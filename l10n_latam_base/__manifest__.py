@@ -52,6 +52,7 @@ This module is compatible with base_vat module in order to be able to validate V
         'data/l10n_latam.identification.type.csv',
         'views/res_partner_view.xml',
         'data/data_provincias.xml',
+        'views/view_l10n_latam_identification_type_tree.xml',
         
         'security/ir.model.access.csv',
     ],
