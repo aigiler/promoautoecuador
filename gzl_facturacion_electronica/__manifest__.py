@@ -35,7 +35,7 @@
         'views/account_move_reversal.xml',
         'views/inventario_servicios_view.xml',
         'views/bitacora_consumo_servicios_view.xml',
-        'views/l10n_latam_identification_type_view.xml',
+        'views/l10n_latam_document_type_view.xml',
 
         'wizard/wizard_ats_view.xml',
         'wizard/wizard_import_documents_view.xml',
