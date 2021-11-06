@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="acount_account_nivel" model="ir.ui.view">
+        <field name="name">acount.account.nivel</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="nivel" />
+                <field name="naturaleza" />
+                <field name="agregado" />
+            </xpath>
+            <xpath expr="//field[@name='group_id']" position="after">
+                <field name="analytic_account" />
+            </xpath>
+        </field>
+    </record>
+
+   </odoo>
