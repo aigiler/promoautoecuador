@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from . import gzl_reporte_subproyectos_por_mes
-from . import gzl_reporte_subproyectos_por_area
+#from . import gzl_reporte_subproyectos_por_mes
+#from . import gzl_reporte_subproyectos_por_area
 from . import report_debts_due
 from . import gzl_reporte_proveedores_clientes
 from . import gzl_reporte_saldo_agrupado_pagos

@@ -7,5 +7,5 @@ from . import account_payment
 from . import crossovered_budget
 from . import account_move
 from . import account_account
-from . import account_analytic_account
+#from . import account_analytic_account
 from . import account_asset
