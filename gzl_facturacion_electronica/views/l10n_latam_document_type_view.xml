@@ -54,13 +54,13 @@
     </record>
 
     <record model="ir.actions.act_window" id="action_document_type">
-        <field name="name">Document Types</field>
+        <field name="name">Tipo de Documentos</field>
         <field name="res_model">l10n_latam.document.type</field>
         <field name="domain">['|', ('active', '=', True), ('active', '=', False)]</field>
         <field name="context">{"search_default_active":1}</field>
     </record>
 
     <menuitem action="action_document_type" id="menu_document_type" sequence="20" 
-                parent="gzl_facturacion_electronica.menu_contabilidad_tributacion"/>
+                parent="menu_contabilidad_tributacion"/>
 
 </odoo>

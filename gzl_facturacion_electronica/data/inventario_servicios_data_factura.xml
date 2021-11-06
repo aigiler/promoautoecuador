@@ -29,10 +29,10 @@
         <record id="url_servicio_descargar_ride_factura" model="inventario.servicio">
             <field name="name">Descargar RIDE Factura</field>
             <field name="ip_address">https://apis.ginvoice.gizlosoftware.com/servicios/factura/v2.0/</field>
-            <field name="link">descagarRide</field>
+            <field name="link">descargarRide</field>
             <field name="description">Servicio para descargar RIDE Factura</field>
             <field name="active">True</field>
-            <field name="header">{"Content-Type":"application/json","Accept":"application/pdf"}</field>
+            <field name="header">{"Content-type": "application/json"}</field>
             <field name="identificador_servicio">url_servicio_descargar_ride_factura</field>
 
 
@@ -41,7 +41,7 @@
         <record id="url_servicio_descargar_xml_factura" model="inventario.servicio">
             <field name="name">Descargar XML</field>
             <field name="ip_address">https://apis.ginvoice.gizlosoftware.com/servicios/factura/v2.0/</field>
-            <field name="link">descagarXml</field>
+            <field name="link">descargarXml</field>
             <field name="description">Servicio para descargar XML Factura</field>
             <field name="active">True</field>
             <field name="header">{"Content-type": "application/json"}</field>
@@ -54,7 +54,7 @@
         <record id="url_servicio_token" model="inventario.servicio">
             <field name="name">OAUT Token</field>
             <field name="ip_address">https://api-ginvoice.auth.us-east-1.amazoncognito.com//oauth2/token/</field>
-            <field name="link">descagarXmlFactura</field>
+            <field name="link">descargarXmlFactura</field>
             <field name="description">Servicio para generar token</field>
             <field name="active">True</field>
             <field name="header">{"Content-Type":"application/json","Accept":"application/json"}</field>

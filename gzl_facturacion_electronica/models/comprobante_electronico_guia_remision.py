@@ -58,7 +58,7 @@ class AccountGuiaRemision(models.Model):
         body_vf = {
                       "guiasRemision": [
                         {
-                          "codigoExterno": self.l10n_latam_document_number[0:3]+'-'+self.l10n_latam_document_number[3:6]+'-'+self.l10n_latam_document_number[6:],
+                          "codigoExterno": self.name[0:3]+'-'+self.name[3:6]+'-'+self.name[6:],
                           "ruc": self.env.user.company_id.vat,
 
                         }
@@ -115,7 +115,7 @@ class AccountGuiaRemision(models.Model):
 
 
             dctDetalle['codDocSustento']=dctCodDoc[detalle.invoice_id.type]
-            dctDetalle['codEstabDestino']=detalle.cod_establecimiento_destino
+            dctDetalle['codEstabDestino']=detalle.cod_establecimiento_destino.zfill(3)
             listaDetalleFactura=[]
             for lineas_cantidad in detalle.guia_remision_line_quantity_ids:
                 dctDetalleLinea={}
@@ -130,13 +130,13 @@ class AccountGuiaRemision(models.Model):
 
             dctDetalle['dirDestinatario']= funciones.elimina_tildes(detalle.picking_id.partner_id.street) or ""  
             dctDetalle['docAduaneroUnico']=detalle.documento_aduanero
-          #  dctDetalle['fechaEmisionDocSustento']='%s-%s-%s 00:00' % (detalle.invoice_id.invoice_date.year, str(detalle.invoice_id.invoice_date.month).zfill(2),str(detalle.invoice_id.invoice_date.day).zfill(2))
+            dctDetalle['fechaEmisionDocSustento']='%s-%s-%s 00:00' % (detalle.invoice_id.invoice_date.year, str(detalle.invoice_id.invoice_date.month).zfill(2),str(detalle.invoice_id.invoice_date.day).zfill(2))
 
 
             dctDetalle['identificacionDestinatario']=detalle.picking_id.partner_id.vat
             dctDetalle['motivoTraslado']=detalle.motivo_id.name
             dctDetalle['numAutDocSustento']=detalle.invoice_id.numero_autorizacion_sri
-            dctDetalle['numDocSustento']=detalle.invoice_id.l10n_latam_document_number
+            dctDetalle['numDocSustento']=detalle.invoice_id.l10n_latam_document_number[0:3]+'-'+detalle.invoice_id.l10n_latam_document_number[3:6]+'-'+detalle.invoice_id.l10n_latam_document_number[6:]
             dctDetalle['razonSocialDestinatario']=detalle.picking_id.partner_id.name
             dctDetalle['ruta']=(detalle.exit_route or '' ) +' -  '+(detalle.arrival_route or '')
 
@@ -150,7 +150,7 @@ class AccountGuiaRemision(models.Model):
         dctFactura['correoNotificacion']=self.env.user.email or ""
         dctFactura['destinatarios']=listaDetalle
         dctFactura['dirEstablecimiento']=funciones.elimina_tildes(self.env.user.company_id.street) or ""
-        dctFactura['dirPartida']= ""
+        dctFactura['dirPartida']= self.direccion_partida
         dctFactura['documentosRelaciondos']= ""
 
 
@@ -165,7 +165,7 @@ class AccountGuiaRemision(models.Model):
 
 
         dctFactura['razonSocialTransportista']= self.transporter_id.name
-        dctFactura['rise']= ""
+        #dctFactura['rise']= ""
         dctFactura['ruc']= self.env.user.company_id.vat
         dctFactura['rucTransportista']= self.transporter_id.vat
         dctFactura['secuencial']=self.name[6:]

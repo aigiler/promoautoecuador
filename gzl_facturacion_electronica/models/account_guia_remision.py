@@ -30,6 +30,7 @@ class AccountGuiaRemision(models.Model):
     date_end = fields.Date('Fecha fin')
     transportation_company = fields.Char('Empresa Transportadora')
     commentary = fields.Text(string='Comentario')
+    direccion_partida = fields.Text(string='Dirección de Partida')
     is_electronic = fields.Boolean('Es Electrónico?')
     ######## TRIBUTACION
     respuesta_sri = fields.Char('Respuesta SRI')

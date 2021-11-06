@@ -3,6 +3,9 @@ import os
 import time
 import logging
 from datetime import datetime
+import itertools
+from itertools import groupby
+
 from odoo import api,fields,models
 from odoo.exceptions import (
     Warning as UserError,
@@ -46,6 +49,62 @@ class AccountRetentionLine(models.Model):
     account_id = fields.Many2one('account.account', string="Cuenta")
     base_ret = fields.Float(string='Base', compute='compute_base_ret')
     
+    @api.onchange('group_id')
+    def onchange_group_id(self):
+        self.tax_id=False
+        self.base=False
+        self.base_ret=False
+        self.tax_repartition_line_id=False
+        self.amount=False
+
+
+
+    @api.onchange('tax_id')
+    def onchange_tax_id(self):
+        for res in self:
+            if res.tax_id:
+                res.name=res.tax_id.name
+                res.tax_repartition_line_id=res.tax_id.invoice_repartition_line_ids[1]
+
+    @api.onchange('tax_id')
+    def onchange_tax_base(self):
+        for res in self:
+            ret_taxes = []
+
+            for line in res.invoice_id.invoice_line_ids:
+                tax_detail = res.tax_id.compute_all(line.price_unit, line.currency_id, line.quantity, line.product_id, res.invoice_id.partner_id)['taxes']
+
+                
+                if res.tax_id.tax_group_id.code in ['ret_vat_b', 'ret_vat_srv', 'ret_ir']:
+                    ret_taxes.append({
+                        'fiscal_year': str(res.invoice_id.invoice_date.month).zfill(2)+'/'+str(res.invoice_id.invoice_date.year),
+                        'group_id': res.tax_id.tax_group_id.id,
+                        'tax_repartition_line_id': tax_detail[0]['tax_repartition_line_id'],
+                        'amount': sum( [t['amount'] for t in tax_detail ]),
+                        'base': sum( [t['base'] for t in tax_detail ]),
+                        'tax_id': res.tax_id.id
+                    })
+
+            ret_taxes = sorted(ret_taxes, key = lambda x: x['tax_id'])
+            ret_to_merge = groupby(ret_taxes, lambda x: x['tax_id'])
+            ret_taxes = []
+            for k,vv in ret_to_merge:
+                v=list(vv)
+                ret_taxes.append({
+                            'fiscal_year': str(res.invoice_id.invoice_date.month).zfill(2)+'/'+str(res.invoice_id.invoice_date.year),
+                            'group_id': v[0]['group_id'],
+                            'tax_repartition_line_id': v[0]['tax_repartition_line_id'],
+                            'amount': sum( [t['amount'] for t in v ]),
+                            'base': sum( [t['base'] for t in v ]),
+                            'tax_id': v[0]['tax_id']
+                        })
+            for retencion in ret_taxes:
+                res.fiscal_year=retencion['fiscal_year']
+                res.amount=retencion['amount']
+                res.base=retencion['base']
+
+
+
     @api.depends('base','tax_repartition_line_id')
     def compute_base_ret(self):
         for res in self:
@@ -94,7 +153,7 @@ class AccountRetention(models.Model):
         ],string='Tipo',readonly=True,default=_get_in_type)
     date = fields.Date('Fecha Emision',readonly=True,states={'draft': [('readonly', False)]}, required=True)
     tax_ids = fields.One2many('account.retention.line','retention_id','Detalle de Impuestos', readonly=True,states=STATES_VALUE,copy=False)
-    invoice_id = fields.Many2one('account.move',string='Documento',required=False,readonly=True,states=STATES_VALUE,domain=[('state', '=', 'open')],copy=False)
+    invoice_id = fields.Many2one('account.move',string='Factura',required=False,readonly=True,states=STATES_VALUE,domain=[('state', '=', 'open')],copy=False)
     partner_id = fields.Many2one('res.partner',string='Empresa',required=True,readonly=True,states=STATES_VALUE )
     move_ret_id = fields.Many2one('account.move',string='Asiento Retención',readonly=True,copy=False)
     state = fields.Selection(
@@ -290,6 +349,7 @@ class AccountRetention(models.Model):
             lines = []
             
             for line in ret.tax_ids:
+
                 lines.append((0, 0, {
                     'partner_id': ret.partner_id.id,
                     'account_id': line.tax_repartition_line_id.account_id.id,
@@ -310,6 +370,10 @@ class AccountRetention(models.Model):
             }))
             move_data.update({'line_ids': lines})
             move = self.env['account.move'].create(move_data)
+
+
+
+
             acctype = self.type == 'in_invoice' and 'payable' or 'receivable'
             inv_lines = inv.line_ids
             acc2rec = inv_lines.filtered(lambda l: l.account_id.internal_type == acctype)  

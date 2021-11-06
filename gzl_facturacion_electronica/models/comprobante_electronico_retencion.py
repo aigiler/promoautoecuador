@@ -82,7 +82,7 @@ class Retenciones(models.Model):
         body_vf = {
                       "retenciones": [
                         {
-                          "codigoExterno": self.l10n_latam_document_number[0:3]+'-'+self.l10n_latam_document_number[3:6]+'-'+self.l10n_latam_document_number[6:],
+                          "codigoExterno": self.name[0:3]+'-'+self.name[3:6]+'-'+self.name[6:],
                           "ruc": self.env.user.company_id.vat,
 
                         }
@@ -149,9 +149,9 @@ class Retenciones(models.Model):
 
 
             dctDetalle['numDocSustento']=self.invoice_id.l10n_latam_document_number or ""
-            dctDetalle['porcentajeRetener']=round(detalle.amount*100/detalle.base,2)
+            dctDetalle['porcentajeRetener']=float(detalle.tax_id.tarifa)
             dctDetalle['tarifa']=detalle.tax_id.tarifa
-            dctDetalle['valorRetenido']=round(detalle.amount,2)
+            dctDetalle['valorRetenido']=abs(round(detalle.amount,2))
 
 
 
@@ -176,7 +176,7 @@ class Retenciones(models.Model):
 
 
 
-        dctFactura['periodoFiscal']= '%s' % (self.date.year)
+        dctFactura['periodoFiscal']= str(self.date.month).zfill(2)+'/'+str(self.date.year)
 
 
         dctFactura['puntoEmision']= self.name[3:6]

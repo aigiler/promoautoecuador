@@ -34,6 +34,9 @@
                     <group>
                         <field name="transporter_id" required="1"/>
                         <field name="placa"  required="1"/>
+                        <field name="direccion_partida"  required="1"/>
+
+
                         <field name="transportation_company"  required="1"/>
                         <field name="company_id" groups="base.group_multi_company" readonly="1"/>
                         <field name="commentary"  required="1"/> 
@@ -70,11 +73,11 @@
                                 </group>
 
                                 <group>
-                                    <field name="documento_aduanero" />
-                                    <field name="cod_establecimiento_destino"/>
-                                    <field name="motivo_id"/>
-                                    <field name="exit_route"/>
-                                    <field name="arrival_route"/>   
+                                    <field name="documento_aduanero" required="1"/>
+                                    <field name="cod_establecimiento_destino" required="1"/>
+                                    <field name="motivo_id" required="1"/>
+                                    <field name="exit_route" required="1"/>
+                                    <field name="arrival_route" required="1"/>   
                                 </group>
                             </group>
                             <field name="guia_remision_line_quantity_ids" >

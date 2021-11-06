@@ -1431,7 +1431,7 @@ class AccountMove(models.Model):
         if 'posted' in self.mapped('line_ids.payment_id.state'):
             raise ValidationError(_("You cannot modify a journal entry linked to a posted payment."))
 
-    @api.constrains('name', 'journal_id', 'state')
+    #@api.constrains('name', 'journal_id', 'state')
     def _check_unique_sequence_number(self):
         moves = self.filtered(lambda move: move.state == 'posted')
         if not moves:
@@ -1763,6 +1763,8 @@ class AccountMove(models.Model):
         return {
             'out_invoice': _('Invoice Created'),
             'out_refund': _('Credit Note Created'),
+            'out_debit': _('Customer Debit Note Created'),
+            'in_debit': _('Vendor Debit Note Created'),
             'in_invoice': _('Vendor Bill Created'),
             'in_refund': _('Refund Created'),
             'out_receipt': _('Sales Receipt Created'),
@@ -1775,7 +1777,7 @@ class AccountMove(models.Model):
 
     @api.model
     def get_invoice_types(self, include_receipts=False):
-        return ['out_invoice', 'out_refund', 'in_refund', 'in_invoice'] + (include_receipts and ['out_receipt', 'in_receipt'] or [])
+        return ['out_invoice', 'out_refund','out_debit', 'in_refund', 'in_invoice','in_debit'] + (include_receipts and ['out_receipt', 'in_receipt'] or [])
 
     def is_invoice(self, include_receipts=False):
         return self.type in self.get_invoice_types(include_receipts)
@@ -1796,7 +1798,7 @@ class AccountMove(models.Model):
 
     @api.model
     def get_inbound_types(self, include_receipts=True):
-        return ['out_invoice', 'in_refund'] + (include_receipts and ['out_receipt'] or [])
+        return ['out_invoice', 'in_refund','out_debit'] + (include_receipts and ['out_receipt'] or [])
 
     def is_inbound(self, include_receipts=True):
         return self.type in self.get_inbound_types(include_receipts)

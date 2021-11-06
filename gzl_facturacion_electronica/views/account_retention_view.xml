@@ -42,7 +42,6 @@
                         <button name="button_validate" string="Validar" class="oe_highlight" type="object" states="draft"/>
                         <button name="action_draft" string="Volver a Borrador" type="object" states="cancel"/>
 
-                        <button name="procesoComprobanteElectronico" string="Facturación Electrónica" class="oe_highlight" type="object"  attrs="{'invisible': ['|',('state','=','draft'),('is_electronic','!=',True)]}"   />
 
                         <button name="action_cancel" string="Anular" type="object" states="done"/>
                         <field name="state" widget="statusbar"/>
@@ -75,6 +74,8 @@
                                 <field name="type" invisible="1"/>
                                 <field name="date"/>
                                 <field name="in_type"/>
+
+
                                 <field name="manual" invisible="1"/>
                                 <field name="is_manual_sequence" readonly="1" invisible="0"/>
                                 <field name="is_electronic" readonly="1" attrs="{'invisible':[('in_type','=','ret_in_invoice')]}"/>
@@ -154,19 +155,18 @@
             <field name="arch" type="xml">
                 <form string="Retención de Cliente">
                     <header>
-                        <button name="print_retention" string="Retención Pdf" class="oe_highlight" type="object" />
+                        <button name="print_retention" string="Retención Pdf" class="oe_highlight" type="object"/>
                         <button name="button_validate" string="Validar" class="oe_highlight" type="object" states="draft"/>
                         <button name="action_draft" string="Volver a Borrador" type="object" states="cancel"/>
-                        <!--<button name="action_cancel" string="Anular" type="object" states="done"/>-->
+
+                        <button name="procesoComprobanteElectronico" string="Facturación Electrónica" class="oe_highlight" type="object"  attrs="{'invisible': ['|',('state','=','draft'),('is_electronic','!=',True)]}"   />
+
+
+
                         <field name="state" widget="statusbar"/>
-
-                    <button name="procesoComprobanteElectronico" string="Facturación Electrónica" class="oe_highlight" type="object"  attrs="{'invisible': ['|',('state','=','draft'),('is_electronic','!=',True)]}"   />
-
-
-                        
                     </header>
                     <sheet>
-                        <field name="company_id" invisible="1" />
+                        <field name="company_id" invisible="1"/>
                         <div class="oe_title">
                             <h1>
                                 <field name="name" class="oe_inline" required="0"/>
@@ -174,36 +174,50 @@
                         </div>
                         <group>
                             <group>
-                                <field name="partner_id" domain="[('customer_rank','!=',0)]"
-				       options="{'no_create': True, 'no_create_edit': True}"
-                                       attrs="{'required':[('to_cancel','=',False)]}"/>
+
+                                <field name="partner_id" placeholder="Seleccione Proveedor" domain="[('customer_rank','!=',0)]" options="{'no_create': True, 'no_create_edit': True}" attrs="{'required':[('to_cancel','=',False)]}"/>
                                 <label for="manual_establishment" attrs="{'invisible': [('state', '=', 'done')]}"/>
-                                <div class="d-flex" attrs="{'invisible': [('state', '=', 'done')]}" >
+                                <div class="d-flex" attrs="{'invisible': [('state', '=', 'done')]}">
                                     <field name="manual_establishment" placeholder="001" required="1"/>
-                                    <span class="o_form_label mx-1 oe_edit_only" >-</span>
+                                    <span class="o_form_label mx-1 oe_edit_only">-</span>
                                     <field name="manual_referral_guide" placeholder="001" required="1"/>
                                     <span class="o_form_label mx-1 oe_edit_only">-</span>
                                     <field name="manual_sequence" readonly="0" placeholder="1452" force_save="1" required="1"/>
                                 </div>
                                 <field name="auth_number" required="1"/>
-                                <field name="invoice_id"
-                                       domain="[('partner_id','=',partner_id),('type','=','out_invoice'),('retention_id','=',False)]"
-                                       options="{'no_create': True, 'no_create_edit': True}"
-                                       attrs="{'required':[('to_cancel','=',False)], 'invisible':[('to_cancel','=',True)]}"/>
+                                <field name="invoice_id" placeholder="Seleccione Factura" domain="[('partner_id','=',partner_id),('retention_id','=',False),('type','=','out_invoice'),('state','=','posted')]" options="{'no_create': True, 'no_create_edit': True}" attrs="{'required':[('to_cancel','=',False)], 'invisible':[('to_cancel','=',True)]}"/>
+
+
                             </group>
+
+
+
+
                             <group>
                                 <field name="date"/>
+
+
                                 <field name="manual" invisible="1"/>
                                 <field name="to_cancel" invisible="1"/>
                                 <field name="type" invisible="1"/>
+                                <field name="is_electronic" invisible="1"/>
                             </group>
                             <field name="currency_id" invisible="1"/>
                         </group>
+
+
+
+
+
+
+
+
                         <notebook>
                             <page string="Impuestos">
-                                <field name="tax_ids"
-				       nolabel="1"
-                                       domain="[('invoice_id','=',invoice_id),('group_id.code','in',['ret_ir','ret_vat_b','ret_vat_srv'])]">
+
+                                <field name="tax_ids" nolabel="1" domain="[('invoice_id','=',invoice_id),('group_id.code','in',['ret_ir','ret_vat_b','ret_vat_srv'])]" attrs="{'readonly':[('invoice_id','=',False)]}"
+                                    context="{'default_invoice_id':invoice_id}">
+
                                     <tree string="Impuestos Aplicados" edit="false">
                                         <field name="fiscal_year"/>
                                         <field name="group_id"/>
@@ -211,42 +225,50 @@
                                         <field name="base_ret"/>
                                         <field name="amount"/>
                                     </tree>
-                                    <form >
+                                    <form>
+
+                                        
                                         <group>
                                             <group>
                                                 
-                                                <field name="amount"/>
-                                                <field name="group_id"/>
-                                                <field name="invoice_id"/>
-                                                <field name="fiscal_year"/>
-                                                <field name="name"/>
-                                                <field name="account_id"/>
-                                            </group>
+                                                <field name="group_id" required="1" options="{'no_create': True, 'no_create_edit': True}" domain="[('code','in',['ret_vat_b', 'ret_vat_srv', 'ret_ir'])]"/>
+                                                <field name="tax_id" required="1" options="{'no_create': True, 'no_create_edit': True}" domain="[('tax_group_id','=',group_id)]"/>
+                                                <field name="tax_repartition_line_id" invisible="1"/>
 
+
+                                            </group>
+                                        </group>
+
+                                        <group>
                                             <group>
-                                                <field name="base"/>
-                                                <field name="tax_id"/>
-                                                <field name="retention_id"/>
-                                                <field name="num_document"/>
-                                                <field name="code"/>
-                                                <field name="sequence"/>
-                                                <field name="base_ret"/>
+                                                
+                                                <field name="amount" required="1"/>
+                                                <field name="invoice_id" invisible="0" readonly="1"/>
+                                                <field name="name" invisible="1"/>
+                                                <field name="base" required="1"/>
+                                                <field name="account_id"/>
+                                                <field name="fiscal_year" required="1"/>
+
+
+                                                <field name="num_document" invisible="1"/>
+                                                <field name="code" invisible="1"/>
+                                                <field name="sequence" invisible="1"/>
+                                                <field name="base_ret" invisible="1"/>
                                             </group>
                                         </group>
                                     </form>
                                     
                                     
-				                                    </field>
+                                                    </field>
                                 <group class="oe_subtotal_footer oe_right">
                                     <field name="amount_total" widget="monetary" class="oe_subtotal_footer_separator"/>
                                 </group>
                                 <separator string=""/>
                             </page>
-                            <page string="Otra Información">
+                            <page string="Info Extra">
                                 <group>
                                     <field name="in_type"/>
                                     <field name="move_ret_id"/>
-                                    <field name="is_electronic"/>
                                 </group>
                             </page>
                         </notebook>

@@ -91,6 +91,7 @@ class FacturacionElectronica(models.Model):
 ##############DETALLES 
         listaDetalle=[]
         listaTipoImpuestos=[]
+        listaImpuestosDetalle=[]
         for detalle in self.invoice_line_ids:
             dctDetalle={}
             impuestos=detalle.tax_ids.mapped("id")
@@ -118,7 +119,7 @@ class FacturacionElectronica(models.Model):
                 dctImpuesto['valor']=round(detalle.price_subtotal*impuesto.amount/100,2)
 
                 listaImpuesto.append(dctImpuesto)
-
+                listaImpuestosDetalle.append(dctImpuesto)
             dctDetalle['detallesImpuesto']=listaImpuesto
             dctDetalle['iva']=''
             dctDetalle['precioTotalSinImpuesto']=round(detalle.price_subtotal,2)
@@ -157,7 +158,7 @@ class FacturacionElectronica(models.Model):
 
 
         dctFactura['adicionales']=[]
-        dctFactura['clave_interna']=""
+        dctFactura['claveInterna']=""
         dctFactura['codDocModificado']=dctCodDoc[facturaReferenciada.type]
         dctFactura['codigoExterno']= self.l10n_latam_document_number or ""
 
@@ -169,7 +170,7 @@ class FacturacionElectronica(models.Model):
         dctFactura['fechaAutorizacion']='%s-%s-%s 00:00' % (self.invoice_date.year, str(self.invoice_date.month).zfill(2),str(self.invoice_date.day).zfill(2))
 
         dctFactura['fechaEmision']='%s-%s-%s 00:00' % (self.invoice_date.year, str(self.invoice_date.month).zfill(2),str(self.invoice_date.day).zfill(2))
-        dctFactura['fechaEmisionDocSustento']='%s-%s-%s 00:00' % (self.debit_origin_nd_id.invoice_date.year, str(self.debit_origin_nd_id.invoice_date.month).zfill(2),str(self.debit_origin_nd_id.invoice_date.day).zfill(2))
+        dctFactura['fechaEmisionDocSustentoDb']='%s-%s-%s 00:00' % (self.debit_origin_nd_id.invoice_date.year, str(self.debit_origin_nd_id.invoice_date.month).zfill(2),str(self.debit_origin_nd_id.invoice_date.day).zfill(2))
 
 
 
@@ -178,18 +179,18 @@ class FacturacionElectronica(models.Model):
 
 
         dctFactura['identificacionComprador']=self.partner_id.vat or ""
-        dctFactura['impuestos']=listaImpuesto
+        dctFactura['impuestos']=listaImpuestosDetalle
 
         dctFactura['infoAdicional']=""
 
-        dctFactura['motivos']=[{ "razon": self.narration or "" ,"valor": abs(round(self.amount_total,0))}]
+        dctFactura['motivos']=[{ "razon": self.narration or "No especifica" ,"valor": abs(round(self.amount_total,2))}]
 
         dctFactura['numDocModificado']=facturaReferenciada.l10n_latam_document_number[0:3]+'-'+facturaReferenciada.l10n_latam_document_number[3:6]+'-'+facturaReferenciada.l10n_latam_document_number[6:]
 
 
         dctFactura['puntoEmision']= self.journal_id.auth_out_invoice_id.serie_emision
         dctFactura['razonSocialComprador']= funciones.elimina_tildes(self.partner_id.name)
-        dctFactura['rise']= ""
+        #dctFactura['rise']= ""
         dctFactura['ruc']= self.env.user.company_id.vat
         dctFactura['secuencial']=self.l10n_latam_document_number[6:]
         dctFactura['telefonoComprodar']=self.partner_id.phone
@@ -197,8 +198,8 @@ class FacturacionElectronica(models.Model):
         dctFactura['tipoIdentificacionComprador']=self.partner_id.l10n_latam_identification_type_id.code_venta
         dctFactura['tipoOperacion']="COM"
       #  dctFactura['totalConImpuestos']=listaTotalConImpuestos
-        dctFactura['totalSinImpuestos']=round(self.amount_untaxed,0)
-        dctFactura['valorTotal']=  abs(round(self.amount_total,0))
+        dctFactura['totalSinImpuestos']=round(self.amount_untaxed,2)
+        dctFactura['valorTotal']=  abs(round(self.amount_total,2))
 
 
 

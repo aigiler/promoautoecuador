@@ -172,13 +172,13 @@ class FacturacionElectronica(models.Model):
 
 
         dctFactura['identificacionComprador']=self.partner_id.vat or ""
-        dctFactura['motivo']=self.narration or ""
+        dctFactura['motivo']=self.narration or "No se ha ingresado motivo"
         dctFactura['numDocModificado']=facturaReferenciada.l10n_latam_document_number[0:3]+'-'+facturaReferenciada.l10n_latam_document_number[3:6]+'-'+facturaReferenciada.l10n_latam_document_number[6:]
 
 
         dctFactura['puntoEmision']= self.journal_id.auth_out_invoice_id.serie_emision
         dctFactura['razonSocialComprador']= funciones.elimina_tildes(self.partner_id.name)
-        dctFactura['rise']= ""
+       # dctFactura['rise']= ""
         dctFactura['ruc']= self.env.user.company_id.vat
         dctFactura['secuencial']=self.l10n_latam_document_number[6:]
         dctFactura['telefonoComprodar']=self.partner_id.phone
@@ -186,8 +186,8 @@ class FacturacionElectronica(models.Model):
         dctFactura['tipoIdentificacionComprador']=self.partner_id.l10n_latam_identification_type_id.code_venta
         dctFactura['tipoOperacion']="COM"
         dctFactura['totalConImpuestos']=listaTotalConImpuestos
-        dctFactura['totalSinImpuestos']=round(self.amount_untaxed,0)
-        dctFactura['valorModificacion']=  round(self.amount_total,0)
+        dctFactura['totalSinImpuestos']=round(self.amount_untaxed,2)
+        dctFactura['valorModificacion']=  round(self.amount_total,2)
 
 
 

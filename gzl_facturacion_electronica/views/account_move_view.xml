@@ -38,10 +38,15 @@
             <xpath expr="//button[@name='action_reverse']" position="attributes">
                 <attribute name="string">Agregar Nota de Crédito</attribute> 
             </xpath>
+
+
+
+
             <xpath expr="//button[@name='action_reverse']" position="after">
                 <button name="procesoComprobanteElectronico" string="Facturación Electrónica" class="oe_highlight" type="object"  attrs="{'invisible': ['|',('state','=','draft'),('is_electronic','!=',True)]}"   />
+            <!--    <button name="agregar_retencion" string="Agregar Retencion" class="oe_highlight" type="object"  attrs="{'invisible': ['|',('state','=','draft'),('type','!=','out_invoice')]}"   />
 
-
+-->
             </xpath>
 
 

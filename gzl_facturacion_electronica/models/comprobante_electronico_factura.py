@@ -387,7 +387,7 @@ class FacturacionElectronica(models.Model):
       #  dctFactura['id']=""
         dctFactura['identificacionComprador']=self.partner_id.vat or ""
         dctFactura['identificadorUsuario']= self.env.user.partner_id.vat or ""
-        dctFactura['importeTotal']=round(self.amount_total,0)
+        dctFactura['importeTotal']=round(self.amount_total,2)
       #  dctFactura['mensajeRespuesta']=""
         dctFactura['moneda']= 'DOLAR'
        # dctFactura['notificado']=False
@@ -407,10 +407,10 @@ class FacturacionElectronica(models.Model):
         dctFactura['tipoOperacion']="COM"
         dctFactura['totalConImpuestos']=listaTotalConImpuestos
         dctFactura['totalDescuento']=descuento
-        dctFactura['totalSinImpuestos']=round(self.amount_untaxed,0)
+        dctFactura['totalSinImpuestos']=round(self.amount_untaxed,2)
         #dctFactura['userName']= self.env.user.name
         dctFactura['valorPagar']=  round(self.amount_total,0)
-        dctFactura['valorRetencion']=  round(self.ret_amount_total,0)
+        dctFactura['valorRetencion']=  round(self.ret_amount_total,2)
 
 
 

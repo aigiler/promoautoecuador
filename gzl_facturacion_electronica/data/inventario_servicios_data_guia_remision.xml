@@ -30,10 +30,10 @@
         <record id="url_servicio_descargar_ride_guia_remision" model="inventario.servicio">
             <field name="name">Descargar RIDE Guia de Remision</field>
             <field name="ip_address">https://apis.ginvoice.gizlosoftware.com/servicios/guiaRemision/v2.0/</field>
-            <field name="link">descagarRide</field>
+            <field name="link">descargarRide</field>
             <field name="description">Servicio para descargar RIDE Guia de remision</field>
             <field name="active">True</field>
-            <field name="header">{"Content-Type":"application/json","Accept":"application/pdf"}</field>
+            <field name="header">{"Content-type": "application/json"}</field>
             <field name="identificador_servicio">url_servicio_descargar_ride_guia_remision</field>
 
 
@@ -42,7 +42,7 @@
         <record id="url_servicio_descargar_xml_guia_remision" model="inventario.servicio">
             <field name="name">Descargar XML Guia de Remision</field>
             <field name="ip_address">https://apis.ginvoice.gizlosoftware.com/servicios/guiaRemision/v2.0/</field>
-            <field name="link">descagarXml</field>
+            <field name="link">descargarXml</field>
             <field name="description">Servicio para descargar XML Guia de remision</field>
             <field name="active">True</field>
             <field name="header">{"Content-type": "application/json"}</field>
