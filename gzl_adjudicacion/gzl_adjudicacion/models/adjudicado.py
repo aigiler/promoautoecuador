@@ -10,7 +10,8 @@ class Partner(models.Model):
     _inherit = 'res.partner'    
   
 
-
     tipo=fields.Char(string='Tipo')
+    monto = fields.Float(string='Monto')
+    tipo_contrato = fields.Many2one("tipo.contrato.adjudicado", String="Tipo de Contrato")
 
 
