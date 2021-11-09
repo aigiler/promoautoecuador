@@ -5,7 +5,7 @@
     'description': 'Modificaciones en Ventas',
     'depends': ['sale'],
     'data': [
-            'views/sale_order_inherit_view.xml',
+            #'views/sale_order_inherit_view.xml',
     ],
     'qweb': [],
     'demo': [],
