@@ -26,9 +26,8 @@ class Asamblea(models.Model):
 
     @api.model
     def create(self, vals):
-        asamblea = super(Asamblea, self).create(vals)
         vals['secuencia'] = self.env['ir.sequence'].next_by_code('asamblea')
-        return asamblea
+        return super(Asamblea, self).create(vals)
 
     @api.onchange('grupo_id')
     def agregar_grupo_a_asamblea(self):

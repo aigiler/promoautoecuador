@@ -6,6 +6,7 @@
             <field name="name">Secuencia para Asamblea</field>
             <field name="code">asamblea</field>
             <field name="prefix">Asamblea </field>
+            <field name="padding">5</field>
             <field eval="1" name="number_next"/>
             <field eval="1" name="number_increment"/>
             <field eval="False" name="company_id"/>
@@ -16,6 +17,7 @@
             <field name="name">Secuencia para Grupo Adjudicado</field>
             <field name="code">grupo.adjudicado</field>
             <field name="prefix">Grupo Adjudicado</field>
+            <field name="padding">5</field>
             <field eval="1" name="number_next"/>
             <field eval="1" name="number_increment"/>
             <field eval="False" name="company_id"/>

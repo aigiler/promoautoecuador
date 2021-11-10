@@ -7,14 +7,14 @@ class CrmLead(models.Model):
     _inherit = 'crm.lead'
 
     is_won = fields.Boolean(related='stage_id.is_won')
-    contacto_name = fields.Char(String='Nombre Completo')
-    contacto_cedula = fields.Char(String='Cédula')
-    contacto_correo = fields.Char(String='Correo Electrónico')
-    contacto_telefono = fields.Char(String='Teléfono')
-    contacto_domicilio = fields.Char(String='Domicilio')
-    tasa_interes = fields.Integer(String='Tasa de Interes')
-    numero_cuotas = fields.Integer(String='Número de Cuotas')
-    dia_pago = fields.Integer(String='Día de Pagos')
+    contacto_name = fields.Char(string='Nombre Completo')
+    contacto_cedula = fields.Char(string='Cédula')
+    contacto_correo = fields.Char(string='Correo Electrónico')
+    contacto_telefono = fields.Char(string='Teléfono')
+    contacto_domicilio = fields.Char(string='Domicilio')
+    tasa_interes = fields.Integer(string='Tasa de Inter+és')
+    numero_cuotas = fields.Integer(string='Número de Cuotas')
+    dia_pago = fields.Integer(string='Día de Pagos')
     tabla_amortizacion = fields.One2many('tabla.amortizacion', 'oportunidad_id' )
     
     def detalle_tabla_amortizacion(self):

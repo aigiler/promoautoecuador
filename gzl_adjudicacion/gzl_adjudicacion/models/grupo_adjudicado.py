@@ -17,9 +17,8 @@ class GrupoAdjudicado(models.Model):
 
     @api.model
     def create(self, vals):
-        g_adjudicados = super(GrupoAdjudicado, self).create(vals)
         vals['secuencia'] = self.env['ir.sequence'].next_by_code('grupo.adjudicado')
-        return g_adjudicados
+        return super(GrupoAdjudicado, self).create(vals)
       
    
 
