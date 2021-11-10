@@ -24,11 +24,10 @@ class Asamblea(models.Model):
             ('cerrado', 'Cerrado')
             ], string='Estado', copy=False, tracking=True, default='borrador')
 
-
+    @api.model
     def create(self, vals):
-        asamblea = super(GrupoAdjudicado, self).create(vals)
-        seq = self.env['ir.sequence'].next_by_code('asamblea')
-        self.secuencia = 'Asamblea '+ str(seq)
+        asamblea = super(Asamblea, self).create(vals)
+        vals['secuencia'] = self.env['ir.sequence'].next_by_code('asamblea')
         return asamblea
 
     @api.onchange('grupo_id')
@@ -38,7 +37,7 @@ class Asamblea(models.Model):
             self.env['integrante.grupo.adjudicado.asamblea'].create({
                 'descripcion':l.descripcion,
                 'asamblea_id':self.id,
-                'adjudicado_id':l.adjudicado_id,
+                'adjudicado_id':l.adjudicado_id.id,
                 'monto':l.monto,
             })
       

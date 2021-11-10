@@ -15,11 +15,10 @@ class GrupoAdjudicado(models.Model):
     monto_grupo = fields.Float(String="Monto")
     secuencia = fields.Char(index=True)
 
-
+    @api.model
     def create(self, vals):
         g_adjudicados = super(GrupoAdjudicado, self).create(vals)
-        seq = self.env['ir.sequence'].next_by_code('grupo.adjudicado')
-        self.secuencia = 'Grupo Adjudicado '+ str(seq)
+        vals['secuencia'] = self.env['ir.sequence'].next_by_code('grupo.adjudicado')
         return g_adjudicados
       
    
@@ -32,4 +31,4 @@ class IntegrantesGrupo(models.Model):
     descripcion=fields.Char('Descripcion',  )
     grupo_id = fields.Many2one('grupo.adjudicado')
     adjudicado_id = fields.Many2one('res.partner')
-    monto=fields.Float('Monto',  )
+    monto=fields.Float('Monto')
