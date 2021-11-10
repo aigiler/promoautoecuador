@@ -20,7 +20,7 @@
 
             <xpath expr="//notebook" position="before">
                 <group string="Tabla de Amortización"> 
-                    <field name="tabla_amortizacion">
+                    <field name="tabla_amortizacion"  nolabel="1">
                         <tree string="Tabla de Amortización" edit="false" create="false" delete="false">
                             <field name="oportunidad_id" invisible="1"/>
                             <field name="numero_cuota" />

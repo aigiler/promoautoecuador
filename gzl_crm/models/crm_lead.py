@@ -58,7 +58,8 @@ class CrmLead(models.Model):
                                         'phone':self.partner_id.phone or None,
                                         'mobile':self.partner_id.mobile or None,
                                         })
-            
+    
+    @api.onchange('stage_id.is_won')
     def crear_factura_automatica(self):
         if self.stage_id.is_won:
             view_id = self.env.ref('gzl_crm.wizard_cotizaciones_crm').id
