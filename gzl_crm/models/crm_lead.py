@@ -18,7 +18,7 @@ class CrmLead(models.Model):
     tabla_amortizacion = fields.One2many('tabla.amortizacion', 'oportunidad_id' )
     
     def detalle_tabla_amortizacion(self):
-
+        print('---')
 
     def crear_adjudicado(self):
         if self.stage_id.is_won:
