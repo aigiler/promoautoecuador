@@ -42,8 +42,8 @@ class TablaAmortizacion(models.Model):
     oportunidad_id = fields.Many2one('crm.lead')
     numero_cuota = fields.Char(String='Número de Cuota')
     fecha = fields.Date(String='Fecha')
-    cuota = fields.Monetary(string='Cuota')
-    capital = fields.Monetary(string='Capital')
-    interes = fields.Monetary(string='Interes')
-    saldo = fields.Monetary(string='Saldo')
+    # cuota = fields.Monetary(string='Cuota')
+    # capital = fields.Monetary(string='Capital')
+    # interes = fields.Monetary(string='Interes')
+    # saldo = fields.Monetary(string='Saldo')
             
