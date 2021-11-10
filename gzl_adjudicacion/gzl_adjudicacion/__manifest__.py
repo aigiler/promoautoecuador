@@ -23,6 +23,7 @@
                    'views/tipo_contrato_view.xml',
                    'views/concesionario_view.xml',
                    'views/grupo_adjudicado_view.xml',
+                   'views/asamblea_view.xml',
                    
                     ],
     

@@ -28,12 +28,12 @@
                         <group>
                                 <field name="name" />
                                 <field name="descripcion" />
+                                <field name="monto_grupo" />
                                 <field name="active" />
                         </group>
                     </group>
 
                     <field name="integrantes" nolabel="1" >
-
                         <tree string="Integrantes" edit="false">
                             <field name="adjudicado_id" domain="[('tipo','=','adjudicado')]"/>
                             <field name="descripcion"/>

@@ -9,7 +9,35 @@
             <xpath expr="//header" position="inside">
                 <field name="is_won" invisible="1"/>
                 <button name="crear_adjudicado" class="oe_highlight" string="Crear Adjudicado" type="object"  attrs="{'invisible': [('is_won', '=',False)]}"/>
+                <button name="detalle_tabla_amortizacion" class="oe_highlight" string="Calcular Amortización" type="object" />
             </xpath>
+
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="tasa_interes"/>
+                <field name="numero_cuotas"/>
+                <field name="dia_pago"/> 
+            </xpath>
+
+            <xpath expr="//notebook" position="before">
+                <field name="tabla_amortizacion"/>
+            </xpath>
+
+            <xpath expr="//page[@name='lead']" position="after">
+                <page name='contact' String='Contacto'>
+                    <group>
+                        <group>
+                            <field name="contacto_name"/>
+                            <field name="contacto_cedula"/>
+                            <field name="contacto_correo"/>
+                        </group>
+                        <group>
+                            <field name="contacto_telefono"/>
+                            <field name="contacto_domicilio"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
         </field>
     </record>
 

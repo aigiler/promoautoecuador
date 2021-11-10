@@ -12,7 +12,15 @@ class GrupoAdjudicado(models.Model):
     descripcion=fields.Text('Descripcion',  required=True)
     active=fields.Boolean( default=True)
     integrantes = fields.One2many('integrante.grupo.adjudicado','grupo_id')
+    monto_grupo = fields.Float(String="Monto")
+    secuencia = fields.Char(index=True)
 
+
+    def create(self, vals):
+        g_adjudicados = super(GrupoAdjudicado, self).create(vals)
+        seq = self.env['ir.sequence'].next_by_code('grupo.adjudicado')
+        self.secuencia = 'Grupo Adjudicado '+ str(seq)
+        return g_adjudicados
       
    
 
