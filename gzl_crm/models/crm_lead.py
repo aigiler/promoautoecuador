@@ -20,3 +20,4 @@ class CrmLead(models.Model):
                                         'phone':self.partner_id.phone or '',
                                         'mobile':self.partner_id.mobile or '',
             })
+            
