@@ -53,13 +53,13 @@
                             </tree>
                         </field>
 
-                        <field name="junta" nolabel="1" >
+                        <!-- <field name="junta" nolabel="1" >
                             <tree string="Junta" >
                                 <field name="lastname"/>
                                 <field name="firstname" />
                                 <field name="department_id"/>
                             </tree>
-                        </field>
+                        </field> -->
                     </group>
                 </sheet>
             </form>

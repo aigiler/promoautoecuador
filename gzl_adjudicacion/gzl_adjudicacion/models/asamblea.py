@@ -13,7 +13,7 @@ class Asamblea(models.Model):
     active=fields.Boolean( default=True)
     grupo_id = fields.Many2one('grupo.adjudicado')
     integrantes = fields.One2many('integrante.grupo.adjudicado.asamblea','asamblea_id')
-    junta = fields.One2many('hr.employee', 'asamblea_id')
+    #junta = fields.One2many('hr.employee', 'asamblea_id')
     fecha_inicio = fields.Datetime(String='Fecha Inicio')
     fecha_fin = fields.Datetime(String='Fecha Fin')
     secuencia = fields.Char(index=True)
