@@ -18,9 +18,9 @@
                 <field name="dia_pago"/> 
             </xpath>
 
-            <!-- <xpath expr="//notebook" position="before">
+            <xpath expr="//notebook" position="before">
                 <field name="tabla_amortizacion"/>
-            </xpath> -->
+            </xpath>
 
             <xpath expr="//page[@name='lead']" position="after">
                 <page name='contact' String='Contacto'>

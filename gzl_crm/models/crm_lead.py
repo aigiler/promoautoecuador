@@ -42,8 +42,9 @@ class TablaAmortizacion(models.Model):
     oportunidad_id = fields.Many2one('crm.lead')
     numero_cuota = fields.Char(String='Número de Cuota')
     fecha = fields.Date(String='Fecha')
-    # cuota = fields.Monetary(string='Cuota')
-    # capital = fields.Monetary(string='Capital')
-    # interes = fields.Monetary(string='Interes')
-    # saldo = fields.Monetary(string='Saldo')
+    currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
+    cuota = fields.Monetary(string='Cuota', currency_field='currency_id')
+    capital = fields.Monetary(string='Capital', currency_field='currency_id')
+    interes = fields.Monetary(string='Interes', currency_field='currency_id')
+    saldo = fields.Monetary(string='Saldo', currency_field='currency_id')
             

@@ -1,7 +1,7 @@
 {
     "name" : "gzl_adjudicacion",
     "version" : "0.1",
-    'depends' :['base'
+    'depends' :['base','hr',
                 ],
     "author" : "Yadira Quimis Gizlo",
     "description" : """
