@@ -41,9 +41,7 @@
                             <field name="integrantes" nolabel="1" attrs="{'readonly': [('estado', '!=', 'borrador')]}">
                                 <tree string="Integrantes" edit="false" create="false">
                                     <field name="asamblea_id" invisible="1"/>
-                                    <field name="secuencia" />
-                                    <field name="monto_grupo"/>
-                                    <field name="integrantes"/>
+                                    <field name="grupo_adjudicado_id" />
                                 </tree>
                             </field>
                         </group> 

@@ -17,7 +17,6 @@ class GrupoAdjudicado(models.Model):
     asamblea_id = fields.Many2one('asamblea')
      
 
-
     @api.model
     def create(self, vals):
         vals['secuencia'] = self.env['ir.sequence'].next_by_code('grupo.adjudicado')
@@ -34,3 +33,5 @@ class IntegrantesGrupo(models.Model):
     grupo_id = fields.Many2one('grupo.adjudicado')
     adjudicado_id = fields.Many2one('res.partner')
     monto=fields.Float('Monto')
+    nro_cuota_licitar = fields.Integer(string='Nro de Cuotas a Licitar')
+    carta_licitacion = fields.Selection([('si', 'Si'), ('no', 'No')], string='Carta Licitación')
