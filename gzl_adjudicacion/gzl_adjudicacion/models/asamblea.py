@@ -11,8 +11,8 @@ class Asamblea(models.Model):
     name=fields.Char('Nombre',  required=True)
     descripcion=fields.Text('Descripcion',  required=True)
     active=fields.Boolean( default=True)
-    grupo_id = fields.Many2one('grupo.adjudicado')
-    integrantes = fields.One2many('integrante.grupo.adjudicado.asamblea','asamblea_id')
+    #grupo_id = fields.Many2one('grupo.adjudicado')
+    integrantes = fields.One2many('grupo.adjudicado','asamblea_id')
     junta = fields.One2many('hr.employee', 'asamblea_id')
     fecha_inicio = fields.Datetime(String='Fecha Inicio')
     fecha_fin = fields.Datetime(String='Fecha Fin')
@@ -20,7 +20,6 @@ class Asamblea(models.Model):
     estado = fields.Selection(selection=[
             ('borrador', 'Borrador'),
             ('en_curso', 'En Curso'),
-            ('seleccion_part', 'Selección de Participantes'),
             ('cerrado', 'Cerrado')
             ], string='Estado', copy=False, tracking=True, default='borrador')
 
@@ -29,16 +28,16 @@ class Asamblea(models.Model):
         vals['secuencia'] = self.env['ir.sequence'].next_by_code('asamblea')
         return super(Asamblea, self).create(vals)
 
-    @api.onchange('grupo_id')
-    def agregar_grupo_a_asamblea(self):
-        self.grupo_id.integrantes=[]
-        for l in self.grupo_id.integrantes:
-            self.env['integrante.grupo.adjudicado.asamblea'].create({
-                'descripcion':l.descripcion,
-                'asamblea_id':self.id,
-                'adjudicado_id':l.adjudicado_id.id,
-                'monto':l.monto,
-            })
+    # @api.onchange('grupo_id')
+    # def agregar_grupo_a_asamblea(self):
+    #     self.grupo_id.integrantes=[]
+    #     for l in self.grupo_id.integrantes:
+    #         self.env['integrante.grupo.adjudicado.asamblea'].create({
+    #             'descripcion':l.descripcion,
+    #             'asamblea_id':self.id,
+    #             'adjudicado_id':l.adjudicado_id.id,
+    #             'monto':l.monto,
+    #         })
       
    
 

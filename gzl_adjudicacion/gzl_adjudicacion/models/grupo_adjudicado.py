@@ -14,6 +14,9 @@ class GrupoAdjudicado(models.Model):
     integrantes = fields.One2many('integrante.grupo.adjudicado','grupo_id')
     monto_grupo = fields.Float(String="Monto")
     secuencia = fields.Char(index=True)
+    asamblea_id = fields.Many2one('asamblea')
+     
+
 
     @api.model
     def create(self, vals):
