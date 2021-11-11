@@ -11,15 +11,19 @@
                 <button name="crear_adjudicado" class="oe_highlight" string="Crear Adjudicado" type="object"  attrs="{'invisible': [('is_won', '=',False)]}"/>
                 <button name="detalle_tabla_amortizacion" class="oe_highlight" string="Calcular Amortización" type="object" />
             </xpath>
-
-            <xpath expr="//field[@name='tag_ids']" position="after">
-                <field name="tasa_interes" string="Tasa de Interés (%)"/>
-                <field name="numero_cuotas" string="Número de Cuotas (meses)"/>
-                <field name="dia_pago"/> 
+            
+            <xpath expr="//label[@for='planned_revenue']" position="attributes">
+                <attribute name="string">Monto del Plan</attribute>
             </xpath>
 
             <xpath expr="//notebook" position="before">
                 <group string="Tabla de Amortización"> 
+                    <group>
+                        <field name="tasa_interes" string="Tasa de Interés (%)"/>
+                        <field name="numero_cuotas" string="Número de Cuotas (meses)"/>
+                        <field name="dia_pago"/>
+                        <field name="tipo_contrato" options="{'no_create_edit': True, 'no_open': True}"/>
+                    </group>
                     <field name="tabla_amortizacion"  nolabel="1">
                         <tree string="Tabla de Amortización" edit="false" create="false" delete="false">
                             <field name="oportunidad_id" invisible="1"/>

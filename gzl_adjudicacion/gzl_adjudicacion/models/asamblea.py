@@ -12,7 +12,7 @@ class Asamblea(models.Model):
     descripcion=fields.Text('Descripcion',  required=True)
     active=fields.Boolean( default=True)
     integrantes = fields.One2many('integrante.grupo.adjudicado.asamblea','asamblea_id')
-    junta = fields.One2many('hr.employee', 'asamblea_id')
+    junta = fields.One2many('junta.grupo.asamblea', 'asamblea_id')
     fecha_inicio = fields.Datetime(String='Fecha Inicio')
     fecha_fin = fields.Datetime(String='Fecha Fin')
     secuencia = fields.Char(index=True)
@@ -46,6 +46,14 @@ class IntegrantesGrupoAsamblea(models.Model):
   
     asamblea_id = fields.Many2one('asamblea')
     grupo_adjudicado_id = fields.Many2one('grupo.adjudicado')
+    integrantes_g = fields.One2many(related='grupo_adjudicado_id.integrantes')
     #adjudicado_id = fields.Many2one('res.partner')
     #monto=fields.Float('Monto' )
     #es_ganador = fields.Boolean(String='Ganador', default=False)
+
+class JuntaGrupoAsamblea(models.Model):
+    _name='junta.grupo.asamblea'
+
+    asamblea_id = fields.Many2one('asamblea', string='Asamblea')
+    empleado_id = fields.Many2one('hr.employee', string="Empleado")
+

@@ -3,6 +3,7 @@
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
+from odoo.exceptions import ValidationError
 
 import numpy_financial as npf
 
@@ -20,6 +21,7 @@ class CrmLead(models.Model):
     tasa_interes = fields.Integer(string='Tasa de Inter+és')
     numero_cuotas = fields.Integer(string='Número de Cuotas')
     dia_pago = fields.Integer(string='Día de Pagos')
+    tipo_contrato = fields.Many2one('tipo.contrato.adjudicado', string='Tipo de Contrato')
     tabla_amortizacion = fields.One2many('tabla.amortizacion', 'oportunidad_id' )
     cotizaciones_ids = fields.One2many('sale.order', 'oportunidad_id')
 
@@ -31,7 +33,10 @@ class CrmLead(models.Model):
         cuota = round(npf.pmt(tasa, plazo, -capital, 0), 0)
         saldo = capital
         ahora = datetime.now()
-        ahora = ahora.replace(day = self.dia_pago)
+        try:
+            ahora = ahora.replace(day = self.dia_pago)
+        except:
+            raise ValidationError('La fecha no existe, por favor ingrese otro día de pago.')
         for i in range(1, plazo+1):
             pago_capital = npf.ppmt(tasa, i, plazo, -capital, 0)
             pago_int = cuota - pago_capital
@@ -92,7 +97,3 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     oportunidad_id = fields.Many2one('crm.lead')
-    
-    
-
-              

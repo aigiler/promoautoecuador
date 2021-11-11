@@ -22,8 +22,13 @@
         <field name="model">grupo.adjudicado</field>
         <field name="arch" type="xml">
             <form string="Grupo Adjudicado">
-
+                <header>
+                    <field name="estado" widget="statusbar" statusbar_visible="en_conformacion,cerrado"/>
+                </header>
                 <sheet>
+                    <div class="oe_title">
+                        <h1><field name="secuencia" class="oe_inline" readonly="1"/></h1>
+                    </div>
                     <group>
                         <group>
                                 <field name="name" />
@@ -38,19 +43,19 @@
                             <field name="adjudicado_id" domain="[('tipo','=','adjudicado')]"/>
                             <field name="descripcion"/>
                             <field name="monto"/>
-
+                            <field name="nro_cuota_licitar"  />
+                            <field name="carta_licitacion"  />
                         </tree>
                         <form>
-
                             <group>
                                 <group>
-                                        <field name="adjudicado_id" domain="[('tipo','=','adjudicado')]"/>
-                                        <field name="descripcion"/>
-                                        <field name="monto"/>
-
+                                    <field name="adjudicado_id" domain="[('tipo','=','adjudicado')]"/>
+                                    <field name="descripcion"/>
+                                    <field name="monto"/>
+                                    <field name="nro_cuota_licitar"  />
+                                    <field name="carta_licitacion"  />
                                 </group>
                             </group>
-
                         </form>
                     </field>
                 </sheet>
@@ -59,10 +64,6 @@
             </form>
         </field>
     </record>
-
-
-
-
 
 
     <record id="action_grupo_adjudicado" model="ir.actions.act_window">
@@ -74,10 +75,7 @@
     </record>
 
 
-
      <menuitem id="menu_grupo_adjudicado" action="action_grupo_adjudicado" 
         parent="menu_adjudicados" sequence="5"  />
-
-
 
 </odoo>
