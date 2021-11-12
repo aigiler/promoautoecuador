@@ -17,10 +17,10 @@
         <field name="type_id" ref="sign.sign_item_type_name"/>
         <field name="responsible_id" ref="sign.sign_item_role_customer"/>
         <field name="page" type="int">1</field>
-        <field name="posX" type="float">0.265</field>
-        <field name="posY" type="float">0.160</field>
-        <field name="width" type="float">0.375</field>
-        <field name="height" type="float">0.015</field>
+        <field name="posX" type="float">0.217</field>
+        <field name="posY" type="float">0.000</field>
+        <field name="width" type="float">0.200</field>
+        <field name="height" type="float">0.050</field>
     </record>
 
     <record model="sign.item" id="sign_item_saas_email">
@@ -28,9 +28,9 @@
         <field name="type_id" ref="sign.sign_item_type_email"/>
         <field name="responsible_id" ref="sign.sign_item_role_customer"/>
         <field name="page" type="int">1</field>
-        <field name="posX" type="float">0.290</field>
-        <field name="posY" type="float">0.631</field>
-        <field name="width" type="float">0.300</field>
+        <field name="posX" type="float">0.183</field>
+        <field name="posY" type="float">0.149</field>
+        <field name="width" type="float">0.337</field>
         <field name="height" type="float">0.015</field>
     </record>
 
@@ -39,8 +39,8 @@
         <field name="type_id" ref="sign.sign_item_type_phone"/>
         <field name="responsible_id" ref="sign.sign_item_role_customer"/>
         <field name="page" type="int">1</field>
-        <field name="posX" type="float">0.290</field>
-        <field name="posY" type="float">0.631</field>
+        <field name="posX" type="float">0.604</field>
+        <field name="posY" type="float">0.147</field>
         <field name="width" type="float">0.300</field>
         <field name="height" type="float">0.015</field>
     </record>
@@ -60,9 +60,9 @@
         <field name="template_id" ref="template_sign_saas"/>
         <field name="type_id" ref="sign.sign_item_type_signature"/>
         <field name="responsible_id" ref="sign.sign_item_role_customer"/>
-        <field name="page" type="int">3</field>
-        <field name="posX" type="float">0.465</field>
-        <field name="posY" type="float">0.670</field>
+        <field name="page" type="int">1</field>
+        <field name="posX" type="float">0.598</field>
+        <field name="posY" type="float">0.000</field>
         <field name="width" type="float">0.200</field>
         <field name="height" type="float">0.050</field>
     </record>
