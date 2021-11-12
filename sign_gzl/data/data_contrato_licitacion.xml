@@ -17,10 +17,10 @@
         <field name="type_id" ref="sign.sign_item_type_name"/>
         <field name="responsible_id" ref="sign.sign_item_role_customer"/>
         <field name="page" type="int">1</field>
-        <field name="posX" type="float">0.217</field>
-        <field name="posY" type="float">0.000</field>
-        <field name="width" type="float">0.200</field>
-        <field name="height" type="float">0.050</field>
+        <field name="posX" type="float">0.212</field>
+        <field name="posY" type="float">0.126</field>
+        <field name="width" type="float">0.305</field>
+        <field name="height" type="float">0.017</field>
     </record>
 
     <record model="sign.item" id="sign_item_saas_email">
@@ -45,7 +45,7 @@
         <field name="height" type="float">0.015</field>
     </record>
 
-    <record model="sign.item" id="sign_item_saas_name">
+    <record model="sign.item" id="sign_item_saas_name_signature">
         <field name="template_id" ref="template_sign_saas"/>
         <field name="type_id" ref="sign.sign_item_type_name"/>
         <field name="responsible_id" ref="sign.sign_item_role_customer"/>
