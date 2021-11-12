@@ -5,6 +5,7 @@
         <field name="name">Saas.pdf</field>
         <field name="datas" type="base64" file="sign_gzl/static/demo/saas.pdf"/>
         <field name="mimetype">application/pdf;base64</field>
+        <field name="tipo_plantilla">adjudicacion</field>
     </record>
 
     <record id="template_sign_saas" model="sign.template">

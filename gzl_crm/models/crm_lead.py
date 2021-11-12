@@ -63,6 +63,15 @@ class CrmLead(models.Model):
                                         'phone':self.partner_id.phone or None,
                                         'mobile':self.partner_id.mobile or None,
                                         })
+
+    
+    def crear_contrato(self):
+        plantillas = self.env['sign.template'].search([('attachment_id.tipo_plantilla','=','adjudicacion')])
+        for l in plantillas:
+           # modelo sign.send.request ---- sign_directly()
+           #sign_directly_without_mail  
+            enviar_ahora = self.env['sign.send.request'].search([('template_id','=',l.id)])
+                enviar_ahora.send_completed_document()
     
     @api.onchange('stage_id.is_won')
     def crear_factura_automatica(self):
@@ -77,6 +86,8 @@ class CrmLead(models.Model):
                     'domain': [('oportunidad_id', '=', self.id)],
                     'context': {'oportunidad_id': self.id}
             }
+
+    
 
 
 class TablaAmortizacion(models.Model):

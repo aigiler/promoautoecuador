@@ -10,6 +10,7 @@
                 <field name="is_won" invisible="1"/>
                 <button name="crear_adjudicado" class="oe_highlight" string="Crear Adjudicado" type="object"  attrs="{'invisible': [('is_won', '=',False)]}"/>
                 <button name="detalle_tabla_amortizacion" class="oe_highlight" string="Calcular Amortización" type="object" />
+                <button name="crear_contrato" class="oe_highlight" string="Crear Contratos" type="object" />
             </xpath>
             
             <xpath expr="//label[@for='planned_revenue']" position="attributes">
