@@ -50,10 +50,10 @@
         <field name="type_id" ref="sign.sign_item_type_name"/>
         <field name="responsible_id" ref="sign.sign_item_role_customer"/>
         <field name="page" type="int">1</field>
-        <field name="posX" type="float">0.465</field>
-        <field name="posY" type="float">0.160</field>
-        <field name="width" type="float">0.375</field>
-        <field name="height" type="float">0.050</field>
+        <field name="posX" type="float">0.529</field>
+        <field name="posY" type="float">0.652</field>
+        <field name="width" type="float">0.284</field>
+        <field name="height" type="float">0.016</field>
     </record>
 
     <record model="sign.item" id="sign_item_saas_signature">
@@ -61,10 +61,10 @@
         <field name="type_id" ref="sign.sign_item_type_signature"/>
         <field name="responsible_id" ref="sign.sign_item_role_customer"/>
         <field name="page" type="int">1</field>
-        <field name="posX" type="float">0.598</field>
-        <field name="posY" type="float">0.000</field>
-        <field name="width" type="float">0.200</field>
-        <field name="height" type="float">0.050</field>
+        <field name="posX" type="float">0.561</field>
+        <field name="posY" type="float">0.675</field>
+        <field name="width" type="float">0.249</field>
+        <field name="height" type="float">0.037</field>
     </record>
     
 </odoo>
