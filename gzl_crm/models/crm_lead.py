@@ -71,7 +71,7 @@ class CrmLead(models.Model):
            # modelo sign.send.request ---- sign_directly()
            #sign_directly_without_mail  
             enviar_ahora = self.env['sign.send.request'].search([('template_id','=',l.id)])
-                enviar_ahora.send_completed_document()
+            enviar_ahora.send_completed_document()
     
     @api.onchange('stage_id.is_won')
     def crear_factura_automatica(self):
