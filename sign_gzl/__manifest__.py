@@ -1,7 +1,7 @@
 {
     "name" : "sign_gzl",
     "version" : "0.1",
-    'depends' :['sign',
+    'depends' :['sign','base',
                 ],
     "author" : "Yadira Quimis Gizlo",
     "description" : """
@@ -13,6 +13,7 @@
     "data" : [   
                 'data/data_contrato_licitacion.xml',
 
+                'views/res_partner_view.xml',
                    
             ],
     
