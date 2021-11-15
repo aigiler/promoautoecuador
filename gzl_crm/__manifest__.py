@@ -11,11 +11,13 @@
     "category" : "Generic Modules",
    
     "data" : [   
+                "data/data_accion_planificada.xml",
+
                 "security/ir.model.access.csv",
 
                 "views/crm_lead_view.xml",  
                    
-                    ],
+            ],
     
     'installable': True,
     'auto_install': False,

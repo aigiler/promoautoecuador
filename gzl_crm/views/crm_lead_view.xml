@@ -34,6 +34,8 @@
                             <field name="capital"/>
                             <field name="interes"/>
                             <field name="saldo"/>
+                            <field name="estado_pago"/>
+                            <button name="pagar_cuota" class="oe_highlight" string="Pagar" type="object" attrs="{'invisible': [('estado_pago', '=','pagado')]}"/>
                         </tree>
                     </field>
                 </group>
