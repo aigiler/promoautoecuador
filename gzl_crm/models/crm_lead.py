@@ -197,15 +197,15 @@ class TablaAmortizacion(models.Model):
         fecha_borrador= datetime.today() + timedelta(days=-5)
         pagos_pendientes = self.env['tabla.amortizacion'].search([
                                                                 ('estado_pago','=','pendiente'),
-                                                                ('fecha','=',fecha_borrador),
-                                                                ('factura_id','!=', None)
+                                                                #('fecha','>=',fecha_borrador),
+                                                                #('factura_id','!=', 0)
                                                                 ])
         if pagos_pendientes:
             for l in pagos_pendientes:
                 l.oportunidad_id.contacto_name=fecha_borrador
                 factura = self.env['account.move'].create({
                             'type': 'out_invoice',
-                            'partner_id': l.oportunidad_id.partner.id,
+                            'partner_id': l.oportunidad_id.partner_id.id,
                             'invoice_line_ids': [(0, 0, {
                                 'quantity': 1,
                                 'price_unit': l.cuota,
@@ -215,12 +215,12 @@ class TablaAmortizacion(models.Model):
                 l.factura_id=factura
                 
                 pago = self.env['account.payment'].create({
-                        'payment_date': self.payment_date,
+                        'payment_date': l.fecha,
                         'communication': l.oportunidad_id.name+' - Cuota '+l.numero_cuota,
                         'invoice_ids': [(6, 0, [factura.id])],
                         'payment_type': 'inbound',
                         'amount': l.cuota,
-                        'partner_id': l.oportunidad_id.partner.id,
+                        'partner_id': l.oportunidad_id.partner_id.id,
                         })
                 l.pago_id = pago
     

@@ -12,5 +12,5 @@
             <field name="code">model.accion_planificada_crear_factura_borrador()</field>
             <field name="state">code</field>
         </record>
-    <data>
+    </data>
 </odoo>
