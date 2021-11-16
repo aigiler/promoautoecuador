@@ -15,8 +15,9 @@
 
                 "security/ir.model.access.csv",
 
-                "views/crm_lead_view.xml",  
-                   
+                "views/crm_lead_view.xml", 
+
+                "wizard/wizard_cuota_pago_amortizacion.xml",                   
             ],
     
     'installable': True,

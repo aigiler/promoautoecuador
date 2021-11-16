@@ -6,6 +6,12 @@
         <field name="model">crm.lead</field>
         <field name="inherit_id" ref="crm.crm_lead_view_form"/>
         <field name="arch" type="xml">
+            <!-- <xpath expr="//button[@name='action_schedule_meeting']" position="before">
+                <button class="oe_stat_button" type="object" name="action_view_sale_quotation" icon="fa-pencil-square-o" attrs="{'invisible': [('type', '=', 'lead')]}">
+                    <field name="quotation_count" widget="statinfo" string="Contratos"/>
+                </button>
+            </xpath> -->
+
             <xpath expr="//header" position="inside">
                 <field name="is_won" invisible="1"/>
                 <button name="crear_adjudicado" class="oe_highlight" string="Crear Adjudicado" type="object"  attrs="{'invisible': [('is_won', '=',False)]}"/>
@@ -20,21 +26,23 @@
             <xpath expr="//notebook" position="before">
                 <group string="Tabla de Amortización"> 
                     <group>
-                        <field name="tasa_interes" string="Tasa de Interés (%)"/>
-                        <field name="numero_cuotas" string="Número de Cuotas (meses)"/>
-                        <field name="dia_pago"/>
-                        <field name="tipo_contrato" options="{'no_create_edit': True, 'no_open': True}"/>
+                        <field name="tasa_interes" string="Tasa de Interés (%)" required="1" placeholder="8"/>
+                        <field name="numero_cuotas" string="Número de Cuotas (meses)" required="1" placeholder="48"/>
+                        <field name="dia_pago" required="1" placeholder="5"/>
+                        <field name="tipo_contrato" options="{'no_create_edit': True, 'no_open': True}" required="1"/>
                     </group>
                     <field name="tabla_amortizacion"  nolabel="1">
-                        <tree string="Tabla de Amortización" edit="false" create="false" delete="false">
+                        <tree string="Tabla de Amortización" editable="bottom" edit="false" create="false" delete="false">
                             <field name="oportunidad_id" invisible="1"/>
-                            <field name="numero_cuota" />
-                            <field name="fecha"/>
-                            <field name="cuota"/>
-                            <field name="capital"/>
-                            <field name="interes"/>
-                            <field name="saldo"/>
-                            <field name="estado_pago"/>
+                            <field name="numero_cuota" readonly="1"/>
+                            <field name="fecha" readonly="1"/>
+                            <field name="cuota" widget="monetary" force_save="1" sum="cuota" readonly="1"/>
+                            <field name="capital" widget="monetary" force_save="1" sum="capital" readonly="1"/>
+                            <field name="interes" widget="monetary" force_save="1" sum="interes" readonly="1"/>
+                            <field name="saldo" widget="monetary" force_save="1" readonly="1"/>
+                            <field name="estado_pago" readonly="1"/>
+                            <field name="factura_id" readonly="1"/>
+                            <field name="pago_id" readonly="1"/>
                             <button name="pagar_cuota" class="oe_highlight" string="Pagar" type="object" attrs="{'invisible': [('estado_pago', '=','pagado')]}"/>
                         </tree>
                     </field>

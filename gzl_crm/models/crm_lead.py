@@ -2,14 +2,12 @@
 
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from odoo.exceptions import ValidationError
 
 import numpy_financial as npf
 
-
 class CrmLead(models.Model):
-    
     _inherit = 'crm.lead'
 
     is_won = fields.Boolean(related='stage_id.is_won')
@@ -19,7 +17,9 @@ class CrmLead(models.Model):
     contacto_telefono = fields.Char(string='Teléfono')
     contacto_domicilio = fields.Char(string='Domicilio')
     tasa_interes = fields.Integer(string='Tasa de Inter+és')
-    numero_cuotas = fields.Integer(string='Número de Cuotas')
+    numero_cuotas = fields.Selection([('60', '60 Meses'), 
+                                      ('72', '72 Meses')
+                                    ],string='Número de Cuotas') 
     dia_pago = fields.Integer(string='Día de Pagos')
     tipo_contrato = fields.Many2one('tipo.contrato.adjudicado', string='Tipo de Contrato')
     tabla_amortizacion = fields.One2many('tabla.amortizacion', 'oportunidad_id' )
@@ -149,27 +149,9 @@ class CrmLead(models.Model):
                         'subject': '%s signed' % self.reference,
                         'body': False,
                     }, engine='ir.qweb', minimal_qcontext=True)
-
-                    
                 return True
-    
 
-    
-    @api.onchange('stage_id.is_won')
-    def crear_factura_automatica(self):
-        if self.stage_id.is_won:
-            view_id = self.env.ref('gzl_crm.wizard_cotizaciones_crm').id
-            return {'type': 'ir.actions.act_window',
-                    'name': _('Cotizaciones'),
-                    'res_model': 'sale.order',
-                    'target': 'new',
-                    'view_mode': 'form',
-                    'views': [[view_id, 'form']],
-                    'domain': [('oportunidad_id', '=', self.id)],
-                    'context': {'oportunidad_id': self.id}
-            }
 
-    
 
 
 class TablaAmortizacion(models.Model):
@@ -191,41 +173,112 @@ class TablaAmortizacion(models.Model):
     pago_id = fields.Many2one('account.payment')
     
     def pagar_cuota(self):
-        print("---")
+        view_id = self.env.ref('gzl_crm.wizard_pago_cuota_amortizaciones').id
+        return {'type': 'ir.actions.act_window',
+                'name': 'Validar Pago',
+                'res_model': 'wizard.pago.cuota.amortizacion',
+                'target': 'new',
+                'view_mode': 'form',
+                'views': [[view_id, 'form']],
+                'context': {
+                    'default_tabla_amortizacion_id': self.id,
+                }
+        }
+            
         
     def accion_planificada_crear_factura_borrador(self):
-        fecha_borrador= datetime.today() + timedelta(days=-5)
-        pagos_pendientes = self.env['tabla.amortizacion'].search([
-                                                                ('estado_pago','=','pendiente'),
-                                                                #('fecha','>=',fecha_borrador),
-                                                                #('factura_id','!=', 0)
-                                                                ])
+        fecha_actual= date.today()
+        pagos_pendientes = self.env['tabla.amortizacion'].search([('estado_pago','=','pendiente')])
         if pagos_pendientes:
             for l in pagos_pendientes:
-                l.oportunidad_id.contacto_name=fecha_borrador
-                factura = self.env['account.move'].create({
-                            'type': 'out_invoice',
+                fecha_borrador = l.fecha + timedelta(days=-5)
+                if fecha_actual >= fecha_borrador and not l.factura_id:
+                    factura = self.env['account.move'].create({
+                                'type': 'out_invoice',
+                                'partner_id': l.oportunidad_id.partner_id.id,
+                                'invoice_line_ids': [(0, 0, {
+                                    'quantity': 1,
+                                    'price_unit': l.cuota,
+                                    'name': l.oportunidad_id.name+' - Cuota '+l.numero_cuota,
+                                })],
+                            })
+                    l.factura_id=factura
+
+                    pago = self.env['account.payment'].create({
+                            'payment_date': l.fecha,
+                            'communication': l.oportunidad_id.name+' - Cuota '+l.numero_cuota,
+                            'invoice_ids': [(6, 0, [factura.id])],
+                            'payment_type': 'inbound',
+                            'amount': l.cuota,
                             'partner_id': l.oportunidad_id.partner_id.id,
-                            'invoice_line_ids': [(0, 0, {
-                                'quantity': 1,
-                                'price_unit': l.cuota,
-                                'name': l.oportunidad_id.name+' - Cuota '+l.numero_cuota,
-                            })],
-                        })
-                l.factura_id=factura
-                
-                pago = self.env['account.payment'].create({
-                        'payment_date': l.fecha,
-                        'communication': l.oportunidad_id.name+' - Cuota '+l.numero_cuota,
-                        'invoice_ids': [(6, 0, [factura.id])],
-                        'payment_type': 'inbound',
-                        'amount': l.cuota,
-                        'partner_id': l.oportunidad_id.partner_id.id,
-                        })
-                l.pago_id = pago
+                            'partner_type': 'customer',
+                            'payment_method_id': self.env['account.payment.method'].search([('payment_type', '=', 'inbound')], limit=1).id,
+                            'journal_id': self.env['account.journal'].search([('type', 'in', ('bank', 'cash'))], limit=1).id
+                            })
+                    l.pago_id = pago
     
     
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     oportunidad_id = fields.Many2one('crm.lead')
+    
+    
+class WizardPagoCuotaAmortizacion(models.TransientModel):
+    _name = 'wizard.pago.cuota.amortizacion'
+    
+    tabla_amortizacion_id = fields.Many2one('tabla.amortizacion')
+    payment_date = fields.Date(required=True, default=fields.Date.context_today)
+    journal_id = fields.Many2one('account.journal', required=True, string='Diario', domain=[('type', 'in', ('bank', 'cash'))])
+    payment_method_id = fields.Many2one('account.payment.method', string='Método de Pago', required=True, domain=[('tabla_amortizacion_id.pago_id.payment_type', '=', 'inbound')])
+    #domain="[('id','in',journal_id.inbound_payment_method_ids)]")
+    
+    def validar_pago(self):
+        factura = self.tabla_amortizacion_id.factura_id
+        pago = self.tabla_amortizacion_id.pago_id
+        if factura:
+            factura.write({
+                'journal_id':self.journal_id,
+                'invoice_date':self.payment_date,
+            })
+            
+            pago.write({
+                'journal_id':self.journal_id,
+                'invoice_id':factura,
+                'payment_date':self.payment_date,
+                'payment_method_id':self.payment_method_id,
+                'communication':factura.name
+            })
+            
+        else:
+            factura = self.env['account.move'].create({
+                        'type': 'out_invoice',
+                        'partner_id': self.tabla_amortizacion_id.oportunidad_id.partner_id.id,
+                        'invoice_line_ids': [(0, 0, {
+                            'quantity': 1,
+                            'price_unit': self.tabla_amortizacion_id.cuota,
+                            'name': self.tabla_amortizacion_id.oportunidad_id.name+' - Cuota '+self.tabla_amortizacion_id.numero_cuota,
+                        })],
+                        'journal_id':self.journal_id,
+                        'invoice_date':self.payment_date,
+                    })
+            self.tabla_amortizacion_id.factura_id=factura
+
+            pago = self.env['account.payment'].create({
+                    'payment_date': self.payment_date,
+                    'communication': l.oportunidad_id.name+' - Cuota '+l.numero_cuota,
+                    'invoice_ids': [(6, 0, [factura.id])],
+                    'payment_type': 'inbound',
+                    'amount': l.cuota,
+                    'partner_id': l.oportunidad_id.partner_id.id,
+                    'partner_type': 'customer',
+                    'payment_method_id': self.payment_method_id,
+                    'journal_id': self.journal_id,
+                    'invoice_id':factura,
+                    'communication':factura.name
+                    })
+            self.tabla_amortizacion_id.pago_id = pago
+            
+        factura.action_post()
+        pago.post()
+        self.tabla_amortizacion_id.estado_pago='pagado'
