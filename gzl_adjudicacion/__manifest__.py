@@ -23,7 +23,7 @@
                     'views/concesionario_view.xml',
                     'views/grupo_adjudicado_view.xml',
                     'views/asamblea_view.xml',
-                   
+                    'views/contrato_view.xml',
                     ],
     
     'installable': True,

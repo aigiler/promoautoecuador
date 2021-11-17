@@ -1,29 +1,29 @@
 id,nombre_ciudad,provincia_id/id
-state_g_01,Guayaquil,l10n_Ec_tree.state_ec_09
-state_g_02,Alfredo Baquerizo Moreno,l10n_Ec_tree.state_ec_09
-state_g_03,Balao,l10n_Ec_tree.state_ec_09
-state_g_04,Balzar,l10n_Ec_tree.state_ec_09
-state_g_05,Colimes,l10n_Ec_tree.state_ec_09
-state_g_06,Daule,l10n_Ec_tree.state_ec_09
-state_g_07,Duran,l10n_Ec_tree.state_ec_09
-state_g_08,Empalme,l10n_Ec_tree.state_ec_09
-state_g_09,El Triunfo,l10n_Ec_tree.state_ec_09
-state_g_10,Milagro,l10n_Ec_tree.state_ec_09
-state_g_11,Naranjal,l10n_Ec_tree.state_ec_09
-state_g_12,Naranjito,l10n_Ec_tree.state_ec_09
-state_g_13,Palestina,l10n_Ec_tree.state_ec_09
-state_g_14,Pedro Carbo,l10n_Ec_tree.state_ec_09
-state_g_15,Salinas,l10n_Ec_tree.state_ec_09
-state_g_16,Samborondon,l10n_Ec_tree.state_ec_09
-state_g_17,Santa Elena,l10n_Ec_tree.state_ec_09
-state_g_18,Santa Lucia,l10n_Ec_tree.state_ec_09
-state_g_19,Salitre,l10n_Ec_tree.state_ec_09
-state_g_20,San Jacinto de Yaguachi,l10n_Ec_tree.state_ec_09
-state_g_21,Playas,l10n_Ec_tree.state_ec_09
-state_g_22,Simon VBolívar,l10n_Ec_tree.state_ec_09
-state_g_23,Coronel Marcelino Maridueña,l10n_Ec_tree.state_ec_09
-state_g_24,Lomas de Sargentillo,l10n_Ec_tree.state_ec_09
-state_g_25,Nobol,l10n_Ec_tree.state_ec_09
-state_g_26,La Libertad,l10n_Ec_tree.state_ec_09
-state_g_27,General Antonio Elizalde,l10n_Ec_tree.state_ec_09
-state_g_28,Isidro Ayora,l10n_Ec_tree.state_ec_09
+state_g_01,Guayaquil,l10n_ec_tree.state_ec_09
+state_g_02,Alfredo Baquerizo Moreno,l10n_ec_tree.state_ec_09
+state_g_03,Balao,l10n_ec_tree.state_ec_09
+state_g_04,Balzar,l10n_ec_tree.state_ec_09
+state_g_05,Colimes,l10n_ec_tree.state_ec_09
+state_g_06,Daule,l10n_ec_tree.state_ec_09
+state_g_07,Duran,l10n_ec_tree.state_ec_09
+state_g_08,Empalme,l10n_ec_tree.state_ec_09
+state_g_09,El Triunfo,l10n_ec_tree.state_ec_09
+state_g_10,Milagro,l10n_ec_tree.state_ec_09
+state_g_11,Naranjal,l10n_ec_tree.state_ec_09
+state_g_12,Naranjito,l10n_ec_tree.state_ec_09
+state_g_13,Palestina,l10n_ec_tree.state_ec_09
+state_g_14,Pedro Carbo,l10n_ec_tree.state_ec_09
+state_g_15,Salinas,l10n_ec_tree.state_ec_09
+state_g_16,Samborondon,l10n_ec_tree.state_ec_09
+state_g_17,Santa Elena,l10n_ec_tree.state_ec_09
+state_g_18,Santa Lucia,l10n_ec_tree.state_ec_09
+state_g_19,Salitre,l10n_ec_tree.state_ec_09
+state_g_20,San Jacinto de Yaguachi,l10n_ec_tree.state_ec_09
+state_g_21,Playas,l10n_ec_tree.state_ec_09
+state_g_22,Simon VBolívar,l10n_ec_tree.state_ec_09
+state_g_23,Coronel Marcelino Maridueña,l10n_ec_tree.state_ec_09
+state_g_24,Lomas de Sargentillo,l10n_ec_tree.state_ec_09
+state_g_25,Nobol,l10n_ec_tree.state_ec_09
+state_g_26,La Libertad,l10n_ec_tree.state_ec_09
+state_g_27,General Antonio Elizalde,l10n_ec_tree.state_ec_09
+state_g_28,Isidro Ayora,l10n_ec_tree.state_ec_09
