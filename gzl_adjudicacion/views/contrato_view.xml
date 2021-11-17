@@ -9,16 +9,16 @@
                 <field name="secuencia" />
                 <field name="cliente" />
                 <field name="grupo" />
-                <field name="tipo_de_contrato" >
-                <field name="active" >
+                <field name="tipo_de_contrato"/>
+                <field name="active"/>
             </tree>
         </field>
     </record>
 
     
-    <record id="view_asamblea_form" model= "ir.ui.view">
-        <field name="name">view.asamblea.form</field>
-        <field name="model">asamblea</field>
+    <record id="view_contrato_form" model= "ir.ui.view">
+        <field name="name">view.contrato.form</field>
+        <field name="model">contrato</field>
         <field name="arch" type="xml">
             <form string="Contrato">
                 <header>
