@@ -9,3 +9,5 @@ access_grupo_adjudicado_user,access.grupo.adjudicado.user,gzl_adjudicacion.model
 access_grupo_adjudicado_manager,access.grupo.adjudicado.manager,gzl_adjudicacion.model_grupo_adjudicado,gzl_adjudicacion.grupo_admin_adjudicaciones,1,1,1,1
 access_tipo_contrato_user,access.tipo.contrato.user,gzl_adjudicacion.model_tipo_contrato_adjudicado,gzl_adjudicacion.grupo_usuario_adjudicaciones,1,1,0,0
 access_tipo_contrato_manager,access.tipo.contrato.manager,gzl_adjudicacion.model_tipo_contrato_adjudicado,gzl_adjudicacion.grupo_admin_adjudicaciones,1,1,1,1
+access_contrato_user,access.contrato.user,gzl_adjudicacion.model_contrato,gzl_adjudicacion.grupo_usuario_adjudicaciones,1,1,0,0
+access_contrato_manager,access.contrato.manager,gzl_adjudicacion.model_contrato,gzl_adjudicacion.grupo_admin_adjudicaciones,1,1,1,1
