@@ -31,7 +31,7 @@ class Contrato(models.Model):
                                     ('72', '72 Meses')
                                     ],string='Plazo (meses)') 
     cuota_adm = fields.Monetary(string='Cuota Administrativa', currency_field='currency_id') 
-    factura_inscripcion = fields.Many2one('acount.invoice', string='Factura Incripción')
+    factura_inscripcion = fields.Many2one('acount.move', string='Factura Incripción')
     active = fields.Selection(selection=[
         ('activo', 'Activo'),
         ('inactivo', 'Inactivo')
