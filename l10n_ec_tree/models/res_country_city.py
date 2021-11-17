@@ -7,6 +7,7 @@ class ResCountryCity(models.Model):
     
     _name = 'res.country.city'
     _description = 'Ciudades'
+    _rec_name = 'nombre_ciudad'
 
     nombre_ciudad = fields.Char(string='Nombre Ciudad')
     codigo_ciudad = fields.Char(string='Código Ciudad')

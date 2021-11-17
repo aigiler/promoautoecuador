@@ -7,6 +7,7 @@ class Contrato(models.Model):
     
     _name = 'contrato'
     _description = 'Contrato'
+    _rec_name = 'secuencia'
 
     secuencia = fields.Char(index=True)
     currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
