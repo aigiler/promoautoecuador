@@ -17,7 +17,7 @@
 
                 "views/crm_lead_view.xml", 
 
-                "wizard/wizard_cuota_pago_amortizacion.xml",                   
+                "wizard/wizard_cuota_pago_amortizacion.xml",                    
             ],
     
     'installable': True,
