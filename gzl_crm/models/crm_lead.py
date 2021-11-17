@@ -25,31 +25,28 @@ class CrmLead(models.Model):
     tabla_amortizacion = fields.One2many('tabla.amortizacion', 'oportunidad_id' )
     cotizaciones_ids = fields.One2many('sale.order', 'oportunidad_id')
 
+    
     def detalle_tabla_amortizacion(self):
         self._cr.execute(""" delete from tabla_amortizacion where oportunidad_id={0}""".format(self.id))
-        capital = self.planned_revenue
-        tasa = self.tasa_interes/100
-        plazo = self.numero_cuotas
-        cuota = round(npf.pmt(tasa, plazo, -capital, 0), 0)
-        saldo = capital
         ahora = datetime.now()
         try:
             ahora = ahora.replace(day = self.dia_pago)
         except:
             raise ValidationError('La fecha no existe, por favor ingrese otro día de pago.')
-        for i in range(1, plazo+1):
-            pago_capital = npf.ppmt(tasa, i, plazo, -capital, 0)
-            pago_int = cuota - pago_capital
-            saldo -= pago_capital  
+        for i in range(1, int(self.numero_cuotas)+1):
+            cuota_capital = self.planned_revenue/int(self.numero_cuotas)
+            cuota_adm = cuota_capital *0.04
+            iva = cuota_adm * 0.12
+            saldo = cuota_capital+cuota_adm+iva
             self.env['tabla.amortizacion'].create({'oportunidad_id':self.id,
                                                    'numero_cuota':i,
                                                    'fecha':ahora + relativedelta(months=i),
-                                                   'cuota':cuota,
-                                                   'capital':pago_capital,
-                                                   'interes':pago_int,
+                                                   'cuota_capital':cuota_capital,
+                                                   'cuota_adm':cuota_adm,
+                                                   'iva':iva,
                                                    'saldo':saldo
                                                     })
-                                            
+                         
                                                
     def crear_adjudicado(self):
         if self.stage_id.is_won:
@@ -92,7 +89,6 @@ class CrmLead(models.Model):
                         'sign_token': user_item.access_token,
                         'create_uid': request.create_uid.id,
                         'state': request.state,
-                        # Don't use mapped to avoid ignoring duplicated signatories
                         'token_list': [item.access_token for item in request.request_item_ids[1:]],
                         'current_signor_name': user_item.partner_id.name,
                         'name_list': [item.partner_id.name for item in request.request_item_ids[1:]],
@@ -160,12 +156,15 @@ class TablaAmortizacion(models.Model):
 
     oportunidad_id = fields.Many2one('crm.lead')
     numero_cuota = fields.Char(String='Número de Cuota')
-    fecha = fields.Date(String='Fecha')
+    fecha = fields.Date(String='Fecha Pago')
     currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
-    cuota = fields.Monetary(string='Cuota', currency_field='currency_id')
-    capital = fields.Monetary(string='Capital', currency_field='currency_id')
-    interes = fields.Monetary(string='Interes', currency_field='currency_id')
+    cuota_capital = fields.Monetary(string='Cuota Capital', currency_field='currency_id')
+    cuota_adm = fields.Monetary(string='Cuota Adm', currency_field='currency_id')
+    iva = fields.Monetary(string='Iva', currency_field='currency_id')
+    seguro = fields.Monetary(string='Seguro', currency_field='currency_id')
     saldo = fields.Monetary(string='Saldo', currency_field='currency_id')
+    rastreo = fields.Monetary(string='Rastreo', currency_field='currency_id')
+    otro = fields.Monetary(string='Otro', currency_field='currency_id')
     estado_pago = fields.Selection([('pendiente', 'Pendiente'), 
                                       ('pagado', 'Pagado')
                                     ],string='Estado de Pago', default='pendiente') 
@@ -230,8 +229,22 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
     tabla_amortizacion_id = fields.Many2one('tabla.amortizacion')
     payment_date = fields.Date(required=True, default=fields.Date.context_today)
     journal_id = fields.Many2one('account.journal', required=True, string='Diario', domain=[('type', 'in', ('bank', 'cash'))])
-    payment_method_id = fields.Many2one('account.payment.method', string='Método de Pago', required=True, domain=[('tabla_amortizacion_id.pago_id.payment_type', '=', 'inbound')])
-    #domain="[('id','in',journal_id.inbound_payment_method_ids)]")
+    payment_method_id = fields.Many2one('account.payment.method', string='Método de Pago', required=True)
+    
+    @api.onchange('journal_id')
+    def onchange_payment_method(self):
+        if self.journal_id:
+            self.env.cr.execute("""select inbound_payment_method from account_journal_inbound_payment_method_rel where journal_id={0}""".format(self.journal_id.id))
+            res = self.env.cr.dictfetchall()
+            if res:
+                list_method=[]
+                for l in res:
+                    list_method.append(l['inbound_payment_method'])
+                return {'domain': {'payment_method_id': [('id', 'in', list_method)]}}
+
+            
+        
+        
     
     def validar_pago(self):
         factura = self.tabla_amortizacion_id.factura_id

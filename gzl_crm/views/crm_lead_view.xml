@@ -14,7 +14,6 @@
 
             <xpath expr="//header" position="inside">
                 <field name="is_won" invisible="1"/>
-                <button name="crear_adjudicado" class="oe_highlight" string="Crear Adjudicado" type="object"  attrs="{'invisible': [('is_won', '=',False)]}"/>
                 <button name="detalle_tabla_amortizacion" class="oe_highlight" string="Calcular Amortización" type="object" />
                 <button name="crear_contrato" class="oe_highlight" string="Crear Contratos" type="object" />
             </xpath>
@@ -36,10 +35,13 @@
                             <field name="oportunidad_id" invisible="1"/>
                             <field name="numero_cuota" readonly="1"/>
                             <field name="fecha" readonly="1"/>
-                            <field name="cuota" widget="monetary" force_save="1" sum="cuota" readonly="1"/>
-                            <field name="capital" widget="monetary" force_save="1" sum="capital" readonly="1"/>
-                            <field name="interes" widget="monetary" force_save="1" sum="interes" readonly="1"/>
-                            <field name="saldo" widget="monetary" force_save="1" readonly="1"/>
+                            <field name="cuota_capital" widget="monetary" force_save="1" sum="cuota_capital" readonly="1"/>
+                            <field name="cuota_adm" widget="monetary" force_save="1" sum="cuota_adm" readonly="1"/>
+                            <field name="iva" widget="monetary" force_save="1" sum="iva" readonly="1"/>
+                            <field name="seguro" widget="monetary" force_save="1" sum="seguro" readonly="1"/>
+                            <field name="rastreo" widget="monetary" force_save="1" sum="rastreo" readonly="1"/>
+                            <field name="otro" widget="monetary" force_save="1" sum="otro" readonly="1"/>
+                            <field name="saldo" widget="monetary" force_save="1" sum="saldo" readonly="1"/>
                             <field name="estado_pago" readonly="1"/>
                             <field name="factura_id" readonly="1"/>
                             <field name="pago_id" readonly="1"/>
