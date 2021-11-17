@@ -68,7 +68,6 @@
             <field name="act_window_id" ref="action_adjudicados_form"/>
         </record>
 
-    <menuitem id="crear_adjudicado_menu" name="Crear Adjudicados"
-                sequence="10"
+    <menuitem id="crear_adjudicado_menu" name="Clientes" sequence="10"
               action="action_adjudicados_form" parent="menu_adjudicados"/>
 </odoo>

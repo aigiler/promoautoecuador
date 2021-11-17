@@ -11,4 +11,4 @@ class ResCountryCity(models.Model):
 
     nombre_ciudad = fields.Char(string='Nombre Ciudad')
     codigo_ciudad = fields.Char(string='Código Ciudad')
-    provincia_id = fields.Many2one('res.country.state', string='Provincia', domain="[('country_id','=',ref('base.ec').id)]" )
+    provincia_id = fields.Many2one('res.country.state', string='Provincia') #domain="[('country_id','=',ref('base.ec').id)]"

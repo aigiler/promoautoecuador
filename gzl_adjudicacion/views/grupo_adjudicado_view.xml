@@ -67,7 +67,7 @@
 
 
     <record id="action_grupo_adjudicado" model="ir.actions.act_window">
-        <field name="name">Grupo Adjudicado</field>
+        <field name="name">Grupos</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">grupo.adjudicado</field>
         <field name="view_mode">tree,form</field>
