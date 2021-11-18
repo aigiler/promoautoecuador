@@ -51,6 +51,14 @@ class Contrato(models.Model):
     iva_administrativo = fields.Monetary(string='Iva Administrativo', currency_field='currency_id')
     estado_de_cuenta_ids = fields.One2many('contrato.estado.cuenta', 'contrato_id')
 
+    
+    @api.model
+    def create(self, vals):
+        vals['secuencia'] = self.env['ir.sequence'].next_by_code('contrato')
+        res = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc")
+        vals['tasa_administrativa'] = res.tasa_administrativa
+        vals['dia_corte'] = res.dia_corte
+        return super(Contrato, self).create(vals)
 
     @api.onchange('cliente', 'grupo')
     def onchange_provincia(self):

@@ -12,12 +12,23 @@
             <field eval="False" name="company_id"/>
         </record>
 
-        <!--    Secuencia para Asamblea  -->
+        <!--    Secuencia para Grupo Adjudicado  -->
         <record id="sequence_grupo_adjudicado" model="ir.sequence">
             <field name="name">Secuencia para Grupo Adjudicado</field>
             <field name="code">grupo.adjudicado</field>
             <field name="prefix">Grupo Adjudicado - </field>
             <field name="padding">5</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="False" name="company_id"/>
+        </record>
+
+        <!--    Secuencia para Contrato -->
+        <record id="sequence_contrato" model="ir.sequence">
+            <field name="name">Secuencia para Contrato</field>
+            <field name="code">contrato</field>
+            <field name="prefix">Contrato - </field>
+            <field name="padding">8</field>
             <field eval="1" name="number_next"/>
             <field eval="1" name="number_increment"/>
             <field eval="False" name="company_id"/>
