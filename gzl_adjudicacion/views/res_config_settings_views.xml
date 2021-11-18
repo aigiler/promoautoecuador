@@ -36,16 +36,16 @@
          </record>
                             
 
-        <record id="action_account_config" model="ir.actions.act_window">
-            <field name="name">Settings</field>
+        <record id="action_adjudicaciones_res_config" model="ir.actions.act_window">
+            <field name="name">Ajustes</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">res.config.settings</field>
             <field name="view_mode">form</field>
             <field name="target">inline</field>
-            <field name="context">{'module' : 'account'}</field>
+            <field name="context">{'module' : 'gzl_adjudicacion'}</field>
         </record>
 
-        <menuitem id="menu_account_config" name="Settings" parent="menu_finance_configuration"
-            sequence="0" action="action_account_config" groups="base.group_system"/>
+        <menuitem id="menu_adjudicaciones_res_config" name="Ajustes" parent="menu_configuracion_adjudicaciones"
+            sequence="0" action="action_adjudicaciones_res_config" groups="base.group_system"/>
     </data>
 </odoo>
