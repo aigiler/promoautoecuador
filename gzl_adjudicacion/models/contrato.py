@@ -16,12 +16,12 @@ class Contrato(models.Model):
     dia_corte = fields.Char(string='Día de Corte')
     saldo_a_favor_de_capital_por_adendum = fields.Monetary(string='Saldo a Favor de Capital por Adendum', currency_field='currency_id')
     pago = fields.Selection(selection=[
-        ('mes_actual', 'Pagar Desde Mes Actual'),
+        ('mes_actual', 'Mes Actual'),
         ('siguiente_mes', 'Siguiente Mes'),
         ('personalizado', 'Personalizado')
         ], string='Pago', default='mes_actual')
     monto_financiamiento = fields.Monetary(string='Monto Financiamiento', currency_field='currency_id')
-    tasa_administrativa = fields.Float(string='Tasa Administrativa (%)')
+    tasa_administrativa = fields.Float(string='Tasa Administrativa(%)')
     valor_inscripcion = fields.Monetary(string='Valor Inscripción', currency_field='currency_id')
     tipo_de_contrato = fields.Many2one('tipo.contrato.adjudicado', string='Tipo de Contrato')
     codigo_grupo = fields.Char(string='Código de Grupo')
@@ -37,6 +37,13 @@ class Contrato(models.Model):
         ('activo', 'Activo'),
         ('inactivo', 'Inactivo')
         ], string='Estado', default='activo')
+    estado = fields.Selection(selection=[
+        ('borrador', 'Borrador'),
+        ('congelar_contrato', 'Congelar Contrato'),
+        ('adjudicar', 'Adjudicar'),
+        ('adendum', 'Realizar Adendum'),
+        ('desistir', 'Desistir'),
+        ], string='Estado', default='borrador')
     observacion = fields.Char(string='Observación')
     ciudad = fields.Many2one('res.country.city', string='Ciudad', domain="[('provincia_id','=',provincias)]") 
     #archivo_adicional =
@@ -53,3 +60,10 @@ class Contrato(models.Model):
             for l in res:
                 list_res.append(l['id'])
             return {'domain': {'provincias': [('id', 'in', list_res)]}}
+
+    
+    @api.constrains('cliente', 'secuencia')
+    def constrains_valor_por_defecto(self): 
+        res = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc")
+        self.tasa_administrativa= res.tasa_administrativa
+        self.dia_corte = res.dia_corte

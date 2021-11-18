@@ -49,7 +49,7 @@
                                     <field name="tipo_de_contrato" options="{'no_create': True, 'no_open': True}" />
                                     <field name="codigo_grupo" />
                                     <field name="provincias" options="{'no_create': True, 'no_open': True}"/>
-                                    <!-- <field name="archivo"/> -->
+                                    <field name="archivo" filename="name"/>
                                     <field name="fecha_contrato" />
                                     <field name="plazo_meses" />
                                     <field name="cuota_adm"/>
@@ -62,7 +62,7 @@
                                     <field name="active" />
                                     <field name="observacion"/>
                                     <field name="ciudad" options="{'no_create': True, 'no_open': True}"/>
-                                    <!-- <field name="archivo_adicional" /> -->
+                                    <field name="archivo_adicional" filename="name"/> 
                                     <field name="fecha_inicio_pago" />
                                     <field name="cuota_capital"/>
                                     <field name="tasa_administrativa"/>

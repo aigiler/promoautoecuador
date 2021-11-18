@@ -1,37 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>        
-        
+    <data>
         <record id="adjudicados_res_config_settings_view_form" model="ir.ui.view">
             <field name="name">adjudicados.res.config.settings.view.form</field>
             <field name="model">res.config.settings</field>
-            <field name="priority" eval="40"/>
+            <field name = "inherit_id" ref = "base.res_config_settings_view_form" />
             <field name="arch" type="xml">
-                <div class="app_settings_block" string="Ajustes" groups="account.group_account_manager">
-                    <h2>Ajustes </h2>
-                    <div class="row mt16 o_settings_container">
-                        <div class="col-12 col-lg-6 o_setting_box" title="These taxes are set in any new product created.">
-                            <div class="o_setting_left_pane"/>
-                            <div class="o_setting_right_pane">
-                                <span class="o_form_label">Default Taxes</span>
-                                <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." aria-label="Values set here are company-specific." groups="base.group_multi_company" role="img"/>
-                                <div class="text-muted">
-                                    Default taxes applied to local transactions
-                                </div>
-                                <div class="content-group">
-                                    <div class="row mt16">
-                                        <label string="Día de Corte" for="dia_corte" class="col-lg-3 o_light_label"/>
-                                        <field name="dia_corte" />
-                                    </div>
-                                    <div class="row">
-                                        <label string="Tasa Administrativa %" for="tasa_administrativa" class="col-lg-3 o_light_label"/>
-                                        <field name="tasa_administrativa" />
+                <xpath expr="//div[hasclass('settings')]" position="inside">
+                    <div class="app_settings_block" data-string="Adjudicaciones" string="Adjudicaciones" data-key="gzl_adjudicacion" groups="account.group_account_manager">
+                        <h2>Ajustes </h2>
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-12 col-lg-6 o_setting_box" title="These taxes are set in any new product created.">
+                                <div class="o_setting_left_pane"/>
+                                <div class="o_setting_right_pane">
+                                    <div class="content-group">
+                                        <div class="row mt16">
+                                            <label string="Día de Corte" for="dia_corte" class="col-lg-3 o_light_label"/>
+                                            <field name="dia_corte" />
+                                        </div>
+                                        <div class="row">
+                                            <label string="Tasa Administrativa %" for="tasa_administrativa" class="col-lg-3 o_light_label"/>
+                                            <field name="tasa_administrativa" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </xpath>
             </field>
          </record>
                             
@@ -47,5 +43,6 @@
 
         <menuitem id="menu_adjudicaciones_res_config" name="Ajustes" parent="menu_configuracion_adjudicaciones"
             sequence="0" action="action_adjudicaciones_res_config" groups="base.group_system"/>
+    
     </data>
 </odoo>
