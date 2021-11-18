@@ -11,3 +11,4 @@ access_tipo_contrato_user,access.tipo.contrato.user,gzl_adjudicacion.model_tipo_
 access_tipo_contrato_manager,access.tipo.contrato.manager,gzl_adjudicacion.model_tipo_contrato_adjudicado,gzl_adjudicacion.grupo_admin_adjudicaciones,1,1,1,1
 access_contrato_user,access.contrato.user,gzl_adjudicacion.model_contrato,gzl_adjudicacion.grupo_usuario_adjudicaciones,1,1,0,0
 access_contrato_manager,access.contrato.manager,gzl_adjudicacion.model_contrato,gzl_adjudicacion.grupo_admin_adjudicaciones,1,1,1,1
+access_contrato_estado_cuenta,access.contrato.estado.cuenta,gzl_adjudicacion.model_contrato_estado_cuenta,gzl_adjudicacion.grupo_admin_adjudicaciones,1,1,1,1
