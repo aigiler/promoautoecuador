@@ -9,22 +9,25 @@ class GrupoAdjudicado(models.Model):
     _description = 'Grupo Adjudicado'
   
     name=fields.Char('Nombre',  required=True)
-    descripcion=fields.Text('Descripcion',  required=True)
-    active=fields.Boolean( default=True)
+    codigo = fields.Char(string='Código')
+    descripcion=fields.Text('Descripcion', required=True)
+    active=fields.Boolean(default=True, string='Activo')
     integrantes = fields.One2many('integrante.grupo.adjudicado','grupo_id')
     monto_grupo = fields.Float(String="Cartera del grupo", compute="compute_monto_cartera")
-    secuencia = fields.Char(index=True)
+    # secuencia = fields.Char(index=True)
     asamblea_id = fields.Many2one('asamblea')
     estado = fields.Selection(selection=[
             ('en_conformacion', 'En Conformación'),
             ('cerrado', 'Cerrado')
             ], string='Estado', copy=False, tracking=True, default='en_conformacion')
-     
+    cantidad_integrantes = fields.Integer(string='Cantidad de Integrantes')
+    maximo_integrantes = fields.Integer(string='Máximo de Integrantes')
 
-    @api.model
-    def create(self, vals):
-        vals['secuencia'] = self.env['ir.sequence'].next_by_code('grupo.adjudicado')
-        return super(GrupoAdjudicado, self).create(vals)
+
+    # @api.model
+    # def create(self, vals):
+    #     vals['secuencia'] = self.env['ir.sequence'].next_by_code('grupo.adjudicado')
+    #     return super(GrupoAdjudicado, self).create(vals)
 
     
     @api.depends('integrantes.monto')

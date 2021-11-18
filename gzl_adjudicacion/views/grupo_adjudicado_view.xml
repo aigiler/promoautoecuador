@@ -26,9 +26,9 @@
                     <field name="estado" widget="statusbar" statusbar_visible="en_conformacion,cerrado"/>
                 </header>
                 <sheet>
-                    <div class="oe_title">
+                    <!-- <div class="oe_title">
                         <h1><field name="secuencia" class="oe_inline" readonly="1"/></h1>
-                    </div>
+                    </div> -->
                     <group>
                         <group>
                                 <field name="name" />
@@ -37,6 +37,31 @@
                                 <field name="active" />
                         </group>
                     </group>
+
+                    <div class="row" >
+                        <group string="Grupo"/>
+                        <div class="col-xs-12 col-sm-4">
+                            <group>
+                                <field name="codigo"/>
+                                <field name="cantidad_integrantes" readonly="1"/>
+                            </group>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-4">
+                            <group>
+                                <field name="name" />
+                                <field name="maximo_integrantes"/>
+                            </group>
+                        </div> 
+
+                        <div class="col-xs-12 col-sm-4">
+                            <group>
+                                <field name="active"/>
+                                <field name="monto_grupo" />
+                            </group>
+                        </div>
+
+                    </div>
 
                     <field name="integrantes" nolabel="1" >
                         <tree string="Integrantes" edit="false">
