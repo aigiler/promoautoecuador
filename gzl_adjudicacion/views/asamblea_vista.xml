@@ -38,18 +38,19 @@
 
                     
                 </sheet>   
-            </field>
-        </record>
+            </form > 
+        </field>
+    </record>
 
 
-        <record id="action_new_asamblea_form" model="ir.actions.act_window">
-            <field name="name">Asamblea</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">asamblea</field>
-            <field name="view_mode">tree,form</field>
-        </record>
+    <record id="action_new_asamblea_form" model="ir.actions.act_window">
+        <field name="name">Asamblea</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">asamblea</field>
+        <field name="view_mode">tree,form</field>
+    </record>
         
 
-    <menuitem id="menu_new_asamblea" action="action_asamblea" 
+    <menuitem id="menu_new_asamblea" action="action_new_asamblea_form" 
         parent="menu_adjudicados" sequence="7"  />
 </odoo>
