@@ -83,7 +83,7 @@ class ContratoEstadoCuenta(models.Model):
     cuota_capital = fields.Monetary(string='Cuota Capital', currency_field='currency_id')
     cuota_adm = fields.Monetary(string='Cuota Adm', currency_field='currency_id')
     factura_id = fields.Many2one('account.move', string='Factura')
-    pago_ids = fields.Many2many('account.payment', string='Pagos')
+    pago_ids = fields.Many2many('account.payment','contrato_estado_cuenta_payment_rel', 'estado_cuenta_id','payment_id', string='Pagos')
     seguro = fields.Monetary(string='Seguro', currency_field='currency_id')
     rastreo = fields.Monetary(string='Rastreo', currency_field='currency_id')
     otro = fields.Monetary(string='Otro', currency_field='currency_id')
