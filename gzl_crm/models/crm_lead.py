@@ -242,9 +242,6 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
                     list_method.append(l['inbound_payment_method'])
                 return {'domain': {'payment_method_id': [('id', 'in', list_method)]}}
 
-            
-        
-        
     
     def validar_pago(self):
         factura = self.tabla_amortizacion_id.factura_id
