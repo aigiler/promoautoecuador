@@ -33,9 +33,14 @@ class GrupoAdjudicado(models.Model):
     @api.depends('integrantes.monto')
     def compute_monto_cartera(self):
         monto=0
+        num_integrantes=0
         for l in self.integrantes:
             monto += l.monto
+            num_integrantes +=1
+            if num_integrantes > self.maximo_integrantes:
+                raise ValidationError('Ha excedido el máximo de integrantes')
         self.monto_grupo=monto
+        self.cantidad_integrantes=num_integrantes
    
 
 class IntegrantesGrupo(models.Model):

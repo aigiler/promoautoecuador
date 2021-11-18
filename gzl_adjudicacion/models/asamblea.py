@@ -16,7 +16,7 @@ class Asamblea(models.Model):
     fecha_inicio = fields.Datetime(String='Fecha Inicio')
     fecha_fin = fields.Datetime(String='Fecha Fin')
     secuencia = fields.Char(index=True)
-    estado = fields.Selection(selection=[
+    state = fields.Selection(selection=[
             ('borrador', 'Borrador'),
             ('en_curso', 'En Curso'),
             ('cerrado', 'Cerrado')

@@ -26,31 +26,18 @@
                     <field name="estado" widget="statusbar" statusbar_visible="en_conformacion,cerrado"/>
                 </header>
                 <sheet>
-                    <!-- <div class="oe_title">
-                        <h1><field name="secuencia" class="oe_inline" readonly="1"/></h1>
-                    </div> -->
-                    <group>
-                        <group>
-                                <field name="name" />
-                                <field name="descripcion" />
-                                <field name="monto_grupo" />
-                                <field name="active" />
-                        </group>
-                    </group>
-
                     <div class="row" >
-                        <group string="Grupo"/>
                         <div class="col-xs-12 col-sm-4">
                             <group>
-                                <field name="codigo"/>
+                                <field name="codigo" required="1"/>
                                 <field name="cantidad_integrantes" readonly="1"/>
                             </group>
                         </div>
 
                         <div class="col-xs-12 col-sm-4">
                             <group>
-                                <field name="name" />
-                                <field name="maximo_integrantes"/>
+                                <field name="name" required="1"/>
+                                <field name="maximo_integrantes" required="1"/>
                             </group>
                         </div> 
 
@@ -63,26 +50,28 @@
 
                     </div>
 
-                    <field name="integrantes" nolabel="1" >
-                        <tree string="Integrantes" edit="false">
-                            <field name="adjudicado_id" domain="[('tipo','=','adjudicado')]"/>
-                            <field name="descripcion"/>
-                            <field name="monto"/>
-                            <field name="nro_cuota_licitar"  />
-                            <field name="carta_licitacion"  />
-                        </tree>
-                        <form>
-                            <group>
+                    <group string="Integrantes">
+                        <field name="integrantes" nolabel="1" >
+                            <tree string="Integrantes" edit="false">
+                                <field name="adjudicado_id" domain="[('tipo','=','adjudicado')]"/>
+                                <field name="descripcion"/>
+                                <field name="monto"/>
+                                <field name="nro_cuota_licitar"  />
+                                <field name="carta_licitacion"  />
+                            </tree>
+                            <form>
                                 <group>
-                                    <field name="adjudicado_id" domain="[('tipo','=','adjudicado')]"/>
-                                    <field name="descripcion"/>
-                                    <field name="monto"/>
-                                    <field name="nro_cuota_licitar"  />
-                                    <field name="carta_licitacion"  />
+                                    <group>
+                                        <field name="adjudicado_id" domain="[('tipo','=','adjudicado')]"/>
+                                        <field name="descripcion"/>
+                                        <field name="monto"/>
+                                        <field name="nro_cuota_licitar"  />
+                                        <field name="carta_licitacion"  />
+                                    </group>
                                 </group>
-                            </group>
-                        </form>
-                    </field>
+                            </form>
+                        </field>
+                    </group>
                 </sheet>
 
 
