@@ -83,7 +83,7 @@
                                 <field name="cuota_capital" sum="cuota_capital"/>
                                 <field name="cuota_adm" sum="cuota_adm"/>
                                 <field name="factura_id"/>
-                                <field name="pago_ids" widget="many2many_tags" />
+                                <!-- <field name="pago_ids" widget="many2many_tags" /> -->
                                 <field name="seguro" sum="seguro"/>
                                 <field name="rastreo" sum="rastreo"/>
                                 <field name="otro" sum="otro"/>
