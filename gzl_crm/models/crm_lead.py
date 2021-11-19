@@ -71,7 +71,7 @@ class CrmLead(models.Model):
                                         'cliente':self.partner_id.id,
                                         'dia_corte':self.dia_pago,
                                         'monto_financiamiento':self.planned_revenue,
-                                        'tasa_administrativa':self.,
+                                        #'tasa_administrativa':,
                                         'tipo_de_contrato':self.tipo_contrato.id,
                                         'provincias':self.partner_id.state_id.id,
                                         'plazo_meses':self.numero_cuotas,
