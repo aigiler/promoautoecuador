@@ -67,5 +67,5 @@ class IntegrantesGrupo(models.Model):
     @api.model
     def create(self, vals):
         secuencia = self.env['ir.sequence'].next_by_code('integrantes.grupo.adjudicado')
-        vals['secuencia'] = self.grupo_id.codigo + secuencia
+        vals['secuencia'] = self.grupo_id.codigo  +' - '+  secuencia
         return super(IntegrantesGrupo, self).create(vals)

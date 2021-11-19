@@ -52,13 +52,13 @@
 
                     <group string="Integrantes">
                         <field name="integrantes" nolabel="1" >
-                            <tree string="Integrantes" edit="false">
+                            <tree string="Integrantes" edit="false" editable="bottom">
                                 <field name="codigo_integrante" readonly="1"/>
                                 <field name="codigo_cliente" readonly="1"/>
                                 <field name="vat" readonly="1"/>
-                                <field name="adjudicado_id"/>
+                                <field name="adjudicado_id" options="{'no_open': True, 'no_create': True}"/>
                                 <field name="mobile" readonly="1"/>
-                                <field name="contrato_id"/>
+                                <field name="contrato_id" options="{'no_open': True, 'no_create': True}"/>
                                 <field name="cupo"/>
                                 <!-- <field name="descripcion"/>
                                 <field name="monto"/>
