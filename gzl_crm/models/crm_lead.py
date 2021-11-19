@@ -26,6 +26,8 @@ class CrmLead(models.Model):
     cotizaciones_ids = fields.One2many('sale.order', 'oportunidad_id')
     cuota_capital = fields.Monetary(string='Cuota Capital', currency_field='currency_id')
     iva = fields.Monetary(string='Iva', currency_field='currency_id')
+    currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
+
 
     
     def detalle_tabla_amortizacion(self):
