@@ -7,9 +7,13 @@
         <field name="model">grupo.adjudicado</field>
         <field name="arch" type="xml">
             <tree string="Grupo Adjudicado"  >
+                <field name="codigo" />
                 <field name="name" />
-                <field name="descripcion" />
+                <field name="cantidad_integrantes" />
+                <field name="maximo_integrantes" />
                 <field name="active" />
+                <field name="create_date" string="Fecha de Creación"/>
+                <field name="create_uid" string="Usuario Creador"/>
             </tree>
         </field>
     </record>
@@ -31,6 +35,7 @@
                             <group>
                                 <field name="codigo" required="1"/>
                                 <field name="cantidad_integrantes" readonly="1"/>
+                                <field name="descripcion"/>
                             </group>
                         </div>
 
