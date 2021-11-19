@@ -26,7 +26,8 @@ class GrupoAdjudicado(models.Model):
 
     # @api.model
     # def create(self, vals):
-    #     vals['secuencia'] = self.env['ir.sequence'].next_by_code('grupo.adjudicado')
+       
+    
     #     return super(GrupoAdjudicado, self).create(vals)
 
     
@@ -66,6 +67,19 @@ class IntegrantesGrupo(models.Model):
 
     @api.model
     def create(self, vals):
-        secuencia = self.env['ir.sequence'].next_by_code('integrantes.grupo.adjudicado')
-        vals['secuencia'] = self.grupo_id.codigo  +' - '+  secuencia
+        # secuencia = self.env['ir.sequence'].next_by_code('integrantes.grupo.adjudicado')
+        # vals['codigo_integrante'] = self.grupo_id.codigo  +' - '+  secuencia
+        grupo = self.env['grupo.adjudicado'].search([('id','=',vals['grupo_id'] )])
+        existe_secuencia = self.env['ir.sequence'].search([('code','=',grupo.codigo)])
+        if existe_secuencia:
+            vals['codigo_integrante'] = existe_secuencia.sudo().next_by_id()
+        else:
+            seq = {
+                'name': 'Secuencia Grupo Adjudicado '+ vals['codigo'] ,
+                'implementation': 'no_gap',
+                'prefix': vals['codigo'] +' - ',
+                'number_increment': 1,
+                'code': vals['codigo']
+            }
+            vals['codigo_integrante'] = seq.sudo().next_by_id()
         return super(IntegrantesGrupo, self).create(vals)
