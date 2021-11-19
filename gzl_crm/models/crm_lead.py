@@ -47,7 +47,7 @@ class CrmLead(models.Model):
                                                    'saldo':saldo
                                                     })
                          
-                                               
+    @api.constrains('partner_id', 'stage_id.is_won')                                        
     def crear_adjudicado(self):
         if self.stage_id.is_won:
             self.env['res.partner'].create({

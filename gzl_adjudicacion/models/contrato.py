@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
@@ -75,7 +74,6 @@ class Contrato(models.Model):
         res = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc")
         self.tasa_administrativa= res.tasa_administrativa
         self.dia_corte = res.dia_corte
-
 
 
 class ContratoEstadoCuenta(models.Model):

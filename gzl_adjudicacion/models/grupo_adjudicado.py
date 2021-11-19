@@ -14,7 +14,6 @@ class GrupoAdjudicado(models.Model):
     active=fields.Boolean(default=True, string='Activo')
     integrantes = fields.One2many('integrante.grupo.adjudicado','grupo_id')
     monto_grupo = fields.Float(String="Cartera del grupo", compute="compute_monto_cartera")
-    # secuencia = fields.Char(index=True)
     asamblea_id = fields.Many2one('asamblea')
     estado = fields.Selection(selection=[
             ('en_conformacion', 'En Conformación'),
@@ -22,13 +21,6 @@ class GrupoAdjudicado(models.Model):
             ], string='Estado', copy=False, tracking=True, default='en_conformacion')
     cantidad_integrantes = fields.Integer(string='Cantidad de Integrantes')
     maximo_integrantes = fields.Integer(string='Máximo de Integrantes')
-
-
-    # @api.model
-    # def create(self, vals):
-       
-    
-    #     return super(GrupoAdjudicado, self).create(vals)
 
     
     @api.depends('integrantes.monto')
@@ -54,10 +46,10 @@ class IntegrantesGrupo(models.Model):
     nro_cuota_licitar = fields.Integer(string='Nro de Cuotas a Licitar')
     carta_licitacion = fields.Selection([('si', 'Si'), ('no', 'No')], string='Carta Licitación')
     codigo_integrante = fields.Char(string='Código')
-    codigo_cliente = fields.Char(string='Código Cliente')
-    vat = fields.Char(string='No. Identificación')
+    codigo_cliente = fields.Char(string='Código Cliente', related='adjudicado_id.codigo_cliente')
+    vat = fields.Char(string='No. Identificación', related='adjudicado_id.vat')
     adjudicado_id = fields.Many2one('res.partner', string="Nombre", domain="[('tipo','=','adjudicado')]")
-    mobile = fields.Char(string='Móvil')
+    mobile = fields.Char(string='Móvil', related='adjudicado_id.mobile')
     contrato_id = fields.Many2one('contrato', string='Contrato')
     cupo = fields.Selection(selection=[
             ('ocupado', 'Ocupado'),
@@ -67,19 +59,17 @@ class IntegrantesGrupo(models.Model):
 
     @api.model
     def create(self, vals):
-        # secuencia = self.env['ir.sequence'].next_by_code('integrantes.grupo.adjudicado')
-        # vals['codigo_integrante'] = self.grupo_id.codigo  +' - '+  secuencia
         grupo = self.env['grupo.adjudicado'].search([('id','=',vals['grupo_id'] )])
         existe_secuencia = self.env['ir.sequence'].search([('code','=',grupo.codigo)])
         if existe_secuencia:
             vals['codigo_integrante'] = existe_secuencia.sudo().next_by_id()
         else:
-            seq = {
-                'name': 'Secuencia Grupo Adjudicado '+ vals['codigo'] ,
+            seq = self.env['ir.sequence'].create({
+                'name': 'Secuencia Grupo Adjudicado '+ grupo.codigo ,
                 'implementation': 'no_gap',
-                'prefix': vals['codigo'] +' - ',
+                'prefix': grupo.codigo +' - ',
                 'number_increment': 1,
-                'code': vals['codigo']
-            }
-            vals['codigo_integrante'] = seq.sudo().next_by_id()
+                'code': grupo.codigo
+            })
+            vals['codigo_integrante'] = seq.next_by_id()
         return super(IntegrantesGrupo, self).create(vals)

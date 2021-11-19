@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-
 from odoo import api, fields, models
 
 
 class Asamblea(models.Model):
-    
     _name = 'asamblea'
     _description = 'Proceso de Asamblea'
   
@@ -56,4 +54,3 @@ class JuntaGrupoAsamblea(models.Model):
 
     asamblea_id = fields.Many2one('asamblea', string='Asamblea')
     empleado_id = fields.Many2one('hr.employee', string="Empleado")
-
