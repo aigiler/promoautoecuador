@@ -13,7 +13,7 @@ class GrupoAdjudicado(models.Model):
     descripcion=fields.Text('Descripcion', required=True)
     active=fields.Boolean(default=True, string='Activo')
     integrantes = fields.One2many('integrante.grupo.adjudicado','grupo_id')
-    monto_grupo = fields.Float(String="Cartera del grupo", compute="compute_monto_cartera")
+    monto_grupo = fields.Float(String="Cartera del grupo",default=0, compute="compute_monto_cartera")
     asamblea_id = fields.Many2one('asamblea')
     estado = fields.Selection(selection=[
             ('en_conformacion', 'En Conformación'),
@@ -22,6 +22,9 @@ class GrupoAdjudicado(models.Model):
     cantidad_integrantes = fields.Integer(string='Cantidad de Integrantes')
     maximo_integrantes = fields.Integer(string='Máximo de Integrantes')
 
+    _sql_constraints = [
+        ('codigo_uniq', 'unique (codigo)', 'El código ya existe.')
+    ]
     
     @api.depends('integrantes.monto')
     def compute_monto_cartera(self):
@@ -31,7 +34,7 @@ class GrupoAdjudicado(models.Model):
             monto += l.monto
             num_integrantes +=1
             if num_integrantes > self.maximo_integrantes:
-                raise ValidationError('Ha excedido el máximo de integrantes')
+                raise ValidationError('Ha excedido el máximo de integrantes.')
         self.monto_grupo=monto
         self.cantidad_integrantes=num_integrantes
    

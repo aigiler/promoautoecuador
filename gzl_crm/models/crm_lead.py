@@ -16,12 +16,12 @@ class CrmLead(models.Model):
     contacto_correo = fields.Char(string='Correo Electrónico')
     contacto_telefono = fields.Char(string='Teléfono')
     contacto_domicilio = fields.Char(string='Domicilio')
-    tasa_interes = fields.Integer(string='Tasa de Inter+és')
+    tasa_interes = fields.Integer(string='Tasa de Interés')
     numero_cuotas = fields.Selection([('60', '60 Meses'), 
                                       ('72', '72 Meses')
-                                    ],string='Número de Cuotas') 
-    dia_pago = fields.Integer(string='Día de Pagos')
-    tipo_contrato = fields.Many2one('tipo.contrato.adjudicado', string='Tipo de Contrato')
+                                    ],string='Número de Cuotas', default="60") 
+    dia_pago = fields.Integer(string='Día de Pagos', required=True)
+    tipo_contrato = fields.Many2one('tipo.contrato.adjudicado', string='Tipo de Contrato', required=True)
     tabla_amortizacion = fields.One2many('tabla.amortizacion', 'oportunidad_id' )
     cotizaciones_ids = fields.One2many('sale.order', 'oportunidad_id')
 
@@ -46,10 +46,12 @@ class CrmLead(models.Model):
                                                    'iva':iva,
                                                    'saldo':saldo
                                                     })
-                         
-    @api.constrains('partner_id', 'stage_id.is_won')                                        
-    def crear_adjudicado(self):
-        if self.stage_id.is_won:
+                        
+
+    def write(self, vals):
+        crm = super(CrmLead, self).write(vals)
+        stage_id = self.env['crm.stage'].browse(vals['stage_id'])
+        if stage_id.is_won:
             self.env['res.partner'].create({
                                         'name':self.partner_id.name,
                                         'type':'contact',
@@ -59,7 +61,10 @@ class CrmLead(models.Model):
                                         'email':self.partner_id.email or None,
                                         'phone':self.partner_id.phone or None,
                                         'mobile':self.partner_id.mobile or None,
-                                        })
+                                        'tipo_contrato':self.tipo_contrato.id,
+                                        'vat':self.partner_id.vat or None
+                                    })
+        return crm
 
     
     def crear_contrato(self):
