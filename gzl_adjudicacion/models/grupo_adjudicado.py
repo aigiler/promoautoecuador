@@ -44,13 +44,28 @@ class GrupoAdjudicado(models.Model):
    
 
 class IntegrantesGrupo(models.Model):
-    
     _name = 'integrante.grupo.adjudicado'
     _description = 'Integrantes de Grupo Adjudicado'
   
     descripcion=fields.Char('Descripcion',  )
     grupo_id = fields.Many2one('grupo.adjudicado')
-    adjudicado_id = fields.Many2one('res.partner')
     monto=fields.Float('Monto')
     nro_cuota_licitar = fields.Integer(string='Nro de Cuotas a Licitar')
     carta_licitacion = fields.Selection([('si', 'Si'), ('no', 'No')], string='Carta Licitación')
+    codigo_integrante = fields.Char(string='Código')
+    codigo_cliente = fields.Char(string='Código Cliente')
+    vat = fields.Char(string='No. Identificación')
+    adjudicado_id = fields.Many2one('res.partner', string="Nombre", domain="[('tipo','=','adjudicado')]")
+    mobile = fields.Char(string='Móvil')
+    contrato_id = fields.Many2one('contrato', string='Contrato')
+    cupo = fields.Selection(selection=[
+            ('ocupado', 'Ocupado'),
+            ('desocupado', 'Desocupado')
+            ], string='Cupo', default='ocupado')
+
+
+    @api.model
+    def create(self, vals):
+        secuencia = self.env['ir.sequence'].next_by_code('integrantes.grupo.adjudicado')
+        vals['secuencia'] = self.grupo_id.codigo + secuencia
+        return super(IntegrantesGrupo, self).create(vals)

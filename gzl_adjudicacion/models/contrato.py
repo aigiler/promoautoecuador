@@ -32,10 +32,7 @@ class Contrato(models.Model):
                                     ],string='Plazo (meses)') 
     cuota_adm = fields.Monetary(string='Cuota Administrativa', currency_field='currency_id') 
     factura_inscripcion = fields.Many2one('account.move', string='Factura Incripción')
-    active = fields.Selection(selection=[
-        ('activo', 'Activo'),
-        ('inactivo', 'Inactivo')
-        ], string='Estado', default='activo')
+    active = fields.Boolean(string='Activo', default=True)
     estado = fields.Selection(selection=[
         ('borrador', 'Borrador'),
         ('congelar_contrato', 'Congelar Contrato'),

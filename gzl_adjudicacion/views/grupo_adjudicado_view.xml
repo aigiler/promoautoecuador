@@ -53,11 +53,17 @@
                     <group string="Integrantes">
                         <field name="integrantes" nolabel="1" >
                             <tree string="Integrantes" edit="false">
-                                <field name="adjudicado_id" domain="[('tipo','=','adjudicado')]"/>
-                                <field name="descripcion"/>
+                                <field name="codigo_integrante" readonly="1"/>
+                                <field name="codigo_cliente" readonly="1"/>
+                                <field name="vat" readonly="1"/>
+                                <field name="adjudicado_id"/>
+                                <field name="mobile" readonly="1"/>
+                                <field name="contrato_id"/>
+                                <field name="cupo"/>
+                                <!-- <field name="descripcion"/>
                                 <field name="monto"/>
                                 <field name="nro_cuota_licitar"  />
-                                <field name="carta_licitacion"  />
+                                <field name="carta_licitacion"  /> -->
                             </tree>
                             <form>
                                 <group>

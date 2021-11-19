@@ -21,6 +21,8 @@
                             attrs="{'invisible': [('is_company','=', True)]}"/>
                     </div>
                     <group>
+                        <field name="codigo_cliente"/>
+                        <field name="vat" string="No. Identificación"/>
                         <field name="function" placeholder="e.g. Sales Director" attrs="{'invisible': [('is_company','=', True)]}"/>
                         <field name="user_ids" invisible="1"/>
                         <field name="email" widget="email" context="{'gravatar_image': True}" required="context.get('force_email', False)" attrs="{'required': [('user_ids','!=', [])]}"/>
@@ -29,6 +31,7 @@
                         <field name="tipo" />
                         <field name="monto" />
                         <field name="tipo_contrato" />
+                        
                     </group>
                 </form>
             </field>
@@ -36,7 +39,7 @@
 
 
         <record id="action_adjudicados_form" model="ir.actions.act_window">
-            <field name="name">Crear Adjudicado</field>
+            <field name="name">Clientes</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">res.partner</field>
             <field name="view_mode">kanban,tree,form</field>

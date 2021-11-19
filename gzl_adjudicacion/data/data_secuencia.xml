@@ -34,5 +34,14 @@
             <field eval="False" name="company_id"/>
         </record>
 
+        <!--  Secuencia para Integrantes en el Grupo Adjudicado -->
+        <record id="sequence_integrante_grupo_adjudicado" model="ir.sequence">
+            <field name="name">Secuencia para Integrantes en el Grupo Adjudicado</field>
+            <field name="code">integrantes.grupo.adjudicado</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="False" name="company_id"/>
+        </record>
+
     </data>
 </odoo>
