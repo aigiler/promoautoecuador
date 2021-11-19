@@ -53,10 +53,11 @@ class CrmLead(models.Model):
         self.cuota_capital = cuota_capital
         self.iva =  iva  
 
+
     def write(self, vals):
         crm = super(CrmLead, self).write(vals)
-        stage_id = self.env['crm.stage'].browse(vals['stage_id'])
-        if stage_id.is_won:
+        #stage_id = self.env['crm.stage'].browse(vals['stage_id'])
+        if self.stage_id.is_won:
             self.env['res.partner'].create({
                                         'name':self.partner_id.name,
                                         'type':'contact',
@@ -81,19 +82,19 @@ class CrmLead(models.Model):
                                         'iva_administrativo':self.iva,
                                     })
 
-            for l in tabla_amortizacion:
+            for l in self.tabla_amortizacion:
                 self.env['contrato.estado.cuenta'].create({
-                                        'contrato_id':self.contrato.id,
-                                        'numero_cuota':l.numero_cuotas,
+                                        'contrato_id':contrato.id,
+                                        'numero_cuota':l.numero_cuota,
                                         'fecha': l.fecha,
                                         'cuota_capital':l.cuota_capital,
                                         'cuota_adm':l.cuota_adm,
-                                        'iva':l.iva
+                                        #'iva':l.iva
                                     })
             
         return crm
 
-    
+
     def crear_contrato(self):
         plantillas = self.env['sign.template'].search([('attachment_id.tipo_plantilla','=','adjudicacion')])
         for l in plantillas:
