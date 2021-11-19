@@ -65,7 +65,6 @@
                                 <field name="archivo_adicional" filename="name"/> 
                                 <field name="fecha_inicio_pago" />
                                 <field name="cuota_capital"/>
-                                <field name="tasa_administrativa"/>
                                 <field name="iva_administrativo" />
                             </group>
                         </div>

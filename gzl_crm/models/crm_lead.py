@@ -24,6 +24,8 @@ class CrmLead(models.Model):
     tipo_contrato = fields.Many2one('tipo.contrato.adjudicado', string='Tipo de Contrato', required=True)
     tabla_amortizacion = fields.One2many('tabla.amortizacion', 'oportunidad_id' )
     cotizaciones_ids = fields.One2many('sale.order', 'oportunidad_id')
+    cuota_capital = fields.Monetary(string='Cuota Capital', currency_field='currency_id')
+    iva = fields.Monetary(string='Iva', currency_field='currency_id')
 
     
     def detalle_tabla_amortizacion(self):
@@ -46,7 +48,8 @@ class CrmLead(models.Model):
                                                    'iva':iva,
                                                    'saldo':saldo
                                                     })
-                        
+        self.cuota_capital = cuota_capital
+        self.iva =  iva  
 
     def write(self, vals):
         crm = super(CrmLead, self).write(vals)
@@ -64,6 +67,28 @@ class CrmLead(models.Model):
                                         'tipo_contrato':self.tipo_contrato.id,
                                         'vat':self.partner_id.vat or None
                                     })
+            contrato = self.env['contrato'].create({
+                                        'cliente':self.partner_id.id,
+                                        'dia_corte':self.dia_pago,
+                                        'monto_financiamiento':self.planned_revenue,
+                                        'tasa_administrativa':self.,
+                                        'tipo_de_contrato':self.tipo_contrato.id,
+                                        'provincias':self.partner_id.state_id.id,
+                                        'plazo_meses':self.numero_cuotas,
+                                        'cuota_capital':self.cuota_capital,
+                                        'iva_administrativo':self.iva,
+                                    })
+
+            for l in tabla_amortizacion:
+                self.env['contrato.estado.cuenta'].create({
+                                        'contrato_id':self.contrato.id,
+                                        'numero_cuota':l.numero_cuotas,
+                                        'fecha': l.fecha,
+                                        'cuota_capital':l.cuota_capital,
+                                        'cuota_adm':l.cuota_adm,
+                                        'iva':l.iva
+                                    })
+            
         return crm
 
     
