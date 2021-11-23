@@ -5,8 +5,9 @@ from odoo import api, fields, models
 class Asamblea(models.Model):
     _name = 'asamblea'
     _description = 'Proceso de Asamblea'
-  
-    name=fields.Char('Nombre',  required=True)
+    _rec_name = 'secuencia'
+
+    name=fields.Char('Nombre')
     descripcion=fields.Text('Descripcion',  required=True)
     active=fields.Boolean( default=True)
     integrantes = fields.One2many('integrante.grupo.adjudicado.asamblea','asamblea_id')
@@ -17,7 +18,7 @@ class Asamblea(models.Model):
     state = fields.Selection(selection=[
             ('borrador', 'Borrador'),
             ('en_curso', 'En Curso'),
-            ('cerrado', 'Cerrado')
+            ('finalizada', 'Finalizada')
             ], string='Estado', copy=False, tracking=True, default='borrador')
 
     @api.model
