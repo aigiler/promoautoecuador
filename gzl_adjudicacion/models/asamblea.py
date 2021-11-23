@@ -5,7 +5,6 @@ from odoo import api, fields, models
 class Asamblea(models.Model):
     _name = 'asamblea'
     _description = 'Proceso de Asamblea'
-    _rec_name = 'secuencia'
 
     name=fields.Char('Nombre')
     descripcion=fields.Text('Descripcion',  required=True)
@@ -23,7 +22,7 @@ class Asamblea(models.Model):
 
     @api.model
     def create(self, vals):
-        vals['secuencia'] = self.env['ir.sequence'].next_by_code('asamblea')
+        vals['name'] = self.env['ir.sequence'].next_by_code('asamblea')
         return super(Asamblea, self).create(vals)
 
     # @api.onchange('grupo_id')
