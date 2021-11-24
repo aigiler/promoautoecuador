@@ -23,8 +23,11 @@
                                             <field name="tasa_administrativa" />
                                         </div>
                                         <div class="row">
-                                            <label string="Requisitos y politicas para aplicar credito" for="requisitosPoliticasCredito" class="col-lg-3 o_light_label"/>
-                                            <field name="requisitosPoliticasCredito" />
+                                            <notebook colspan="4">
+                                                <page string="Requisitos y politicas para aplicar credito" for="requisitosPoliticasCredito" class="col-lg-3 o_light_label">
+                                                    <field name="requisitosPoliticasCredito" nolabel="1"/>
+                                                </page>
+                                            </notebook>
                                         </div>
                                     </div>
                                 </div>
