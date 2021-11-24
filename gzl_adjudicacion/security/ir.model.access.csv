@@ -14,5 +14,5 @@ access_contrato_manager,access.contrato.manager,gzl_adjudicacion.model_contrato,
 access_contrato_estado_cuenta,access.contrato.estado.cuenta,gzl_adjudicacion.model_contrato_estado_cuenta,gzl_adjudicacion.grupo_admin_adjudicaciones,1,1,1,1
 access_junta_grupo_asamblea_user,access.junta.grupo.asamblea.user,gzl_adjudicacion.model_junta_grupo_asamblea,gzl_adjudicacion.grupo_usuario_adjudicaciones,1,1,0,0
 access_junta_grupo_asamblea_manager,access.junta.grupo.asamblea.manager,gzl_adjudicacion.model_junta_grupo_asamblea,gzl_adjudicacion.grupo_admin_adjudicaciones,1,1,1,1
-access_entrega_vehiculo_user,access.entrega.vehiculo.user,gzl_adjudicacion.model_entrega_vehiculo,gzl_adjudicacion.entrega_vehiculo,1,1,0,0
-access_entrega_vehiculo_manager,access.entrega.vehiculo.manager,gzl_adjudicacion.model_entrega_vehiculo,gzl_adjudicacion.entrega_vehiculo,1,1,1,1
+access_entrega_vehiculo_user,access.entrega.vehiculo.user,gzl_adjudicacion.model_entrega_vehiculo,grupo_usuario_adjudicaciones,1,1,0,0
+access_entrega_vehiculo_manager,access.entrega.vehiculo.manager,gzl_adjudicacion.model_entrega_vehiculo,gzl_adjudicacion.grupo_admin_adjudicaciones,1,1,1,1
