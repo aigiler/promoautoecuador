@@ -12,17 +12,6 @@
             <field eval="False" name="company_id"/>
         </record>
 
-        <!--    Secuencia para Asamblea  -->
-        <record id="sequence_entrega_vehiculo" model="ir.sequence">
-            <field name="name">Secuencia para Entrega Vehiculo</field>
-            <field name="code">entrega.vehiculo</field>
-            <field name="prefix">Entrega vehiculo - </field>
-            <field name="padding">5</field>
-            <field eval="1" name="number_next"/>
-            <field eval="1" name="number_increment"/>
-            <field eval="False" name="company_id"/>
-        </record>
-
         <!--    Secuencia para Grupo Adjudicado  -->
         <record id="sequence_grupo_adjudicado" model="ir.sequence">
             <field name="name">Secuencia para Grupo Adjudicado</field>
