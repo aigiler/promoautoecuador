@@ -10,6 +10,6 @@ class ResConfigSettings(models.TransientModel):
     tasa_administrativa = fields.Float(string='Tasa Administrativa %', default=4)
     requisitosPoliticasCredito = fields.Text(string='Informacion Cobranzas')
 
-    @api.multi
+
     def set_values(self):
         super(ResConfigSettings, self).set_values()
