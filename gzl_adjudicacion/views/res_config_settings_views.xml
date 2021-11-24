@@ -23,16 +23,16 @@
                                             <field name="tasa_administrativa" />
                                         </div>
                                         <div class="row">
-                                            <notebook colspan="4">
-                                                <page string="Requisitos y politicas para aplicar credito" for="requisitosPoliticasCredito" class="col-lg-3 o_light_label">
-                                                    <field name="requisitosPoliticasCredito" widget="html" nolabel="1"/>
-                                                </page>
-                                            </notebook>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <notebook colspan="4">
+                            <page string="Requisitos y politicas para aplicar credito" for="requisitosPoliticasCredito">
+                                <field name="requisitosPoliticasCredito" widget="html" nolabel="1"/>
+                            </page>
+                        </notebook>
                     </div>
                 </xpath>
             </field>
