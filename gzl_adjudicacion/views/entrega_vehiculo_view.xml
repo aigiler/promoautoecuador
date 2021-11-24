@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <odoo>
-    <record id="view_new_entrega_vehiculo_tree" model= "ir.ui.view">
+    <record id="view_entrega_vehiculo_tree" model= "ir.ui.view">
         <field name="name">view.entrega.vehiculo.tree</field>
         <field name="model">entrega.vehiculo</field>
         <field name="arch" type="xml">
@@ -29,9 +29,7 @@
                     </div>
                     <group>
                         <group>
-                            <field name="descripcion" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
-                            <field name="fecha_inicio" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
-                            <field name="fecha_fin" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
+                            <field name="archivo" filename="name"/> 
                             <field name="active"  />
                         </group>
                     </group>
@@ -42,7 +40,7 @@
 
 
     <record id="action_new_entrega_vehiculo_form" model="ir.actions.act_window">
-        <field name="name">Asamblea</field>
+        <field name="name">Entrega Vehiculo</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">entrega.vehiculo</field>
         <field name="view_mode">tree,form</field>
