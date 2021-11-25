@@ -16,3 +16,5 @@ class Partner(models.Model):
     tipo_contrato = fields.Many2one("tipo.contrato.adjudicado", String="Tipo de Contrato")
     codigo_cliente = fields.Char(string='Código Cliente')
     fecha_nacimiento  = fields.Date(string='Fecha de nacimiento')
+    estado_civil = fields.Char(string='Estado Civil')
+    numero_cargas_familiares = fields.Char(string='Cargas Familiares')
