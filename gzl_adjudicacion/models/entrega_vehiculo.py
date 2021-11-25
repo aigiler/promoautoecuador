@@ -26,7 +26,7 @@ class EntegaVehiculo(models.Model):
 
     documentos  = fields.Binary(string='Carga Documentos')
     nombreSocioAdjudicado = fields.Many2one('res.partner',string="Nombre del Socio Adj.")
-    documentoIdentidad = fields.One2many('res.partner.val', 'name', string='Cédula de ciudadania')
+    documentoIdentidad = fields.One2many('res.partner.val', nombreSocioAdjudicado, string='Cédula de ciudadania')
 
     @api.model
     def create(self, vals):
