@@ -29,7 +29,7 @@ class EntegaVehiculo(models.Model):
     codigoAdjudicado = fields.Char(related="nombreSocioAdjudicado.codigo_cliente", string='Código')
     fechaNacimientoAdj  = fields.Date(related="nombreSocioAdjudicado.fecha_nacimiento", string='Fecha de Nacimiento')
     vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía')
-    estadoCivilAdj  = fields.Char(string='Estado Civil')
+    estadoCivilAdj  = fields.Char(related="nombreSocioAdjudicado.estado_civil",string='Estado Civil')
 
     @api.model
     def create(self, vals):
