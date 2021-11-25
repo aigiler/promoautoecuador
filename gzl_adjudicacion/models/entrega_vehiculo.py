@@ -46,11 +46,11 @@ class EntegaVehiculo(models.Model):
         self.requisitosPoliticasCredito= res.requisitosPoliticasCredito
 
 
-    @api.one 
+    @api.multi 
     def cambio_estado_boton_borrador(self):
         return self.write({"state": "borrador"})
 
-    """ @api.multi 
+    @api.multi 
     def cambio_estado_boton_revision(self):
         return self.write({"state": "revision_documentos"})
     
@@ -68,7 +68,7 @@ class EntegaVehiculo(models.Model):
     
     @api.multi 
     def cambio_estado_boton_entrega(self):
-        return self.write({"state": "entrega_vehiculo"}) """
+        return self.write({"state": "entrega_vehiculo"})
 
 
 
