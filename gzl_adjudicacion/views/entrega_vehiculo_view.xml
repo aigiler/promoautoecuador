@@ -19,34 +19,25 @@
         <field name="arch" type="xml">
             <form string="Entrega Vehiculo">
                 <header>
-                    <field name="state" widget="statusbar" statusbar_visible="borrador,revision_documentos,informe_credito_cobranza,calificador_compra,liquidacion_orden_compra,entrega_vehiculo " 
-                    options="{'clickable': 1}"/>
+                   <button name="cambio_estado_boton_enviar" string="Enviar" type="object" 
+                        states="requerimiento" class="oe_highlight"/>
+                    <button name="cambio_estado_boton_solicitar" string="Solicitar"
+                        states="solicitar_documento" type="object"  class="oe_highlight"/>
+                    <button name="cambio_estado_boton_aprobar" string="Aprobar" type="object" 
+                    states="entrega_documentos" class="oe_highlight"/>
+                    <field name="state" widget="statusbar"/>
                 </header>
-
                 <sheet>
                     <div class="oe_title">
                         <h1><field name="secuencia" class="oe_inline" readonly="1"/></h1>
                     </div>
                     <group>
                         <group>
-                            <field name="archivo" widget="many2many_binary"/> 
+                            <field name="archivo" filename="name"/> 
                             <field name="active"  />
                         </group>
                     </group>
-                </sheet>
-                <sheet  invisible="1" attrs="{'visible': [('state','!=','revision_documentos')]}">
-                    <div class="oe_title">
-                        <h1><field name="secuencia" class="oe_inline" readonly="1"/></h1>
-                    </div>
-                    <group>
-                        <group>
-                            <field name="active"  />
-                            <field name="nombreSocioAdjudicado" options="{'no_create': True, 'no_open': True}"/>
-                            <field name="vatAdjudicado" options="{'no_create': True, 'no_open': True}"/>
-                        </group>
-                    </group>
-                </sheet>
-                   
+                </sheet>     
             </form > 
         </field>
     </record>
