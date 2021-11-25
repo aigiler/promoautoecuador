@@ -5,7 +5,7 @@
         <field name="name">view.entrega.vehiculo.tree</field>
         <field name="model">entrega.vehiculo</field>
         <field name="arch" type="xml">
-            <tree string="Entrega Vehiculo"  >
+            <tree string="Entrega Vehiculo">
                 <field name="secuencia" />
                 <field name="state" />
                 <field name="active"/>
@@ -19,26 +19,51 @@
         <field name="arch" type="xml">
             <form string="Entrega Vehiculo">
                 <header>
-                   <button name="cambio_estado_boton_enviar" string="Enviar" type="object" 
-                        states="requerimiento" class="oe_highlight"/>
-                    <button name="cambio_estado_boton_solicitar" string="Solicitar"
-                        states="solicitar_documento" type="object"  class="oe_highlight"/>
-                    <button name="cambio_estado_boton_aprobar" string="Aprobar" type="object" 
-                    states="entrega_documentos" class="oe_highlight"/>
+                    <button name="cambio_estado_boton_borrador" string="Borrador" type="object" states="borrador" class="oe_highlight"/>
+                    <button name="cambio_estado_boton_revision" string="Revisión documentos" states="revision_documentos" type="object" class="oe_highlight"/>
+                    <button name="cambio_estado_boton_informe" string="Informe de Crédito y Cobranza" type="object" states="informe_credito_cobranza" class="oe_highlight"/>
+                    <button name="cambio_estado_boton_caificador" string="Calificador para compra del bien" type="object" states="calificador_compra" class="oe_highlight"/>
+                    <button name="cambio_estado_boton_liquidacion" string="Liquidación de compra y orden de compra" type="object" states="liquidacion_orden_compra" class="oe_highlight"/>
+                    <button name="cambio_estado_boton_entrega" string="Entrega de Vehiculo" type="object" states="entrega_vehiculo" class="oe_highlight"/>
                     <field name="state" widget="statusbar"/>
                 </header>
+
+                <!-- sheet principal-->
                 <sheet>
-                    <div class="oe_title">
-                        <h1><field name="secuencia" class="oe_inline" readonly="1"/></h1>
+                    <!-- div state borrador -->
+                    <div states="borrador" class="row">
+                        <div class="col-xs-4">
+                            <separator string=""/>
+                            <group>
+                                <label string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
+                                <field name="archivo" filename="name"/>
+                                <field name="active" />
+                            </group>
+                        </div>
                     </div>
-                    <group>
-                        <group>
-                            <field name="archivo" filename="name"/> 
-                            <field name="active"  />
-                        </group>
-                    </group>
-                </sheet>     
-            </form > 
+                    <!-- FIN div state borrador -->
+
+                    <div states="revision_documentos">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <group>
+                                    <group>
+                                        <label string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
+                                    </group>
+                                </group>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <separator string="Documentos para Iniciar Proyecto" />
+                            </div>
+                            <div class="col-xs-6">
+                                <separator string="Lista de Requerimientos" />
+                            </div>
+                        </div>
+                    </div>
+                </sheet>
+            </form >
         </field>
     </record>
 
@@ -49,8 +74,7 @@
         <field name="res_model">entrega.vehiculo</field>
         <field name="view_mode">tree,form</field>
     </record>
-        
 
-    <menuitem id="menu_new_entrega_vehiculo" action="action_new_entrega_vehiculo_form" 
-        parent="menu_adjudicados" sequence="7"  />
+
+    <menuitem id="menu_new_entrega_vehiculo" action="action_new_entrega_vehiculo_form" parent="menu_adjudicados" sequence="7" />
 </odoo>
