@@ -34,7 +34,7 @@
                         </group>
                     </group>
                 </sheet>
-                <sheet attrs="{'invisible': [('estado','!=','revision_documentos')]}">
+                <sheet invisible=1 attrs="{'visible': [('estado','!=','revision_documentos')]}">
                     <div class="oe_title">
                         <h1><field name="secuencia" class="oe_inline" readonly="1"/></h1>
                     </div>
