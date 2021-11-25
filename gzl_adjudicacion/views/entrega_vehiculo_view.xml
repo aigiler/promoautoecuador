@@ -40,11 +40,12 @@
                     </div>
                     <group>
                         <group>
-                            <field name="active"/>
+                            <field name="active"  />
                             <field name="nombreSocioAdjudicado" options="{'no_create': True, 'no_open': True}"/>
                             <field name="vatAdjudicado" options="{'no_create': True, 'no_open': True}"/>
                             <field name="fechaNacimientoAdj" options="{'no_create': True, 'no_open': True}"/>
                             <field name="estadoCivilAdj" options="{'no_create': True, 'no_open': True}"/>
+                            
                         </group>
                     </group>
                 </sheet>
