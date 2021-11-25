@@ -11,5 +11,3 @@ class ResConfigSettings(models.TransientModel):
     requisitosPoliticasCredito = fields.Text(string='Informacion Cobranzas')
 
 
-def set_values(self):
-    super(ResConfigSettings, self).set_values()
