@@ -29,7 +29,7 @@
                     </div>
                     <group>
                         <group>
-                            <field name="archivo" filename="name"/> 
+                            <field name="archivo" widget="many2many_binary" options="{'style-inline': true}" nolabel = '1' /> 
                             <field name="active"  />
                         </group>
                     </group>
