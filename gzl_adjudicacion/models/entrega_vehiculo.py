@@ -26,8 +26,8 @@ class EntegaVehiculo(models.Model):
 
     documentos  = fields.Binary(string='Carga Documentos')
     nombreSocioAdjudicado = fields.Many2one('res.partner',string="Nombre del Socio Adj.")
-    documentoIdentidad = fields.One2many('res.partner', 'name')
-    
+    documentoIdentidad = fields.One2many('res.partner', 'nombreSocioAdjudicado', string='Cédula de ciudadania')
+
     @api.model
     def create(self, vals):
         vals['secuencia'] = self.env['ir.sequence'].next_by_code('entrega.vehiculo')
