@@ -15,7 +15,7 @@ class EntegaVehiculo(models.Model):
     archivo = fields.Binary(string='Archivo')
     
     active = fields.Boolean(string='Activo', default=True)
-    estado = fields.Selection(selection=[
+    state = fields.Selection(selection=[
         ('borrador', 'Borrador'),
         ('revision_documentos', 'Revisión documentos'),
         ('informe_credito_cobranza', 'Informe de Crédito y Cobranza'),
@@ -27,7 +27,7 @@ class EntegaVehiculo(models.Model):
     documentos  = fields.Binary(string='Carga Documentos')
     rh_cargas_ids = fields.One2many('l.cargas', 'employee_id', string='Cargas')
     nombreSocioAdjudicado = fields.Many2one('res.partner',string="Nombre del Socio Adj.")
-    documentoIdentidad = fields.One2many('res.partner', string='Cédula de ciudad')
+    vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat")
 
     @api.model
     def create(self, vals):
