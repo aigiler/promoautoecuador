@@ -41,6 +41,8 @@
                     <group>
                         <group>
                             <field name="active"  />
+                            <field name="nombreSocioAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="documentoIdentidad" options="{'no_create': True, 'no_open': True}"/>
                         </group>
                     </group>
                 </sheet>
