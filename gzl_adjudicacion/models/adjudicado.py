@@ -17,4 +17,4 @@ class Partner(models.Model):
     codigo_cliente = fields.Char(string='Código Cliente')
     fecha_nacimiento  = fields.Date(string='Fecha de nacimiento')
     estado_civil = fields.Char(string='Estado Civil')
-    numero_cargas_familiares = fields.Integer(string='Cargas Familiares')
+    num_cargas_familiares = fields.Integer(string='Cargas Familiares')
