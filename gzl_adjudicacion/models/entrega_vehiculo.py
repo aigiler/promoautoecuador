@@ -30,7 +30,7 @@ class EntegaVehiculo(models.Model):
     fechaNacimientoAdj  = fields.Date(related="nombreSocioAdjudicado.fecha_nacimiento", string='Fecha de Nacimiento')
     vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía')
     estadoCivilAdj  = fields.Char(related="nombreSocioAdjudicado.estado_civil")
-    cargasFamAdj  = fields.Integer(related="nombreSocioAdjudicado.num_cargas_familiares")
+    cargasFamAdj  = fields.Integer(related="nombreSocioAdjudicado.numero_cargas_familiares")
     
 
     @api.model
