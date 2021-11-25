@@ -11,3 +11,5 @@ class ResConfigSettings(models.TransientModel):
     requisitosPoliticasCredito = fields.Text(string='Informacion Cobranzas')
 
 
+
+
