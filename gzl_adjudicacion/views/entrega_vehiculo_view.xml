@@ -33,7 +33,18 @@
                             <field name="active"  />
                         </group>
                     </group>
-                </sheet>   
+                </sheet>
+                <sheet attrs="{'invisible': [('estado','!=','revision_documentos')]}">
+                    <div class="oe_title">
+                        <h1><field name="secuencia" class="oe_inline" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="active"  />
+                        </group>
+                    </group>
+                </sheet>
+                   
             </form > 
         </field>
     </record>
