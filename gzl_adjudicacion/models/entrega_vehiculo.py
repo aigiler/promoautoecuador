@@ -32,11 +32,6 @@ class EntegaVehiculo(models.Model):
     estadoCivilAdj  = fields.Char(related="nombreSocioAdjudicado.estado_civil")
     #cargasFamAdj  = fields.Integer(related="nombreSocioAdjudicado.num_cargas_familiares")
 
-
-
-
-    
-
     @api.model
     def create(self, vals):
         vals['secuencia'] = self.env['ir.sequence'].next_by_code('entrega.vehiculo')
@@ -51,26 +46,30 @@ class EntegaVehiculo(models.Model):
         self.requisitosPoliticasCredito= res.requisitosPoliticasCredito
 
 
-""" class ContratoEstadoCuenta(models.Model):
-    _name = 'contrato.estado.cuenta'
-    _description = 'Contrato - Tabla de estado de cuenta de Aporte'
+    @api.multi 
+    def cambio_estado_boton_borrador(self):
+        return self.write({"state": "borrador"})
 
-    contrato_id = fields.Many2one('contrato')
-    numero_cuota = fields.Char(String='Número de Cuota')
-    fecha = fields.Date(String='Fecha Pago')
-    fecha_pagada = fields.Date(String='Fecha Pagada')
-    currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
-    cuota_capital = fields.Monetary(string='Cuota Capital', currency_field='currency_id')
-    cuota_adm = fields.Monetary(string='Cuota Adm', currency_field='currency_id')
-    factura_id = fields.Many2one('account.move', string='Factura')
-    # pago_ids = fields.Many2many('account.payment','contrato_estado_cuenta_payment_rel', 'estado_cuenta_id','payment_id', string='Pagos')
-    seguro = fields.Monetary(string='Seguro', currency_field='currency_id')
-    rastreo = fields.Monetary(string='Rastreo', currency_field='currency_id')
-    otro = fields.Monetary(string='Otro', currency_field='currency_id')
-    monto_pagado = fields.Monetary(string='Monto Pagado', currency_field='currency_id')
-    saldo = fields.Monetary(string='Saldo', currency_field='currency_id')
-    certificado = fields.Binary(string='Certificado')
-    estado_pago = fields.Selection([('pendiente', 'Pendiente'), 
-                                      ('pagado', 'Pagado')
-                                    ],string='Estado de Pago', default='pendiente') 
-     """
+    @api.multi 
+    def cambio_estado_boton_revision(self):
+        return self.write({"state": "revision_documentos"})
+    
+    @api.multi 
+    def cambio_estado_boton_informe(self):
+        return self.write({"state": "informe_credito_cobranza"})
+    
+    @api.multi 
+    def cambio_estado_boton_caificador(self):
+        return self.write({"state": "calificador_compra"})
+    
+    @api.multi 
+    def cambio_estado_boton_liquidacion(self):
+        return self.write({"state": "liquidacion_orden_compra"})
+    
+    @api.multi 
+    def cambio_estado_boton_entrega(self):
+        return self.write({"state": "entrega_vehiculo"})
+
+
+
+
