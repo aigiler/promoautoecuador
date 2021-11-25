@@ -19,9 +19,8 @@
         <field name="arch" type="xml">
             <form string="Entrega Vehiculo">
                 <header>
-                    <field name="estado" widget="statusbar" statusbar_visible="borrador,revision_documentos,
-                    informe_credito_cobranza,calificador_compra,
-                    liquidacion_orden_compra,entrega_vehiculo " options=”{‘clickable’: ’1’}”/>
+                    <field name="estado" widget="statusbar" statusbar_visible="borrador,revision_documentos,informe_credito_cobranza,calificador_compra,liquidacion_orden_compra,entrega_vehiculo " 
+                    options="{'clickable': 1}"/>
                 </header>
 
                 <sheet>
