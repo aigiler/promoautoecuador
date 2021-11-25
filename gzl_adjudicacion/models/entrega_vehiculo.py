@@ -46,9 +46,9 @@ class EntegaVehiculo(models.Model):
         self.requisitosPoliticasCredito= res.requisitosPoliticasCredito
 
 
-    @api.multi 
-    def cambio_estado_boton_borrador(self):
-        return self.write({"state": "borrador"})
+@api.multi 
+def cambio_estado_boton_borrador(self):
+    return self.write({"state": "borrador"})
 
     @api.multi 
     def cambio_estado_boton_revision(self):
