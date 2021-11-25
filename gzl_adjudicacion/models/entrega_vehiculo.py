@@ -27,7 +27,7 @@ class EntegaVehiculo(models.Model):
     documentos  = fields.Binary(string='Carga Documentos')
     @api.model
     def create(self, vals):
-        vals['secuencia'] = self.env['ir.sequence'].next_by_code('contrato')
+        vals['secuencia'] = self.env['ir.sequence'].next_by_code('entrega.vehiculo')
         res = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc")
         vals['requisitosPoliticasCredito'] = res.requisitosPoliticasCredito
         return super(EntegaVehiculo, self).create(vals)
