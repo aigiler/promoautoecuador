@@ -46,27 +46,22 @@ class EntegaVehiculo(models.Model):
         self.requisitosPoliticasCredito= res.requisitosPoliticasCredito
 
 
-    @api.multi 
+    
     def cambio_estado_boton_borrador(self):
         return self.write({"state": "borrador"})
 
-    @api.multi 
     def cambio_estado_boton_revision(self):
         return self.write({"state": "revision_documentos"})
     
-    @api.multi 
     def cambio_estado_boton_informe(self):
         return self.write({"state": "informe_credito_cobranza"})
     
-    @api.multi 
     def cambio_estado_boton_caificador(self):
         return self.write({"state": "calificador_compra"})
     
-    @api.multi 
     def cambio_estado_boton_liquidacion(self):
         return self.write({"state": "liquidacion_orden_compra"})
     
-    @api.multi 
     def cambio_estado_boton_entrega(self):
         return self.write({"state": "entrega_vehiculo"})
 
