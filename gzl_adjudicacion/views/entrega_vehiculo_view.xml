@@ -61,6 +61,7 @@
                                 <group>
                                     <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="edadAdjudicado" string="Edad"/>
+                                    <field name="cargasFamiliares" />
                                 </group>
                             </div>
                         </div>

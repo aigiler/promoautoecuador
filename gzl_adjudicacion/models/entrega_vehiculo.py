@@ -31,6 +31,7 @@ class EntegaVehiculo(models.Model):
     vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía')
     estadoCivilAdj  = fields.Selection(related="nombreSocioAdjudicado.estado_civil")
     edadAdjudicado  = fields.Integer(compute='calcular_edad', string="Edad")
+    cargasFamiliares = fields.Integer( string="Cargas Fam.")
     
 
     @api.model
