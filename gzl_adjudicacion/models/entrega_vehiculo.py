@@ -12,7 +12,7 @@ class EntegaVehiculo(models.Model):
     secuencia = fields.Char(index=True)
     requisitosPoliticasCredito = fields.Text(string='Informacion Cobranzas')
 
-    archivo = fields.Many2many('ir.attachment', string='Carga Documentos')
+    documentos = fields.Many2many('ir.attachment', string='Carga Documentos')
     
     active = fields.Boolean(string='Activo', default=True)
     state = fields.Selection(selection=[
@@ -24,7 +24,6 @@ class EntegaVehiculo(models.Model):
         ('entrega_vehiculo', 'Entrega de Vehiculo'),
         ], string='Estado', default='borrador')
 
-    documentos  = fields.Binary(string='Carga Documentos')
     nombreSocioAdjudicado = fields.Many2one('res.partner',string="Nombre del Socio Adj.")
     codigoAdjudicado = fields.Char(related="nombreSocioAdjudicado.codigo_cliente", string='Código')
     fechaNacimientoAdj  = fields.Date(related="nombreSocioAdjudicado.fecha_nacimiento", string='Fecha de Nacimiento')
