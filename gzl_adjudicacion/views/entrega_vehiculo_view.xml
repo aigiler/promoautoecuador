@@ -31,11 +31,10 @@
                 <!-- sheet principal-->
                 <sheet>
                     <!-- div state borrador -->
-                    <div states="borrador" class="row">
+                    <div states="borrador, revision_documentos" class="row">
                         <div class="col-xs-4">
                             <separator string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
                             <group>
-                                
                                 <field name="documentos" widget="many2many_binary"/>
                                 <field name="active" attrs = "{'invisible': 1}" />
                             </group>
@@ -43,10 +42,16 @@
                     </div>
                     <!-- FIN div state borrador -->
 
-                    <div states="revision_documentos">
+                    <div states="informe_credito_cobranza">
+                    <separator string="ANTECEDENTES DEL ASOCIADO"/>
                         <div class="row">
                             <div class="col-xs-6">
                                 <group>
+                                <field name="nombreSocioAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="vatAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="fechaNacimientoAdj" options="{'no_create': True, 'no_open': True}"/>
+                                
                                 </group>
                             </div>
                         </div>
