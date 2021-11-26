@@ -24,6 +24,7 @@
                         <field name="codigo_cliente"/>
                         <field name="vat" string="No. Identificación"/>
                         <field name="fecha_nacimiento" string="Fecha de nacimiento"/>
+                        <field name="estado_civil" string="Estado Civil"/>
                         <field name="function" placeholder="e.g. Sales Director" attrs="{'invisible': [('is_company','=', True)]}"/>
                         <field name="user_ids" invisible="1"/>
                         <field name="email" widget="email" context="{'gravatar_image': True}" required="context.get('force_email', False)" attrs="{'required': [('user_ids','!=', [])]}"/>
