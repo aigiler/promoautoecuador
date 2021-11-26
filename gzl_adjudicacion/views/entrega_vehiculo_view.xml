@@ -45,13 +45,6 @@
                     <div states="informe_credito_cobranza">
                         <separator class="text-center" string="ANTECEDENTES DEL ASOCIADO"/>
                         <div class="row">
-                            <div class="col-xs-12 col-sm-6 col-md-8">
-                                <group>
-                                    <field name="nombreSocioAdjudicado" options="{'no_create': True, 'no_open': True}"/>
-                                </group>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-xs-12 col-md-12">
                                 <group>
                                     <field name="nombreSocioAdjudicado" options="{'no_create': True, 'no_open': True}"/>
@@ -63,7 +56,7 @@
                                     <field name="fechaNacimientoAdj"/>
                                 </group>
                             </div>
-                            <div class="col-xs-6 col-md-4">
+                            <div class="col-xs-8 col-md-4">
                                 <group>
                                     <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
                                 </group>
