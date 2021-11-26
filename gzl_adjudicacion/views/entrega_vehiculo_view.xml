@@ -54,6 +54,7 @@
                                 <group>
                                     <field name="vatAdjudicado" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="fechaNacimientoAdj"/>
+                                    <field name="estadoCivilAdj" options="{'no_create': True, 'no_open': True}"/>
                                 </group>
                             </div>
                             <div class="col-xs-4">
@@ -63,6 +64,7 @@
                                 </group>
                             </div>
                         </div>
+                        <separator class="text-center" string="DATOS DEL CONYUGE"/>
                         <div class="row">
                             <div class="col-xs-6">
                                 <group>
