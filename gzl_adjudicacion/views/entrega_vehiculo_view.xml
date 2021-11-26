@@ -52,7 +52,6 @@
                             </div>
                             <div class="col-xs-6">
                                 <group>
-                                    <field name="nombreSocioAdjudicado" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="vatAdjudicado" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="fechaNacimientoAdj"/>
                                 </group>
