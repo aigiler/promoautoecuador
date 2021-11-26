@@ -43,20 +43,21 @@
                     <!-- FIN div state borrador -->
 
                     <div states="informe_credito_cobranza">
-                    <separator string="ANTECEDENTES DEL ASOCIADO"/>
+                        <separator string="ANTECEDENTES DEL ASOCIADO"/>
                         <div class="row">
                             <div class="col-xs-6">
                                 <group>
-                                <field name="nombreSocioAdjudicado" options="{'no_create': True, 'no_open': True}"/>
-                                <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
-                                <field name="vatAdjudicado" options="{'no_create': True, 'no_open': True}"/>
-                                <field name="fechaNacimientoAdj"/>
-                                
+                                    <field name="nombreSocioAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="vatAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="fechaNacimientoAdj"/>
                                 </group>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-6">
+                                <group>
+                                    <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
                             </div>
                         </div>
                     </div>
