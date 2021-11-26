@@ -57,14 +57,14 @@
                                 </group>
                             </div>
                             <div class="col-xs-6">
-                                <group>
-                                    <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
-                                </group>
+
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-6">
-
+                                <group>
+                                    <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
                             </div>
                         </div>
                     </div>
