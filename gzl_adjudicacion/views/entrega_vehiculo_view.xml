@@ -33,10 +33,11 @@
                     <!-- div state borrador -->
                     <div states="borrador" class="row">
                         <div class="col-xs-4">
-                            <separator string=""/>
+                            <separator string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
                             <group>
-                                <field name="archivo" widget="many2many_binary"/>
-                                <field name="active" />
+                                
+                                <field name="documentos" widget="many2many_binary"/>
+                                <field name="active" attrs = "{'invisible': 1}" />
                             </group>
                         </div>
                     </div>

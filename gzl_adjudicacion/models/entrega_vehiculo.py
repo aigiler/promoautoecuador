@@ -12,7 +12,7 @@ class EntegaVehiculo(models.Model):
     secuencia = fields.Char(index=True)
     requisitosPoliticasCredito = fields.Text(string='Informacion Cobranzas')
 
-    archivo = fields.Binary(string='Archivo')
+    archivo = fields.Many2many('ir.attachment', string='Carga Documentos')
     
     active = fields.Boolean(string='Activo', default=True)
     state = fields.Selection(selection=[
