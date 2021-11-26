@@ -16,5 +16,12 @@ class Partner(models.Model):
     tipo_contrato = fields.Many2one("tipo.contrato.adjudicado", String="Tipo de Contrato")
     codigo_cliente = fields.Char(string='Código Cliente')
     fecha_nacimiento  = fields.Date(string='Fecha de nacimiento')
-    estado_civil = fields.Char(string='Estado Civil')
+    estado_civil = fields.Selection(selection=[
+                    ('soltero', 'Soltero'),
+                    ('union_libre', 'Uni[on libre'),
+                    ('casado', 'Casado/a'),
+                    ('divorciado', 'Divorciado/a'),
+                    ('viudo', 'Viudo/a'),
+                    ('desistir', 'Desistir'),
+                    ], string='Estado Civil', default='soltero')
     num_cargas_familiares = fields.Integer(string='Cargas Familiares')
