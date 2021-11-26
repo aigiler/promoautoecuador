@@ -24,7 +24,7 @@ class EntegaVehiculo(models.Model):
         ('liquidacion_orden_compra', 'Liquidación de compra y orden de compra'),
         ('entrega_vehiculo', 'Entrega de Vehiculo'),
         ], string='Estado', default='borrador')
-
+    # datos del socio adjudicado
     nombreSocioAdjudicado = fields.Many2one('res.partner',string="Nombre del Socio Adj.")
     codigoAdjudicado = fields.Char(related="nombreSocioAdjudicado.codigo_cliente", string='Código')
     fechaNacimientoAdj  = fields.Date(related="nombreSocioAdjudicado.fecha_nacimiento", string='Fecha de Nacimiento')
@@ -32,13 +32,43 @@ class EntegaVehiculo(models.Model):
     estadoCivilAdj  = fields.Selection(related="nombreSocioAdjudicado.estado_civil")
     edadAdjudicado  = fields.Integer(compute='calcular_edad', string="Edad")
     cargasFamiliares = fields.Integer( string="Cargas Fam.")
-    
+    # datos del conyuge
+    nombreConyuge = fields.Char(string="Nombre del Conyuge")
+    fechaNacimientoConyuge = fields.Date(string='Fecha de Nacimiento')
+    vatConyuge = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía')
+    estadoCivilConyuge = fields.Selection(related="nombreSocioAdjudicado.estado_civil")
+    edadConyuge  = fields.Integer(compute='calcular_edad_conyuge', string="Edad")
+
+    #datos domiciliarios
+    referenciaDomiciliaria = fields.Text(string='Referencias indican:')
+
+    #datos laborales
+    referenciaLaborales = fields.Text(string='Referencias indican:')
+
+    #datos del patrimonio del socio
+    montoAhorroInversiones =  fields.Float(string='Ahorro o Inversiones')
+    casaValor  = fields.Float(string='Casa Valor')
+    terrenoValor  = fields.Float(string='Terreno Valor')
+    montoMueblesEnseres = fields.Float(string='Muebles y Enseres')
+    inventarios  = fields.Float()
+    institucionFinanciera = fields.Char(string='Institución')
+    direccion = fields.Char(string='Direccion')
+    direccion1 = fields.Char(string='Direccion')
+    placa  = fields.Char(string='Placa')
+
+
 
     @api.model
     def calcular_edad(self):  
         for rec in self:
             today = date.today()
             edad = today.year - rec.fechaNacimientoAdj.year - ((today.month, today.day) < (rec.fechaNacimientoAdj.month, rec.fechaNacimientoAdj.day))
+            rec.edadAdjudicado =edad
+
+    def calcular_edad_conyuge(self):  
+        for rec in self:
+            today = date.today()
+            edad = today.year - rec.fechaNacimientoConyuge.year - ((today.month, today.day) < (rec.fechaNacimientoConyuge.month, rec.fechaNacimientoConyuge.day))
             rec.edadAdjudicado =edad
 
     @api.model

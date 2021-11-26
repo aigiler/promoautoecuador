@@ -67,9 +67,21 @@
                         </div>
                         <separator class="text-center" string="DATOS DEL CONYUGE"/>
                         <div class="row">
-                            <div class="col-xs-6">
+                            <div class="col-xs-12 col-md-12">
                                 <group>
-                                    <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="nombreConyuge"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="vatConyuge"/>
+                                    <field name="estadoCivilConyuge"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-4">
+                                <group>
+                                    <field name="fechaNacimientoConyuge"/>
+                                    <field name="edadAdConyuge" string="Edad"/>
                                 </group>
                             </div>
                         </div>
