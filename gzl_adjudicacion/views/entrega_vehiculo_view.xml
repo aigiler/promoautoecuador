@@ -59,6 +59,7 @@
                             <div class="col-xs-4">
                                 <group>
                                     <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="calcular_edad" string="Edad"/>
                                 </group>
                             </div>
                         </div>

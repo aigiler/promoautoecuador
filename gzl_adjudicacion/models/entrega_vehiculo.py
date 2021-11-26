@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import date
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
@@ -29,6 +30,7 @@ class EntegaVehiculo(models.Model):
     fechaNacimientoAdj  = fields.Date(related="nombreSocioAdjudicado.fecha_nacimiento", string='Fecha de Nacimiento')
     vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía')
     estadoCivilAdj  = fields.Char(related="nombreSocioAdjudicado.estado_civil")
+    edadAdjudicado  = fields.Integer(string="Edad")
     #cargasFamAdj  = fields.Integer(related="nombreSocioAdjudicado.num_cargas_familiares")
 
     @api.model
@@ -44,6 +46,10 @@ class EntegaVehiculo(models.Model):
         res = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc")
         self.requisitosPoliticasCredito= res.requisitosPoliticasCredito
 
+
+    def calcular_edad(fechaNacimientoAdj):
+        today = date.today()
+        return today.year - fechaNacimientoAdj.year - ((today.month, today.day) < (fechaNacimientoAdj.month, fechaNacimientoAdj.day))
 
     
     def cambio_estado_boton_borrador(self):
