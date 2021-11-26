@@ -35,7 +35,7 @@
                         <div class="col-xs-4">
                             <separator string=""/>
                             <group>
-                                <field name="archivo" filename="name"/>
+                                <field name="archivo" widget="many2many_binary"/>
                                 <field name="active" />
                             </group>
                         </div>
