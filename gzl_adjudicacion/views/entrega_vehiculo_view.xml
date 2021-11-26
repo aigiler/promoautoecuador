@@ -43,7 +43,7 @@
                     <!-- FIN div state borrador -->
 
                     <div states="informe_credito_cobranza">
-                        <separator string="ANTECEDENTES DEL ASOCIADO"/>
+                        <separator class="text-center" string="ANTECEDENTES DEL ASOCIADO"/>
                         <div class="row">
                             <div class="col-xs-6">
                                 <group>
@@ -52,12 +52,15 @@
                                     <field name="fechaNacimientoAdj"/>
                                 </group>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-xs-6">
                                 <group>
                                     <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
                                 </group>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+
                             </div>
                         </div>
                     </div>
