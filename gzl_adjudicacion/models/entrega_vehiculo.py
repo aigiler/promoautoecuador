@@ -30,8 +30,7 @@ class EntegaVehiculo(models.Model):
     fechaNacimientoAdj  = fields.Date(related="nombreSocioAdjudicado.fecha_nacimiento", string='Fecha de Nacimiento')
     vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía')
     estadoCivilAdj  = fields.Char(related="nombreSocioAdjudicado.estado_civil")
-    edadAdjudicado  = fields.Integer(compute='_get_tax_amount', string="Edad")
-    tax_amount = fields.Float(compute='_get_tax_amount', string='Tax Amount')
+    edadAdjudicado  = fields.Integer(compute='calcular_edad', string="Edad")
     
 
     @api.depends('fechaNacimientoAdj')
