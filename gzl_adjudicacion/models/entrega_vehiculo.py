@@ -33,7 +33,7 @@ class EntegaVehiculo(models.Model):
     edadAdjudicado  = fields.Integer(compute='_get_tax_amount', string="Edad")
     tax_amount = fields.Float(compute='_get_tax_amount', string='Tax Amount')
     
-    @api.one
+
     @api.depends('fechaNacimientoAdj')
     def calcular_edad(self, fechaNacimientoAdj): 
         today = date.today()
