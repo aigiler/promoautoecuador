@@ -33,7 +33,7 @@ class EntegaVehiculo(models.Model):
     edadAdjudicado  = fields.Integer(compute='calcular_edad', string="Edad")
     
 
-    @api.depends('fechaNacimientoAdj')
+    @api.model
     def calcular_edad(self, fechaNacimientoAdj): 
         today = date.today()
         edad = today.year - fechaNacimientoAdj.year - ((today.month, today.day) < (fechaNacimientoAdj.month, fechaNacimientoAdj.day))
