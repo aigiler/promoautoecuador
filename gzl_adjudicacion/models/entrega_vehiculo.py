@@ -30,8 +30,15 @@ class EntegaVehiculo(models.Model):
     fechaNacimientoAdj  = fields.Date(related="nombreSocioAdjudicado.fecha_nacimiento", string='Fecha de Nacimiento')
     vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía')
     estadoCivilAdj  = fields.Char(related="nombreSocioAdjudicado.estado_civil")
-    edadAdjudicado  = fields.Integer(string="Edad")
-    #cargasFamAdj  = fields.Integer(related="nombreSocioAdjudicado.num_cargas_familiares")
+    edadAdjudicado  = fields.Integer(compute='_get_tax_amount', string="Edad")
+    tax_amount = fields.Float(compute='_get_tax_amount', string='Tax Amount')
+    
+    @api.one
+    @api.depends('fechaNacimientoAdj')
+    def calcular_edad(self, fechaNacimientoAdj): 
+        today = date.today()
+        edad = today.year - fechaNacimientoAdj.year - ((today.month, today.day) < (fechaNacimientoAdj.month, fechaNacimientoAdj.day))
+        self. edadAdjudicado  =edad
 
     @api.model
     def create(self, vals):
@@ -45,11 +52,6 @@ class EntegaVehiculo(models.Model):
     def constrains_valor_por_defecto(self): 
         res = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc")
         self.requisitosPoliticasCredito= res.requisitosPoliticasCredito
-
-
-    def calcular_edad(fechaNacimientoAdj):
-        today = date.today()
-        return today.year - fechaNacimientoAdj.year - ((today.month, today.day) < (fechaNacimientoAdj.month, fechaNacimientoAdj.day))
 
     
     def cambio_estado_boton_borrador(self):
