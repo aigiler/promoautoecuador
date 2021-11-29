@@ -34,7 +34,7 @@ class EntegaVehiculo(models.Model):
     cargasFamiliares = fields.Integer( string="Cargas Fam.")
     # datos del conyuge
     nombreConyuge = fields.Char(string="Nombre del Conyuge")
-    fechaNacimientoConyuge = fields.Date(string='Fecha de Nacimiento', default=date.today())
+    fechaNacimientoConyuge = fields.Date(string='Fecha de Nacimiento')
     vatConyuge = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía')
     estadoCivilConyuge = fields.Selection(related="nombreSocioAdjudicado.estado_civil")
     edadConyuge  = fields.Integer(compute='calcular_edad_conyuge', string="Edad")
@@ -47,10 +47,10 @@ class EntegaVehiculo(models.Model):
 
     #datos del patrimonio del socio
     montoAhorroInversiones =  fields.Float(string='Ahorro o Inversiones')
-    casaValor  = fields.Float(string='Casa Valor')
-    terrenoValor  = fields.Float(string='Terreno Valor')
-    montoMueblesEnseres = fields.Float(string='Muebles y Enseres')
-    inventarios  = fields.Float()
+    casaValor  = fields.Float(string='Casa Valor',digits=(6, 2))
+    terrenoValor  = fields.Float(string='Terreno Valor',digits=(6, 2))
+    montoMueblesEnseres = fields.Float(string='Muebles y Enseres',digits=(6, 2))
+    inventarios  = fields.Float(string='Muebles y Enseres', digits=(6, 2))
     institucionFinanciera = fields.Char(string='Institución')
     direccion = fields.Char(string='Direccion')
     direccion1 = fields.Char(string='Direccion')
@@ -59,18 +59,21 @@ class EntegaVehiculo(models.Model):
 
 
     @api.onchange(fechaNacimientoConyuge)
-    def calcular_edad(self):  
+    def calcular_edad(self):
+        edad = 0  
         for rec in self:
             today = date.today()
+            
             if rec.fechaNacimientoConyuge != False:
                 edad = today.year - rec.fechaNacimientoAdj.year - ((today.month, today.day) < (rec.fechaNacimientoAdj.month, rec.fechaNacimientoAdj.day))
                 rec.edadAdjudicado =edad
             else:
                 rec.edadAdjudicado = 0
-
+        rec.edadAdjudicado =edad
    
     @api.onchange(fechaNacimientoConyuge)
-    def calcular_edad_conyuge(self):  
+    def calcular_edad_conyuge(self): 
+        edad = 0 
         for rec in self:
             today = date.today()
             if rec.fechaNacimientoConyuge != False:
@@ -78,7 +81,8 @@ class EntegaVehiculo(models.Model):
                 rec.edadAdjudicado =edad
             else:
                 rec.edadAdjudicado = 0
-
+        rec.edadAdjudicado =edad
+        
     @api.model
     def create(self, vals):
         vals['secuencia'] = self.env['ir.sequence'].next_by_code('entrega.vehiculo')
