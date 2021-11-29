@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from datetime import date
+from datetime import date, timedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
@@ -27,7 +27,7 @@ class EntegaVehiculo(models.Model):
     # datos del socio adjudicado
     nombreSocioAdjudicado = fields.Many2one('res.partner',string="Nombre del Socio Adj.")
     codigoAdjudicado = fields.Char(related="nombreSocioAdjudicado.codigo_cliente", string='Código')
-    fechaNacimientoAdj  = fields.Date(related="nombreSocioAdjudicado.fecha_nacimiento", string='Fecha de Nacimiento', default=date.today())
+    fechaNacimientoAdj  = fields.Date(related="nombreSocioAdjudicado.fecha_nacimiento", string='Fecha de Nacimiento')
     vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía')
     estadoCivilAdj  = fields.Selection(related="nombreSocioAdjudicado.estado_civil")
     edadAdjudicado  = fields.Integer(compute='calcular_edad', string="Edad")
@@ -64,31 +64,35 @@ class EntegaVehiculo(models.Model):
         for rec in self:
             totalActivos = rec.montoAhorroInversiones + rec.casaValor + rec.terrenoValor + rec.vehiculoValor + rec.montoMueblesEnseres + rec.inventarios
             rec.totalActivosAdj = totalActivos
-        
-        
-    def calcular_edad(self):
-        edad = 0  
-        for rec in self:
-            today = date.today()
-            
-            if rec.fechaNacimientoConyuge != False:
-                edad = today.year - rec.fechaNacimientoAdj.year - ((today.month, today.day) < (rec.fechaNacimientoAdj.month, rec.fechaNacimientoAdj.day))
-                rec.edadAdjudicado =edad
-            else:
-                rec.edadAdjudicado = 0
-            rec.edadAdjudicado =edad
+
+    @api.depends('fechaNacimientoAdj')
+    def age_calc(self):
+        if self.fechaNacimientoAdj is not False:
+            self.edadAdjudicado = (date.today().date() - date.strptime(str(self.fechaNacimientoAdj), '%Y-%m-%d').date()) // timedelta(days=365)
+    
+    
+    # def calcular_edad(self):
+    #     edad = 0  
+    #     for rec in self:
+    #         today = date.today()
+    #         if rec.fechaNacimientoConyuge != False:
+    #             edad = today.year - rec.fechaNacimientoAdj.year - ((today.month, today.day) < (rec.fechaNacimientoAdj.month, rec.fechaNacimientoAdj.day))
+    #             rec.edadAdjudicado =edad
+    #         else:
+    #             rec.edadAdjudicado = 0
+    #         rec.edadAdjudicado =edad
    
-    @api.onchange(fechaNacimientoConyuge)
-    def calcular_edad_conyuge(self): 
-        edad = 0 
-        for rec in self:
-            today = date.today()
-            if rec.fechaNacimientoConyuge != False:
-                edad = today.year - rec.fechaNacimientoConyuge.year - ((today.month, today.day) < (rec.fechaNacimientoConyuge.month, rec.fechaNacimientoConyuge.day))
-                rec.edadAdjudicado =edad
-            else:
-                rec.edadAdjudicado = 0
-        rec.edadAdjudicado =edad
+    # @api.onchange(fechaNacimientoConyuge)
+    # def calcular_edad_conyuge(self): 
+    #     edad = 0 
+    #     for rec in self:
+    #         today = date.today()
+    #         if rec.fechaNacimientoConyuge != False:
+    #             edad = today.year - rec.fechaNacimientoConyuge.year - ((today.month, today.day) < (rec.fechaNacimientoConyuge.month, rec.fechaNacimientoConyuge.day))
+    #             rec.edadAdjudicado =edad
+    #         else:
+    #             rec.edadAdjudicado = 0
+    #     rec.edadAdjudicado =edad
 
     @api.model
     def create(self, vals):
