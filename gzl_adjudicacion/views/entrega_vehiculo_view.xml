@@ -81,9 +81,15 @@
                             <div class="col-xs-4">
                                 <group>
                                     <field name="fechaNacimientoConyuge"/>
-                                    <field name="edadAdConyuge" string="Edad"/>
+                                    <field name="edadConyuge" string="Edad"/>
                                 </group>
                             </div>
+                        </div>
+                        <separator class="text-center" string="DATOS DOMICIARIOS"/>
+                        <div class="row">
+                        </div>
+                        <separator class="text-center" string="DATOS LABORALES"/>
+                        <div class="row">
                         </div>
                     </div>
                 </sheet>
