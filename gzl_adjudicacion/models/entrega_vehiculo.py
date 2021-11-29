@@ -65,22 +65,23 @@ class EntegaVehiculo(models.Model):
             totalActivos = rec.montoAhorroInversiones + rec.casaValor + rec.terrenoValor + rec.vehiculoValor + rec.montoMueblesEnseres + rec.inventarios
             rec.totalActivosAdj = totalActivos
 
-    @api.depends('fechaNacimientoAdj')
-    def calcular_edad(self):
-        if self.fechaNacimientoAdj is not False:
-            self.edadAdjudicado = (date.today().date() - date.strptime(str(self.fechaNacimientoAdj), '%Y-%m-%d').date()) // timedelta(days=365)
-    
-    
+    # @api.depends('fechaNacimientoAdj')
     # def calcular_edad(self):
-    #     edad = 0  
-    #     for rec in self:
-    #         today = date.today()
-    #         if rec.fechaNacimientoConyuge != False:
-    #             edad = today.year - rec.fechaNacimientoAdj.year - ((today.month, today.day) < (rec.fechaNacimientoAdj.month, rec.fechaNacimientoAdj.day))
-    #             rec.edadAdjudicado =edad
-    #         else:
-    #             rec.edadAdjudicado = 0
-    #         rec.edadAdjudicado =edad
+    #     if self.fechaNacimientoAdj is not False:
+    #         self.edadAdjudicado = (date.today().date() - date.strptime(str(self.fechaNacimientoAdj), '%Y-%m-%d').date()) // timedelta(days=365)
+    
+    @api.depends('fechaNacimientoAdj')
+    @api.onchange('fechaNacimientoAdj')    
+    def calcular_edad(self):
+        edad = 0  
+        for rec in self:
+            today = date.today()
+            if rec.fechaNacimientoConyuge is not False:
+                edad = today.year - rec.fechaNacimientoAdj.year - ((today.month, today.day) < (rec.fechaNacimientoAdj.month, rec.fechaNacimientoAdj.day))
+                rec.edadAdjudicado =edad
+            else:
+                rec.edadAdjudicado = 0
+            rec.edadAdjudicado =edad
    
     # @api.onchange(fechaNacimientoConyuge)
     # def calcular_edad_conyuge(self): 
