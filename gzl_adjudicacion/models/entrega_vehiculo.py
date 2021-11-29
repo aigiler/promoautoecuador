@@ -69,8 +69,9 @@ class EntegaVehiculo(models.Model):
     def calcular_edad_conyuge(self):  
         for rec in self:
             today = date.today()
-            edad = today.year - rec.fechaNacimientoConyuge.year - ((today.month, today.day) < (rec.fechaNacimientoConyuge.month, rec.fechaNacimientoConyuge.day))
-            rec.edadAdjudicado =edad
+            if rec.fechaNacimientoConyuge != False:
+                edad = today.year - rec.fechaNacimientoConyuge.year - ((today.month, today.day) < (rec.fechaNacimientoConyuge.month, rec.fechaNacimientoConyuge.day))
+                rec.edadAdjudicado =edad
 
     @api.model
     def create(self, vals):
