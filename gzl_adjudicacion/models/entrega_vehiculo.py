@@ -37,7 +37,7 @@ class EntegaVehiculo(models.Model):
     fechaNacimientoConyuge = fields.Date(string='Fecha de Nacimiento')
     vatConyuge = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía')
     estadoCivilConyuge = fields.Selection(related="nombreSocioAdjudicado.estado_civil")
-    edadConyuge  = fields.Integer(compute='calcular_edad_conyuge', string="Edad")
+    edadConyuge  = fields.Integer(compute='calcular_edad', string="Edad")
 
     #datos domiciliarios
     referenciaDomiciliaria = fields.Text(string='Referencias indican:')
@@ -66,7 +66,7 @@ class EntegaVehiculo(models.Model):
             rec.totalActivosAdj = totalActivos
 
     @api.depends('fechaNacimientoAdj')
-    def age_calc(self):
+    def calcular_edad(self):
         if self.fechaNacimientoAdj is not False:
             self.edadAdjudicado = (date.today().date() - date.strptime(str(self.fechaNacimientoAdj), '%Y-%m-%d').date()) // timedelta(days=365)
     
