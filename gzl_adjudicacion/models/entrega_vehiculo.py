@@ -27,14 +27,14 @@ class EntegaVehiculo(models.Model):
     # datos del socio adjudicado
     nombreSocioAdjudicado = fields.Many2one('res.partner',string="Nombre del Socio Adj.")
     codigoAdjudicado = fields.Char(related="nombreSocioAdjudicado.codigo_cliente", string='Código')
-    fechaNacimientoAdj  = fields.Date(related="nombreSocioAdjudicado.fecha_nacimiento", string='Fecha de Nacimiento')
+    fechaNacimientoAdj  = fields.Date(related="nombreSocioAdjudicado.fecha_nacimiento", string='Fecha de Nacimiento', default=date.today())
     vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía')
     estadoCivilAdj  = fields.Selection(related="nombreSocioAdjudicado.estado_civil")
     edadAdjudicado  = fields.Integer(compute='calcular_edad', string="Edad")
     cargasFamiliares = fields.Integer( string="Cargas Fam.")
     # datos del conyuge
     nombreConyuge = fields.Char(string="Nombre del Conyuge")
-    fechaNacimientoConyuge = fields.Date(string='Fecha de Nacimiento')
+    fechaNacimientoConyuge = fields.Date(string='Fecha de Nacimiento', default=date.today())
     vatConyuge = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía')
     estadoCivilConyuge = fields.Selection(related="nombreSocioAdjudicado.estado_civil")
     edadConyuge  = fields.Integer(compute='calcular_edad_conyuge', string="Edad")
