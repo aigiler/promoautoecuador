@@ -17,11 +17,10 @@ class Partner(models.Model):
     codigo_cliente = fields.Char(string='Código Cliente')
     fecha_nacimiento  = fields.Date(string='Fecha de nacimiento')
     estado_civil = fields.Selection(selection=[
-                    ('soltero', 'Soltero'),
-                    ('union_libre', 'Uni[on libre'),
+                    ('soltero', 'Soltero/a'),
+                    ('union_libre', 'Unión libre'),
                     ('casado', 'Casado/a'),
                     ('divorciado', 'Divorciado/a'),
-                    ('viudo', 'Viudo/a'),
-                    ('desistir', 'Desistir'),
+                    ('viudo', 'Viudo/a')                    
                     ], string='Estado Civil', default='soltero')
     num_cargas_familiares = fields.Integer(string='Cargas Familiares')
