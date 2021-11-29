@@ -47,18 +47,25 @@ class EntegaVehiculo(models.Model):
 
     #datos del patrimonio del socio
     montoAhorroInversiones =  fields.Float(string='Ahorro o Inversiones')
-    casaValor  = fields.Float(string='Casa Valor',digits=(6, 2))
-    terrenoValor  = fields.Float(string='Terreno Valor',digits=(6, 2))
-    montoMueblesEnseres = fields.Float(string='Muebles y Enseres',digits=(6, 2))
-    inventarios  = fields.Float(string='Muebles y Enseres', digits=(6, 2))
+    casaValor  = fields.Float(string='Casa Valor',digits=(6, 2), default=0.00)
+    terrenoValor  = fields.Float(string='Terreno Valor',digits=(6, 2), default=0.00)
+    montoMueblesEnseres = fields.Float(string='Muebles y Enseres',digits=(6, 2), default=0.00)
+    vehiculoValor = fields.Float(string='Vehiculo Valor', digits=(6, 2), default=0.00)
+    inventarios  = fields.Float(string='Inventarios', digits=(6, 2), default=0.00)
     institucionFinanciera = fields.Char(string='Institución')
     direccion = fields.Char(string='Direccion')
     direccion1 = fields.Char(string='Direccion')
     placa  = fields.Char(string='Placa')
 
+    totalActivosAdj = fields.Float(compute='calcular_total_activos', string='TOTAL ACTIVOS', digits=(6, 2))
 
-
-    @api.onchange(fechaNacimientoConyuge)
+    def calcular_total_activos(self):
+        totalActivos = 0
+        for rec in self:
+            totalActivos = rec.montoAhorroInversiones + rec.casaValor + rec.terrenoValor + rec.vehiculoValor + rec.montoMueblesEnseres + rec.inventarios
+            rec.totalActivosAdj = totalActivos
+        
+        
     def calcular_edad(self):
         edad = 0  
         for rec in self:
@@ -69,7 +76,7 @@ class EntegaVehiculo(models.Model):
                 rec.edadAdjudicado =edad
             else:
                 rec.edadAdjudicado = 0
-        rec.edadAdjudicado =edad
+            rec.edadAdjudicado =edad
    
     @api.onchange(fechaNacimientoConyuge)
     def calcular_edad_conyuge(self): 
@@ -82,7 +89,7 @@ class EntegaVehiculo(models.Model):
             else:
                 rec.edadAdjudicado = 0
         rec.edadAdjudicado =edad
-        
+
     @api.model
     def create(self, vals):
         vals['secuencia'] = self.env['ir.sequence'].next_by_code('entrega.vehiculo')
