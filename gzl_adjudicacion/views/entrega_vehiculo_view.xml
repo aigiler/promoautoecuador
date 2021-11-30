@@ -53,7 +53,7 @@
                             <div class="col-xs-12 col-sm-4">
                                 <group>
                                     <field name="vatAdjudicado" options="{'no_create': True, 'no_open': True}"/>
-                                    <field name="fechaNacimientoAdj"/>
+                                    <field name="fechaNacimientoAdj" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="estadoCivilAdj" options="{'no_create': True, 'no_open': True}"/>
                                 </group>
                             </div>
@@ -66,6 +66,34 @@
                             </div>
                         </div>
                         <separator class="text-center" string="DATOS DEL CONYUGE"/>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12">
+                                <group>
+                                    <field name="nombreConyuge" string="Nombre del Cónyuge"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="vatConyuge" string="Cedula de Ciudadanía"/>
+                                    <field name="estadoCivilConyuge" string="Estado Civil"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-4">
+                                <group>
+                                    <field name="fechaNacimientoConyuge" string="Fecha de Nacimiento"/>
+                                    <field name="edadConyuge" string="Edad"/>
+                                </group>
+                            </div>
+                        </div>
+                        <separator class="text-center" string="DATOS DOMICIARIOS"/>
+                        <div class="row">
+                            <field name="referenciaDomiciliaria" widget="pad"/>
+                        </div>
+                        <separator class="text-center" string="DATOS LABORALES"/>
+                        <div class="row">
+                            <field name="referenciasLaborales" widget="pad"/>
+                        </div>
+                        <separator class="text-center" string="PATRIMONIO"/>
                         <div class="row">
                             <div class="col-xs-12 col-md-12">
                                 <group>
@@ -84,12 +112,6 @@
                                     <field name="edadConyuge" string="Edad"/>
                                 </group>
                             </div>
-                        </div>
-                        <separator class="text-center" string="DATOS DOMICIARIOS"/>
-                        <div class="row">
-                        </div>
-                        <separator class="text-center" string="DATOS LABORALES"/>
-                        <div class="row">
                         </div>
                     </div>
                 </sheet>

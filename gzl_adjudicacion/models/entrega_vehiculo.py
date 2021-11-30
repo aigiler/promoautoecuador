@@ -43,7 +43,7 @@ class EntegaVehiculo(models.Model):
     referenciaDomiciliaria = fields.Text(string='Referencias indican:')
 
     #datos laborales
-    referenciaLaborales = fields.Text(string='Referencias indican:')
+    referenciasLaborales = fields.Text(string='Referencias indican:')
 
     #datos del patrimonio del socio
     montoAhorroInversiones =  fields.Float(string='Ahorro o Inversiones')
@@ -59,17 +59,13 @@ class EntegaVehiculo(models.Model):
 
     totalActivosAdj = fields.Float(compute='calcular_total_activos', string='TOTAL ACTIVOS', digits=(6, 2))
 
+    @api.depends('montoAhorroInversiones', 'casaValor','terrenoValor', 'montoMueblesEnseres','vehiculoValor','inventarios')
     def calcular_total_activos(self):
         totalActivos = 0
         for rec in self:
             totalActivos = rec.montoAhorroInversiones + rec.casaValor + rec.terrenoValor + rec.vehiculoValor + rec.montoMueblesEnseres + rec.inventarios
             rec.totalActivosAdj = totalActivos
 
-    # @api.depends('fechaNacimientoAdj')
-    # def calcular_edad(self):
-    #     if self.fechaNacimientoAdj is not False:
-    #         self.edadAdjudicado = (date.today().date() - date.strptime(str(self.fechaNacimientoAdj), '%Y-%m-%d').date()) // timedelta(days=365)
-    
     @api.depends('fechaNacimientoAdj')
     def calcular_edad(self):
         edad = 0  
@@ -81,17 +77,16 @@ class EntegaVehiculo(models.Model):
             else:
                 rec.edadAdjudicado = 0
    
-    # @api.onchange(fechaNacimientoConyuge)
-    # def calcular_edad_conyuge(self): 
-    #     edad = 0 
-    #     for rec in self:
-    #         today = date.today()
-    #         if rec.fechaNacimientoConyuge != False:
-    #             edad = today.year - rec.fechaNacimientoConyuge.year - ((today.month, today.day) < (rec.fechaNacimientoConyuge.month, rec.fechaNacimientoConyuge.day))
-    #             rec.edadAdjudicado =edad
-    #         else:
-    #             rec.edadAdjudicado = 0
-    #     rec.edadAdjudicado =edad
+    @api.depends('fechaNacimientoConyuge')
+    def calcular_edad_conyuge(self): 
+        edad = 0 
+        for rec in self:
+            today = date.today()
+            if rec.fechaNacimientoConyuge:
+                edad = today.year - rec.fechaNacimientoConyuge.year - ((today.month, today.day) < (rec.fechaNacimientoConyuge.month, rec.fechaNacimientoConyuge.day))
+                rec.edadConyuge =edad
+            else:
+                rec.edadConyuge = 0
 
     @api.model
     def create(self, vals):
