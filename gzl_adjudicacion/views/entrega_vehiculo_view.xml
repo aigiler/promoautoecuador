@@ -81,7 +81,7 @@
                             <div class="col-xs-4">
                                 <group>
                                     <field name="fechaNacimientoConyuge" string="Fecha de Nacimiento"/>
-                                    <field name="edadConyuge" string="Edad" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="edadConyuge" options="{'no_create': True, 'no_open': True}"/>
                                 </group>
                             </div>
                         </div>
@@ -135,15 +135,10 @@
                             <div class="col-xs-4">
                                 <group>
                                     <field name="scoreBuroCredito"/>
+                                    <field name="posee" />
                                     <field name="posee"/>
                                     <field name="posee"/>
                                     <field name="posee"/>
-                                    <field name="posee"/>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-md-12">
-                                <group>
-                                    <field name="totalActivosAdj" string="TOTAL ACTIVOS" widget="monetary"/>
                                 </group>
                             </div>
                         </div>
@@ -154,7 +149,7 @@
                         <separator class="text-center" string="COMITÉ DE APROBACION"/>
                         <div class="row">
                         </div>
-                        
+
                     </div>
                 </sheet>
             </form >

@@ -67,9 +67,8 @@ class EntegaVehiculo(models.Model):
 
     # REVISION EN PAGINAS DE CONTROL
     scoreBuroCredito = fields.Integer(string='Score')
-    posee = fields.Integer(string='Posee')
-
-    score  = fields.Char()
+    posee = fields.Char(string='Posee')
+    score = fields.Char(string='Posee')
     poseeAntecedentesPenales  = fields.Selection(selection=[
                     ('si', 'SI'),
                     ('no', 'NO')                  
@@ -114,7 +113,7 @@ class EntegaVehiculo(models.Model):
             else:
                 rec.edadAdjudicado = 0
    
-    @api.depends('fechaNacimientoConyuge')
+    @api.onchange('fechaNacimientoConyuge')
     def calcular_edad_conyuge(self): 
         edad = 0 
         for rec in self:
