@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import date, timedelta
+from logging import StringTemplateStyle
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
@@ -52,12 +53,14 @@ class EntegaVehiculo(models.Model):
     referenciasLaborales = fields.Text(string='Referencias indican:')
 
     #datos del patrimonio del socio
-    montoAhorroInversiones =  fields.Float(string='Ahorro o Inversiones')
-    casaValor  = fields.Float(string='Casa Valor',digits=(6, 2), default=0.00)
-    terrenoValor  = fields.Float(string='Terreno Valor',digits=(6, 2), default=0.00)
-    montoMueblesEnseres = fields.Float(string='Muebles y Enseres',digits=(6, 2), default=0.00)
-    vehiculoValor = fields.Float(string='Vehiculo Valor', digits=(6, 2), default=0.00)
-    inventarios  = fields.Float(string='Inventarios', digits=(6, 2), default=0.00)
+    currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
+    montoAhorroInversiones =  fields.Monetary(string='Ahorro o Inversiones')
+    casaValor  = fields.Monetary(string='Casa Valor', default=0.00)
+    terrenoValor  = fields.Monetary(string='Terreno Valor', default=0.00)
+    montoMueblesEnseres = fields.Monetary(string='Muebles y Enseres', default=0.00)
+    vehiculoValor = fields.Monetary(string='Vehiculo Valor',  default=0.00)
+    inventarios  = fields.Monetary(string='Inventarios',  default=0.00)
+    
     institucionFinanciera = fields.Char(string='Institución')
     direccion = fields.Char(string='Direccion')
     direccion1 = fields.Char(string='Direccion')
@@ -93,7 +96,82 @@ class EntegaVehiculo(models.Model):
     #observaciones
     observaciones = fields.Text()
     
+
+    #calificador compras
+    clienteContrato  = fields.Char(related="nombreSocioAdjudicado.nombreSocioAdjudicado")
+    cedulaContrato = fields.Char(related="vatAdjudicado")
+    codClienteContrado = fields.Char(related="codigoAdjudicado")
+    montoAdjudicado = fields.Monetary(related="contrato.monto_financiamiento", currency_field='currency_id', string='Monto Adjudicado')
+    plazoMeses = fields.Integer(related="contrato.plazo_meses", string='Plazo')
+    tipoAdj = fields.Selection(related="contrato.tipo_de_contrato")
     
+    valorCuota = fields.Monetary(string='Valor de Cuota')
+    # #    #
+    fechaAdj = fields.Date(string='Fecha de Adj.')
+
+    valorTotalPlan = fields.Monetary(string='Valor Total del Plan')
+    porcentajeTotal = fields.Float(digits=(6, 2))
+    montoCancelado = fields.Monetary(string='Cuotas Canceladas')
+    cuotasCanceladas  = fields.Integer()
+    montoPendiente = fields.Float()
+    porcentajeCancelado = fields.Float(digits=(6, 2))
+    porcentajePendiente = fields.Float(digits=(6, 2))
+    cuotasPendientes  = fields.Integer()
+
+    valorDelBien = fields.Monetary(string='Valor del Bien')
+    saldoPlan = fields.Monetary(string='Saldo del Plan')
+
+    ingresosFamiliares = fields.Monetary(string='Saldo del Plan')
+    porcentajeIngresos = fields.Float(digits=(6, 2))
+    gastosFamiliares = fields.Monetary(string='Saldo del Plan')
+    porcentajeGastos = fields.Float(digits=(6, 2))
+    disponibilidad = fields.Monetary(string='Saldo del Plan')
+    
+    scoreCredito  = fields.Integer(string="Score de Credito Mayor a 800 puntos")
+    puntosScoreCredito = fields.Integer()
+    antiguedadLaboral  = fields.Integer(string="Antigüedad Laboral o Comercial Mayor a 2 años")
+    puntosAntiguedadLaboral = fields.Integer()
+    
+    totalPuntosBienesAdj = fields.Integer()
+
+    poseeCasa = fields.Selection(selection=[
+                    ('si', 'SI'),
+                    ('no', 'NO')                  
+                    ], string='Fiscalia General del Estado', default='no')
+    
+    puntosCasa = fields.Integer()
+
+    poseeTerreno = fields.Selection(selection=[
+                    ('si', 'SI'),
+                    ('no', 'NO')                  
+                    ], string='Fiscalia General del Estado', default='no')
+
+    puntosTerreno = fields.Integer()
+
+    poseeVehiculo = fields.Selection(selection=[
+                    ('si', 'SI'),
+                    ('no', 'NO')                  
+                    ], string='Fiscalia General del Estado', default='no')
+    puntosVehiculo = fields.Integer()
+    poseeMotos = fields.Selection(selection=[
+                    ('si', 'SI'),
+                    ('no', 'NO')                  
+                    ], string='Fiscalia General del Estado', default='no')
+    puntosMotos = fields.Integer()
+    poseeMueblesEnseres = fields.Selection(selection=[
+                    ('si', 'SI'),
+                    ('no', 'NO')                  
+                    ], string='Fiscalia General del Estado', default='no')
+    puntosMueblesEnseres = fields.Integer()
+
+    totalPuntosCalificador = fields.Integer()
+
+    observacionesCalificador  = fields.Text(string="Observaciones")
+
+
+
+
+
 
     @api.depends('montoAhorroInversiones', 'casaValor','terrenoValor', 'montoMueblesEnseres','vehiculoValor','inventarios')
     def calcular_total_activos(self):

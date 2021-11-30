@@ -151,6 +151,113 @@
                         </div>
 
                     </div>
+                    <!-- calificador_compra -->
+                    <div states="calificador_compra">
+                        <separator class="text-center" string="CALIFICADOR PARA COMPRA DEL BIEN"/>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12">
+                                <group>
+                                    <field name="nombreSocioAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="vatAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-4">
+                                <group>
+                                    <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                        </div>
+
+                        <separator/>
+                        <div class="col">
+                            <div class="col-xs-12 col-md-12">
+                                <group>
+                                    <field name="nombreConyuge" string="Nombre del Cónyuge"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="vatConyuge" string="Cedula de Ciudadanía"/>
+                                    <field name="estadoCivilConyuge" string="Estado Civil"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-4">
+                                <group>
+                                    <field name="fechaNacimientoConyuge" string="Fecha de Nacimiento"/>
+                                    <field name="edadConyuge" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                        </div>
+                        <separator class="text-center" string="DATOS DOMICIARIOS"/>
+                        <div class="row">
+                            <field name="referenciaDomiciliaria" widget="pad" string='Referencias indican:'/>
+                        </div>
+                        <separator class="text-center" string="DATOS LABORALES"/>
+                        <div class="row">
+                            <field name="referenciasLaborales" widget="pad" string='Referencias indican:'/>
+                        </div>
+                        <separator class="text-center" string="PATRIMONIO"/>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="montoAhorroInversiones" widget="monetary"/>
+                                    <field name="casaValor" options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                    <field name="terrenoValor" widget="monetary"/>
+                                    <field name="montoMueblesEnseres" widget="monetary"/>
+                                    <field name="vehiculoValor" widget="monetary"/>
+                                    <field name="inventarios" widget="monetary"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-4">
+                                <group>
+                                    <field name="institucionFinanciera"/>
+                                    <field name="direccion"/>
+                                    <field name="direccion1"/>
+                                    <field name="placa"/>
+                                    <field name="direccion"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-md-12">
+                                <group>
+                                    <field name="totalActivosAdj" string="TOTAL ACTIVOS" widget="monetary"/>
+                                </group>
+                            </div>
+                        </div>
+
+                        <separator class="text-center" string="REVISION EN PAGINAS DE CONTROL"/>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="scoreBuroCredito" string="Buró de Crédito" />
+                                    <field name="poseeAntecedentesPenales" string="Policía Nacional antecedentes"/>
+                                    <field name="estadoTributario" string="SRI, deudas firmes y estado Tributario"/>
+                                    <field name="funcionJudicial" string="Función Judicial"/>
+                                    <field name="fiscaliaGeneral" string="Fiscalia General del Estado"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-4">
+                                <group>
+                                    <field name="scoreBuroCredito"/>
+                                    <field name="posee" />
+                                    <field name="posee"/>
+                                    <field name="posee"/>
+                                    <field name="posee"/>
+                                </group>
+                            </div>
+                        </div>
+                        <separator class="text-center" string="OBSERVACIONES"/>
+                        <div class="row">
+                            <field name="observaciones" widget="pad" string='Referencias indican:'/>
+                        </div>
+                        <separator class="text-center" string="COMITÉ DE APROBACION"/>
+                        <div class="row">
+                        </div>
+
+                    </div>
                 </sheet>
             </form >
         </field>
