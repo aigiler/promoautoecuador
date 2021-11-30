@@ -98,7 +98,7 @@
                             <div class="col-xs-12 col-sm-4">
                                 <group>
                                     <field name="montoAhorroInversiones" widget="monetary"/>
-                                    <field name="casaValor" widget="payment"/>
+                                    <field name="casaValor" options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
                                     <field name="terrenoValor" widget="monetary"/>
                                     <field name="montoMueblesEnseres" widget="monetary"/>
                                     <field name="vehiculoValor" widget="monetary"/>
@@ -125,11 +125,11 @@
                         <div class="row">
                             <div class="col-xs-12 col-sm-4">
                                 <group>
-                                    <field name="scoreBuroCredito" string="Buró de Crédito"/>
+                                    <field name="scoreBuroCredito" string="Buró de Crédito" />
                                     <field name="poseeAntecedentesPenales" string="Policía Nacional antecedentes"/>
                                     <field name="estadoTributario" string="SRI, deudas firmes y estado Tributario"/>
-                                    <field name="montoMueblesEnseres" string="Función Judicial"/>
-                                    <field name="vehiculoValor" string="Fiscalia General del Estado"/>
+                                    <field name="funcionJudicial" string="Función Judicial"/>
+                                    <field name="fiscaliaGeneral" string="Fiscalia General del Estado"/>
                                 </group>
                             </div>
                             <div class="col-xs-4">
