@@ -87,29 +87,36 @@
                         </div>
                         <separator class="text-center" string="DATOS DOMICIARIOS"/>
                         <div class="row">
-                            <field name="referenciaDomiciliaria" widget="pad"/>
+                            <field name="referenciaDomiciliaria" widget="pad" string='Referencias indican:'/>
                         </div>
                         <separator class="text-center" string="DATOS LABORALES"/>
                         <div class="row">
-                            <field name="referenciasLaborales" widget="pad"/>
+                            <field name="referenciasLaborales" widget="pad" string='Referencias indican:'/>
                         </div>
                         <separator class="text-center" string="PATRIMONIO"/>
                         <div class="row">
-                            <div class="col-xs-12 col-md-12">
-                                <group>
-                                    <field name="nombreConyuge"/>
-                                </group>
-                            </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group>
-                                    <field name="vatConyuge"/>
-                                    <field name="estadoCivilConyuge"/>
+                                    <field name="montoAhorroInversiones" widget="monetary"/>
+                                    <field name="casaValor" widget="monetary"/>
+                                    <field name="terrenoValor" widget="monetary"/>
+                                    <field name="montoMueblesEnseres" widget="monetary"/>
+                                    <field name="vehiculoValor" widget="monetary"/>
+                                    <field name="inventarios" widget="monetary"/>
                                 </group>
                             </div>
                             <div class="col-xs-4">
                                 <group>
-                                    <field name="fechaNacimientoConyuge"/>
-                                    <field name="edadConyuge" string="Edad"/>
+                                    <field name="institucionFinanciera"/>
+                                    <field name="direccion"/>
+                                    <field name="direccion1"/>
+                                    <field name="placa"/>
+                                    <field name="direccion"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-md-12">
+                                <group>
+                                    <field name="totalActivosAdj" string="TOTAL ACTIVOS" widget="monetary"/>
                                 </group>
                             </div>
                         </div>

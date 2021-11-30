@@ -35,8 +35,14 @@ class EntegaVehiculo(models.Model):
     # datos del conyuge
     nombreConyuge = fields.Char(string="Nombre del Conyuge")
     fechaNacimientoConyuge = fields.Date(string='Fecha de Nacimiento')
-    vatConyuge = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía')
-    estadoCivilConyuge = fields.Selection(related="nombreSocioAdjudicado.estado_civil")
+    vatConyuge = fields.Char(string='Cedula de Ciudadanía')
+    estadoCivilConyuge = fields.Selection(selection=[
+                    ('soltero', 'Soltero/a'),
+                    ('union_libre', 'Unión libre'),
+                    ('casado', 'Casado/a'),
+                    ('divorciado', 'Divorciado/a'),
+                    ('viudo', 'Viudo/a')                    
+                    ], string='Estado Civil', default='soltero')
     edadConyuge  = fields.Integer( string="Edad")
 
     #datos domiciliarios
