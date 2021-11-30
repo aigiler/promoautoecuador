@@ -43,7 +43,7 @@ class EntegaVehiculo(models.Model):
                     ('divorciado', 'Divorciado/a'),
                     ('viudo', 'Viudo/a')                    
                     ], string='Estado Civil', default='soltero')
-    edadConyuge  = fields.Integer( string="Edad")
+    edadConyuge  = fields.Integer(compute='calcular_edad_conyuge', string="Edad")
 
     #datos domiciliarios
     referenciaDomiciliaria = fields.Text(string='Referencias indican:')
@@ -64,6 +64,37 @@ class EntegaVehiculo(models.Model):
     placa  = fields.Char(string='Placa')
 
     totalActivosAdj = fields.Float(compute='calcular_total_activos', string='TOTAL ACTIVOS', digits=(6, 2))
+
+    # REVISION EN PAGINAS DE CONTROL
+    scoreBuroCredito = fields.Integer(string='Score')
+    posee = fields.Integer(string='Posee')
+
+    score  = fields.Char()
+    poseeAntecedentesPenales  = fields.Selection(selection=[
+                    ('si', 'SI'),
+                    ('no', 'NO')                  
+                    ], string='Policía Nacional antecedentes', default='no')
+
+    estadoTributario = fields.Selection(selection=[
+                    ('atrasado', 'ATRASADO'),
+                    ('no_activo', 'NO ACTIVO'),
+                    ('al_dia', 'AL DIA')                  
+                    ], string='SRI, deudas firmes y estado Tributario', default='al_dia')
+    
+    funcionJudicial = fields.Selection(selection=[
+                    ('si', 'SI'),
+                    ('no', 'NO')                  
+                    ], string='Función Judicial', default='no')
+    
+    fiscaliaGeneral = fields.Selection(selection=[
+                    ('si', 'SI'),
+                    ('no', 'NO')                  
+                    ], string='Fiscalia General del Estado', default='no')
+    
+    #observaciones
+    observaciones = fields.Text()
+    
+    
 
     @api.depends('montoAhorroInversiones', 'casaValor','terrenoValor', 'montoMueblesEnseres','vehiculoValor','inventarios')
     def calcular_total_activos(self):
