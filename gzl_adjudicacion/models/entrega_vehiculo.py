@@ -98,9 +98,9 @@ class EntegaVehiculo(models.Model):
     
 
     #calificador compras
-    clienteContrato  = fields.Char(related="entrega.vehiculo.nombreSocioAdjudicado")
-    cedulaContrato = fields.Char(related="vatAdjudicado")
-    codClienteContrado = fields.Char(related="codigoAdjudicado")
+    clienteContrato  = fields.Char(compute = 'set_campos_cliente_informe_credito',string="Nombre del Socio Adj.")
+    cedulaContrato = fields.Char()
+    codClienteContrado = fields.Char()
     montoAdjudicado = fields.Monetary(related="contrato.monto_financiamiento", currency_field='currency_id', string='Monto Adjudicado')
     plazoMeses = fields.Integer(related="contrato.plazo_meses", string='Plazo')
     tipoAdj = fields.Selection(related="contrato.tipo_de_contrato")
@@ -171,7 +171,15 @@ class EntegaVehiculo(models.Model):
 
 
 
-
+    @api.depends('nombreSocioAdjudicado')
+    def set_campos_cliente_informe_credito(self):
+        clienteContrato = ''  
+        for rec in self:
+            if rec.nombreSocioAdjudicado :
+               
+                rec.clienteContrato = rec.nombreSocioAdjudicado
+            else:
+                rec.clienteContrato = '' 
 
     @api.depends('montoAhorroInversiones', 'casaValor','terrenoValor', 'montoMueblesEnseres','vehiculoValor','inventarios')
     def calcular_total_activos(self):
