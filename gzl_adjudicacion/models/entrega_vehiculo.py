@@ -94,11 +94,11 @@ class EntegaVehiculo(models.Model):
                     ], string='Fiscalia General del Estado', default='no')
     
     #observaciones
-    observaciones = fields.Text()
+    observaciones = fields.Text(string='Observaciones')
     
 
     #calificador compras
-    clienteContrato  = fields.Char(related="nombreSocioAdjudicado.nombreSocioAdjudicado")
+    clienteContrato  = fields.Char(related="nombreSocioAdjudicado")
     cedulaContrato = fields.Char(related="vatAdjudicado")
     codClienteContrado = fields.Char(related="codigoAdjudicado")
     montoAdjudicado = fields.Monetary(related="contrato.monto_financiamiento", currency_field='currency_id', string='Monto Adjudicado')
