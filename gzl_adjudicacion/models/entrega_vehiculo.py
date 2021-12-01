@@ -98,7 +98,7 @@ class EntegaVehiculo(models.Model):
     
 
     #calificador compras
-    clienteContrato  = fields.Char(related="nombreSocioAdjudicado")
+    clienteContrato  = fields.Char(related="contrato.cliente")
     cedulaContrato = fields.Char(related="vatAdjudicado")
     codClienteContrado = fields.Char(related="codigoAdjudicado")
     montoAdjudicado = fields.Monetary(related="contrato.monto_financiamiento", currency_field='currency_id', string='Monto Adjudicado')
