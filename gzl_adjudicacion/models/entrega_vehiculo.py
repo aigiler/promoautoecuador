@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import date, timedelta
 from logging import StringTemplateStyle
+import logging
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
@@ -101,7 +102,7 @@ class EntegaVehiculo(models.Model):
     clienteContrato  = fields.Char(compute = 'set_campos_cliente_informe_credito',string="Nombre del Socio Adj.")
     cedulaContrato = fields.Char()
     codClienteContrado = fields.Char()
-    contratoCliente =_id = fields.Many2one('contrato',string='')
+    contratoCliente = fields.Char(compute='buscar_parner')
     montoAdjudicado  = fields.Integer(related="contratoCliente.monto_financiamiento", currency_field='currency_id', string='Monto Adjudicado')
     #plazoMeses = fields.Integer(related="contrato.plazo_meses", string='Plazo')
     #tipoAdj = fields.Selection(related="contrato.tipo_de_contrato")
@@ -174,11 +175,10 @@ class EntegaVehiculo(models.Model):
     @api.onchange('cedulaContrato')
     def buscar_parner(self):
         for rec in self:
-            partner_users_ids = self.env['res.users'].search([('partner_id.vat', 'ilike', rec.cedulaContrato)]).mapped('partner_id').ids     
-            rec.montoCancelado = partner_users_ids
-    
+            val=self.env['res.partner'].search_read([('vat','=',rec.cedulaContrato)])
+            logging.info(val)
 
-    
+
     @api.depends('nombreSocioAdjudicado')
     def set_campos_cliente_informe_credito(self):
         clienteContrato = ''  
