@@ -190,7 +190,7 @@ class EntegaVehiculo(models.Model):
             if contrato.plazo_meses == '60':
                 rec.plazoMeses = 60
             elif contrato.plazo_meses == '72':
-                rec.plazoMeses = 60 
+                rec.plazoMeses = 72 
             else:
                 rec.plazoMeses = 0
             
