@@ -176,6 +176,7 @@ class EntegaVehiculo(models.Model):
     def buscar_parner(self):
         for rec in self:
             val=self.env['res.partner'].search([('name','=',rec.nombreSocioAdjudicado)])
+            rec.contratoCliente = val
             logging.info(val)
 
     @api.depends('nombreSocioAdjudicado')
