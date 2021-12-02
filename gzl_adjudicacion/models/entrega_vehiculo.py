@@ -101,7 +101,8 @@ class EntegaVehiculo(models.Model):
     clienteContrato  = fields.Char(compute = 'set_campos_cliente_informe_credito',string="Nombre del Socio Adj.")
     cedulaContrato = fields.Char()
     codClienteContrado = fields.Char()
-    montoAdjudicado = fields.Monetary(related="contrato.monto_financiamiento", currency_field='currency_id', string='Monto Adjudicado')
+    contratoCliente =_id = fields.Many2one('contrato',string='')
+    montoAdjudicado = fields.Many2one(related="contrato.monto_financiamiento", currency_field='currency_id', string='Monto Adjudicado')
     plazoMeses = fields.Integer(related="contrato.plazo_meses", string='Plazo')
     tipoAdj = fields.Selection(related="contrato.tipo_de_contrato")
     
