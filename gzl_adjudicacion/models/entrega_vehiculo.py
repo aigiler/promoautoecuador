@@ -105,7 +105,7 @@ class EntegaVehiculo(models.Model):
     contratoCliente = fields.Char()
     montoAdjudicado  = fields.Monetary(compute= 'buscar_parner',currency_field='currency_id', string='Monto Adjudicado')
     plazoMeses = fields.Integer(string='Plazo')
-    tipoAdj = fields.Char(tring='Tipo Adj.')
+    tipoAdj = fields.Selection(tring='Tipo Adj.')
     
     valorCuota = fields.Monetary(string='Valor de Cuota')
     # #    #
@@ -177,7 +177,6 @@ class EntegaVehiculo(models.Model):
             rec.valorTotalPlan = rec.valorCuota * rec.plazoMeses
     
 
-    valorTotalPlan 
 
     @api.depends('nombreSocioAdjudicado')
     def buscar_parner(self):

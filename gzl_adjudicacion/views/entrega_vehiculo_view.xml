@@ -184,6 +184,19 @@
                                 <group>
                                     <field name="plazoMeses"  options="{'no_create': True, 'no_open': True}"/>
                                     <field name="tipoAdj" string="Tipo Adj."  options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="fechaAdj" string="Fecha de Adj."  options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                        </div>
+                        <separator/>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="valorTotalPlan" string="Valor Total del Plan" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
                                 </group>
                             </div>
                         </div>
