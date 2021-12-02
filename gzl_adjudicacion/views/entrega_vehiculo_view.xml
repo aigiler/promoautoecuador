@@ -176,7 +176,7 @@
                         <div class="col">
                             <div class="col-xs-12 col-sm-4">
                                 <group>
-                                    <field name="vatConyuge" string="Monto Adjudicado"/>
+                                    <field name="montoAdjudicado" string="Monto Adjudicado" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="estadoCivilConyuge" string="Valor de Cuota"/>
                                 </group>
                             </div>
