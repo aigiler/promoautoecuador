@@ -182,9 +182,17 @@
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group>
-                                    <field name="plazoMeses" options="{'no_create': True, 'no_open': True}"/>
-                                    <field name="tipoAdj" options="{'no_create': True, 'no_open': True}"/>
-                                    <field name="fechaAdj" options="{'no_create': True, 'no_open': True}"/>
+                                    <label for="plazoMeses" string="Plazo"/>
+                                    <label for="tipoAdj" string="Tipo Adj."/>
+                                    <label for="fechaAdj" string="Fecha de Adj."/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="plazoMeses" nolabel="1" position='after'/>
+                                    <field name="tipoAdj" nolabel="1" position='after'/>
+                                    <field name="fechaAdj" nolabel="1" position='after'/>
+
                                 </group>
                             </div>
                         </div>
