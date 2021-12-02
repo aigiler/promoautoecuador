@@ -103,7 +103,7 @@ class EntegaVehiculo(models.Model):
     cedulaContrato = fields.Char()
     codClienteContrado = fields.Char()
     contratoCliente = fields.Char(compute='buscar_parner')
-    #montoAdjudicado  = fields.Integer(related="contratoCliente.monto_financiamiento", currency_field='currency_id', string='Monto Adjudicado')
+    montoAdjudicado  = fields.Monetary(currency_field='currency_id', string='Monto Adjudicado')
     #plazoMeses = fields.Integer(related="contrato.plazo_meses", string='Plazo')
     #tipoAdj = fields.Selection(related="contrato.tipo_de_contrato")
     
