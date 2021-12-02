@@ -102,7 +102,7 @@ class EntegaVehiculo(models.Model):
     clienteContrato  = fields.Char(compute = 'set_campos_cliente_informe_credito',string="Nombre del Socio Adj.")
     cedulaContrato = fields.Char()
     codClienteContrado = fields.Char()
-    contratoCliente = fields.Char(compute='buscar_parner')
+    contratoCliente = fields.Char()
     montoAdjudicado  = fields.Monetary(currency_field='currency_id', string='Monto Adjudicado')
     #plazoMeses = fields.Integer(related="contrato.plazo_meses", string='Plazo')
     #tipoAdj = fields.Selection(related="contrato.tipo_de_contrato")
@@ -170,7 +170,7 @@ class EntegaVehiculo(models.Model):
 
     observacionesCalificador  = fields.Text(string="Observaciones")
 
-
+    logging.info(nombreSocioAdjudicado)
 
     @api.depends('nombreSocioAdjudicado')
     def buscar_parner(self):
@@ -183,6 +183,7 @@ class EntegaVehiculo(models.Model):
     def set_campos_cliente_informe_credito(self):
         clienteContrato = ''  
         for rec in self:
+            logging.info(rec.nombreSocioAdjudicado)
             if rec.nombreSocioAdjudicado :
                 rec.clienteContrato = rec.nombreSocioAdjudicado
                 rec.cedulaContrato = rec.vatAdjudicado
