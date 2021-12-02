@@ -186,9 +186,16 @@ class EntegaVehiculo(models.Model):
             contrato=self.env['contrato'].search([('cliente','=',rec.nombreSocioAdjudicado.id)])
             rec.montoAdjudicado=contrato.monto_financiamiento
             rec.valorCuota = contrato.cuota_capital
-            rec.plazoMeses = contrato.plazo_meses
             rec.tipoAdj  = contrato.tipo_de_contrato
             rec.fechaAdj = contrato.fecha_adjudicado
+            
+            if contrato.plazo_meses == '60':
+                rec.plazoMeses = 60
+            elif contrato.plazo_meses == '72':
+                rec.plazoMeses = 60 
+            else:
+                rec.plazoMeses = 0
+            
 
     @api.depends('nombreSocioAdjudicado')
     def set_campos_cliente_informe_credito(self):
