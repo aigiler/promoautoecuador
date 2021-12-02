@@ -48,6 +48,7 @@ class Contrato(models.Model):
     cuota_capital = fields.Monetary(string='Cuota Capital', currency_field='currency_id')
     iva_administrativo = fields.Monetary(string='Iva Administrativo', currency_field='currency_id')
     estado_de_cuenta_ids = fields.One2many('contrato.estado.cuenta', 'contrato_id')
+    fecha_adjudicado  = fields.Date(string='Fecha Adj.')
 
     
     @api.model

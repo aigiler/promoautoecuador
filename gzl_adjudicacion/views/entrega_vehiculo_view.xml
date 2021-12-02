@@ -173,84 +173,21 @@
                         </div>
 
                         <separator/>
-                        <div class="col">
+                        <div class="row">
                             <div class="col-xs-12 col-sm-4">
                                 <group>
                                     <field name="montoAdjudicado" string="Monto Adjudicado" options="{'no_create': True, 'no_open': True}"/>
-                                    <field name="estadoCivilConyuge" string="Valor de Cuota"/>
+                                    <field name="valorCuota" string="Valor de Cuota" options="{'no_create': True, 'no_open': True}"/>
                                 </group>
                             </div>
-                            <div class="col">
-                                <group>
-                                    <field name="fechaNacimientoConyuge" string="Fecha de Nacimiento"/>
-                                    <field name="edadConyuge" options="{'no_create': True, 'no_open': True}"/>
-                                </group>
-                            </div>
-                        </div>
-                        <separator class="text-center" string="DATOS DOMICIARIOS"/>
-                        <div class="row">
-                            <field name="referenciaDomiciliaria" widget="pad" string='Referencias indican:'/>
-                        </div>
-                        <separator class="text-center" string="DATOS LABORALES"/>
-                        <div class="row">
-                            <field name="referenciasLaborales" widget="pad" string='Referencias indican:'/>
-                        </div>
-                        <separator class="text-center" string="PATRIMONIO"/>
-                        <div class="row">
                             <div class="col-xs-12 col-sm-4">
                                 <group>
-                                    <field name="montoAhorroInversiones" widget="monetary"/>
-                                    <field name="casaValor" options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
-                                    <field name="terrenoValor" widget="monetary"/>
-                                    <field name="montoMueblesEnseres" widget="monetary"/>
-                                    <field name="vehiculoValor" widget="monetary"/>
-                                    <field name="inventarios" widget="monetary"/>
-                                </group>
-                            </div>
-                            <div class="col-xs-4">
-                                <group>
-                                    <field name="institucionFinanciera"/>
-                                    <field name="direccion"/>
-                                    <field name="direccion1"/>
-                                    <field name="placa"/>
-                                    <field name="direccion"/>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-md-12">
-                                <group>
-                                    <field name="totalActivosAdj" string="TOTAL ACTIVOS" widget="monetary"/>
+                                    <field name="plazoMeses"  options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="tipoAdj" string="Tipo Adj."  options="{'no_create': True, 'no_open': True}"/>
                                 </group>
                             </div>
                         </div>
-
-                        <separator class="text-center" string="REVISION EN PAGINAS DE CONTROL"/>
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-4">
-                                <group>
-                                    <field name="scoreBuroCredito" string="Buró de Crédito" />
-                                    <field name="poseeAntecedentesPenales" string="Policía Nacional antecedentes"/>
-                                    <field name="estadoTributario" string="SRI, deudas firmes y estado Tributario"/>
-                                    <field name="funcionJudicial" string="Función Judicial"/>
-                                    <field name="fiscaliaGeneral" string="Fiscalia General del Estado"/>
-                                </group>
-                            </div>
-                            <div class="col-xs-4">
-                                <group>
-                                    <field name="scoreBuroCredito"/>
-                                    <field name="posee" />
-                                    <field name="posee"/>
-                                    <field name="posee"/>
-                                    <field name="posee"/>
-                                </group>
-                            </div>
-                        </div>
-                        <separator class="text-center" string="OBSERVACIONES"/>
-                        <div class="row">
-                            <field name="observaciones" widget="pad" string='Referencias indican:'/>
-                        </div>
-                        <separator class="text-center" string="COMITÉ DE APROBACION"/>
-                        <div class="row">
-                        </div>
+                        
 
                     </div>
                 </sheet>

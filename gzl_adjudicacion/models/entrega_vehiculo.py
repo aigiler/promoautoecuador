@@ -2,6 +2,7 @@
 from datetime import date, timedelta
 from logging import StringTemplateStyle
 import logging
+from gzl_adjudicacion.models.contrato import ContratoEstadoCuenta
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
@@ -104,8 +105,8 @@ class EntegaVehiculo(models.Model):
     codClienteContrado = fields.Char()
     contratoCliente = fields.Char()
     montoAdjudicado  = fields.Monetary(compute= 'buscar_parner',currency_field='currency_id', string='Monto Adjudicado')
-    #plazoMeses = fields.Integer(related="contrato.plazo_meses", string='Plazo')
-    #tipoAdj = fields.Selection(related="contrato.tipo_de_contrato")
+    plazoMeses = fields.Integer(string='Plazo')
+    tipoAdj = fields.Char(tring='Tipo Adj.')
     
     valorCuota = fields.Monetary(string='Valor de Cuota')
     # #    #
@@ -170,13 +171,24 @@ class EntegaVehiculo(models.Model):
 
     observacionesCalificador  = fields.Text(string="Observaciones")
 
-    logging.info(nombreSocioAdjudicado)
+
+    @api.depends('valorCuota', 'plazoMeses')
+    def calcular_valor_total_plan(self):
+        for rec in self:
+            rec.valorTotalPlan = rec.valorCuota * rec.plazoMeses
+    
+
+    valorTotalPlan 
 
     @api.depends('nombreSocioAdjudicado')
     def buscar_parner(self):
         for rec in self:
             contrato=self.env['contrato'].search([('cliente','=',rec.nombreSocioAdjudicado.id)])
             rec.montoAdjudicado=contrato.monto_financiamiento
+            rec.valorCuota = contrato.cuota_capital
+            rec.plazoMeses = contrato.plazo_meses
+            rec.tipoAdj  = contrato.tipo_de_contrato
+            rec.fechaAdj = contrato.fecha_adjudicado
 
     @api.depends('nombreSocioAdjudicado')
     def set_campos_cliente_informe_credito(self):
