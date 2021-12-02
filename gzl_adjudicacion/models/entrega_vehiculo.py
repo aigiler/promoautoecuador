@@ -175,9 +175,8 @@ class EntegaVehiculo(models.Model):
     @api.depends('nombreSocioAdjudicado')
     def buscar_parner(self):
         for rec in self:
-            val=self.env['res.partner'].search([('name','=',rec.nombreSocioAdjudicado)])
-            rec.contratoCliente = val
-            logging.info(val)
+            contrato=self.env['contrato'].search([('cliente','=',rec.nombreSocioAdjudicado.id)])
+            rec.montoAdjudicado=contrato.monto_financiamiento
 
     @api.depends('nombreSocioAdjudicado')
     def set_campos_cliente_informe_credito(self):
