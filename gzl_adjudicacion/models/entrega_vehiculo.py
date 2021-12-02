@@ -171,7 +171,14 @@ class EntegaVehiculo(models.Model):
 
 
 
+    @api.onchange('cedulaContrato')
+    def buscar_parner(self):
+        for rec in self:
+            partner_users_ids = self.env['res.users'].search([('partner_id.vat', 'ilike', rec.cedulaContrato)]).mapped('partner_id').ids     
+            rec.montoCancelado = partner_users_ids
+    
 
+    
     @api.depends('nombreSocioAdjudicado')
     def set_campos_cliente_informe_credito(self):
         clienteContrato = ''  
