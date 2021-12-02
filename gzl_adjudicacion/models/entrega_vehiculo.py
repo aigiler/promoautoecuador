@@ -105,7 +105,7 @@ class EntegaVehiculo(models.Model):
     contratoCliente = fields.Char()
     montoAdjudicado  = fields.Monetary(compute= 'buscar_parner',currency_field='currency_id', string='Monto Adjudicado')
     plazoMeses = fields.Integer(string='Plazo')
-    tipoAdj = fields.Selection(string='Tipo Adj.')
+    tipoAdj = fields.Char(string='Tipo Adj.')
     
     valorCuota = fields.Monetary(string='Valor de Cuota')
     # #    #
