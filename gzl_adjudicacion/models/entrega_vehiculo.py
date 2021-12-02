@@ -2,7 +2,6 @@
 from datetime import date, timedelta
 from logging import StringTemplateStyle
 import logging
-from gzl_adjudicacion.models.contrato import ContratoEstadoCuenta
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
@@ -188,7 +187,7 @@ class EntegaVehiculo(models.Model):
             rec.valorCuota = contrato.cuota_capital
             rec.tipoAdj  = contrato.tipo_de_contrato
             rec.fechaAdj = contrato.fecha_adjudicado
-            
+
             if contrato.plazo_meses == '60':
                 rec.plazoMeses = 60
             elif contrato.plazo_meses == '72':
