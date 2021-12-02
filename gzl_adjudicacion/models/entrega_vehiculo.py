@@ -172,10 +172,10 @@ class EntegaVehiculo(models.Model):
 
 
 
-    @api.onchange('cedulaContrato')
+    @api.onchange('nombreSocioAdjudicado')
     def buscar_parner(self):
         for rec in self:
-            val=self.env['res.partner'].search_read([('vat','=',rec.cedulaContrato)])
+            val=self.env['res.partner'].search_read([('name','=',rec.nombreSocioAdjudicado)])
             logging.info(val)
 
 
