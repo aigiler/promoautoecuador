@@ -111,7 +111,7 @@ class EntegaVehiculo(models.Model):
     # #    #
     fechaAdj = fields.Date(string='Fecha de Adj.')
 
-    valorTotalPlan = fields.Monetary(string='Valor Total del Plan')
+    valorTotalPlan = fields.Monetary(compute= 'calcular_valor_total_plan', string='Valor Total del Plan')
     porcentajeTotal = fields.Float(digits=(6, 2))
     montoCancelado = fields.Monetary(string='Cuotas Canceladas')
     cuotasCanceladas  = fields.Integer()
