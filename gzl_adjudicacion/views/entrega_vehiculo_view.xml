@@ -174,18 +174,13 @@
 
                         <separator/>
                         <div class="col">
-                            <div class="col-xs-12 col-md-12">
-                                <group>
-                                    <field name="nombreConyuge" string="Nombre del Cónyuge"/>
-                                </group>
-                            </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group>
-                                    <field name="vatConyuge" string="Cedula de Ciudadanía"/>
-                                    <field name="estadoCivilConyuge" string="Estado Civil"/>
+                                    <field name="vatConyuge" string="Monto Adjudicado"/>
+                                    <field name="estadoCivilConyuge" string="Valor de Cuota"/>
                                 </group>
                             </div>
-                            <div class="col-xs-4">
+                            <div class="col">
                                 <group>
                                     <field name="fechaNacimientoConyuge" string="Fecha de Nacimiento"/>
                                     <field name="edadConyuge" options="{'no_create': True, 'no_open': True}"/>

@@ -177,10 +177,13 @@ class EntegaVehiculo(models.Model):
         clienteContrato = ''  
         for rec in self:
             if rec.nombreSocioAdjudicado :
-               
                 rec.clienteContrato = rec.nombreSocioAdjudicado
+                rec.cedulaContrato = rec.vatAdjudicado
+                rec.codClienteContrado = rec.codigoAdjudicado
             else:
-                rec.clienteContrato = '' 
+                rec.clienteContrato = ''
+                rec.cedulaContrato = ''
+                rec.codClienteContrado = ''
 
     @api.depends('montoAhorroInversiones', 'casaValor','terrenoValor', 'montoMueblesEnseres','vehiculoValor','inventarios')
     def calcular_total_activos(self):
