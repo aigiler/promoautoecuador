@@ -134,6 +134,8 @@ class EntegaVehiculo(models.Model):
     valorDelBien = fields.Monetary(string='Valor del Bien')
     saldoPlan = fields.Monetary(string='Saldo del Plan')
 
+    puntosPorcentajeCancelado = fields.Integer(compute='calcular_puntos_porcentaje_cancelado') 
+
     ingresosFamiliares = fields.Monetary(string='Saldo del Plan')
     porcentajeIngresos = fields.Float(digits=(6, 2))
     gastosFamiliares = fields.Monetary(string='Saldo del Plan')
@@ -181,6 +183,24 @@ class EntegaVehiculo(models.Model):
     totalPuntosCalificador = fields.Integer()
 
     observacionesCalificador = fields.Text(string="Observaciones")
+
+
+
+
+
+
+    @api.depends('porcentajeCancelado')
+    def calcular_puntos_porcentaje_cancelado(self):
+        for rec in self:
+            if rec.porcentajeCancelado >= 0.00 and rec.porcentajeCancelado  <= 25.00:
+                rec.puntosPorcentajeCancelado = 0
+            elif rec.porcentajeCancelado >= 26.00 and rec.porcentajeCancelado  <= 30.00:
+                rec.puntosPorcentajeCancelado = 100
+            elif rec.porcentajeCancelado >= 31.00:
+                rec.puntosPorcentajeCancelado = 200
+            else:
+                rec.puntosPorcentajeCancelado = 0
+
 
     @api.depends('montoCuotasCanceladas', 'valorTotalPlan')
     def calcular_porcentaj_cuotas_canc(self):
