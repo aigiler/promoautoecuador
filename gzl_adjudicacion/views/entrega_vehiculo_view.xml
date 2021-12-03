@@ -203,14 +203,16 @@
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group>
-                                    <field name="plazoMeses" nolabel="1" />
-                                    <field name="cuotasCanceladas" nolabel="1" />
+                                    <field name="plazoMeses" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="porcentajeTotal" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="cuotasCanceladas" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="porcentajeCancelado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                 </group>
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group>
-                                    <field name="porcentajeTotal" nolabel="1" />
-                                    <field name="porcentajeCancelado" nolabel="1" />
+                                    
+                                    
                                 </group>
                             </div>
                         </div>
