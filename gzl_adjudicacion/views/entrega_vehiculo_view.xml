@@ -229,15 +229,16 @@
                                     <field name="porcentajeIngresos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="porcentajeGastos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="porcentajeDisponibilidad" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-4">
-                                <group>
                                     <text>Comprometido</text>
                                     <text>Cuota Plan</text>
                                     <field name="porcentajeCuotaPlan" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                 </group>
                             </div>
+                            <!-- <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    
+                                </group>
+                            </div> -->
                             <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
                                 <group>
                                     <field name="puntosPorcentajeCancelado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
