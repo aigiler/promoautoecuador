@@ -176,7 +176,7 @@
                             <div class="col-xs-4 col-sm-3">
                                 <group>
                                     <field name="montoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
-                                    <field name="valorCuota"  options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="valorCuota" options="{'no_create': True, 'no_open': True}"/>
                                 </group>
                             </div>
                             <div class="col-xs-4 col-sm-4">
@@ -199,32 +199,30 @@
                                 <group>
                                     <field name="valorTotalPlan" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="montoCuotasCanceladas" options="{'no_create': True, 'no_open': True}"/>
+                                </div>
+                                <div class="col-xs-12 col-sm-4">
+                                    <group>
+                                        <field name="porcentajeTotal" nolabel="1" />
+                                        <field name="porcentajeCancelado" nolabel="1" />
+                                    </group>
+                                </div>
+                            </div>
 
-                                    
-                            </div>
-                            <div class="col-xs-12 col-sm-4">
-                                <group>
-                                    <field name="porcentajeTotal" nolabel="1" />
-                                    <field name="porcentajeCancelado" nolabel="1" />
-                                </group>
-                            </div>
+
                         </div>
+                    </sheet>
+                </form >
+            </field>
+        </record>
 
 
-                    </div>
-                </sheet>
-            </form >
-        </field>
-    </record>
+        <record id="action_new_entrega_vehiculo_form" model="ir.actions.act_window">
+            <field name="name">Entrega Vehiculo</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">entrega.vehiculo</field>
+            <field name="view_mode">tree,form</field>
+        </record>
 
 
-    <record id="action_new_entrega_vehiculo_form" model="ir.actions.act_window">
-        <field name="name">Entrega Vehiculo</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">entrega.vehiculo</field>
-        <field name="view_mode">tree,form</field>
-    </record>
-
-
-    <menuitem id="menu_new_entrega_vehiculo" action="action_new_entrega_vehiculo_form" parent="menu_adjudicados" sequence="7" />
-</odoo>
+        <menuitem id="menu_new_entrega_vehiculo" action="action_new_entrega_vehiculo_form" parent="menu_adjudicados" sequence="7" />
+    </odoo>
