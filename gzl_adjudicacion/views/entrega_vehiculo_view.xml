@@ -187,21 +187,13 @@
                                     <label for="fechaAdj" string="Fecha de Adj."/>
                                 </group>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-xs-12 col-sm-4">
                                 <group>
                                     <field name="plazoMeses" nolabel="1" />
                                     <field name="tipoAdj" nolabel="1" />
                                     <field name="fechaAdj" nolabel="1" />
-
-                                </group>
-                            </div>
-                        </div>
-                        <separator/>
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-4">
-                                <group>
-                                    <field name="valorTotalPlan" options="{'no_create': True, 'no_open': True}"/>
-                                    <label for='plazoMeses'></label>
 
                                 </group>
                             </div>
