@@ -228,9 +228,9 @@
                                 <group>
                                     <field name="porcentajeIngresos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="porcentajeGastos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    <field name="porcentajeDisponibilidad" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    <text>Comprometido</text>
                                     <field name="porcentajeCuotaPlan" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <text>Comprometido</text>
+                                    <field name="porcentajeDisponibilidad" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                     <text>Cuota Plan</text>
                                     
                                 </group>
