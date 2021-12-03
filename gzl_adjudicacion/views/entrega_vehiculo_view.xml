@@ -201,8 +201,8 @@
                             </div>
                             <div class="col-xs-4 col-sm-4">
                                 <group>
-                                    <field name="plazoMeses" nolabel="1" />%
-                                    <field name="plazoMeses" nolabel="1" />%
+                                    <field name="plazoMeses" nolabel="1" />
+                                    <field name="plazoMeses" nolabel="1" />
                                 </group>
                             </div>
                         </div>
