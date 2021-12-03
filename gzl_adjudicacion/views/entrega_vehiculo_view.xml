@@ -174,13 +174,13 @@
 
                         <separator/>
                         <div class="row">
-                            <div class="col-xs-12 col-sm-4">
+                            <div class="col-xs-12 col-sm-3">
                                 <group>
                                     <field name="montoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="valorCuota" options="{'no_create': True, 'no_open': True}"/>
                                 </group>
                             </div>
-                            <div class="col-xs-12 col-sm-12">
+                            <div class="col-xs-12 col-sm-5">
                                 <group>
                                     <label for="plazoMeses" string="Plazo"/>
                                     <label for="tipoAdj" string="Tipo Adj."/>
