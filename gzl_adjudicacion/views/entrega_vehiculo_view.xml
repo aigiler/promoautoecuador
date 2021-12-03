@@ -230,11 +230,12 @@
                                     <field name="porcentajeGastos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="porcentajeDisponibilidad" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                     <text>Comprometido</text>
-                                    <text>Cuota Plan</text>
+                                    
                                 </group>
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group>
+                                    <text>Cuota Plan</text>
                                     <field name="porcentajeCuotaPlan" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                 </group>
                             </div>
