@@ -196,7 +196,7 @@ class EntegaVehiculo(models.Model):
         for rec in self:
             rec.porcentajeDisponibilidad = rec.porcentajeIngresos - rec.porcentajeGastos
 
-     @api.depends('ingresosFamiliares', 'gastosFamiliares', )
+    @api.depends('ingresosFamiliares', 'gastosFamiliares', )
     def calcular_valor_disponibilidad(self):
         for rec in self:
             rec.disponibilidad = rec.ingresosFamiliares - rec.gastosFamiliares
