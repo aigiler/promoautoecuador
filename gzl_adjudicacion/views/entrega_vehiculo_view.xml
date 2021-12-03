@@ -224,12 +224,12 @@
                                     <field name="disponibilidad" options="{'no_create': True, 'no_open': True}"/>
                                 </group>
                             </div>
-                            <div class="col-xs-12 col-sm-4">
+                            <div class="col-xs-12 col-sm-4" colspan="4">
                                 <group>
                                     <field name="porcentajeIngresos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="porcentajeGastos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="porcentajeDisponibilidad" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    <text>Comprometido</text>
+                                    <text>Comprometido</text><newline>
                                     
                                 </group>
                             </div>
