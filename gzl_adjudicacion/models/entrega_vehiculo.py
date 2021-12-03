@@ -122,12 +122,12 @@ class EntegaVehiculo(models.Model):
 
     valorTotalPlan = fields.Monetary(
         compute='calcular_valor_total_plan', string='Valor Total del Plan')
-    porcentajeTotal = fields.Float(digits=(6, 2), default=100.00)
+    porcentajeTotal = fields.Float(default=100.00)
     montoCuotasCanceladas = fields.Monetary(
-        string='Cuotas Canceladas', default=100.00)
+        string='Cuotas Canceladas', compute='calcular_valor_cuotas_canceladas')
     cuotasCanceladas = fields.Integer(default=37)
     montoPendiente = fields.Float()
-    porcentajeCancelado = fields.Float(digits=(6, 2))
+    porcentajeCancelado = fields.Float(digits=(6, 2), compute='calcular_porcentaj_cuotas_canc')
     porcentajePendiente = fields.Float(digits=(6, 2))
     cuotasPendientes = fields.Integer()
 
@@ -183,7 +183,7 @@ class EntegaVehiculo(models.Model):
     observacionesCalificador = fields.Text(string="Observaciones")
 
     @api.depends('montoCuotasCanceladas', 'valorTotalPlan')
-    def calcular_porcentaj_cuatas_canc(self):
+    def calcular_porcentaj_cuotas_canc(self):
         for rec in self:
             rec.porcentajeCancelado = rec.montoCuotasCanceladas / rec.valorTotalPlan
 
