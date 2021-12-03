@@ -183,7 +183,9 @@
                                 <group>
                                     <label for="plazoMeses" string="Plazo"/>
                                     <label for="tipoAdj" string="Tipo Adj."/>
-                                    <label for="fechaAdj" string="Fecha de Adj."/>
+                                    <label for="fechaAdj" string="Fecha de Adj."/>                                
+                                </group>
+                                <group>
                                     <field name="plazoMeses" nolabel="1" />
                                     <field name="tipoAdj" nolabel="1" />
                                     <field name="fechaAdj" nolabel="1" />                                   
