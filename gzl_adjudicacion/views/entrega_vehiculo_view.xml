@@ -176,7 +176,7 @@
                             <div class="col-xs-4 col-sm-3">
                                 <group>
                                     <field name="montoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
-                                    <field name="valorCuota" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="valorCuota"  options="{'no_create': True, 'no_open': True}"/>
                                 </group>
                             </div>
                             <div class="col-xs-4 col-sm-4">
@@ -189,20 +189,29 @@
                             </div>
                             <div class="col-xs-4 col-sm-4">
                                 <group>
-                                    <label for="fechaAdj" string="Fecha de Adj."/>
-                                    <field name="fechaAdj" nolabel="1" />
+                                    <field name="montoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="montoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                             <div class="col-xs-4 col-sm-4">
+                                <group>
+                                    <field name="plazoMeses" nolabel="1" />
+                                    <field name="plazoMeses" nolabel="1" />
+                                </group>
+                            </div>
+                            <div class="col-xs-4 col-sm-4">
+                                <group>
+                                    <field name="plazoMeses" nolabel="1" />%
+                                    <field name="plazoMeses" nolabel="1" />%
                                 </group>
                             </div>
                         </div>
+                        <separator/>
                         <div class="row">
-                            <div class="col-xs-12 col-sm-4">
+                            <div class="col-xs-4 col-sm-4">
                                 <group>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-4">
-                                <group>
-                                    <label for="valorTotalPlan" string="what you want to appear for note_date"/>
-                                    <field name="valorTotalPlan" nolabel="1" />
+                                    <field name="plazoMeses" nolabel="1" />
+                                    <field name="tipoAdj" nolabel="1" />
                                 </group>
                             </div>
                         </div>
