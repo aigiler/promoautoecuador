@@ -209,12 +209,6 @@
                                     <field name="porcentajeCancelado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                 </group>
                             </div>
-                            <div class="col-xs-12 col-sm-4">
-                                <group>
-                                    
-                                    
-                                </group>
-                            </div>
                         </div>
 
 
