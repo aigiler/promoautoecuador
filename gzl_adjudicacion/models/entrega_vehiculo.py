@@ -138,7 +138,7 @@ class EntegaVehiculo(models.Model):
     puntosPorcentajeCancelado = fields.Integer(
         compute='calcular_puntos_porcentaje_cancelado')
 
-    ingresosFamiliares = fields.Monetary(string='Ingresos familiares')
+    ingresosFamiliares = fields.Monetary(string='Ingresos familiares', default=100.00)
     porcentajeIngresos = fields.Float(default=100.00)
     gastosFamiliares = fields.Monetary(
         string='Gastos familiares', compute='calcular_valor_gastos_familiares')
@@ -191,12 +191,12 @@ class EntegaVehiculo(models.Model):
 
     observacionesCalificador = fields.Text(string="Observaciones")
 
-    @api.depends('porcentajeGastos', 'porcentajeIngresos', )
+    @api.depends('porcentajeGastos', 'porcentajeIngresos')
     def calcular_porcentaje_disponibilidad(self):
         for rec in self:
             rec.porcentajeDisponibilidad = rec.porcentajeIngresos - rec.porcentajeGastos
 
-    @api.depends('ingresosFamiliares', 'gastosFamiliares', )
+    @api.depends('ingresosFamiliares', 'gastosFamiliares' )
     def calcular_valor_disponibilidad(self):
         for rec in self:
             rec.disponibilidad = rec.ingresosFamiliares - rec.gastosFamiliares
