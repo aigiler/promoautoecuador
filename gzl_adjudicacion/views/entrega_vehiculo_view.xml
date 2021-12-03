@@ -194,7 +194,7 @@
                                 </group>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group>
                                     <field name="valorTotalPlan" options="{'no_create': True, 'no_open': True}"/>
