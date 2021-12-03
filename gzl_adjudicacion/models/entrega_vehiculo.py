@@ -191,8 +191,8 @@ class EntegaVehiculo(models.Model):
     def calcular_valor_cuotas_canceladas(self):
         for rec in self:
             rec.porcentajeTotal= 100.00
-            rec.cuotasCanceladas =37
-            rec.montoCuotasCanceladas = rec.valorCuota * rec.cuotasCanceladas
+            rec.cuotasCanceladas =31
+            rec.montoCuotasCanceladas = (rec.valorCuota * rec.cuotasCanceladas)*100
 
     @api.depends('valorCuota', 'plazoMeses')
     def calcular_valor_total_plan(self):
