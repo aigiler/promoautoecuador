@@ -222,8 +222,7 @@ class EntegaVehiculo(models.Model):
             else:
                rec.porcentajeGastos = 0
 
-    
-     
+ 
     @api.depends('porcentajeCancelado')
     def calcular_puntos_porcentaje_cancelado(self):
         for rec in self:
