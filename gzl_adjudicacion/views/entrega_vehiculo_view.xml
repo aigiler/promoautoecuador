@@ -186,12 +186,13 @@
                                     <label for="tipoAdj" string="Tipo Adj."/>
                                     <field name="plazoMeses" nolabel="1" />
                                     <field name="tipoAdj" nolabel="1" />
-                                    <field name="fechaAdj" nolabel="1" />
+                                    
                                 </group>
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group>
                                     <label for="fechaAdj" string="Fecha de Adj."/>
+                                    <field name="fechaAdj" nolabel="1" />
                                 </group>
                             </div>
                         </div>
