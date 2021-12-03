@@ -112,9 +112,9 @@ class EntegaVehiculo(models.Model):
     fechaAdj = fields.Date(string='Fecha de Adj.')
 
     valorTotalPlan = fields.Monetary(compute= 'calcular_valor_total_plan', string='Valor Total del Plan')
-    porcentajeTotal = fields.Float(digits=(6, 2))
-    montoCancelado = fields.Monetary(string='Cuotas Canceladas')
-    cuotasCanceladas  = fields.Integer()
+    porcentajeTotal = fields.Float(digits=(6, 2), default=100.00)
+    montoCuotasCanceladas = fields.Monetary(string='Cuotas Canceladas', default=100.00)
+    cuotasCanceladas  = fields.Integer(default=37)
     montoPendiente = fields.Float()
     porcentajeCancelado = fields.Float(digits=(6, 2))
     porcentajePendiente = fields.Float(digits=(6, 2))
@@ -171,12 +171,21 @@ class EntegaVehiculo(models.Model):
     observacionesCalificador  = fields.Text(string="Observaciones")
 
 
+    @api.depends('montoCuotasCanceladas', 'valorTotalPlan')
+    def calcular_porcentaj_cuatas_canc(self):
+        for rec in self:
+            rec.porcentajeCancelado = rec.montoCuotasCanceladas / rec.valorTotalPlan
+
+
+    @api.depends('valorCuota', 'plazoMeses', 'cuotasCanceladas')
+    def calcular_valor_cuotas_canceladas(self):
+        for rec in self:
+            rec.montoCuotasCanceladas = rec.valorCuota * rec.cuotasCanceladas
+
     @api.depends('valorCuota', 'plazoMeses')
     def calcular_valor_total_plan(self):
         for rec in self:
             rec.valorTotalPlan = rec.valorCuota * rec.plazoMeses
-    
-
 
     @api.depends('nombreSocioAdjudicado')
     def buscar_parner(self):
