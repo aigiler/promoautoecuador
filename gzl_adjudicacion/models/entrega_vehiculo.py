@@ -216,9 +216,14 @@ class EntegaVehiculo(models.Model):
     @api.depends('ingresosFamiliares', 'gastosFamiliares')
     def calcular_porcentaje_gastos_familiares(self):
         for rec in self:
-            rec.porcentajeGastos = (
+            if rec.gastosFamiliares:
+                rec.porcentajeGastos = (
                 rec.gastosFamiliares / rec.ingresosFamiliares) * 100
+            else:
+               rec.porcentajeGastos = 0
 
+    
+     
     @api.depends('porcentajeCancelado')
     def calcular_puntos_porcentaje_cancelado(self):
         for rec in self:
