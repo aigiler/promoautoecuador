@@ -179,7 +179,7 @@
                                     <field name="valorCuota" options="{'no_create': True, 'no_open': True}"/>
                                 </group>
                             </div>
-                            <div class="col-xs-8 col-sm-8">
+                            <div class="col-xs-4 col-sm-4">
                                 <group>
                                     <label for="plazoMeses" string="Plazo"/>
                                     <label for="tipoAdj" string="Tipo Adj."/>
@@ -187,7 +187,7 @@
                                     <field name="tipoAdj" nolabel="1" />                             
                                 </group>
                             </div>
-                            <div class="col-xs-8 col-sm-8">
+                            <div class="col-xs-4 col-sm-4">
                                 <group>
                                     <label for="plazoMeses" string="Plazo"/>
                                     <label for="tipoAdj" string="Tipo Adj."/>
