@@ -232,8 +232,25 @@ class EntegaVehiculo(models.Model):
         for rec in self:
             if rec.montoAdjudicado:
                 rec.valorDelBien = rec.montoAdjudicado
+
             else:
                 rec.valorDelBien = 0.00
+
+    @api.depends('montoAdjudicado')
+    def set_valor_del_bien(self):
+        for rec in self:
+            if rec.montoAdjudicado:
+                rec.valorDelBien = rec.montoAdjudicado
+            else:
+                rec.valorDelBien = 0.00
+
+    @api.depends('montoCuotasCanceladas')
+    def set_valor_saldo_plan(self):
+        for rec in self:
+            if rec.montoCuotasCanceladas:
+                rec.saldoPlan = rec.montoCuotasCanceladas
+            else:
+                rec.saldoPlan = 0.00
 
     @api.depends('montoAdjudicado', 'montoPendiente')
     def setear_montos_bien(self):
