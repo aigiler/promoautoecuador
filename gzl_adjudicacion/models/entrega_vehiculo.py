@@ -206,7 +206,7 @@ class EntegaVehiculo(models.Model):
 
     observacionesCalificador = fields.Text(string="Observaciones")
 
- @api.depends('valorDelBien', 'saldoPlan')
+    @api.depends('valorDelBien', 'saldoPlan')
     def calcular_porcentaj_saldo_plan(self):
         for rec in self:
             if rec.saldoPlan:
