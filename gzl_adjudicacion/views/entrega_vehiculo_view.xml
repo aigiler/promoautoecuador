@@ -263,10 +263,7 @@
                         </div>
                         <separator/>
                         <div class="row" style="border: 1px solid black;">
-                            <div class="col-xs-12 col-sm-4">
-                                <text>Score de Credito Mayor a 800 puntos</text>
-                            </div>
-                            <div class="col-xs-12 col-sm-5">
+                            <div class="col-xs-12 col-sm-9">
                                 <group>
                                     <field name="scoreCredito" string="Score de Credito Mayor a 800 puntos " />
                                 </group>
