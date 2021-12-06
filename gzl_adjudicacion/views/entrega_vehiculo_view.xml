@@ -264,13 +264,11 @@
                         <separator/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
-                                <group>
-                                    <label for="scoreCredito" string="Score de Credito Mayor a 800 puntos " />
-                                </group>
+                                <text>Score de Credito Mayor a 800 puntos</text>
                             </div>
                             <div class="col-xs-12 col-sm-5">
-                                <group colspan="4">
-                                    <field name="scoreCredito" nolabel="1"/>
+                                <group>
+                                    <field name="scoreCredito" string="Score de Credito Mayor a 800 puntos " />
                                 </group>
                             </div>
                             <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
@@ -307,6 +305,12 @@
                                 </group>
                             </div>
                         </div>
+
+
+
+
+
+
                     </div>
                 </sheet>
             </form >
