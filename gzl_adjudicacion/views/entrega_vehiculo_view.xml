@@ -393,7 +393,7 @@
                         <separator/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-9">
-                                 <text class="text-center">
+                                <text class="text-center">
                                     <strong>TOTAL PUNTOS</strong>
                                 </text>
                             </div>
@@ -401,10 +401,10 @@
                                 <field name="totalPuntosCalificador" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                             </div>
                         </div>
-                         <separator/>
-                         <div class="row">
+                        <separator/>
+                        <div class="row">
                             <div class="col-xs-12 col-sm-6">
-                                 <text class="text-center">
+                                <text class="text-center">
                                     <strong>Titular, Conyugue y Depositario</strong>
                                 </text>
                             </div>
@@ -414,7 +414,7 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12 col-sm-6">
-                                 <text class="text-center">
+                                <text class="text-center">
                                     <strong>Titular, Conyugue y Garante Solidario</strong>
                                 </text>
                             </div>
@@ -423,9 +423,9 @@
                             </div>
                         </div>
                         <separator/>
-                        <div class="row" >
+                        <div class="row">
                             <div class="col-xs-12 col-sm-12" style="border-bottom: 1px solid black;">
-                                 <text class="text-center">
+                                <text class="text-center">
                                     <strong>Observaciones:</strong>
                                 </text>
                             </div>
@@ -436,8 +436,74 @@
                         <separator class="text-center" string="COMITÉ DE APROBACION"/>
                         <div class="row">
                         </div>
-
-
+                    </div>
+                    <!-- liquidacion_orden_compra -->
+                    <div states="liquidacion_orden_compra">
+                    <separator class="text-center" string="LIQUIDACION DE COMPRA"/>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12">
+                                <group>
+                                    <field name="nombreSocioAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="vatAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-4">
+                                <group>
+                                    <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-3">
+                                <group>
+                                    <field name="montoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-4 col-sm-3">
+                                <group>
+                                    <label for="plazoMeses" string="Plazo"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-4 col-sm-3">
+                                <group>
+                                    <label for="tipoAdj" string="Tipo Adj."/>
+                                </group>
+                            </div>
+                            <div class="col-xs-4 col-sm-3">
+                                <group>
+                                    <label for="fechaAdj" string="Fecha de Adj."/>
+                                </group>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-3">
+                                <group>
+                                    <field name="valorCuota" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-4 col-sm-3">
+                                <group>
+                                    <field name="plazoMeses" nolabel="1" />
+                                </group>
+                            </div>
+                            <div class="col-xs-4 col-sm-3">
+                                <group>
+                                    <field name="tipoAdj" nolabel="1" />
+                                </group>
+                            </div>
+                            <div class="col-xs-4 col-sm-3">
+                                <group>
+                                    <field name="fechaAdj" nolabel="1" />
+                                </group>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- liquidacion_orden_compra -->
+                    <div states="liquidacion_orden_compra">
                     </div>
                 </sheet>
             </form >
