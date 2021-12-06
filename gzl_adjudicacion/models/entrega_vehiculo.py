@@ -232,15 +232,6 @@ class EntegaVehiculo(models.Model):
         for rec in self:
             if rec.montoAdjudicado:
                 rec.valorDelBien = rec.montoAdjudicado
-
-            else:
-                rec.valorDelBien = 0.00
-
-    @api.depends('montoAdjudicado')
-    def set_valor_del_bien(self):
-        for rec in self:
-            if rec.montoAdjudicado:
-                rec.valorDelBien = rec.montoAdjudicado
             else:
                 rec.valorDelBien = 0.00
 
