@@ -199,6 +199,7 @@
                                 <group>
                                     <field name="valorTotalPlan" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="montoCuotasCanceladas" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="montoCuotasPendientes" options="{'no_create': True, 'no_open': True}"/>
                                 </group>
                             </div>
                             <div class="col-xs-12 col-sm-4">
