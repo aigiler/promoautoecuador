@@ -274,6 +274,17 @@
                         </div>
                         <separator/>
                         <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-9">
+                                <field name="antiguedadLaboral" string="Antigüedad Laboral o Comercial Mayor a 2 años" />
+                            </div>
+                            <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
+                                <group>
+                                    <field name="puntosAntiguedadLaboral" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                        </div>
+                        <separator/>
+                        <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-3">
                                 <text>Posee Bienes</text>
                             </div>

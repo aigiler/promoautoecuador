@@ -169,44 +169,101 @@ class EntegaVehiculo(models.Model):
     puntosScoreCredito = fields.Integer(compute='calcular_punto_score_credito')
     antiguedadLaboral = fields.Integer(
         string="Antigüedad Laboral o Comercial Mayor a 2 años")
-    puntosAntiguedadLaboral = fields.Integer()
+    puntosAntiguedadLaboral = fields.Integer(
+        compute='calcular_puntos_antiguedad_laboral')
 
-    totalPuntosBienesAdj = fields.Integer()
+    totalPuntosBienesAdj = fields.Integer(compute='calcular_puntos_bienes')
 
     poseeCasa = fields.Selection(selection=[
         ('si', 'SI'),
         ('no', 'NO')
     ], string='Fiscalia General del Estado', default='no')
 
-    puntosCasa = fields.Integer()
+    puntosCasa = fields.Integer(compute='set_puntos_casa')
 
     poseeTerreno = fields.Selection(selection=[
         ('si', 'SI'),
         ('no', 'NO')
     ], string='Fiscalia General del Estado', default='no')
 
-    puntosTerreno = fields.Integer()
+    puntosTerreno = fields.Integer(compute='set_puntos_terreno')
 
     poseeVehiculo = fields.Selection(selection=[
         ('si', 'SI'),
         ('no', 'NO')
     ], string='Fiscalia General del Estado', default='no')
-    puntosVehiculo = fields.Integer()
+    puntosVehiculo = fields.Integer(compute='set_puntos_vehiculo')
     poseeMotos = fields.Selection(selection=[
         ('si', 'SI'),
         ('no', 'NO')
     ], string='Fiscalia General del Estado', default='no')
-    puntosMotos = fields.Integer()
+    puntosMotos = fields.Integer(compute='set_puntos_motos')
     poseeMueblesEnseres = fields.Selection(selection=[
         ('si', 'SI'),
         ('no', 'NO')
     ], string='Fiscalia General del Estado', default='no')
-    puntosMueblesEnseres = fields.Integer()
+    puntosMueblesEnseres = fields.Integer(compute='set_puntos_muebles')
 
     totalPuntosCalificador = fields.Integer()
 
     observacionesCalificador = fields.Text(string="Observaciones")
 
+    @api.depends('poseeCasa')
+    def set_puntos_casa(self):
+        for rec in self:
+            if rec.poseeCasa == 'si':
+                rec.puntosCasa = 200
+            else:
+                rec.puntosCasa = 0
+
+    @api.depends('poseeTerreno')
+    def set_puntos_terreno(self):
+        for rec in self:
+            if rec.poseeTerreno == 'si':
+                rec.puntosTerreno = 150
+            else:
+                rec.puntosTerreno = 0
+
+    @api.depends('poseeMotos')
+    def set_puntos_motos(self):
+        for rec in self:
+            if rec.poseeMotos == 'si':
+                rec.puntosMotos = 50
+            else:
+                rec.puntosMotos = 0
+
+    @api.depends('poseeVehiculo')
+    def set_puntos_vehiculo(self):
+        for rec in self:
+            if rec.poseeVehiculo == 'si':
+                rec.puntosVehiculo = 100
+            else:
+                rec.puntosVehiculo = 0
+
+    @api.depends('poseeMueblesEnseres')
+    def set_puntos_muebles(self):
+        for rec in self:
+            if rec.poseeMueblesEnseres == 'si':
+                rec.puntosMueblesEnseres = 25
+            else:
+                rec.puntosMueblesEnseres = 0
+
+    @api.depends('puntosMueblesEnseres', 'puntosVehiculo', 'puntosMotos', 'puntosTerreno', 'puntosCasa')
+    def calcular_puntos_bienes(self):
+        for rec in self:
+            rec.totalPuntosBienesAdj = rec.puntosCasa + rec.puntosTerreno + \
+                rec.puntosVehiculo + rec.puntosMotos + rec.puntosMueblesEnseres
+
+    @api.depends('antiguedadLaboral')
+    def calcular_puntos_antiguedad_laboral(self):
+        for rec in self: 
+            if rec.antiguedadLaboral >= 2:
+                rec.puntosAntiguedadLaboral = 200
+            elif rec.antiguedadLaboral >= 1:
+                rec.puntosAntiguedadLaboral = 100
+            else:
+                rec.puntosAntiguedadLaboral = 0
+        
 
     @api.depends('scoreCredito')
     def calcular_punto_score_credito(self):
@@ -353,7 +410,7 @@ class EntegaVehiculo(models.Model):
     def calcular_valor_cuotas_pendientes(self):
         for rec in self:
             rec.montoCuotasPendientes = rec.valorTotalPlan - rec.montoCuotasCanceladas
-    
+
     @api.depends('valorCuota', 'cuotasCanceladas')
     def calcular_valor_cuotas_canceladas(self):
         for rec in self:
