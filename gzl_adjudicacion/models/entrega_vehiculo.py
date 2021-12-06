@@ -204,9 +204,15 @@ class EntegaVehiculo(models.Model):
     ], string='Fiscalia General del Estado', default='no')
     puntosMueblesEnseres = fields.Integer(compute='set_puntos_muebles')
 
-    totalPuntosCalificador = fields.Integer()
+    totalPuntosCalificador = fields.Integer(compute='calcular_total_puntos')
 
     observacionesCalificador = fields.Text(string="Observaciones")
+
+
+    def calcular_total_puntos(self):
+        for rec in self:
+            rec.totalPuntosCalificador = rec.puntosPorcentajSaldos + rec.puntosIngresos + rec.puntosScoreCredito + rec.totalPuntosBienesAdj 
+            + rec.puntosAntiguedadLaboral  + rec.puntosMueblesEnseres
 
     @api.depends('poseeCasa')
     def set_puntos_casa(self):
