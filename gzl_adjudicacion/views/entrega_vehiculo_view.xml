@@ -322,7 +322,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-12 col-sm-3">
+                            <div class="col-xs-12 col-sm-5">
                                 <group>
                                     <text>
                                         <strong>Casa</strong>
@@ -342,11 +342,13 @@
                                 </group>
                             </div>
                             <div class="col-xs-12 col-sm-3">
-                                <field name="poseeCasa" nolabel="1"/>
-                                <field name="poseeTerreno" nolabel="1"/>
-                                <field name="poseeVehiculo" nolabel="1"/>
-                                <field name="poseeMotos" nolabel="1"/>
-                                <field name="poseeMueblesEnseres" nolabel="1"/>
+                                <group>
+                                    <field name="poseeCasa" nolabel="1"/>
+                                    <field name="poseeTerreno" nolabel="1"/>
+                                    <field name="poseeVehiculo" nolabel="1"/>
+                                    <field name="poseeMotos" nolabel="1"/>
+                                    <field name="poseeMueblesEnseres" nolabel="1"/>
+                                </group>
                             </div>
                             <div class="col-xs-12 col-sm-3">
                                 <field name="puntosCasa" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
