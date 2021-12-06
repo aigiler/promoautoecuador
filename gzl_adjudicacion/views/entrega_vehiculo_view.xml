@@ -440,6 +440,7 @@
                     <!-- liquidacion_orden_compra -->
                     <div states="liquidacion_orden_compra">
                     <separator class="text-center" string="LIQUIDACION DE COMPRA"/>
+                    <div style="border: 1px solid black;">
                         <div class="row">
                             <div class="col-xs-12 col-md-12">
                                 <group>
@@ -501,6 +502,7 @@
                                 </group>
                             </div>
                         </div>
+                    </div>
                     </div>
                     <!-- liquidacion_orden_compra -->
                     <div states="liquidacion_orden_compra">
