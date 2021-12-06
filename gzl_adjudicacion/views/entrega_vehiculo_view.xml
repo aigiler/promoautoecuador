@@ -321,45 +321,75 @@
                                 </group>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-5">
+                                <text>
+                                    <strong>Casa</strong>
+                                </text>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <field name="poseeCasa" nolabel="1"/>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <field name="puntosCasa" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-5">
+                                <text>
+                                    <strong>Terreno</strong>
+                                </text>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <field name="poseeTerreno" nolabel="1"/>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <field name="puntosTerreno" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-5">
+                                <text>
+                                    <strong>Vehiculo</strong>
+                                </text>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <field name="poseeVehiculo" nolabel="1"/>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <field name="puntosVehiculo" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-5">
+                                <text>
+                                    <strong>Motos</strong>
+                                </text>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <field name="poseeMotos" nolabel="1"/>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <field name="puntosMotos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-xs-12 col-sm-5">
                                 <group>
                                     <text>
                                         <strong>Casa</strong>
                                     </text>
-                                    <text>
-                                        <strong>Terreno</strong>
-                                    </text>
-                                    <text>
-                                        <strong>Vehiculo</strong>
-                                    </text>
-                                    <text>
-                                        <strong>Motos</strong>
-                                    </text>
-                                    <text>
-                                        <strong>Muebles y Enseres</strong>
-                                    </text>
                                 </group>
                             </div>
                             <div class="col-xs-12 col-sm-3">
                                 <group>
-                                    <field name="poseeCasa" nolabel="1"/>
-                                    <field name="poseeTerreno" nolabel="1"/>
-                                    <field name="poseeVehiculo" nolabel="1"/>
-                                    <field name="poseeMotos" nolabel="1"/>
                                     <field name="poseeMueblesEnseres" nolabel="1"/>
                                 </group>
                             </div>
                             <div class="col-xs-12 col-sm-3">
-                                <field name="puntosCasa" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                <field name="puntosTerreno" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                <field name="puntosVehiculo" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                <field name="puntosMotos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                 <field name="puntosMueblesEnseres" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                             </div>
-
-
-
                         </div>
 
 
