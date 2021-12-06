@@ -264,7 +264,7 @@
                         <separator/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
-                                <text><strong>Score de Credito Mayor a 800 puntos</strong></text>
+                                <text class="align-middle"><strong>Score de Credito Mayor a 800 puntos</strong></text>
                             </div>
                             <div class="col-xs-12 col-sm-5">
                                 <group>
