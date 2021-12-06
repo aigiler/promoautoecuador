@@ -225,6 +225,7 @@
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group>
+                                    <text></text>
                                     <field name="porcentajeSaldoPlan" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                 </group>
                             </div>

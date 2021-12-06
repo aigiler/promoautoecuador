@@ -227,10 +227,10 @@ class EntegaVehiculo(models.Model):
             else:
                 rec.puntosPorcentajSaldos = 0
 
-    @api.depends('valorDelBien')
+    @api.depends('montoAdjudicado')
     def set_valor_del_bien(self):
         for rec in self:
-            if rec.valorDelBien:
+            if rec.montoAdjudicado:
                 rec.valorDelBien = rec.montoAdjudicado
             else:
                 rec.valorDelBien = 0.00
