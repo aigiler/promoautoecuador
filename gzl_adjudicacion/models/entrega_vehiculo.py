@@ -339,7 +339,7 @@ class EntegaVehiculo(models.Model):
                 rec.porcentajeCancelado = 0.00
 
     @api.depends('valorTotalPlan', 'montoCuotasCanceladas')
-    def ccalcular_valor_cuotas_pendientes(self):
+    def calcular_valor_cuotas_pendientes(self):
         for rec in self:
             rec.montoCuotasPendientes = rec.valorTotalPlan - rec.montoCuotasCanceladas
     
