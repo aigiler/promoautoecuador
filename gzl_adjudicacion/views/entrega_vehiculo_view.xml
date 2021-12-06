@@ -705,8 +705,10 @@
                         </div>
 
                     </div>
-                    <!-- liquidacion_orden_compra -->
-                    <div states="liquidacion_orden_compra">
+                    <!-- entrega_vehiculo -->
+                    <div states="entrega_vehiculo">
+                    <separator class="text-center" string="LIQUIDACION DE COMPRA"/>
+                    <field name="mes" />
                     </div>
                 </sheet>
             </form >

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import date, timedelta
+import datetime
 from logging import StringTemplateStyle
 import logging
 from odoo import api, fields, models
@@ -223,6 +224,15 @@ class EntegaVehiculo(models.Model):
     nombreConsesionario = fields.Char(string="NOMBRE DEL CONCESIONARIO:")
     observacionesLiquidacion = fields.Text(string="Observaciones")
 
+    dia  = fields.Char()   
+    mes  = fields.Char(string='')
+    anio  = fields.Char()
+
+
+    def definir_mes(self):
+        for rec in self:
+            rec.mes  = datetime.strptime(datetime.today(), '%Y-%m-%d').strftime('%B')
+    
     def calcular_valor_cheque(self):
         for rec in self:
             rec.montoChequeConsesionario = rec.valorAdjParaCompra - rec.valorComisionFactura - rec.comisionDispositivoRastreo - rec.montoAnticipoConsesionaria
