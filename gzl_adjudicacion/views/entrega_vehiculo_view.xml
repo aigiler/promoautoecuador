@@ -392,7 +392,7 @@
                         </div>
                         <separator/>
                         <div class="row" style="border: 1px solid black;">
-                            <div class="col-xs-12 col-sm-3">
+                            <div class="col-xs-12 col-sm-9">
                                  <text class="text-center">
                                     <strong>TOTAL PUNTOS</strong>
                                 </text>
