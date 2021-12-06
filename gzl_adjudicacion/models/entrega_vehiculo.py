@@ -133,7 +133,7 @@ class EntegaVehiculo(models.Model):
     cuotasPendientes = fields.Integer()
 
     porcentajeSaldoPlan = fields.Float(
-        digits=(6, 2), compute='calcular_porcentaj_saldo_plan')
+        digits=(6, 2), compute='calcular_porcentaj_saldo_plan', default=0.00)
 
     puntosPorcentajSaldos = fields.Integer(
         compute='calcular_puntos_porcentaje_saldos')
@@ -206,6 +206,15 @@ class EntegaVehiculo(models.Model):
 
     observacionesCalificador = fields.Text(string="Observaciones")
 
+ @api.depends('valorDelBien', 'saldoPlan')
+    def calcular_porcentaj_saldo_plan(self):
+        for rec in self:
+            if rec.saldoPlan:
+                rec.porcentajeSaldoPlan = (
+                    rec.valorDelBien/rec.saldoPlan) * 100
+            else:
+                rec.porcentajeSaldoPlan = 0.00
+
     @api.depends('porcentajeSaldoPlan')
     def calcular_puntos_porcentaje_saldos(self):
         for rec in self:
@@ -217,13 +226,6 @@ class EntegaVehiculo(models.Model):
                 rec.puntosPorcentajSaldos = 200
             else:
                 rec.puntosPorcentajSaldos = 0
-
-    @api.depends('valorDelBien', 'saldoPlan')
-    def calcular_porcentaj_saldo_plan(self):
-        for rec in self:
-            if rec.saldoPlan:
-                rec.porcentajeSaldoPlan = (
-                    rec.valorDelBien/rec.saldoPlan) * 100
 
     @api.depends('valorDelBien')
     def set_valor_del_bien(self):
@@ -241,7 +243,6 @@ class EntegaVehiculo(models.Model):
                     rec.valorCuota / rec.ingresosFamiliares) * 100
             else:
                 rec.porcentajeCuotaPlan = 0
-
 
     @api.depends('porcentajeCuotaPlan')
     def calcular_puntos_saldos_plan(self):
