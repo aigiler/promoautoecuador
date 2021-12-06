@@ -208,6 +208,9 @@ class EntegaVehiculo(models.Model):
 
     observacionesCalificador = fields.Text(string="Observaciones")
 
+    titularConyugePuntos  = fields.Char(string="Titular, Conyugue y Depositario")
+    titularConyugeGarantePuntos  = fields.Char(string="Titular, Conyugue y Garante Solidario")
+
     def calcular_total_puntos(self):
         for rec in self:
             rec.totalPuntosCalificador = rec.puntosPorcentajeCancelado + rec.puntosPorcentajSaldos +  rec.puntosPorcentajeCancelado + rec.puntosScoreCredito + rec.puntosAntiguedadLaboral + rec.totalPuntosBienesAdj
