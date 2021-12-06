@@ -288,7 +288,7 @@
                             </div>
                             <div class="col-xs-12 col-sm-5">
                                 <group>
-                                    <field name="antiguedadLaboral" nolabel="1" string="Antigüedad Laboral o Comercial Mayor a 2 años " /> Años
+                                    <field name="antiguedadLaboral" nolabel="1" string="Antigüedad Laboral o Comercial Mayor a 2 años " />
                                 </group>
                             </div>
                             <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
@@ -342,6 +342,7 @@
                                 <field name="puntosMotos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                 <field name="puntosMueblesEnseres" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                             </div>
+
 
                         
                         </div>
