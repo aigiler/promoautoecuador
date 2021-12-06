@@ -624,18 +624,6 @@
                             </div>
                             <div class="col-xs-12 col-sm-8">
                                 <group>
-                                    <text>ANTICIPO AL CONCESIONARIO	</text>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-2">
-                            </div>
-                            <div class="col-xs-12 col-sm-2">
-                                <group>
-                                    <field name="montoAnticipoConsesionaria" nolabel="1"/>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-8">
-                                <group>
                                     <text>COMISION FACTURA A NOMBRE CONCESIONARI	</text>
                                 </group>
                             </div>

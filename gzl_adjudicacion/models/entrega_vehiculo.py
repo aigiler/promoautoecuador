@@ -242,7 +242,7 @@ class EntegaVehiculo(models.Model):
             else:
                 rec.valorAdjParaCompra = rec.montoVehiculo
 
-
+    @api.depends('montoVehiculo', 'montoAdjudicado')
     def calcular_monto_a_favor(self):
         for rec in self:
             rec.montoAFavor = rec.montoVehiculo - rec.montoAdjudicado
