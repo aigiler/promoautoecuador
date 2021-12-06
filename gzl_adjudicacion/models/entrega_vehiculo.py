@@ -211,6 +211,43 @@ class EntegaVehiculo(models.Model):
     titularConyugePuntos  = fields.Char(string="Titular, Conyugue y Depositario")
     titularConyugeGarantePuntos  = fields.Char(string="Titular, Conyugue y Garante Solidario")
 
+    montoVehiculo = fields.Monetary(string = "valor del vehiculo")
+    montoAFavor = fields.Monetary(compute='calcular_monto_a_favor')
+
+    valorAdjParaCompra = fields.Monetary(compute='calcular_valor_adj_para_compra')
+    montoAnticipoConsesionaria = fields.Monetary()
+    comisionFacturaConcesionario  = fields.Float()
+    valorComisionFactura = fields.Monetary(compute='calcular_valor_comision_fact')
+    comisionDispositivoRastreo  = fields.Monetary()
+    montoChequeConsesionario  = fields.Monetary(compute='calcular_valor_cheque')
+    nombreConsesionario = fields.Char(string="NOMBRE DEL CONCESIONARIO:")
+    observacionesLiquidacion = fields.Text(string="Observaciones")
+
+    def calcular_valor_cheque(self):
+        for rec in self:
+            rec.montoChequeConsesionario = rec.valorAdjParaCompra - rec.valorComisionFactura - rec.comisionDispositivoRastreo - rec.montoAnticipoConsesionaria
+
+    @api.depends('montoVehiculo', 'comisionFacturaConcesionario')
+    def calcular_valor_comision_fact(self):
+        for rec in self:
+            decimalPorcentaje = (rec.comisionFacturaConcesionario/100)
+            rec.valorComisionFactura = rec.montoVehiculo * decimalPorcentaje
+
+    @api.depends('montoVehiculo', 'montoAdjudicado')
+    def calcular_valor_adj_para_compra(self):
+        for rec in self:
+            # si el valor del plan adj. es menor al valor del vehiculo
+            if rec.montoAdjudicado < rec.montoVehiculo:
+                rec.valorAdjParaCompra = rec.montoAdjudicado
+            else:
+                rec.valorAdjParaCompra = rec.montoVehiculo
+
+
+    def calcular_monto_a_favor(self):
+        for rec in self:
+            rec.montoAFavor = rec.montoVehiculo - rec.montoAdjudicado
+
+
     def calcular_total_puntos(self):
         for rec in self:
             rec.totalPuntosCalificador = rec.puntosPorcentajeCancelado + rec.puntosPorcentajSaldos +  rec.puntosPorcentajeCancelado + rec.puntosScoreCredito + rec.puntosAntiguedadLaboral + rec.totalPuntosBienesAdj

@@ -557,9 +557,182 @@
                                 </div>
                             </div>
                         </div>
+                        <separator/>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <text>MONTO DEL PLAN ADJUDICADO</text>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="montoAdjudicado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <text>VALOR DEL VEHICULO</text>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="montoVehiculo" nolabel="1"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <text>SALDO A FAVOR APLICA A CUOTAS FINALES DEL PLAN	</text>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="montoAFavor" nolabel="1"/>
+                                </group>
+                            </div>
+                        </div>
+                        <separator/>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <text>VALOR ADJUDICADO PARA LA COMPRA DEL VEHICULO	</text>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="valorAdjParaCompra" nolabel="1"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <text>ANTICIPO AL CONCESIONARIO	</text>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="montoAnticipoConsesionaria" nolabel="1"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <text>ANTICIPO AL CONCESIONARIO	</text>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="montoAnticipoConsesionaria" nolabel="1"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <text>COMISION FACTURA A NOMBRE CONCESIONARI	</text>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="comisionFacturaConcesionario" nolabel="1"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="valorComisionFactura" nolabel="1"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <text>COMISION POR DISPOSITIVO DE RASTREO	</text>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="comisionDispositivoRastreo" nolabel="1"/>
+                                </group>
+                            </div>
+                        </div>
+                        <separator/>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <text>CHEQUE AL CONCESIONARIO	</text>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="montoChequeConsesionario" nolabel="1"/>
+                                </group>
+                            </div>
+                        </div>
+                        <separator/>
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <text>
+                                        <strong>NOMBRE DEL CONCESIONARIO: </strong>
+                                    </text>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="nombreConsesionario" nolabel="1"/>
+                                </group>
+                            </div>
+                        </div>
+                        <separator/>
+                        <separator/>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12" style="border-bottom: 1px solid black;">
+                                <text class="text-center">
+                                    <strong>Observaciones:</strong>
+                                </text>
+                            </div>
+                            <div class="col-xs-12 col-sm-12">
+                                <field name="observacionesLiquidacion" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                            </div>
+                        </div>
+                        <separator class="text-center" string="COMITÉ DE APROBACION"/>
+                        <div class="row">
+                        </div>
+
+
+
 
 
                     </div>
+
+
+
+
+
+
+
+
+
+
+
+                </div>
                 <!-- liquidacion_orden_compra -->
                 <div states="liquidacion_orden_compra">
                 </div>
