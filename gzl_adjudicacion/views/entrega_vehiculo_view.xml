@@ -264,7 +264,9 @@
                         <separator/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
-                                <text class="align-baseline"><strong>Score de Credito Mayor a 800 puntos</strong></text>
+                                <text class="align-baseline">
+                                    <strong>Score de Credito Mayor a 800 puntos</strong>
+                                </text>
                             </div>
                             <div class="col-xs-12 col-sm-5">
                                 <group>
@@ -279,8 +281,15 @@
                         </div>
                         <separator/>
                         <div class="row" style="border: 1px solid black;">
-                            <div class="col-xs-12 col-sm-9">
-                                <field name="antiguedadLaboral" string="Antigüedad Laboral o Comercial Mayor a 2 años " />
+                            <div class="col-xs-12 col-sm-4">
+                                <text class="align-baseline">
+                                    <strong>Antigüedad Laboral o Comercial Mayor a 2 años</strong>
+                                </text>
+                            </div>
+                            <div class="col-xs-12 col-sm-5">
+                                <group>
+                                    <field name="antiguedadLaboral" nolabel="1" string="Antigüedad Laboral o Comercial Mayor a 2 años " />
+                                </group>
                             </div>
                             <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
                                 <group>
@@ -291,13 +300,19 @@
                         <separator/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-3">
-                                <text>Posee Bienes</text>
+                                <text>
+                                    <strong>Posee Bienes</strong>
+                                </text>
                             </div>
                             <div class="col-xs-12 col-sm-3">
-                                <text>Si/No</text>
+                                <text>
+                                    <strong>Si/No</strong>
+                                </text>
                             </div>
                             <div class="col-xs-12 col-sm-3">
-                                <text>Ptos.</text>
+                                <text>
+                                    <strong>Ptos.</strong>
+                                </text>
                             </div>
                             <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
                                 <group>
@@ -305,6 +320,40 @@
                                 </group>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-3">
+                                <text><strong>Casa</strong></text>
+                                <text><strong>Terreno</strong></text>
+                                <text><strong>Vehiculo</strong></text>
+                                <text><strong>Motos</strong></text>
+                                <text><strong>Muebles y Enseres</strong></text>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <field name="poseeCasa" nolabel="1"/>
+                                <field name="poseeTerreno" nolabel="1"/>
+                                <field name="poseeVehiculo" nolabel="1"/>
+                                <field name="poseeMotos" nolabel="1"/>
+                                <field name="poseeMueblesEnseres" nolabel="1"/>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <field name="puntosCasa" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="puntosTerreno" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="puntosVehiculo" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="puntosMotos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="puntosMueblesEnseres" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                            </div>
+                        
+                        
+                        
+                        Casa
+                        Terreno
+                        Vehiculo
+                        Motos
+                        Muebles y Enseres
+
+                        
+                        </div>
+
 
 
 
