@@ -208,11 +208,9 @@ class EntegaVehiculo(models.Model):
 
     observacionesCalificador = fields.Text(string="Observaciones")
 
-
     def calcular_total_puntos(self):
         for rec in self:
-            rec.totalPuntosCalificador = rec.puntosPorcentajSaldos + rec.puntosIngresos + rec.puntosScoreCredito + rec.totalPuntosBienesAdj 
-            + rec.puntosAntiguedadLaboral  + rec.puntosMueblesEnseres
+            rec.totalPuntosCalificador = rec.puntosPorcentajSaldos + rec.puntosIngresos + rec.puntosScoreCredito + rec.totalPuntosBienesAdj + rec.puntosAntiguedadLaboral + rec.puntosMueblesEnseres
 
     @api.depends('poseeCasa')
     def set_puntos_casa(self):
@@ -262,14 +260,13 @@ class EntegaVehiculo(models.Model):
 
     @api.depends('antiguedadLaboral')
     def calcular_puntos_antiguedad_laboral(self):
-        for rec in self: 
+        for rec in self:
             if rec.antiguedadLaboral >= 2:
                 rec.puntosAntiguedadLaboral = 200
             elif rec.antiguedadLaboral >= 1:
                 rec.puntosAntiguedadLaboral = 100
             else:
                 rec.puntosAntiguedadLaboral = 0
-        
 
     @api.depends('scoreCredito')
     def calcular_punto_score_credito(self):
