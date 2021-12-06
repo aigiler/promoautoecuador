@@ -422,7 +422,7 @@
                                 <field name="titularConyugeGarantePuntos" nolabel="1"/>
                             </div>
                         </div>
-                        
+                        <separator/>
                         <div class="row" >
                             <div class="col-xs-12 col-sm-12" style="border-bottom: 1px solid black;">
                                  <text class="text-center">
@@ -433,15 +433,9 @@
                                 <field name="observacionesCalificador" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                             </div>
                         </div>
-                        
-                        
-                        
-
-
-
-
-
-
+                        <separator class="text-center" string="COMITÉ DE APROBACION"/>
+                        <div class="row">
+                        </div>
 
 
                     </div>
