@@ -166,7 +166,7 @@ class EntegaVehiculo(models.Model):
         digits=(6, 2), compute='calcular_porcentaje_disponibilidad')
 
     scoreCredito = fields.Integer(string="Score de Credito Mayor a 800 puntos")
-    puntosScoreCredito = fields.Integer()
+    puntosScoreCredito = fields.Integer(compute='calcular_punto_score_credito')
     antiguedadLaboral = fields.Integer(
         string="Antigüedad Laboral o Comercial Mayor a 2 años")
     puntosAntiguedadLaboral = fields.Integer()
@@ -206,6 +206,17 @@ class EntegaVehiculo(models.Model):
     totalPuntosCalificador = fields.Integer()
 
     observacionesCalificador = fields.Text(string="Observaciones")
+
+
+    @api.depends('scoreCredito')
+    def calcular_punto_score_credito(self):
+        for rec in self:
+            if rec.scoreCredito >= 500 and rec.scoreCredito <= 799:
+                rec.puntosScoreCredito = 100
+            elif rec.scoreCredito >= 800:
+                rec.puntosScoreCredito = 200
+            else:
+                rec.puntosScoreCredito = 0
 
     @api.depends('valorDelBien', 'saldoPlan')
     def calcular_porcentaj_saldo_plan(self):

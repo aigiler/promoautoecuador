@@ -261,7 +261,23 @@
                                 </group>
                             </div>
                         </div>
+                        <separator/>
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-8">
+                                <field name="scoreCredito" />
+                            </div>
+                             <div class="col-xs-12 col-sm-4" style="border: 0.05px solid black;">
+                                <group>
+                                    <field name="puntosScoreCredito" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                        </div>
 
+
+
+
+
+                        
                     </div>
                 </sheet>
             </form >
