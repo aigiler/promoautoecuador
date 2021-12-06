@@ -264,11 +264,11 @@
                         <separator/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
-                                <text>Score de Credito Mayor a 800 puntos</text>
+                                <text><strong>Score de Credito Mayor a 800 puntos</strong></text>
                             </div>
                             <div class="col-xs-12 col-sm-5">
                                 <group>
-                                    <field name="scoreCredito" string="Score de Credito Mayor a 800 puntos " />
+                                    <field name="scoreCredito" nolabel="1" string="Score de Credito Mayor a 800 puntos " />
                                 </group>
                             </div>
                             <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
