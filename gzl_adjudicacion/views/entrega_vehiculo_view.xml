@@ -274,9 +274,12 @@
                         </div>
                         <separator/>
                         <div class="row" style="border: 1px solid black;">
-                            <div class="col-xs-12 col-sm-8">
-                                <text>Comprometido</text>
-                                <text>Cuota Plan</text>
+                            <div class="col-xs-12 col-sm-4">
+                                <text>Posee Bienes</text>
+                                
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <text>Si/No</text>
                             </div>
                             <div class="col-xs-12 col-sm-4" style="border: 0.05px solid black;">
                                 <group>
