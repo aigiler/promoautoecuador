@@ -132,14 +132,27 @@ class EntegaVehiculo(models.Model):
     porcentajePendiente = fields.Float(digits=(6, 2))
     cuotasPendientes = fields.Integer()
 
+    porcentajeSaldoPlan  = fields.Float(
+        digits=(6, 2), compute='calcular_porcentaj_saldo_plan')
+
+    puntosPorcentajSaldos = fields.Integer(
+        compute='calcular_puntos_porcentaje_saldos')
+
+
     valorDelBien = fields.Monetary(string='Valor del Bien')
     saldoPlan = fields.Monetary(string='Saldo del Plan')
 
     puntosPorcentajeCancelado = fields.Integer(
         compute='calcular_puntos_porcentaje_cancelado')
 
-    porcentajeCuotaPlan = fields.Float(digits=(6, 2))
+    puntosIngresos = fields.Integer(
+        compute='calcular_puntos_ingresos')
 
+    porcentajeCuotaPlan = fields.Float(
+        digits=(6, 2), compute='calcular_porcentaje_cuota_plan')
+
+    puntosSaldosPlan = fields.Float(
+        digits=(6, 2), compute='calcular_puntos_saldos_plan')
     ingresosFamiliares = fields.Monetary(
         string='Ingresos familiares', default=100.00)
     porcentajeIngresos = fields.Float(default=100.00)
@@ -193,6 +206,67 @@ class EntegaVehiculo(models.Model):
     totalPuntosCalificador = fields.Integer()
 
     observacionesCalificador = fields.Text(string="Observaciones")
+
+
+    api.depends('porcentajeSaldoPlan')
+    def calcular_puntos_porcentaje_saldos(self):
+       for rec in self:
+            if rec.porcentajeSaldoPlan >= 0.00 and rec.porcentajeSaldoPlan <= 99.00:
+                rec.puntosPorcentajSaldos = 0
+            elif rec.porcentajeSaldoPlan >= 100.00 and rec.porcentajeSaldoPlan <= 139.00:
+                rec.puntosPorcentajSaldos = 100
+            elif rec.porcentajeSaldoPlan >= 140.00:
+                rec.puntosPorcentajSaldos = 200
+            else:
+                rec.puntosPorcentajSaldos = 0
+
+
+
+    @api.depends('valorDelBien', 'saldoPlan')
+    def calcular_porcentaj_saldo_plan(self):
+        for rec in self:
+            if rec.saldoPlan:
+                rec.porcentajeSaldoPlan = (rec.valorDelBien/rec.saldoPlan) * 100
+
+    @api.depends('valorDelBien')
+    def set_valor_del_bien(self):
+        for rec in self:
+            if rec.valorDelBien:
+               rec.valorDelBien = rec.montoAdjudicado
+            else:
+               rec.valorDelBien = 0.00 
+
+
+    @api.depends('montoAdjudicado', 'montoPendiente')
+    def setear_montos_bien(self):
+        for rec in self:
+            if rec.ingresosFamiliares:
+                rec.porcentajeCuotaPlan = (
+                    rec.valorCuota / rec.ingresosFamiliares) * 100
+
+    @api.depends('porcentajeCuotaPlan')
+    def calcular_puntos_saldos_plan(self):
+        for rec in self:
+            if rec.porcentajeCuotaPlan >= 0.00 and rec.porcentajeCuotaPlan <= 30.00:
+                rec.puntosPorcentajeCancelado = 200
+            elif rec.porcentajeCuotaPlan >= 31.00 and rec.porcentajeCuotaPlan <= 40.00:
+                rec.puntosPorcentajeCancelado = 100
+            elif rec.porcentajeCuotaPlan >= 41.00:
+                rec.puntosPorcentajeCancelado = 0
+            else:
+                rec.puntosPorcentajeCancelado = 0
+
+    @api.depends('porcentajeCuotaPlan')
+    def calcular_puntos_ingresos(self):
+        for rec in self:
+            if rec.porcentajeCuotaPlan >= 0.00 and rec.porcentajeCuotaPlan <= 30.00:
+                rec.puntosPorcentajeCancelado = 200
+            elif rec.porcentajeCuotaPlan >= 31.00 and rec.porcentajeCuotaPlan <= 40.00:
+                rec.puntosPorcentajeCancelado = 100
+            elif rec.porcentajeCuotaPlan >= 41.00:
+                rec.puntosPorcentajeCancelado = 0
+            else:
+                rec.puntosPorcentajeCancelado = 0
 
     @api.depends('valorCuota', 'ingresosFamiliares')
     def calcular_porcentaje_cuota_plan(self):
@@ -283,7 +357,6 @@ class EntegaVehiculo(models.Model):
     def set_campos_cliente_informe_credito(self):
         clienteContrato = ''
         for rec in self:
-            logging.info(rec.nombreSocioAdjudicado)
             if rec.nombreSocioAdjudicado:
                 rec.clienteContrato = rec.nombreSocioAdjudicado
                 rec.cedulaContrato = rec.vatAdjudicado

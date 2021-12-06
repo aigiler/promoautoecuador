@@ -219,6 +219,25 @@
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group>
+                                    <field name="valorDelBien" />
+                                    <field name="saldoPlan" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="porcentajeSaldoPlan" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4" style="border: 0.05px solid black;">
+                                <group>
+                                    <field name="puntosPorcentajSaldos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                        </div>
+                        <separator/>
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
                                     <field name="ingresosFamiliares" />
                                     <field name="gastosFamiliares" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="disponibilidad" options="{'no_create': True, 'no_open': True}"/>
