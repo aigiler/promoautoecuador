@@ -122,10 +122,10 @@
                         </div>
 
                         <separator class="text-center" string="REVISION EN PAGINAS DE CONTROL"/>
-                        <table style=" border-collapse: collapse;">
+                        <table style=" border-collapse: collapse; width:100%">
                             <tbody >
                                 <tr>
-                                    <td colspan="3">
+                                    <td>
                                     <label for="scoreBuroCredito" string="Buró de Crédito" />
                                     <br/>
                                     <label for="poseeAntecedentesPenales" string="Policía Nacional antecedentes"/>
@@ -135,13 +135,13 @@
                                     <label for="funcionJudicial" string="Función Judicial"/>
                                     <br/>
                                     <label for="fiscaliaGeneral" string="Fiscalia General del Estado"/></td>
-                                    <td colspan="3">
+                                    <td>
                                     <text>Score</text><br/>
                                     <text>Posee</text><br/>
                                     <text>Posee</text><br/>
                                     <text>Posee</text><br/>
                                     <text>Posee</text><br/></td>
-                                    <td colspan="3">
+                                    <td>
                                     <field name="scoreBuroCredito" nolabel="1"/><br/>
                                     <field name="poseeAntecedentesPenales" nolabel="1"/><br/>
                                     <field name="estadoTributario" nolabel="1"/><br/>
