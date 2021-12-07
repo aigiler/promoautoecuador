@@ -233,6 +233,7 @@ class EntegaVehiculo(models.Model):
         for rec in self:
             rec.mes  = datetime.strptime(datetime.today(), '%Y-%m-%d').strftime('%B')
     
+    @api.depends('valorAdjParaCompra', 'valorComisionFactura', 'comisionDispositivoRastreo', 'montoAnticipoConsesionaria')
     def calcular_valor_cheque(self):
         for rec in self:
             rec.montoChequeConsesionario = rec.valorAdjParaCompra - rec.valorComisionFactura - rec.comisionDispositivoRastreo - rec.montoAnticipoConsesionaria

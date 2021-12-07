@@ -13,6 +13,7 @@ class Partner(models.Model):
 
     tipo=fields.Char(string='Tipo')
     monto = fields.Float(string='Monto')
+    direccion = fields.Text(string='Dirección')
     tipo_contrato = fields.Many2one("tipo.contrato.adjudicado", String="Tipo de Contrato")
     codigo_cliente = fields.Char(string='Código Cliente')
     fecha_nacimiento  = fields.Date(string='Fecha de nacimiento')
