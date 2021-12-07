@@ -14,10 +14,11 @@ class Asamblea(models.Model):
     fecha_inicio = fields.Datetime(String='Fecha Inicio')
     fecha_fin = fields.Datetime(String='Fecha Fin')
     secuencia = fields.Char(index=True)
+    tipo_asamblea = fields.Many2one('tipo.contrato.adjudicado', string='Tipo de Asamblea')
     state = fields.Selection(selection=[
             ('borrador', 'Borrador'),
             ('en_curso', 'En Curso'),
-            ('finalizada', 'Finalizada')
+            ('cerrado', 'Cerrado')
             ], string='Estado', copy=False, tracking=True, default='borrador')
 
     @api.model

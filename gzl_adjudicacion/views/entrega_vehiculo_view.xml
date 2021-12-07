@@ -593,10 +593,20 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td style="width:50%">
+                                        <text>VALOR DEL VEHICULO</text>
+                                    </td>
+                                    <td style="width:50%">
+                                    </td>
+                                    <td>
+                                        <field name="montoVehiculo" nolabel="1"/>
+                                    </td>
+                                </tr>
+                                <tr>
 
 
                                     <td style="width:50%">
-                                        <text>VALOR DEL VEHICULO</text>
+                                        
                                         <text>SALDO A FAVOR APLICA A CUOTAS FINALES DEL PLAN	</text>
                                         <text>VALOR ADJUDICADO PARA LA COMPRA DEL VEHICULO	</text>
                                         <text>ANTICIPO AL CONCESIONARIO	</text>
@@ -609,7 +619,7 @@
                                     <td>
 
 
-                                        <field name="montoVehiculo" nolabel="1"/>
+                                        
                                         <field name="montoAFavor" nolabel="1"/>
                                         <field name="valorAdjParaCompra" nolabel="1"/>
                                         <field name="montoAnticipoConsesionaria" nolabel="1"/>
