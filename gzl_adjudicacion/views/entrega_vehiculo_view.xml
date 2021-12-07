@@ -96,7 +96,7 @@
                         <separator class="text-center" string="PATRIMONIO"/>
                         <div class="row">
                             <div class="col-xs-12 col-sm-4">
-                                <group>
+                                <group col="5">
                                     <field name="montoAhorroInversiones" widget="monetary"/>
                                     <field name="casaValor" options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
                                     <field name="terrenoValor" widget="monetary"/>
@@ -123,7 +123,6 @@
 
                         <separator class="text-center" string="REVISION EN PAGINAS DE CONTROL"/>
                         <div class="row">
-                            <div class="col">
                             <div class="col-xs-12 col-sm-4">
                                 <group>
                                     <label for="scoreBuroCredito" string="Buró de Crédito" />
@@ -133,8 +132,6 @@
                                     <label for="fiscaliaGeneral" string="Fiscalia General del Estado"/>
                                 </group>
                             </div>
-                            </div>
-                            <div class="col">
                              <div class="col-xs-12 col-sm-4">
                                 <group>
                                     <text>Score</text>
@@ -144,8 +141,6 @@
                                     <text>Posee</text>
                                 </group>
                             </div>
-                            </div>
-                            <div class="col">
                             <div class="col-xs-12 col-sm-4">
                                 <group>
                                     <field name="scoreBuroCredito" nolabel="1"/>
@@ -154,7 +149,6 @@
                                     <field name="funcionJudicial" nolabel="1"/>
                                     <field name="fiscaliaGeneral" nolabel="1"/>
                                 </group>
-                            </div>
                             </div>
                         </div>
                         
