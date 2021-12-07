@@ -566,117 +566,39 @@
                             </div>
                         </div>
                         <separator/>
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-8">
-                                <group>
-                                    <text>MONTO DEL PLAN ADJUDICADO</text>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-2">
-                            </div>
-                            <div class="col-xs-12 col-sm-2">
-                                <group>
-                                    <field name="montoAdjudicado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-8">
-                                <group>
-                                    <text>VALOR DEL VEHICULO</text>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-2">
-                            </div>
-                            <div class="col-xs-12 col-sm-2">
-                                <group>
-                                    <field name="montoVehiculo" nolabel="1"/>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-8">
-                                <group>
-                                    <text>SALDO A FAVOR APLICA A CUOTAS FINALES DEL PLAN	</text>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-2">
-                            </div>
-                            <div class="col-xs-12 col-sm-2">
-                                <group>
-                                    <field name="montoAFavor" nolabel="1"/>
-                                </group>
-                            </div>
-                        </div>
-                        <separator/>
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-8">
-                                <group>
-                                    <text>VALOR ADJUDICADO PARA LA COMPRA DEL VEHICULO	</text>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-2">
-                            </div>
-                            <div class="col-xs-12 col-sm-2">
-                                <group>
-                                    <field name="valorAdjParaCompra" nolabel="1"/>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-8">
-                                <group>
-                                    <text>ANTICIPO AL CONCESIONARIO	</text>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-2">
-                            </div>
-                            <div class="col-xs-12 col-sm-2">
-                                <group>
-                                    <field name="montoAnticipoConsesionaria" nolabel="1"/>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-8">
-                                <group>
-                                    <text>COMISION FACTURA A NOMBRE CONCESIONARI	</text>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-2">
-                                <group>
-                                    <field name="comisionFacturaConcesionario" nolabel="1"/>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-2">
-                                <group>
-                                    <field name="valorComisionFactura" nolabel="1"/>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-8">
-                                <group>
-                                    <text>COMISION POR DISPOSITIVO DE RASTREO	</text>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-2">
-                                <group>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-2">
-                                <group>
-                                    <field name="comisionDispositivoRastreo" nolabel="1"/>
-                                </group>
-                            </div>
-                        </div>
-                        <separator/>
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-8">
-                                <group>
-                                    <text>CHEQUE AL CONCESIONARIO	</text>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-2">
-                                <group>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-2">
-                                <group>
-                                    <field name="montoChequeConsesionario" nolabel="1"/>
-                                </group>
-                            </div>
-                        </div>
+
+                        <table style=" border-collapse: collapse;width:75%">
+                            <tbody>
+                                <tr>
+                                    <td style="width:50%">
+                                    <group>
+                                        <text>MONTO DEL PLAN ADJUDICADO</text>
+                                        <text>VALOR DEL VEHICULO</text>
+                                        <text>SALDO A FAVOR APLICA A CUOTAS FINALES DEL PLAN	</text>
+                                        <text>VALOR ADJUDICADO PARA LA COMPRA DEL VEHICULO	</text>
+                                        <text>ANTICIPO AL CONCESIONARIO	</text>
+                                        <text>COMISION FACTURA A NOMBRE CONCESIONARIO	</text>
+                                        <text>COMISION POR DISPOSITIVO DE RASTREO	</text>
+                                        <text>CHEQUE AL CONCESIONARIO	</text>
+
+                                    </group> 
+                                    <br/></td>
+                                    <td>
+                                    <group>
+                                        <field name="montoAdjudicado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="montoVehiculo" nolabel="1"/>
+                                        <field name="montoAFavor" nolabel="1"/>
+                                        <field name="valorAdjParaCompra" nolabel="1"/>
+                                        <field name="montoAnticipoConsesionaria" nolabel="1"/>
+                                        <field name="comisionFacturaConcesionario" nolabel="1"/>
+                                        <field name="valorComisionFactura" nolabel="1"/>
+                                        <field name="comisionDispositivoRastreo" nolabel="1"/>
+                                        <field name="montoChequeConsesionario" nolabel="1"/>
+                                    </group>
+                                    <br/></td>
+                                </tr>
+                            </tbody>
+                        </table>
                         <separator/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
