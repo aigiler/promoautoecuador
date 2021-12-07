@@ -123,32 +123,34 @@
 
                         <separator class="text-center" string="REVISION EN PAGINAS DE CONTROL"/>
                         <div class="row">
-                            <div class="col-xs-4 col-sm-4">
-                                <group>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4">
+                                
                                     <label for="scoreBuroCredito" string="Buró de Crédito" />
                                     <label for="poseeAntecedentesPenales" string="Policía Nacional antecedentes"/>
                                     <label for="estadoTributario" string="SRI, deudas firmes y estado Tributario"/>
                                     <label for="funcionJudicial" string="Función Judicial"/>
                                     <label for="fiscaliaGeneral" string="Fiscalia General del Estado"/>
-                                </group>
+                                
                             </div>
-                             <div class="col-xs-4 col-sm-4">
-                                <group>
+                             <div class="col-xs-12 col-sm-4">
+                                
                                     <text>Score</text>
                                     <text>Posee</text>
                                     <text>Posee</text>
                                     <text>Posee</text>
                                     <text>Posee</text>
-                                </group>
+                                
                             </div>
-                            <div class="col-xs-4 col-sm-4">
-                                <group>
+                            <div class="col-xs-12 col-sm-4">
+                                
                                     <field name="scoreBuroCredito" nolabel="1"/>
                                     <field name="poseeAntecedentesPenales" nolabel="1"/>
                                     <field name="estadoTributario" nolabel="1"/>
                                     <field name="funcionJudicial" nolabel="1"/>
                                     <field name="fiscaliaGeneral" nolabel="1"/>
-                                </group>
+                                
+                            </div>
                             </div>
                         </div>
                         
