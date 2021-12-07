@@ -96,7 +96,7 @@
                         <separator class="text-center" string="PATRIMONIO"/>
                         <div class="row">
                             <div class="col-xs-12 col-sm-4">
-                                <group col="5">
+                                <group>
                                     <field name="montoAhorroInversiones" widget="monetary"/>
                                     <field name="casaValor" options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
                                     <field name="terrenoValor" widget="monetary"/>
@@ -124,7 +124,7 @@
                         <separator class="text-center" string="REVISION EN PAGINAS DE CONTROL"/>
                         <div class="row">
                             <div class="col-xs-12 col-sm-4">
-                                <group>
+                                <group col="5">
                                     <label for="scoreBuroCredito" string="Buró de Crédito" />
                                     <label for="poseeAntecedentesPenales" string="Policía Nacional antecedentes"/>
                                     <label for="estadoTributario" string="SRI, deudas firmes y estado Tributario"/>
@@ -133,7 +133,7 @@
                                 </group>
                             </div>
                              <div class="col-xs-12 col-sm-4">
-                                <group>
+                                <group col="5">
                                     <text>Score</text>
                                     <text>Posee</text>
                                     <text>Posee</text>
@@ -142,7 +142,7 @@
                                 </group>
                             </div>
                             <div class="col-xs-12 col-sm-4">
-                                <group>
+                                <group col="5">
                                     <field name="scoreBuroCredito" nolabel="1"/>
                                     <field name="poseeAntecedentesPenales" nolabel="1"/>
                                     <field name="estadoTributario" nolabel="1"/>
@@ -151,7 +151,6 @@
                                 </group>
                             </div>
                         </div>
-                        
                         <separator class="text-center" string="OBSERVACIONES"/>
                         <div class="row">
                             <field name="observaciones" widget="pad" string='Referencias indican:'/>
