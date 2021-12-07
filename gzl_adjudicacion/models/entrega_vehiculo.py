@@ -230,7 +230,7 @@ class EntegaVehiculo(models.Model):
 
     def buscar_concesionarios(self):
         for rec in self:
-            concesionarios  = self.env['res_partner'].search(
+            concesionarios  = self.env['res.partner'].search(
                 [('tipo', '=', 'concesionario')])
             rec.nombreConsesionario = concesionarios 
 
