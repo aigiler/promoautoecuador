@@ -126,27 +126,83 @@
                             <div class="col-xs-12 col-sm-4">
                                 <group>
                                     <label for="scoreBuroCredito" string="Buró de Crédito" />
-                                    <label for="poseeAntecedentesPenales" string="Policía Nacional antecedentes"/>
-                                    <label for="estadoTributario" string="SRI, deudas firmes y estado Tributario"/>
-                                    <label for="funcionJudicial" string="Función Judicial"/>
-                                    <label for="fiscaliaGeneral" string="Fiscalia General del Estado"/>
                                 </group>
                             </div>
                              <div class="col-xs-12 col-sm-4">
                                 <group>
                                     <text>Score</text>
-                                    <text>Posee</text>
-                                    <text>Posee</text>
-                                    <text>Posee</text>
-                                    <text>Posee</text>
                                 </group>
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group>
                                     <field name="scoreBuroCredito" nolabel="1"/>
+                                </group>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <label for="poseeAntecedentesPenales" string="Policía Nacional antecedentes"/>
+                                </group>
+                            </div>
+                             <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <text>Posee</text>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
                                     <field name="poseeAntecedentesPenales" nolabel="1"/>
+                                </group>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <label for="estadoTributario" string="SRI, deudas firmes y estado Tributario"/>
+                                </group>
+                            </div>
+                             <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <text>Posee</text>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
                                     <field name="estadoTributario" nolabel="1"/>
+                                </group>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <label for="funcionJudicial" string="Función Judicial"/>
+                                </group>
+                            </div>
+                             <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <text>Posee</text>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
                                     <field name="funcionJudicial" nolabel="1"/>
+                                </group>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <label for="fiscaliaGeneral" string="Fiscalia General del Estado"/>
+                                </group>
+                            </div>
+                             <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <text>Posee</text>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
                                     <field name="fiscaliaGeneral" nolabel="1"/>
                                 </group>
                             </div>
@@ -158,7 +214,6 @@
                         <separator class="text-center" string="COMITÉ DE APROBACION"/>
                         <div class="row">
                         </div>
-
                     </div>
                     <!-- calificador_compra -->
                     <div states="calificador_compra">
