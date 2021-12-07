@@ -122,10 +122,10 @@
                         </div>
 
                         <separator class="text-center" string="REVISION EN PAGINAS DE CONTROL"/>
-                        <table style=" border-collapse: collapse; width:100%">
-                            <tbody >
+                        <table style=" border-collapse: collapse;width:75%">
+                            <tbody>
                                 <tr>
-                                    <td>
+                                    <td style="width:50%"> 
                                     <label for="scoreBuroCredito" string="Buró de Crédito" />
                                     <br/>
                                     <label for="poseeAntecedentesPenales" string="Policía Nacional antecedentes"/>
