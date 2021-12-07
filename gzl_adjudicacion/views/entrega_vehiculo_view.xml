@@ -123,8 +123,8 @@
 
                         <separator class="text-center" string="REVISION EN PAGINAS DE CONTROL"/>
                         <div class="row">
-                            <div class="col-xs-12 col-sm-4">
-                                <group col="5">
+                            <div class="col-xs-4">
+                                <group>
                                     <label for="scoreBuroCredito" string="Buró de Crédito" />
                                     <label for="poseeAntecedentesPenales" string="Policía Nacional antecedentes"/>
                                     <label for="estadoTributario" string="SRI, deudas firmes y estado Tributario"/>
