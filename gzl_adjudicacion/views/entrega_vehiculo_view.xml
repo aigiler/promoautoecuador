@@ -125,7 +125,7 @@
                         <table style=" border-collapse: collapse;">
                             <tbody >
                                 <tr>
-                                    <label for="scoreBuroCredito" string="Buró de Crédito" />
+                                    <td><label for="scoreBuroCredito" string="Buró de Crédito" />
                                     <br/>
                                     <label for="poseeAntecedentesPenales" string="Policía Nacional antecedentes"/>
                                     <br/>
@@ -133,21 +133,21 @@
                                     <br/>
                                     <label for="funcionJudicial" string="Función Judicial"/>
                                     <br/>
-                                    <label for="fiscaliaGeneral" string="Fiscalia General del Estado"/>
+                                    <label for="fiscaliaGeneral" string="Fiscalia General del Estado"/></td>
                                 </tr>
                                 <tr>
-                                    <text>Score</text><br/>
+                                    <td><text>Score</text><br/>
                                     <text>Posee</text><br/>
                                     <text>Posee</text><br/>
                                     <text>Posee</text><br/>
-                                    <text>Posee</text><br/>
+                                    <text>Posee</text><br/></td>
                                 </tr>
                                  <tr>
-                                    <field name="scoreBuroCredito" nolabel="1"/><br/>
+                                    <td><field name="scoreBuroCredito" nolabel="1"/><br/>
                                     <field name="poseeAntecedentesPenales" nolabel="1"/><br/>
                                     <field name="estadoTributario" nolabel="1"/><br/>
                                     <field name="funcionJudicial" nolabel="1"/><br/>
-                                    <field name="fiscaliaGeneral" nolabel="1"/><br/>
+                                    <field name="fiscaliaGeneral" nolabel="1"/><br/></td>
                                 </tr>
                             </tbody>
                         </table>
