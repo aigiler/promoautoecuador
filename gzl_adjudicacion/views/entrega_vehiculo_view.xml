@@ -133,7 +133,7 @@
                                 </group>
                             </div>
                              <div class="col-xs-12 col-sm-4">
-                                <group col="5">
+                                <group>
                                     <text>Score</text>
                                     <text>Posee</text>
                                     <text>Posee</text>
@@ -142,7 +142,7 @@
                                 </group>
                             </div>
                             <div class="col-xs-12 col-sm-4">
-                                <group col="5">
+                                <group>
                                     <field name="scoreBuroCredito" nolabel="1"/>
                                     <field name="poseeAntecedentesPenales" nolabel="1"/>
                                     <field name="estadoTributario" nolabel="1"/>
