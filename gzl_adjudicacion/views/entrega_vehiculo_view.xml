@@ -122,48 +122,32 @@
                         </div>
 
                         <separator class="text-center" string="REVISION EN PAGINAS DE CONTROL"/>
-                        <div class="row">
-                            <div class="col-xs-4">
-                                <group>
-                                    <label for="scoreBuroCredito" string="Buró de Crédito" />
-                                    <label for="poseeAntecedentesPenales" string="Policía Nacional antecedentes"/>
-                                    <label for="estadoTributario" string="SRI, deudas firmes y estado Tributario"/>
-                                    <label for="funcionJudicial" string="Función Judicial"/>
-                                    <label for="fiscaliaGeneral" string="Fiscalia General del Estado"/>
-                                </group>
-                            </div>
-                            <div class="col-xs-4">
-                                <group>
-                                    <text>Score</text>
-                                    <text>Posee</text>
-                                    <text>Posee</text>
-                                    <text>Posee</text>
-                                    <text>Posee</text>
-                                </group>
-                            </div>
-                            <div class="col-xs-4">
-                                <group>
-                                    <field name="scoreBuroCredito" nolabel="1"/>
-                                    <field name="poseeAntecedentesPenales" nolabel="1"/>
-                                    <field name="estadoTributario" nolabel="1"/>
-                                    <field name="funcionJudicial" nolabel="1"/>
-                                    <field name="fiscaliaGeneral" nolabel="1"/>
-                                </group>
-                            </div>
-                        </div>
-
                         <table style=" border-collapse: collapse;">
                             <tbody >
                                 <tr>
-                                    <label for="scoreBuroCredito" string="Buró de Crédito" /><br/>
-                                    <label for="poseeAntecedentesPenales" string="Policía Nacional antecedentes"/><br/>
-                                    <label for="estadoTributario" string="SRI, deudas firmes y estado Tributario"/><br/>
-                                    <label for="funcionJudicial" string="Función Judicial"/><br/>
+                                    <label for="scoreBuroCredito" string="Buró de Crédito" />
+                                    <br/>
+                                    <label for="poseeAntecedentesPenales" string="Policía Nacional antecedentes"/>
+                                    <br/>
+                                    <label for="estadoTributario" string="SRI, deudas firmes y estado Tributario"/>
+                                    <br/>
+                                    <label for="funcionJudicial" string="Función Judicial"/>
+                                    <br/>
                                     <label for="fiscaliaGeneral" string="Fiscalia General del Estado"/>
                                 </tr>
                                 <tr>
-                                    <td style=" border-collapse: collapse;"> Field1 </td>
-                                    <td style=" border-collapse: collapse;"> Field2 </td>
+                                    <text>Score</text><br/>
+                                    <text>Posee</text><br/>
+                                    <text>Posee</text><br/>
+                                    <text>Posee</text><br/>
+                                    <text>Posee</text><br/>
+                                </tr>
+                                 <tr>
+                                    <field name="scoreBuroCredito" nolabel="1"/><br/>
+                                    <field name="poseeAntecedentesPenales" nolabel="1"/><br/>
+                                    <field name="estadoTributario" nolabel="1"/><br/>
+                                    <field name="funcionJudicial" nolabel="1"/><br/>
+                                    <field name="fiscaliaGeneral" nolabel="1"/><br/>
                                 </tr>
                             </tbody>
                         </table>
