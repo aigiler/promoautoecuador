@@ -90,11 +90,11 @@
                             <field name="referenciaDomiciliaria" widget="pad" string='Referencias indican:'/>
                         </div>
                         <separator class="text-center" string="DATOS LABORALES"/>
-                        <div class="row">
+                        <div class="row" >
                             <field name="referenciasLaborales" widget="pad" string='Referencias indican:'/>
                         </div>
                         <separator class="text-center" string="PATRIMONIO"/>
-                        <div class="row">
+                        <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group>
                                     <field name="montoAhorroInversiones" widget="monetary"/>
@@ -111,7 +111,6 @@
                                     <field name="direccion"/>
                                     <field name="direccion1"/>
                                     <field name="placa"/>
-                                    <field name="direccion"/>
                                 </group>
                             </div>
                             <div class="col-xs-12 col-md-12">
@@ -120,7 +119,7 @@
                                 </group>
                             </div>
                         </div>
-
+                        <separator/>
                         <separator class="text-center" string="REVISION EN PAGINAS DE CONTROL"/>
                         <table style=" border-collapse: collapse;width:75%">
                             <tbody>
@@ -150,10 +149,12 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <separator/>
                         <separator class="text-center" string="OBSERVACIONES"/>
                         <div class="row">
                             <field name="observaciones" widget="pad" string='Referencias indican:'/>
                         </div>
+                        <separator/>
                         <separator class="text-center" string="COMITÉ DE APROBACION"/>
                         <div class="row">
                         </div>
