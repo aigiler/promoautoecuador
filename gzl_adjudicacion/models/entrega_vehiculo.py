@@ -221,12 +221,18 @@ class EntegaVehiculo(models.Model):
     valorComisionFactura = fields.Monetary(compute='calcular_valor_comision_fact')
     comisionDispositivoRastreo  = fields.Monetary()
     montoChequeConsesionario  = fields.Monetary(compute='calcular_valor_cheque')
-    nombreConsesionario = fields.Char(string="NOMBRE DEL CONCESIONARIO:")
+    nombreConsesionario  = fields.Many2one(compute='buscar_concesionarios', string="NOMBRE DEL CONCESIONARIO:")
     observacionesLiquidacion = fields.Text(string="Observaciones")
 
     dia  = fields.Char()   
     mes  = fields.Char(string='')
     anio  = fields.Char()
+
+    def buscar_concesionarios(self):
+        for rec in self:
+            concesionarios  = self.env['res_partner'].search(
+                [('tipo', '=', 'concesionario')])
+            rec.nombreConsesionario = concesionarios 
 
 
     def definir_mes(self):
