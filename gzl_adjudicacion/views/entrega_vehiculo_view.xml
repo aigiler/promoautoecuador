@@ -90,7 +90,7 @@
                             <field name="referenciaDomiciliaria" widget="pad" string='Referencias indican:'/>
                         </div>
                         <separator class="text-center" string="DATOS LABORALES"/>
-                        <div class="row" >
+                        <div class="row">
                             <field name="referenciasLaborales" widget="pad" string='Referencias indican:'/>
                         </div>
                         <separator class="text-center" string="PATRIMONIO"/>
@@ -124,28 +124,41 @@
                         <table style=" border-collapse: collapse;width:75%">
                             <tbody>
                                 <tr>
-                                    <td style="width:50%"> 
-                                    <label for="scoreBuroCredito" string="Buró de Crédito" />
-                                    <br/>
-                                    <label for="poseeAntecedentesPenales" string="Policía Nacional antecedentes"/>
-                                    <br/>
-                                    <label for="estadoTributario" string="SRI, deudas firmes y estado Tributario"/>
-                                    <br/>
-                                    <label for="funcionJudicial" string="Función Judicial"/>
-                                    <br/>
-                                    <label for="fiscaliaGeneral" string="Fiscalia General del Estado"/></td>
-                                    <td> 
-                                    <text>Score</text><br/>
-                                    <text>Posee</text><br/>
-                                    <text>Posee</text><br/>
-                                    <text>Posee</text><br/>
-                                    <text>Posee</text><br/></td>
+                                    <td style="width:50%">
+                                        <label for="scoreBuroCredito" string="Buró de Crédito" />
+                                        <br/>
+                                        <label for="poseeAntecedentesPenales" string="Policía Nacional antecedentes"/>
+                                        <br/>
+                                        <label for="estadoTributario" string="SRI, deudas firmes y estado Tributario"/>
+                                        <br/>
+                                        <label for="funcionJudicial" string="Función Judicial"/>
+                                        <br/>
+                                        <label for="fiscaliaGeneral" string="Fiscalia General del Estado"/>
+                                    </td>
                                     <td>
-                                    <field name="scoreBuroCredito" nolabel="1"/><br/>
-                                    <field name="poseeAntecedentesPenales" nolabel="1"/><br/>
-                                    <field name="estadoTributario" nolabel="1"/><br/>
-                                    <field name="funcionJudicial" nolabel="1"/><br/>
-                                    <field name="fiscaliaGeneral" nolabel="1"/><br/></td>
+                                        <text>Score</text>
+                                        <br/>
+                                        <text>Posee</text>
+                                        <br/>
+                                        <text>Posee</text>
+                                        <br/>
+                                        <text>Posee</text>
+                                        <br/>
+                                        <text>Posee</text>
+                                        <br/>
+                                    </td>
+                                    <td>
+                                        <field name="scoreBuroCredito" nolabel="1"/>
+                                        <br/>
+                                        <field name="poseeAntecedentesPenales" nolabel="1"/>
+                                        <br/>
+                                        <field name="estadoTributario" nolabel="1"/>
+                                        <br/>
+                                        <field name="funcionJudicial" nolabel="1"/>
+                                        <br/>
+                                        <field name="fiscaliaGeneral" nolabel="1"/>
+                                        <br/>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -571,18 +584,18 @@
                             <tbody>
                                 <tr>
                                     <td style="width:50%">
-                                    <text>MONTO DEL PLAN ADJUDICADO</text>
+                                        <text>MONTO DEL PLAN ADJUDICADO</text>
                                     </td>
                                     <td style="width:50%">
                                     </td>
                                     <td>
-                                    <field name="montoAdjudicado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="montoAdjudicado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    
-                                    
-                                       <td style="width:50%"> 
+
+
+                                    <td style="width:50%">
                                         <text>VALOR DEL VEHICULO</text>
                                         <text>SALDO A FAVOR APLICA A CUOTAS FINALES DEL PLAN	</text>
                                         <text>VALOR ADJUDICADO PARA LA COMPRA DEL VEHICULO	</text>
@@ -590,11 +603,12 @@
                                         <text>COMISION FACTURA A NOMBRE CONCESIONARIO	</text>
                                         <text>COMISION POR DISPOSITIVO DE RASTREO	</text>
                                         <text>CHEQUE AL CONCESIONARIO	</text>
-                                    
-                                    <br/></td>
+
+                                        <br/>
+                                    </td>
                                     <td>
-                                    
-                                        
+
+
                                         <field name="montoVehiculo" nolabel="1"/>
                                         <field name="montoAFavor" nolabel="1"/>
                                         <field name="valorAdjParaCompra" nolabel="1"/>
@@ -603,8 +617,9 @@
                                         <field name="valorComisionFactura" nolabel="1"/>
                                         <field name="comisionDispositivoRastreo" nolabel="1"/>
                                         <field name="montoChequeConsesionario" nolabel="1"/>
-                                    
-                                    <br/></td>
+
+                                        <br/>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
