@@ -684,7 +684,7 @@
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group>
-                                    <field name="nombreConsesionario" nolabel="1"/>
+                                    <field name="nombreConsesionario" domain = "[('tipo', '=', 'concesionario')]" nolabel="1"/>
                                 </group>
                             </div>
                         </div>
