@@ -125,7 +125,8 @@
                         <table style=" border-collapse: collapse;">
                             <tbody >
                                 <tr>
-                                    <td><label for="scoreBuroCredito" string="Buró de Crédito" />
+                                    <td colspan="3">
+                                    <label for="scoreBuroCredito" string="Buró de Crédito" />
                                     <br/>
                                     <label for="poseeAntecedentesPenales" string="Policía Nacional antecedentes"/>
                                     <br/>
@@ -134,12 +135,14 @@
                                     <label for="funcionJudicial" string="Función Judicial"/>
                                     <br/>
                                     <label for="fiscaliaGeneral" string="Fiscalia General del Estado"/></td>
-                                    <td><text>Score</text><br/>
+                                    <td colspan="3">
+                                    <text>Score</text><br/>
                                     <text>Posee</text><br/>
                                     <text>Posee</text><br/>
                                     <text>Posee</text><br/>
                                     <text>Posee</text><br/></td>
-                                    <td><field name="scoreBuroCredito" nolabel="1"/><br/>
+                                    <td colspan="3">
+                                    <field name="scoreBuroCredito" nolabel="1"/><br/>
                                     <field name="poseeAntecedentesPenales" nolabel="1"/><br/>
                                     <field name="estadoTributario" nolabel="1"/><br/>
                                     <field name="funcionJudicial" nolabel="1"/><br/>
