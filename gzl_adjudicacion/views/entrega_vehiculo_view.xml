@@ -134,20 +134,22 @@
                                     <label for="funcionJudicial" string="Función Judicial"/>
                                     <br/>
                                     <label for="fiscaliaGeneral" string="Fiscalia General del Estado"/></td>
-                                </tr>
-                                <tr>
                                     <td><text>Score</text><br/>
                                     <text>Posee</text><br/>
                                     <text>Posee</text><br/>
                                     <text>Posee</text><br/>
                                     <text>Posee</text><br/></td>
-                                </tr>
-                                 <tr>
                                     <td><field name="scoreBuroCredito" nolabel="1"/><br/>
                                     <field name="poseeAntecedentesPenales" nolabel="1"/><br/>
                                     <field name="estadoTributario" nolabel="1"/><br/>
                                     <field name="funcionJudicial" nolabel="1"/><br/>
                                     <field name="fiscaliaGeneral" nolabel="1"/><br/></td>
+                                </tr>
+                                <tr>
+                                    
+                                </tr>
+                                 <tr>
+                                   
                                 </tr>
                             </tbody>
                         </table>
