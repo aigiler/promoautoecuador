@@ -498,7 +498,7 @@ class EntegaVehiculo(models.Model):
                 [('cliente', '=', rec.nombreSocioAdjudicado.id)])
             rec.montoAdjudicado = contrato.monto_financiamiento
             rec.valorCuota = contrato.cuota_capital
-            rec.tipoAdj = contrato.tipo_de_contrato
+            rec.tipoAdj = contrato.tipo_de_contrato.name
             rec.fechaAdj = contrato.fecha_adjudicado
 
             if contrato.plazo_meses == '60':
