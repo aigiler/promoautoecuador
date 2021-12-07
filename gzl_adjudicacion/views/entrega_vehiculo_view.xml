@@ -155,11 +155,11 @@
                         <table style=" border-collapse: collapse;">
                             <tbody >
                                 <tr>
-                                    <label for="scoreBuroCredito" string="Buró de Crédito" /><br>
-                                    <label for="poseeAntecedentesPenales" string="Policía Nacional antecedentes"/><br>
-                                    <label for="estadoTributario" string="SRI, deudas firmes y estado Tributario"/><br>
-                                    <label for="funcionJudicial" string="Función Judicial"/><br>
-                                    <label for="fiscaliaGeneral" string="Fiscalia General del Estado"/><br>
+                                    <label for="scoreBuroCredito" string="Buró de Crédito" /><br/>
+                                    <label for="poseeAntecedentesPenales" string="Policía Nacional antecedentes"/><br/>
+                                    <label for="estadoTributario" string="SRI, deudas firmes y estado Tributario"/><br/>
+                                    <label for="funcionJudicial" string="Función Judicial"/><br/>
+                                    <label for="fiscaliaGeneral" string="Fiscalia General del Estado"/>
                                 </tr>
                                 <tr>
                                     <td style=" border-collapse: collapse;"> Field1 </td>
