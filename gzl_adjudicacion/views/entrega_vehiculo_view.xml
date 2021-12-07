@@ -151,7 +151,7 @@
                                 </group>
                             </div>
                         </div>
-                        
+
                         <table style=" border-collapse: collapse;">
                             <tbody >
                                 <tr>
@@ -164,17 +164,304 @@
                                 </tr>
                             </tbody>
                         </table>
-                            <separator class="text-center" string="OBSERVACIONES"/>
-                            <div class="row">
-                                <field name="observaciones" widget="pad" string='Referencias indican:'/>
+                        <separator class="text-center" string="OBSERVACIONES"/>
+                        <div class="row">
+                            <field name="observaciones" widget="pad" string='Referencias indican:'/>
+                        </div>
+                        <separator class="text-center" string="COMITÉ DE APROBACION"/>
+                        <div class="row">
+                        </div>
+                    </div>
+                    <!-- calificador_compra -->
+                    <div states="calificador_compra">
+                        <separator class="text-center" string="CALIFICADOR PARA COMPRA DEL BIEN"/>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12">
+                                <group>
+                                    <field name="nombreSocioAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
                             </div>
-                            <separator class="text-center" string="COMITÉ DE APROBACION"/>
-                            <div class="row">
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="vatAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-4">
+                                <group>
+                                    <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
                             </div>
                         </div>
-                        <!-- calificador_compra -->
-                        <div states="calificador_compra">
-                            <separator class="text-center" string="CALIFICADOR PARA COMPRA DEL BIEN"/>
+                        <separator/>
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-3">
+                                <group>
+                                    <field name="montoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="valorCuota" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-4 col-sm-4">
+                                <group>
+                                    <label for="plazoMeses" string="Plazo"/>
+                                    <label for="tipoAdj" string="Tipo Adj."/>
+                                    <field name="plazoMeses" nolabel="1" />
+                                    <field name="tipoAdj" nolabel="1" />
+                                </group>
+                            </div>
+                            <div class="col-xs-4 col-sm-4">
+                                <group>
+                                    <label for="fechaAdj" string="Fecha de Adj."/>
+                                    <field name="fechaAdj" nolabel="1" />
+                                </group>
+                            </div>
+                        </div>
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="valorTotalPlan" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="montoCuotasCanceladas" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="montoCuotasPendientes" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-5">
+                                <group>
+                                    <field name="plazoMeses" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="porcentajeTotal" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="cuotasCanceladas" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="porcentajeCancelado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
+                                <group>
+                                    <field name="puntosPorcentajeCancelado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                        </div>
+                        <separator/>
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-5">
+                                <group>
+                                    <field name="valorDelBien" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="saldoPlan" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <text></text>
+                                    <field name="porcentajeSaldoPlan" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
+                                <group>
+                                    <field name="puntosPorcentajSaldos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                        </div>
+                        <separator/>
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="ingresosFamiliares" />
+                                    <field name="gastosFamiliares" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="disponibilidad" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-5" colspan="4">
+                                <group>
+                                    <field name="porcentajeIngresos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="porcentajeGastos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="porcentajeDisponibilidad" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <text>Comprometido</text>
+                                    <text>Cuota Plan</text>
+                                    <field name="porcentajeCuotaPlan" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
+                                <group>
+                                    <field name="puntosPorcentajeCancelado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                        </div>
+                        <separator/>
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-4">
+                                <text class="align-baseline">
+                                    <strong>Score de Credito Mayor a 800 puntos</strong>
+                                </text>
+                            </div>
+                            <div class="col-xs-12 col-sm-5">
+                                <group>
+                                    <field name="scoreCredito" nolabel="1" string="Score de Credito Mayor a 800 puntos " />
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
+                                <group>
+                                    <field name="puntosScoreCredito" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                        </div>
+                        <separator/>
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-4">
+                                <text class="align-baseline">
+                                    <strong>Antigüedad Laboral o Comercial Mayor a 2 años</strong>
+                                </text>
+                            </div>
+                            <div class="col-xs-12 col-sm-5">
+                                <group>
+                                    <field name="antiguedadLaboral" nolabel="1" string="Antigüedad Laboral o Comercial Mayor a 2 años " />
+                                    <text>Años</text>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
+                                <group>
+                                    <field name="puntosAntiguedadLaboral" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                        </div>
+                        <separator/>
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-3">
+                                <text>
+                                    <strong>Posee Bienes</strong>
+                                </text>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <text>
+                                    <strong>Si/No</strong>
+                                </text>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <text>
+                                    <strong>Ptos.</strong>
+                                </text>
+                            </div>
+                            <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
+                                <group>
+                                    <field name="totalPuntosBienesAdj" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-3">
+                                <text>
+                                    <strong>Casa</strong>
+                                </text>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <field name="poseeCasa" nolabel="1"/>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <field name="puntosCasa" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-3">
+                                <text>
+                                    <strong>Terreno</strong>
+                                </text>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <field name="poseeTerreno" nolabel="1"/>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <field name="puntosTerreno" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-3">
+                                <text>
+                                    <strong>Vehiculo</strong>
+                                </text>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <field name="poseeVehiculo" nolabel="1"/>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <field name="puntosVehiculo" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-3">
+                                <text>
+                                    <strong>Motos</strong>
+                                </text>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <field name="poseeMotos" nolabel="1"/>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <field name="puntosMotos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-3">
+                                <group>
+                                    <text>
+                                        <strong>Muebles y Enseres</strong>
+                                    </text>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <group>
+                                    <field name="poseeMueblesEnseres" nolabel="1"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <field name="puntosMueblesEnseres" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                            </div>
+                        </div>
+                        <separator/>
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-9">
+                                <text class="text-center">
+                                    <strong>TOTAL PUNTOS</strong>
+                                </text>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <field name="totalPuntosCalificador" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                            </div>
+                        </div>
+                        <separator/>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6">
+                                <text class="text-center">
+                                    <strong>Titular, Conyugue y Depositario</strong>
+                                </text>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <field name="titularConyugePuntos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6">
+                                <text class="text-center">
+                                    <strong>Titular, Conyugue y Garante Solidario</strong>
+                                </text>
+                            </div>
+                            <div class="col-xs-12 col-sm-3">
+                                <field name="titularConyugeGarantePuntos" nolabel="1"/>
+                            </div>
+                        </div>
+                        <separator/>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12" style="border-bottom: 1px solid black;">
+                                <text class="text-center">
+                                    <strong>Observaciones:</strong>
+                                </text>
+                            </div>
+                            <div class="col-xs-12 col-sm-12">
+                                <field name="observacionesCalificador" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                            </div>
+                        </div>
+                        <separator class="text-center" string="COMITÉ DE APROBACION"/>
+                        <div class="row">
+                        </div>
+                    </div>
+                    <!-- liquidacion_orden_compra -->
+                    <div states="liquidacion_orden_compra">
+                        <separator class="text-center" string="LIQUIDACION DE COMPRA"/>
+                        <div style="border: 1px solid black;">
                             <div class="row">
                                 <div class="col-xs-12 col-md-12">
                                     <group>
@@ -192,558 +479,271 @@
                                     </group>
                                 </div>
                             </div>
-                            <separator/>
                             <div class="row">
                                 <div class="col-xs-4 col-sm-3">
                                     <group>
                                         <field name="montoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                </div>
+                                <div class="col-xs-4 col-sm-3">
+                                    <group>
+                                        <label for="plazoMeses" string="Plazo"/>
+                                    </group>
+                                </div>
+                                <div class="col-xs-4 col-sm-3">
+                                    <group>
+                                        <label for="tipoAdj" string="Tipo Adj."/>
+                                    </group>
+                                </div>
+                                <div class="col-xs-4 col-sm-3">
+                                    <group>
+                                        <label for="fechaAdj" string="Fecha de Adj."/>
+                                    </group>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-4 col-sm-3">
+                                    <group>
                                         <field name="valorCuota" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
                                 </div>
-                                <div class="col-xs-4 col-sm-4">
+                                <div class="col-xs-4 col-sm-3">
                                     <group>
-                                        <label for="plazoMeses" string="Plazo"/>
-                                        <label for="tipoAdj" string="Tipo Adj."/>
                                         <field name="plazoMeses" nolabel="1" />
+                                    </group>
+                                </div>
+                                <div class="col-xs-4 col-sm-3">
+                                    <group>
                                         <field name="tipoAdj" nolabel="1" />
                                     </group>
                                 </div>
-                                <div class="col-xs-4 col-sm-4">
+                                <div class="col-xs-4 col-sm-3">
                                     <group>
-                                        <label for="fechaAdj" string="Fecha de Adj."/>
                                         <field name="fechaAdj" nolabel="1" />
                                     </group>
                                 </div>
                             </div>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-4">
+                        </div>
+                        <separator/>
+                        <div style="border: 1px solid black;">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-3">
                                     <group>
                                         <field name="valorTotalPlan" options="{'no_create': True, 'no_open': True}"/>
-                                        <field name="montoCuotasCanceladas" options="{'no_create': True, 'no_open': True}"/>
-                                        <field name="montoCuotasPendientes" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
                                 </div>
-                                <div class="col-xs-12 col-sm-5">
+                                <div class="col-xs-12 col-sm-3">
                                     <group>
                                         <field name="plazoMeses" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    <group>
                                         <field name="porcentajeTotal" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-3">
+                                    <group>
+                                        <field name="montoCuotasCanceladas" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    <group>
                                         <field name="cuotasCanceladas" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    <group>
                                         <field name="porcentajeCancelado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
                                 </div>
-                                <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <group>
-                                        <field name="puntosPorcentajeCancelado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-5">
-                                    <group>
-                                        <field name="valorDelBien" options="{'no_create': True, 'no_open': True}"/>
-                                        <field name="saldoPlan" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-4">
-                                    <group>
-                                        <text></text>
-                                        <field name="porcentajeSaldoPlan" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <group>
-                                        <field name="puntosPorcentajSaldos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-4">
-                                    <group>
-                                        <field name="ingresosFamiliares" />
-                                        <field name="gastosFamiliares" options="{'no_create': True, 'no_open': True}"/>
-                                        <field name="disponibilidad" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-5" colspan="4">
-                                    <group>
-                                        <field name="porcentajeIngresos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                        <field name="porcentajeGastos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                        <field name="porcentajeDisponibilidad" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                        <text>Comprometido</text>
-                                        <text>Cuota Plan</text>
-                                        <field name="porcentajeCuotaPlan" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <group>
-                                        <field name="puntosPorcentajeCancelado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-4">
-                                    <text class="align-baseline">
-                                        <strong>Score de Credito Mayor a 800 puntos</strong>
-                                    </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-5">
-                                    <group>
-                                        <field name="scoreCredito" nolabel="1" string="Score de Credito Mayor a 800 puntos " />
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <group>
-                                        <field name="puntosScoreCredito" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-4">
-                                    <text class="align-baseline">
-                                        <strong>Antigüedad Laboral o Comercial Mayor a 2 años</strong>
-                                    </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-5">
-                                    <group>
-                                        <field name="antiguedadLaboral" nolabel="1" string="Antigüedad Laboral o Comercial Mayor a 2 años " />
-                                        <text>Años</text>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <group>
-                                        <field name="puntosAntiguedadLaboral" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-3">
-                                    <text>
-                                        <strong>Posee Bienes</strong>
-                                    </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-3">
-                                    <text>
-                                        <strong>Si/No</strong>
-                                    </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-3">
-                                    <text>
-                                        <strong>Ptos.</strong>
-                                    </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <group>
-                                        <field name="totalPuntosBienesAdj" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-3">
-                                    <text>
-                                        <strong>Casa</strong>
-                                    </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-3">
-                                    <field name="poseeCasa" nolabel="1"/>
-                                </div>
-                                <div class="col-xs-12 col-sm-3">
-                                    <field name="puntosCasa" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-3">
-                                    <text>
-                                        <strong>Terreno</strong>
-                                    </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-3">
-                                    <field name="poseeTerreno" nolabel="1"/>
-                                </div>
-                                <div class="col-xs-12 col-sm-3">
-                                    <field name="puntosTerreno" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-3">
-                                    <text>
-                                        <strong>Vehiculo</strong>
-                                    </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-3">
-                                    <field name="poseeVehiculo" nolabel="1"/>
-                                </div>
-                                <div class="col-xs-12 col-sm-3">
-                                    <field name="puntosVehiculo" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-3">
-                                    <text>
-                                        <strong>Motos</strong>
-                                    </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-3">
-                                    <field name="poseeMotos" nolabel="1"/>
-                                </div>
-                                <div class="col-xs-12 col-sm-3">
-                                    <field name="puntosMotos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-3">
                                     <group>
-                                        <text>
-                                            <strong>Muebles y Enseres</strong>
-                                        </text>
+                                        <field name="montoCuotasPendientes" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-12 col-sm-3">
                                     <group>
-                                        <field name="poseeMueblesEnseres" nolabel="1"/>
+                                        <field name="cuotasPendientes" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-12 col-sm-3">
-                                    <field name="puntosMueblesEnseres" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <group>
+                                        <field name="porcentajePendiente" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
                                 </div>
-                            </div>
-                            <separator/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-9">
-                                    <text class="text-center">
-                                        <strong>TOTAL PUNTOS</strong>
-                                    </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-3">
-                                    <field name="totalPuntosCalificador" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-6">
-                                    <text class="text-center">
-                                        <strong>Titular, Conyugue y Depositario</strong>
-                                    </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-3">
-                                    <field name="titularConyugePuntos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-6">
-                                    <text class="text-center">
-                                        <strong>Titular, Conyugue y Garante Solidario</strong>
-                                    </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-3">
-                                    <field name="titularConyugeGarantePuntos" nolabel="1"/>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12" style="border-bottom: 1px solid black;">
-                                    <text class="text-center">
-                                        <strong>Observaciones:</strong>
-                                    </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-12">
-                                    <field name="observacionesCalificador" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </div>
-                            </div>
-                            <separator class="text-center" string="COMITÉ DE APROBACION"/>
-                            <div class="row">
                             </div>
                         </div>
-                        <!-- liquidacion_orden_compra -->
-                        <div states="liquidacion_orden_compra">
-                            <separator class="text-center" string="LIQUIDACION DE COMPRA"/>
-                            <div style="border: 1px solid black;">
-                                <div class="row">
-                                    <div class="col-xs-12 col-md-12">
-                                        <group>
-                                            <field name="nombreSocioAdjudicado" options="{'no_create': True, 'no_open': True}"/>
-                                        </group>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-4">
-                                        <group>
-                                            <field name="vatAdjudicado" options="{'no_create': True, 'no_open': True}"/>
-                                        </group>
-                                    </div>
-                                    <div class="col-xs-4">
-                                        <group>
-                                            <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
-                                        </group>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-4 col-sm-3">
-                                        <group>
-                                            <field name="montoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
-                                        </group>
-                                    </div>
-                                    <div class="col-xs-4 col-sm-3">
-                                        <group>
-                                            <label for="plazoMeses" string="Plazo"/>
-                                        </group>
-                                    </div>
-                                    <div class="col-xs-4 col-sm-3">
-                                        <group>
-                                            <label for="tipoAdj" string="Tipo Adj."/>
-                                        </group>
-                                    </div>
-                                    <div class="col-xs-4 col-sm-3">
-                                        <group>
-                                            <label for="fechaAdj" string="Fecha de Adj."/>
-                                        </group>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-4 col-sm-3">
-                                        <group>
-                                            <field name="valorCuota" options="{'no_create': True, 'no_open': True}"/>
-                                        </group>
-                                    </div>
-                                    <div class="col-xs-4 col-sm-3">
-                                        <group>
-                                            <field name="plazoMeses" nolabel="1" />
-                                        </group>
-                                    </div>
-                                    <div class="col-xs-4 col-sm-3">
-                                        <group>
-                                            <field name="tipoAdj" nolabel="1" />
-                                        </group>
-                                    </div>
-                                    <div class="col-xs-4 col-sm-3">
-                                        <group>
-                                            <field name="fechaAdj" nolabel="1" />
-                                        </group>
-                                    </div>
-                                </div>
+                        <separator/>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-8">
+                                <group>
+                                    <text>MONTO DEL PLAN ADJUDICADO</text>
+                                </group>
                             </div>
-                            <separator/>
-                            <div style="border: 1px solid black;">
-                                <div class="row">
-                                    <div class="col-xs-12 col-sm-3">
-                                        <group>
-                                            <field name="valorTotalPlan" options="{'no_create': True, 'no_open': True}"/>
-                                        </group>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-3">
-                                        <group>
-                                            <field name="plazoMeses" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                        </group>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-3">
-                                        <group>
-                                            <field name="porcentajeTotal" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                        </group>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-12 col-sm-3">
-                                        <group>
-                                            <field name="montoCuotasCanceladas" options="{'no_create': True, 'no_open': True}"/>
-                                        </group>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-3">
-                                        <group>
-                                            <field name="cuotasCanceladas" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                        </group>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-3">
-                                        <group>
-                                            <field name="porcentajeCancelado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                        </group>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-12 col-sm-3">
-                                        <group>
-                                            <field name="montoCuotasPendientes" options="{'no_create': True, 'no_open': True}"/>
-                                        </group>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-3">
-                                        <group>
-                                            <field name="cuotasPendientes" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                        </group>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-3">
-                                        <group>
-                                            <field name="porcentajePendiente" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                        </group>
-                                    </div>
-                                </div>
+                            <div class="col-xs-12 col-sm-2">
                             </div>
-                            <separator/>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-8">
-                                    <group>
-                                        <text>MONTO DEL PLAN ADJUDICADO</text>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-2">
-                                </div>
-                                <div class="col-xs-12 col-sm-2">
-                                    <group>
-                                        <field name="montoAdjudicado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-8">
-                                    <group>
-                                        <text>VALOR DEL VEHICULO</text>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-2">
-                                </div>
-                                <div class="col-xs-12 col-sm-2">
-                                    <group>
-                                        <field name="montoVehiculo" nolabel="1"/>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-8">
-                                    <group>
-                                        <text>SALDO A FAVOR APLICA A CUOTAS FINALES DEL PLAN	</text>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-2">
-                                </div>
-                                <div class="col-xs-12 col-sm-2">
-                                    <group>
-                                        <field name="montoAFavor" nolabel="1"/>
-                                    </group>
-                                </div>
+                            <div class="col-xs-12 col-sm-2">
+                                <group>
+                                    <field name="montoAdjudicado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
                             </div>
-                            <separator/>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-8">
-                                    <group>
-                                        <text>VALOR ADJUDICADO PARA LA COMPRA DEL VEHICULO	</text>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-2">
-                                </div>
-                                <div class="col-xs-12 col-sm-2">
-                                    <group>
-                                        <field name="valorAdjParaCompra" nolabel="1"/>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-8">
-                                    <group>
-                                        <text>ANTICIPO AL CONCESIONARIO	</text>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-2">
-                                </div>
-                                <div class="col-xs-12 col-sm-2">
-                                    <group>
-                                        <field name="montoAnticipoConsesionaria" nolabel="1"/>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-8">
-                                    <group>
-                                        <text>COMISION FACTURA A NOMBRE CONCESIONARI	</text>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-2">
-                                    <group>
-                                        <field name="comisionFacturaConcesionario" nolabel="1"/>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-2">
-                                    <group>
-                                        <field name="valorComisionFactura" nolabel="1"/>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-8">
-                                    <group>
-                                        <text>COMISION POR DISPOSITIVO DE RASTREO	</text>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-2">
-                                    <group>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-2">
-                                    <group>
-                                        <field name="comisionDispositivoRastreo" nolabel="1"/>
-                                    </group>
-                                </div>
+                            <div class="col-xs-12 col-sm-8">
+                                <group>
+                                    <text>VALOR DEL VEHICULO</text>
+                                </group>
                             </div>
-                            <separator/>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-8">
-                                    <group>
-                                        <text>CHEQUE AL CONCESIONARIO	</text>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-2">
-                                    <group>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-2">
-                                    <group>
-                                        <field name="montoChequeConsesionario" nolabel="1"/>
-                                    </group>
-                                </div>
+                            <div class="col-xs-12 col-sm-2">
                             </div>
-                            <separator/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-4">
-                                    <group>
-                                        <text>
-                                            <strong>NOMBRE DEL CONCESIONARIO: </strong>
-                                        </text>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-4">
-                                    <group>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-4">
-                                    <group>
-                                        <field name="nombreConsesionario" domain = "[('tipo', '=', 'concesionario')]" nolabel="1"/>
-                                    </group>
-                                </div>
+                            <div class="col-xs-12 col-sm-2">
+                                <group>
+                                    <field name="montoVehiculo" nolabel="1"/>
+                                </group>
                             </div>
-                            <separator/>
-                            <separator/>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12" style="border-bottom: 1px solid black;">
-                                    <text class="text-center">
-                                        <strong>Observaciones:</strong>
+                            <div class="col-xs-12 col-sm-8">
+                                <group>
+                                    <text>SALDO A FAVOR APLICA A CUOTAS FINALES DEL PLAN	</text>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-2">
+                            </div>
+                            <div class="col-xs-12 col-sm-2">
+                                <group>
+                                    <field name="montoAFavor" nolabel="1"/>
+                                </group>
+                            </div>
+                        </div>
+                        <separator/>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-8">
+                                <group>
+                                    <text>VALOR ADJUDICADO PARA LA COMPRA DEL VEHICULO	</text>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-2">
+                            </div>
+                            <div class="col-xs-12 col-sm-2">
+                                <group>
+                                    <field name="valorAdjParaCompra" nolabel="1"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-8">
+                                <group>
+                                    <text>ANTICIPO AL CONCESIONARIO	</text>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-2">
+                            </div>
+                            <div class="col-xs-12 col-sm-2">
+                                <group>
+                                    <field name="montoAnticipoConsesionaria" nolabel="1"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-8">
+                                <group>
+                                    <text>COMISION FACTURA A NOMBRE CONCESIONARI	</text>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-2">
+                                <group>
+                                    <field name="comisionFacturaConcesionario" nolabel="1"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-2">
+                                <group>
+                                    <field name="valorComisionFactura" nolabel="1"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-8">
+                                <group>
+                                    <text>COMISION POR DISPOSITIVO DE RASTREO	</text>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-2">
+                                <group>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-2">
+                                <group>
+                                    <field name="comisionDispositivoRastreo" nolabel="1"/>
+                                </group>
+                            </div>
+                        </div>
+                        <separator/>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-8">
+                                <group>
+                                    <text>CHEQUE AL CONCESIONARIO	</text>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-2">
+                                <group>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-2">
+                                <group>
+                                    <field name="montoChequeConsesionario" nolabel="1"/>
+                                </group>
+                            </div>
+                        </div>
+                        <separator/>
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <text>
+                                        <strong>NOMBRE DEL CONCESIONARIO: </strong>
                                     </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-12">
-                                    <field name="observacionesLiquidacion" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </div>
+                                </group>
                             </div>
-                            <separator class="text-center" string="COMITÉ DE APROBACION"/>
-                            <div class="row">
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                </group>
                             </div>
-
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="nombreConsesionario" domain = "[('tipo', '=', 'concesionario')]" nolabel="1"/>
+                                </group>
+                            </div>
                         </div>
-                        <!-- entrega_vehiculo -->
-                        <div states="entrega_vehiculo">
-                            <separator class="text-center" string="LIQUIDACION DE COMPRA"/>
-                            <field name="mes" />
+                        <separator/>
+                        <separator/>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12" style="border-bottom: 1px solid black;">
+                                <text class="text-center">
+                                    <strong>Observaciones:</strong>
+                                </text>
+                            </div>
+                            <div class="col-xs-12 col-sm-12">
+                                <field name="observacionesLiquidacion" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                            </div>
                         </div>
-                    </sheet>
-                </form >
-            </field>
-        </record>
+                        <separator class="text-center" string="COMITÉ DE APROBACION"/>
+                        <div class="row">
+                        </div>
+
+                    </div>
+                    <!-- entrega_vehiculo -->
+                    <div states="entrega_vehiculo">
+                        <separator class="text-center" string="LIQUIDACION DE COMPRA"/>
+                        <field name="mes" />
+                    </div>
+                </sheet>
+            </form >
+        </field>
+    </record>
 
 
-        <record id="action_new_entrega_vehiculo_form" model="ir.actions.act_window">
-            <field name="name">Entrega Vehiculo</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">entrega.vehiculo</field>
-            <field name="view_mode">tree,form</field>
-        </record>
+    <record id="action_new_entrega_vehiculo_form" model="ir.actions.act_window">
+        <field name="name">Entrega Vehiculo</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">entrega.vehiculo</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 
 
-        <menuitem id="menu_new_entrega_vehiculo" action="action_new_entrega_vehiculo_form" parent="menu_adjudicados" sequence="7" />
-    </odoo>
+    <menuitem id="menu_new_entrega_vehiculo" action="action_new_entrega_vehiculo_form" parent="menu_adjudicados" sequence="7" />
+</odoo>
