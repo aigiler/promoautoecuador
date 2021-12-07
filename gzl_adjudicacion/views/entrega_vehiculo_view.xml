@@ -151,6 +151,7 @@
                                 </group>
                             </div>
                         </div>
+                        
                         <table style=" border-collapse: collapse;">
                             <tbody >
                                 <tr>
@@ -162,6 +163,7 @@
                                     <td style=" border-collapse: collapse;"> Field2 </td>
                                 </tr>
                             </tbody>
+                        </table>
                             <separator class="text-center" string="OBSERVACIONES"/>
                             <div class="row">
                                 <field name="observaciones" widget="pad" string='Referencias indican:'/>
