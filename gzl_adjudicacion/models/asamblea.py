@@ -5,8 +5,9 @@ from odoo import api, fields, models
 class Asamblea(models.Model):
     _name = 'asamblea'
     _description = 'Proceso de Asamblea'
+    _rec_name = 'secuencia'
 
-    name = fields.Char('Nombre')
+    secuencia = fields.Char(index=True)
     descripcion = fields.Text('Descripcion',  required=True)
     active = fields.Boolean(default=True)
     integrantes = fields.One2many(
@@ -16,7 +17,6 @@ class Asamblea(models.Model):
     junta = fields.One2many('junta.grupo.asamblea', 'asamblea_id')
     fecha_inicio = fields.Datetime(String='Fecha Inicio')
     fecha_fin = fields.Datetime(String='Fecha Fin')
-    secuencia = fields.Char(index=True)
     tipo_asamblea = fields.Many2one(
         'tipo.contrato.adjudicado', string='Tipo de Asamblea')
     state = fields.Selection(selection=[
@@ -28,7 +28,7 @@ class Asamblea(models.Model):
 
     @api.model
     def create(self, vals):
-        vals['name'] = self.env['ir.sequence'].next_by_code('asamblea')
+        vals['secuencia'] = self.env['ir.sequence'].next_by_code('asamblea')
         return super(Asamblea, self).create(vals)
 
     # @api.onchange('grupo_id')
