@@ -32,7 +32,7 @@ class Asamblea(models.Model):
         res = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc")
         return super(Asamblea, self).create(vals)
 
-     @api.constrains('secuencia')
+    @api.constrains('secuencia')
     def constrains_valor_por_defecto(self): 
         res = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc")
 
