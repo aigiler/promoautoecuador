@@ -11,6 +11,3 @@ class TipoContratoAdjudicado(models.Model):
     name=fields.Char('Nombre',  required=True)
     descripcion=fields.Text('Descripcion',  required=True)
     active=fields.Boolean( default=True)
-      
-    
-   
