@@ -11,7 +11,10 @@ class ResConfigSettings(models.TransientModel):
     requisitosPoliticasCredito = fields.Text(string='Informacion Cobranzas')
 
 
-    
+    def set_values(self):
+        res = super(ResConfigSettings, self).set_values()
+        self.env['ir.config_parameter'].set_param('gzl_adjudicacion.dia_corte', self.dia_corte)
+        return res
 
 
 
