@@ -9,7 +9,10 @@ class Asamblea(models.Model):
     name=fields.Char('Nombre')
     descripcion=fields.Text('Descripcion',  required=True)
     active=fields.Boolean( default=True)
-    integrantes = fields.One2many('integrante.grupo.adjudicado.asamblea','asamblea_id')
+    #integrantes = fields.One2many('integrante.grupo.adjudicado.asamblea','asamblea_id')
+
+    integrantes = fields.Many2many('integrante.grupo.adjudicado')
+    
     junta = fields.One2many('junta.grupo.asamblea', 'asamblea_id')
     fecha_inicio = fields.Datetime(String='Fecha Inicio')
     fecha_fin = fields.Datetime(String='Fecha Fin')
