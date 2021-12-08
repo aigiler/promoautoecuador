@@ -20,6 +20,7 @@ class Asamblea(models.Model):
     state = fields.Selection(selection=[
             ('borrador', 'Borrador'),
             ('en_curso', 'En Curso'),
+            ('pre_cierre', 'Pre cierre'),
             ('cerrado', 'Cerrado')
             ], string='Estado', copy=False, tracking=True, default='borrador')
 
