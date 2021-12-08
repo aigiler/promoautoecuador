@@ -11,22 +11,7 @@ class ResConfigSettings(models.TransientModel):
     requisitosPoliticasCredito = fields.Text(string='Informacion Cobranzas')
 
 
-    @api.onchange('dia_corte')
-    def _onchange_dia_corte(self):
-        if not self.dia_corte:
-            self.dia_corte = 5
-
-    def get_values(self):
-        res = super(ResConfigSettings, self).get_values()
-        res.update(
-            dia_corte=self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
-        )
-        return res
-
-    def set_values(self):
-        super(ResConfigSettings, self).set_values()
-        self.env['ir.config_parameter'].sudo().set_param('gzl_adjudicacion.dia_corte', self.dia_corte)
-
+    
 
 
 
