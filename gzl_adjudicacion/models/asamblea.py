@@ -43,16 +43,14 @@ class Asamblea(models.Model):
     #         })
 
     def cambio_estado_boton_borrador(self):
-        return self.write({"state": "borrador"})
-
-    def cambio_estado_boton_en_curso(self):
         return self.write({"state": "en_curso"})
 
-    def cambio_estado_boton_pre_cierre(self):
+    def cambio_estado_boton_en_curso(self):
         return self.write({"state": "pre_cierre"})
 
-    def cambio_estado_boton_cerrado(self):
+    def cambio_estado_boton_pre_cierre(self):
         return self.write({"state": "cerrado"})
+
 
 
 class IntegrantesGrupoAsamblea(models.Model):
