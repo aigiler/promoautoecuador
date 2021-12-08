@@ -14,7 +14,7 @@ class ResConfigSettings(models.TransientModel):
     @api.onchange('dia_corte')
     def _onchange_dia_corte(self):
         if not self.dia_corte:
-            self.dia_corte = 0.0
+            self.dia_corte = 5
 
     def get_values(self):
         res = super(ResConfigSettings, self).get_values()
