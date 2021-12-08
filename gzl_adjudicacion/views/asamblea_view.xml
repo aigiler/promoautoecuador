@@ -45,9 +45,9 @@
                                 </tree>
                                 <form>
                                     <group>
-                                        <field name="integrantes_g" nolabel="1" >
+                                        <field name="integrantes" nolabel="1" >
                                             <tree string="Integrantes" editable="top" >
-                                                <field name="adjudicado_id" />
+                                                <field name="codigo_integrante" />
                                                 <field name="nro_cuota_licitar"/>
                                                 <field name="carta_licitacion"  />
                                             </tree>
