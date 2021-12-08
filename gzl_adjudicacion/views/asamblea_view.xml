@@ -29,7 +29,6 @@
                     </div>
                     <group>
                         <group>
-                        
                             <field name="tipo_asamblea" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
                             <field name="descripcion" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
                             <field name="fecha_inicio" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
@@ -42,8 +41,7 @@
                         <group string="Integrantes de la Asamblea">
                             <field name="integrantes" nolabel="1" attrs="{'readonly': [('state', '!=', 'borrador')]}">
                                 <tree string="Integrantes" edit="false" >
-                                    <field name="asamblea_id" invisible="1"/>
-                                    <field name="grupo_adjudicado_id"/>
+                                    <field name="grupo_id"/>
                                 </tree>
                                 <form>
                                     <group>
