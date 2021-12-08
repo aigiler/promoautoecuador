@@ -6,17 +6,19 @@ class Asamblea(models.Model):
     _name = 'asamblea'
     _description = 'Proceso de Asamblea'
 
-    name=fields.Char('Nombre')
-    descripcion=fields.Text('Descripcion',  required=True)
-    active=fields.Boolean( default=True)
-    integrantes = fields.One2many('integrante.grupo.adjudicado.asamblea','asamblea_id')
-    #integrantes = fields.Many2many('integrante.grupo.adjudicado')
-    
+    name = fields.Char('Nombre')
+    descripcion = fields.Text('Descripcion',  required=True)
+    active = fields.Boolean(default=True)
+    integrantes = fields.One2many(
+        'integrante.grupo.adjudicado.asamblea', 'asamblea_id')
+    # integrantes = fields.Many2many('integrante.grupo.adjudicado')
+
     junta = fields.One2many('junta.grupo.asamblea', 'asamblea_id')
     fecha_inicio = fields.Datetime(String='Fecha Inicio')
     fecha_fin = fields.Datetime(String='Fecha Fin')
     secuencia = fields.Char(index=True)
-    tipo_asamblea = fields.Many2one('tipo.contrato.adjudicado', string='Tipo de Asamblea')
+    tipo_asamblea = fields.Many2one(
+        'tipo.contrato.adjudicado', string='Tipo de Asamblea')
     state = fields.Selection(selection=[
             ('borrador', 'Borrador'),
             ('en_curso', 'En Curso'),
@@ -39,22 +41,36 @@ class Asamblea(models.Model):
     #             'adjudicado_id':l.adjudicado_id.id,
     #             'monto':l.monto,
     #         })
-      
-   
+
 
 class IntegrantesGrupoAsamblea(models.Model):
     _name = 'integrante.grupo.adjudicado.asamblea'
     _description = 'Integrantes de grupo adjudicado en asamblea'
-  
+
     asamblea_id = fields.Many2one('asamblea')
     grupo_adjudicado_id = fields.Many2one('grupo.adjudicado')
     integrantes_g = fields.One2many(related='grupo_adjudicado_id.integrantes')
-    #adjudicado_id = fields.Many2one('res.partner')
-    #monto=fields.Float('Monto' )
-    #es_ganador = fields.Boolean(String='Ganador', default=False)
+    # adjudicado_id = fields.Many2one('res.partner')
+    # monto=fields.Float('Monto' )
+    # es_ganador = fields.Boolean(String='Ganador', default=False)
+
 
 class JuntaGrupoAsamblea(models.Model):
-    _name='junta.grupo.asamblea'
+    _name = 'junta.grupo.asamblea'
 
     asamblea_id = fields.Many2one('asamblea', string='Asamblea')
     empleado_id = fields.Many2one('hr.employee', string="Empleado")
+
+
+
+def cambio_estado_boton_borrador(self):
+    return self.write({"state": "borrador"})
+
+def cambio_estado_boton_en_curso(self):
+    return self.write({"state": "en_curso"})
+
+def cambio_estado_boton_pre_cierre(self):
+    return self.write({"state": "pre_cierre"})
+
+def cambio_estado_boton_cerrado(self):
+    return self.write({"state": "cerrado"})
