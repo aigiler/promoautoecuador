@@ -29,6 +29,8 @@
                     </div>
                     <group>
                         <group>
+                        
+                            <field name="tipo_asamblea" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
                             <field name="descripcion" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
                             <field name="fecha_inicio" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
                             <field name="fecha_fin" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
