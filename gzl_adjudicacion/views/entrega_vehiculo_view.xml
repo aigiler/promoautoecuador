@@ -579,125 +579,64 @@
                             </div>
                         </div>
                         <separator/>
-                        <div>
                         <table style=" border-collapse: collapse;width:75%">
                             <tbody>
-                                <tr>
-                                    <td style="width:50%">
-                                        <text>MONTO DEL PLAN ADJUDICADO</text>
-                                    </td>
-                                    <td style="width:50%">
-                                    </td>
-                                    <td>
-                                        <field name="montoAdjudicado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width:50%">
-                                        <text>VALOR DEL VEHICULO</text>
-                                    </td>
-                                    <td style="width:50%">
-                                    </td>
-                                    <td>
-                                        <field name="montoVehiculo" nolabel="1"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <tr>
-                                        <td style="width:50%">
-                                            <text>VALOR DEL VEHICULO</text>
-                                        </td>
-                                        <td style="width:50%">
-                                        </td>
-                                        <td>
-                                            <field name="montoVehiculo" nolabel="1"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
 
-
-                                        <td style="width:50%">
-
-                                            <text>SALDO A FAVOR APLICA A CUOTAS FINALES DEL PLAN	</text>
-                                            <text>VALOR ADJUDICADO PARA LA COMPRA DEL VEHICULO	</text>
-                                            <text>ANTICIPO AL CONCESIONARIO	</text>
-                                            <text>COMISION FACTURA A NOMBRE CONCESIONARIO	</text>
-                                            <text>COMISION POR DISPOSITIVO DE RASTREO	</text>
-                                            <text>CHEQUE AL CONCESIONARIO	</text>
-
-                                            <br/>
-                                        </td>
-                                        <td>
-
-
-
-                                            <field name="montoAFavor" nolabel="1"/>
-                                            <field name="valorAdjParaCompra" nolabel="1"/>
-                                            <field name="montoAnticipoConsesionaria" nolabel="1"/>
-                                            <field name="comisionFacturaConcesionario" nolabel="1"/>
-                                            <field name="valorComisionFactura" nolabel="1"/>
-                                            <field name="comisionDispositivoRastreo" nolabel="1"/>
-                                            <field name="montoChequeConsesionario" nolabel="1"/>
-
-                                            <br/>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <separator/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-4">
-                                    <group>
-                                        <text>
-                                            <strong>NOMBRE DEL CONCESIONARIO: </strong>
-                                        </text>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-4">
-                                    <group>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-4">
-                                    <group>
-                                        <field name="nombreConsesionario" domain = "[('tipo', '=', 'concesionario')]" nolabel="1"/>
-                                    </group>
-                                </div>
-                            </div>
-                            <separator/>
-                            <separator/>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12" style="border-bottom: 1px solid black;">
-                                    <text class="text-center">
-                                        <strong>Observaciones:</strong>
+                            </tbody>
+                        </table>
+                        <separator/>
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <text>
+                                        <strong>NOMBRE DEL CONCESIONARIO: </strong>
                                     </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-12">
-                                    <field name="observacionesLiquidacion" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </div>
+                                </group>
                             </div>
-                            <separator class="text-center" string="COMITÉ DE APROBACION"/>
-                            <div class="row">
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                </group>
                             </div>
-
+                            <div class="col-xs-12 col-sm-4">
+                                <group>
+                                    <field name="nombreConsesionario" domain = "[('tipo', '=', 'concesionario')]" nolabel="1"/>
+                                </group>
+                            </div>
                         </div>
-                        <!-- entrega_vehiculo -->
-                        <div states="entrega_vehiculo">
-                            <separator class="text-center" string="LIQUIDACION DE COMPRA"/>
-                            <field name="mes" />
+                        <separator/>
+                        <separator/>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12" style="border-bottom: 1px solid black;">
+                                <text class="text-center">
+                                    <strong>Observaciones:</strong>
+                                </text>
+                            </div>
+                            <div class="col-xs-12 col-sm-12">
+                                <field name="observacionesLiquidacion" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                            </div>
                         </div>
-                    </sheet>
-                </form >
-            </field>
-        </record>
+                        <separator class="text-center" string="COMITÉ DE APROBACION"/>
+                        <div class="row">
+                        </div>
+                    </div>
+                    <!-- entrega_vehiculo -->
+                    <div states="entrega_vehiculo">
+                        <separator class="text-center" string="LIQUIDACION DE COMPRA"/>
+                        <field name="mes" />
+                    </div>
+                </sheet>
+            </form >
+        </field>
+    </record>
 
 
-        <record id="action_new_entrega_vehiculo_form" model="ir.actions.act_window">
-            <field name="name">Entrega Vehiculo</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">entrega.vehiculo</field>
-            <field name="view_mode">tree,form</field>
-        </record>
+    <record id="action_new_entrega_vehiculo_form" model="ir.actions.act_window">
+        <field name="name">Entrega Vehiculo</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">entrega.vehiculo</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 
 
-        <menuitem id="menu_new_entrega_vehiculo" action="action_new_entrega_vehiculo_form" parent="menu_adjudicados" sequence="7" />
-    </odoo>
+    <menuitem id="menu_new_entrega_vehiculo" action="action_new_entrega_vehiculo_form" parent="menu_adjudicados" sequence="7" />
+</odoo>
