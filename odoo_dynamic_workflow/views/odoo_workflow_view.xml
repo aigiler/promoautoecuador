@@ -289,9 +289,9 @@
                             <group>
                                 <field name="btn_hide"/>
                             </group>
-                            <label string="In this case you can't use 'obj' variable because the code will be populated on whole view."
+                        <!--    <label string="In this case you can't use 'obj' variable because the code will be populated on whole view."
                                    style="color: red;"
-                                   attrs="{'invisible':[('btn_hide','=',False)]}"/>
+                                   attrs="{'invisible':[('btn_hide','=',False)]}"/>  -->
                             <group>
                                 <field name="condition_code" required="1"
                                        widget="ace" options="{'mode': 'python'}"/>
