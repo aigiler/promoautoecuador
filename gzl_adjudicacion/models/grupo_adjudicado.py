@@ -105,9 +105,9 @@ class IntegrantesGrupo(models.Model):
 
             for grupo in grupos:
                 listaIntegrantes=listaIntegrantes + (grupo.integrantes.mapped('adjudicado_id').ids)
-            listaIntegrantes=list(set(listaGrupos))
+            listaIntegrantes=list(set(listaIntegrantes))
 
-            if self.adjudicado_id.id in listaGrupos:
+            if self.adjudicado_id.id in listaIntegrantes:
                 raise ValidationError("El integrante {0} ya está ingresado en otro grupo".format(self.adjudicado_id.name))
 
 
