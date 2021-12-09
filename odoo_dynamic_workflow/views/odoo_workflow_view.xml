@@ -265,9 +265,6 @@
             </field>
         </record>
 
-        <!--
-            Workflow Node Buttons
-        -->
         <record id="view_form_odoo_workflow_node_button" model="ir.ui.view">
             <field name="name">odoo.workflow.node.button.form</field>
             <field name="model">odoo.workflow.node.button</field>
@@ -335,6 +332,8 @@
                 </form>
             </field>
         </record>
+
+        
         <record id="view_tree_odoo_workflow_node_button" model="ir.ui.view">
             <field name="name">odoo.workflow.node.button.tree</field>
             <field name="model">odoo.workflow.node.button</field>
