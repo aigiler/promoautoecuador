@@ -42,7 +42,6 @@
             <field name="name">Server Actions</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">ir.actions.server</field>
-            <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('is_workflow','=',True)]</field>
             <field name="context">{'key':'server_action','default_is_workflow':'1'}</field>
