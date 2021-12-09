@@ -85,7 +85,7 @@ class IntegrantesGrupo(models.Model):
     def agregar_contrato(self, ):
 
         if self.adjudicado_id.id:
-            contrato=self.env['contrato'].search([('Cliente','=',self.adjudicado_id.id)],limit=1)
+            contrato=self.env['contrato'].search([('cliente','=',self.adjudicado_id.id)],limit=1)
             if len(contrato)>0:
                 self.contrato_id=contrato.id
 
