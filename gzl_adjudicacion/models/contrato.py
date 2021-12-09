@@ -77,11 +77,6 @@ class Contrato(models.Model):
         self.tasa_administrativa= res.tasa_administrativa
         self.dia_corte = res.dia_corte
 
-        ('borrador', 'Borrador'),
-        ('congelar_contrato', 'Congelar Contrato'),
-        ('adjudicar', 'Adjudicar'),
-        ('adendum', 'Realizar Adendum'),
-        ('desistir', 'Desistir'),
     def cambio_estado_boton_borrador(self):
         return self.write({"state": "congelar_contrato"})
 
