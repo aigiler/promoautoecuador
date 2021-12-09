@@ -66,7 +66,7 @@
                             </div>
                         </div>
                         <separator class="text-center" string="DATOS DEL CONYUGE"/>
-                        <div class="row" style="border: 1px solid black;">
+                        <div class="row">
                             <div class="col-xs-12 col-md-12">
                                 <group>
                                     <field name="nombreConyuge" string="Nombre del Cónyuge"/>
@@ -86,7 +86,7 @@
                             </div>
                         </div>
                         <separator class="text-center" string="DATOS DOMICIARIOS"/>
-                        <div class="row" style="border: 1px solid black;"> 
+                        <div class="row">
                             <field name="referenciaDomiciliaria" widget="pad" string='Referencias indican:'/>
                         </div>
                         <separator class="text-center" string="DATOS LABORALES"/>
