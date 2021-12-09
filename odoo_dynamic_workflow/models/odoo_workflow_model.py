@@ -13,7 +13,7 @@
 ##########################################################
 
 from odoo import models, fields, api, _
-from odoo.osv.orm import setup_modifiers
+from orm import setup_modifiers
 from odoo.tools.safe_eval import safe_eval as eval
 from odoo.exceptions import UserError, Warning
 from datetime import datetime, date, time, timedelta
