@@ -44,7 +44,7 @@
 
                     <div states="informe_credito_cobranza">
                         <separator class="text-center" string="ANTECEDENTES DEL ASOCIADO"/>
-                        <div class="row">
+                        <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-md-12">
                                 <group>
                                     <field name="nombreSocioAdjudicado" options="{'no_create': True, 'no_open': True}"/>
@@ -66,7 +66,7 @@
                             </div>
                         </div>
                         <separator class="text-center" string="DATOS DEL CONYUGE"/>
-                        <div class="row">
+                        <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-md-12">
                                 <group>
                                     <field name="nombreConyuge" string="Nombre del Cónyuge"/>
@@ -86,11 +86,11 @@
                             </div>
                         </div>
                         <separator class="text-center" string="DATOS DOMICIARIOS"/>
-                        <div class="row">
+                        <div class="row" style="border: 1px solid black;">
                             <field name="referenciaDomiciliaria" widget="pad" string='Referencias indican:'/>
                         </div>
                         <separator class="text-center" string="DATOS LABORALES"/>
-                        <div class="row">
+                        <div class="row" style="border: 1px solid black;">
                             <field name="referenciasLaborales" widget="pad" string='Referencias indican:'/>
                         </div>
                         <separator class="text-center" string="PATRIMONIO"/>
@@ -579,58 +579,9 @@
                             </div>
                         </div>
                         <separator/>
-
                         <table style=" border-collapse: collapse;width:75%">
                             <tbody>
-                                <tr>
-                                    <td style="width:50%">
-                                        <text>MONTO DEL PLAN ADJUDICADO</text>
-                                    </td>
-                                    <td style="width:50%">
-                                    </td>
-                                    <td>
-                                        <field name="montoAdjudicado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width:50%">
-                                        <text>VALOR DEL VEHICULO</text>
-                                    </td>
-                                    <td style="width:50%">
-                                    </td>
-                                    <td>
-                                        <field name="montoVehiculo" nolabel="1"/>
-                                    </td>
-                                </tr>
-                                <tr>
 
-
-                                    <td style="width:50%">
-                                        
-                                        <text>SALDO A FAVOR APLICA A CUOTAS FINALES DEL PLAN	</text>
-                                        <text>VALOR ADJUDICADO PARA LA COMPRA DEL VEHICULO	</text>
-                                        <text>ANTICIPO AL CONCESIONARIO	</text>
-                                        <text>COMISION FACTURA A NOMBRE CONCESIONARIO	</text>
-                                        <text>COMISION POR DISPOSITIVO DE RASTREO	</text>
-                                        <text>CHEQUE AL CONCESIONARIO	</text>
-
-                                        <br/>
-                                    </td>
-                                    <td>
-
-
-                                        
-                                        <field name="montoAFavor" nolabel="1"/>
-                                        <field name="valorAdjParaCompra" nolabel="1"/>
-                                        <field name="montoAnticipoConsesionaria" nolabel="1"/>
-                                        <field name="comisionFacturaConcesionario" nolabel="1"/>
-                                        <field name="valorComisionFactura" nolabel="1"/>
-                                        <field name="comisionDispositivoRastreo" nolabel="1"/>
-                                        <field name="montoChequeConsesionario" nolabel="1"/>
-
-                                        <br/>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                         <separator/>
@@ -667,7 +618,6 @@
                         <separator class="text-center" string="COMITÉ DE APROBACION"/>
                         <div class="row">
                         </div>
-
                     </div>
                     <!-- entrega_vehiculo -->
                     <div states="entrega_vehiculo">
