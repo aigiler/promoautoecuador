@@ -6,25 +6,26 @@ class Asamblea(models.Model):
     _name = 'asamblea'
     _description = 'Proceso de Asamblea'
     _rec_name = 'secuencia'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     secuencia = fields.Char(index=True)
-    descripcion = fields.Text('Descripcion',  required=True)
-    active = fields.Boolean(default=True)
+    descripcion = fields.Text('Descripcion',  required=True,track_visibility='onchange')
+    active = fields.Boolean(default=True,track_visibility='onchange')
     integrantes = fields.One2many(
-        'integrante.grupo.adjudicado.asamblea', 'asamblea_id')
+        'integrante.grupo.adjudicado.asamblea', 'asamblea_id',track_visibility='onchange')
     # integrantes = fields.Many2many('integrante.grupo.adjudicado')
 
-    junta = fields.One2many('junta.grupo.asamblea', 'asamblea_id')
-    fecha_inicio = fields.Datetime(String='Fecha Inicio')
-    fecha_fin = fields.Datetime(String='Fecha Fin')
+    junta = fields.One2many('junta.grupo.asamblea', 'asamblea_id',track_visibility='onchange')
+    fecha_inicio = fields.Datetime(String='Fecha Inicio',track_visibility='onchange')
+    fecha_fin = fields.Datetime(String='Fecha Fin',track_visibility='onchange')
     tipo_asamblea = fields.Many2one(
-        'tipo.contrato.adjudicado', string='Tipo de Asamblea')
+        'tipo.contrato.adjudicado', string='Tipo de Asamblea',track_visibility='onchange')
     state = fields.Selection(selection=[
             ('borrador', 'Borrador'),
             ('en_curso', 'En Curso'),
             ('pre_cierre', 'Pre cierre'),
             ('cerrado', 'Cerrado')
-            ], string='Estado', copy=False, tracking=True, default='borrador')
+            ], string='Estado', copy=False, tracking=True, default='borrador',track_visibility='onchange')
 
     @api.model
     def create(self, vals):
