@@ -110,12 +110,12 @@ class OdooWorkflow(models.Model):
                 if res:
                     raise ValidationError(_("Nodes' sequence must be unique per workflow."))
 
-    @api.multi
+    #@api.multi
     def btn_reload_workflow(self):
         from odoo.addons import odoo_dynamic_workflow
         return odoo_dynamic_workflow.update_workflow_reload(self)
 
-    @api.multi
+   # @api.multi
     def btn_nodes(self):
         for rec in self:
             act = {
@@ -130,7 +130,7 @@ class OdooWorkflow(models.Model):
             }
             return act
 
-    @api.multi
+  #  @api.multi
     def btn_buttons(self):
         for rec in self:
             act = {
@@ -145,7 +145,7 @@ class OdooWorkflow(models.Model):
             }
             return act
 
-    @api.multi
+   # @api.multi
     def btn_links(self):
         for rec in self:
             act = {
@@ -191,7 +191,7 @@ class OdooWorkflowNode(models.Model):
                 name = rec.name.lower().strip().replace(' ', '_')
                 rec.node_name = name
 
-    @api.multi
+   # @api.multi
     def btn_load_fields(self):
         # Variables
         field_obj = self.env['ir.model.fields']
@@ -229,7 +229,7 @@ class OdooWorkflowLink(models.Model):
             if rec.node_from and rec.node_to:
                 rec.name = "%s -> %s" % (rec.node_from.name, rec.node_to.name)
 
-    @api.multi
+   # @api.multi
     def trigger_link(self):
         # Variables
         cx = self.env.context
@@ -330,7 +330,7 @@ class OdooWorkflowNodeButton(models.Model):
             if res:
                 rec.btn_key = self._generate_key()
 
-    @api.multi
+   # @api.multi
     def run(self):
         for rec in self:
             # Check Condition Before Executing Action
@@ -364,7 +364,7 @@ class OdooWorkflowNodeButton(models.Model):
 
 
 
-    @api.multi
+  # @api.multi
     def run_2(self):
         for rec in self:
             # Check Condition Before Executing Action

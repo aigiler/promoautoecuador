@@ -56,7 +56,7 @@ class OdooWorkflowModel(models.Model):
     state = fields.Selection(selection='_load_state', string='Status', default=_compute_default_state,
                              track_visibility='onchange')
 
-    @api.multi
+  #  @api.multi
     def btn_exec_action(self):
         """
             Got invoked when a workflow button is called.
