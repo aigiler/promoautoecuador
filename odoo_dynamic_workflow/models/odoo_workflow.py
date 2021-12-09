@@ -413,7 +413,7 @@ class OdooWorkflowNodeButton(models.Model):
 
 
 
-    @api.multi
+   # @api.multi
     def _run_win_act(self):
         # Variables
         cx = self.env.context.copy() or {}
@@ -425,7 +425,7 @@ class OdooWorkflowNodeButton(models.Model):
             return action
         return False
 
-    @api.multi
+   # @api.multi
     def _run_action(self):
         # Variables
         srv_act_obj = self.env['ir.actions.server']
@@ -434,7 +434,7 @@ class OdooWorkflowNodeButton(models.Model):
             srv_act_rec = srv_act_obj.browse(rec.server_action_id.id)
             return srv_act_rec.run()
 
-    @api.multi
+   # @api.multi
     def _run_code(self):
         # Variables
         cx = self.env.context.copy() or {}
@@ -464,7 +464,7 @@ class OdooWorkflowNodeButton(models.Model):
                 raise UserError(_("Wrong python code defined.\n\nError: %s\nLine: %s, Column: %s\n\n%s" % (ex.args[0], ex.args[1][1], ex.args[1][2], ex.args[1][3])))
         return True
 
-    @api.multi
+   # @api.multi
     def _run_link(self):
         for rec in self:
             # Check Condition Before Executing Action
