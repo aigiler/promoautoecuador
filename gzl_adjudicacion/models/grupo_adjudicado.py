@@ -43,7 +43,7 @@ class GrupoAdjudicado(models.Model):
     monto_grupo = fields.Float(string='Monto Pagado',compute="calcular_monto_pagado",store=True)
 
 
-    @api.depends("integrantes"):
+    @api.depends("integrantes")
     def calcular_monto_pagado(self,):
         for l in self:
             monto=round(sum(l.integrantes.mapped("contrato_id").mapped("monto_pagado")),2)
