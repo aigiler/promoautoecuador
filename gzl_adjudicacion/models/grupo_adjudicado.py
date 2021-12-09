@@ -80,7 +80,7 @@ class IntegrantesGrupo(models.Model):
 
 
 
-
+    @api.constrains("adjudicado_id")
     @api.onchange("adjudicado_id")
     def agregar_contrato(self, ):
 
@@ -88,7 +88,8 @@ class IntegrantesGrupo(models.Model):
             contrato=self.env['contrato'].search([('cliente','=',self.adjudicado_id.id)],limit=1)
             if len(contrato)>0:
                 self.contrato_id=contrato.id
-
+            else:
+                self.contrato_id=False
 
 
 
