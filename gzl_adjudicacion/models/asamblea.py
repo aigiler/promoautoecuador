@@ -52,10 +52,10 @@ class Asamblea(models.Model):
         return self.write({"state": "en_curso"})
 
     def cambio_estado_boton_en_curso(self):
-        return self.write({"state": "en_curso"})
+        return self.write({"state": "pre_cierre"})
 
     def cambio_estado_boton_pre_cierre(self):
-        return self.write({"state": "pre_cierre"})
+        return self.write({"state": "cerrado"})
 
     def cambio_estado_boton_cerrado(self):
         return self.write({"state": "cerrado"})
