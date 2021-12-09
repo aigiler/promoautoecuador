@@ -63,7 +63,7 @@
                     </div>
 
                     <group string="Integrantes">
-                        <field name="integrantes" nolabel="1" >
+                        <field name="integrantes" nolabel="1"  attrs="{'readonly': [('estado','=','cerrado')]}">
                             <tree string="Integrantes" edit="false" editable="bottom">
                                 <field name="codigo_integrante" readonly="1"/>
                                 <field name="codigo_cliente" readonly="1"/>
