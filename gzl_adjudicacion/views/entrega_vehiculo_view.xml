@@ -85,11 +85,11 @@
                                 </group>
                             </div>
                         </div>
-                        <separator class="text-center" string="DATOS DOMICIARIOS"/>
+                        <separator class="text-center fw-bold" string="DATOS DOMICIARIOS"/>
                         <div class="row" style="border: 1px solid black;">
                             <field name="referenciaDomiciliaria" widget="pad" string='Referencias indican:'/>
                         </div>
-                        <separator class="text-center" string="DATOS LABORALES"/>
+                        <separator class="text-center fw-bold" string="DATOS LABORALES"/>
                         <div class="row" style="border: 1px solid black;">
                             <field name="referenciasLaborales" widget="pad" string='Referencias indican:'/>
                         </div>
