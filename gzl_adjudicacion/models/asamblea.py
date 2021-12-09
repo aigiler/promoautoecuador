@@ -29,7 +29,7 @@ class Asamblea(models.Model):
 
     @api.model
     def create(self, vals):
-        vals['secuencia'] = self.env['ir.sequence'].next_by_code('contrato')
+        vals['secuencia'] = self.env['ir.sequence'].next_by_code('asamblea')
         res = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc")
         return super(Asamblea, self).create(vals)
 
