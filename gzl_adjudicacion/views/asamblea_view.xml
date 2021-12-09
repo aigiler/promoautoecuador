@@ -56,7 +56,7 @@
                                         <group>
 
                                             <field name="grupo_adjudicado_id"/>
-                                            <field name="tipo_asamblea"/>
+                                            <field name="tipo_contrato"/>
 
 
                                         </group>
