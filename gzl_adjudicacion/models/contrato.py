@@ -7,38 +7,39 @@ class Contrato(models.Model):
     _name = 'contrato'
     _description = 'Contrato'
     _rec_name = 'secuencia'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     secuencia = fields.Char(index=True)
     currency_id = fields.Many2one(
         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
-    cliente = fields.Many2one('res.partner', string="Cliente")
-    grupo = fields.Many2one('grupo.adjudicado', string="Grupo")
+    cliente = fields.Many2one('res.partner', string="Cliente" ,track_visibility='onchange')
+    grupo = fields.Many2one('grupo.adjudicado', string="Grupo" ,track_visibility='onchange')
     dia_corte = fields.Char(string='Día de Corte')
     saldo_a_favor_de_capital_por_adendum = fields.Monetary(
-        string='Saldo a Favor de Capital por Adendum', currency_field='currency_id')
+        string='Saldo a Favor de Capital por Adendum', currency_field='currency_id' ,track_visibility='onchange')
     pago = fields.Selection(selection=[
         ('mes_actual', 'Mes Actual'),
         ('siguiente_mes', 'Siguiente Mes'),
         ('personalizado', 'Personalizado')
-    ], string='Pago', default='mes_actual')
+    ], string='Pago', default='mes_actual' ,track_visibility='onchange')
     monto_financiamiento = fields.Monetary(
-        string='Monto Financiamiento', currency_field='currency_id')
-    tasa_administrativa = fields.Float(string='Tasa Administrativa(%)')
+        string='Monto Financiamiento', currency_field='currency_id' ,track_visibility='onchange')
+    tasa_administrativa = fields.Float(string='Tasa Administrativa(%)' ,track_visibility='onchange')
     valor_inscripcion = fields.Monetary(
-        string='Valor Inscripción', currency_field='currency_id')
+        string='Valor Inscripción', currency_field='currency_id' ,track_visibility='onchange')
     tipo_de_contrato = fields.Many2one(
-        'tipo.contrato.adjudicado', string='Tipo de Contrato')
-    codigo_grupo = fields.Char(string='Código de Grupo')
-    provincias = fields.Many2one('res.country.state', string='Provincia')
+        'tipo.contrato.adjudicado', string='Tipo de Contrato' ,track_visibility='onchange')
+    codigo_grupo = fields.Char(string='Código de Grupo' ,track_visibility='onchange')
+    provincias = fields.Many2one('res.country.state', string='Provincia' ,track_visibility='onchange')
     archivo = fields.Binary(string='Archivo')
-    fecha_contrato = fields.Date(string='Fecha Contrato')
+    fecha_contrato = fields.Date(string='Fecha Contrato' ,track_visibility='onchange')
     plazo_meses = fields.Selection([('60', '60 Meses'),
                                     ('72', '72 Meses')
-                                    ], string='Plazo (meses)')
+                                    ], string='Plazo (meses)' ,track_visibility='onchange')
     cuota_adm = fields.Monetary(
-        string='Cuota Administrativa', currency_field='currency_id')
+        string='Cuota Administrativa', currency_field='currency_id' ,track_visibility='onchange')
     factura_inscripcion = fields.Many2one(
-        'account.move', string='Factura Incripción')
+        'account.move', string='Factura Incripción' ,track_visibility='onchange')
     active = fields.Boolean(string='Activo', default=True)
     state = fields.Selection(selection=[
         ('borrador', 'Borrador'),
@@ -46,19 +47,31 @@ class Contrato(models.Model):
         ('adjudicar', 'Adjudicar'),
         ('adendum', 'Realizar Adendum'),
         ('desistir', 'Desistir'),
-    ], string='Estado', default='borrador')
-    observacion = fields.Char(string='Observación')
+    ], string='Estado', default='borrador' ,track_visibility='onchange')
+    observacion = fields.Char(string='Observación' ,track_visibility='onchange')
     ciudad = fields.Many2one(
-        'res.country.city', string='Ciudad', domain="[('provincia_id','=',provincias)]")
-    archivo_adicional = fields.Binary(string='Archivo Adicional')
-    fecha_inicio_pago = fields.Char(string='Fecha Inicio de Pago')
+        'res.country.city', string='Ciudad', domain="[('provincia_id','=',provincias)]" ,track_visibility='onchange')
+    archivo_adicional = fields.Binary(string='Archivo Adicional' ,track_visibility='onchange')
+    fecha_inicio_pago = fields.Char(string='Fecha Inicio de Pago' ,track_visibility='onchange')
     cuota_capital = fields.Monetary(
-        string='Cuota Capital', currency_field='currency_id')
+        string='Cuota Capital', currency_field='currency_id' ,track_visibility='onchange')
     iva_administrativo = fields.Monetary(
-        string='Iva Administrativo', currency_field='currency_id')
+        string='Iva Administrativo', currency_field='currency_id' ,track_visibility='onchange')
     estado_de_cuenta_ids = fields.One2many(
-        'contrato.estado.cuenta', 'contrato_id')
-    fecha_adjudicado = fields.Date(string='Fecha Adj.')
+        'contrato.estado.cuenta', 'contrato_id' ,track_visibility='onchange')
+    fecha_adjudicado = fields.Date(string='Fecha Adj.' ,track_visibility='onchange')
+
+    monto_pagado = fields.Float(string='Monto Pagado',compute="calcular_monto_pagado",store=True ,track_visibility='onchange')
+
+
+    @api.depends("estado_de_cuenta_ids.monto_pagado"):
+    def calcular_monto_pagado(self,):
+        for l in self:
+            monto=round(sum(l.estado_de_cuenta_ids.mapped("monto_pagado"),2))
+            l.monto_pagado=monto
+
+
+
 
     @api.model
     def create(self, vals):

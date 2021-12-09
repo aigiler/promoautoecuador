@@ -2,7 +2,7 @@
     "name" : "gzl_adjudicacion",
     "version" : "0.1",
     'depends' :['base',
-                ],
+                ,'mail','portal'],
     "author" : "Yadira Quimis Gizlo",
     "description" : """
     product

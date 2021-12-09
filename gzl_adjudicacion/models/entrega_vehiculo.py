@@ -11,6 +11,7 @@ class EntegaVehiculo(models.Model):
     _name = 'entrega.vehiculo'
     _description = 'Enrega Vehiculo'
     _rec_name = 'secuencia'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     secuencia = fields.Char(index=True)
     requisitosPoliticasCredito = fields.Text(string='Informacion Cobranzas')
