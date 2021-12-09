@@ -25,7 +25,6 @@
             <field name="name">Refusal Reason Wizard</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">odoo.workflow.refuse.wizard</field>
-            <field name="view_type">form</field>
             <field name="view_mode">form</field>
             <field name="view_id" ref="view_form_odoo_workflow_refuse_wizard"/>
             <field name="target">new</field>
