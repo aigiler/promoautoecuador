@@ -94,7 +94,7 @@ class IntegrantesGrupo(models.Model):
 
 
 
-    @api.contrains("adjudicado_id")
+    @api.constrains("adjudicado_id")
     def validar_cliente_en_otro_grupo(self, ):
 
 
