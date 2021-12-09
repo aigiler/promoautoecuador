@@ -265,10 +265,13 @@
             </field>
         </record>
 
-        <record id="view_form_odoo_workflow_node_button" model="ir.ui.view">
-            <field name="name">odoo.workflow.node.button.form</field>
+
+
+        <record model='ir.ui.view' id='view_form_odoo_workflow_node_button'>
+            <field name="name">view.odoo.workflow.node.button.form</field>
             <field name="model">odoo.workflow.node.button</field>
             <field name="arch" type="xml">
+
                 <form>
                     <field name="workflow_id" invisible="1"/>
                     <sheet>
@@ -333,7 +336,7 @@
             </field>
         </record>
 
-        
+
         <record id="view_tree_odoo_workflow_node_button" model="ir.ui.view">
             <field name="name">odoo.workflow.node.button.tree</field>
             <field name="model">odoo.workflow.node.button</field>
