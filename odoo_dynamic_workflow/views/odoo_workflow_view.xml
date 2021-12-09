@@ -260,13 +260,14 @@
     </record>
 
 
-    <record model='ir.ui.view' id='view_form_odoo_workflow_node_button'>
+
+
+    <record id="view_form_odoo_workflow_node_button" model="ir.ui.view">
         <field name="name">view.odoo.workflow.node.button.form</field>
         <field name="model">odoo.workflow.node.button</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
- 
                     <group>
                         <group>
                             <field name="sequence" required="1"/>
@@ -329,6 +330,7 @@
             </form>
         </field>
     </record>
+
 
 
     <record id="view_tree_odoo_workflow_node_button" model="ir.ui.view">
