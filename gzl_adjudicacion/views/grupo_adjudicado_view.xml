@@ -28,12 +28,10 @@
             <form string="Grupo Adjudicado">
                 <header>
                      <button name="cerrar_grupo" string="Cerrar Grupo"
-                                                type="object" 
-                                                attrs="{'invisible': [('state','=','cerrado')]}"/>
+                                                type="object" attrs="{'invisible': [('estado','=','cerrado')]}"/>
 
                      <button name="abrir_grupo" string="Abrir Grupo"
-                                                type="object" 
-                                                attrs="{'invisible': [('state','!=','cerrado')]}"/>
+                                                type="object"  attrs="{'invisible': [('estado','!=','cerrado')]}"/>
                     <field name="estado" widget="statusbar" statusbar_visible="en_conformacion,cerrado"/>
 
 
