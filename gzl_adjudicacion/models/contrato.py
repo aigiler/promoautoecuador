@@ -64,7 +64,7 @@ class Contrato(models.Model):
     monto_pagado = fields.Float(string='Monto Pagado',compute="calcular_monto_pagado",store=True ,track_visibility='onchange')
 
 
-    @api.depends("estado_de_cuenta_ids.monto_pagado"):
+    @api.depends("estado_de_cuenta_ids.monto_pagado")
     def calcular_monto_pagado(self,):
         for l in self:
             monto=round(sum(l.estado_de_cuenta_ids.mapped("monto_pagado"),2))
