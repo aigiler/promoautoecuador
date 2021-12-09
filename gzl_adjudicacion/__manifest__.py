@@ -13,6 +13,7 @@
                     'data/data_grupo_adjudicacion.xml',
                     'data/data_tipo_contrato.xml',
                     'data/data_secuencia.xml',
+                    'data/data_calificacion_cliente_parametros.xml',
                       
                     'security/ir.model.access.csv',
 

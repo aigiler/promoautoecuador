@@ -71,7 +71,7 @@
                                 <field name="adjudicado_id" options="{'no_open': True, 'no_create': True}"/>
                                 <field name="mobile" readonly="1"/>
                                 <field name="contrato_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
-                                <field name="cupo"/>
+                                <field name="cupo" invisible="1"/>
                                 <!-- <field name="descripcion"/>
                                 <field name="monto"/>
                                 <field name="nro_cuota_licitar"  />
