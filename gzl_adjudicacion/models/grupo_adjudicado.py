@@ -51,10 +51,10 @@ class GrupoAdjudicado(models.Model):
 
 
     def cerrar_grupo(self,):
-        self.state='cerrado'
+        self.estado='cerrado'
 
     def abrir_grupo(self,):
-        self.state='en_conformacion'
+        self.estado='en_conformacion'
 
 
 class IntegrantesGrupo(models.Model):
