@@ -18,7 +18,7 @@ from odoo import models, api
 class OdooWorkflowUpdateWizard(models.TransientModel):
     _name = 'odoo.workflow.update.wizard'
 
-    @api.multi
+    #@api.multi
     def btn_update(self):
         from odoo.addons import odoo_dynamic_workflow
         return odoo_dynamic_workflow.update_workflow_reload(self)

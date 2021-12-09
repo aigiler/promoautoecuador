@@ -21,7 +21,7 @@ class OdooWorkflowRefuseWizard(models.TransientModel):
 
     reason = fields.Text(string='Reason')
 
-    @api.multi
+    #@api.multi
     def btn_submit(self):
         # Variables
         cx = self.env.context.copy() or {}
