@@ -40,7 +40,7 @@ class Contrato(models.Model):
     factura_inscripcion = fields.Many2one(
         'account.move', string='Factura Incripción')
     active = fields.Boolean(string='Activo', default=True)
-    estado = fields.Selection(selection=[
+    state = fields.Selection(selection=[
         ('borrador', 'Borrador'),
         ('congelar_contrato', 'Congelar Contrato'),
         ('adjudicar', 'Adjudicar'),

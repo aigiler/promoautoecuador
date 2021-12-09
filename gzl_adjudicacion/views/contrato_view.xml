@@ -27,7 +27,7 @@
                     <button name="cambio_estado_boton_adendum" string="Adjudicar" type="object" states="adjudicar" class="oe_highlight"/>
                     <button name="cambio_estado_boton_desistir" string="Cerrado" type="object" states="adendum" class="oe_highlight"/>
 
-                    <field name="estado" widget="statusbar" statusbar_visible="borrador,congelar_contrato,adjudicar,adendum,desistir"/>
+                    <field name="state" widget="statusbar" statusbar_visible="borrador,congelar_contrato,adjudicar,adendum,desistir"/>
                 </header>
 
                 <sheet>
