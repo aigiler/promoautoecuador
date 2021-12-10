@@ -5,5 +5,7 @@
             <field name="requisitosPoliticasCredito">Texto Informativo</field>
             <field name="name">Politicas de Credito y Cobranza</field>
 
+        </record>
+
     </data>
 </odoo>
