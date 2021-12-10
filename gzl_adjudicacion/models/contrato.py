@@ -107,8 +107,9 @@ class Contrato(models.Model):
             rec.dia_corte = 5
             if int(rec.plazo_meses):
                 rec.cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses)
-                rec.cuota_adm = rec.monto_financiamiento*(0.04/12)
-
+                cuotaAdministrativa= rec.monto_financiamiento*(0.04/12)
+                rec.iva_administrativo = cuotaAdministrativa * 1.12
+                rec.cuota_adm = cuotaAdministrativa
 
             elif rec.pago == 'siguiente_mes':
                 fechaMesSeguiente = datetime.today() + relativedelta(months=1)
