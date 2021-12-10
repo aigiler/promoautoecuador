@@ -30,6 +30,7 @@
                     'views/asamblea_view.xml',
                     'views/contrato_view.xml',
                     'views/res_config_settings_views.xml',
+                    'views/configuracion_adicional.xml',
                     ],
     
     'installable': True,
