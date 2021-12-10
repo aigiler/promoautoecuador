@@ -73,7 +73,7 @@
                                     <field name="observacion"/>
                                     <field name="ciudad" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="archivo_adicional" filename="name"/>
-                                    <field name="fecha_inicio_pago" string ="Fecha Inicio de Pago" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="fecha_inicio_pago" readonly="0"/>
                                     <field name="cuota_capital"/>
                                     <field name="iva_administrativo" />
                                 </group>
