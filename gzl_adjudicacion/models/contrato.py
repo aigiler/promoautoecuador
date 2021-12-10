@@ -108,7 +108,7 @@ class Contrato(models.Model):
     def detalle_tabla_amortizacion(self):
         for rec in self:
             for i in range(1, int(rec.plazo_meses)+1):
-                cuota_capital = self.planned_revenue/int(rec.plazo_meses)
+                cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses)
                 cuota_adm = cuota_capital *0.04
                 iva = cuota_adm * 0.12
                 saldo = cuota_capital+cuota_adm+iva
