@@ -79,7 +79,7 @@ class Contrato(models.Model):
     monto_pagado = fields.Float(
         string='Monto Pagado', compute="calcular_monto_pagado", store=True, track_visibility='onchange')
 
-    tabla_amortizacion_contrato = fields.One2many(
+    tabla_amortizacion = fields.One2many(
         'contrato.estado.cuenta', 'contrato_id', track_visibility='onchange')
 
     @api.depends("pago")
