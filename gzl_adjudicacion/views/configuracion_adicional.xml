@@ -3,11 +3,11 @@
 <odoo>
 
 
-    <record id="view_new_asamblea_form" model="ir.ui.view">
-        <field name="name">view.new.asamblea.form</field>
-        <field name="model">asamblea</field>
+    <record id="view_configuracion_adicional_form" model="ir.ui.view">
+        <field name="name">view.configuracion.adicional.form</field>
+        <field name="model">configuracion.adicional.template</field>
         <field name="arch" type="xml">
-            <form string="Asamblea">
+            <form string="Configuracion Adicional">
 
 
                 <sheet>
@@ -29,7 +29,4 @@
     </record>
 
 
-
-
-    <menuitem id="menu_new_asamblea" action="action_new_asamblea_form" parent="menu_adjudicados" sequence="7" />
 </odoo>
