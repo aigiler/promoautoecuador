@@ -4,6 +4,7 @@ import dateutil.relativedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from datetime import datetime, timedelta, date
+from dateutil.parser import parse
 
 
 class Contrato(models.Model):
@@ -63,8 +64,8 @@ class Contrato(models.Model):
         'res.country.city', string='Ciudad', domain="[('provincia_id','=',provincias)]", track_visibility='onchange')
     archivo_adicional = fields.Binary(
         string='Archivo Adicional', track_visibility='onchange')
-    fecha_inicio_pago = fields.Char(
-        string='Fecha Inicio de Pago', track_visibility='onchange')
+    fecha_inicio_pago = fields.Date(
+        string='Fecha Inicio de Pago', compute='calcular_fecha_pago', track_visibility='onchange')
     cuota_capital = fields.Monetary(
         string='Cuota Capital', currency_field='currency_id', track_visibility='onchange')
     iva_administrativo = fields.Monetary(
@@ -80,13 +81,21 @@ class Contrato(models.Model):
     tabla_amortizacion_contrato = fields.One2many(
         'contrato.estado.cuenta', 'contrato_id', track_visibility='onchange')
 
-    # @api.depends("pago")
-    # def calcular_fecha_pago(self):
-    #     for rec in self:
-    #         rec.dia_corte = 5
-    #         d = datetime.datetime.today()
-    #         d2 = d + dateutil.relativedelta.relativedelta(months=1)
-    #         fecha_inicio_pago = ''
+    @api.depends("pago")
+    def calcular_fecha_pago(self):
+        for rec in self:
+            rec.dia_corte = 5
+            if rec.pago == 'mes_actual':
+                anio = str(datetime.datetime.today().year)
+                mes = str(datetime.datetime.today().month -1)
+                fechaPago =  "05/"+ mes+ "/"+ anio
+                rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%d/%m/%Y')
+            elif rec.pago == 'siguiente_mes':
+                fechaMesSeguiente = datetime.datetime.today() + dateutil.relativedelta.relativedelta(months=1)
+                mesSgte=str(fechaMesSeguiente.month)
+                anioSgte=str(fechaMesSeguiente.year)
+                fechaPago = "05/"+mesSgte+ "/"+anioSgte
+                rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%d/%m/%Y')
 
     def detalle_tabla_amortizacion(self):
         ahora = datetime.now()
