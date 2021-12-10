@@ -222,7 +222,7 @@ class Contrato(models.Model):
             obj_cliente_integrante.unlink()
 
             dctCliente={
-            "grupo_id":self.grupo.id
+            "grupo_id":self.grupo.id,
             "adjudicado_id":self.cliente.id
 
             }
