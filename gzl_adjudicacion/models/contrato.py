@@ -98,7 +98,10 @@ class Contrato(models.Model):
                 anioSgte=str(fechaMesSeguiente.year)
                 fechaPago = anioSgte+"-"+mesSgte+"-05"
                 rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%Y-%m-%d')
+            else:
+                rec.fecha_inicio_pago =''
 
+                
     def detalle_tabla_amortizacion(self):
         ahora = datetime.now()
         try:
