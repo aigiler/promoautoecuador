@@ -562,14 +562,14 @@ class EntegaVehiculo(models.Model):
             'entrega.vehiculo')
         res = self.env['res.config.settings'].sudo(
             1).search([], limit=1, order="id desc")
-        vals['requisitosPoliticasCredito'] = res.requisitosPoliticasCredito
+        vals['requisitosPoliticasCredito'] = res.configuracion_adicional.requisitosPoliticasCredito
         return super(EntegaVehiculo, self).create(vals)
 
     @api.constrains('cliente', 'secuencia')
     def constrains_valor_por_defecto(self):
         res = self.env['res.config.settings'].sudo(
             1).search([], limit=1, order="id desc")
-        self.requisitosPoliticasCredito = res.requisitosPoliticasCredito
+        self.requisitosPoliticasCredito = res.configuracion_adicional.requisitosPoliticasCredito
 
     def cambio_estado_boton_borrador(self):
         return self.write({"state": "revision_documentos"})
