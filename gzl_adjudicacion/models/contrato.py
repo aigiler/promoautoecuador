@@ -46,7 +46,7 @@ class Contrato(models.Model):
         string='Fecha Contrato', track_visibility='onchange')
     plazo_meses = fields.Selection([('60', '60 Meses'),
                                     ('72', '72 Meses')
-                                    ], string='Plazo (meses)', track_visibility='onchange')
+                                    ], string='Plazo (meses)',default='60', track_visibility='onchange')
     cuota_adm = fields.Monetary(
         string='Cuota Administrativa', currency_field='currency_id', track_visibility='onchange')
     factura_inscripcion = fields.Many2one(
@@ -91,7 +91,7 @@ class Contrato(models.Model):
         self.dia_corte = res.dia_corte
     
 
-    @api.depends("pago")
+    @api.depends('pago')
     def calcular_fecha_pago(self):
         for rec in self:
             rec.dia_corte = 5
@@ -105,10 +105,9 @@ class Contrato(models.Model):
     def calcular_valores_contrato(self):
         for rec in self:
             rec.dia_corte = 5
-            if rec.monto_financiamiento:
-                if int(rec.plazo_meses):
-                    rec.cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses)
-                    rec.cuota_adm = rec.monto_financiamiento*(0.04/12)
+            if int(rec.plazo_meses):
+                rec.cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses)
+                rec.cuota_adm = rec.monto_financiamiento*(0.04/12)
 
 
             elif rec.pago == 'siguiente_mes':
