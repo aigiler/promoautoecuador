@@ -27,11 +27,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <notebook colspan="4">
+<!--                             <notebook colspan="4">
                                 <page string="Requisitos y politicas para aplicar credito" for="requisitosPoliticasCredito">
                                     <field name="requisitosPoliticasCredito" widget="html" nolabel="1"/>
                                 </page>
-                            </notebook>
+                            </notebook> -->
                         </div>
                     </div>
                 </xpath>
