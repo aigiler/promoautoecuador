@@ -14,7 +14,11 @@
                     'data/data_tipo_contrato.xml',
                     'data/data_secuencia.xml',
                     'data/data_calificacion_cliente_parametros.xml',
-                      
+                    'data/data_configuracion_adicional.xml',
+
+
+
+
                     'security/ir.model.access.csv',
 
                     'views/menu_view.xml',

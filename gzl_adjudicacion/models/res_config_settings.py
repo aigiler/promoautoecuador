@@ -9,7 +9,7 @@ class ResConfigSettings(models.TransientModel):
     
     dia_corte = fields.Integer(string='Día de Corte', config_parameter="gzl_adjudicacion.dia_corte")
     tasa_administrativa = fields.Float(string='Tasa Administrativa %' , config_parameter="gzl_adjudicacion.tasa_administrativa")
-# requisitosPoliticasCredito = fields.Text(string='Informacion Cobranzas', config_parameter="gzl_adjudicacion.requisitosPoliticasCredito")
+    configuracion_adicional=fields.Many2one('configuracion.adicional.template',string="Configuracion Adicional",default=self.env.ref('gzl_adjudicacion.configuracion_adicional1'))
 
 
 
