@@ -103,27 +103,30 @@ class Contrato(models.Model):
                 rec.fecha_inicio_pago =''
 
 
+    @api.depends('fecha_inicio_pago')
+    
     def detalle_tabla_amortizacion(self):
-        ahora = datetime.now()
-        try:
-            ahora = ahora.replace(day = self.fecha_inicio_pago)
-        except:
-            raise ValidationError('La fecha no existe, por favor ingrese otro día de pago.')
-        for i in range(1, int(self.plazo_meses)+1):
-            cuota_capital = self.planned_revenue/int(self.plazo_meses)
-            cuota_adm = cuota_capital *0.04
-            iva = cuota_adm * 0.12
-            saldo = cuota_capital+cuota_adm+iva
-            self.env['tabla.amortizacion'].create({'oportunidad_id':self.id,
-                                                   'numero_cuota':i,
-                                                   'fecha':ahora + relativedelta(months=i),
-                                                   'cuota_capital':cuota_capital,
-                                                   'cuota_adm':cuota_adm,
-                                                   'iva':iva,
-                                                   'saldo':saldo
-                                                    })
-        self.cuota_capital = cuota_capital
-        self.iva =  iva 
+        for rec in self:
+            ahora = datetime.now()
+            try:
+                ahora = ahora.replace(day = rec.fecha_inicio_pago)
+            except:
+                raise ValidationError('La fecha no existe, por favor ingrese otro día de pago.')
+            for i in range(1, int(rec.plazo_meses)+1):
+                cuota_capital = self.planned_revenue/int(rec.plazo_meses)
+                cuota_adm = cuota_capital *0.04
+                iva = cuota_adm * 0.12
+                saldo = cuota_capital+cuota_adm+iva
+                self.env['tabla.amortizacion'].create({'oportunidad_id':self.id,
+                                                    'numero_cuota':i,
+                                                    'fecha':ahora + relativedelta(months=i),
+                                                    'cuota_capital':cuota_capital,
+                                                    'cuota_adm':cuota_adm,
+                                                    'iva':iva,
+                                                    'saldo':saldo
+                                                        })
+            rec.cuota_capital = cuota_capital
+            rec.iva =  iva 
 
 
 
