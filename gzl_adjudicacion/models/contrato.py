@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-import datetime
-import dateutil.relativedelta
+
+from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
+import datetime
 from odoo.exceptions import UserError, ValidationError
 from datetime import datetime, timedelta, date
 from dateutil.parser import parse
@@ -93,7 +94,7 @@ class Contrato(models.Model):
 
 
             elif rec.pago == 'siguiente_mes':
-                fechaMesSeguiente = datetime.today() + dateutil.relativedelta.relativedelta(months=1)
+                fechaMesSeguiente = datetime.today() + relativedelta(months=1)
                 mesSgte=str(fechaMesSeguiente.month)
                 anioSgte=str(fechaMesSeguiente.year)
                 fechaPago = anioSgte+"-"+mesSgte+"-05"
