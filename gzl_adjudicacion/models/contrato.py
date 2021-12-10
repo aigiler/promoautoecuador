@@ -87,17 +87,17 @@ class Contrato(models.Model):
             rec.dia_corte = 5
             if rec.pago == 'mes_actual':
                 anio = str(datetime.today().year)
-                mes = str(datetime.today().month -1)
-                fechaPago =  "05/"+ mes+ "/"+ anio
-                rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%d/%m/%Y')
+                mes = str(datetime.today().month)
+                fechaPago =  anio+"-"+mes+"-05" 
+                rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%Y-%m-%d')
 
-                
+
             elif rec.pago == 'siguiente_mes':
                 fechaMesSeguiente = datetime.today() + dateutil.relativedelta.relativedelta(months=1)
                 mesSgte=str(fechaMesSeguiente.month)
                 anioSgte=str(fechaMesSeguiente.year)
-                fechaPago = "05/"+mesSgte+ "/"+anioSgte
-                rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%d/%m/%Y')
+                fechaPago = anioSgte+"-"+mesSgte+"-05"
+                rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%Y-%m-%d')
 
     def detalle_tabla_amortizacion(self):
         ahora = datetime.now()
