@@ -20,7 +20,15 @@ class CrmLead(models.Model):
     numero_cuotas = fields.Selection([('60', '60 Meses'), 
                                       ('72', '72 Meses')
                                     ],string='Número de Cuotas', default="60") 
-    dia_pago = fields.Integer(string='Día de Pagos', required=True)
+    dia_pago = fields.Integer(string='Día de Pagos', default="_capturar_dia_pago",default=lambda self: self._capturar_dia_pago())
+
+    def _capturar_dia_pago(self):
+        res = self.env['res.config.settings'].sudo(
+            1).search([], limit=1, order="id desc")
+        self.dia_pago = res.dia_corte
+
+
+
     tipo_contrato = fields.Many2one('tipo.contrato.adjudicado', string='Tipo de Contrato', required=True)
     tabla_amortizacion = fields.One2many('tabla.amortizacion', 'oportunidad_id' )
     cotizaciones_ids = fields.One2many('sale.order', 'oportunidad_id')
