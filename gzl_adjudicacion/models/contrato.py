@@ -122,6 +122,7 @@ class Contrato(models.Model):
                                                         })
                 rec.cuota_capital = cuota_capital
                 rec.iva =  iva 
+        for rec in self:
             for l in self.tabla_amortizacion:
                     self.env['contrato.estado.cuenta'].create({
                                             'contrato_id':rec.contrato.id,
