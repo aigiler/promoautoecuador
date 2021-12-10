@@ -193,6 +193,47 @@ class Contrato(models.Model):
         return self.write({"state": "desistir"})
 
 
+
+
+
+
+    @api.constrains('cliente')
+    def constrains_valor_por_defecto(self):
+        res = self.env['res.config.settings'].sudo(
+            1).search([], limit=1, order="id desc")
+        self.tasa_administrativa = res.tasa_administrativa
+        self.dia_corte = res.dia_corte
+
+
+
+    @api.constrains("cliente")
+    def validar_cliente_en_otro_contrato(self, ):
+        if self.cliente.id:
+            contratos=self.env['contrato'].search([('cliente','=',self.cliente.id),('id','!=',self.id)],limit=1)
+            if len(contratos)>0:
+                raise ValidationError("El cliente {0} ya está asignado en el contrato {1}".format(self.cliente.name,contratos.secuencia))
+
+
+
+    @api.constrains("grupo")
+    def validar_cliente_en_grupo(self, ):
+        if self.grupo.id:
+            obj_cliente_integrante=self.env['integrante.grupo.adjudicado'].search([('adjudicado_id','=',self.cliente.id)])
+            obj_cliente_integrante.unlink()
+
+            dctCliente={
+            "grupo_id":self.grupo.id
+            "adjudicado_id":self.cliente.id
+
+            }
+
+            obj_cliente_integrante=self.env['integrante.grupo.adjudicado'].create(dctCliente)
+            obj_cliente_integrante.agregar_contrato()
+
+
+
+
+
 class ContratoEstadoCuenta(models.Model):
     _name = 'contrato.estado.cuenta'
     _description = 'Contrato - Tabla de estado de cuenta de Aporte'
