@@ -496,7 +496,7 @@ class EntegaVehiculo(models.Model):
     def buscar_parner(self):
         for rec in self:
             contrato = self.env['contrato'].search(
-                [('cliente', '=', rec.nombreSocioAdjudicado.id)])
+                [('cliente', '=', rec.nombreSocioAdjudicado.id)],limit=1)
             rec.montoAdjudicado = contrato.monto_financiamiento
             rec.valorCuota = contrato.cuota_capital
             rec.tipoAdj = contrato.tipo_de_contrato.name
