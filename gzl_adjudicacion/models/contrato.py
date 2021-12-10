@@ -112,7 +112,7 @@ class Contrato(models.Model):
                 cuota_adm = cuota_capital *0.04
                 iva = cuota_adm * 0.12
                 saldo = cuota_capital+cuota_adm+iva
-                self.env['tabla.amortizacion'].create({'oportunidad_id':self.id,
+                self.env['tabla.amortizacion'].create({
                                                     'numero_cuota':i,
                                                     'fecha':rec.fecha_inicio_pago + relativedelta(months=i),
                                                     'cuota_capital':cuota_capital,
