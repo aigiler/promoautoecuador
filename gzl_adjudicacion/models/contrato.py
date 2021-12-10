@@ -68,7 +68,7 @@ class Contrato(models.Model):
     fecha_inicio_pago = fields.Date(
         string='Fecha Inicio de Pago', compute='calcular_fecha_pago', track_visibility='onchange')
     cuota_capital = fields.Monetary(
-        string='Cuota Capital', currency_field='currency_id', track_visibility='onchange')
+        string='Cuota Capital', currency_field='currency_id', compute='calcular_valores_contrato', track_visibility='onchange')
     iva_administrativo = fields.Monetary(
         string='Iva Administrativo', currency_field='currency_id', track_visibility='onchange')
     estado_de_cuenta_ids = fields.One2many(
@@ -101,7 +101,7 @@ class Contrato(models.Model):
                 fechaPago =  anio+"-"+mes+"-05" 
                 rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%Y-%m-%d')
     
-    @api.depends('pago', 'monto_financiamiento')
+    @api.depends('plazo_meses', 'monto_financiamiento')
     def calcular_valores_contrato(self):
         for rec in self:
             rec.dia_corte = 5
