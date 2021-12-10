@@ -100,6 +100,14 @@ class Contrato(models.Model):
                 mes = str(datetime.today().month)
                 fechaPago =  anio+"-"+mes+"-05" 
                 rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%Y-%m-%d')
+            elif rec.pago == 'siguiente_mes':
+                fechaMesSeguiente = datetime.today() + relativedelta(months=1)
+                mesSgte=str(fechaMesSeguiente.month)
+                anioSgte=str(fechaMesSeguiente.year)
+                fechaPago = anioSgte+"-"+mesSgte+"-05"
+                rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%Y-%m-%d')
+            else:
+                rec.fecha_inicio_pago =''
     
     @api.depends('plazo_meses', 'monto_financiamiento')
     def calcular_valores_contrato(self):
@@ -111,14 +119,7 @@ class Contrato(models.Model):
                 rec.iva_administrativo = cuotaAdministrativa * 1.12
                 rec.cuota_adm = cuotaAdministrativa
 
-            elif rec.pago == 'siguiente_mes':
-                fechaMesSeguiente = datetime.today() + relativedelta(months=1)
-                mesSgte=str(fechaMesSeguiente.month)
-                anioSgte=str(fechaMesSeguiente.year)
-                fechaPago = anioSgte+"-"+mesSgte+"-05"
-                rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%Y-%m-%d')
-            else:
-                rec.fecha_inicio_pago =''
+            
 
 
     @api.depends('fecha_inicio_pago')
