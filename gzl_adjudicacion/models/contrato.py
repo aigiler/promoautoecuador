@@ -101,15 +101,15 @@ class Contrato(models.Model):
             else:
                 rec.fecha_inicio_pago =''
 
-                
+
     def detalle_tabla_amortizacion(self):
         ahora = datetime.now()
         try:
-            ahora = ahora.replace(day = self.dia_pago)
+            ahora = ahora.replace(day = self.fecha_inicio_pago)
         except:
             raise ValidationError('La fecha no existe, por favor ingrese otro día de pago.')
-        for i in range(1, int(self.numero_cuotas)+1):
-            cuota_capital = self.planned_revenue/int(self.numero_cuotas)
+        for i in range(1, int(self.plazo_meses)+1):
+            cuota_capital = self.planned_revenue/int(self.plazo_meses)
             cuota_adm = cuota_capital *0.04
             iva = cuota_adm * 0.12
             saldo = cuota_capital+cuota_adm+iva
