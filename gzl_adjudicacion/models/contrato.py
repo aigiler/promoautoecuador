@@ -86,12 +86,14 @@ class Contrato(models.Model):
         for rec in self:
             rec.dia_corte = 5
             if rec.pago == 'mes_actual':
-                anio = str(datetime.datetime.today().year)
-                mes = str(datetime.datetime.today().month -1)
+                anio = str(datetime.today().year)
+                mes = str(datetime.today().month -1)
                 fechaPago =  "05/"+ mes+ "/"+ anio
                 rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%d/%m/%Y')
+
+                
             elif rec.pago == 'siguiente_mes':
-                fechaMesSeguiente = datetime.datetime.today() + dateutil.relativedelta.relativedelta(months=1)
+                fechaMesSeguiente = datetime.today() + dateutil.relativedelta.relativedelta(months=1)
                 mesSgte=str(fechaMesSeguiente.month)
                 anioSgte=str(fechaMesSeguiente.year)
                 fechaPago = "05/"+mesSgte+ "/"+anioSgte
