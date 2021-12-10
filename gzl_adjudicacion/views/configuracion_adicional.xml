@@ -9,19 +9,19 @@
         <field name="arch" type="xml">
             <form string="Configuracion Adicional">
 
-
                 <sheet>
 
                     <group>
                         <group>
-                            <field name="name" />
+                            <field name="name"/>
 
-                            <field name="requisitosPoliticasCredito" widget="HTML" />
 
                         </group>
                     </group>
+                            <field name="requisitosPoliticasCredito" widget="html"/>
 
                 </sheet>
+
 
                 
             </form >
