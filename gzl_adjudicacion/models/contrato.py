@@ -21,7 +21,7 @@ class Contrato(models.Model):
         'res.partner', string="Cliente", track_visibility='onchange')
     grupo = fields.Many2one(
         'grupo.adjudicado', string="Grupo", track_visibility='onchange')
-    dia_corte = fields.Char(string='Día de Corte')
+    dia_corte = fields.Char(string='Día de Corte', default=lambda self: self._capturar_valores_por_defecto())
     saldo_a_favor_de_capital_por_adendum = fields.Monetary(
         string='Saldo a Favor de Capital por Adendum', currency_field='currency_id', track_visibility='onchange')
     pago = fields.Selection(selection=[
@@ -82,6 +82,15 @@ class Contrato(models.Model):
     tabla_amortizacion = fields.One2many(
         'contrato.estado.cuenta', 'contrato_id', track_visibility='onchange')
 
+
+
+    def _capturar_valores_por_defecto(self):
+        res = self.env['res.config.settings'].sudo(
+            1).search([], limit=1, order="id desc")
+        self.tasa_administrativa = res.tasa_administrativa
+        self.dia_corte = res.dia_corte
+    
+
     @api.depends("pago")
     def calcular_fecha_pago(self):
         for rec in self:
@@ -91,6 +100,15 @@ class Contrato(models.Model):
                 mes = str(datetime.today().month)
                 fechaPago =  anio+"-"+mes+"-05" 
                 rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%Y-%m-%d')
+    
+    @api.depends('pago', 'monto_financiamiento')
+    def calcular_valores_contrato(self):
+        for rec in self:
+            rec.dia_corte = 5
+            if rec.monto_financiamiento:
+                if int(rec.plazo_meses):
+                    rec.cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses)
+                    rec.cuota_adm = rec.monto_financiamiento*(0.04/12)
 
 
             elif rec.pago == 'siguiente_mes':
@@ -104,11 +122,11 @@ class Contrato(models.Model):
 
 
     @api.depends('fecha_inicio_pago')
-    
     def detalle_tabla_amortizacion(self):
         for rec in self:
             for i in range(1, int(rec.plazo_meses)+1):
                 cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses)
+                
                 cuota_adm = cuota_capital *0.04
                 iva = cuota_adm * 0.12
                 saldo = cuota_capital+cuota_adm+iva
@@ -154,16 +172,6 @@ class Contrato(models.Model):
             1).search([], limit=1, order="id desc")
         vals['tasa_administrativa'] = res.tasa_administrativa
         vals['dia_corte'] = res.dia_corte
-        for rec in self:
-            for l in self.tabla_amortizacion:
-                    self.env['contrato.estado.cuenta'].create({
-                                            'contrato_id':rec.contrato.id,
-                                            'numero_cuota':l.numero_cuota,
-                                            'fecha': l.fecha,
-                                            'cuota_capital':l.cuota_capital,
-                                            'cuota_adm':l.cuota_adm,
-                                            #'iva':l.iva
-                                        })
         return super(Contrato, self).create(vals)
 
     @api.onchange('cliente', 'grupo')
@@ -266,17 +274,11 @@ class ContratoEstadoCuenta(models.Model):
                                     ], string='Estado de Pago', default='pendiente')
 
 
-
-
-
-
-
-
 class TablaAmortizacion(models.Model):
     _name = 'tabla.amortizacion'
     _description = 'Tabla de Amortización'
 
-    oportunidad_id = fields.Many2one('crm.lead')
+    contrato_id = fields.Many2one('contrato')
     numero_cuota = fields.Char(String='Número de Cuota')
     fecha = fields.Date(String='Fecha Pago')
     currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
