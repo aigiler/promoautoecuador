@@ -40,7 +40,7 @@
         </record>
 
 
-        <record id="action_cliente_proceso_adjudicacion_form" model="ir.actions.act_window">
+        <record id="action_cliente_proceso_adjudicacion" model="ir.actions.act_window">
             <field name="name">Clientes</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">res.partner</field>
@@ -54,25 +54,25 @@
               </p>
             </field>
         </record>
-        <record id="action_adjudicados_kanban_view1" model="ir.actions.act_window.view">
+        <record id="action_cliente_proceso_adjudicacion_kanban" model="ir.actions.act_window.view">
             <field eval="0" name="sequence"/>
             <field name="view_mode">kanban</field>
             <field name="view_id" ref="base.res_partner_kanban_view"/>
-            <field name="act_window_id" ref="action_adjudicados_form"/>
+            <field name="act_window_id" ref="action_cliente_proceso_adjudicacion"/>
         </record>
-        <record id="action_adjudicados_form_view1" model="ir.actions.act_window.view">
+        <record id="action_cliente_proceso_adjudicacion_form" model="ir.actions.act_window.view">
             <field eval="2" name="sequence"/>
             <field name="view_mode">form</field>
             <field name="view_id" ref="view_cliente_proceso_adjudicadion_simple_form"/>
-            <field name="act_window_id" ref="action_adjudicados_form"/>
+            <field name="act_window_id" ref="action_cliente_proceso_adjudicacion"/>
         </record>
-        <record id="action_adjudicados_tree_view1" model="ir.actions.act_window.view">
+        <record id="action_cliente_proceso_adjudicacion_tree" model="ir.actions.act_window.view">
             <field name="sequence" eval="1"/>
             <field name="view_mode">tree</field>
             <field name="view_id" ref="base.view_partner_tree"/>
-            <field name="act_window_id" ref="action_adjudicados_form"/>
+            <field name="act_window_id" ref="action_cliente_proceso_adjudicacion"/>
         </record>
 
     <menuitem id="crear_cliente_procesdo_adjudicado_menu" name="Clientes" sequence="10"
-              action="action_cliente_proceso_adjudicacion_form" parent="menu_clientes_proceso_adjudicacion"/>
+              action="action_cliente_proceso_adjudicacion" parent="menu_clientes_proceso_adjudicacion"/>
 </odoo>
