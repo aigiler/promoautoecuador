@@ -194,7 +194,7 @@
                                             <td><label for="montoCuotasCanceladas" /></td>
                                             <td><field name="montoCuotasCanceladas" readonly="1" options="{'no_create': True, 'no_open': True}"/></td>
                                             <td><field name="cuotasCanceladas" nolabel="1"  readonly="1"  options="{'no_create': True, 'no_open': True}"/> Cuotas</td>
-                                            <td><field name="porcentajeCancelado" nolabel="1" readonly="1"  options="{'no_create': True, 'no_open': True}"/>%</td>
+                                            <td><field name="porcentajeMontoCancelado" nolabel="1" readonly="1"  options="{'no_create': True, 'no_open': True}"/>%</td>
                                         </tr>
                                         <tr>
                                             <td><label for="montoCuotasPendientes" options="{'no_create': True, 'no_open': True}"/> </td>
@@ -227,7 +227,7 @@
                             </div>
                             <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
                                 <group>
-                                    <field name="puntosPorcentajSaldos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="puntosPorcentajSaldoPlan" nolabel="1" options="{'no_create': True, 'no_open': True}"/>%
                                 </group>
                             </div>
                         </div>

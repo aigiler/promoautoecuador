@@ -15,10 +15,7 @@ class EntegaVehiculo(models.Model):
 
     secuencia = fields.Char(index=True)
     requisitosPoliticasCredito = fields.Text(string='Informacion Cobranzas', default=lambda self: self._capturar_valores_por_defecto())
-
-
     documentos = fields.Many2many('ir.attachment', string='Carga Documentos')
-
     active = fields.Boolean(string='Activo', default=True)
     state = fields.Selection(selection=[
         ('borrador', 'Borrador'),
@@ -30,16 +27,11 @@ class EntegaVehiculo(models.Model):
         ('entrega_vehiculo', 'Entrega de Vehiculo'),
     ], string='Estado', default='borrador')
     # datos del socio adjudicado
-    nombreSocioAdjudicado = fields.Many2one(
-        'res.partner', string="Nombre del Socio Adj.")
-    codigoAdjudicado = fields.Char(
-        related="nombreSocioAdjudicado.codigo_cliente", string='Código')
-    fechaNacimientoAdj = fields.Date(
-        related="nombreSocioAdjudicado.fecha_nacimiento", string='Fecha de Nacimiento')
-    vatAdjudicado = fields.Char(
-        related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía')
-    estadoCivilAdj = fields.Selection(
-        related="nombreSocioAdjudicado.estado_civil")
+    nombreSocioAdjudicado = fields.Many2one('res.partner', string="Nombre del Socio Adj.")
+    codigoAdjudicado = fields.Char(related="nombreSocioAdjudicado.codigo_cliente", string='Código')
+    fechaNacimientoAdj = fields.Date(related="nombreSocioAdjudicado.fecha_nacimiento", string='Fecha de Nacimiento')
+    vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía')
+    estadoCivilAdj = fields.Selection(related="nombreSocioAdjudicado.estado_civil")
     edadAdjudicado = fields.Integer(compute='calcular_edad', string="Edad")
     cargasFamiliares = fields.Integer(string="Cargas Fam.")
     # datos del conyuge
@@ -53,8 +45,7 @@ class EntegaVehiculo(models.Model):
         ('divorciado', 'Divorciado/a'),
         ('viudo', 'Viudo/a')
     ], string='Estado Civil', default='soltero')
-    edadConyuge = fields.Integer(
-        compute='calcular_edad_conyuge', string="Edad")
+    edadConyuge = fields.Integer(compute='calcular_edad_conyuge', string="Edad")
 
     # datos domiciliarios
     referenciaDomiciliaria = fields.Text(string='Referencias indican:')
@@ -63,23 +54,18 @@ class EntegaVehiculo(models.Model):
     referenciasLaborales = fields.Text(string='Referencias indican:')
 
     # datos del patrimonio del socio
-    currency_id = fields.Many2one(
-        'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
+    currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
     montoAhorroInversiones = fields.Monetary(string='Ahorro o Inversiones')
     casaValor = fields.Monetary(string='Casa Valor', default=0.00)
     terrenoValor = fields.Monetary(string='Terreno Valor', default=0.00)
-    montoMueblesEnseres = fields.Monetary(
-        string='Muebles y Enseres', default=0.00)
+    montoMueblesEnseres = fields.Monetary( string='Muebles y Enseres', default=0.00)
     vehiculoValor = fields.Monetary(string='Vehiculo Valor',  default=0.00)
     inventarios = fields.Monetary(string='Inventarios',  default=0.00)
-
     institucionFinanciera = fields.Char(string='Institución')
     direccion = fields.Char(string='Direccion')
     direccion1 = fields.Char(string='Direccion')
     placa = fields.Char(string='Placa')
-
-    totalActivosAdj = fields.Float(
-        compute='calcular_total_activos', string='TOTAL ACTIVOS', digits=(6, 2))
+    totalActivosAdj = fields.Float(compute='calcular_total_activos', string='TOTAL ACTIVOS', digits=(6, 2))
 
     # REVISION EN PAGINAS DE CONTROL
     scoreBuroCredito = fields.Integer(string='Score')
@@ -119,7 +105,7 @@ class EntegaVehiculo(models.Model):
     tipoAdj = fields.Char(string='Tipo Adj.')
     valorCuota = fields.Monetary(string='Valor de Cuota')
     fechaAdj = fields.Date(string='Fecha de Adj.')
-     # valores del plan 
+    # valores del plan
     valorTotalPlan = fields.Monetary(compute='calcular_valor_total_plan', string='Valor Total del Plan')
     porcentajeTotal = fields.Float(default=100.00)
     
@@ -128,29 +114,27 @@ class EntegaVehiculo(models.Model):
     porcentajeCancelado = fields.Float(digits=(6, 2), compute='calcular_porcentaj_cuotas_canc')
 
     montoCuotasPendientes = fields.Monetary(string='Cuotas Pendientes', compute='calcular_valor_cuotas_pendientes')
-    cuotasPendientes = fields.Integer(compute = 'calcular_cuotas_pendientes')
-    porcentajePendiente = fields.Float(digits=(6, 2), compute='calcular_porcentaj_pendiente')
+    cuotasPendientes = fields.Integer(compute='calcular_cuotas_pendientes')
+    porcentajeMontoCancelado = fields.Float(digits=(6, 2), compute='calcular_porcentaj_pendiente')
+    
+    #puntos valor cancelado del plan
+    puntosPorcentajeCancelado = fields.Integer(compute='calcular_puntos_porcentaje_cancelado')
 
-    porcentajeSaldoPlan = fields.Float(
-        digits=(6, 2), compute='calcular_porcentaj_saldo_plan', default=0.00)
-
-    puntosPorcentajSaldos = fields.Integer(
-        compute='calcular_puntos_porcentaje_saldos')
-
+    #saldosBien
     valorDelBien = fields.Monetary(string='Valor del Bien', compute='set_valor_del_bien')
-    saldoPlan = fields.Monetary(string='Saldo del Plan', compute = 'set_valor_saldo_plan')
-
-    puntosPorcentajeCancelado = fields.Integer(
-        compute='calcular_puntos_porcentaje_cancelado')
-
-    puntosCuotaIngresos = fields.Integer(
-        compute='calcular_puntos_ingresos')
+    saldoPlan = fields.Monetary(string='Saldo del Plan', compute='set_valor_saldo_plan')
+    porcentajeSaldoPlan = fields.Float(digits=(6, 2), compute='calcular_porcentaj_saldo_plan', default=0.00)
+    #puntos saldos
+    puntosPorcentajSaldoPlan = fields.Integer(compute='calcular_puntos_porcentaje_saldos')
+    
+    #ingresos y gastos
+    puntosCuotaIngresos = fields.Integer(compute='calcular_puntos_ingresos')
 
     puntosSaldosPlan = fields.Float(digits=(6, 2), compute='calcular_puntos_saldos_plan')
     ingresosFamiliares = fields.Monetary(string='Ingresos familiares')
     gastosFamiliares = fields.Monetary(string='Gastos familiares', compute='calcular_valor_gastos_familiares')
     porcentajeIngresos = fields.Float(default=100.00)
-   
+
     porcentajeGastos = fields.Float( digits=(6, 2), compute='calcular_porcentaje_gastos_familiares')
     porcentajeDisponibilidad = fields.Float(digits=(6, 2), compute='calcular_porcentaje_disponibilidad')
     disponibilidad = fields.Monetary(string='Disponibilidad', compute='calcular_valor_disponibilidad')
@@ -158,31 +142,26 @@ class EntegaVehiculo(models.Model):
 
     scoreCredito = fields.Integer(string="Score de Credito Mayor a 800 puntos")
     puntosScoreCredito = fields.Integer(compute='calcular_punto_score_credito')
-    antiguedadLaboral = fields.Integer(
-        string="Antigüedad Laboral o Comercial Mayor a 2 años")
-    puntosAntiguedadLaboral = fields.Integer(
-        compute='calcular_puntos_antiguedad_laboral')
+    antiguedadLaboral = fields.Integer(string="Antigüedad Laboral o Comercial Mayor a 2 años")
+    puntosAntiguedadLaboral = fields.Integer(compute='calcular_puntos_antiguedad_laboral')
 
     totalPuntosBienesAdj = fields.Integer(compute='calcular_puntos_bienes')
 
     poseeCasa = fields.Selection(selection=[
         ('si', 'SI'),
-        ('no', 'NO')
-    ], string='Fiscalia General del Estado', default='no')
+        ('no', 'NO')], string='Fiscalia General del Estado', default='no')
 
     puntosCasa = fields.Integer(compute='set_puntos_casa')
 
     poseeTerreno = fields.Selection(selection=[
         ('si', 'SI'),
-        ('no', 'NO')
-    ], string='Fiscalia General del Estado', default='no')
+        ('no', 'NO')], string='Fiscalia General del Estado', default='no')
 
     puntosTerreno = fields.Integer(compute='set_puntos_terreno')
 
     poseeVehiculo = fields.Selection(selection=[
         ('si', 'SI'),
-        ('no', 'NO')
-    ], string='Fiscalia General del Estado', default='no')
+        ('no', 'NO')], string='Fiscalia General del Estado', default='no')
     puntosVehiculo = fields.Integer(compute='set_puntos_vehiculo')
     poseeMotos = fields.Selection(selection=[
         ('si', 'SI'),
@@ -191,50 +170,50 @@ class EntegaVehiculo(models.Model):
     puntosMotos = fields.Integer(compute='set_puntos_motos')
     poseeMueblesEnseres = fields.Selection(selection=[
         ('si', 'SI'),
-        ('no', 'NO')
-    ], string='Fiscalia General del Estado', default='no')
+        ('no', 'NO')], string='Fiscalia General del Estado', default='no')
     puntosMueblesEnseres = fields.Integer(compute='set_puntos_muebles')
 
     totalPuntosCalificador = fields.Integer(compute='calcular_total_puntos')
 
     observacionesCalificador = fields.Text(string="Observaciones")
 
-    titularConyugePuntos  = fields.Char(string="Titular, Conyugue y Depositario")
-    titularConyugeGarantePuntos  = fields.Char(string="Titular, Conyugue y Garante Solidario")
+    titularConyugePuntos = fields.Char(
+        string="Titular, Conyugue y Depositario")
+    titularConyugeGarantePuntos = fields.Char(
+        string="Titular, Conyugue y Garante Solidario")
 
-    montoVehiculo = fields.Monetary(string = "valor del vehiculo")
+    montoVehiculo = fields.Monetary(string="valor del vehiculo")
     montoAFavor = fields.Monetary(compute='calcular_monto_a_favor')
 
-    valorAdjParaCompra = fields.Monetary(compute='calcular_valor_adj_para_compra')
+    valorAdjParaCompra = fields.Monetary(
+        compute='calcular_valor_adj_para_compra')
     montoAnticipoConsesionaria = fields.Monetary()
-    comisionFacturaConcesionario  = fields.Float()
+    comisionFacturaConcesionario = fields.Float()
     valorComisionFactura = fields.Monetary(compute='calcular_valor_comision_fact')
-    comisionDispositivoRastreo  = fields.Monetary()
-    montoChequeConsesionario  = fields.Monetary(compute='calcular_valor_cheque')
-    nombreConsesionario  = fields.Many2one('res.partner', string="NOMBRE DEL CONCESIONARIO:")
+    comisionDispositivoRastreo = fields.Monetary()
+    montoChequeConsesionario = fields.Monetary(compute='calcular_valor_cheque')
+    nombreConsesionario = fields.Many2one('res.partner', string="NOMBRE DEL CONCESIONARIO:")
     observacionesLiquidacion = fields.Text(string="Observaciones")
 
-    dia  = fields.Char()   
-    mes  = fields.Char(string='')
-    anio  = fields.Char()
-
-  
-
+    dia = fields.Char()
+    mes = fields.Char(string='')
+    anio = fields.Char()
 
     def _capturar_valores_por_defecto(self):
-        res = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc")
+        res = self.env['res.config.settings'].sudo(
+            1).search([], limit=1, order="id desc")
         self.requisitosPoliticasCredito = res.configuracion_adicional.requisitosPoliticasCredito
-
-
 
     def definir_mes(self):
         for rec in self:
-            rec.mes  = datetime.strptime(datetime.today(), '%Y-%m-%d').strftime('%B')
-    
+            rec.mes = datetime.strptime(
+                datetime.today(), '%Y-%m-%d').strftime('%B')
+
     @api.depends('valorAdjParaCompra', 'valorComisionFactura', 'comisionDispositivoRastreo', 'montoAnticipoConsesionaria')
     def calcular_valor_cheque(self):
         for rec in self:
-            rec.montoChequeConsesionario = rec.valorAdjParaCompra - rec.valorComisionFactura - rec.comisionDispositivoRastreo - rec.montoAnticipoConsesionaria
+            rec.montoChequeConsesionario = rec.valorAdjParaCompra - rec.valorComisionFactura - \
+                rec.comisionDispositivoRastreo - rec.montoAnticipoConsesionaria
 
     @api.depends('montoVehiculo', 'comisionFacturaConcesionario')
     def calcular_valor_comision_fact(self):
@@ -256,10 +235,9 @@ class EntegaVehiculo(models.Model):
         for rec in self:
             rec.montoAFavor = rec.montoVehiculo - rec.montoAdjudicado
 
-
     def calcular_total_puntos(self):
         for rec in self:
-            rec.totalPuntosCalificador = rec.puntosPorcentajeCancelado + rec.puntosPorcentajSaldos + rec.puntosCuotaIngresos  + rec.puntosScoreCredito + rec.puntosAntiguedadLaboral + rec.totalPuntosBienesAdj
+            rec.totalPuntosCalificador = rec.puntosPorcentajeCancelado 
 
     @api.depends('poseeCasa')
     def set_puntos_casa(self):
@@ -326,8 +304,8 @@ class EntegaVehiculo(models.Model):
                 rec.puntosScoreCredito = 200
             else:
                 rec.puntosScoreCredito = 0
- 
-    @api.depends('saldoPlan','valorDelBien')
+
+    @api.depends('saldoPlan', 'valorDelBien')
     def calcular_porcentaj_saldo_plan(self):
         for rec in self:
             if rec.saldoPlan:
@@ -339,13 +317,13 @@ class EntegaVehiculo(models.Model):
     def calcular_puntos_porcentaje_saldos(self):
         for rec in self:
             if rec.porcentajeSaldoPlan >= 0.00 and rec.porcentajeSaldoPlan <= 99.00:
-                rec.puntosPorcentajSaldos = 0
+                rec.puntosPorcentajSaldoPlan = 0
             elif rec.porcentajeSaldoPlan >= 100.00 and rec.porcentajeSaldoPlan <= 139.00:
-                rec.puntosPorcentajSaldos = 100
+                rec.puntosPorcentajSaldoPlan = 100
             elif rec.porcentajeSaldoPlan >= 140.00:
-                rec.puntosPorcentajSaldos = 200
+                rec.puntosPorcentajSaldoPlan = 200
             else:
-                rec.puntosPorcentajSaldos = 0
+                rec.puntosPorcentajSaldoPlan = 0
 
     @api.depends('montoAdjudicado')
     def set_valor_del_bien(self):
@@ -363,14 +341,11 @@ class EntegaVehiculo(models.Model):
             else:
                 rec.saldoPlan = 0.00
 
-    
-
     @api.depends('montoAdjudicado', 'montoPendiente')
     def setear_montos_bien(self):
         for rec in self:
             if rec.ingresosFamiliares:
-                rec.porcentajeCuotaPlan = (
-                    rec.valorCuota / rec.ingresosFamiliares) * 100
+                rec.porcentajeCuotaPlan = (rec.valorCuota / rec.ingresosFamiliares) * 100
             else:
                 rec.porcentajeCuotaPlan = 0
 
@@ -402,7 +377,7 @@ class EntegaVehiculo(models.Model):
     def calcular_porcentaje_cuota_plan(self):
         for rec in self:
             if rec.ingresosFamiliares:
-                rec.porcentajeCuotaPlan = round((rec.valorCuota / rec.ingresosFamiliares) * 100)
+                rec.porcentajeCuotaPlan = (rec.valorCuota / rec.ingresosFamiliares) * 100
             else:
                 rec.porcerntajeCuotaPlan = 0
 
@@ -437,14 +412,14 @@ class EntegaVehiculo(models.Model):
             else:
                 rec.porcentajeGastos = 0
 
-    @api.depends('porcentajeCancelado')
+    @api.depends('porcentajeMontoCancelado')
     def calcular_puntos_porcentaje_cancelado(self):
         for rec in self:
-            if rec.porcentajeCancelado >= 0.00 and rec.porcentajeCancelado <= 25.00:
+            if rec.porcentajeMontoCancelado >= 0.00 and rec.porcentajeMontoCancelado <= 25.00:
                 rec.puntosPorcentajeCancelado = 0
-            elif rec.porcentajeCancelado >= 26.00 and rec.porcentajeCancelado <= 30.00:
+            elif rec.porcentajeMontoCancelado >= 26.00 and rec.porcentajeMontoCancelado <= 30.00:
                 rec.puntosPorcentajeCancelado = 100
-            elif rec.porcentajeCancelado >= 31.00:
+            elif rec.porcentajeMontoCancelado >= 31.00:
                 rec.puntosPorcentajeCancelado = 200
             else:
                 rec.puntosPorcentajeCancelado = 0
@@ -453,7 +428,8 @@ class EntegaVehiculo(models.Model):
     def calcular_porcentaj_cuotas_canc(self):
         for rec in self:
             if rec.valorTotalPlan:
-                rec.porcentajeCancelado = (rec.montoCuotasCanceladas / rec.valorTotalPlan) * 100
+                rec.porcentajeCancelado = (
+                    rec.montoCuotasCanceladas / rec.valorTotalPlan) * 100
             else:
                 rec.porcentajeCancelado = 0.00
 
@@ -465,16 +441,15 @@ class EntegaVehiculo(models.Model):
     @api.depends('plazoMeses', 'cuotasCanceladas')
     def calcular_cuotas_pendientes(self):
         for rec in self:
-            rec.cuotasPendientes  = rec.plazoMeses - rec.cuotasCanceladas
+            rec.cuotasPendientes = rec.plazoMeses - rec.cuotasCanceladas
 
     @api.depends('valorTotalPlan', 'montoCuotasPendientes')
     def calcular_porcentaj_pendiente(self):
         for rec in self:
             if rec.valorTotalPlan:
-                rec.porcentajePendiente = (rec.montoCuotasPendientes/rec.valorTotalPlan)*100
+                rec.porcentajeMontoCancelado = (rec.montoCuotasPendientes/rec.valorTotalPlan)*100
             else:
-                rec.porcentajePendiente = 0.00
-
+                rec.porcentajeMontoCancelado = 0.00
 
     @api.depends('valorCuota', 'cuotasCanceladas')
     def calcular_valor_cuotas_canceladas(self):
@@ -492,7 +467,7 @@ class EntegaVehiculo(models.Model):
     def buscar_parner(self):
         for rec in self:
             contrato = self.env['contrato'].search(
-                [('cliente', '=', rec.nombreSocioAdjudicado.id)],limit=1)
+                [('cliente', '=', rec.nombreSocioAdjudicado.id)], limit=1)
             rec.montoAdjudicado = contrato.monto_financiamiento
             rec.valorCuota = contrato.cuota_capital
             rec.tipoAdj = contrato.tipo_de_contrato.name
