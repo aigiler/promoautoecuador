@@ -6,11 +6,11 @@
         <field name="model">calificador.cliente.parametros</field>
         <field name="arch" type="xml">
             <tree string="Calificador">
-                <field name="secuencia" />
-                <field name="tipo_asamblea"/>
+                <field name="motivo" />
+                <field name="calificacion"/>
                 <field name="descripcion" />
-                <field name="state" />
-                <field name="active"/>
+
+                
             </tree>
         </field>
     </record>
