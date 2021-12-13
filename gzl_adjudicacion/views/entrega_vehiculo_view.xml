@@ -264,17 +264,17 @@
                                 <table style=" border-collapse: collapse;width:75%">
                                     <tbody>
                                         <tr>
-                                            <td><field name="ingresosFamiliares" /></td>
+                                            <td><field name="ingresosFamiliares" string="Ingresos familiares"/></td>
                                             <td><field name="porcentajeIngresos" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
                                             <td><text>Comprometido</text></td>
                                         </tr>
                                         <tr>
-                                            <td><field name="gastosFamiliares" options="{'no_create': True, 'no_open': True}"/> </td>
+                                            <td><field name="gastosFamiliares"string ="Gastos familiares" options="{'no_create': True, 'no_open': True}"/> </td>
                                             <td><field name="porcentajeGastos" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
                                             <td><text>Cuota Plan</text></td>
                                         </tr>
                                         <tr>
-                                                <td><field name="disponibilidad" options="{'no_create': True, 'no_open': True}"/></td>
+                                                <td><field name="disponibilidad" string="Disponibilidad" options="{'no_create': True, 'no_open': True}"/></td>
                                                 <td><field name="porcentajeDisponibilidad" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
                                                 <td><field name="porcentajeCuotaPlan" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
                                         </tr>
