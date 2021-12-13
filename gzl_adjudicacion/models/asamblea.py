@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models
-
+import json
 
 class Asamblea(models.Model):
     _name = 'asamblea'
@@ -96,7 +96,7 @@ class Asamblea(models.Model):
 
 class GrupoAsamblea(models.Model):
     _name = 'integrante.grupo.adjudicado.asamblea'
-    _description = 'Grupo adjudicado en asamblea'
+    _description = 'Grupo Participante en asamblea'
 
     asamblea_id = fields.Many2one('asamblea')
     grupo_adjudicado_id = fields.Many2one('grupo.adjudicado')
@@ -107,16 +107,21 @@ class GrupoAsamblea(models.Model):
 
 
 
+    @api.onchange('grupo_adjudicado_id')
+    def onchange_grupo_adjudicado_id(self):
+        self.integrantes_g=()
+
 
 class IntegrantesGrupoAsamblea(models.Model):
     _name = 'integrante.grupo.adjudicado.asamblea.clientes'
-    _description = 'Integrantes de Grupo Adjudicado Asamblea'
+    _description = 'Integrantes de Grupo Participante en asamblea'
   
 
 
     adjudicado_id = fields.Many2one('res.partner', string="Nombre")
     descripcion=fields.Char('Descripcion',  )
     grupo_id = fields.Many2one('integrante.grupo.adjudicado.asamblea')
+    grupo_cliente = fields.Many2one('grupo.adjudicado')
     nro_cuota_licitar = fields.Integer(string='Nro de Cuotas a Licitar')
     carta_licitacion = fields.Selection([('si', 'Si'), ('no', 'No')], string='Carta Licitación')
     carta_doc = fields.Binary(string='Carta Licitación')
@@ -126,12 +131,16 @@ class IntegrantesGrupoAsamblea(models.Model):
 
     dominio  = fields.Char(store=False, compute="_filtro_partner",readonly=True)
 
-    @api.depends('grupo_id')
-    def _filtro_partner(self):
-        for l in self:
 
-            integrantes=l.grupo_id.grupo_adjudicado_id.integrantes.filtered(lambda l: l.contrato_id.tipo_de_contrato==l.grupo_id.tipo_contrato.id).mapped('adjudicado_id').ids
-            l.dominio=json.dumps( [('id','in',integrantes)] )
+
+    @api.depends('grupo_cliente')
+    def _filtro_partner(self):
+        for rec in self:
+            integrantes=rec.grupo_id.grupo_adjudicado_id.integrantes.filtered(lambda l: l.contrato_id.tipo_de_contrato.id==rec.grupo_id.tipo_contrato.id).mapped('adjudicado_id').ids
+            if len(integrantes)>0:
+                rec.dominio=json.dumps( [('id','in',integrantes)] )
+            else:
+                rec.dominio=json.dumps([])
 
 
 
@@ -157,6 +166,7 @@ class GanadoresAsamblea(models.Model):
 
 class JuntaGrupoAsamblea(models.Model):
     _name = 'junta.grupo.asamblea'
+    _description = 'Comité que realiza la asamblea'
 
     asamblea_id = fields.Many2one('asamblea', string='Asamblea')
     empleado_id = fields.Many2one('hr.employee', string="Empleado")

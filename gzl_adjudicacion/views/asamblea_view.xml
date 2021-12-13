@@ -21,10 +21,9 @@
         <field name="arch" type="xml">
             <form string="Asamblea">
                 <header>
-                    <button name="cambio_estado_boton_borrador" string="Borrador" type="object" states="borrador" class="oe_highlight"/>
-                    <button name="cambio_estado_boton_en_curso" string="En curso" states="en_curso" type="object" class="oe_highlight"/>
-                    <button name="cambio_estado_boton_pre_cierre" string="Pre cierre" type="object" states="pre_cierre" class="oe_highlight"/>
-                    <button name="cambio_estado_boton_cerrado" string="Cerrado" type="object"   class="oe_highlight"/>
+                    <button name="cambio_estado_boton_pre_cierre" string="Pre cierre" type="object" states="en_curso" class="oe_highlight"/>
+                    <button name="cambio_estado_boton_cerrado" string="Cerrado" type="object" states="pre_cierre"   class="oe_highlight"/>
+
 
                     <field name="state" widget="statusbar" statusbar_visible="en_curso,pre_cierre,cerrado"/>
                 </header>
@@ -38,7 +37,7 @@
                         </div>
                         <group>
                             <group>
-                                <field name="tipo_asamblea" attrs="{'readonly': [('state', '=', 'cerrado')]}" options="{'no_open': True, 'no_create': True}"/>
+                                <field name="tipo_asamblea" required="1" attrs="{'readonly': [('state', '=', 'cerrado')]}" options="{'no_open': True, 'no_create': True}"/>
                                 <field name="descripcion" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
                                 <field name="fecha_inicio" required="1" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
                                 <field name="fecha_fin" required="1" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
@@ -46,25 +45,27 @@
                             </group>
                         </group>
 
-                        <group attrs="{'readonly': [('state', '=', 'cerrado')]}">
+                        <group  >
                             <group string="Integrantes de la Asamblea">
-                                <field name="integrantes" nolabel="1" attrs="{'readonly': [('state', '!=', 'borrador')]}">
+                                <field name="integrantes"  context="{'default_tipo_contrato':tipo_asamblea}" nolabel="1" attrs="{'readonly': [('state', '=', 'cerrado')],'invisible':[('tipo_asamblea','=',False)]}"  >
                                     <tree string="Integrantes" >
-                                        <field name="grupo_adjudicado_id"/>
+                                        <field name="grupo_adjudicado_id" string="Grupo Participante"/>
                                     </tree>
                                     <form>
                                         <group>
 
-                                            <field name="grupo_adjudicado_id"/>
-                                            <field name="tipo_contrato"/>
+                                            <field name="grupo_adjudicado_id" required="1" string="Grupo Participante"/>
+                                            <field name="tipo_contrato" readonly="1" required="1"/>
 
 
                                         </group>
 
-                                        <field name="integrantes_g" nolabel="1">
+                                        <field name="integrantes_g" nolabel="1" context="{'default_grupo_cliente':grupo_adjudicado_id}">
                                             <tree string="Integrantes" editable="top">
-                                                <field name="dominio"/>
-                                                <field name="adjudicado_id"  domain="dominio"/>
+                                                <field name="dominio" invisible="1"/>
+                                                <field name="grupo_cliente" invisible="1"/>
+
+                                                <field name="adjudicado_id"   />
                                                 <field name="nro_cuota_licitar"/>
                                                 <field name="carta_licitacion" />
                                             </tree>
@@ -75,7 +76,7 @@
                                     </form>
                                 </field>
                             </group>
-                            <group string="Junta">
+                            <group string="Junta" attrs="{'readonly': [('state', '=', 'cerrado')]}">
                                 <field name="junta" nolabel="1">
                                     <tree string="Junta" editable="top">
                                         <field name="asamblea_id" invisible="1"/>
@@ -109,5 +110,5 @@
     </record>
 
 
-    <menuitem id="menu_new_asamblea" action="action_new_asamblea_form" parent="menu_adjudicados" sequence="7" />
+    <menuitem id="menu_new_asamblea" action="action_new_asamblea_form" parent="menu_clientes_proceso_adjudicacion" sequence="7" />
 </odoo>

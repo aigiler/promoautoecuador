@@ -42,7 +42,7 @@
                             <field name="rastreo" widget="monetary" force_save="1" sum="rastreo" readonly="1"/>
                             <field name="otro" widget="monetary" force_save="1" sum="otro" readonly="1"/>
                             <field name="saldo" widget="monetary" force_save="1" sum="saldo" readonly="1"/>
-                            <field name="estado_pago" readonly="1" invisible="1" invisible="1"/>
+                            <field name="estado_pago" readonly="1"  invisible="1"/>
                             <field name="factura_id" readonly="1" invisible="1"/>
                             <field name="pago_id" readonly="1" invisible="1"/>
                             <button name="pagar_cuota" invisible="1" class="oe_highlight" string="Pagar" type="object" attrs="{'invisible': [('estado_pago', '=','pagado')]}"/>

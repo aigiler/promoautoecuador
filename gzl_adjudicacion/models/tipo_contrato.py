@@ -10,4 +10,7 @@ class TipoContratoAdjudicado(models.Model):
   
     name=fields.Char('Nombre',  required=True)
     descripcion=fields.Text('Descripcion',  required=True)
+    code=fields.Char('Código',  required=True)
+    numero_ganadores=fields.Integer('Número Ganadores',  required=True)
+    numero_suplentes=fields.Integer('Número Suplentes',  required=True)
     active=fields.Boolean( default=True)

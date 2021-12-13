@@ -6,7 +6,7 @@ from odoo.exceptions import UserError, ValidationError
 
 class GrupoAdjudicado(models.Model):
     _name = 'grupo.adjudicado'
-    _description = 'Grupo Adjudicado'
+    _description = 'Grupo  para proceso adjudicacion'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
 
@@ -59,7 +59,7 @@ class GrupoAdjudicado(models.Model):
 
 class IntegrantesGrupo(models.Model):
     _name = 'integrante.grupo.adjudicado'
-    _description = 'Integrantes de Grupo Adjudicado'
+    _description = 'Integrantes de Grupo para proceso adjudicacion'
   
     descripcion=fields.Char('Descripcion',  )
     grupo_id = fields.Many2one('grupo.adjudicado')
