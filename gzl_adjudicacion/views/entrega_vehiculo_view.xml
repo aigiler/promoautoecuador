@@ -35,6 +35,7 @@
                         <div class="col-xs-4">
                             <separator string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
                             <group>
+                                <field name="requisitosPoliticasCredito" nolabel="1"/>
                                 <field name="documentos" widget="many2many_binary"/>
                                 <field name="active" attrs = "{'invisible': 1}" />
                             </group>
@@ -635,7 +636,7 @@
                 </div>
 
 
-                
+
             </form >
         </field>
     </record>
