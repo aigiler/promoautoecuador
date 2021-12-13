@@ -47,7 +47,7 @@
 
                         <group  >
                             <group string="Integrantes de la Asamblea">
-                                <field name="integrantes" context="{'default_tipo_contrato':tipo_asamblea}" nolabel="1" attrs="{'readonly': [('state', '=', 'cerrado')]}"  >
+                                <field name="integrantes" attrs="{'invisible':[('tipo_asamblea','!=',False)]}" context="{'default_tipo_contrato':tipo_asamblea}" nolabel="1" attrs="{'readonly': [('state', '=', 'cerrado')]}"  >
                                     <tree string="Integrantes" >
                                         <field name="grupo_adjudicado_id" string="Grupo Participante"/>
                                     </tree>
@@ -55,7 +55,7 @@
                                         <group>
 
                                             <field name="grupo_adjudicado_id" required="1" string="Grupo Participante"/>
-                                            <field name="tipo_contrato" required="1"/>
+                                            <field name="tipo_contrato" readonly="1" required="1"/>
 
 
                                         </group>

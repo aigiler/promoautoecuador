@@ -127,7 +127,7 @@ class IntegrantesGrupoAsamblea(models.Model):
 
     dominio  = fields.Char(store=False, compute="_filtro_partner",readonly=True)
 
-    @api.depends('grupo_id')
+    @api.depends('grupo_cliente')
     def _filtro_partner(self):
         for rec in self:
             integrantes=rec.grupo_id.grupo_adjudicado_id.integrantes.filtered(lambda l: l.contrato_id.tipo_de_contrato==rec.grupo_id.tipo_contrato.id).mapped('adjudicado_id').ids
