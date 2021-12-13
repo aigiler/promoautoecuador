@@ -137,8 +137,9 @@ class IntegrantesGrupoAsamblea(models.Model):
     def _filtro_partner(self):
         for rec in self:
             integrantes=rec.grupo_id.grupo_adjudicado_id.integrantes.filtered(lambda l: l.contrato_id.tipo_de_contrato.id==rec.grupo_id.tipo_contrato.id).mapped('adjudicado_id').ids
+            integrantes_res=rec.grupo_id.integrantes_g.mapped("adjudicado_id").ids
             if len(integrantes)>0:
-                rec.dominio=json.dumps( [('id','in',integrantes)] )
+                rec.dominio=json.dumps( [('id','in',integrantes),('id','not in',integrantes_res)] )
             else:
                 rec.dominio=json.dumps([])
 
