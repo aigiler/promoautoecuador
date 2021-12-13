@@ -607,7 +607,7 @@
                         </div>
                         <separator/>
                         <div class="col-xs-12 col-sm-9">
-                            <table style=" border-collapse: collapse;width:75%">
+                            <table style=" border-collapse: collapse;width:80%">
                                 <tbody>
                                     <tr>
                                         <td>
@@ -668,9 +668,6 @@
                                     </tr>
                                 </tbody>
                             </table>
-
-                            <div class="col-xs-12 col-sm-3">
-                            </div>
                         </div>
                         <separator/>
                         <div class="row" style="border: 1px solid black;">
