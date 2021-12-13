@@ -143,7 +143,7 @@ class EntegaVehiculo(models.Model):
         compute='calcular_puntos_porcentaje_saldos')
 
     valorDelBien = fields.Monetary(string='Valor del Bien')
-    saldoPlan = fields.Monetary(string='Saldo del Plan')
+    saldoPlan = fields.Monetary(string='Saldo del Plan', compute = 'set_valor_saldo_plan')
 
     puntosPorcentajeCancelado = fields.Integer(
         compute='calcular_puntos_porcentaje_cancelado')
