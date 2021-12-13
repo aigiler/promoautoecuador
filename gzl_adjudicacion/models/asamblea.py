@@ -107,6 +107,10 @@ class GrupoAsamblea(models.Model):
 
 
 
+    @api.onchange('grupo_adjudicado_id')
+    def onchange_grupo_adjudicado_id(self):
+        self.integrantes_g=()
+
 
 class IntegrantesGrupoAsamblea(models.Model):
     _name = 'integrante.grupo.adjudicado.asamblea.clientes'
@@ -127,10 +131,12 @@ class IntegrantesGrupoAsamblea(models.Model):
 
     dominio  = fields.Char(store=False, compute="_filtro_partner",readonly=True)
 
+
+
     @api.depends('grupo_cliente')
     def _filtro_partner(self):
         for rec in self:
-            integrantes=rec.grupo_id.grupo_adjudicado_id.integrantes.filtered(lambda l: l.contrato_id.tipo_de_contrato==rec.grupo_id.tipo_contrato.id).mapped('adjudicado_id').ids
+            integrantes=rec.grupo_id.grupo_adjudicado_id.integrantes.filtered(lambda l: l.contrato_id.tipo_de_contrato.id==rec.grupo_id.tipo_contrato.id).mapped('adjudicado_id').ids
             if len(integrantes)>0:
                 rec.dominio=json.dumps( [('id','in',integrantes)] )
             else:
