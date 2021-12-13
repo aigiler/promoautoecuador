@@ -37,7 +37,7 @@
                         </div>
                         <group>
                             <group>
-                                <field name="tipo_asamblea" options="{'no_open': True, 'no_create': True}" required="1" options="{'no_open': True, 'no_create': True}"  attrs="{'readonly': [('state', '=', 'cerrado')]}"  />
+                                <field name="tipo_asamblea"  required="1" options="{'no_open': True, 'no_create': True}"  attrs="{'readonly': [('state', '=', 'cerrado')]}" />
                                 <field name="descripcion"  attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
                                 <field name="fecha_inicio" required="1" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
                                 <field name="fecha_fin" required="1" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
