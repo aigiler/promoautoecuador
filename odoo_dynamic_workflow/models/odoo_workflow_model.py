@@ -199,7 +199,7 @@ class OdooWorkflowModel(models.Model):
                     btn_exec_action_el.set('attrs', "{'invisible':[('state','!=','%s')]}" % node.node_name)
                     btn_exec_action_el.set('context',
                                            "{'btn_key':'%s','active_model':'%s'}" % (button.btn_key, self._name))
-                    setup_modifiers(btn_exec_action_el)
+                    orm.setup_modifiers(btn_exec_action_el)
             res['arch'] = etree.tostring(arch, encoding="utf-8")
         return res
 
@@ -221,7 +221,7 @@ class OdooWorkflowModel(models.Model):
         # Helper Functions
         def _add_field_def_to_view(resource, field_name, field_node):
             resource['fields'].update(model_obj.fields_get(allfields=[field_name]))
-            setup_modifiers(field_node, resource['fields'][field_name])
+            orm.setup_modifiers(field_node, resource['fields'][field_name])
 
         #
         if view_type == 'form':
@@ -324,7 +324,7 @@ class OdooWorkflowModel(models.Model):
             # Set Attributes & Setup Modifiers
             if field_inst is not False and attrs_dict:
                 field_inst.set('attrs', str(attrs_dict))
-                setup_modifiers(field_inst, res['fields'][str(field)])
+                orm.setup_modifiers(field_inst, res['fields'][str(field)])
         res['arch'] = etree.tostring(arch, encoding="utf-8")
         return res
 
@@ -343,7 +343,7 @@ class OdooWorkflowModel(models.Model):
         # Helper Functions
         def _add_field_def_to_view(resource, field_name, field_node):
             resource['fields'].update(model_obj.fields_get(allfields=[field_name]))
-            setup_modifiers(field_node, resource['fields'][field_name])
+            orm.setup_modifiers(field_node, resource['fields'][field_name])
 
         # Add State Field to Tree View if not Exists
         if view_type == 'tree':
@@ -378,7 +378,7 @@ class OdooWorkflowModel(models.Model):
         # Helper Functions
         def _add_field_def_to_view(resource, field_name, field_node):
             resource['fields'].update(model_obj.fields_get(allfields=[field_name]))
-            setup_modifiers(field_node, resource['fields'][field_name])
+            orm.setup_modifiers(field_node, resource['fields'][field_name])
 
         # Add Mail Tread to Form View
         if view_type == 'form' and wkf_rec.mail_thread_add:
