@@ -21,8 +21,6 @@
         <field name="arch" type="xml">
             <form string="Asamblea">
                 <header>
-                    <button name="cambio_estado_boton_borrador" string="Borrador" type="object" states="borrador" class="oe_highlight"/>
-                    <button name="cambio_estado_boton_en_curso" string="En curso" states="en_curso" type="object" class="oe_highlight"/>
                     <button name="cambio_estado_boton_pre_cierre" string="Pre cierre" type="object" states="pre_cierre" class="oe_highlight"/>
                     <button name="cambio_estado_boton_cerrado" string="Cerrado" type="object"   class="oe_highlight"/>
 
