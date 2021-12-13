@@ -1,7 +1,7 @@
-odoo.define('board.dashboard_tests', function (require) {
+odoo.define('board_community.dashboard_tests', function (require) {
 "use strict";
 
-var BoardView = require('board.BoardView');
+var BoardView = require('board_community.BoardView');
 
 var ListController = require('web.ListController');
 var testUtils = require('web.test_utils');

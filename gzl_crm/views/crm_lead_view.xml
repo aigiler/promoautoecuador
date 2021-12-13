@@ -25,7 +25,7 @@
             <xpath expr="//notebook" position="before">
                 <group string="Tabla de Amortización"> 
                     <group>
-                        <field name="tasa_interes" string="Tasa de Interés (%)" required="1" placeholder="8"/>
+                        <field name="tasa_interes" invisible="1" string="Tasa de Interés (%)" required="1" placeholder="8"/>
                         <field name="numero_cuotas" string="Número de Cuotas (meses)" required="1" placeholder="48"/>
                         <field name="dia_pago" required="1" placeholder="5"/>
                         <field name="tipo_contrato" options="{'no_create_edit': True, 'no_open': True}" required="1"/>
