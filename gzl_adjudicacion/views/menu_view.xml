@@ -8,7 +8,7 @@
     <menuitem id="menu_configuracion_adjudicaciones" name="Configuraciones"
                 sequence="10" parent="menu_principal_adjudicaciones"/>
 
-    <menuitem id="menu_clientes_proceso_adjudicacion" name="Clientes"
+    <menuitem id="menu_socio_proceso_adjudicacion" name="Socios"
                 sequence="1" parent="menu_principal_adjudicaciones"/>
 
 </odoo>

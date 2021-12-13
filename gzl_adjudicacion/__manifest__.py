@@ -22,7 +22,7 @@
                     'security/ir.model.access.csv',
 
                     'views/menu_view.xml',
-                    'views/adjudicado_view.xml',
+                    'views/socio_view.xml',
                     'views/tipo_contrato_view.xml',
                     'views/concesionario_view.xml',
                     'views/grupo_adjudicado_view.xml',
@@ -32,6 +32,7 @@
                     'views/res_config_settings_views.xml',
                     'views/configuracion_adicional.xml',
                     'views/calificador_view.xml',
+                    'views/stylesheet_view.xml',
 
                     
                     ],

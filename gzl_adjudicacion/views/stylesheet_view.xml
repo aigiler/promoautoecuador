@@ -2,7 +2,7 @@
 <odoo>
     <template id="assets_backend_inherit_sale" inherit_id="web.assets_backend" name="Adjudicacion backend assets">
         <xpath expr="link[last()]" position="after">
-            <link rel="stylesheet" type="text/scss" href="/gzl_adjudicacion/static/src/css/style.scss"/>
+            <link rel="stylesheet" type="text/css" href="/gzl_adjudicacion/static/src/css/style.css"/>
         </xpath>
 
     </template>
