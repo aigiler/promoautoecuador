@@ -176,10 +176,10 @@
                     <!-- calificador_compra -->
                     <div states="calificador_compra">
                         <separator class="text-center" string="CALIFICADOR PARA COMPRA DEL BIEN"/>
-                        <div class="row">
+                        <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-md-12">
                                 <group>
-                                    <field name="nombreSocioAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="nombreSocioAdjudicado"  readonly="1"options="{'no_create': True, 'no_open': True}"/>
                                 </group>
                             </div>
                             <div class="col-xs-12 col-sm-4">
