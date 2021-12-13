@@ -547,7 +547,7 @@
                                     </tr>
                                     <tr>
                                         <td><text>COMISION FACTURA A NOMBRE CONCESIONARIO</text> </td>
-                                        <td><field name="comisionFacturaConcesionario" nolabel="1" options="{'no_create': True, 'no_open': True}"/>%</td>
+                                        <td style="width:25%"><field name="comisionFacturaConcesionario" nolabel="1" options="{'no_create': True, 'no_open': True}"/>%</td>
                                         <td><field name="valorComisionFactura" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/></td>
                                     </tr>
                                     <tr>
