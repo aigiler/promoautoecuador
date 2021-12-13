@@ -122,40 +122,23 @@ class Contrato(models.Model):
             
 
 
-    @api.depends('fecha_inicio_pago')
     def detalle_tabla_amortizacion(self):
         for rec in self:
             for i in range(1, int(rec.plazo_meses)+1):
                 cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses)
-                
                 cuota_adm = cuota_capital *0.04
                 iva = cuota_adm * 0.12
                 saldo = cuota_capital+cuota_adm+iva
-                self.env['tabla.amortizacion'].create({
+                self.env['contrato.estado.cuenta'].create({
                                                     'numero_cuota':i,
                                                     'fecha':rec.fecha_inicio_pago + relativedelta(months=i),
                                                     'cuota_capital':cuota_capital,
                                                     'cuota_adm':cuota_adm,
                                                     'iva':iva,
-                                                    'saldo':saldo
+                                                    'saldo':saldo,
+                                                    'contrato_id':self.id,                                                    
                                                         })
-                rec.cuota_capital = cuota_capital
-                rec.iva =  iva 
-        for rec in self:
-            for l in self.tabla_amortizacion:
-                    self.env['contrato.estado.cuenta'].create({
-                                            'contrato_id':rec.contrato.id,
-                                            'numero_cuota':l.numero_cuota,
-                                            'fecha': l.fecha,
-                                            'cuota_capital':l.cuota_capital,
-                                            'cuota_adm':l.cuota_adm,
-                                            #'iva':l.iva
-                                        })
-
-
-
-    
-
+                                                        
 
     @api.depends("estado_de_cuenta_ids.monto_pagado")
     def calcular_monto_pagado(self,):
