@@ -110,32 +110,26 @@ class EntegaVehiculo(models.Model):
     observaciones = fields.Text(string='Observaciones')
 
     # calificador compras
-    clienteContrato = fields.Char(
-        compute='set_campos_cliente_informe_credito', string="Nombre del Socio Adj.")
+    clienteContrato = fields.Char(compute='set_campos_cliente_informe_credito', string="Nombre del Socio Adj.")
     cedulaContrato = fields.Char()
     codClienteContrado = fields.Char()
     contratoCliente = fields.Char()
-    montoAdjudicado = fields.Monetary(
-        compute='buscar_parner', currency_field='currency_id', string='Monto Adjudicado')
+    montoAdjudicado = fields.Monetary(compute='buscar_parner', currency_field='currency_id', string='Monto Adjudicado')
     plazoMeses = fields.Integer(string='Plazo')
     tipoAdj = fields.Char(string='Tipo Adj.')
-
     valorCuota = fields.Monetary(string='Valor de Cuota')
-    # #    #
     fechaAdj = fields.Date(string='Fecha de Adj.')
-
-    valorTotalPlan = fields.Monetary(
-        compute='calcular_valor_total_plan', string='Valor Total del Plan')
+     # valores del plan 
+    valorTotalPlan = fields.Monetary(compute='calcular_valor_total_plan', string='Valor Total del Plan')
     porcentajeTotal = fields.Float(default=100.00)
-    montoCuotasCanceladas = fields.Monetary(
-        string='Cuotas Canceladas', compute='calcular_valor_cuotas_canceladas')
-    cuotasCanceladas = fields.Integer(default=37)
-    montoCuotasPendientes = fields.Monetary(
-        string='Cuotas Pendientes', compute='calcular_valor_cuotas_pendientes')
-    porcentajeCancelado = fields.Float(
-        digits=(6, 2), compute='calcular_porcentaj_cuotas_canc')
-    porcentajePendiente = fields.Float(digits=(6, 2), compute='calcular_porcentaj_pendiente')
+    
+    montoCuotasCanceladas = fields.Monetary(string='Cuotas Canceladas', compute='calcular_valor_cuotas_canceladas')
+    cuotasCanceladas = fields.Integer()
+    porcentajeCancelado = fields.Float(digits=(6, 2), compute='calcular_porcentaj_cuotas_canc')
+
+    montoCuotasPendientes = fields.Monetary(string='Cuotas Pendientes', compute='calcular_valor_cuotas_pendientes')
     cuotasPendientes = fields.Integer(compute = 'calcular_cuotas_pendientes')
+    porcentajePendiente = fields.Float(digits=(6, 2), compute='calcular_porcentaj_pendiente')
 
     porcentajeSaldoPlan = fields.Float(
         digits=(6, 2), compute='calcular_porcentaj_saldo_plan', default=0.00)
@@ -143,31 +137,24 @@ class EntegaVehiculo(models.Model):
     puntosPorcentajSaldos = fields.Integer(
         compute='calcular_puntos_porcentaje_saldos')
 
-    valorDelBien = fields.Monetary(string='Valor del Bien')
+    valorDelBien = fields.Monetary(string='Valor del Bien', compute='set_valor_del_bien')
     saldoPlan = fields.Monetary(string='Saldo del Plan', compute = 'set_valor_saldo_plan')
 
     puntosPorcentajeCancelado = fields.Integer(
         compute='calcular_puntos_porcentaje_cancelado')
 
-    puntosIngresos = fields.Integer(
+    puntosCuotaIngresos = fields.Integer(
         compute='calcular_puntos_ingresos')
 
-    porcentajeCuotaPlan = fields.Float(
-        digits=(6, 2), compute='calcular_porcentaje_cuota_plan')
-
-    puntosSaldosPlan = fields.Float(
-        digits=(6, 2), compute='calcular_puntos_saldos_plan')
-    ingresosFamiliares = fields.Monetary(
-        string='Ingresos familiares', default=100.00)
+    puntosSaldosPlan = fields.Float(digits=(6, 2), compute='calcular_puntos_saldos_plan')
+    ingresosFamiliares = fields.Monetary(string='Ingresos familiares')
+    gastosFamiliares = fields.Monetary(string='Gastos familiares', compute='calcular_valor_gastos_familiares')
     porcentajeIngresos = fields.Float(default=100.00)
-    gastosFamiliares = fields.Monetary(
-        string='Gastos familiares', compute='calcular_valor_gastos_familiares')
-    porcentajeGastos = fields.Float(
-        digits=(6, 2), compute='calcular_porcentaje_gastos_familiares')
-    disponibilidad = fields.Monetary(
-        string='Disponibilidad', compute='calcular_valor_disponibilidad')
-    porcentajeDisponibilidad = fields.Float(
-        digits=(6, 2), compute='calcular_porcentaje_disponibilidad')
+   
+    porcentajeGastos = fields.Float( digits=(6, 2), compute='calcular_porcentaje_gastos_familiares')
+    porcentajeDisponibilidad = fields.Float(digits=(6, 2), compute='calcular_porcentaje_disponibilidad')
+    disponibilidad = fields.Monetary(string='Disponibilidad', compute='calcular_valor_disponibilidad')
+    porcentajeCuotaPlan = fields.Float(digits=(6, 2), compute='calcular_porcentaje_cuota_plan')
 
     scoreCredito = fields.Integer(string="Score de Credito Mayor a 800 puntos")
     puntosScoreCredito = fields.Integer(compute='calcular_punto_score_credito')
@@ -272,7 +259,7 @@ class EntegaVehiculo(models.Model):
 
     def calcular_total_puntos(self):
         for rec in self:
-            rec.totalPuntosCalificador = rec.puntosPorcentajeCancelado + rec.puntosPorcentajSaldos +  rec.puntosPorcentajeCancelado + rec.puntosScoreCredito + rec.puntosAntiguedadLaboral + rec.totalPuntosBienesAdj
+            rec.totalPuntosCalificador = rec.puntosPorcentajeCancelado + rec.puntosPorcentajSaldos + rec.puntosCuotaIngresos  + rec.puntosScoreCredito + rec.puntosAntiguedadLaboral + rec.totalPuntosBienesAdj
 
     @api.depends('poseeCasa')
     def set_puntos_casa(self):
@@ -339,13 +326,12 @@ class EntegaVehiculo(models.Model):
                 rec.puntosScoreCredito = 200
             else:
                 rec.puntosScoreCredito = 0
-
-    @api.depends('valorDelBien', 'saldoPlan')
+ 
+    @api.depends('saldoPlan','valorDelBien')
     def calcular_porcentaj_saldo_plan(self):
         for rec in self:
             if rec.saldoPlan:
-                rec.porcentajeSaldoPlan = (
-                    rec.valorDelBien/rec.saldoPlan) * 100
+                rec.porcentajeSaldoPlan = round((rec.valorDelBien/rec.saldoPlan) * 100)
             else:
                 rec.porcentajeSaldoPlan = 0.00
 
@@ -377,6 +363,8 @@ class EntegaVehiculo(models.Model):
             else:
                 rec.saldoPlan = 0.00
 
+    
+
     @api.depends('montoAdjudicado', 'montoPendiente')
     def setear_montos_bien(self):
         for rec in self:
@@ -389,12 +377,12 @@ class EntegaVehiculo(models.Model):
     @api.depends('porcentajeCuotaPlan')
     def calcular_puntos_saldos_plan(self):
         for rec in self:
-            if rec.porcentajeCuotaPlan >= 0.00 and rec.porcentajeCuotaPlan <= 30.00:
-                rec.puntosPorcentajeCancelado = 200
-            elif rec.porcentajeCuotaPlan >= 31.00 and rec.porcentajeCuotaPlan <= 40.00:
-                rec.puntosPorcentajeCancelado = 100
-            elif rec.porcentajeCuotaPlan >= 41.00:
+            if rec.porcentajeCuotaPlan >= 0.00 and rec.porcentajeCuotaPlan <= 25.00:
                 rec.puntosPorcentajeCancelado = 0
+            elif rec.porcentajeCuotaPlan >= 26.00 and rec.porcentajeCuotaPlan <= 30.00:
+                rec.puntosPorcentajeCancelado = 100
+            elif rec.porcentajeCuotaPlan >= 31.00:
+                rec.puntosPorcentajeCancelado = 200
             else:
                 rec.puntosPorcentajeCancelado = 0
 
@@ -402,11 +390,11 @@ class EntegaVehiculo(models.Model):
     def calcular_puntos_ingresos(self):
         for rec in self:
             if rec.porcentajeCuotaPlan >= 0.00 and rec.porcentajeCuotaPlan <= 30.00:
-                rec.puntosPorcentajeCancelado = 200
+                rec.puntosCuotaIngresos = 200
             elif rec.porcentajeCuotaPlan >= 31.00 and rec.porcentajeCuotaPlan <= 40.00:
-                rec.puntosPorcentajeCancelado = 100
+                rec.puntosCuotaIngresos = 100
             elif rec.porcentajeCuotaPlan >= 41.00:
-                rec.puntosPorcentajeCancelado = 0
+                rec.puntosCuotaIngresos = 0
             else:
                 rec.puntosPorcentajeCancelado = 0
 
@@ -414,10 +402,9 @@ class EntegaVehiculo(models.Model):
     def calcular_porcentaje_cuota_plan(self):
         for rec in self:
             if rec.ingresosFamiliares:
-                rec.porcentajeCuotaPlan = (
-                    rec.valorCuota / rec.ingresosFamiliares) * 100
+                rec.porcentajeCuotaPlan = round((rec.valorCuota / rec.ingresosFamiliares) * 100)
             else:
-                rec.porcentajeCuotaPlan = 0
+                rec.porcerntajeCuotaPlan = 0
 
     @api.depends('porcentajeGastos', 'porcentajeIngresos')
     def calcular_porcentaje_disponibilidad(self):
@@ -466,8 +453,7 @@ class EntegaVehiculo(models.Model):
     def calcular_porcentaj_cuotas_canc(self):
         for rec in self:
             if rec.valorTotalPlan:
-                rec.porcentajeCancelado = (
-                    rec.montoCuotasCanceladas / rec.valorTotalPlan) * 100
+                rec.porcentajeCancelado = (rec.montoCuotasCanceladas / rec.valorTotalPlan) * 100
             else:
                 rec.porcentajeCancelado = 0.00
 

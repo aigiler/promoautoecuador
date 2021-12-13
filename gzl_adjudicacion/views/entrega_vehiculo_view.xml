@@ -181,42 +181,29 @@
                         </div>
                         <separator/>
                         <div class="row" style="border: 1px solid black;">
-                            <div class="col-xs-4 col-sm-3">
-                                <group>
-                                    <field name="montoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
-                                    <field name="valorCuota" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-                                </group>
-                            </div>
-                            <div class="col-xs-4 col-sm-4">
-                                <group>
-                                    <label for="plazoMeses" string="Plazo"/>
-                                    <label for="tipoAdj" string="Tipo Adj."/>
-                                    <field name="plazoMeses" readonly="1" nolabel="1" />
-                                    <field name="tipoAdj" readonly="1" nolabel="1" />
-                                </group>
-                            </div>
-                            <div class="col-xs-4 col-sm-4">
-                                <group>
-                                    <label for="fechaAdj" string="Fecha de Adj."/>
-                                    <field name="fechaAdj" readonly="1" nolabel="1"/>
-                                </group>
-                            </div>
-                        </div>
-                        <div class="row" style="border: 1px solid black;">
-                            <div class="col-xs-12 col-sm-4">
-                                <group>
-                                    <field name="valorTotalPlan" options="{'no_create': True, 'no_open': True}"/>
-                                    <field name="montoCuotasCanceladas" options="{'no_create': True, 'no_open': True}"/>
-                                    <field name="montoCuotasPendientes" options="{'no_create': True, 'no_open': True}"/>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-5">
-                                <group>
-                                    <field name="plazoMeses" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    <field name="porcentajeTotal" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    <field name="cuotasCanceladas" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    <field name="porcentajeCancelado" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </group>
+                            <div class="col-xs-4 col-sm-9">
+                                <table style=" border-collapse: collapse;width:75%">
+                                    <tbody>
+                                        <tr>
+                                            <td><label for="valorTotalPlan"/></td>
+                                            <td><field name="valorTotalPlan" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
+                                            <td><field name="plazoMeses" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/> Cuotas</td>
+                                            <td><field name="porcentajeTotal" readonly="1"  nolabel="1" options="{'no_create': True, 'no_open': True}"/>%</td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="montoCuotasCanceladas" /></td>
+                                            <td><field name="montoCuotasCanceladas" readonly="1" options="{'no_create': True, 'no_open': True}"/></td>
+                                            <td><field name="cuotasCanceladas" nolabel="1"  readonly="1"  options="{'no_create': True, 'no_open': True}"/> Cuotas</td>
+                                            <td><field name="porcentajeCancelado" nolabel="1" readonly="1"  options="{'no_create': True, 'no_open': True}"/>%</td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="montoCuotasPendientes" options="{'no_create': True, 'no_open': True}"/> </td>
+                                            <td><field name="montoCuotasPendientes" readonly="1" options="{'no_create': True, 'no_open': True}"/></td>
+                                            <td><field name="cuotasPendientes" nolabel="1" options="{'no_create': True, 'no_open': True}"/> Cuotas</td>
+                                            <td><field name="porcentajePendiente" nolabel="1" options="{'no_create': True, 'no_open': True}"/>%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                             <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
                                 <group>
@@ -256,7 +243,7 @@
                                             <td> <text>Comprometido</text> </td>
                                         </tr>
                                         <tr>
-                                            <td><label for="ingresosFamiliares" string="Ingresos familiares"/></td>
+                                            <td><label for="gastosFamiliares" string="Gastos familiares"/></td>
                                             <td><field name="gastosFamiliares" string ="Gastos familiares" options="{'no_create': True, 'no_open': True}"/></td>
                                             <td><field name="porcentajeGastos" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
                                             <td><text>Cuota Plan</text></td>
@@ -272,7 +259,7 @@
                             </div>
                             <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
                                 <group>
-                                    <field name="puntosPorcentajeCancelado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="puntosCuotaIngresos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                 </group>
                             </div>
                         </div>
