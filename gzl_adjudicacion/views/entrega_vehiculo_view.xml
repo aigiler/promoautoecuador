@@ -264,8 +264,13 @@
                                 <table style=" border-collapse: collapse;width:75%">
                                     <tbody>
                                         <tr>
+                                            <label for="ingresosFamiliares" string="Ingresos familiares"/></td>
+                                            <label for="gastosFamiliares" string ="Gastos familiares" options="{'no_create': True, 'no_open': True}"/> </td>
+                                            <label for="disponibilidad" string="Disponibilidad" options="{'no_create': True, 'no_open': True}"/></td>
+                                        </tr>
+                                        <tr>
                                             <td><field name="ingresosFamiliares" string="Ingresos familiares"/></td>
-                                            <td><field name="porcentajeIngresos" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
+                                            <td><field name="porcentajeIngresos"  readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
                                             <td><text>Comprometido</text></td>
                                         </tr>
                                         <tr>
