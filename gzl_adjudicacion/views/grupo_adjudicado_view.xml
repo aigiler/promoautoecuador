@@ -115,6 +115,6 @@
 
 
      <menuitem id="menu_grupo_adjudicado" action="action_grupo_adjudicado" 
-        parent="menu_adjudicados" sequence="5"  />
+        parent="menu_clientes_proceso_adjudicacion" sequence="5"  />
 
 </odoo>

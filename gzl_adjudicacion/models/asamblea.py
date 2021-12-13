@@ -96,7 +96,7 @@ class Asamblea(models.Model):
 
 class GrupoAsamblea(models.Model):
     _name = 'integrante.grupo.adjudicado.asamblea'
-    _description = 'Grupo adjudicado en asamblea'
+    _description = 'Grupo Participante en asamblea'
 
     asamblea_id = fields.Many2one('asamblea')
     grupo_adjudicado_id = fields.Many2one('grupo.adjudicado')
@@ -110,7 +110,7 @@ class GrupoAsamblea(models.Model):
 
 class IntegrantesGrupoAsamblea(models.Model):
     _name = 'integrante.grupo.adjudicado.asamblea.clientes'
-    _description = 'Integrantes de Grupo Adjudicado Asamblea'
+    _description = 'Integrantes de Grupo Participante en asamblea'
   
 
 
@@ -129,7 +129,6 @@ class IntegrantesGrupoAsamblea(models.Model):
     @api.depends('grupo_id')
     def _filtro_partner(self):
         for l in self:
-
             integrantes=l.grupo_id.grupo_adjudicado_id.integrantes.filtered(lambda l: l.contrato_id.tipo_de_contrato==l.grupo_id.tipo_contrato.id).mapped('adjudicado_id').ids
             l.dominio=json.dumps( [('id','in',integrantes)] )
 
@@ -157,6 +156,7 @@ class GanadoresAsamblea(models.Model):
 
 class JuntaGrupoAsamblea(models.Model):
     _name = 'junta.grupo.asamblea'
+    _description = 'Comité que realiza la asamblea'
 
     asamblea_id = fields.Many2one('asamblea', string='Asamblea')
     empleado_id = fields.Many2one('hr.employee', string="Empleado")

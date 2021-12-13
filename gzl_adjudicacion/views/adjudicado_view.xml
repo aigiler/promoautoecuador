@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <odoo>
-        <record id="view_partner_adjudicado_simple_form" model="ir.ui.view">
-            <field name="name">res.partner.adjudicado.simplified.form</field>
+        <record id="view_cliente_proceso_adjudicadion_simple_form" model="ir.ui.view">
+            <field name="name">view.cliente.proceso.adjudicadion.simple.form</field>
             <field name="model">res.partner</field>
             <field name="arch" type="xml">
                 <form string="Contact">
@@ -40,13 +40,13 @@
         </record>
 
 
-        <record id="action_adjudicados_form" model="ir.actions.act_window">
+        <record id="action_cliente_proceso_adjudicacion_form" model="ir.actions.act_window">
             <field name="name">Clientes</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">res.partner</field>
             <field name="view_mode">kanban,tree,form</field>
-            <field name="context">{'default_tipo': 'adjudicado'}</field>
-            <field name="domain">[('tipo','=','adjudicado')]</field>
+            <field name="context">{'default_tipo': 'preAdjudicado'}</field>
+            <field name="domain">[('tipo','=','preAdjudicado')]</field>
             <field name="search_view_id" ref="base.view_res_partner_filter"/>
             <field name="help" type="html">
               <p class="o_view_nocontent_smiling_face">
@@ -63,7 +63,7 @@
         <record id="action_adjudicados_form_view1" model="ir.actions.act_window.view">
             <field eval="2" name="sequence"/>
             <field name="view_mode">form</field>
-            <field name="view_id" ref="view_partner_adjudicado_simple_form"/>
+            <field name="view_id" ref="view_cliente_proceso_adjudicadion_simple_form"/>
             <field name="act_window_id" ref="action_adjudicados_form"/>
         </record>
         <record id="action_adjudicados_tree_view1" model="ir.actions.act_window.view">
@@ -73,6 +73,6 @@
             <field name="act_window_id" ref="action_adjudicados_form"/>
         </record>
 
-    <menuitem id="crear_adjudicado_menu" name="Clientes" sequence="10"
-              action="action_adjudicados_form" parent="menu_adjudicados"/>
+    <menuitem id="crear_cliente_procesdo_adjudicado_menu" name="Clientes" sequence="10"
+              action="action_cliente_proceso_adjudicacion_form" parent="menu_clientes_proceso_adjudicacion"/>
 </odoo>
