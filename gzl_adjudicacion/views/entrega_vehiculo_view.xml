@@ -264,22 +264,46 @@
                                 <table style=" border-collapse: collapse;width:75%">
                                     <tbody>
                                         <tr>
-                                            <td><label for="ingresosFamiliares" string="Ingresos familiares"/></td>
-                                            <td><field name="ingresosFamiliares" string="Ingresos familiares"/></td>
-                                            <td><field name="porcentajeIngresos"  readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
-                                            <td><text>Comprometido</text></td>
+                                            <td>
+                                                <label for="ingresosFamiliares" string="Ingresos familiares"/>
+                                            </td>
+                                            <td>
+                                                <field name="ingresosFamiliares" string="Ingresos familiares"/>
+                                            </td>
+                                            <td>
+                                                <field name="porcentajeIngresos" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                            </td>
+                                            <td>
+                                                <text>Comprometido</text>
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td><label for="ingresosFamiliares" string="Ingresos familiares"/></td>
-                                            <td><field name="gastosFamiliares" string ="Gastos familiares" options="{'no_create': True, 'no_open': True}"/> </td>
-                                            <td><field name="porcentajeGastos" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
-                                            <td><text>Cuota Plan</text></td>
+                                            <td>
+                                                <label for="ingresosFamiliares" string="Ingresos familiares"/>
+                                            </td>
+                                            <td>
+                                                <field name="gastosFamiliares" string ="Gastos familiares" options="{'no_create': True, 'no_open': True}"/>
+                                            </td>
+                                            <td>
+                                                <field name="porcentajeGastos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                            </td>
+                                            <td>
+                                                <text>Cuota Plan</text>
+                                            </td>
                                         </tr>
                                         <tr>
-                                                <td><label for="disponibilidad" string="Disponibilidad" options="{'no_create': True, 'no_open': True}"/></td>
-                                                <td><field name="disponibilidad" string="Disponibilidad" options="{'no_create': True, 'no_open': True}"/></td>
-                                                <td><field name="porcentajeDisponibilidad" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
-                                                <td><field name="porcentajeCuotaPlan" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
+                                            <td>
+                                                <label for="disponibilidad" string="Disponibilidad" options="{'no_create': True, 'no_open': True}"/>
+                                            </td>
+                                            <td>
+                                                <field name="disponibilidad" string="Disponibilidad" options="{'no_create': True, 'no_open': True}"/>
+                                            </td>
+                                            <td>
+                                                <field name="porcentajeDisponibilidad" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                            </td>
+                                            <td>
+                                                <field name="porcentajeCuotaPlan" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -533,73 +557,121 @@
                             </div>
                         </div>
                         <separator/>
-
-
                         <div class="row" style="border: 1px solid black;">
-                            <div class="col-xs-12 col-sm-9">
-                                <table style=" border-collapse: collapse;width:75%">
-                                    <tbody>
-                                        <tr>
-                                            <td><text>MONTO DEL PLAN ADJUDICADO</text></td>
-                                            <td></td>
-                                            <td><field name="montoAdjudicado"  readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
-                                            </tr>
-                                        <tr>
-                                            <td><text>VALOR DEL VEHICULO</text></td>
-                                            <td></td>
-                                            <td><field name="montoVehiculo" nolabel="1"  options="{'no_create': True, 'no_open': True}"/> </td>
-                                        </tr>
-                                        <tr>
-                                            <td><text>SALDO A FAVOR APLICA A CUOTAS FINALES DEL PLAN</text></td>
-                                            <td></td>
-                                            <td><field name="montoAFavor" nolabel="1"  options="{'no_create': True, 'no_open': True}"/></td>
-                                        </tr>
-                                        <tr>
-                                            <td><text>VALOR ADJUDICADO PARA LA COMPRA DEL VEHICULO</text></td>
-                                            <td></td>
-                                            <td><field name="valorAdjParaCompra" nolabel="1"  options="{'no_create': True, 'no_open': True}"/></td>
-                                        </tr>
-                                        <tr>
-                                            <td><text>ANTICIPO AL CONCESIONARIO</text></td>
-                                            <td><field name="montoAnticipoConsesionaria" nolabel="1"  options="{'no_create': True, 'no_open': True}"/></td>
-                                            <td><field name="valorComisionFactura" nolabel="1"  options="{'no_create': True, 'no_open': True}"/></td>
-                                            
-                                        </tr>
-                                        <tr>
-                                            <td><text>COMISION FACTURA A NOMBRE CONCESIONARIO</text></td>
-                                            <td></td>
-                                            <td><field name="comisionDispositivoRastreo" nolabel="1"  options="{'no_create': True, 'no_open': True}"/></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-xs-12 col-sm-3">  
-                            </div>
+                            <table style=" border-collapse: collapse;width:75%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <label for="valorTotalPlan"/>
+                                        </td>
+                                        <td>
+                                            <field name="valorTotalPlan" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                        </td>
+                                        <td>
+                                            <field name="plazoMeses" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                        </td>
+                                        <td>
+                                            <field name="porcentajeTotal" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="montoCuotasCanceladas" />
+                                        </td>
+                                        <td>
+                                            <field name="montoCuotasCanceladas" options="{'no_create': True, 'no_open': True}"/>
+                                        </td>
+                                        <td>
+                                            <field name="cuotasCanceladas" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                        </td>
+                                        <td>
+                                            <field name="porcentajeCancelado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="montoCuotasPendientes" options="{'no_create': True, 'no_open': True}"/>
+                                        </td>
+                                        <td>
+                                            <field name="montoCuotasPendientes" options="{'no_create': True, 'no_open': True}"/>
+                                        </td>
+                                        <td>
+                                            <field name="cuotasPendientes" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                        </td>
+                                        <td>
+                                            <field name="porcentajePendiente" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                         <separator/>
-                        <table style=" border-collapse: collapse;width:75%">
-                            <tbody>
-                            <tr>
-                                <td><label for="valorTotalPlan"/></td>
-                                <td><field name="valorTotalPlan"  readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
-                                <td><field name="plazoMeses" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
-                                <td><field name="porcentajeTotal" nolabel="1" options="{'no_create': True, 'no_open': True}"/>%</td>
-                            </tr>
-                            <tr>
-                                <td><label for="montoCuotasCanceladas" /></td>
-                                <td><field name="montoCuotasCanceladas"  options="{'no_create': True, 'no_open': True}"/> </td>
-                                <td><field name="cuotasCanceladas" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
-                                <td><field name="porcentajeCancelado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>%</td>
-                            </tr>
-                            <tr>
-                                <td><label for="montoCuotasPendientes" options="{'no_create': True, 'no_open': True}"/></td>
-                                <td><field name="montoCuotasPendientes"  options="{'no_create': True, 'no_open': True}"/></td>
-                                <td><field name="cuotasPendientes" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
-                                <td><field name="porcentajePendiente" nolabel="1" options="{'no_create': True, 'no_open': True}"/>%</td>
-                            </tr>
+                        <div class="col-xs-12 col-sm-9">
+                            <table style=" border-collapse: collapse;width:75%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <text>MONTO DEL PLAN ADJUDICADO</text>
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                            <field name="montoAdjudicado" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <text>VALOR DEL VEHICULO</text>
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                            <field name="montoVehiculo" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <text>SALDO A FAVOR APLICA A CUOTAS FINALES DEL PLAN</text>
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                            <field name="montoAFavor" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <text>VALOR ADJUDICADO PARA LA COMPRA DEL VEHICULO</text>
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                            <field name="valorAdjParaCompra" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <text>ANTICIPO AL CONCESIONARIO</text>
+                                        </td>
+                                        <td>
+                                            <field name="montoAnticipoConsesionaria" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                        </td>
+                                        <td>
+                                            <field name="valorComisionFactura" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                        </td>
 
-                            </tbody>
-                        </table>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <text>COMISION FACTURA A NOMBRE CONCESIONARIO</text>
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                            <field name="comisionDispositivoRastreo" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="col-xs-12 col-sm-3">
+                            </div>
+                        </div>
                         <separator/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
