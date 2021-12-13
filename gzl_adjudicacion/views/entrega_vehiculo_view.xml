@@ -35,7 +35,7 @@
                         <separator string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
                         <div class="col-xs-12 col-md-12">
                             <group>
-                                <field name="requisitosPoliticasCredito" readonly="1"/>
+                                <field name="requisitosPoliticasCredito" nolabel="1" readonly="1"/>
                                 <field name="documentos" widget="many2many_binary"/>
                                 <field name="active" attrs = "{'invisible': 1}" />
                             </group>
