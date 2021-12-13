@@ -128,12 +128,12 @@ class IntegrantesGrupoAsamblea(models.Model):
 
     @api.depends('grupo_id')
     def _filtro_partner(self):
-        for l in self:
-            integrantes=l.grupo_id.grupo_adjudicado_id.integrantes.filtered(lambda l: l.contrato_id.tipo_de_contrato==l.grupo_id.tipo_contrato.id).mapped('adjudicado_id').ids
+        for rec in self:
+            integrantes=rec.grupo_id.grupo_adjudicado_id.integrantes.filtered(lambda l: l.contrato_id.tipo_de_contrato==rec.grupo_id.tipo_contrato.id).mapped('adjudicado_id').ids
             if len(integrantes)>0:
-                l.dominio=json.dumps( [('id','in',integrantes)] )
+                rec.dominio=json.dumps( [('id','in',integrantes)] )
             else:
-                l.dominio=json.dumps([])
+                rec.dominio=json.dumps([])
 
 
 
