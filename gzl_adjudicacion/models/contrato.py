@@ -134,7 +134,6 @@ class Contrato(models.Model):
                                                     'fecha':rec.fecha_inicio_pago + relativedelta(months=i),
                                                     'cuota_capital':cuota_capital,
                                                     'cuota_adm':cuota_adm,
-                                                    'iva':iva,
                                                     'saldo':saldo,
                                                     'contrato_id':self.id,                                                    
                                                         })
@@ -258,26 +257,6 @@ class ContratoEstadoCuenta(models.Model):
                                     ], string='Estado de Pago', default='pendiente')
 
 
-class TablaAmortizacion(models.Model):
-    _name = 'tabla.amortizacion'
-    _description = 'Tabla de Amortización'
-
-    contrato_id = fields.Many2one('contrato')
-    numero_cuota = fields.Char(String='Número de Cuota')
-    fecha = fields.Date(String='Fecha Pago')
-    currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
-    cuota_capital = fields.Monetary(string='Cuota Capital', currency_field='currency_id')
-    cuota_adm = fields.Monetary(string='Cuota Adm', currency_field='currency_id')
-    iva = fields.Monetary(string='Iva', currency_field='currency_id')
-    seguro = fields.Monetary(string='Seguro', currency_field='currency_id')
-    saldo = fields.Monetary(string='Saldo', currency_field='currency_id')
-    rastreo = fields.Monetary(string='Rastreo', currency_field='currency_id')
-    otro = fields.Monetary(string='Otro', currency_field='currency_id')
-    estado_pago = fields.Selection([('pendiente', 'Pendiente'), 
-                                      ('pagado', 'Pagado')
-                                    ],string='Estado de Pago', default='pendiente') 
-    factura_id = fields.Many2one('account.move')
-    pago_id = fields.Many2one('account.payment')
     
     def pagar_cuota(self):
         view_id = self.env.ref('gzl_crm.wizard_pago_cuota_amortizaciones').id
