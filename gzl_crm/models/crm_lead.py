@@ -63,7 +63,30 @@ class CrmLead(models.Model):
         crm = super(CrmLead, self).write(vals)
         #stage_id = self.env['crm.stage'].browse(vals['stage_id'])
         if self.stage_id.is_won:
-            self.tipo='preAdjudicado'
+            obj_partner=self.env['res.partner'].create({
+                                        'name':self.partner_id.name,
+                                        'type':'contact',
+                                        'tipo':'preAdjudicado',
+                                        'monto':self.planned_revenue or 0,
+                                        'function':self.partner_id.function or None,
+                                        'email':self.partner_id.email or None,
+                                        'phone':self.partner_id.phone or None,
+                                        'mobile':self.partner_id.mobile or None,
+                                        'tipo_contrato':self.tipo_contrato.id,
+                                        'vat':self.partner_id.vat or None
+                                    })
+            contrato = self.env['contrato'].create({
+                                        'cliente':obj_partner.id,
+                                        'dia_corte':self.dia_pago,
+                                        'monto_financiamiento':self.planned_revenue,
+                                        #'tasa_administrativa':,
+                                        'tipo_de_contrato':self.tipo_contrato.id,
+                                        'provincias':self.partner_id.state_id.id,
+                                        'plazo_meses':self.numero_cuotas,
+                                        'cuota_capital':self.cuota_capital,
+                                        'iva_administrativo':self.iva,
+                                    })
+
 
 
             for l in self.tabla_amortizacion:

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="quick_create_opportunity_form_inherit" model="ir.ui.view">
+        <field name="name">quick.create.opportunity.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="crm.quick_create_opportunity_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="required">True
+                </attribute>                
+            </xpath>
+            
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="numero_cuotas" invisible="0" required="1"/>
+                <field name="dia_pago" invisible="0" required="1"/>
+                <field name="tipo_contrato" invisible="0" required="1"/>
+
+            </xpath>
+
+            
+        </field>
+    </record>
+
+
+
+</odoo>
