@@ -8,7 +8,6 @@
             <tree string="Calificador">
                 <field name="motivo" />
                 <field name="calificacion"/>
-                <field name="descripcion" />
 
                 
             </tree>
