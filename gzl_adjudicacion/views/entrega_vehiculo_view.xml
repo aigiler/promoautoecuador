@@ -269,7 +269,7 @@
                                             <td><text>Comprometido</text></td>
                                         </tr>
                                         <tr>
-                                            <td><field name="gastosFamiliares"string ="Gastos familiares" options="{'no_create': True, 'no_open': True}"/> </td>
+                                            <td><field name="gastosFamiliares" string ="Gastos familiares" options="{'no_create': True, 'no_open': True}"/> </td>
                                             <td><field name="porcentajeGastos" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
                                             <td><text>Cuota Plan</text></td>
                                         </tr>
