@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models
-
+import json
 
 class Asamblea(models.Model):
     _name = 'asamblea'
@@ -124,13 +124,16 @@ class IntegrantesGrupoAsamblea(models.Model):
 
 
 
-    dominio  = fields.Char(store=False, compute="_filtro_partner",readonly=True)
+    dominio  = fields.Char(store=True, compute="_filtro_partner")
 
     @api.depends('grupo_id')
     def _filtro_partner(self):
         for l in self:
             integrantes=l.grupo_id.grupo_adjudicado_id.integrantes.filtered(lambda l: l.contrato_id.tipo_de_contrato==l.grupo_id.tipo_contrato.id).mapped('adjudicado_id').ids
-            l.dominio=json.dumps( [('id','in',integrantes)] )
+            if len(integrantes)>0:
+                l.dominio=json.dumps( [('id','in',integrantes)] )
+            else:
+                l.dominio=json.dumps([])
 
 
 
