@@ -65,7 +65,7 @@
                                                 <field name="dominio" invisible="1"/>
                                                 <field name="grupo_cliente" invisible="1"/>
 
-                                                <field name="adjudicado_id"  required="1" />
+                                                <field name="adjudicado_id" domain="dominio" required="1" />
                                                 <field name="nro_cuota_licitar" required="1"/>
                                                 <field name="carta_licitacion" required="1" />
                                             </tree>
