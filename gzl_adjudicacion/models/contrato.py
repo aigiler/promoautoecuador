@@ -85,10 +85,11 @@ class Contrato(models.Model):
 
 
     def _capturar_valores_por_defecto(self):
-        res = self.env['res.config.settings'].sudo(
-            1).search([], limit=1, order="id desc")
-        self.tasa_administrativa = res.tasa_administrativa
-        self.dia_corte = res.dia_corte
+        dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
+        tasa_administrativa =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa')
+
+        self.tasa_administrativa = tasa_administrativa
+        self.dia_corte = dia_corte
     
 
     @api.depends('pago')
@@ -111,11 +112,15 @@ class Contrato(models.Model):
     
     @api.depends('plazo_meses', 'monto_financiamiento')
     def calcular_valores_contrato(self):
+        dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
+        tasa_administrativa =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa')
         for rec in self:
-            rec.dia_corte = 5
+
+
+            rec.dia_corte = dia_corte
             if int(rec.plazo_meses):
                 rec.cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses)
-                cuotaAdministrativa= rec.monto_financiamiento*(0.04/12)
+                cuotaAdministrativa= rec.monto_financiamiento*((tasa_administrativa/100)/12)
                 rec.iva_administrativo = cuotaAdministrativa * 1.12
                 rec.cuota_adm = cuotaAdministrativa
 
@@ -123,10 +128,14 @@ class Contrato(models.Model):
 
 
     def detalle_tabla_amortizacion(self):
+        dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
+        tasa_administrativa =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa')
+
+
         for rec in self:
             for i in range(1, int(rec.plazo_meses)+1):
                 cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses)
-                cuota_adm = cuota_capital *0.04
+                cuota_adm = cuota_capital *tasa_administrativa/100
                 iva = cuota_adm * 0.12
                 saldo = cuota_capital+cuota_adm+iva
                 self.env['contrato.estado.cuenta'].create({
@@ -151,10 +160,11 @@ class Contrato(models.Model):
     @api.model
     def create(self, vals):
         vals['secuencia'] = self.env['ir.sequence'].next_by_code('contrato')
-        res = self.env['res.config.settings'].sudo(
-            1).search([], limit=1, order="id desc")
-        vals['tasa_administrativa'] = res.tasa_administrativa
-        vals['dia_corte'] = res.dia_corte
+        dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
+        tasa_administrativa =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa')
+
+        vals['tasa_administrativa'] = tasa_administrativa
+        vals['dia_corte'] = dia_corte
         return super(Contrato, self).create(vals)
 
     @api.onchange('cliente', 'grupo')
@@ -170,10 +180,10 @@ class Contrato(models.Model):
 
     @api.constrains('cliente', 'secuencia')
     def constrains_valor_por_defecto(self):
-        res = self.env['res.config.settings'].sudo(
-            1).search([], limit=1, order="id desc")
-        self.tasa_administrativa = res.tasa_administrativa
-        self.dia_corte = res.dia_corte
+        dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
+        tasa_administrativa =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa')
+        self.tasa_administrativa = tasa_administrativa
+        self.dia_corte = dia_corte
 
     def cambio_estado_boton_borrador(self):
         return self.write({"state": "congelar_contrato"})
@@ -194,10 +204,11 @@ class Contrato(models.Model):
 
     @api.constrains('cliente')
     def constrains_valor_por_defecto(self):
-        res = self.env['res.config.settings'].sudo(
-            1).search([], limit=1, order="id desc")
-        self.tasa_administrativa = res.tasa_administrativa
-        self.dia_corte = res.dia_corte
+        dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
+        tasa_administrativa =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa')
+
+        self.tasa_administrativa = tasa_administrativa
+        self.dia_corte = dia_corte
 
 
 
