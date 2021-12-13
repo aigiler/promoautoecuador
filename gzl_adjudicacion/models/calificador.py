@@ -28,6 +28,18 @@ class CalificadorCliente(models.Model):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 class CalificadorClienteParametros(models.Model):
     _name = 'calificador.cliente.parametros'
     _description = 'Paràmetros Calificacion de cliente'

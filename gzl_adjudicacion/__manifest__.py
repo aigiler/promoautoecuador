@@ -31,6 +31,9 @@
                     'views/contrato_view.xml',
                     'views/res_config_settings_views.xml',
                     'views/configuracion_adicional.xml',
+                    'views/calificador_view.xml',
+
+                    
                     ],
     
     'installable': True,

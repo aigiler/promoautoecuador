@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="view_calificador_tree" model= "ir.ui.view">
+        <field name="name">view.calificador.cliente.parametros.tree</field>
+        <field name="model">calificador.cliente.parametros</field>
+        <field name="arch" type="xml">
+            <tree string="Calificador">
+                <field name="secuencia" />
+                <field name="tipo_asamblea"/>
+                <field name="descripcion" />
+                <field name="state" />
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_calificador" model="ir.actions.act_window">
+        <field name="name">Calificador</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">calificador.cliente.parametros</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem id="menu_action_calificador" action="action_calificador" parent="menu_configuracion_adjudicaciones" sequence="7" />
+</odoo>
