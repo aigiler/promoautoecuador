@@ -32,6 +32,7 @@
                     'views/res_config_settings_views.xml',
                     'views/configuracion_adicional.xml',
                     'views/calificador_view.xml',
+                    'views/stylesheet_view.xml',
 
                     
                     ],
