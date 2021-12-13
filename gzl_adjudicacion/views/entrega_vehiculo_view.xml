@@ -497,7 +497,7 @@
                                     <tr>
                                         <td><label for="valorTotalPlan"/></td>
                                         <td><field name="valorTotalPlan" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
-                                        <td><field name="plazoMeses" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
+                                        <td><field name="plazoMeses" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/></td>
                                         <td><field name="porcentajeTotal" readonly="1"  nolabel="1" options="{'no_create': True, 'no_open': True}"/>%</td>
                                     </tr>
                                     <tr>
@@ -517,7 +517,7 @@
                         </div>
                         <separator/>
                         <div class="col-xs-12 col-sm-9">
-                            <table style=" border-collapse: collapse;width:80%">
+                            <table style=" border-collapse: collapse;width:100%">
                                 <tbody>
                                     <tr>
                                         <td><text>MONTO DEL PLAN ADJUDICADO</text></td>
@@ -534,6 +534,7 @@
                                         <td></td>
                                         <td><field name="montoAFavor" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
                                     </tr>
+                                    <separator/>
                                     <tr>
                                         <td><text>VALOR ADJUDICADO PARA LA COMPRA DEL VEHICULO</text></td>
                                         <td></td>
@@ -544,11 +545,17 @@
                                         <td></td>
                                         <td><field name="montoAnticipoConsesionaria" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
                                     </tr>
-                                    <!-- <tr>
+                                    <tr>
                                         <td><text>COMISION FACTURA A NOMBRE CONCESIONARIO</text> </td>
                                         <td><field name="comisionFacturaConcesionario" nolabel="1" options="{'no_create': True, 'no_open': True}"/>%</td>
-                                        <td><field name="valorComisionFactura" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
+                                        <td><field name="valorComisionFactura" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/></td>
                                     </tr>
+                                    <tr>
+                                        <td><text>COMISION POR DISPOSITIVO DE RASTREO</text> </td>
+                                        <td> </td>
+                                        <td><field name="comisionDispositivoRastreo" nolabel="1" options="{'no_create': True, 'no_open': True}"/> </td>
+                                    </tr>
+                                    <!-- 
                                     <tr>
                                         <td><text>COMISION POR DISPOSITIVO DE RASTREO</text> </td>
                                         <td> </td>
