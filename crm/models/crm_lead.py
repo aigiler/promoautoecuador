@@ -99,7 +99,7 @@ class Lead(models.Model):
     date_closed = fields.Datetime('Closed Date', readonly=True, copy=False)
 
     stage_id = fields.Many2one('crm.stage', string='Stage', ondelete='restrict', tracking=True, index=True, copy=False,
-        domain="['|', ('team_id', '=', False), ('team_id', '=', team_id)]",
+        
         group_expand='_read_group_stage_ids', default=lambda self: self._default_stage_id())
     user_id = fields.Many2one('res.users', string='Salesperson', index=True, tracking=True, default=lambda self: self.env.user)
     referred = fields.Char('Referred By')

@@ -23,11 +23,8 @@ class CrmLead(models.Model):
     dia_pago = fields.Integer(string='Día de Pagos', default=lambda self: self._capturar_dia_pago())
 
     def _capturar_dia_pago(self):
-        res = self.env['res.config.settings'].sudo(
-            1).search([], limit=1, order="id desc")
-        self.dia_pago = res.dia_corte
-
-
+        dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
+        return dia_corte
 
     tipo_contrato = fields.Many2one('tipo.contrato.adjudicado', string='Tipo de Contrato', required=True)
     tabla_amortizacion = fields.One2many('tabla.amortizacion', 'oportunidad_id' )
