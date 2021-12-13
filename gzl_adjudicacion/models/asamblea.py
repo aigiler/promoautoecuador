@@ -131,6 +131,11 @@ class IntegrantesGrupoAsamblea(models.Model):
 
     dominio  = fields.Char(store=False, compute="_filtro_partner",readonly=True)
 
+    @api.onchange('nro_cuota_licitar')
+    def ingresar_cuota(self):
+        if self.nro_cuota_licitar==0:
+            raise ValidationError("Por favor Ingrese el número de Cuotas.")
+
 
 
     @api.depends('grupo_cliente')

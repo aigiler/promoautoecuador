@@ -37,8 +37,8 @@
                         </div>
                         <group>
                             <group>
-                                <field name="tipo_asamblea" required="1" attrs="{'readonly': [('state', '=', 'cerrado')]}" options="{'no_open': True, 'no_create': True}"/>
-                                <field name="descripcion" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
+                                <field name="tipo_asamblea" options="{'no_open': True, 'no_create': True}" required="1" options="{'no_open': True, 'no_create': True}"  attrs="{'readonly': [('state', '=', 'cerrado')]}" options="{'no_open': True, 'no_create': True}"/>
+                                <field name="descripcion"  attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
                                 <field name="fecha_inicio" required="1" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
                                 <field name="fecha_fin" required="1" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
                                 <field name="active" invisible="1 "/>
@@ -54,8 +54,8 @@
                                     <form>
                                         <group>
 
-                                            <field name="grupo_adjudicado_id" required="1" string="Grupo Participante"/>
-                                            <field name="tipo_contrato" readonly="1" required="1"/>
+                                            <field name="grupo_adjudicado_id" options="{'no_open': True, 'no_create': True}" required="1" string="Grupo Participante"/>
+                                            <field name="tipo_contrato" options="{'no_open': True, 'no_create': True}" readonly="1" required="1"/>
 
 
                                         </group>
@@ -65,7 +65,7 @@
                                                 <field name="dominio" invisible="1"/>
                                                 <field name="grupo_cliente" invisible="1"/>
 
-                                                <field name="adjudicado_id" domain="dominio" required="1" />
+                                                <field name="adjudicado_id" options="{'no_open': True, 'no_create': True}" domain="dominio" required="1" />
                                                 <field name="nro_cuota_licitar" required="1"/>
                                                 <field name="carta_licitacion" required="1" />
                                             </tree>
