@@ -26,6 +26,7 @@ class EntegaVehiculo(models.Model):
         ('informe_credito_cobranza', 'Informe de Crédito y Cobranza'),
         ('calificador_compra', 'Calificador para compra del bien'),
         ('liquidacion_orden_compra', 'Liquidación de compra y orden de compra'),
+        ('orden_compra', 'Orden de compra'),
         ('entrega_vehiculo', 'Entrega de Vehiculo'),
     ], string='Estado', default='borrador')
     # datos del socio adjudicado
@@ -229,6 +230,8 @@ class EntegaVehiculo(models.Model):
     dia  = fields.Char()   
     mes  = fields.Char(string='')
     anio  = fields.Char()
+
+  
 
 
     def _capturar_valores_por_defecto(self):
