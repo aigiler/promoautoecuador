@@ -124,7 +124,7 @@ class IntegrantesGrupoAsamblea(models.Model):
 
 
 
-    dominio  = fields.Char(store=True, compute="_filtro_partner")
+    dominio  = fields.Char(store=False, compute="_filtro_partner",readonly=True)
 
     @api.depends('grupo_id')
     def _filtro_partner(self):
