@@ -125,6 +125,6 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_contrato" action="action_contrato" parent="menu_clientes_proceso_adjudicacion" sequence="7" />
+    <menuitem id="menu_contrato" action="action_contrato" parent="menu_socio_proceso_adjudicacion" sequence="7" />
 
 </odoo>
