@@ -278,8 +278,6 @@
                                                 <td><field name="porcentajeDisponibilidad" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
                                                 <td><field name="porcentajeCuotaPlan" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
                                         </tr>
-                                            
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
