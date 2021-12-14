@@ -37,7 +37,11 @@
                             <group>
                                 <field name="requisitosPoliticasCredito" widget="html" nolabel="1" readonly="1"/>
                             </group>
-                             <field class="text-center" name="documentos" nolabel="1" widget="many2many_binary"/>
+                        </div>
+                        <div class="col-xs-12 col-md-12">
+                            <group>
+                                <field class="text-center" name="documentos" nolabel="1" widget="many2many_binary"/>
+                            </group>
                         </div>
                     </div>
                     <!-- FIN div state borrador -->
