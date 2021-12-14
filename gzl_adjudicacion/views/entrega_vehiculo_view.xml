@@ -32,11 +32,11 @@
                 <sheet>
                     <!-- div state borrador -->
                     <div states="borrador,revision_documentos" class="row">
-                        <separator string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
+                        <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
                         <div class="col-xs-12 col-md-12">
                             <group>
-                                <field name="requisitosPoliticasCredito"  widget="html" nolabel="1" readonly="1"/>
-                                <field name="documentos" nolabel="1" widget="many2many_binary"/>
+                                <field name="requisitosPoliticasCredito" widget="html" nolabel="1" readonly="1"/>
+                                <field class="text-center" name="documentos" nolabel="1" widget="many2many_binary"/>
                                 <field name="active" attrs = "{'invisible': 1}" />
                             </group>
                         </div>
