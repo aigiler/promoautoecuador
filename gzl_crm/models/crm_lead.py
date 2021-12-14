@@ -34,6 +34,12 @@ class CrmLead(models.Model):
     currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
 
 
+    @api.constrains("planned_revenue")
+    def validar_monto_contrato(self):
+        if self.planned_revenue==0:
+            raise ValidationError("Ingrese el monto de la oportunidad")
+
+
     
     def detalle_tabla_amortizacion(self):
         self._cr.execute(""" delete from tabla_amortizacion where oportunidad_id={0}""".format(self.id))
@@ -42,9 +48,13 @@ class CrmLead(models.Model):
             ahora = ahora.replace(day = self.dia_pago)
         except:
             raise ValidationError('La fecha no existe, por favor ingrese otro día de pago.')
+        
+        tasa_administrativa =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa')
+
+
         for i in range(1, int(self.numero_cuotas)+1):
             cuota_capital = self.planned_revenue/int(self.numero_cuotas)
-            cuota_adm = cuota_capital *0.04
+            cuota_adm = cuota_capital *float(tasa_administrativa)
             iva = cuota_adm * 0.12
             saldo = cuota_capital+cuota_adm+iva
             self.env['tabla.amortizacion'].create({'oportunidad_id':self.id,
@@ -63,23 +73,14 @@ class CrmLead(models.Model):
         crm = super(CrmLead, self).write(vals)
         #stage_id = self.env['crm.stage'].browse(vals['stage_id'])
         if self.stage_id.is_won:
-            obj_partner=self.env['res.partner'].create({
-                                        'name':self.partner_id.name,
-                                        'type':'contact',
-                                        'tipo':'preAdjudicado',
-                                        'monto':self.planned_revenue or 0,
-                                        'function':self.partner_id.function or None,
-                                        'email':self.partner_id.email or None,
-                                        'phone':self.partner_id.phone or None,
-                                        'mobile':self.partner_id.mobile or None,
-                                        'tipo_contrato':self.tipo_contrato.id,
-                                        'vat':self.partner_id.vat or None
-                                    })
+            obj_partner=self.partner_id
+            obj_partner.tipo='preAdjudicado'
+
+
             contrato = self.env['contrato'].create({
                                         'cliente':obj_partner.id,
                                         'dia_corte':self.dia_pago,
                                         'monto_financiamiento':self.planned_revenue,
-                                        #'tasa_administrativa':,
                                         'tipo_de_contrato':self.tipo_contrato.id,
                                         'provincias':self.partner_id.state_id.id,
                                         'plazo_meses':self.numero_cuotas,
@@ -96,7 +97,6 @@ class CrmLead(models.Model):
                                         'fecha': l.fecha,
                                         'cuota_capital':l.cuota_capital,
                                         'cuota_adm':l.cuota_adm,
-                                        #'iva':l.iva
                                     })
             
         return crm
