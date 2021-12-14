@@ -169,17 +169,17 @@
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-md-12">
                                 <group>
-                                    <field name="nombreSocioAdjudicado" force_save="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="nombreSocioAdjudicado" readonly="1" options="{'no_create': True, 'no_open': True}"/>
                                 </group>
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group>
-                                    <field name="vatAdjudicado" force_save="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="vatAdjudicado"  readonly="1" options="{'no_create': True, 'no_open': True}"/>
                                 </group>
                             </div>
                             <div class="col-xs-4">
                                 <group>
-                                    <field name="codigoAdjudicado" force_save="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="codigoAdjudicado"  readonly="1" options="{'no_create': True, 'no_open': True}"/>
                                 </group>
                             </div>
                         </div>

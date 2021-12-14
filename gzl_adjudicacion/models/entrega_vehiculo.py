@@ -21,7 +21,7 @@ class EntegaVehiculo(models.Model):
         return res.configuracion_adicional.requisitosPoliticasCredito
     
         
-    documentos = fields.Many2many('ir.attachment', string='Carga Documentos')
+    documentos = fields.Many2many('ir.attachment', string='Carga Documentos', track_visibility='onchange')
     active = fields.Boolean(string='Activo', default=True)
     state = fields.Selection(selection=[
         ('borrador', 'Borrador'),
@@ -31,10 +31,10 @@ class EntegaVehiculo(models.Model):
         ('liquidacion_orden_compra', 'Liquidación de compra y orden de compra'),
         ('orden_compra', 'Orden de compra'),
         ('entrega_vehiculo', 'Entrega de Vehiculo'),
-    ], string='Estado', default='borrador')
+    ], string='Estado', default='borrador', track_visibility='onchange')
     # datos del socio adjudicado
-    nombreSocioAdjudicado = fields.Many2one('res.partner', string="Nombre del Socio Adj.")
-    codigoAdjudicado = fields.Char(related="nombreSocioAdjudicado.codigo_cliente", string='Código')
+    nombreSocioAdjudicado = fields.Many2one('res.partner', string="Nombre del Socio Adj.", track_visibility='onchange')
+    codigoAdjudicado = fields.Char(related="nombreSocioAdjudicado.codigo_cliente", string='Código', track_visibility='onchange')
     fechaNacimientoAdj = fields.Date(related="nombreSocioAdjudicado.fecha_nacimiento", string='Fecha de Nacimiento')
     vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía')
     estadoCivilAdj = fields.Selection(related="nombreSocioAdjudicado.estado_civil")
@@ -208,8 +208,8 @@ class EntegaVehiculo(models.Model):
         'res.partner', string="NOMBRE DEL CONCESIONARIO:")
     observacionesLiquidacion = fields.Text(string="Observaciones")
     
-    ordenCompra = fields.Many2one('account.move', string="Orden de Compra")
-
+    liquidacionCompra = fields.Many2one('account.move', string="LIquidación de Compra")
+    ordenCompra  = fields.Many2one('account.move', string="Orden de Compra")
     dia = fields.Char()
     mes = fields.Char(string='')
     anio = fields.Char()
