@@ -14,7 +14,7 @@ class EntegaVehiculo(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     secuencia = fields.Char(index=True)
-    requisitosPoliticasCredito = fields.Text(string='Informacion Cobranzas')
+    requisitosPoliticasCredito = fields.Text(string='Informacion Cobranzas', default=lambda self: self._capturar_valores_por_defecto())
     documentos = fields.Many2many('ir.attachment', string='Carga Documentos')
     active = fields.Boolean(string='Activo', default=True)
     state = fields.Selection(selection=[
@@ -108,20 +108,16 @@ class EntegaVehiculo(models.Model):
     # valores del plan
     valorTotalPlan = fields.Monetary(compute='calcular_valor_total_plan', string='Valor Total del Plan')
     porcentajeTotal = fields.Float(default=100.00)
-    #monto cuotas canceladas
-    montoCuotasCanceladas = fields.Monetary(string='Cuotas Canceladas', compute='calcular_valor_cuotas_canceladas')
-    #numero de cuotas canceladas
-    cuotasCanceladas = fields.Integer()
-    #porcentaje cancelado del monto del valor
-    porcentajeCancelado = fields.Float(digits=(6, 2), compute='calcular_porcentaj_cuotas_canc')
-    #monto de cuotas pendientes
-    montoCuotasPendientes = fields.Monetary(string='Cuotas Pendientes', compute='calcular_valor_cuotas_pendientes')
-    #numero de cuotas pendientes
-    cuotasPendientes = fields.Integer(compute='calcular_cuotas_pendientes')
-    # porcentaje monto pendiente
-    porcentajePendiente = fields.Float(digits=(6, 2), compute='calcular_porcentaj_pendiente')
     
-    #puntos por porcentaje cancelado
+    montoCuotasCanceladas = fields.Monetary(string='Cuotas Canceladas', compute='calcular_valor_cuotas_canceladas')
+    cuotasCanceladas = fields.Integer()
+    porcentajeCancelado = fields.Float(digits=(6, 2), compute='calcular_porcentaj_cuotas_canc')
+
+    montoCuotasPendientes = fields.Monetary(string='Cuotas Pendientes', compute='calcular_valor_cuotas_pendientes')
+    cuotasPendientes = fields.Integer(compute='calcular_cuotas_pendientes')
+    porcentajeMontoCancelado = fields.Float(digits=(6, 2), compute='calcular_porcentaj_pendiente')
+    
+    #puntos valor cancelado del plan
     puntosPorcentajeCancelado = fields.Integer(compute='calcular_puntos_porcentaje_cancelado')
 
     #saldosBien
@@ -212,15 +208,13 @@ class EntegaVehiculo(models.Model):
     def calcular_valor_total_plan(self):
         for rec in self:
             rec.valorTotalPlan = rec.valorCuota * rec.plazoMeses
-            
-    @api.depends('valorCuota', 'cuotasCanceladas')
-    def calcular_valor_cuotas_canceladas(self):
-        for rec in self:
-            rec.porcentajeTotal = 100.00
-            rec.cuotasCanceladas = 31
-            rec.montoCuotasCanceladas = rec.valorCuota * rec.cuotasCanceladas
 
-   
+    def definir_mes(self):
+        for rec in self:
+            rec.mes = datetime.strptime(
+                datetime.today(), '%Y-%m-%d').strftime('%B')
+
+    @api.depends('valorAdjParaCompra', 'valorComisionFactura', 'comisionDispositivoRastreo', 'montoAnticipoConsesionaria')
     def calcular_valor_cheque(self):
         for rec in self:
             rec.montoChequeConsesionario = rec.valorAdjParaCompra - rec.valorComisionFactura - \
@@ -423,14 +417,14 @@ class EntegaVehiculo(models.Model):
             else:
                 rec.porcentajeGastos = 0
 
-    @api.depends('porcentajeCancelado')
+    @api.depends('porcentajeMontoCancelado')
     def calcular_puntos_porcentaje_cancelado(self):
         for rec in self:
-            if rec.porcentajeCancelado >= 0.00 and rec.porcentajeCancelado <= 25.00:
+            if rec.porcentajeMontoCancelado >= 0.00 and rec.porcentajeMontoCancelado <= 25.00:
                 rec.puntosPorcentajeCancelado = 0
-            elif rec.porcentajeCancelado >= 26.00 and rec.porcentajeCancelado <= 30.00:
+            elif rec.porcentajeMontoCancelado >= 26.00 and rec.porcentajeMontoCancelado <= 30.00:
                 rec.puntosPorcentajeCancelado = 100
-            elif rec.porcentajeCancelado >= 31.00:
+            elif rec.porcentajeMontoCancelado >= 31.00:
                 rec.puntosPorcentajeCancelado = 200
             else:
                 rec.puntosPorcentajeCancelado = 0
@@ -439,7 +433,8 @@ class EntegaVehiculo(models.Model):
     def calcular_porcentaj_cuotas_canc(self):
         for rec in self:
             if rec.valorTotalPlan:
-                rec.porcentajeCancelado = (rec.montoCuotasCanceladas / rec.valorTotalPlan) * 100
+                rec.porcentajeCancelado = (
+                    rec.montoCuotasCanceladas / rec.valorTotalPlan) * 100
             else:
                 rec.porcentajeCancelado = 0.00
 
@@ -457,10 +452,18 @@ class EntegaVehiculo(models.Model):
     def calcular_porcentaj_pendiente(self):
         for rec in self:
             if rec.valorTotalPlan:
-                rec.porcentajeCancelado = (rec.montoCuotasPendientes/rec.valorTotalPlan)*100
+                rec.porcentajeMontoCancelado = (rec.montoCuotasPendientes/rec.valorTotalPlan)*100
             else:
-                rec.porcentajeCancelado = 0.00
+                rec.porcentajeMontoCancelado = 0.00
 
+    @api.depends('valorCuota', 'cuotasCanceladas')
+    def calcular_valor_cuotas_canceladas(self):
+        for rec in self:
+            rec.porcentajeTotal = 100.00
+            rec.cuotasCanceladas = 31
+            rec.montoCuotasCanceladas = rec.valorCuota * rec.cuotasCanceladas
+
+   
 
     @api.depends('nombreSocioAdjudicado')
     def buscar_parner(self):
