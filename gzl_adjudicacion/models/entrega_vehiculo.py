@@ -14,7 +14,7 @@ class EntegaVehiculo(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     secuencia = fields.Char(index=True)
-    requisitosPoliticasCredito = fields.Text(string='Informacion Cobranzas',  default=lambda self: self._capturar_valores_por_defecto())
+    requisitosPoliticasCredito = fields.Text(string='Informacion Cobranzas', default=lambda self: self._capturar_valores_por_defecto())
     documentos = fields.Many2many('ir.attachment', string='Carga Documentos')
     active = fields.Boolean(string='Activo', default=True)
     state = fields.Selection(selection=[
@@ -207,8 +207,7 @@ class EntegaVehiculo(models.Model):
     anio = fields.Char()
 
     def _capturar_valores_por_defecto(self):
-        res = self.env['res.config.settings'].sudo(
-            1).search([], limit=1, order="id desc")
+        res = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc")
         self.requisitosPoliticasCredito = res.configuracion_adicional.requisitosPoliticasCredito
 
     def definir_mes(self):
