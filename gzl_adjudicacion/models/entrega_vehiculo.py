@@ -205,15 +205,13 @@ class EntegaVehiculo(models.Model):
     dia = fields.Char()
     mes = fields.Char(string='')
     anio = fields.Char()
+    
+    
 
     def _capturar_valores_por_defecto(self):
         res = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc")
         self.requisitosPoliticasCredito = res.configuracion_adicional.requisitosPoliticasCredito
 
-    def definir_mes(self):
-        for rec in self:
-            rec.mes = datetime.strptime(
-                datetime.today(), '%Y-%m-%d').strftime('%B')
 
     @api.depends('valorAdjParaCompra', 'valorComisionFactura', 'comisionDispositivoRastreo', 'montoAnticipoConsesionaria')
     def calcular_valor_cheque(self):
