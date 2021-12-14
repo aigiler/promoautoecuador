@@ -14,7 +14,7 @@ class EntegaVehiculo(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     secuencia = fields.Char(index=True)
-    requisitosPoliticasCredito = fields.Text(string='Informacion Cobranzas', default=lambda self: self._capturar_valores_por_defecto())
+    requisitosPoliticasCredito = fields.Text(string='Informacion Cobranzas')
     documentos = fields.Many2many('ir.attachment', string='Carga Documentos')
     active = fields.Boolean(string='Activo', default=True)
     state = fields.Selection(selection=[
@@ -108,16 +108,20 @@ class EntegaVehiculo(models.Model):
     # valores del plan
     valorTotalPlan = fields.Monetary(compute='calcular_valor_total_plan', string='Valor Total del Plan')
     porcentajeTotal = fields.Float(default=100.00)
-    
+    #monto cuotas canceladas
     montoCuotasCanceladas = fields.Monetary(string='Cuotas Canceladas', compute='calcular_valor_cuotas_canceladas')
+    #numero de cuotas canceladas
     cuotasCanceladas = fields.Integer()
+    #porcentaje cancelado del monto del valor
     porcentajeCancelado = fields.Float(digits=(6, 2), compute='calcular_porcentaj_cuotas_canc')
-
+    #monto de cuotas pendientes
     montoCuotasPendientes = fields.Monetary(string='Cuotas Pendientes', compute='calcular_valor_cuotas_pendientes')
+    #numero de cuotas pendientes
     cuotasPendientes = fields.Integer(compute='calcular_cuotas_pendientes')
-    porcentajeMontoCancelado = fields.Float(digits=(6, 2), compute='calcular_porcentaj_pendiente')
+    # porcentaje monto pendiente
+    porcentajePendiente = fields.Float(digits=(6, 2), compute='calcular_porcentaj_pendiente')
     
-    #puntos valor cancelado del plan
+    #puntos por porcentaje cancelado
     puntosPorcentajeCancelado = fields.Integer(compute='calcular_puntos_porcentaje_cancelado')
 
     #saldosBien
@@ -203,13 +207,20 @@ class EntegaVehiculo(models.Model):
         res = self.env['res.config.settings'].sudo(
             1).search([], limit=1, order="id desc")
         self.requisitosPoliticasCredito = res.configuracion_adicional.requisitosPoliticasCredito
-
-    def definir_mes(self):
+        
+    @api.depends('valorCuota', 'plazoMeses')
+    def calcular_valor_total_plan(self):
         for rec in self:
-            rec.mes = datetime.strptime(
-                datetime.today(), '%Y-%m-%d').strftime('%B')
+            rec.valorTotalPlan = rec.valorCuota * rec.plazoMeses
+            
+    @api.depends('valorCuota', 'cuotasCanceladas')
+    def calcular_valor_cuotas_canceladas(self):
+        for rec in self:
+            rec.porcentajeTotal = 100.00
+            rec.cuotasCanceladas = 31
+            rec.montoCuotasCanceladas = rec.valorCuota * rec.cuotasCanceladas
 
-    @api.depends('valorAdjParaCompra', 'valorComisionFactura', 'comisionDispositivoRastreo', 'montoAnticipoConsesionaria')
+   
     def calcular_valor_cheque(self):
         for rec in self:
             rec.montoChequeConsesionario = rec.valorAdjParaCompra - rec.valorComisionFactura - \
@@ -428,8 +439,7 @@ class EntegaVehiculo(models.Model):
     def calcular_porcentaj_cuotas_canc(self):
         for rec in self:
             if rec.valorTotalPlan:
-                rec.porcentajeCancelado = (
-                    rec.montoCuotasCanceladas / rec.valorTotalPlan) * 100
+                rec.porcentajeCancelado = (rec.montoCuotasCanceladas / rec.valorTotalPlan) * 100
             else:
                 rec.porcentajeCancelado = 0.00
 
@@ -451,17 +461,6 @@ class EntegaVehiculo(models.Model):
             else:
                 rec.porcentajeMontoCancelado = 0.00
 
-    @api.depends('valorCuota', 'cuotasCanceladas')
-    def calcular_valor_cuotas_canceladas(self):
-        for rec in self:
-            rec.porcentajeTotal = 100.00
-            rec.cuotasCanceladas = 31
-            rec.montoCuotasCanceladas = rec.valorCuota * rec.cuotasCanceladas
-
-    @api.depends('valorCuota', 'plazoMeses')
-    def calcular_valor_total_plan(self):
-        for rec in self:
-            rec.valorTotalPlan = rec.valorCuota * rec.plazoMeses
 
     @api.depends('nombreSocioAdjudicado')
     def buscar_parner(self):
