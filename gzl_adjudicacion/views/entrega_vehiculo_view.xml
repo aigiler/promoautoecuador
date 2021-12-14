@@ -25,7 +25,7 @@
                     <button name="cambio_estado_boton_caificador" string="Calificador para compra del bien" type="object" states="calificador_compra" class="oe_highlight"/>
                     <button name="cambio_estado_boton_liquidacion" string="Liquidación de compra y orden de compra" type="object" states="liquidacion_orden_compra" class="oe_highlight"/>
                     <button name="cambio_estado_boton_entrega" string="Entrega de Vehiculo" type="object" states="entrega_vehiculo" class="oe_highlight"/>
-                    <field name="state" widget="statusbar"/>
+                    <field name="state" widget="statusbar" />
                 </header>
 
                 <!-- sheet principal-->
@@ -35,8 +35,8 @@
                         <separator string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
                         <div class="col-xs-12 col-md-12">
                             <group>
-                                <field name="requisitosPoliticasCredito" nolabel="1" readonly="1"/>
-                                <field name="documentos" widget="many2many_binary"/>
+                                <field name="requisitosPoliticasCredito"  widget="html" nolabel="1" readonly="1"/>
+                                <field name="documentos" nolabel="1" widget="many2many_binary"/>
                                 <field name="active" attrs = "{'invisible': 1}" />
                             </group>
                         </div>
