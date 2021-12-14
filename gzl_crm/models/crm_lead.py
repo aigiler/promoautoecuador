@@ -34,6 +34,10 @@ class CrmLead(models.Model):
     currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
 
 
+    factura_inscripcion_id = fields.Many2one('account.move',string='Factura de inscripción')
+
+
+
     @api.constrains("planned_revenue")
     def validar_monto_contrato(self):
         if self.planned_revenue==0:
@@ -73,6 +77,12 @@ class CrmLead(models.Model):
         crm = super(CrmLead, self).write(vals)
         #stage_id = self.env['crm.stage'].browse(vals['stage_id'])
         if self.stage_id.is_won:
+
+            if not (self.factura_inscripcion_id.id or True):
+                raise ValidationError("Debe registrarse la factura de inscripción para que sea marcada como válida")
+
+
+
             obj_partner=self.partner_id
             obj_partner.tipo='preAdjudicado'
 
