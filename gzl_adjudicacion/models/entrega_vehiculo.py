@@ -423,14 +423,14 @@ class EntegaVehiculo(models.Model):
             else:
                 rec.porcentajeGastos = 0
 
-    @api.depends('porcentajeMontoCancelado')
+    @api.depends('porcentajeCancelado')
     def calcular_puntos_porcentaje_cancelado(self):
         for rec in self:
-            if rec.porcentajeMontoCancelado >= 0.00 and rec.porcentajeMontoCancelado <= 25.00:
+            if rec.porcentajeCancelado >= 0.00 and rec.porcentajeCancelado <= 25.00:
                 rec.puntosPorcentajeCancelado = 0
-            elif rec.porcentajeMontoCancelado >= 26.00 and rec.porcentajeMontoCancelado <= 30.00:
+            elif rec.porcentajeCancelado >= 26.00 and rec.porcentajeCancelado <= 30.00:
                 rec.puntosPorcentajeCancelado = 100
-            elif rec.porcentajeMontoCancelado >= 31.00:
+            elif rec.porcentajeCancelado >= 31.00:
                 rec.puntosPorcentajeCancelado = 200
             else:
                 rec.puntosPorcentajeCancelado = 0
@@ -457,9 +457,9 @@ class EntegaVehiculo(models.Model):
     def calcular_porcentaj_pendiente(self):
         for rec in self:
             if rec.valorTotalPlan:
-                rec.porcentajeMontoCancelado = (rec.montoCuotasPendientes/rec.valorTotalPlan)*100
+                rec.porcentajeCancelado = (rec.montoCuotasPendientes/rec.valorTotalPlan)*100
             else:
-                rec.porcentajeMontoCancelado = 0.00
+                rec.porcentajeCancelado = 0.00
 
 
     @api.depends('nombreSocioAdjudicado')
