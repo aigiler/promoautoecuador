@@ -207,6 +207,8 @@ class EntegaVehiculo(models.Model):
     nombreConsesionario = fields.Many2one(
         'res.partner', string="NOMBRE DEL CONCESIONARIO:")
     observacionesLiquidacion = fields.Text(string="Observaciones")
+    
+    ordenCompra = fields.Many2one('account.move', string="Orden de Compra")
 
     dia = fields.Char()
     mes = fields.Char(string='')
