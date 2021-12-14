@@ -388,10 +388,9 @@ class EntegaVehiculo(models.Model):
     def calcular_porcentaje_cuota_plan(self):
         for rec in self:
             if rec.ingresosFamiliares:
-                rec.porcentajeCuotaPlan = round(
-                    (rec.valorCuota / rec.ingresosFamiliares) * 100)
+                rec.porcentajeCuotaPlan =  (rec.valorCuota / rec.ingresosFamiliares) * 100
             else:
-                rec.porcerntajeCuotaPlan = 0
+                rec.porcentajeCuotaPlan = 0.0
 
     @api.depends('porcentajeGastos', 'porcentajeIngresos')
     def calcular_porcentaje_disponibilidad(self):
