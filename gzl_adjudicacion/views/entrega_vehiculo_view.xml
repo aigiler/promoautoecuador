@@ -194,13 +194,13 @@
                                             <td><label for="montoCuotasCanceladas" /></td>
                                             <td><field name="montoCuotasCanceladas" readonly="1" options="{'no_create': True, 'no_open': True}"/></td>
                                             <td><field name="cuotasCanceladas" nolabel="1"  readonly="1"  options="{'no_create': True, 'no_open': True}"/> Cuotas</td>
-                                            <td><field name="porcentajeMontoCancelado" nolabel="1" readonly="1"  options="{'no_create': True, 'no_open': True}"/>%</td>
+                                            <td><field name="porcentajeCancelado" nolabel="1" readonly="1"  options="{'no_create': True, 'no_open': True}"/>%</td>
                                         </tr>
                                         <tr>
                                             <td><label for="montoCuotasPendientes" options="{'no_create': True, 'no_open': True}"/> </td>
                                             <td><field name="montoCuotasPendientes" readonly="1" options="{'no_create': True, 'no_open': True}"/></td>
                                             <td><field name="cuotasPendientes" nolabel="1" options="{'no_create': True, 'no_open': True}"/> Cuotas</td>
-                                            <td><field name="porcentajeMontoCancelado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>%</td>
+                                            <td><field name="porcentajePendiente" nolabel="1" options="{'no_create': True, 'no_open': True}"/>%</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -497,7 +497,7 @@
                                         <td><label for="montoCuotasPendientes" options="{'no_create': True, 'no_open': True}"/> </td>
                                         <td><field name="montoCuotasPendientes" readonly="1" options="{'no_create': True, 'no_open': True}"/></td>
                                         <td><field name="cuotasPendientes" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
-                                        <td><field name="porcentajeMontoCancelado" nolabel="1" options="{'no_create': True, 'no_open': True}"/>%</td>
+                                        <td><field name="porcentajePendiente" nolabel="1" options="{'no_create': True, 'no_open': True}"/>%</td>
                                     </tr>
                                 </tbody>
                             </table>
