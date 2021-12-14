@@ -138,7 +138,7 @@ class EntegaVehiculo(models.Model):
     porcentajeGastos = fields.Float( digits=(6, 2), compute='calcular_porcentaje_gastos_familiares')
     porcentajeDisponibilidad = fields.Float(digits=(6, 2), compute='calcular_porcentaje_disponibilidad')
     disponibilidad = fields.Monetary(string='Disponibilidad', compute='calcular_valor_disponibilidad')
-    porcentajeCuotaPlan = fields.Float(digits=(6, 2), default='calcular_porcentaje_cuota_plan')
+    porcentajeCuotaPlan = fields.Float(digits=(6, 2), default=0.0, compute='calcular_porcentaje_cuota_plan')
 
     scoreCredito = fields.Integer(string="Score de Credito Mayor a 800 puntos")
     puntosScoreCredito = fields.Integer(compute='calcular_punto_score_credito')
