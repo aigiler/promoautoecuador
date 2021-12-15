@@ -17,9 +17,9 @@ class EntegaVehiculo(models.Model):
     requisitosPoliticasCredito = fields.Text(string='Informacion Cobranzas', default=lambda self: self._capturar_valores_por_defecto())
     
     def _capturar_valores_por_defecto(self):
-        res = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc")
+        res = self.env['res.config.settings'].sudo(
+            1).search([], limit=1, order="id desc")
         self.requisitosPoliticasCredito = res.configuracion_adicional.requisitosPoliticasCredito
-        return res.configuracion_adicional.requisitosPoliticasCredito
     
         
     documentos = fields.Many2many('ir.attachment', string='Carga Documentos', track_visibility='onchange')
