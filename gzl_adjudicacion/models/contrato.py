@@ -44,9 +44,10 @@ class Contrato(models.Model):
     archivo = fields.Binary(string='Archivo')
     fecha_contrato = fields.Date(
         string='Fecha Contrato', track_visibility='onchange')
-    plazo_meses = fields.Selection([('60', '60 Meses'),
-                                    ('72', '72 Meses')
-                                    ], string='Plazo (meses)',default='60', track_visibility='onchange')
+
+    plazo_meses = fields.Many2one('numero.meses',default=lambda self: self.env.ref('gzl_adjudicacion.{0}'.format('numero_meses60')).id ,track_visibility='onchange' )
+
+
     cuota_adm = fields.Monetary(
         string='Cuota Administrativa', currency_field='currency_id', track_visibility='onchange')
     factura_inscripcion = fields.Many2one(
@@ -118,8 +119,8 @@ class Contrato(models.Model):
 
 
             rec.dia_corte = dia_corte
-            if int(rec.plazo_meses):
-                rec.cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses)
+            if int(rec.plazo_meses.numero):
+                rec.cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses.numero)
                 cuotaAdministrativa= rec.monto_financiamiento*((tasa_administrativa/100)/12)
                 rec.iva_administrativo = cuotaAdministrativa * 1.12
                 rec.cuota_adm = cuotaAdministrativa
@@ -133,8 +134,8 @@ class Contrato(models.Model):
 
 
         for rec in self:
-            for i in range(1, int(rec.plazo_meses)+1):
-                cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses)
+            for i in range(1, int(rec.plazo_meses.numero)+1):
+                cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses.numero)
                 cuota_adm = cuota_capital *tasa_administrativa/100
                 iva = cuota_adm * 0.12
                 saldo = cuota_capital+cuota_adm+iva

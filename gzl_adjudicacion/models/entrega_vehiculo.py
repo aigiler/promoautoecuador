@@ -488,12 +488,8 @@ class EntegaVehiculo(models.Model):
             rec.tipoAdj = contrato.tipo_de_contrato.name
             rec.fechaAdj = contrato.fecha_adjudicado
 
-            if contrato.plazo_meses == '60':
-                rec.plazoMeses = 60
-            elif contrato.plazo_meses == '72':
-                rec.plazoMeses = 72
-            else:
-                rec.plazoMeses = 0
+            rec.plazoMeses = contrato.plazo_meses.numero
+
 
     @api.depends('nombreSocioAdjudicado')
     def set_campos_cliente_informe_credito(self):

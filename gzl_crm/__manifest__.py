@@ -1,7 +1,7 @@
 {
     "name" : "gzl_crm",
     "version" : "0.1",
-    'depends' :['crm','sale',
+    'depends' :['crm','sale','gzl_adjudicacion'
                 ],
     "author" : "Yadira Quimis Gizlo",
     "description" : """
