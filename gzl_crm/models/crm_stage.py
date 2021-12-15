@@ -21,4 +21,13 @@ class Stage(models.Model):
 
 
 
-    equipo_id = fields.Many2one('crm.team', string='Equipo de CRM' )
+    char = fields.Char( string='Correos' )
+
+    modificacion_solo_equipo = fields.Boolean( string='Solo puede Editar el equipo asignado' )
+
+    colocar_venta_como_ganada = fields.Boolean( string='En este estado se puede colocar la venta como ganada' )
+
+    restringir_movimiento = fields.Boolean( string='Restringir movimiento de Estado de Oportunidad' )
+
+    stage_anterior_id = fields.Many2one('crm.stage', string='Estado Anterior' )
+    stage_siguiente_id = fields.Many2one('crm.stage', string='Estado Siguiente' )

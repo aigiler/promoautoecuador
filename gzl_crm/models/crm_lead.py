@@ -28,6 +28,7 @@ class CrmLead(models.Model):
 
 
 
+    colocar_venta_como_ganada = fields.Boolean(related="stage_id.colocar_venta_como_ganada", string='Colocar Venta Como Ganada')
 
 
     tipo_contrato = fields.Many2one('tipo.contrato.adjudicado', string='Tipo de Contrato', required=True)
@@ -39,6 +40,14 @@ class CrmLead(models.Model):
 
 
     factura_inscripcion_id = fields.Many2one('account.move',string='Factura de inscripción')
+
+
+
+
+
+
+
+
 
 
 
@@ -59,6 +68,18 @@ class CrmLead(models.Model):
 
 
 
+
+
+
+    def modificar_contrato(self):
+
+        usuario_logeado=self.env.user.id
+
+        usuarios=self.stage_id.team_id.member_ids.ids
+
+
+        if not usuario_logeado in usuarios:
+            raise ValidationError("Usted no puede editar la oportunidad está asignado el equipo {0}".format(self.stage_id.team_id.name))
 
 
 
@@ -102,8 +123,30 @@ class CrmLead(models.Model):
 
 
     def write(self, vals):
+
+        if self.stage_id.modificacion_solo_equipo:
+            self.modificar_contrato()
+
+
+        if vals.get('stage_id',False) and self.stage_id.restringir_movimiento:
+            estados_habilitados=[]
+            estados_habilitados.append(self.stage_id.stage_anterior_id.id)
+            estados_habilitados.append(self.stage_id.stage_siguiente_id.id)
+
+            if not (vals['stage_id'] in estados_habilitados):
+                raise ValidationError("No se puede cambiar a ese estado.")
+
+
+
+
         crm = super(CrmLead, self).write(vals)
         #stage_id = self.env['crm.stage'].browse(vals['stage_id'])
+
+
+
+
+
+
         if self.stage_id.is_won:
 
             if not (self.factura_inscripcion_id.id or True):
