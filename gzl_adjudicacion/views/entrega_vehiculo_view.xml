@@ -231,8 +231,9 @@
                             </div>
                         </div>
                         <separator/>
-                        <div class="col-xs-12 col-sm-9">
-                              <table style=" border-collapse: collapse;width:50%">
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-9">
+                                <table style=" border-collapse: collapse;width:50%">
                                     <tbody>
                                         <tr>
                                             <td><label for="valorDelBien"/></td>
@@ -247,7 +248,7 @@
                                             <td><field name="porcentajeSaldoPlan" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>%</td>
                                         </tr>
                                     </tbody>
-                              </table>
+                                </table>
                             </div>
                             <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
                                 <group>
