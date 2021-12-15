@@ -28,7 +28,19 @@ class CrmLead(models.Model):
 
 
 
-    colocar_venta_como_ganada = fields.Boolean(related="stage_id.colocar_venta_como_ganada", string='Colocar Venta Como Ganada')
+    colocar_venta_como_ganada = fields.Boolean( string='Colocar Venta Como Ganada')
+
+
+
+
+    @api.constrains("stage_id")
+    def cambio_colocar_venta_como_ganada(self, ):
+        self.colocar_venta_como_ganada=self.stage_id.colocar_venta_como_ganada
+
+
+
+
+
 
 
     tipo_contrato = fields.Many2one('tipo.contrato.adjudicado', string='Tipo de Contrato', required=True)
