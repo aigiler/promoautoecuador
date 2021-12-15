@@ -178,7 +178,7 @@
                                 </group>
                             </div>
                            <div class="col-xs-12 col-md-12">
-                                <table style=" border-collapse: collapse;width:75%">
+                                <table style=" border-collapse: collapse; width:100%">
                                     <tbody>
                                         <tr>
                                             <td><label for="montoAdjudicado"/></td>
@@ -201,7 +201,7 @@
                         <separator/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-4 col-sm-9">
-                                <table style=" border-collapse: collapse;width:75%">
+                                <table style=" border-collapse: collapse;width:100%">
                                     <tbody>
                                         <tr>
                                             <td><label for="valorTotalPlan"/></td>
@@ -233,7 +233,7 @@
                         <separator/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-9">
-                                <table style=" border-collapse: collapse;width:50%">
+                                <table style=" border-collapse: collapse; width:90%">
                                     <tbody>
                                         <tr>
                                             <td><label for="valorDelBien"/></td>
@@ -259,7 +259,7 @@
                         <separator/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-9">
-                                <table style=" border-collapse: collapse;width:75%">
+                                <table style=" border-collapse: collapse; width:100%">
                                     <tbody>
                                         <tr>
                                             <td><label for="ingresosFamiliares" string="Ingresos familiares"/></td>
