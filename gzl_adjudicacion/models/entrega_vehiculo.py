@@ -20,6 +20,7 @@ class EntegaVehiculo(models.Model):
         referencia=self.env.ref('gzl_adjudicacion.configuracion_adicional1')
         
         return referencia.requisitosPoliticasCredito
+
         
     documentos = fields.Many2many('ir.attachment', string='Carga Documentos', track_visibility='onchange')
     active = fields.Boolean(string='Activo', default=True)
