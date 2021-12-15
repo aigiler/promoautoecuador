@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, fields, models
+from odoo import api, fields, models, tools, SUPERUSER_ID
 from dateutil.relativedelta import relativedelta
 from datetime import datetime, timedelta, date
 from odoo.exceptions import ValidationError
@@ -10,21 +10,39 @@ import numpy_financial as npf
 class CrmLead(models.Model):
     _inherit = 'crm.lead'
 
-    is_won = fields.Boolean(related='stage_id.is_won')
-    contacto_name = fields.Char(string='Nombre Completo')
-    contacto_cedula = fields.Char(string='Cédula')
-    contacto_correo = fields.Char(string='Correo Electrónico')
-    contacto_telefono = fields.Char(string='Teléfono')
-    contacto_domicilio = fields.Char(string='Domicilio')
-    tasa_interes = fields.Integer(string='Tasa de Interés')
-    numero_cuotas = fields.Selection([('60', '60 Meses'), 
-                                      ('72', '72 Meses')
-                                    ],string='Número de Cuotas', default="60") 
-    dia_pago = fields.Integer(string='Día de Pagos', default=lambda self: self._capturar_dia_pago())
+    is_won = fields.Boolean(related='stage_id.is_won',track_visibility='onchange')
+    contacto_name = fields.Char(string='Nombre Completo',track_visibility='onchange')
+    contacto_cedula = fields.Char(string='Cédula',track_visibility='onchange')
+    contacto_correo = fields.Char(string='Correo Electrónico',track_visibility='onchange')
+    contacto_telefono = fields.Char(string='Teléfono',track_visibility='onchange')
+    contacto_domicilio = fields.Char(string='Domicilio',track_visibility='onchange')
+    tasa_interes = fields.Integer(string='Tasa de Interés',track_visibility='onchange')
+    numero_cuotas = fields.Many2one('numero.meses',default=lambda self: self.env.ref('gzl_adjudicacion.{0}'.format('numero_meses60')).id ,track_visibility='onchange' )
+
+
+
+    dia_pago = fields.Integer(string='Día de Pagos', default=lambda self: self._capturar_dia_pago(),track_visibility='onchange')
 
     def _capturar_dia_pago(self):
         dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
         return dia_corte
+
+
+
+    colocar_venta_como_ganada = fields.Boolean( string='Colocar Venta Como Ganada')
+
+
+
+
+    @api.constrains("stage_id")
+    def cambio_colocar_venta_como_ganada(self, ):
+        self.colocar_venta_como_ganada=self.stage_id.colocar_venta_como_ganada
+
+
+
+
+
+
 
     tipo_contrato = fields.Many2one('tipo.contrato.adjudicado', string='Tipo de Contrato', required=True)
     tabla_amortizacion = fields.One2many('tabla.amortizacion', 'oportunidad_id' )
@@ -35,6 +53,50 @@ class CrmLead(models.Model):
 
 
     factura_inscripcion_id = fields.Many2one('account.move',string='Factura de inscripción')
+
+
+
+
+
+
+
+
+
+
+
+
+    @api.model
+    def _read_group_stage_ids(self, stages, domain, order):
+        # retrieve team_id from the context and write the domain
+        # - ('id', 'in', stages.ids): add columns that should be present
+        # - OR ('fold', '=', False): add default columns that are not folded
+        # - OR ('team_ids', '=', team_id), ('fold', '=', False) if team_id: add team columns that are not folded
+        team_id = self._context.get('default_team_id')
+
+        search_domain = [ ('id', '!=', 0)]
+
+        # perform search
+        stage_ids = stages._search(search_domain, order=order, access_rights_uid=SUPERUSER_ID)
+        return stages.browse(stage_ids)
+
+
+
+
+
+
+    def modificar_contrato(self):
+
+        usuario_logeado=self.env.user.id
+
+        usuarios=self.stage_id.team_id.member_ids.ids
+
+
+        if not usuario_logeado in usuarios:
+            raise ValidationError("Usted no puede editar la oportunidad está asignado el equipo {0}".format(self.stage_id.team_id.name))
+
+
+
+
 
 
 
@@ -56,8 +118,8 @@ class CrmLead(models.Model):
         tasa_administrativa =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa')
 
 
-        for i in range(1, int(self.numero_cuotas)+1):
-            cuota_capital = self.planned_revenue/int(self.numero_cuotas)
+        for i in range(1, int(self.numero_cuotas.numero)+1):
+            cuota_capital = self.planned_revenue/int(self.numero_cuotas.numero)
             cuota_adm = cuota_capital *float(tasa_administrativa)
             iva = cuota_adm * 0.12
             saldo = cuota_capital+cuota_adm+iva
@@ -74,8 +136,30 @@ class CrmLead(models.Model):
 
 
     def write(self, vals):
+
+        if self.stage_id.modificacion_solo_equipo:
+            self.modificar_contrato()
+
+
+        if vals.get('stage_id',False) and self.stage_id.restringir_movimiento:
+            estados_habilitados=[]
+            estados_habilitados.append(self.stage_id.stage_anterior_id.id)
+            estados_habilitados.append(self.stage_id.stage_siguiente_id.id)
+
+            if not (vals['stage_id'] in estados_habilitados):
+                raise ValidationError("No se puede cambiar a ese estado.")
+
+
+
+
         crm = super(CrmLead, self).write(vals)
         #stage_id = self.env['crm.stage'].browse(vals['stage_id'])
+
+
+
+
+
+
         if self.stage_id.is_won:
 
             if not (self.factura_inscripcion_id.id or True):
@@ -93,7 +177,7 @@ class CrmLead(models.Model):
                                         'monto_financiamiento':self.planned_revenue,
                                         'tipo_de_contrato':self.tipo_contrato.id,
                                         'provincias':self.partner_id.state_id.id,
-                                        'plazo_meses':self.numero_cuotas,
+                                        'plazo_meses':self.numero_cuotas.id,
                                         'cuota_capital':self.cuota_capital,
                                         'iva_administrativo':self.iva,
                                     })

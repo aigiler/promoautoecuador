@@ -18,6 +18,22 @@
                 <!-- <button name="crear_contrato" class="oe_highlight" string="Crear Contratos" type="object" /> -->
             </xpath>
             
+
+            <xpath expr="//field[@name='phone_state']" position="after">
+                <field name="colocar_venta_como_ganada"></field>
+            </xpath>
+
+
+
+            <xpath expr="//button[@name='action_set_won_rainbowman']" position="attributes">
+                <attribute name="attrs">{'invisible': [('colocar_venta_como_ganada', '=', True)]}</attribute>
+            </xpath>
+
+
+
+
+
+
             <xpath expr="//label[@for='planned_revenue']" position="attributes">
                 <attribute name="string">Monto del Plan</attribute>
             </xpath>
