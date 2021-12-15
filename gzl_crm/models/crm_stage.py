@@ -23,6 +23,8 @@ class Stage(models.Model):
 
     correos = fields.Char( string='Correos' )
 
+    
+
     modificacion_solo_equipo = fields.Boolean( string='Solo puede Editar el equipo asignado' )
 
     colocar_venta_como_ganada = fields.Boolean( string='En este estado se puede colocar la venta como ganada' )
