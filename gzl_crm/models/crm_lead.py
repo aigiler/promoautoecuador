@@ -51,7 +51,7 @@ class CrmLead(models.Model):
         # - OR ('team_ids', '=', team_id), ('fold', '=', False) if team_id: add team columns that are not folded
         team_id = self._context.get('default_team_id')
 
-        search_domain = [ ('id', 'in', stages.ids)]
+        search_domain = [ ('id', '!=', 0)]
 
         # perform search
         stage_ids = stages._search(search_domain, order=order, access_rights_uid=SUPERUSER_ID)
