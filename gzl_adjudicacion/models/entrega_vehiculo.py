@@ -17,9 +17,9 @@ class EntegaVehiculo(models.Model):
     requisitosPoliticasCredito = fields.Text(string='Informacion Cobranzas', default=lambda self: self._capturar_valores_por_defecto())
     
     def _capturar_valores_por_defecto(self):
-        res = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc")
-        return res.configuracion_adicional.requisitosPoliticasCredito
-    
+        referencia=self.env.ref('gzl_adjudicacion.configuracion_adicional1')
+        
+        return referencia.requisitosPoliticasCredito
         
     documentos = fields.Many2many('ir.attachment', string='Carga Documentos', track_visibility='onchange')
     active = fields.Boolean(string='Activo', default=True)
@@ -543,16 +543,8 @@ class EntegaVehiculo(models.Model):
     def create(self, vals):
         vals['secuencia'] = self.env['ir.sequence'].next_by_code(
             'entrega.vehiculo')
-        res = self.env['res.config.settings'].sudo(
-            1).search([], limit=1, order="id desc")
-        vals['requisitosPoliticasCredito'] = res.configuracion_adicional.requisitosPoliticasCredito
         return super(EntegaVehiculo, self).create(vals)
 
-    @api.constrains('cliente', 'secuencia')
-    def constrains_valor_por_defecto(self):
-        res = self.env['res.config.settings'].sudo(
-            1).search([], limit=1, order="id desc")
-        self.requisitosPoliticasCredito = res.configuracion_adicional.requisitosPoliticasCredito
 
     def cambio_estado_boton_borrador(self):
         return self.write({"state": "revision_documentos"})

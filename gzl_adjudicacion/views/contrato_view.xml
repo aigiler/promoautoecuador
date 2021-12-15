@@ -61,7 +61,7 @@
                                     <field name="provincias" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="archivo" filename="name"/>
                                     <field name="fecha_contrato" />
-                                    <field name="plazo_meses" />
+                                    <field name="plazo_meses" widget="selection" />
                                     <field name="cuota_adm"/>
                                     <field name="factura_inscripcion" options="{'no_create': True, 'no_open': True}"/>
                                 </group>

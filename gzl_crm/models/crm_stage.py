@@ -21,7 +21,6 @@ class Stage(models.Model):
 
 
 
-    correos = fields.Char( string='Correos' )
 
     
 
