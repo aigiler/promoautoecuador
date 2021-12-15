@@ -499,7 +499,8 @@ class EntegaVehiculo(models.Model):
     def set_campos_cliente_informe_credito(self):
         for rec in self:
             if rec.nombreSocioAdjudicado:
-                rec.clienteContrato = rec.nombreSocioAdjudicado
+                rec.clienteContrato = self.env['contrato'].search(
+                [('cliente', '=', rec.nombreSocioAdjudicado.id)], limit=1)
                 rec.cedulaContrato = rec.vatAdjudicado
                 rec.codClienteContrado = rec.codigoAdjudicado
             else:
