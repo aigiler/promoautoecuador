@@ -31,3 +31,6 @@ class Stage(models.Model):
 
     stage_anterior_id = fields.Many2one('crm.stage', string='Estado Anterior' )
     stage_siguiente_id = fields.Many2one('crm.stage', string='Estado Siguiente' )
+
+
+    solicitar_adjunto_documento = fields.Boolean( string='Solicitar Adjunto de Documentos' )

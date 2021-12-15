@@ -14,6 +14,9 @@
                 <field name="restringir_movimiento">
                 <field name="stage_anterior_id" attrs="{'invisible':[('restringir_movimiento','=',False)]}">
                 <field name="stage_siguiente_id" attrs="{'invisible':[('restringir_movimiento','=',False)]}">
+                <field name="solicitar_adjunto_documento">
+
+                    
                 </field>   
 
 
