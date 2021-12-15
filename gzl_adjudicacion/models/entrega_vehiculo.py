@@ -497,7 +497,6 @@ class EntegaVehiculo(models.Model):
 
     @api.depends('nombreSocioAdjudicado')
     def set_campos_cliente_informe_credito(self):
-        clienteContrato = ''
         for rec in self:
             if rec.nombreSocioAdjudicado:
                 rec.clienteContrato = rec.nombreSocioAdjudicado
