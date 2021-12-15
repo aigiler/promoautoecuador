@@ -238,13 +238,13 @@
                                         <tr>
                                             <td><label for="valorDelBien"/></td>
                                             <td><field name="valorDelBien" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
-                                            <td></td>
+                                            <td style="width:10%"></td>
                                             <td></td>
                                         </tr>
                                         <tr>
                                             <td><label for="saldoPlan"/></td>
                                             <td><field name="saldoPlan" readonly="1" options="{'no_create': True, 'no_open': True}"/></td>
-                                            <td></td>
+                                            <td style="width:10%"></td>
                                             <td><field name="porcentajeSaldoPlan" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>%</td>
                                         </tr>
                                     </tbody>
