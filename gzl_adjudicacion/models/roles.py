@@ -9,7 +9,7 @@ from odoo.exceptions import ValidationError
 
 
 class Team(models.Model):
-    _name = 'crm.team'
+    _name = 'Roles'
     _inherit = ['mail.alias.mixin', 'crm.team']
     _description = 'Sales Team'
 
