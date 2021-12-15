@@ -35,3 +35,5 @@ class Stage(models.Model):
 
 
     solicitar_adjunto_documento = fields.Boolean( string='Solicitar Adjunto de Documentos' )
+
+    correos = fields.Text( string='')
