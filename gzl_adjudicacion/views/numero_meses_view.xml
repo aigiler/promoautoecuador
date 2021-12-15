@@ -5,7 +5,7 @@
         <field name="name">view.numero.meses.tree</field>
         <field name="model">numero.meses</field>
         <field name="arch" type="xml">
-            <tree string="Numero de meses" editable="Bottom">
+            <tree string="Numero de meses" editable="bottom">
                 <field name="numero" />
                 <field name="active"/>
 
