@@ -34,6 +34,7 @@
                     'views/configuracion_adicional.xml',
                     'views/calificador_view.xml',
                     'views/stylesheet_view.xml',
+                    'views/numero_meses_view.xml',
 
                     
                     ],
