@@ -18,6 +18,7 @@ class EntegaVehiculo(models.Model):
     
     def _capturar_valores_por_defecto(self):
         res = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc")
+        self.requisitosPoliticasCredito = res.configuracion_adicional.requisitosPoliticasCredito
         return res.configuracion_adicional.requisitosPoliticasCredito
     
         
