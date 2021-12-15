@@ -21,7 +21,7 @@ class Stage(models.Model):
 
 
 
-    char = fields.Char( string='Correos' )
+    correos = fields.Char( string='Correos' )
 
     modificacion_solo_equipo = fields.Boolean( string='Solo puede Editar el equipo asignado' )
 
