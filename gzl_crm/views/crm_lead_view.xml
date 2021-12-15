@@ -19,13 +19,13 @@
             </xpath>
             
 
-            <xpath expr="//field[@for='phone_state']" position="after">
+            <xpath expr="//field[@name='phone_state']" position="after">
                 <field name="colocar_venta_como_ganada"></field>
             </xpath>
 
 
 
-            <xpath expr="//button[@for='action_set_won_rainbowman']" position="attributes">
+            <xpath expr="//button[@name='action_set_won_rainbowman']" position="attributes">
                 <attribute name="attrs">{'invisible': [('colocar_venta_como_ganada', '=', True)]}</attribute>
             </xpath>
 
