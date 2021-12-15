@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, fields, models
+from odoo import api, fields, models, tools, SUPERUSER_ID
 from dateutil.relativedelta import relativedelta
 from datetime import datetime, timedelta, date
 from odoo.exceptions import ValidationError
@@ -26,12 +26,83 @@ class CrmLead(models.Model):
         dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
         return dia_corte
 
+
+
+    colocar_venta_como_ganada = fields.Boolean( string='Colocar Venta Como Ganada')
+
+
+
+
+    @api.constrains("stage_id")
+    def cambio_colocar_venta_como_ganada(self, ):
+        self.colocar_venta_como_ganada=self.stage_id.colocar_venta_como_ganada
+
+
+
+
+
+
+
     tipo_contrato = fields.Many2one('tipo.contrato.adjudicado', string='Tipo de Contrato', required=True)
     tabla_amortizacion = fields.One2many('tabla.amortizacion', 'oportunidad_id' )
     cotizaciones_ids = fields.One2many('sale.order', 'oportunidad_id')
     cuota_capital = fields.Monetary(string='Cuota Capital', currency_field='currency_id')
     iva = fields.Monetary(string='Iva', currency_field='currency_id')
     currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
+
+
+    factura_inscripcion_id = fields.Many2one('account.move',string='Factura de inscripción')
+
+
+
+
+
+
+
+
+
+
+
+
+    @api.model
+    def _read_group_stage_ids(self, stages, domain, order):
+        # retrieve team_id from the context and write the domain
+        # - ('id', 'in', stages.ids): add columns that should be present
+        # - OR ('fold', '=', False): add default columns that are not folded
+        # - OR ('team_ids', '=', team_id), ('fold', '=', False) if team_id: add team columns that are not folded
+        team_id = self._context.get('default_team_id')
+
+        search_domain = [ ('id', '!=', 0)]
+
+        # perform search
+        stage_ids = stages._search(search_domain, order=order, access_rights_uid=SUPERUSER_ID)
+        return stages.browse(stage_ids)
+
+
+
+
+
+
+    def modificar_contrato(self):
+
+        usuario_logeado=self.env.user.id
+
+        usuarios=self.stage_id.team_id.member_ids.ids
+
+
+        if not usuario_logeado in usuarios:
+            raise ValidationError("Usted no puede editar la oportunidad está asignado el equipo {0}".format(self.stage_id.team_id.name))
+
+
+
+
+
+
+
+    @api.constrains("planned_revenue")
+    def validar_monto_contrato(self):
+        if self.planned_revenue==0:
+            raise ValidationError("Ingrese el monto de la oportunidad")
 
 
     
@@ -42,9 +113,13 @@ class CrmLead(models.Model):
             ahora = ahora.replace(day = self.dia_pago)
         except:
             raise ValidationError('La fecha no existe, por favor ingrese otro día de pago.')
+        
+        tasa_administrativa =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa')
+
+
         for i in range(1, int(self.numero_cuotas)+1):
             cuota_capital = self.planned_revenue/int(self.numero_cuotas)
-            cuota_adm = cuota_capital *0.04
+            cuota_adm = cuota_capital *float(tasa_administrativa)
             iva = cuota_adm * 0.12
             saldo = cuota_capital+cuota_adm+iva
             self.env['tabla.amortizacion'].create({'oportunidad_id':self.id,
@@ -60,26 +135,45 @@ class CrmLead(models.Model):
 
 
     def write(self, vals):
+
+        if self.stage_id.modificacion_solo_equipo:
+            self.modificar_contrato()
+
+
+        if vals.get('stage_id',False) and self.stage_id.restringir_movimiento:
+            estados_habilitados=[]
+            estados_habilitados.append(self.stage_id.stage_anterior_id.id)
+            estados_habilitados.append(self.stage_id.stage_siguiente_id.id)
+
+            if not (vals['stage_id'] in estados_habilitados):
+                raise ValidationError("No se puede cambiar a ese estado.")
+
+
+
+
         crm = super(CrmLead, self).write(vals)
         #stage_id = self.env['crm.stage'].browse(vals['stage_id'])
+
+
+
+
+
+
         if self.stage_id.is_won:
-            obj_partner=self.env['res.partner'].create({
-                                        'name':self.partner_id.name,
-                                        'type':'contact',
-                                        'tipo':'preAdjudicado',
-                                        'monto':self.planned_revenue or 0,
-                                        'function':self.partner_id.function or None,
-                                        'email':self.partner_id.email or None,
-                                        'phone':self.partner_id.phone or None,
-                                        'mobile':self.partner_id.mobile or None,
-                                        'tipo_contrato':self.tipo_contrato.id,
-                                        'vat':self.partner_id.vat or None
-                                    })
+
+            if not (self.factura_inscripcion_id.id or True):
+                raise ValidationError("Debe registrarse la factura de inscripción para que sea marcada como válida")
+
+
+
+            obj_partner=self.partner_id
+            obj_partner.tipo='preAdjudicado'
+
+
             contrato = self.env['contrato'].create({
                                         'cliente':obj_partner.id,
                                         'dia_corte':self.dia_pago,
                                         'monto_financiamiento':self.planned_revenue,
-                                        #'tasa_administrativa':,
                                         'tipo_de_contrato':self.tipo_contrato.id,
                                         'provincias':self.partner_id.state_id.id,
                                         'plazo_meses':self.numero_cuotas,
@@ -96,7 +190,6 @@ class CrmLead(models.Model):
                                         'fecha': l.fecha,
                                         'cuota_capital':l.cuota_capital,
                                         'cuota_adm':l.cuota_adm,
-                                        #'iva':l.iva
                                     })
             
         return crm
