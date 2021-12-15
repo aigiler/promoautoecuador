@@ -14,3 +14,6 @@ class AdjudicacionTeam(models.Model):
     _description = 'Roles'
 
 
+    correo = fields.Char(string="Correo")
+
+

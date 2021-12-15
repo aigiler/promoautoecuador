@@ -8,7 +8,6 @@
         <field name="inherit_id" ref="crm.crm_stage_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='team_id']" position="after">
-                <field name="correos"/>
                 <field name="modificacion_solo_equipo"/>
                 <field name="colocar_venta_como_ganada"/>
                 <field name="restringir_movimiento"/>
