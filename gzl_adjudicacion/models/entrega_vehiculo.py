@@ -219,7 +219,23 @@ class EntegaVehiculo(models.Model):
         ('no', 'Titular, Conyugue y Depositario'),
         ('si', 'Titular, Conyugue y Garante Solidario')
     ], compute='set_aplica_garante')
-
+    
+    montoPagoConsesionario = fields.Selection(selection=[
+        ('saldo_a_favor', 'SALDO A FAVOR APLICA A CUOTAS FINALES DEL PLAN'),
+        ('diferencia', 'DIFERENCIA PAGA AL CONCESIONARIO')
+    ], compute='set_aplica_garante')
+    
+    
+    @api.depends('montoVehiculo', 'montoAdjudicado')
+    def calcular_monto_a_favor(self):
+        for rec in self:
+            rec.montoAFavor = rec.montoVehiculo - rec.montoAdjudicado
+            if rec.montoVehiculo < rec.montoAdjudicado:
+                rec.montoPagoConsesionario = 'saldo_a_favor'
+            else:
+                rec.montoPagoConsesionario = 'diferencia'    
+    
+    
     @api.depends('totalPuntosCalificador')
     def set_aplica_garante(self):
         for rec in self:
@@ -249,11 +265,6 @@ class EntegaVehiculo(models.Model):
                 rec.valorAdjParaCompra = rec.montoAdjudicado
             else:
                 rec.valorAdjParaCompra = rec.montoVehiculo
-
-    @api.depends('montoVehiculo', 'montoAdjudicado')
-    def calcular_monto_a_favor(self):
-        for rec in self:
-            rec.montoAFavor = rec.montoVehiculo - rec.montoAdjudicado
 
     
     @api.depends('puntosPorcentajeCancelado', 'puntosPorcentajSaldos', 'puntosCuotaIngresos', 'puntosScoreCredito', 'puntosAntiguedadLaboral', 'totalPuntosBienesAdj')

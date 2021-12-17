@@ -510,7 +510,7 @@
                                         <td><field name="montoVehiculo" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
                                     </tr>
                                     <tr>
-                                        <td><text>SALDO A FAVOR APLICA A CUOTAS FINALES DEL PLAN</text></td>
+                                        <td><label for="montoPagoConsesionario"/></td>
                                         <td></td>
                                         <td><field name="montoAFavor" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
                                     </tr>
@@ -546,7 +546,7 @@
                         </div>
                         <separator/>
                         <div style="border: 1px solid black;">
-                            <div class="col-xs-12 col-sm-4">
+                            <div class="col-xs-12 col-sm-12">
                                 <group>
                                     <field name="nombreConsesionario" domain = "[('tipo', '=', 'concesionario')]"/>
                                 </group>
