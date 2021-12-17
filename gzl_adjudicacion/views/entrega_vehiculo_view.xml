@@ -510,7 +510,7 @@
                                         <td><field name="montoVehiculo" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
                                     </tr>
                                     <tr>
-                                        <td><label for="montoPagoConsesionario"/></td>
+                                        <td><field name="montoPagoConsesionario" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
                                         <td></td>
                                         <td><field name="montoAFavor" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
                                     </tr>
