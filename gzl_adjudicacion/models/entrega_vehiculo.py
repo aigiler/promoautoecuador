@@ -248,9 +248,7 @@ class EntegaVehiculo(models.Model):
 
     def calcular_total_puntos(self):
         for rec in self:
-            rec.totalPuntosCalificador = rec.puntosPorcentajeCancelado + rec.puntosPorcentajSaldos + \
-                rec.puntosCuotaIngresos + rec.puntosScoreCredito + \
-                rec.puntosAntiguedadLaboral + rec.totalPuntosBienesAdj
+            rec.totalPuntosCalificador = rec.puntosPorcentajeCancelado + rec.puntosPorcentajSaldos +  rec.puntosCuotaIngresos + rec.puntosScoreCredito +  rec.puntosAntiguedadLaboral + rec.totalPuntosBienesAdj
 
     @api.depends('poseeCasa')
     def set_puntos_casa(self):
