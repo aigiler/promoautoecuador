@@ -494,11 +494,6 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                <group>
-                                    <field name="puntosPorcentajeCancelado" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </group>
-                            </div>
                         </div>
                         <separator/>
                         <div class="col-xs-12 col-sm-9">
