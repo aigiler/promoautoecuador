@@ -215,10 +215,19 @@ class EntegaVehiculo(models.Model):
     mes = fields.Char(string='')
     anio = fields.Char()
     
+    aplicaGarante = fields.Selection(selection=[
+        ('no', 'Titular, Conyugue y Depositario'),
+        ('si', 'Titular, Conyugue y Garante Solidario')
+    ], compute='set_aplica_garante')
+
+    @api.depends('totalPuntosCalificador')
+    def set_aplica_garante(self):
+        for rec in self:
+            if rec.totalPuntosCalificador  >= 700:
+                rec.aplicaGarante = 'no'
+            else:
+                rec.aplicaGarante = 'si'
     
-
-   
-
 
     @api.depends('valorAdjParaCompra', 'valorComisionFactura', 'comisionDispositivoRastreo', 'montoAnticipoConsesionaria')
     def calcular_valor_cheque(self):

@@ -408,20 +408,10 @@
                         </div>
                         <separator/>
                         <div class="row">
-                            <div class="col-xs-12 col-sm-6">
-                                <text class="text-center"><strong>Titular, Conyugue y Depositario</strong></text>
+                            <div class="col-xs-12 col-sm-12">
+                                <field name="aplicaGarante" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
                             </div>
-                            <div class="col-xs-12 col-sm-3">
-                                <field name="titularConyugePuntos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-6">
-                                <text class="text-center"><strong>Titular, Conyugue y Garante Solidario</strong></text>
-                            </div>
-                            <div class="col-xs-12 col-sm-3">
-                                <field name="titularConyugeGarantePuntos" nolabel="1"/>
-                            </div>
+                           
                         </div>
                         <separator/>
                         <div class="row">
