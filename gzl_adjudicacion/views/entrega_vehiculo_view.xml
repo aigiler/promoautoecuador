@@ -470,28 +470,35 @@
                         </div>
                         <separator/>
                         <div class="row" style="border: 1px solid black;">
-                            <table style=" border-collapse: collapse;width:75%">
-                                <tbody>
-                                    <tr>
-                                        <td><label for="valorTotalPlan"/></td>
-                                        <td><field name="valorTotalPlan" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
-                                        <td><field name="plazoMeses" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/></td>
-                                        <td><field name="porcentajeTotal" readonly="1"  nolabel="1" options="{'no_create': True, 'no_open': True}"/>%</td>
-                                    </tr>
-                                    <tr>
-                                        <td><label for="montoCuotasCanceladas" /></td>
-                                        <td><field name="montoCuotasCanceladas" readonly="1" options="{'no_create': True, 'no_open': True}"/></td>
-                                        <td><field name="cuotasCanceladas" nolabel="1"  readonly="1"  options="{'no_create': True, 'no_open': True}"/></td>
-                                        <td><field name="porcentajeCancelado" nolabel="1" readonly="1"  options="{'no_create': True, 'no_open': True}"/>%</td>
-                                    </tr>
-                                    <tr>
-                                        <td><label for="montoCuotasPendientes" options="{'no_create': True, 'no_open': True}"/> </td>
-                                        <td><field name="montoCuotasPendientes" readonly="1" options="{'no_create': True, 'no_open': True}"/></td>
-                                        <td><field name="cuotasPendientes" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
-                                        <td><field name="porcentajePendiente" nolabel="1" options="{'no_create': True, 'no_open': True}"/>%</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="col-xs-4 col-sm-9">
+                                <table style=" border-collapse: collapse;width:100%">
+                                    <tbody>
+                                        <tr>
+                                            <td><label for="valorTotalPlan"/></td>
+                                            <td><field name="valorTotalPlan" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
+                                            <td><field name="plazoMeses" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/> Cuotas</td>
+                                            <td><field name="porcentajeTotal" readonly="1"  nolabel="1" options="{'no_create': True, 'no_open': True}"/>%</td>
+                                        </tr>
+                                        <tr class="font-weight-bold">
+                                            <td><label for="montoCuotasCanceladas" /></td>
+                                            <td><field name="montoCuotasCanceladas" readonly="1" options="{'no_create': True, 'no_open': True}"/></td>
+                                            <td><field name="cuotasCanceladas" nolabel="1"  readonly="1"  options="{'no_create': True, 'no_open': True}"/> Cuotas</td>
+                                            <td><field name="porcentajeCancelado" nolabel="1" readonly="1"  options="{'no_create': True, 'no_open': True}"/>%</td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="montoCuotasPendientes" options="{'no_create': True, 'no_open': True}"/> </td>
+                                            <td><field name="montoCuotasPendientes" readonly="1" options="{'no_create': True, 'no_open': True}"/></td>
+                                            <td><field name="cuotasPendientes" nolabel="1" options="{'no_create': True, 'no_open': True}"/> Cuotas</td>
+                                            <td><field name="porcentajePendiente" nolabel="1" options="{'no_create': True, 'no_open': True}"/>%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
+                                <group>
+                                    <field name="puntosPorcentajeCancelado" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                            </div>
                         </div>
                         <separator/>
                         <div class="col-xs-12 col-sm-9">
