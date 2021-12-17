@@ -409,7 +409,7 @@
                         <separator/>
                         <div class="row">
                             <div class="col-xs-12 col-sm-12">
-                                <field name="aplicaGarante" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field class="font-weight-bold" name="aplicaGarante" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
                             </div>
                            
                         </div>
