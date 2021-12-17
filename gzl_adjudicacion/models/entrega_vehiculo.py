@@ -246,6 +246,8 @@ class EntegaVehiculo(models.Model):
         for rec in self:
             rec.montoAFavor = rec.montoVehiculo - rec.montoAdjudicado
 
+    
+    @api.depends('puntosPorcentajeCancelado', 'puntosPorcentajSaldos', 'puntosCuotaIngresos', 'puntosScoreCredito', 'puntosAntiguedadLaboral', 'totalPuntosBienesAdj')
     def calcular_total_puntos(self):
         for rec in self:
             rec.totalPuntosCalificador = rec.puntosPorcentajeCancelado + rec.puntosPorcentajSaldos +  rec.puntosCuotaIngresos + rec.puntosScoreCredito +  rec.puntosAntiguedadLaboral + rec.totalPuntosBienesAdj
