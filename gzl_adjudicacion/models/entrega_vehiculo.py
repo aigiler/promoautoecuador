@@ -223,7 +223,7 @@ class EntegaVehiculo(models.Model):
     montoPagoConsesionario = fields.Selection(selection=[
         ('saldo_a_favor', 'SALDO A FAVOR APLICA A CUOTAS FINALES DEL PLAN'),
         ('diferencia', 'DIFERENCIA PAGA AL CONCESIONARIO')
-    ], compute='set_aplica_garante')
+    ], default = 'saldo_a_favor', compute='calcular_monto_a_favor')
     
     
     @api.depends('montoVehiculo', 'montoAdjudicado')
