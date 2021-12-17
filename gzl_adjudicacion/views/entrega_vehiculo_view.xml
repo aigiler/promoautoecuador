@@ -447,49 +447,25 @@
                                     </group>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-xs-4 col-sm-3">
-                                    <group>
-                                        <field name="montoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                                <div class="col-xs-4 col-sm-3">
-                                    <group>
-                                        <label for="plazoMeses" string="Plazo"/>
-                                    </group>
-                                </div>
-                                <div class="col-xs-4 col-sm-3">
-                                    <group>
-                                        <label for="tipoAdj" string="Tipo Adj."/>
-                                    </group>
-                                </div>
-                                <div class="col-xs-4 col-sm-3">
-                                    <group>
-                                        <label for="fechaAdj" string="Fecha de Adj."/>
-                                    </group>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-4 col-sm-3">
-                                    <group>
-                                        <field name="valorCuota" readonly="1"  options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                                <div class="col-xs-4 col-sm-3">
-                                    <group>
-                                        <field name="plazoMeses" readonly="1"  nolabel="1" />
-                                    </group>
-                                </div>
-                                <div class="col-xs-4 col-sm-3">
-                                    <group>
-                                        <field name="tipoAdj" nolabel="1" readonly="1" />
-                                    </group>
-                                </div>
-                                <div class="col-xs-4 col-sm-3">
-                                    <group>
-                                        <field name="fechaAdj" nolabel="1"  readonly="1" />
-                                    </group>
-                                </div>
+                            <div class="col-xs-12 col-md-12">
+                                <table style=" border-collapse: collapse; width:100%">
+                                    <tbody>
+                                        <tr>
+                                            <td><label for="montoAdjudicado"/></td>
+                                            <td><field name="montoAdjudicado" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
+                                            <td><label for="plazoMeses"/></td>
+                                            <td><label for="tipoAdj"/></td>
+                                            <td><label for="fechaAdj"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="valorCuota"/></td>
+                                            <td><field name="valorCuota" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
+                                            <td><field name="plazoMeses" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
+                                            <td><field name="tipoAdj" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
+                                            <td><field name="fechaAdj" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                         <separator/>
