@@ -241,7 +241,7 @@
                                             <td style="width:10%"></td>
                                             <td></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="font-weight-bold">
                                             <td><label for="saldoPlan"/></td>
                                             <td><field name="saldoPlan" readonly="1" options="{'no_create': True, 'no_open': True}"/></td>
                                             <td style="width:10%"></td>
@@ -273,11 +273,11 @@
                                             <td><field name="porcentajeGastos" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
                                             <td><text>Cuota Plan</text></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="font-weight-bold">
                                             <td><label for="disponibilidad" string="Disponibilidad" options="{'no_create': True, 'no_open': True}"/></td>
-                                            <td><field name="disponibilidad" string="Disponibilidad" options="{'no_create': True, 'no_open': True}"/></td>
+                                            <td style="border-top: 0.5px solid"><field name="disponibilidad" string="Disponibilidad" options="{'no_create': True, 'no_open': True}"/></td>
                                             <td><field name="porcentajeDisponibilidad" nolabel="1" options="{'no_create': True, 'no_open': True}"/> </td>
-                                            <td><field name="porcentajeCuotaPlan" nolabel="1" options="{'no_create': True, 'no_open': True}"/></td>
+                                            <td><field name="porcentajeCuotaPlan" nolabel="1" options="{'no_create': True, 'no_open': True}"/>%</td>
                                         </tr>
                                     </tbody>
                                 </table>
