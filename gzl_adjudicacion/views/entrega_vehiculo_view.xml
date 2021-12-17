@@ -548,18 +548,7 @@
                         <div style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group>
-                                    <text>
-                                        <strong>NOMBRE DEL CONCESIONARIO: </strong>
-                                    </text>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-4">
-                                <group>
-                                </group>
-                            </div>
-                            <div class="col-xs-12 col-sm-4">
-                                <group>
-                                    <field name="nombreConsesionario" domain = "[('tipo', '=', 'concesionario')]" nolabel="1"/>
+                                    <field name="nombreConsesionario" domain = "[('tipo', '=', 'concesionario')]"/>
                                 </group>
                             </div>
                         </div>
