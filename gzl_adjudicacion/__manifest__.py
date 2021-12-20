@@ -16,6 +16,7 @@
                     'data/data_calificacion_cliente_parametros.xml',
                     'data/data_configuracion_adicional.xml',
                     'data/data_numero_meses.xml',
+                    'data/data_roles.xml',
 
 
 
@@ -35,8 +36,8 @@
                     'views/calificador_view.xml',
                     'views/stylesheet_view.xml',
                     'views/numero_meses_view.xml',
+                     'views/roles_view.xml',
 
-                    
                     ],
     
     'installable': True,
