@@ -6,10 +6,7 @@
         <field name="model">adjudicaciones.team</field>
         <field name="arch" type="xml">
             <tree string="Roles" editable="bottom">
-                <field name="numero" />
-                <field name="active"/>
-
-                
+                <field name="correo"/>
             </tree>
         </field>
     </record>
