@@ -15,9 +15,7 @@
                     'data/data_secuencia.xml',
                     'data/data_calificacion_cliente_parametros.xml',
                     'data/data_configuracion_adicional.xml',
-                    'data/data_numero_meses.xml'    
-
-
+                    'data/data_numero_meses.xml' ,   
 
 
                     'security/ir.model.access.csv',
