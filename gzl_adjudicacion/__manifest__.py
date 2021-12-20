@@ -1,7 +1,7 @@
 {
     "name" : "gzl_adjudicacion",
     "version" : "0.1",
-    'depends' :['base','mail','portal','base_setup'],
+    'depends' :['base','mail','portal','base_setup', 'crm'],
     "author" : "Yadira Quimis Gizlo",
     "description" : """
     product
@@ -15,7 +15,7 @@
                     'data/data_secuencia.xml',
                     'data/data_calificacion_cliente_parametros.xml',
                     'data/data_configuracion_adicional.xml',
-                    'data/data_numero_meses.xml'
+                    'data/data_numero_meses.xml'    
 
 
 
@@ -35,7 +35,7 @@
                     'views/calificador_view.xml',
                     'views/stylesheet_view.xml',
                     'views/numero_meses_view.xml',
-                     'views/roles_view.xml',
+                    'views/roles_view.xml',
 
                     ],
     
