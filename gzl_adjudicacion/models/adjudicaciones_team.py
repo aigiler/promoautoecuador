@@ -11,6 +11,7 @@ from odoo.exceptions import ValidationError
 class AdjudicacionTeam(models.Model):
     _name = 'adjudicaciones.team'
     _description = 'Adjudicaciones Roles'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     correo = fields.Char(string="Correo")
 
