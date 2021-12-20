@@ -18,6 +18,5 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-
     <menuitem id="menu_action_roles" action="action_roles" parent="menu_configuracion_adjudicaciones" sequence="7" />
 </odoo>
