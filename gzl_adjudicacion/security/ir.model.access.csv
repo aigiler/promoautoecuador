@@ -28,5 +28,5 @@ access_configuracion_adicional_template_user,access.configuracion.adicional.temp
 accessconfiguracion_adicional_template_manager,access.configuracion.adicional.template.manager,gzl_adjudicacion.model_configuracion_adicional_template,grupo_usuario_adjudicaciones,1,1,1,1
 access_numero_meses_user,access.numero.meses.user,gzl_adjudicacion.model_numero_meses,grupo_usuario_adjudicaciones,1,1,0,0
 access_numero_meses_manager,access.numero.meses.manager,gzl_adjudicacion.model_numero_meses,grupo_usuario_adjudicaciones,1,1,1,1
-
-
+access_adjudicaciones_team_user,access.adjudicaciones.team.user,gzl_adjudicacion.model_adjudicaciones_team,grupo_usuario_adjudicaciones,1,1,0,0
+access_adjudicaciones_team_manager,access.adjudicaciones.team.manager,gzl_adjudicacion.model_adjudicaciones_team,grupo_usuario_adjudicaciones,1,1,1,1
