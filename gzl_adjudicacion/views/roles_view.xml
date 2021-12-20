@@ -16,7 +16,7 @@
             <field name="name">view.roles.form</field>
             <field name="model">adjudicaciones.team</field>
             <field name="arch" type="xml">
-                <form string="Sales Team">
+                <form string="Adjudicaciones Team">
                     <sheet>
                         <div class="oe_button_box" name="button_box"/>
                         <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
