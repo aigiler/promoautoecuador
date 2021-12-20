@@ -1,7 +1,7 @@
 {
     "name" : "gzl_adjudicacion",
     "version" : "0.1",
-    'depends' :['base','mail','portal','base_setup', 'crm'],
+    'depends' :['base','mail','portal','base_setup'],
     "author" : "Yadira Quimis Gizlo",
     "description" : """
     product
