@@ -9,4 +9,5 @@ from . import res_config_settings
 from . import calificador
 from . import configuraciones_adicionales
 from . import numero_meses
+from . import adjudicaciones_team
 
