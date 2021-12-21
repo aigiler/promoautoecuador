@@ -9,7 +9,7 @@ from odoo.exceptions import UserError, ValidationError
 
 class EntegaVehiculo(models.Model):
     _name = 'entrega.vehiculo'
-    _description = 'Enrega Vehiculo'
+    _description = 'Entrega Vehiculo'
     _rec_name = 'secuencia'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
