@@ -16,6 +16,7 @@ class AdjudicacionTeam(models.Model):
     correo = fields.Char(string="Correo")
 
     name = fields.Char('Rol Adjudicaciones', required=True, translate=True)
+    code=fields.Char('Código',  required=True)
     descripcion=fields.Text('Descripcion',  required=True)
     sequence = fields.Integer('Sequence', default=10)
     active = fields.Boolean(default=True, help="If the active field is set to false, it will allow you to hide the Sales Team without removing it.")
