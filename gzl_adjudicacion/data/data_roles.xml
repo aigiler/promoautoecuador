@@ -16,5 +16,10 @@
             <field name="code">creditosYCobranzas</field>
             <field name="descripcion">Rol de Crédito y Cobranza</field>
         </record>
+        <record id="tipo_rol4" model="adjudicaciones.team">
+            <field name="name">Gerencia Financiera</field>
+            <field name="code">gerenciaFinanciera</field>
+            <field name="descripcion">Rol de Gerencia Financiera</field>
+        </record>
     </data>
 </odoo>
