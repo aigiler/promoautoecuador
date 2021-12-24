@@ -35,7 +35,7 @@
                 <!---->
                 
                     <!-- div state borrador -->
-                    <page string="Entrega de Requisitos"  states="borrador,revision_documentos">
+                    <page string="Entrega de Requisitos">
                         <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
                         <div class="col-xs-12 col-md-12">
                             <group>
@@ -45,7 +45,7 @@
                     </page>
                     <!-- FIN div state borrador -->
 
-                    <page  string="Informe de Credito y Cobranza" states="informe_credito_cobranza">
+                    <page  string="Informe de Credito y Cobranza">
                         <separator class="text-center" string="ANTECEDENTES DEL ASOCIADO"/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-md-12">
@@ -162,7 +162,7 @@
                         </div>
                     </page>
                     <!-- calificador_compra -->
-                    <page string="Calificador de Compra" states="calificador_compra">
+                    <page string="Calificador de Compra">
                         <separator class="text-center" string="CALIFICADOR PARA COMPRA DEL BIEN"/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-md-12">
@@ -430,7 +430,7 @@
                         </div>
                     </page>
                     <!-- liquidacion_orden_compra -->
-                    <page string="Liquidación Orden de Compra" states="liquidacion_orden_compra">
+                    <page string="Liquidación Orden de Compra" >
                         <separator class="text-center" string="LIQUIDACION DE COMPRA"/>
                         <div style="border: 1px solid black;">
                             <div class="row">
@@ -578,7 +578,7 @@
                         </div>
                     </page>
                     <!-- ORDEN DE COMPRA -->
-                    <page string ="Orden de Compra" states="orden_compra">
+                    <page string ="Orden de Compra" >
                         <separator class="text-center" string="ORDEN DE COMPRA"/>
                         <div class="row">
                             <div class="col-xs-12 col-sm-12" >
