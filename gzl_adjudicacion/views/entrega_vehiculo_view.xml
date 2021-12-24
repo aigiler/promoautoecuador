@@ -30,8 +30,9 @@
                 </header>
 
                 <!-- sheet principal-->
+                <sheet> 
                 <notebook>
-                <!--<sheet> -->
+                <!---->
                 
                     <!-- div state borrador -->
                     <page string="Entrega de Requisitos"  states="borrador,revision_documentos">
@@ -591,8 +592,8 @@
                         </div>
                     </page>
                 </notebook>
-                
-                <!-- </sheet> <notebook>
+            </sheet>     
+                <!-- <notebook>
                     <page string="Internal Notes">
                     </page>
                 </notebook> -->
