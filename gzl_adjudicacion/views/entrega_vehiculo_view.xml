@@ -30,19 +30,21 @@
                 </header>
 
                 <!-- sheet principal-->
-                <sheet>
+                <notebook>
+                <!--<sheet> -->
+                
                     <!-- div state borrador -->
-                    <div states="borrador,revision_documentos">
+                    <page states="borrador,revision_documentos">
                         <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
                         <div class="col-xs-12 col-md-12">
                             <group>
                                 <field name="requisitosPoliticasCredito" widget="html" nolabel="1" force_save="1" readonly="1"/>
                             </group>
                         </div>
-                    </div>
+                    </page>
                     <!-- FIN div state borrador -->
 
-                    <div states="informe_credito_cobranza">
+                    <page states="informe_credito_cobranza">
                         <separator class="text-center" string="ANTECEDENTES DEL ASOCIADO"/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-md-12">
@@ -157,7 +159,7 @@
                         <separator class="text-center" string="COMITÉ DE APROBACION"/>
                         <div class="row">
                         </div>
-                    </div>
+                    </page>
                     <!-- calificador_compra -->
                     <div states="calificador_compra">
                         <separator class="text-center" string="CALIFICADOR PARA COMPRA DEL BIEN"/>
@@ -589,11 +591,13 @@
                         </div>
 
                     </div>
+                    
+                </notebook>
                 </sheet>
-                <notebook>
+                <!-- <notebook>
                     <page string="Internal Notes">
                     </page>
-                </notebook>
+                </notebook> -->
                 <!-- Attachment preview -->
                 <div class="o_attachment_preview" />
                 <!-- Chatter -->
