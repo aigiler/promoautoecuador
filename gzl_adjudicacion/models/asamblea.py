@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models
 import json
+from odoo.exceptions import UserError, ValidationError
 
 class Asamblea(models.Model):
     _name = 'asamblea'
