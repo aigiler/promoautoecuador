@@ -104,7 +104,7 @@ class Asamblea(models.Model):
         for l in  listaGanadores[:2]:
             entrega_vehiculo.create({'nombreSocioAdjudicado':l['adjudicado_id']})
 
-       self.write({"state": "cerrado"})
+        self.write({"state": "cerrado"})
 
     def cambio_estado_boton_cerrado(self):
         return self.write({"state": "cerrado"})
