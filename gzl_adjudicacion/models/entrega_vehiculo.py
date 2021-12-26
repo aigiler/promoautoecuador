@@ -43,7 +43,7 @@ class EntegaVehiculo(models.Model):
     state = fields.Selection(selection=[
         ('borrador', 'Borrador'),
         ('revision_documentos', 'Revisión documentos'),
-        ('informe_credito_cobranza', 'Informe de Crédito y Cobranza'),
+        ('informe_de_créditos_y_cobranzas', 'Informe de Crédito y Cobranza'),
         ('calificador_compra', 'Calificador para compra del bien'),
         ('liquidacion_orden_compra', 'Liquidación de compra y orden de compra'),
         ('orden_compra', 'Orden de compra'),

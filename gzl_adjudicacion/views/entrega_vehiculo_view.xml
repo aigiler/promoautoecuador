@@ -30,19 +30,22 @@
                 </header>
 
                 <!-- sheet principal-->
-                <sheet>
+                <sheet> 
+                <notebook>
+                <!---->
+                
                     <!-- div state borrador -->
-                    <div states="borrador,revision_documentos">
+                    <page string="Entrega de Requisitos">
                         <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
-                        <div class="col-xs-12 col-md-12">
+                        <!-- <div class="col-xs-12 col-md-12"> -->
                             <group>
                                 <field name="requisitosPoliticasCredito" widget="html" nolabel="1" force_save="1" readonly="1"/>
                             </group>
-                        </div>
-                    </div>
+                        <!-- </div> -->
+                    </page>
                     <!-- FIN div state borrador -->
 
-                    <div states="informe_credito_cobranza">
+                    <page  string="Informe de Credito y Cobranza">
                         <separator class="text-center" string="ANTECEDENTES DEL ASOCIADO"/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-md-12">
@@ -157,9 +160,9 @@
                         <separator class="text-center" string="COMITÉ DE APROBACION"/>
                         <div class="row">
                         </div>
-                    </div>
+                    </page>
                     <!-- calificador_compra -->
-                    <div states="calificador_compra">
+                    <page string="Calificador de Compra">
                         <separator class="text-center" string="CALIFICADOR PARA COMPRA DEL BIEN"/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-md-12">
@@ -425,9 +428,9 @@
                         <separator class="text-center" string="COMITÉ DE APROBACION"/>
                         <div class="row">
                         </div>
-                    </div>
+                    </page>
                     <!-- liquidacion_orden_compra -->
-                    <div states="liquidacion_orden_compra">
+                    <page string="Liquidación Orden de Compra" >
                         <separator class="text-center" string="LIQUIDACION DE COMPRA"/>
                         <div style="border: 1px solid black;">
                             <div class="row">
@@ -573,9 +576,9 @@
                         <separator class="text-center" string="COMITÉ DE APROBACION"/>
                         <div class="row">
                         </div>
-                    </div>
+                    </page>
                     <!-- ORDEN DE COMPRA -->
-                    <div states="orden_compra">
+                    <page string ="Orden de Compra" >
                         <separator class="text-center" string="ORDEN DE COMPRA"/>
                         <div class="row">
                             <div class="col-xs-12 col-sm-12" >
@@ -587,9 +590,13 @@
                                 <field name="observacionesLiquidacion" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                             </div>
                         </div>
-
-                    </div>
-                </sheet>
+                    </page>
+                </notebook>
+            </sheet>     
+                <!-- <notebook>
+                    <page string="Internal Notes">
+                    </page>
+                </notebook> -->
                 <!-- Attachment preview -->
                 <div class="o_attachment_preview" />
                 <!-- Chatter -->
