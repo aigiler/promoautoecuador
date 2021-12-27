@@ -11,7 +11,7 @@ from dateutil.parser import parse
 class ItemsPatrimonio(models.Model):
     _name = 'items.patrimonio'
     _description = 'Items Patrimonio'
-    _rec_name="patrimonio"
+    _rec_name="items"
     
     
     montoAhorroInversiones = fields.Monetary(string='Ahorro o Inversiones', digits=(6, 2))
