@@ -17,7 +17,7 @@ class Asamblea(models.Model):
     # integrantes = fields.Many2many('integrante.grupo.adjudicado')
 
     junta = fields.One2many('junta.grupo.asamblea', 'asamblea_id',track_visibility='onchange')
-    ganadores = fields.One2many('junta.grupo.asamblea', 'asamblea_id',track_visibility='onchange')
+    ganadores = fields.One2many('gana.grupo.adjudicado.asamblea.clientes', 'grupo_id',track_visibility='onchange')
     fecha_inicio = fields.Datetime(String='Fecha Inicio',track_visibility='onchange')
     fecha_fin = fields.Datetime(String='Fecha Fin',track_visibility='onchange')
     tipo_asamblea = fields.Many2one(
@@ -52,7 +52,7 @@ class Asamblea(models.Model):
                     dct={}
                     dct['adjudicado_id']=integrante.adjudicado_id.id
                     dct['grupo_id']=integrante.adjudicado_id.contrato.grupo.id
-                    dct['nro_cuota_licitar']=integrante.nro_cuota_licitar
+                    dct['puntos']=integrante.nro_cuota_licitar
                     listaGanadores.append(dct)
 
 
@@ -69,7 +69,7 @@ class Asamblea(models.Model):
                     dct={}
                     dct['adjudicado_id']=integrante.adjudicado_id.id
                     dct['grupo_id']=integrante.adjudicado_id.contrato.grupo.id
-                    dct['nro_cuota_licitar']=integrante.nro_cuota_licitar
+                    dct['puntos']=integrante.adjudicado_id.calificacion
                     listaGanadores.append(dct)
 
 
@@ -88,7 +88,23 @@ class Asamblea(models.Model):
 
 
     def cambio_estado_boton_pre_cierre(self):
-        return self.write({"state": "cerrado"})
+        entrega_vehiculo=self.env['entrega.vehiculo']
+        listaGanadores=self.ganadores.mapped()
+
+
+        for l in self.ganadores:
+            dct={}
+            dct['adjudicado_id']=l.adjudicado_id.id
+            dct['puntos']=l.puntos
+            listaGanadores.append(dct)
+
+
+        listaGanadores=sorted(listaGanadores, key=lambda k : k['puntos'],reverse=True) 
+
+        for l in  listaGanadores[:2]:
+            entrega_vehiculo.create({'nombreSocioAdjudicado':l['adjudicado_id']})
+
+        self.write({"state": "cerrado"})
 
     def cambio_estado_boton_cerrado(self):
         return self.write({"state": "cerrado"})
@@ -157,10 +173,10 @@ class GanadoresAsamblea(models.Model):
     _description = 'Ganadores de la Asamblea'
   
 
-    grupo_id = fields.Many2one('integrante.grupo.adjudicado.asamblea')
+    grupo_id = fields.Many2one('asamblea')
     adjudicado_id = fields.Many2one('res.partner', string="Nombre")
     grupo_adjudicado_id = fields.Many2one('grupo.adjudicado',string="Grupo")
-    nro_cuota_licitar = fields.Integer(string='Nro de Cuotas a Licitar')
+    puntos = fields.Integer(string='Nro de Cuotas a Licitar')
 
 
 
