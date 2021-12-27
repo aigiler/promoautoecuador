@@ -82,8 +82,8 @@ class EntegaVehiculo(models.Model):
 
     montoAhorroInversiones = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',track_visibility='onchange')
     
-    def llenar_tabla (self,):
-        obj_patrimonio=self.env['item.patrimonio'].search([])
+    def llenar_tabla(self):
+        obj_patrimonio=self.env['items.patrimonio'].search([])
         for patrimonio in obj_patrimonio:
             self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id})
         

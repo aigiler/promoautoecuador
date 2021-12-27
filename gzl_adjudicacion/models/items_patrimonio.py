@@ -14,24 +14,4 @@ class ItemsPatrimonio(models.Model):
     
     nombre = fields.Char('Nombre',  required=True)
     descripcion=fields.Text('Descripcion',  required=True)
-    valor  = fields.Monetary(digits=(6, 2))
-    currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
-    
-    montoAhorroInversiones = fields.Monetary(
-        string='Ahorro o Inversiones', digits=(6, 2))
-    casaValor = fields.Monetary(string='Casa Valor', digits=(6, 2))
-    terrenoValor = fields.Monetary(string='Terreno Valor', digits=(6, 2))
-    montoMueblesEnseres = fields.Monetary(
-        string='Muebles y Enseres', digits=(6, 2))
-    vehiculoValor = fields.Monetary(string='Vehiculo Valor',  digits=(6, 2))
-    inventarios = fields.Monetary(string='Inventarios', digits=(6, 2))
-    totalActivosAdj = fields.Monetary(
-        compute='calcular_total_activos', string='TOTAL ACTIVOS', digits=(6, 2))
-
-    @api.depends('montoAhorroInversiones', 'casaValor', 'terrenoValor', 'montoMueblesEnseres', 'vehiculoValor', 'inventarios')
-    def calcular_total_activos(self):
-        totalActivos = 0
-        for rec in self:
-            totalActivos = rec.montoAhorroInversiones + rec.casaValor + rec.terrenoValor + \
-                rec.vehiculoValor + rec.montoMueblesEnseres + rec.inventarios
-            rec.totalActivosAdj = totalActivos
+  
