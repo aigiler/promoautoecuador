@@ -99,10 +99,12 @@
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group>
-                                    <field name="montoAhorroInversiones"/>
-                                    <tree>
-                                        <field name="valor"/>
-                                    </tree>
+                                    <field name="montoAhorroInversiones" >
+                                        <tree create='0' delete='0'>
+                                            <field name="patrimnio_id" readonly='1'/>
+                                            <field name="valor"/>
+                                        </tree>
+                                    </field>
                                 </group>
                             </div>
                             <div class="col-xs-4">
