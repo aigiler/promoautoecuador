@@ -80,7 +80,15 @@ class EntegaVehiculo(models.Model):
     currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
     #    junta = fields.One2many('junta.grupo.asamblea', 'asamblea_id',track_visibility='onchange')
 
-    montoAhorroInversiones = fields.One2many('items.patrimonio','nombre',track_visibility='onchange')
+    montoAhorroInversiones = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',track_visibility='onchange')
+    
+    def llenar_tabla (self,):
+        obj_patrimonio=self.env['item.patrimonio'].search([])
+        for patrimonio in obj_patrimonio:
+            self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id})
+        
+    
+    
     #montoAhorroInversiones = fields.Monetary(string='Ahorro o Inversiones')
     casaValor = fields.Monetary(string='Casa Valor', default=0.00)
     terrenoValor = fields.Monetary(string='Terreno Valor', default=0.00)
@@ -603,3 +611,14 @@ class EntegaVehiculo(models.Model):
 
     def cambio_estado_boton_entrega(self):
         return self.write({"state": "entrega_vehiculo"})
+
+class ItemPatrimonioEntregaVehiculo(models.Model):
+    _name = 'items.patrimonio.entrega.vehiculo'
+    _description = 'Grupo Participante en asamblea'
+
+    entrega_id = fields.Many2one('entrega.vehiculo')
+    patrimonio_id = fields.Many2one('item.patrimonio')
+    valor  = fields.Monetary(digits=(6, 2))
+
+
+
