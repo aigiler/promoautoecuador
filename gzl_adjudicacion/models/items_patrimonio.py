@@ -9,7 +9,7 @@ from dateutil.parser import parse
 
 
 class ItemsPatrimonio(models.Model):
-    _name = 'items.patrimonio.adjudicado'
+    _name = 'items.patrimonio'
     _description = 'Items Patrimonio'
     
     nombre = fields.Char('Nombre',  required=True)
