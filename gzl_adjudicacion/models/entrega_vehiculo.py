@@ -80,7 +80,7 @@ class EntegaVehiculo(models.Model):
     currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
     #    junta = fields.One2many('junta.grupo.asamblea', 'asamblea_id',track_visibility='onchange')
 
-    montoAhorroInversiones = fields.One2many('items.patrimonio','items_patrimonio_id',track_visibility='onchange')
+    montoAhorroInversiones = fields.One2many('items.patrimonio','nombre',track_visibility='onchange')
     #montoAhorroInversiones = fields.Monetary(string='Ahorro o Inversiones')
     casaValor = fields.Monetary(string='Casa Valor', default=0.00)
     terrenoValor = fields.Monetary(string='Terreno Valor', default=0.00)
