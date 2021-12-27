@@ -78,7 +78,8 @@ class EntegaVehiculo(models.Model):
 
     # datos del patrimonio del socio
     currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
-    montoAhorroInversiones = fields.Monetary(string='Ahorro o Inversiones')
+    montoAhorroInversiones = fields.one2many('items.patrimonio.adjudicado')
+    #montoAhorroInversiones = fields.Monetary(string='Ahorro o Inversiones')
     casaValor = fields.Monetary(string='Casa Valor', default=0.00)
     terrenoValor = fields.Monetary(string='Terreno Valor', default=0.00)
     montoMueblesEnseres = fields.Monetary( string='Muebles y Enseres', default=0.00)
