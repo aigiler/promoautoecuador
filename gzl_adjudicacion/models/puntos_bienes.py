@@ -11,7 +11,6 @@ from dateutil.parser import parse
 class PuntosBienes(models.Model):
     _name = 'puntos.bienes'
     _description = 'Bienes'
-    _rec_name = "bienes"
 
     
     #items bienes
