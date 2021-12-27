@@ -101,7 +101,7 @@
                                 <group>
                                     <field name="montoAhorroInversiones" >
                                         <tree create='0' delete='0'>
-                                            <field name="patrimnio_id" readonly='1'/>
+                                            <field name="patrimonio_id" readonly='1'/>
                                             <field name="valor"/>
                                         </tree>
                                     </field>
