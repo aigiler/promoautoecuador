@@ -13,20 +13,21 @@
         </field>
     </record>
 
-    
+
 
     <record id="action_items_patrimonio" model="ir.actions.act_window">
-        <field name="name">Items Patrimonio</field>
+        <field name="name">Items del Patrimonio</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">items.patrimonio.adjudicado</field>
         <field name="view_mode">tree</field>
         <field name="context">{}</field>
-    </record> 
+    </record>
 
 
 
-     <menuitem id="menu_items_patrimonio" action="action_items_patrimonio" 
-        parent="menu_configuracion_adjudicaciones" sequence="5"  />
+    <menuitem id="menu_items_patrimonio" action="action_items_patrimonio" 
+    parent="menu_configuracion_adjudicaciones" sequence="5" />
+
 
 
 
