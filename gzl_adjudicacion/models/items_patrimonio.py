@@ -9,9 +9,8 @@ from dateutil.parser import parse
 
 
 class ItemsPatrimonio(models.Model):
-    _name = 'items.patrimonio'
+    _name = 'items.patrimonio.adjudicado'
     _description = 'Items Patrimonio'
-    _rec_name = "items.patrimonio"
 
     montoAhorroInversiones = fields.Monetary(
         string='Ahorro o Inversiones', digits=(6, 2))
