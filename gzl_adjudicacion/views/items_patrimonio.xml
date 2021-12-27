@@ -4,7 +4,7 @@
 
     <record id="view_items_patrimonio_tree" model= "ir.ui.view">
         <field name="name">view.items.patrimonio.tree</field>
-        <field name="model">items.patrimonio.adjudicado</field>
+        <field name="model">items.patrimonio</field>
         <field name="arch" type="xml">
             <tree string="Items Patrimonio" editable="top">
                 <field name="nombre" />
@@ -18,7 +18,7 @@
     <record id="action_items_patrimonio" model="ir.actions.act_window">
         <field name="name">Items del Patrimonio</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">items.patrimonio.adjudicado</field>
+        <field name="res_model">items.patrimonio</field>
         <field name="view_mode">tree</field>
         <field name="context">{}</field>
     </record>
