@@ -35,7 +35,7 @@
                     'views/stylesheet_view.xml',
                     'views/numero_meses_view.xml',
                     'views/roles_view.xml',
-                    'items_patrimonio',
+                    'items_patrimonio.xml',
                     ],
     
     'installable': True,
