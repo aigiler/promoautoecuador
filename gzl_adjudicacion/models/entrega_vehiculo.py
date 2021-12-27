@@ -82,16 +82,16 @@ class EntegaVehiculo(models.Model):
 
     montoAhorroInversiones = fields.One2many('items.patrimonio','nombre',track_visibility='onchange')
     #montoAhorroInversiones = fields.Monetary(string='Ahorro o Inversiones')
-    casaValor = fields.Monetary(string='Casa Valor', default=0.00)
-    terrenoValor = fields.Monetary(string='Terreno Valor', default=0.00)
-    montoMueblesEnseres = fields.Monetary( string='Muebles y Enseres', default=0.00)
-    vehiculoValor = fields.Monetary(string='Vehiculo Valor',  default=0.00)
-    inventarios = fields.Monetary(string='Inventarios',  default=0.00)
+    # casaValor = fields.Monetary(string='Casa Valor', default=0.00)
+    # terrenoValor = fields.Monetary(string='Terreno Valor', default=0.00)
+    # montoMueblesEnseres = fields.Monetary( string='Muebles y Enseres', default=0.00)
+    # vehiculoValor = fields.Monetary(string='Vehiculo Valor',  default=0.00)
+    #inventarios = fields.Monetary(string='Inventarios',  default=0.00)
     institucionFinanciera = fields.Char(string='Institución')
     direccion = fields.Char(string='Direccion')
     direccion1 = fields.Char(string='Direccion')
     placa = fields.Char(string='Placa')
-    totalActivosAdj = fields.Float(compute='calcular_total_activos', string='TOTAL ACTIVOS', digits=(6, 2))
+    #totalActivosAdj = fields.Float(compute='calcular_total_activos', string='TOTAL ACTIVOS', digits=(6, 2))
 
     # REVISION EN PAGINAS DE CONTROL
     scoreBuroCredito = fields.Integer(string='Score')
@@ -545,13 +545,13 @@ class EntegaVehiculo(models.Model):
                 rec.cedulaContrato = ''
                 rec.codClienteContrado = ''
 
-    @api.depends('montoAhorroInversiones', 'casaValor', 'terrenoValor', 'montoMueblesEnseres', 'vehiculoValor', 'inventarios')
-    def calcular_total_activos(self):
-        totalActivos = 0
-        for rec in self:
-            totalActivos = rec.montoAhorroInversiones + rec.casaValor + rec.terrenoValor + \
-                rec.vehiculoValor + rec.montoMueblesEnseres + rec.inventarios
-            rec.totalActivosAdj = totalActivos
+    # @api.depends('montoAhorroInversiones', 'casaValor', 'terrenoValor', 'montoMueblesEnseres', 'vehiculoValor', 'inventarios')
+    # def calcular_total_activos(self):
+    #     totalActivos = 0
+    #     for rec in self:
+    #         totalActivos = rec.montoAhorroInversiones + rec.casaValor + rec.terrenoValor + \
+    #             rec.vehiculoValor + rec.montoMueblesEnseres + rec.inventarios
+    #         rec.totalActivosAdj = totalActivos
 
     @api.depends('fechaNacimientoAdj')
     def calcular_edad(self):
