@@ -11,17 +11,19 @@ from dateutil.parser import parse
 class ItemsPatrimonio(models.Model):
     _name = 'items.patrimonio'
     _description = 'Items Patrimonio'
-    _rec_name="items"
-    
-    
-    montoAhorroInversiones = fields.Monetary(string='Ahorro o Inversiones', digits=(6, 2))
+    _rec_name = "items.patrimonio"
+
+    montoAhorroInversiones = fields.Monetary(
+        string='Ahorro o Inversiones', digits=(6, 2))
     casaValor = fields.Monetary(string='Casa Valor', digits=(6, 2))
     terrenoValor = fields.Monetary(string='Terreno Valor', digits=(6, 2))
-    montoMueblesEnseres = fields.Monetary( string='Muebles y Enseres', digits=(6, 2))
+    montoMueblesEnseres = fields.Monetary(
+        string='Muebles y Enseres', digits=(6, 2))
     vehiculoValor = fields.Monetary(string='Vehiculo Valor',  digits=(6, 2))
     inventarios = fields.Monetary(string='Inventarios', digits=(6, 2))
-    totalActivosAdj = fields.Monetary(compute='calcular_total_activos', string='TOTAL ACTIVOS', digits=(6, 2))
-    
+    totalActivosAdj = fields.Monetary(
+        compute='calcular_total_activos', string='TOTAL ACTIVOS', digits=(6, 2))
+
     @api.depends('montoAhorroInversiones', 'casaValor', 'terrenoValor', 'montoMueblesEnseres', 'vehiculoValor', 'inventarios')
     def calcular_total_activos(self):
         totalActivos = 0
