@@ -99,12 +99,10 @@
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group>
-                                    <field name="montoAhorroInversiones" widget="monetary"/>
-                                    <field name="casaValor" options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
-                                    <field name="terrenoValor" widget="monetary"/>
-                                    <field name="montoMueblesEnseres" widget="monetary"/>
-                                    <field name="vehiculoValor" widget="monetary"/>
-                                    <field name="inventarios" widget="monetary"/>
+                                    <field name="montoAhorroInversiones"/>
+                                    <tree string="Patrimonio" edit="false">
+                                    <field name="valor"/>
+                                </tree>
                                 </group>
                             </div>
                             <div class="col-xs-4">
