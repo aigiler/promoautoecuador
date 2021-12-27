@@ -12,8 +12,11 @@ class ItemsPatrimonio(models.Model):
     _name = 'items.patrimonio.adjudicado'
     _description = 'Items Patrimonio'
     
+    nombre = fields.Char('Nombre',  required=True)
+    descripcion=fields.Text('Descripcion',  required=True)
+    valor  = fields.Monetary(digits=(6, 2))
     currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
-
+    
     montoAhorroInversiones = fields.Monetary(
         string='Ahorro o Inversiones', digits=(6, 2))
     casaValor = fields.Monetary(string='Casa Valor', digits=(6, 2))
