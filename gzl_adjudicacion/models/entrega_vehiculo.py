@@ -616,6 +616,8 @@ class ItemPatrimonioEntregaVehiculo(models.Model):
     _name = 'items.patrimonio.entrega.vehiculo'
     _description = 'Grupo Participante en asamblea'
 
+    currency_id = fields.Many2one(
+        'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
     entrega_id = fields.Many2one('entrega.vehiculo')
     patrimonio_id = fields.Many2one('item.patrimonio')
     valor  = fields.Monetary(digits=(6, 2))
