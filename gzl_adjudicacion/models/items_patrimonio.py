@@ -11,6 +11,7 @@ from dateutil.parser import parse
 class ItemsPatrimonio(models.Model):
     _name = 'items.patrimonio'
     _description = 'Items Patrimonio'
+    _rec_name= 'nombre'
     
     nombre = fields.Char('Nombre',  required=True)
     descripcion=fields.Text('Descripcion',  required=True)
