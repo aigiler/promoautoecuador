@@ -99,7 +99,7 @@
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group>
-                                    <field name="montoAhorroInversiones" nolabel="1" >
+                                    <field name="montoAhorroInversiones" nolabel="1" position="after">
                                         <tree create='0' delete='0' editable='top'>
                                             <field name="patrimonio_id" readonly='1'/>
                                             <field name="valor" sum="valor"/>
