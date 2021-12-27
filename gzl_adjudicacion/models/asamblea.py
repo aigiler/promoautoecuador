@@ -123,7 +123,7 @@ class IntegrantesGrupoAsamblea(models.Model):
     descripcion=fields.Char('Descripcion',  )
     grupo_id = fields.Many2one('integrante.grupo.adjudicado.asamblea')
     grupo_cliente = fields.Many2one('grupo.adjudicado')
-    nro_cuota_licitar = fields.Integer(string='Nro de Cuotas a Licitar')
+    nro_cuota_licitar = fields.Integer(string='Nro de Cuotas a Licitar',default=1)
     carta_licitacion = fields.Selection([('si', 'Si'), ('no', 'No')], string='Carta Licitación')
     carta_doc = fields.Binary(string='Carta Licitación')
 
