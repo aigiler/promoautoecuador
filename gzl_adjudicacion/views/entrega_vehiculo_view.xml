@@ -126,7 +126,7 @@
                                     <tree create='0' delete='0' editable='top'>
                                         <field name="pagina_id" readonly='1'/>
                                         <field name="descripcion" readonly='1'/>
-                                        <field name="pagina" widget="selection"/>
+                                        <field name="pagina"/>
                                     </tree>
                                 </field>
                             </group>
