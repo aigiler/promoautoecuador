@@ -36,6 +36,7 @@
                     'views/numero_meses_view.xml',
                     'views/roles_view.xml',
                     'views/items_patrimonio.xml',
+                    'views/paginas_de_control.xml',
                     ],
     
     'installable': True,
