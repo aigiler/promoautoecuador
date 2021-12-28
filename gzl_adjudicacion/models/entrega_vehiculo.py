@@ -83,11 +83,7 @@ class EntegaVehiculo(models.Model):
     montoAhorroInversiones = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',track_visibility='onchange')
     
     def llenar_tabla(self):
-        obj_patrimonio=self.env['items.patrimonio'].search([])
-        obj_paginas_de_control=self.env['paginas.de.control'].search([])
-        for paginas_de_control in obj_paginas_de_control:
-            self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas_de_control.id,'entrega_id':self.id})
-            
+        obj_patrimonio=self.env['items.patrimonio'].search([])  
         for patrimonio in obj_patrimonio:
             self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id})
         
@@ -100,6 +96,15 @@ class EntegaVehiculo(models.Model):
 
     # REVISION EN PAGINAS DE CONTROL
     paginasDeControl = fields.One2many('paginas.de.control.entrega.vehiculo','entrega_id',track_visibility='onchange')
+    
+    def llenar_tabla_paginas(self):
+        obj_paginas_de_control=self.env['paginas.de.control'].search([])
+        for paginas_de_control in obj_paginas_de_control:
+            self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas_de_control.id,'entrega_id':self.id})
+    
+    
+    
+    
     scoreBuroCredito = fields.Integer(string='Score')
     posee = fields.Char(string='Posee')
     score = fields.Char(string='Posee')
