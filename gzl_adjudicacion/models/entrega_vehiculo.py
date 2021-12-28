@@ -84,6 +84,10 @@ class EntegaVehiculo(models.Model):
     
     def llenar_tabla(self):
         obj_patrimonio=self.env['items.patrimonio'].search([])
+        obj_paginas_de_control=self.env['paginas.de.control'].search([])
+        for paginas_de_control in obj_paginas_de_control:
+            self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas_de_control.id,'entrega_id':self.id})
+            
         for patrimonio in obj_patrimonio:
             self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id})
         
