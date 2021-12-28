@@ -95,7 +95,7 @@ class EntegaVehiculo(models.Model):
     totalActivosAdj = fields.Float(string='TOTAL ACTIVOS', digits=(6, 2))
 
     # REVISION EN PAGINAS DE CONTROL
-    paginasDeControl = fields.One2many('paginas.control.entrega.vehiculo','entrega_id',track_visibility='onchange')
+    paginasDeControl = fields.One2many('paginas.de.control.entrega.vehiculo','entrega_id',track_visibility='onchange')
     scoreBuroCredito = fields.Integer(string='Score')
     posee = fields.Char(string='Posee')
     score = fields.Char(string='Posee')
@@ -617,10 +617,10 @@ class ItemPatrimonioEntregaVehiculo(models.Model):
     valor  = fields.Monetary(digits=(6, 2))
     
 class PaginasDeControlEntregaVehiculo(models.Model):
-    _name = 'paginas.control.entrega.vehiculo'
+    _name = 'paginas.de.control.entrega.vehiculo'
     _description = 'Revisión de páginas de control en Entrega de vehiculo'
     entrega_id = fields.Many2one('entrega.vehiculo')
-    pagina_id = fields.Many2one('paginas.control')
+    pagina_id = fields.Many2one('paginas.de.control')
     valor  = fields.Char()
     
     

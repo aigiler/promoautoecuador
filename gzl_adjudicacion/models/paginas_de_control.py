@@ -8,8 +8,8 @@ from datetime import datetime, timedelta, date
 from dateutil.parser import parse
 
 
-class ItemsPatrimonio(models.Model):
-    _name = 'paginas.control'
+class PaginasRevision(models.Model):
+    _name = 'paginas.de.control'
     _description = 'Revisión de paginas de control'
     _rec_name= 'nombre'
     
