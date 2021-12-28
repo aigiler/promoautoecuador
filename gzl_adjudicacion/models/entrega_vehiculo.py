@@ -87,14 +87,7 @@ class EntegaVehiculo(models.Model):
         for patrimonio in obj_patrimonio:
             self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id})
         
-    
-    
-    #montoAhorroInversiones = fields.Monetary(string='Ahorro o Inversiones')
-    casaValor = fields.Monetary(string='Casa Valor', default=0.00)
-    terrenoValor = fields.Monetary(string='Terreno Valor', default=0.00)
-    montoMueblesEnseres = fields.Monetary( string='Muebles y Enseres', default=0.00)
-    vehiculoValor = fields.Monetary(string='Vehiculo Valor',  default=0.00)
-    inventarios = fields.Monetary(string='Inventarios',  default=0.00)
+
     institucionFinanciera = fields.Char(string='Institución')
     direccion = fields.Char(string='Direccion')
     direccion1 = fields.Char(string='Direccion')
@@ -102,6 +95,7 @@ class EntegaVehiculo(models.Model):
     totalActivosAdj = fields.Float(string='TOTAL ACTIVOS', digits=(6, 2))
 
     # REVISION EN PAGINAS DE CONTROL
+    paginasDeControl = fields.One2many('paginas.control.entrega.vehiculo','entrega_id',track_visibility='onchange')
     scoreBuroCredito = fields.Integer(string='Score')
     posee = fields.Char(string='Posee')
     score = fields.Char(string='Posee')
@@ -614,13 +608,22 @@ class EntegaVehiculo(models.Model):
 
 class ItemPatrimonioEntregaVehiculo(models.Model):
     _name = 'items.patrimonio.entrega.vehiculo'
-    _description = 'Grupo Participante en asamblea'
+    _description = 'Items de Patrimonio '
 
     currency_id = fields.Many2one(
         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
     entrega_id = fields.Many2one('entrega.vehiculo')
     patrimonio_id = fields.Many2one('items.patrimonio')
     valor  = fields.Monetary(digits=(6, 2))
+    
+class PaginasDeControlEntregaVehiculo(models.Model):
+    _name = 'paginas.control.entrega.vehiculo'
+    _description = 'Revisión de páginas de control en Entrega de vehiculo'
+    entrega_id = fields.Many2one('entrega.vehiculo')
+    pagina_id = fields.Many2one('paginas.control')
+    valor  = fields.Char()
+    
+    
 
 
 
