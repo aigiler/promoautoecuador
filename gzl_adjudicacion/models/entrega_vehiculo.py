@@ -105,7 +105,7 @@ class EntegaVehiculo(models.Model):
     
     
     
-    scoreBuroCredito = fields.Integer(string='Score')
+    scoreBuroCredito = fields.Integer(string='Buró de Crédito')
     posee = fields.Char(string='Posee')
     score = fields.Char(string='Posee')
     poseeAntecedentesPenales = fields.Selection(selection=[
@@ -633,6 +633,10 @@ class PaginasDeControlEntregaVehiculo(models.Model):
     pagina_id = fields.Many2one('paginas.de.control')
     descripcion  = fields.Char(related='pagina_id.descripcion')
     pagina = fields.Text()
+    # fields.Selection(selection=[
+    #     ('si', 'SI'),
+    #     ('no', 'NO')
+    # ], default='no')
     
     
 
