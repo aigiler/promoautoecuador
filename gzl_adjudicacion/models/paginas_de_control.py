@@ -12,5 +12,5 @@ class PaginasDeControl(models.Model):
     _rec_name= 'nombre'
     
     nombre = fields.Char('Nombre',  required=True)
-    descripcion=fields.Text('Descripcion',  required=True)
+    descripcion=fields.Char('Descripcion',  required=True)
     
