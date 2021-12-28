@@ -632,11 +632,7 @@ class PaginasDeControlEntregaVehiculo(models.Model):
     entrega_id = fields.Many2one('entrega.vehiculo')
     pagina_id = fields.Many2one('paginas.de.control')
     descripcion  = fields.Char(related='pagina_id.descripcion')
-    pagina = fields.Text()
-    # fields.Selection(selection=[
-    #     ('si', 'SI'),
-    #     ('no', 'NO')
-    # ], default='no')
+    pagina = fields.Selection(selection=[ ('si', 'SI'),('no', 'NO')], default='no')
     
     
 
