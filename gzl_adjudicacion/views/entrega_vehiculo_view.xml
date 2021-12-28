@@ -103,7 +103,6 @@
                                         <tree create='0' delete='0' editable='top'>
                                             <field name="patrimonio_id" readonly='1' nolabel="1"/>
                                             <field name="valor" sum="valor" nolabel="1"/>
-                                            <label for="totalActivosAdj" string="TOTAL ACTIVOS" />
                                         </tree>
                                     </field>
                                 </group>
