@@ -623,7 +623,7 @@ class ItemPatrimonioEntregaVehiculo(models.Model):
         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
     entrega_id = fields.Many2one('entrega.vehiculo')
     patrimonio_id = fields.Many2one('items.patrimonio')
-    valor = fields.Float(String ="item patrimonio")
+    valor  = fields.Monetary(digits=(6, 2))
     
 class PaginasDeControlEntregaVehiculo(models.Model):
     _name = 'paginas.de.control.entrega.vehiculo'
