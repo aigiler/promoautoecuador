@@ -41,7 +41,7 @@
                                     'readonly': [('state', 'in', ('borrador','revision_documentos','calificador_compra','liquidacion_orden_compra','entrega_vehiculo'))]}
                                 </attribute>
                             </xpath>
-                            <field name="requisitosPoliticasCredito">
+                            <field name="requisitosPoliticasCredito"/>
                             
                         </page>
                         <!-- FIN div state borrador -->
