@@ -44,7 +44,7 @@
                     </page>
                     <!-- FIN div state borrador -->
 
-                    <page  string="Informe de Credito y Cobranza">
+                    <page  string="Informe de Credito y Cobranza"  attrs="{'invisible': [('state', 'in', ('borrador','revision_documentos'))], 'readonly':[('state', 'in', ('informe_credito_cobranza') )]}">
                         <separator class="text-center" string="ANTECEDENTES DEL ASOCIADO"/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-md-12">
