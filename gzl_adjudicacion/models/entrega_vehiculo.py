@@ -24,13 +24,8 @@ class EntegaVehiculo(models.Model):
 
 
 
-
-
-
-
-
     secuencia = fields.Char(index=True)
-    requisitosPoliticasCredito = fields.Text(string='Informacion Cobranzas', default=lambda self: self._capturar_valores_por_defecto())
+    requisitosPoliticasCredito = fields.Html(string='Informacion Cobranzas', default=lambda self: self._capturar_valores_por_defecto())
     
     def _capturar_valores_por_defecto(self):
         referencia=self.env.ref('gzl_adjudicacion.configuracion_adicional1')
