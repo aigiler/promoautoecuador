@@ -38,7 +38,8 @@
                             <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
                             <!-- <div class="col-xs-12 col-md-12"> -->
                             <group>
-                                <field name="requisitosPoliticasCredito" widget="html" nolabel="1" readonly="1"/>
+                                <field name="requisitosPoliticasCredito" widget="html" nolabel="1"  position="attributes">
+                                <attribute name="readonly">1</attribute>
                             </group>
                             <!-- </div> -->
                         </page>
