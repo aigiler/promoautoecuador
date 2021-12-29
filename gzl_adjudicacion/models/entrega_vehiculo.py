@@ -155,7 +155,7 @@ class EntegaVehiculo(models.Model):
     porcentajePendiente = fields.Float(digits=(6, 2), compute='calcular_porcentaj_pendiente')
     
     #puntos valor cancelado del plan
-    puntosPorcentajeCancelado = fields.Integer(compute='calcular_puntos_porcentaje_cancelado')
+    puntosPorcentajeCancelado = fields.Integer(string = 'puntos', compute='calcular_puntos_porcentaje_cancelado')
 
     #saldosBien
     valorDelBien = fields.Monetary(string='Valor del Bien', compute='set_valor_del_bien')
