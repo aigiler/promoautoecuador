@@ -36,13 +36,9 @@
                         <!-- div state borrador -->
                         <page string="Entrega de Requisitos" attrs="{'invisible': [('state', 'in', ('informe_credito_cobranza','calificador_compra','liquidacion_orden_compra','entrega_vehiculo'))], 'readonly':[('state', 'in', ('borrador','revision_documentos') )]}">
                             <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
-                            <!-- <div class="col-xs-12 col-md-12"> -->
-                            <group>
-                                <field name="requisitosPoliticasCredito" widget="html" nolabel="1"  position="attributes">
+                            <field name="requisitosPoliticasCredito" widget="html" position="attributes">
                                     <attribute name="readonly">1</attribute>
-                                </field>
-                            </group>
-                            <!-- </div> -->
+                            </field>
                         </page>
                         <!-- FIN div state borrador -->
                     </notebook>
