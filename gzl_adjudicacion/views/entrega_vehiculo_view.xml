@@ -36,9 +36,7 @@
                         <!-- div state borrador -->
                         <page string="Entrega de Requisitos" attrs="{'invisible': [('state', 'in', ('informe_credito_cobranza','calificador_compra','liquidacion_orden_compra','entrega_vehiculo'))], 'readonly':[('state', 'in', ('borrador','revision_documentos') )]}">
                             <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
-                            <field name="requisitosPoliticasCredito" widget="html" position="attributes">
-                                <attribute name="readonly">1</attribute>
-                            </field>
+                            <field name="requisitosPoliticasCredito" readonly="1" class="oe_read_only">
                         </page>
                         <!-- FIN div state borrador -->
                     </notebook>
