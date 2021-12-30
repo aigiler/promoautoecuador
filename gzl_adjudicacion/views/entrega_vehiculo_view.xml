@@ -36,7 +36,7 @@
                         <!-- div state borrador -->
                         <page string="Entrega de Requisitos" attrs="{'invisible': [('state', 'in', ('calificador_compra','liquidacion_orden_compra','entrega_vehiculo'))]}">
                             <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
-                            <field name="requisitosPoliticasCredito" attrs="{'readonly':[('penerimaan_line','!=',False)]}"/>
+                            <field name="requisitosPoliticasCredito" attrs="{'readonly': [('id', '>', 0)]}"/>
                             
                         </page>
                         <!-- FIN div state borrador -->
