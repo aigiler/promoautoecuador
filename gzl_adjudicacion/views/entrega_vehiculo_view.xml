@@ -36,12 +36,7 @@
                         <!-- div state borrador -->
                         <page string="Entrega de Requisitos" attrs="{'invisible': [('state', 'in', ('calificador_compra','liquidacion_orden_compra','entrega_vehiculo'))]}">
                             <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
-                            <xpath expr="//field[@name='requisitosPoliticasCredito']" position="attributes">
-                                <attribute name="attrs">{
-                                    'readonly': [('state', 'in', ('borrador','revision_documentos','calificador_compra','liquidacion_orden_compra','entrega_vehiculo'))]}
-                                </attribute>
-                            </xpath>
-                            <field name="requisitosPoliticasCredito"/>
+                            <field name="requisitosPoliticasCredito" attrs="{'readonly':[('penerimaan_line','!=',False)]}"/>
                             
                         </page>
                         <!-- FIN div state borrador -->
