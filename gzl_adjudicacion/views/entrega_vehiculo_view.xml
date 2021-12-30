@@ -31,10 +31,18 @@
 
                 <!-- sheet principal-->
                 <sheet>
-                     <div state="borrador" attrs="{'invisible': [('state', 'in', ('calificador_compra','liquidacion_orden_compra','entrega_vehiculo'))]}">
+                     <div states="borrador,revision_documentos">
+                        <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
+                        <div class="col-xs-12 col-md-12">
+                            <group>
+                                <field name="requisitosPoliticasCredito" widget="html" nolabel="1" force_save="1" readonly="1"/>
+                            </group>
+                        </div>
+                    </div>
+                     <!-- <div state="borrador" attrs="{'invisible': [('state', 'in', ('calificador_compra','liquidacion_orden_compra','entrega_vehiculo'))]}">
                             <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
                             <field name="requisitosPoliticasCredito" widget="html" readonly="1"/> 
-                    </div>
+                    </div> -->
                     <notebook attrs="{'invisible': [('state', 'in', ('borrador','revision_documentos'))]}">
                         <!---->
                         <!-- div state borrador -->
