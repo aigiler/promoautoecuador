@@ -31,7 +31,7 @@
 
                 <!-- sheet principal-->
                 <sheet>
-                     <div states="borrador,revision_documentos">
+                    <div states="borrador,revision_documentos">
                         <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
                         <div class="col-xs-12 col-md-12">
                             <group>
