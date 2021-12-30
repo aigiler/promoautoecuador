@@ -26,7 +26,7 @@
 
 
             <xpath expr="//button[@name='action_set_won_rainbowman']" position="attributes">
-                <attribute name="attrs">{'invisible': [('colocar_venta_como_ganada', '=', True)]}</attribute>
+                <attribute name="attrs">{'invisible': [('colocar_venta_como_ganada', '=', False)]}</attribute>
             </xpath>
 
 

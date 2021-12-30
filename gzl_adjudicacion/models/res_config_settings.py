@@ -11,7 +11,7 @@ class ResConfigSettings(models.TransientModel):
     tasa_administrativa = fields.Float(string='Tasa Administrativa %' , config_parameter="gzl_adjudicacion.tasa_administrativa")
     configuracion_adicional=fields.Many2one('configuracion.adicional.template',string="Configuracion Adicional",default=lambda self:self.env.ref('gzl_adjudicacion.configuracion_adicional1'))
 
-
+    numero_cuotas_pagadas = fields.Integer(string='Cantidad de Cuotas Mínimas Licitar',default=0, config_parameter="gzl_adjudicacion.numero_cuotas_pagadas")
 
 
 
