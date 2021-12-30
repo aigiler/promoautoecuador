@@ -69,6 +69,7 @@
 
                                             <field name="grupo_adjudicado_id" options="{'no_open': True, 'no_create': True}" required="1" string="Grupo Participante"/>
                                             <field name="tipo_contrato" options="{'no_open': True, 'no_create': True}" invisible="1" required="1"/>
+                                            <field name="codigo_tipo_contrato" />
 
 
                                         </group>
@@ -79,8 +80,8 @@
                                                 <field name="grupo_cliente" invisible="1"/>
 
                                                 <field name="adjudicado_id" options="{'no_open': True, 'no_create': True}" domain="dominio" required="1" />
-                                                <field name="nro_cuota_licitar" required="1"/>
-                                                <field name="carta_licitacion" required="1" />
+                                                <field name="nro_cuota_licitar" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'evaluacion')],'required': [('parent.codigo_tipo_contrato', '=', 'licitacion')]}" required="1"/>
+                                                <field name="carta_licitacion" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'evaluacion')],'required': [('parent.codigo_tipo_contrato', '=', 'licitacion')]}"/>
                                             </tree>
                                         </field>
 

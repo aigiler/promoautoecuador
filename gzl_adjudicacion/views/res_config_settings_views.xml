@@ -22,6 +22,14 @@
                                             <label string="Tasa Administrativa %" for="tasa_administrativa" class="col-lg-3 o_light_label"/>
                                             <field name="tasa_administrativa" />
                                         </div>
+
+                                        <div class="row">
+                                            <label string="Cantidad de Cuotas Mínimas Licitar" for="numero_cuotas_pagadas" class="col-lg-3 o_light_label"/>
+                                            <field name="numero_cuotas_pagadas" />
+                                        </div>
+
+
+                                        
                                         <div class="row">
                                             <label string="Configurar Texto informativo" for="configuracion_adicional" class="col-lg-3 o_light_label"/>
                                             <field name="configuracion_adicional" readonly="1"/>

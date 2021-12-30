@@ -85,6 +85,20 @@ class Contrato(models.Model):
 
 
 
+    numero_cuotas_pagadas = fields.Integer(
+        string='Monto Pagado', compute="calcular_cuotas_pagadas", store=True, track_visibility='onchange')
+
+
+    @api.depends('tabla_amortizacion')
+    def calcular_cuotas_pagadas(self):
+        for rec in self:
+            cuotas=rec.tabla_amortizacion.filtered(lambda l: l.saldo==0)
+            rec.numero_cuotas_pagadas=len(cuotas)
+
+
+
+
+
     def _capturar_valores_por_defecto(self):
         dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
         tasa_administrativa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa'))

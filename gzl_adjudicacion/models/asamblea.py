@@ -120,6 +120,9 @@ class GrupoAsamblea(models.Model):
     tipo_contrato = fields.Many2one(
         'tipo.contrato.adjudicado', string='Tipo de Asamblea',track_visibility='onchange')
 
+    codigo_tipo_contrato = fields.Char(related="tipo_contrato.code", string='Tipo de Asamblea' )
+
+
     integrantes_g = fields.One2many('integrante.grupo.adjudicado.asamblea.clientes','grupo_id')
 
 
@@ -148,7 +151,7 @@ class IntegrantesGrupoAsamblea(models.Model):
 
     dominio  = fields.Char(store=False, compute="_filtro_partner",readonly=True)
 
-    @api.onchange('nro_cuota_licitar')
+    #@api.onchange('nro_cuota_licitar')
     def ingresar_cuota(self):
         if self.nro_cuota_licitar==0:
             raise ValidationError("Por favor Ingrese el número de Cuotas.")
@@ -157,8 +160,10 @@ class IntegrantesGrupoAsamblea(models.Model):
 
     @api.depends('grupo_cliente')
     def _filtro_partner(self):
+        numero_cuotas_pagadas_limite =  int(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.numero_cuotas_pagadas'))
         for rec in self:
-            integrantes=rec.grupo_id.grupo_adjudicado_id.integrantes.filtered(lambda l: l.contrato_id.tipo_de_contrato.id==rec.grupo_id.tipo_contrato.id).mapped('adjudicado_id').ids
+ 
+            integrantes=rec.grupo_id.grupo_adjudicado_id.integrantes.filtered(lambda l: l.contrato_id.tipo_de_contrato.id==rec.grupo_id.tipo_contrato.id and l.contrato_id.numero_cuotas_pagadas>=numero_cuotas_pagadas_limite).mapped('adjudicado_id').ids
             integrantes_res=rec.grupo_id.integrantes_g.mapped("adjudicado_id").ids
             if len(integrantes)>0:
                 rec.dominio=json.dumps( [('id','in',integrantes),('id','not in',integrantes_res)] )
