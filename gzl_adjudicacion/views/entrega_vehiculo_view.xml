@@ -44,14 +44,6 @@
                             <field name="requisitosPoliticasCredito" widget="html" readonly="1"/> 
                     </div> -->
                     <notebook attrs="{'invisible': [('state', 'in', ('borrador','revision_documentos'))]}">
-                        <!---->
-                        <!-- div state borrador -->
-                        <page string="Entrega de Requisitos" attrs="{'invisible': [('state', 'in', ('calificador_compra','liquidacion_orden_compra','entrega_vehiculo'))]}">
-                            <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
-                            <field name="requisitosPoliticasCredito" attrs="{'readonly': [('id', '>', 0)]}"/>
-                            
-                        </page>
-                        <!-- FIN div state borrador -->
                     </notebook>
                 </sheet>
                 <!-- Attachment preview -->
