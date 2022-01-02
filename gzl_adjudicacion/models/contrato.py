@@ -56,7 +56,7 @@ class Contrato(models.Model):
     state = fields.Selection(selection=[
         ('borrador', 'Borrador'),
         ('congelar_contrato', 'Congelar Contrato'),
-        ('adjudicar', 'Adjudicar'),
+        ('adjudicar', 'Adjudicado'),
         ('adendum', 'Realizar Adendum'),
         ('desistir', 'Desistir'),
     ], string='Estado', default='borrador', track_visibility='onchange')
@@ -94,6 +94,10 @@ class Contrato(models.Model):
         for rec in self:
             cuotas=rec.tabla_amortizacion.filtered(lambda l: l.saldo==0)
             rec.numero_cuotas_pagadas=len(cuotas)
+
+
+
+
 
 
 

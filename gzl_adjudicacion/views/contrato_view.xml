@@ -16,6 +16,33 @@
     </record>
 
 
+
+
+
+    <record id="view_contrato_form_inherit_rol_supervisor" model= "ir.ui.view">
+        <field name="name">view.contrato.form.inherit</field>
+        <field name="model">contrato</field>
+        <field name="arch" type="xml">
+            <form string="Contrato">
+                <field   name="tasa_administrativa" position="attributes">
+                    <attributes name="readonly">1</attributes>
+                </field>
+
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+
+
+
+
+
+
+
     <record id="view_contrato_form" model= "ir.ui.view">
         <field name="name">view.contrato.form</field>
         <field name="model">contrato</field>
@@ -49,7 +76,7 @@
                                     <field name="saldo_a_favor_de_capital_por_adendum" />
                                     <field name="pago" />
                                     <field name="monto_financiamiento"/>
-                                    <field name="tasa_administrativa"/>
+                                    <field name="tasa_administrativa" readonly="1"/>
                                     <field name="valor_inscripcion" />
                                 </group>
                             </div>

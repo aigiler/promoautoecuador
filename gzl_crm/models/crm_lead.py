@@ -137,8 +137,7 @@ class CrmLead(models.Model):
 
     def write(self, vals):
 
-        if self.stage_id.modificacion_solo_equipo:
-            self.modificar_contrato()
+
 
 
         if vals.get('stage_id',False) and self.stage_id.restringir_movimiento:
@@ -149,7 +148,8 @@ class CrmLead(models.Model):
             if not (vals['stage_id'] in estados_habilitados):
                 raise ValidationError("No se puede cambiar a ese estado.")
 
-
+            if self.stage_id.modificacion_solo_equipo:
+                self.modificar_contrato()
 
 
         crm = super(CrmLead, self).write(vals)
@@ -193,7 +193,54 @@ class CrmLead(models.Model):
                                         'cuota_adm':l.cuota_adm,
                                     })
             
+
+        if self.stage_id.crear_reunion_en_calendar:
+
+            now=datetime.now()
+
+            id_calendar=self.crear_calendar_event('Reunión Socio {0}'.format(self.partner_id.name),now,24,'Reunión para evidenciar Calidad de la Venta')
+
+
+
+
+
+
+
+
+
+
+
         return crm
+
+
+    def crear_calendar_event(self,name,fecha,duracion,descripcion):
+
+
+        start_datetime = datetime.strptime(str(fecha), '%Y-%m-%d')
+        start_datetime= start_datetime + timedelta(hours=6)
+        stop= start_datetime + timedelta(hours=duracion)
+
+
+        asign=self.env['calendar.event']
+        x=asign.create({                
+                'name':name,
+                'start_datetime':start_datetime,
+                'duration': duracion,
+                'start':str(start_datetime),
+                'stop':str(stop),
+                'description': descripcion,
+                'allday':False,
+
+                })
+        return x.id
+
+
+
+
+
+
+
+
 
 
     def crear_contrato(self):

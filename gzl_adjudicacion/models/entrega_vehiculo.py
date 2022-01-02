@@ -523,6 +523,17 @@ class EntegaVehiculo(models.Model):
         for rec in self:
             rec.valorTotalPlan = rec.valorCuota * rec.plazoMeses
 
+
+    def setear_fecha_adjudicado(self):
+
+        contrato = self.env['contrato'].search(
+            [('cliente', '=', self.nombreSocioAdjudicado.id)], limit=1)
+        now=date.today()
+        contrato.fecha_adjudicado=now
+        contrato.state='adjudicar'
+
+
+
     @api.depends('nombreSocioAdjudicado')
     def buscar_parner(self):
         for rec in self:
