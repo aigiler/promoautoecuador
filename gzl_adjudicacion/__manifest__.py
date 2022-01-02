@@ -1,5 +1,6 @@
 {
     "name" : "gzl_adjudicacion",
+    'category': 'Adjudicaciones',
     "version" : "0.1",
     'depends' :['base','mail','portal','base_setup'],
     "author" : "Yadira Quimis Gizlo",
