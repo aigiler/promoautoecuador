@@ -49,7 +49,7 @@ class EntegaVehiculo(models.Model):
     fechaNacimientoAdj = fields.Date(related="nombreSocioAdjudicado.fecha_nacimiento", string='Fecha de Nacimiento')
     vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía')
     estadoCivilAdj = fields.Selection(related="nombreSocioAdjudicado.estado_civil")
-    edadAdjudicado = fields.Integer(compute='calcular_edad', string="Edad")
+    edadAdjudicado = fields.Integer(compute='calcular_edad', string="Edad", readonly=True, store=True)
     cargasFamiliares = fields.Integer(string="Cargas Fam.")
     # datos del conyuge
     nombreConyuge = fields.Char(string="Nombre del Conyuge")
@@ -525,7 +525,6 @@ class EntegaVehiculo(models.Model):
 
 
     def setear_fecha_adjudicado(self):
-
         contrato = self.env['contrato'].search(
             [('cliente', '=', self.nombreSocioAdjudicado.id)], limit=1)
         now=date.today()
@@ -533,7 +532,7 @@ class EntegaVehiculo(models.Model):
         contrato.state='adjudicar'
 
 
-
+    @api.onchange('nombreSocioAdjudicado')
     @api.depends('nombreSocioAdjudicado')
     def buscar_parner(self):
         for rec in self:
@@ -545,8 +544,8 @@ class EntegaVehiculo(models.Model):
             rec.fechaAdj = contrato.fecha_adjudicado
 
             rec.plazoMeses = contrato.plazo_meses.numero
-
-    
+   
+    @api.onchange('nombreSocioAdjudicado')
     @api.depends('nombreSocioAdjudicado')
     def set_campos_cliente_informe_credito(self):
         for rec in self:
@@ -554,8 +553,8 @@ class EntegaVehiculo(models.Model):
                 contrato = self.env['contrato'].search(
                 [('cliente', '=', rec.nombreSocioAdjudicado.id)], limit=1)
                 rec.clienteContrato = contrato
-                rec.cedulaContrato = rec.vatAdjudicado
-                rec.codClienteContrado = rec.codigoAdjudicado
+                rec.cedulaContrato = contrato.vatAdjudicado
+                rec.codClienteContrado = contrato.codigoAdjudicado
             else:
                 rec.clienteContrato = ''
                 rec.cedulaContrato = ''
@@ -569,6 +568,7 @@ class EntegaVehiculo(models.Model):
     #             rec.vehiculoValor + rec.montoMueblesEnseres + rec.inventarios
     #         rec.totalActivosAdj = totalActivos
     
+    @api.onchange('fechaNacimientoAdj')    
     @api.depends('fechaNacimientoAdj')
     def calcular_edad(self):
         edad = 0
