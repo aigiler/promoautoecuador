@@ -34,9 +34,13 @@
                     <div states="inicio,borrador,revision_documentos">
                         <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
                         <div class="col-xs-12 col-md-12">
-                            <field name="requisitosPoliticasCredito" widget="html" nolabel="1" force_save="1" readonly="1"/>
+
                         </div>
                     </div>
+                    <page string="Entrega de Requisitos" attrs="{'readonly':[('state', 'in', ('inicio, 'borrador','revision_documentos') )]}">
+                        <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
+                        <field name="requisitosPoliticasCredito" widget="html" nolabel="1" force_save="1" readonly="1"/>
+                    </page>
                 </sheet>
                 <!-- Attachment preview -->
                 <div class="o_attachment_preview" />
