@@ -63,7 +63,7 @@
                     <field name="state" widget="statusbar" statusbar_visible="borrador,congelar_contrato,adjudicar,adendum,desistir"/>
                 </header>
 
-                    <div states="borrador,congelar_contrato,adjudicar,adendum,desistir">
+                    <div >
                         <div class="oe_title">
                             <h1>
                                 <field name="secuencia" class="oe_inline" readonly="1"/>
@@ -111,7 +111,7 @@
 
                         </div>
 
-                        <h1 string="Estado de Cuenta de Aportes"></h1>
+                        <separator string="Estado de Cuenta de Aportes"></separator>
 
                         <field name="estado_de_cuenta_ids" nolabel="1">
                             <tree string="Estado de Cuenta" editable="bottom" limit="100" delete="0">
