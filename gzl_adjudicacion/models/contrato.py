@@ -157,7 +157,7 @@ class Contrato(models.Model):
         self.tabla_amortizacion=()
 
         for rec in self:
-            for i in range(1, int(rec.plazo_meses.numero)+1):
+            for i in range(0, int(rec.plazo_meses.numero)):
                 cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses.numero)
                 cuota_adm = rec.monto_financiamiento *tasa_administrativa / 100 / 12
                 iva = cuota_adm * 0.12
