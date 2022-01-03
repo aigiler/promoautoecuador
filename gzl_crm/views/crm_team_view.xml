@@ -13,6 +13,14 @@
 
                 
             </xpath>
+            <xpath expr="//field[@name='company_id']" position="after">
+
+                <field name="correo" />
+
+                
+            </xpath>
+
+
         </field>
     </record>
 
