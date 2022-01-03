@@ -55,7 +55,7 @@
                     <button name="reactivar_contrato_congelado" string="Reactivar Contrato " states="congelar_contrato" type="object" class="oe_highlight"/>
 
 
-                    <button name="cambio_estado_boton_desistir" string="Desistir" type="object" states="inactivar"  states="adendum" class="oe_highlight"/>
+                    <button name="cambio_estado_boton_desistir" string="Desistir" type="object" states="inactivar"  class="oe_highlight"/>
                     
                     <button name="detalle_tabla_amortizacion" string="Generar estado cuenta contrato" type="object" class="oe_highlight"/>
 
