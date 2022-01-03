@@ -107,13 +107,13 @@ class Contrato(models.Model):
 
 
 
-    def _capturar_valores_por_defecto_tasa_administrativa(self):
+    def capturar_valores_por_defecto_tasa_administrativa(self):
         tasa_administrativa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa'))
 
         return tasa_administrativa
 
 
-    def _capturar_valores_por_defecto_dia:(self):
+    def capturar_valores_por_defecto_dia(self):
         dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
 
         return dia_corte
