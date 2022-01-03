@@ -395,6 +395,7 @@ class Contrato(models.Model):
         contador=1
         for detalle in nuevo_detalle_estado_cuenta_pendiente:
             detalle.fecha=tabla[0].fecha +relativedelta(months=contador)
+            detalle.numero_cuota=tabla[0].numero_cuota +contador
             contador+=1
 
 
@@ -417,6 +418,82 @@ class Contrato(models.Model):
 
 
 
+    def pagar_cuotas_por_adelantado(self):
+        view_id = self.env.ref('gzl_adjudicacion.wizard_adelantar_cuotas_form').id
+
+
+        return {'type': 'ir.actions.act_window',
+                'name': 'Validar Pago',
+                'res_model': 'wizard.adelantar.cuotas',
+                'target': 'new',
+                'view_mode': 'form',
+                'views': [[view_id, 'form']],
+                'context': {
+                    'default_contrato_id': self.id,
+                }
+        }
+
+
+    def modificar_contrato_por_rubro_rastreo(self,):
+
+
+        numero_cuota=12
+        month=month
+        year=year
+
+        obj_detalle=self.tabla_amortizacion.filtered(lambda l: l.fecha.year==year and l.fecha.month==month)
+
+
+        contador=0
+
+        for l in self.tabla_amortizacion.filtered(lambda l: l.numero_cuota>=obj_detalle.numero_cuota)
+            l.rastreo=self.rastreo/12
+
+            contador+=1
+            if contador==12:
+                break
+
+
+
+    def modificar_contrato_por_rubro_seguro(self,):
+
+
+        numero_cuota=12
+        month=month
+        year=year
+
+        obj_detalle=self.tabla_amortizacion.filtered(lambda l: l.fecha.year==year and l.fecha.month==month)
+
+
+        contador=0
+
+        for l in self.tabla_amortizacion.filtered(lambda l: l.numero_cuota>=obj_detalle.numero_cuota)
+            l.seguro=self.seguro/12
+
+            contador+=1
+            if contador==12:
+                break
+
+
+
+    def modificar_contrato_por_rubro_otros(self,):
+
+
+        numero_cuota=12
+        month=month
+        year=year
+
+        obj_detalle=self.tabla_amortizacion.filtered(lambda l: l.fecha.year==year and l.fecha.month==month)
+
+
+        contador=0
+
+        for l in self.tabla_amortizacion.filtered(lambda l: l.numero_cuota>=obj_detalle.numero_cuota)
+            l.otro=self.otro/12
+
+            contador+=1
+            if contador==12:
+                break
 
 
 
@@ -474,7 +551,7 @@ class ContratoEstadoCuenta(models.Model):
 
     
     def pagar_cuota(self):
-        view_id = self.env.ref('gzl_crm.wizard_pago_cuota_amortizaciones').id
+        view_id = self.env.ref('gzl_adjudicacion.wizard_pago_cuota_amortizaciones_contrato').id
 
         hoy= date.today()
 
