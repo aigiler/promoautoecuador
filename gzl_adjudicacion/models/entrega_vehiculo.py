@@ -533,7 +533,7 @@ class EntegaVehiculo(models.Model):
         contrato.state='adjudicar'
 
 
-
+    @api.onchange('nombreSocioAdjudicado')
     @api.depends('nombreSocioAdjudicado')
     def buscar_parner(self):
         for rec in self:
@@ -545,7 +545,7 @@ class EntegaVehiculo(models.Model):
             rec.fechaAdj = contrato.fecha_adjudicado
 
             rec.plazoMeses = contrato.plazo_meses.numero
-
+   
     @api.onchange('nombreSocioAdjudicado')
     @api.depends('nombreSocioAdjudicado')
     def set_campos_cliente_informe_credito(self):
