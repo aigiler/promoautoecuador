@@ -37,10 +37,13 @@
 
                         </div>
                     </div>
-                    <page string="Entrega de Requisitos" attrs="{'readonly':[('state', 'in', ('inicio, 'borrador','revision_documentos') )]}">
-                        <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
-                        <field name="requisitosPoliticasCredito" widget="html" nolabel="1" force_save="1" readonly="1"/>
-                    </page>
+                    <notebook>
+                        <page string="Entrega de Requisitos" attrs="{'readonly':[('state', 'in', ('inicio, 'borrador','revision_documentos') )]}">
+                            <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
+                            <field name="requisitosPoliticasCredito" widget="html" nolabel="1" force_save="1" readonly="1"/>
+                        </page>
+                    </notebook>
+
                 </sheet>
                 <!-- Attachment preview -->
                 <div class="o_attachment_preview" />
