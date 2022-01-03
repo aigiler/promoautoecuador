@@ -52,7 +52,7 @@ class Contrato(models.Model):
 
 
     cuota_adm = fields.Monetary(
-        string='Cuota Administrativa', compute='calcular_valores_contrato', currency_field='currency_id', track_visibility='onchange')
+        string='Cuota Administrativa',store=True, compute='calcular_valores_contrato', currency_field='currency_id', track_visibility='onchange')
     factura_inscripcion = fields.Many2one(
         'account.move', string='Factura Incripción', track_visibility='onchange')
     active = fields.Boolean(string='Activo', default=True)
@@ -75,9 +75,9 @@ class Contrato(models.Model):
     fecha_inicio_pago = fields.Date(
         string='Fecha Inicio de Pago', compute='calcular_fecha_pago', track_visibility='onchange')
     cuota_capital = fields.Monetary(
-        string='Cuota Capital', currency_field='currency_id', compute='calcular_valores_contrato', track_visibility='onchange')
+        string='Cuota Capital', currency_field='currency_id', compute='calcular_valores_contrato', track_visibility='onchange',store=True)
     iva_administrativo = fields.Monetary(
-        string='Iva Administrativo',  compute='calcular_valores_contrato',currency_field='currency_id', track_visibility='onchange')
+        string='Iva Administrativo',  compute='calcular_valores_contrato',currency_field='currency_id', track_visibility='onchange',store=True)
     estado_de_cuenta_ids = fields.One2many(
         'contrato.estado.cuenta', 'contrato_id', track_visibility='onchange')
     fecha_adjudicado = fields.Date(
@@ -143,7 +143,7 @@ class Contrato(models.Model):
 
             if int(rec.plazo_meses.numero):
                 rec.cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses.numero)
-                cuotaAdministrativa= rec.monto_financiamiento*((tasa_administrativa/100)/12)
+                cuotaAdministrativa= rec.monto_financiamiento*((rec.tasa_administrativa/100)/12)
                 rec.iva_administrativo = cuotaAdministrativa * 0.12
                 rec.cuota_adm = cuotaAdministrativa
 
@@ -151,13 +151,13 @@ class Contrato(models.Model):
 
 
     def detalle_tabla_amortizacion(self):
-        dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
-        tasa_administrativa = float(  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa'))
+        dia_corte =  self.dia_corte
+        tasa_administrativa = self.tasa_administrativa
 
         self.tabla_amortizacion=()
 
         for rec in self:
-            for i in range(1, int(rec.plazo_meses.numero)+1):
+            for i in range(0, int(rec.plazo_meses.numero)):
                 cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses.numero)
                 cuota_adm = rec.monto_financiamiento *tasa_administrativa / 100 / 12
                 iva = cuota_adm * 0.12
@@ -165,7 +165,7 @@ class Contrato(models.Model):
                 cuota_administrativa_neto= cuota_adm + iva
                 saldo = cuota_capital+cuota_adm+iva
                 self.env['contrato.estado.cuenta'].create({
-                                                    'numero_cuota':i,
+                                                    'numero_cuota':i+1,
                                                     'fecha':rec.fecha_inicio_pago + relativedelta(months=i),
                                                     'cuota_capital':cuota_capital,
                                                     'cuota_adm':cuota_adm,

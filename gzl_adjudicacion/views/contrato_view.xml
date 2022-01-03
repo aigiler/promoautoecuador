@@ -129,7 +129,7 @@
                                 <field name="otro" sum="otro" readonly="1"/>
                                 <field name="monto_pagado" sum="monto_pagado" readonly="1"/>
                                 <field name="saldo" sum="saldo" readonly="1"/>
-                                <field name="estado_pago" readonly="1" readonly="1"/>
+                                <field name="estado_pago"   readonly="1"/>
                                 <button name="pagar_cuota" type="object" string="Pagar"/>
                             </tree>
                         </field>
