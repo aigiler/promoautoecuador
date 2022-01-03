@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <notebook>
-                        <page string="Entrega de Requisitos" attrs="{'readonly':[('state', 'in', ('inicio, 'borrador','revision_documentos') )]}">
+                        <page string="Entrega de Requisitos" attrs="{'readonly':[('state', 'in', ('inicio', 'borrador','revision_documentos') )]}">
                             <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
                             <field name="requisitosPoliticasCredito" widget="html" nolabel="1" force_save="1" readonly="1"/>
                         </page>
