@@ -42,7 +42,7 @@
 
 
 
-                    'wizard/wizard_pago_contrato.xml',
+                    'wizard/wizard_pago_contrato_view.xml',
                     ],
     
     'installable': True,

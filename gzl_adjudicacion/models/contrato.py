@@ -57,6 +57,7 @@ class Contrato(models.Model):
     state = fields.Selection(selection=[
         ('borrador', 'Borrador'),
         ('activo', 'Activo'),
+        ('inactivo', 'Inactivo'),
         ('congelar_contrato', 'Congelar Contrato'),
         ('adjudicar', 'Adjudicado'),
         ('adendum', 'Realizar Adendum'),
@@ -85,6 +86,9 @@ class Contrato(models.Model):
 
     tabla_amortizacion = fields.One2many(
         'contrato.estado.cuenta', 'contrato_id', track_visibility='onchange')
+
+    congelar_contrato_ids = fields.One2many(
+        'contrato.congelamiento', 'contrato_id', track_visibility='onchange')
 
 
 
@@ -208,13 +212,16 @@ class Contrato(models.Model):
         self.dia_corte = dia_corte
 
     def cambio_estado_boton_borrador(self):
-        return self.write({"state": "congelar_contrato"})
+        return self.write({"state": "activo"})
 
-    def cambio_estado_congelar_contrato(self):
-        return self.write({"state": "adjudicar"})
+
 
     def cambio_estado_boton_adendum(self):
         return self.write({"state": "adendum"})
+
+    def cambio_estado_boton_adjudicar(self):
+        return self.write({"state": "adjudicar"})
+
 
     def cambio_estado_boton_desistir(self):
         return self.write({"state": "desistir"})
@@ -319,9 +326,19 @@ class Contrato(models.Model):
             if len(mes_estado_cuenta)>0:
                 self.envio_correos_plantilla('email_contrato_notificacion_de_pago',contrato.id)
 
+    def cambio_estado_congelar_contrato(self):
+
+        self.state='congelar_contrato'
+
+        tabla=self.contrato.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pendiente').sorted(key=lambda r: r.fecha)
+
+
+        dct={'contrato_id':self.id,'fecha':hoy}
+        self.env['contrato.congelamiento'].create(dct)
 
 
 
+    def reactivar_contrato_congelado(self):
 
 
 
@@ -350,6 +367,17 @@ class Contrato(models.Model):
 
 
 
+
+
+
+
+
+class ContratoCongelamiento(models.Model):
+    _name = 'contrato.congelamiento'
+    _description = 'Bitacora de Congelamiento'
+
+    contrato_id = fields.Many2one('contrato')
+    fecha = fields.Date(String='Fecha Congelamiento')
 
 
 
@@ -391,6 +419,16 @@ class ContratoEstadoCuenta(models.Model):
     
     def pagar_cuota(self):
         view_id = self.env.ref('gzl_crm.wizard_pago_cuota_amortizaciones').id
+
+        hoy= date.today()
+
+        pagos_pendientes=self.contrato_id.filtered(lambda l: l.estado_pago=='pendiente' and l.fecha_pago<self.fecha)
+        if len(pagos_pendientes)>0:
+            raise ValidationError('Tengo pagos pendientes a la fecha, por favor realizar los pagos pendientes.')
+
+
+
+
         return {'type': 'ir.actions.act_window',
                 'name': 'Validar Pago',
                 'res_model': 'wizard.pago.cuota.amortizacion.contrato',

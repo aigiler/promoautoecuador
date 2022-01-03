@@ -50,9 +50,12 @@
             <form string="Contrato">
                 <header>
                     <button name="cambio_estado_boton_borrador" string="Borrador" type="object" states="borrador" class="oe_highlight"/>
-                    <button name="cambio_estado_congelar_contrato" string="Congelar Contrato" states="congelar_contrato" type="object" class="oe_highlight"/>
-                    <button name="cambio_estado_boton_adendum" string="Adjudicar" type="object" states="adjudicar" class="oe_highlight"/>
-                    <button name="cambio_estado_boton_desistir" string="Cerrado" type="object" states="adendum" class="oe_highlight"/>
+
+                    <button name="cambio_estado_congelar_contrato" string="Congelar " states="inactivar" type="object" class="oe_highlight"/>
+                    <button name="reactivar_contrato_congelado" string="Reactivar Contrato " states="congelar_contrato" type="object" class="oe_highlight"/>
+
+
+                    <button name="cambio_estado_boton_desistir" string="Desistir" type="object" states="inactivar"  states="adendum" class="oe_highlight"/>
                     
                     <button name="detalle_tabla_amortizacion" string="Generar estado cuenta contrato" type="object" class="oe_highlight"/>
 
