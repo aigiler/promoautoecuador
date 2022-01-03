@@ -14,12 +14,14 @@ class Team(models.Model):
 
 
     correos = fields.Char( string='Correos' )
-    member_ids = fields.Many2many('res.users', string='Miembros del Equipo' )
+    miembros = fields.Many2many('res.users', string='Miembros del Equipo' )
 
     @api.onchange("member_ids")
     def actualizar_correos_team(self,):
         correos=self.member_ids.mapped('email')
-        correo=""
+        correoCadena=""
         for correo in correos:
-            correos=correos+corr
+            correoCadena=correoCadena+correo+','
+        correoCadena=correoCadena.strip(',')
+        self.correos=correoCadena
 
