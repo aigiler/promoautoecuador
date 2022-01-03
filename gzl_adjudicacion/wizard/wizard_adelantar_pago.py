@@ -35,7 +35,7 @@ class WizardAdelantarCuotas(models.TransientModel):
 
         tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.id),('estado_pago','=','pendiente')],order='fecha desc')
 
-        for detalle in tabla[:numero_cuotas]:
+        for detalle in tabla[:self.numero_cuotas]:
             dct={
 
             'tabla_amortizacion_id':detalle.id,
