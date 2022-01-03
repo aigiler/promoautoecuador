@@ -112,13 +112,13 @@
                             <div class="col-xs-12 col-sm-12">
                                 <tbody>
                                     <tr>
-                                        <td style="width:80%">
+                                        <td class="col-xs-12 col-sm-7">
                                             <label for="scoreBuroCredito"/>
                                         </td>
-                                        <td style="width:30%">
+                                        <td class="col-xs-12 col-sm-4">
                                             <text>Score</text>
                                         </td>
-                                        <td style="width:20%"> 
+                                        <td class="col-xs-12 col-sm-3"> 
                                             <field name="scoreBuroCredito" nolabel="1"/>
                                         </td>
                                     </tr>
