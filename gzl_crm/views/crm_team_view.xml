@@ -15,7 +15,7 @@
             </xpath>
             <xpath expr="//field[@name='company_id']" position="after">
 
-                <field name="correo" />
+                <field name="correos" />
 
                 
             </xpath>

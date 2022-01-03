@@ -23,5 +23,5 @@ class Team(models.Model):
         for correo in correos:
             correoCadena=correoCadena+correo+','
         correoCadena=correoCadena.strip(',')
-        self.correo=correoCadena
+        self.correos=correoCadena
 
