@@ -40,11 +40,13 @@
                             <separator class="text-center" string="ANTECEDENTES DEL ASOCIADO"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
-                                    <field name="nombreSocioAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                    <group>
+                                        <field name="nombreSocioAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
                                     <group>
-                                        <field name="vatAdjudicado" options="{'no_create': True, 'no_open': True}" attrs="{'readonly':[('state', 'in', ('informe_credito_cobranza') )]}"/>
+                                        <field name="vatAdjudicado" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' attrs="{'readonly':[('state', 'in', ('informe_credito_cobranza'))]}"/>
                                         <field name="fechaNacimientoAdj" options="{'no_create': True, 'no_open': True}"/>
                                         <field name="estadoCivilAdj" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
