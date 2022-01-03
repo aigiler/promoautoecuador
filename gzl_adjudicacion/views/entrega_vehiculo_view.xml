@@ -31,16 +31,106 @@
 
                 <!-- sheet principal-->
                 <sheet>
-                    <div states="inicio,borrador,revision_documentos">
-                        <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
-                        <div class="col-xs-12 col-md-12">
-
-                        </div>
-                    </div>
                     <notebook>
                         <page string="Entrega de Requisitos" attrs="{'readonly':[('state', 'in', ('inicio', 'borrador','revision_documentos') )]}">
                             <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
                             <field name="requisitosPoliticasCredito" widget="html" nolabel="1" force_save="1" readonly="1"/>
+                        </page>
+                        <page string="Informe de Credito y Cobranza" attrs="{'readonly': [('id', '!=', False)]}">
+                            <separator class="text-center" string="ANTECEDENTES DEL ASOCIADO"/>
+                            <div class="row" style="border: 1px solid black;">
+                                <div class="col-xs-12 col-md-12">
+                                    <group>
+                                        <field name="nombreSocioAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                </div>
+                                <div class="col-xs-12 col-sm-4">
+                                    <group>
+                                        <field name="vatAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="fechaNacimientoAdj" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="estadoCivilAdj" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                </div>
+                                <div class="col-xs-4">
+                                    <group>
+                                        <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="edadAdjudicado" string="Edad"/>
+                                        <field name="cargasFamiliares" />
+                                    </group>
+                                </div>
+                            </div>
+                            <separator class="text-center" string="DATOS DEL CONYUGE"/>
+                            <div class="row" style="border: 1px solid black;">
+                                <div class="col-xs-12 col-md-12">
+                                    <group>
+                                        <field name="nombreConyuge" string="Nombre del Cónyuge"/>
+                                    </group>
+                                </div>
+                                <div class="col-xs-12 col-sm-4">
+                                    <group>
+                                        <field name="vatConyuge" string="Cedula de Ciudadanía"/>
+                                        <field name="estadoCivilConyuge" string="Estado Civil"/>
+                                    </group>
+                                </div>
+                                <div class="col-xs-4">
+                                    <group>
+                                        <field name="fechaNacimientoConyuge" string="Fecha de Nacimiento"/>
+                                        <field name="edadConyuge" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                </div>
+                            </div>
+                            <separator class="text-center fw-bold" string="DATOS DOMICIARIOS"/>
+                            <div class="row" style="border: 1px solid black;">
+                                <field name="referenciaDomiciliaria" widget="pad" string='Referencias indican:'/>
+                            </div>
+                            <separator class="text-center fw-bold" string="DATOS LABORALES"/>
+                            <div class="row" style="border: 1px solid black;">
+                                <field name="referenciasLaborales" widget="pad" string='Referencias indican:'/>
+                            </div>
+                            <separator class="text-center" string="PATRIMONIO"/>
+                            <div class="row" style="border: 1px solid black;">
+                                <div class="col-xs-12 col-sm-8">
+                                    <group>
+                                        <field name="montoAhorroInversiones" nolabel="1">
+                                            <tree create='0' delete='0' editable='top'>
+                                                <field name="patrimonio_id" readonly='1'/>
+                                                <field name="valor" sum="valor" />
+                                            </tree>
+                                        </field>
+                                    </group>
+                                </div>
+                                <div class="col-xs-4">
+                                    <group>
+                                        <field name="institucionFinanciera"/>
+                                        <field name="direccion"/>
+                                        <field name="direccion1"/>
+                                        <field name="placa"/>
+                                    </group>
+                                </div>
+                            </div>
+                            <separator/>
+                            <separator class="text-center" string="REVISION EN PAGINAS DE CONTROL"/>
+                            <div class="col-xs-12 col-sm-8">
+                                <group>
+
+                                    <field name="paginasDeControl" nolabel="1">
+                                        <tree create='0' delete='0' editable='top'>
+                                            <field name="pagina_id" readonly='1'/>
+                                            <field name="descripcion" readonly='1'/>
+                                            <field name="pagina"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </div>
+                            <separator/>
+                            <separator class="text-center" string="OBSERVACIONES"/>
+                            <div class="row">
+                                <field name="observaciones" widget="pad" string='Referencias indican:'/>
+                            </div>
+                            <separator/>
+                            <separator class="text-center" string="COMITÉ DE APROBACION"/>
+                            <div class="row">
+                            </div>
                         </page>
                     </notebook>
 
