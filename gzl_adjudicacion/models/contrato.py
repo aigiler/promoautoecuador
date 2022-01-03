@@ -165,12 +165,14 @@ class Contrato(models.Model):
                 cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses.numero)
                 cuota_adm = cuota_capital *tasa_administrativa/100
                 iva = cuota_adm * 0.12
+
+                cuota_administrativa_neto= cuota_adm + iva
                 saldo = cuota_capital+cuota_adm+iva
                 self.env['contrato.estado.cuenta'].create({
                                                     'numero_cuota':i,
                                                     'fecha':rec.fecha_inicio_pago + relativedelta(months=i),
                                                     'cuota_capital':cuota_capital,
-                                                    'cuota_adm':cuota_adm,
+                                                    'cuota_adm':cuota_administrativa_neto,
                                                     'saldo':saldo,
                                                     'contrato_id':self.id,                                                    
                                                         })
