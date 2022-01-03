@@ -330,7 +330,6 @@ class Contrato(models.Model):
 
 
 
-    @api.multi
     def envio_correos_plantilla(self, plantilla,id_envio):
 
         try:
