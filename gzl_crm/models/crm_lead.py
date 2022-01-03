@@ -88,7 +88,7 @@ class CrmLead(models.Model):
 
         usuario_logeado=self.env.user.id
 
-        usuarios=self.stage_id.team_id.member_ids.ids
+        usuarios=self.stage_id.team_id.miembros.ids
 
 
         if not usuario_logeado in usuarios:
