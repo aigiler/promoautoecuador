@@ -123,33 +123,28 @@ class Contrato(models.Model):
     @api.depends('pago')
     def calcular_fecha_pago(self):
         for rec in self:
-            rec.dia_corte = 5
             if rec.pago == 'mes_actual':
                 anio = str(datetime.today().year)
                 mes = str(datetime.today().month)
-                fechaPago =  anio+"-"+mes+"-05" 
+                fechaPago =  anio+"-"+mes+"-{0}".format(self.dia_corte.zfill(2)) 
                 rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%Y-%m-%d')
             elif rec.pago == 'siguiente_mes':
                 fechaMesSeguiente = datetime.today() + relativedelta(months=1)
                 mesSgte=str(fechaMesSeguiente.month)
                 anioSgte=str(fechaMesSeguiente.year)
-                fechaPago = anioSgte+"-"+mesSgte+"-05"
+                fechaPago = anioSgte+"-"+mesSgte+"-{0}".format(self.dia_corte.zfill(2)) 
                 rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%Y-%m-%d')
             else:
                 rec.fecha_inicio_pago =''
     
     @api.depends('plazo_meses', 'monto_financiamiento')
     def calcular_valores_contrato(self):
-        dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
-        tasa_administrativa = float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa'))
         for rec in self:
 
-
-            rec.dia_corte = dia_corte
             if int(rec.plazo_meses.numero):
                 rec.cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses.numero)
                 cuotaAdministrativa= rec.monto_financiamiento*((tasa_administrativa/100)/12)
-                rec.iva_administrativo = cuotaAdministrativa * 1.12
+                rec.iva_administrativo = cuotaAdministrativa * 0.12
                 rec.cuota_adm = cuotaAdministrativa
 
             
@@ -214,12 +209,7 @@ class Contrato(models.Model):
                 list_res.append(l['id'])
             return {'domain': {'provincias': [('id', 'in', list_res)]}}
 
-    @api.constrains('cliente', 'secuencia')
-    def constrains_valor_por_defecto(self):
-        dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
-        tasa_administrativa =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa')
-        self.tasa_administrativa = float( tasa_administrativa)
-        self.dia_corte = dia_corte
+
 
     def cambio_estado_boton_borrador(self):
         return self.write({"state": "activo"})
@@ -236,18 +226,6 @@ class Contrato(models.Model):
     def cambio_estado_boton_desistir(self):
         return self.write({"state": "desistir"})
 
-
-
-
-
-
-    @api.constrains('cliente')
-    def constrains_valor_por_defecto(self):
-        dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
-        tasa_administrativa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa'))
-
-        self.tasa_administrativa = tasa_administrativa
-        self.dia_corte = dia_corte
 
 
 
