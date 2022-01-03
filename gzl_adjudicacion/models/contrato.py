@@ -6,6 +6,8 @@ import datetime
 from odoo.exceptions import UserError, ValidationError
 from datetime import datetime, timedelta, date
 from dateutil.parser import parse
+import calendar
+from dateutil.relativedelta import relativedelta
 
 
 class Contrato(models.Model):
@@ -316,6 +318,33 @@ class Contrato(models.Model):
 
 
 
+
+
+
+    def job_para_inactivar_contrato(self, ):
+
+        hoy=date.today()
+        dateMonthStart="%s-%s-01" % (hoy.year, hoy.mes)
+        dateMonthStart=datetime.strptime(dateMonthStart, '%Y-%m-%d') 
+
+
+        contratos=self.env['contrato'].search([('state','in',['activo'])])
+
+        for contrato in contratos:
+                 
+            lineas_pendientes=contrato.tabla_amortizacion.filtered(lambda l: l.fecha<dateMonthStart and estado_pago=='pendiente')
+            if len(lineas_pendientes)>=3:
+                contrato.state='inactivo'
+
+
+
+
+
+
+
+
+
+
     def job_enviar_correos_contratos_pago_por_vencer(self, ):
 
         hoy=date.today()
@@ -330,17 +359,43 @@ class Contrato(models.Model):
 
         self.state='congelar_contrato'
 
-        tabla=self.contrato.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pendiente').sorted(key=lambda r: r.fecha)
+        tabla=self.env['contrato.estado.cuenta'].search([('estado_pago','=','pendiente'),('contrato_id','=',self.id)],order='fecha asc')
+
+        if len(tabla)>0:
+            dct={'contrato_id':self.id,'fecha':tabla[0].fecha}
+            self.env['contrato.congelamiento'].create(dct)
 
 
-        dct={'contrato_id':self.id,'fecha':hoy}
-        self.env['contrato.congelamiento'].create(dct)
+
+    def reactivar_contrato_congelado(self):
+        obj_fecha_congelamiento=self.env['contrato.congelamiento'].search([('contrato_id','=',self.id),('pendiente','=',True)],limit=1)
+
+        hoy=date.today()
+
+        fecha_reactivacion="%s-%s-%s" % (hoy.year, hoy.month,(calendar.monthrange(hoy.year, hoy.month)[1]))
+        fecha_reactivacion = datetime.strptime(fecha_fin_tarea, '%y-%m-%d')
+
+        detalle_estado_cuenta_pendiente=self.contrato.tabla_amortizacion.filtered(lambda l:  l.fecha>=obj_fecha_congelamiento.fecha  and l.fecha<fecha_reactivacion)
+
+        nuevo_detalle_estado_cuenta_pendiente=detalle_estado_cuenta_pendiente.copy()
+
+        for detalle in detalle_estado_cuenta_pendiente:
+
+            detalle.cuota_capital=0
+            detalle.cuota_adm=0
+            detalle.seguro=0
+            detalle.rastreo=0
+            detalle.otro=0
+            detalle.monto_pagado=0
+            detalle.saldo=0
+
+        tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.id)],order='fecha desc')
 
 
-
-   # def reactivar_contrato_congelado(self):
-
-
+        contador=1
+        for detalle in nuevo_detalle_estado_cuenta_pendiente:
+            detalle.fecha=tabla[0].fecha +relativedelta(months=contador)
+            contador+=1
 
 
 
@@ -378,6 +433,7 @@ class ContratoCongelamiento(models.Model):
 
     contrato_id = fields.Many2one('contrato')
     fecha = fields.Date(String='Fecha Congelamiento')
+    pendiente = fields.Boolean(String='Pendiente de Activación')
 
 
 
@@ -422,8 +478,8 @@ class ContratoEstadoCuenta(models.Model):
 
         hoy= date.today()
 
-        pagos_pendientes=self.contrato_id.filtered(lambda l: l.estado_pago=='pendiente' and l.fecha_pago<self.fecha)
-        if len(pagos_pendientes)>0:
+        pagos_pendientes=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pendiente' and l.fecha_pago<self.fecha)
+        if len(pagos_pendientes)>0 :
             raise ValidationError('Tengo pagos pendientes a la fecha, por favor realizar los pagos pendientes.')
 
 
