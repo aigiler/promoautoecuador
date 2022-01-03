@@ -546,7 +546,7 @@ class EntegaVehiculo(models.Model):
 
             rec.plazoMeses = contrato.plazo_meses.numero
 
-
+    @api.multi
     @api.depends('nombreSocioAdjudicado')
     def set_campos_cliente_informe_credito(self):
         for rec in self:
@@ -568,7 +568,7 @@ class EntegaVehiculo(models.Model):
     #         totalActivos = rec.montoAhorroInversiones + rec.casaValor + rec.terrenoValor + \
     #             rec.vehiculoValor + rec.montoMueblesEnseres + rec.inventarios
     #         rec.totalActivosAdj = totalActivos
-
+    @api.multi
     @api.depends('fechaNacimientoAdj')
     def calcular_edad(self):
         edad = 0
