@@ -174,48 +174,7 @@
                                 <div class="col-xs-4 col-sm-9">
                                     <table style=" border-collapse: collapse;width:100%">
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    <label for="valorTotalPlan"/>
-                                                </td>
-                                                <td>
-                                                    <field name="valorTotalPlan" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="plazoMeses" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
- Cuotas</td>
-                                                <td>
-                                                    <field name="porcentajeTotal" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-%</td>
-                                            </tr>
-                                            <tr class="font-weight-bold">
-                                                <td>
-                                                    <label for="montoCuotasCanceladas" />
-                                                </td>
-                                                <td>
-                                                    <field name="montoCuotasCanceladas" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="cuotasCanceladas" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
- Cuotas</td>
-                                                <td>
-                                                    <field name="porcentajeCancelado" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-%</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label for="montoCuotasPendientes" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="montoCuotasPendientes" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="cuotasPendientes" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
- Cuotas</td>
-                                                <td>
-                                                    <field name="porcentajePendiente" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-%</td>
-                                            </tr>
+                                           
                                         </tbody>
                                     </table>
                                 </div>
@@ -230,28 +189,7 @@
                                 <div class="col-xs-12 col-sm-9">
                                     <table style=" border-collapse: collapse; width:90%">
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    <label for="valorDelBien"/>
-                                                </td>
-                                                <td>
-                                                    <field name="valorDelBien" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td style="width:10%"></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr class="font-weight-bold">
-                                                <td>
-                                                    <label for="saldoPlan"/>
-                                                </td>
-                                                <td>
-                                                    <field name="saldoPlan" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td style="width:10%"></td>
-                                                <td>
-                                                    <field name="porcentajeSaldoPlan" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-%</td>
-                                            </tr>
+                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -266,48 +204,7 @@
                                 <div class="col-xs-12 col-sm-9">
                                     <table style=" border-collapse: collapse; width:100%">
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    <label for="ingresosFamiliares" string="Ingresos familiares"/>
-                                                </td>
-                                                <td>
-                                                    <field name="ingresosFamiliares" string="Ingresos familiares"/>
-                                                </td>
-                                                <td>
-                                                    <field name="porcentajeIngresos" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <text>Comprometido</text>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label for="gastosFamiliares" string="Gastos familiares"/>
-                                                </td>
-                                                <td>
-                                                    <field name="gastosFamiliares" string ="Gastos familiares" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="porcentajeGastos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <text>Cuota Plan</text>
-                                                </td>
-                                            </tr>
-                                            <tr class="font-weight-bold">
-                                                <td>
-                                                    <label for="disponibilidad" string="Disponibilidad" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td style="border-top: 0.5px solid">
-                                                    <field name="disponibilidad" string="Disponibilidad" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="porcentajeDisponibilidad" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="porcentajeCuotaPlan" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-%</td>
-                                            </tr>
+                                            
                                         </tbody>
                                     </table>
                                 </div>
