@@ -123,19 +123,20 @@ class Contrato(models.Model):
     @api.depends('pago')
     def calcular_fecha_pago(self):
         for rec in self:
-            if rec.pago == 'mes_actual':
-                anio = str(datetime.today().year)
-                mes = str(datetime.today().month)
-                fechaPago =  anio+"-"+mes+"-{0}".format(self.dia_corte.zfill(2)) 
-                rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%Y-%m-%d')
-            elif rec.pago == 'siguiente_mes':
-                fechaMesSeguiente = datetime.today() + relativedelta(months=1)
-                mesSgte=str(fechaMesSeguiente.month)
-                anioSgte=str(fechaMesSeguiente.year)
-                fechaPago = anioSgte+"-"+mesSgte+"-{0}".format(self.dia_corte.zfill(2)) 
-                rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%Y-%m-%d')
-            else:
-                rec.fecha_inicio_pago =False
+            if rec.dia_corte:
+                if rec.pago == 'mes_actual':
+                    anio = str(datetime.today().year)
+                    mes = str(datetime.today().month)
+                    fechaPago =  anio+"-"+mes+"-{0}".format(rec.dia_corte.zfill(2)) 
+                    rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%Y-%m-%d')
+                elif rec.pago == 'siguiente_mes':
+                    fechaMesSeguiente = datetime.today() + relativedelta(months=1)
+                    mesSgte=str(fechaMesSeguiente.month)
+                    anioSgte=str(fechaMesSeguiente.year)
+                    fechaPago = anioSgte+"-"+mesSgte+"-{0}".format(rec.dia_corte.zfill(2)) 
+                    rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%Y-%m-%d')
+                else:
+                    rec.fecha_inicio_pago =False
     
     @api.depends('plazo_meses', 'monto_financiamiento')
     def calcular_valores_contrato(self):
