@@ -517,7 +517,7 @@ class ContratoEstadoCuenta(models.Model):
 
         hoy= date.today()
 
-        pagos_pendientes=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pendiente' and l.fecha_pago<self.fecha)
+        pagos_pendientes=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pendiente' and l.fecha<self.fecha)
         if len(pagos_pendientes)>0 :
             raise ValidationError('Tengo pagos pendientes a la fecha, por favor realizar los pagos pendientes.')
 
