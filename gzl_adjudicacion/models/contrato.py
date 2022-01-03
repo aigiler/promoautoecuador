@@ -338,7 +338,7 @@ class Contrato(models.Model):
 
 
 
-    def reactivar_contrato_congelado(self):
+   # def reactivar_contrato_congelado(self):
 
 
 
