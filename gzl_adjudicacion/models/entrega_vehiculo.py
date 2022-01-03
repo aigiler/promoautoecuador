@@ -525,7 +525,6 @@ class EntegaVehiculo(models.Model):
 
 
     def setear_fecha_adjudicado(self):
-
         contrato = self.env['contrato'].search(
             [('cliente', '=', self.nombreSocioAdjudicado.id)], limit=1)
         now=date.today()
@@ -554,8 +553,8 @@ class EntegaVehiculo(models.Model):
                 contrato = self.env['contrato'].search(
                 [('cliente', '=', rec.nombreSocioAdjudicado.id)], limit=1)
                 rec.clienteContrato = contrato
-                rec.cedulaContrato = rec.vatAdjudicado
-                rec.codClienteContrado = rec.codigoAdjudicado
+                rec.cedulaContrato = contrato.vatAdjudicado
+                rec.codClienteContrado = contrato.codigoAdjudicado
             else:
                 rec.clienteContrato = ''
                 rec.cedulaContrato = ''
