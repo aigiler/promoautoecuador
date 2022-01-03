@@ -193,6 +193,10 @@ class Contrato(models.Model):
 
         vals['tasa_administrativa'] = float(tasa_administrativa)
         vals['dia_corte'] = dia_corte
+
+        self.validar_cliente_en_otro_contrato()
+
+        
         return super(Contrato, self).create(vals)
 
     @api.onchange('cliente', 'grupo')
@@ -243,11 +247,10 @@ class Contrato(models.Model):
 
 
 
-    @api.constrains("cliente")
     def validar_cliente_en_otro_contrato(self, ):
         if self.cliente.id:
-            contratos=self.env['contrato'].search([('cliente','=',self.cliente.id),('id','!=',self.id)],limit=1)
-            if len(contratos)>0:
+            contratos=self.env['contrato'].search([('cliente','=',self.cliente.id)])
+            if len(contratos)>1:
                 raise ValidationError("El cliente {0} ya está asignado en el contrato {1}".format(self.cliente.name,contratos.secuencia))
 
 
