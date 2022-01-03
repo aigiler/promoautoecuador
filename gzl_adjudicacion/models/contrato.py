@@ -73,7 +73,7 @@ class Contrato(models.Model):
     archivo_adicional = fields.Binary(
         string='Archivo Adicional', track_visibility='onchange')
     fecha_inicio_pago = fields.Date(
-        string='Fecha Inicio de Pago', compute='calcular_fecha_pago', track_visibility='onchange')
+        string='Fecha Inicio de Pago', compute='calcular_fecha_pago', track_visibility='onchange',store=True)
     cuota_capital = fields.Monetary(
         string='Cuota Capital', currency_field='currency_id', compute='calcular_valores_contrato', track_visibility='onchange',store=True)
     iva_administrativo = fields.Monetary(
@@ -135,7 +135,7 @@ class Contrato(models.Model):
                 fechaPago = anioSgte+"-"+mesSgte+"-{0}".format(self.dia_corte.zfill(2)) 
                 rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%Y-%m-%d')
             else:
-                rec.fecha_inicio_pago =''
+                rec.fecha_inicio_pago =False
     
     @api.depends('plazo_meses', 'monto_financiamiento')
     def calcular_valores_contrato(self):
