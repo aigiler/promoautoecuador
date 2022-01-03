@@ -64,13 +64,13 @@
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <group>
-                                        <field name="nombreConyuge" string="Nombre del Cónyuge"/>
+                                        <field name="nombreConyuge" string="Nombre del Cónyuge" attrs="{'readonly':[('state', 'in', ('informe_credito_cobranza'))]}"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
                                     <group>
-                                        <field name="vatConyuge" string="Cedula de Ciudadanía"/>
-                                        <field name="estadoCivilConyuge" string="Estado Civil"/>
+                                        <field name="vatConyuge" string="Cedula de Ciudadanía" attrs="{'readonly':[('state', 'in', ('informe_credito_cobranza'))]}"/>
+                                        <field name="estadoCivilConyuge" string="Estado Civil" attrs="{'readonly':[('state', 'in', ('informe_credito_cobranza'))]}"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-4">
@@ -82,7 +82,7 @@
                             </div>
                             <separator class="text-center fw-bold" string="DATOS DOMICIARIOS"/>
                             <div class="row" style="border: 1px solid black;">
-                                <field name="referenciaDomiciliaria" widget="pad" string='Referencias indican:'/>
+                                <field name="referenciaDomiciliaria" widget="pad" string='Referencias indican:' attrs="{'readonly':[('state', 'in', ('informe_credito_cobranza'))]}"/>
                             </div>
                             <separator class="text-center fw-bold" string="DATOS LABORALES"/>
                             <div class="row" style="border: 1px solid black;">
