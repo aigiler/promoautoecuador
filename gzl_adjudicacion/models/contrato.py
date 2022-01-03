@@ -159,11 +159,12 @@ class Contrato(models.Model):
         dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
         tasa_administrativa = float(  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa'))
 
+        self.tabla_amortizacion=()
 
         for rec in self:
             for i in range(1, int(rec.plazo_meses.numero)+1):
                 cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses.numero)
-                cuota_adm = cuota_capital *tasa_administrativa/100
+                cuota_adm = rec.monto_financiamiento *tasa_administrativa / 100 / 12
                 iva = cuota_adm * 0.12
 
                 cuota_administrativa_neto= cuota_adm + iva
