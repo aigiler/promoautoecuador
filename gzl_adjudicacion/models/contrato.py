@@ -173,7 +173,8 @@ class Contrato(models.Model):
                                                     'numero_cuota':i,
                                                     'fecha':rec.fecha_inicio_pago + relativedelta(months=i),
                                                     'cuota_capital':cuota_capital,
-                                                    'cuota_adm':cuota_administrativa_neto,
+                                                    'cuota_adm':cuota_adm,
+                                                    'iva_adm':iva,
                                                     'saldo':saldo,
                                                     'contrato_id':self.id,                                                    
                                                         })
@@ -514,6 +515,10 @@ class ContratoEstadoCuenta(models.Model):
         string='Cuota Capital', currency_field='currency_id')
     cuota_adm = fields.Monetary(
         string='Cuota Adm', currency_field='currency_id')
+
+    iva_adm = fields.Monetary(
+        string='Iva Adm', currency_field='currency_id')
+
     factura_id = fields.Many2one('account.move', string='Factura')
     # pago_ids = fields.Many2many('account.payment','contrato_estado_cuenta_payment_rel', 'estado_cuenta_id','payment_id', string='Pagos')
     seguro = fields.Monetary(string='Seguro', currency_field='currency_id')
