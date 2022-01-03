@@ -165,7 +165,7 @@ class Contrato(models.Model):
                 cuota_administrativa_neto= cuota_adm + iva
                 saldo = cuota_capital+cuota_adm+iva
                 self.env['contrato.estado.cuenta'].create({
-                                                    'numero_cuota':i,
+                                                    'numero_cuota':i+1,
                                                     'fecha':rec.fecha_inicio_pago + relativedelta(months=i),
                                                     'cuota_capital':cuota_capital,
                                                     'cuota_adm':cuota_adm,
