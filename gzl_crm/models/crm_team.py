@@ -14,3 +14,8 @@ class Team(models.Model):
 
 
     correos = fields.Char( string='Correos' )
+    member_ids = fields.Many2many('res.users', string='Miembros del Equipo' )
+
+    @api.onchange("member_ids")
+    
+
