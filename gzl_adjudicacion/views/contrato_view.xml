@@ -113,7 +113,7 @@
                         </div>
 
                         <h1 string="Estado de Cuenta de Aportes"></h1>
-                        
+
                         <field name="estado_de_cuenta_ids" nolabel="1">
                             <tree string="Estado de Cuenta" edit="false">
                                 <field name="contrato_id" invisible="1"/>
@@ -130,6 +130,7 @@
                                 <field name="monto_pagado" sum="monto_pagado"/>
                                 <field name="saldo" sum="saldo"/>
                                 <field name="estado_pago" readonly="1"/>
+                                <button name="pagar_cuota" type="object" string="Pagar"/>
                             </tree>
                         </field>
 
