@@ -114,22 +114,22 @@
                         <h1 string="Estado de Cuenta de Aportes"></h1>
 
                         <field name="estado_de_cuenta_ids" nolabel="1">
-                            <tree string="Estado de Cuenta" edit="false" limit="100">
-                                <field name="contrato_id" invisible="1"/>
-                                <field name="numero_cuota" string="Nro."/>
-                                <field name="fecha"/>
-                                <field name="fecha_pagada"/>
-                                <field name="cuota_capital" sum="cuota_capital"/>
-                                <field name="cuota_adm" sum="cuota_adm"/>
-                                <field name="iva_adm" sum="iva_adm"/>
-                                <field name="factura_id"/>
+                            <tree string="Estado de Cuenta" editable="bottom" limit="100" delete="0">
+                                <field name="contrato_id" invisible="1" readonly="1"/>
+                                <field name="numero_cuota" string="Nro." readonly="1"/>
+                                <field name="fecha" readonly="1"/>
+                                <field name="fecha_pagada" readonly="1"/>
+                                <field name="cuota_capital" sum="cuota_capital" readonly="1"/>
+                                <field name="cuota_adm" sum="cuota_adm" readonly="1"/>
+                                <field name="iva_adm" sum="iva_adm" readonly="1"/>
+                                <field name="factura_id" />
                                 <!-- <field name="pago_ids" widget="many2many_tags" /> -->
-                                <field name="seguro" sum="seguro"/>
-                                <field name="rastreo" sum="rastreo"/>
-                                <field name="otro" sum="otro"/>
-                                <field name="monto_pagado" sum="monto_pagado"/>
-                                <field name="saldo" sum="saldo"/>
-                                <field name="estado_pago" readonly="1"/>
+                                <field name="seguro" sum="seguro" readonly="1"/>
+                                <field name="rastreo" sum="rastreo" readonly="1"/>
+                                <field name="otro" sum="otro" readonly="1"/>
+                                <field name="monto_pagado" sum="monto_pagado" readonly="1"/>
+                                <field name="saldo" sum="saldo" readonly="1"/>
+                                <field name="estado_pago" readonly="1" readonly="1"/>
                                 <button name="pagar_cuota" type="object" string="Pagar"/>
                             </tree>
                         </field>
