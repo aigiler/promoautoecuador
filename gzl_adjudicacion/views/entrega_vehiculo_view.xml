@@ -110,6 +110,21 @@
                             <separator/>
                             <separator class="text-center" string="REVISION EN PAGINAS DE CONTROL"/>
                             <div class="col-xs-12 col-sm-8">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <label for="scoreBuroCredito"/>
+                                        </td>
+                                        <td>
+                                            <text>Score</text>
+                                        </td>
+                                        <td>
+                                            <field name="scoreBuroCredito" nolabel="1"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </div>
+                            <div class="col-xs-12 col-sm-8">
                                 <field name="paginasDeControl" nolabel="1">
                                     <tree create='0' delete='0' editable='top'>
                                         <field name="pagina_id" readonly='1'/>
