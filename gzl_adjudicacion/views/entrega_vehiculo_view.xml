@@ -37,7 +37,7 @@
                             <field name="requisitosPoliticasCredito" widget="html" nolabel="1" force_save="1" readonly="1"/>
                         </page>
                         <!-- INFORME DE CREDITO Y COBRANZAS -->
-                        <page string="Informe de Credito y Cobranza" attrs="{'invisible': [('state', 'in', ('inicio','borrador','revision_documentos''requisitos_de_aprobacion'))],'readonly': [('id', '!=', False)]}">
+                        <page string="Informe de Credito y Cobranza" attrs="{'invisible': [('state', 'in', ('inicio','borrador','revision_documentos''requisitos_de_aprobación'))],'readonly': [('id', '!=', False)]}">
                             <separator class="text-center" string="ANTECEDENTES DEL ASOCIADO"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
