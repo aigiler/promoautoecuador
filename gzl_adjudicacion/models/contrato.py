@@ -24,7 +24,7 @@ class Contrato(models.Model):
         'res.partner', string="Cliente", track_visibility='onchange')
     grupo = fields.Many2one(
         'grupo.adjudicado', string="Grupo", track_visibility='onchange')
-    dia_corte = fields.Char(string='Día de Corte', default=lambda self: self._capturar_valores_por_defecto())
+    dia_corte = fields.Char(string='Día de Corte', default=lambda self: self._capturar_valores_por_defecto_dia())
     saldo_a_favor_de_capital_por_adendum = fields.Monetary(
         string='Saldo a Favor de Capital por Adendum', currency_field='currency_id', track_visibility='onchange')
     pago = fields.Selection(selection=[
@@ -35,7 +35,7 @@ class Contrato(models.Model):
     monto_financiamiento = fields.Monetary(
         string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
     tasa_administrativa = fields.Float(
-        string='Tasa Administrativa(%)', track_visibility='onchange')
+        string='Tasa Administrativa(%)', track_visibility='onchange',default=lambda self: self.capturar_valores_por_defecto_tasa_administrativa())
     valor_inscripcion = fields.Monetary(
         string='Valor Inscripción', currency_field='currency_id', track_visibility='onchange')
     tipo_de_contrato = fields.Many2one(
@@ -107,18 +107,17 @@ class Contrato(models.Model):
 
 
 
-
-
-
-
-
-    def _capturar_valores_por_defecto(self):
-        dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
+    def _capturar_valores_por_defecto_tasa_administrativa(self):
         tasa_administrativa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa'))
 
-        self.tasa_administrativa = tasa_administrativa
-        self.dia_corte = dia_corte
-    
+        return tasa_administrativa
+
+
+    def _capturar_valores_por_defecto_dia:(self):
+        dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
+
+        return dia_corte
+
 
     @api.depends('pago')
     def calcular_fecha_pago(self):
