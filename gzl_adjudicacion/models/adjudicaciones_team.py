@@ -26,15 +26,6 @@ class AdjudicacionTeam(models.Model):
         "res.currency", related='company_id.currency_id',
         string="Currency", readonly=True)
     user_id = fields.Many2one('res.users', string='Responsable', check_company=True)
-    member_ids = fields.One2many(
-        'res.users', 'adjudicaciones_team_id', string='Channel Members', check_company=True,
-        domain=lambda self: [('groups_id', 'in', self.env.ref('base.group_user').id)],
-        help="Add members to automatically assign their documents to this Adjudicacion team. You can only be member of one team.")
+    member_ids = fields.Many2many('res.users', string='Miembros del Equipo' )
 
 
-
-class ResUsers(models.Model):
-    _inherit = 'res.users'
-
-    adjudicaciones_team_id = fields.Many2one(
-        'adjudicaciones.team', "User's Adjudicaciones Team")
