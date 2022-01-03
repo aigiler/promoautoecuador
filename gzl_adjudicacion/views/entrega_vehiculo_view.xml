@@ -179,9 +179,7 @@
                                     </table>
                                 </div>
                                 <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <group>
-                                        <field name="puntosPorcentajeCancelado" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
+                                    <field name="puntosPorcentajeCancelado" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                 </div>
                             </div>
                             <separator/>
@@ -194,9 +192,7 @@
                                     </table>
                                 </div>
                                 <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <group>
-                                        <field name="puntosPorcentajSaldos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
+                                    <field name="puntosPorcentajSaldos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                 </div>
                             </div>
                             <separator/>
@@ -209,9 +205,7 @@
                                     </table>
                                 </div>
                                 <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <group>
-                                        <field name="puntosCuotaIngresos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
+                                    <field name="puntosCuotaIngresos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                 </div>
                             </div>
                             <separator/>
@@ -227,9 +221,7 @@
                                     </group>
                                 </div>
                                 <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <group>
-                                        <field name="puntosScoreCredito" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
+                                    <field name="puntosScoreCredito" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                 </div>
                             </div>
                             <separator/>
@@ -240,15 +232,11 @@
                                     </text>
                                 </div>
                                 <div class="col-xs-12 col-sm-5">
-                                    <group>
-                                        <field name="antiguedadLaboral" nolabel="1" string="Antigüedad Laboral o Comercial Mayor a 2 años " />
-                                        <text>Años</text>
-                                    </group>
+                                    <field name="antiguedadLaboral" nolabel="1" string="Antigüedad Laboral o Comercial Mayor a 2 años " />
+                                    <text>Años</text>
                                 </div>
                                 <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <group>
-                                        <field name="puntosAntiguedadLaboral" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
+                                    <field name="puntosAntiguedadLaboral" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                 </div>
                             </div>
                             <separator/>
@@ -269,9 +257,7 @@
                                     </text>
                                 </div>
                                 <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <group>
-                                        <field name="totalPuntosBienesAdj" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
+                                    <field name="totalPuntosBienesAdj" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                 </div>
                             </div>
                             <div class="row">
