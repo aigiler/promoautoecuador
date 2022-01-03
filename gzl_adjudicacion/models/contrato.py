@@ -52,7 +52,7 @@ class Contrato(models.Model):
 
 
     cuota_adm = fields.Monetary(
-        string='Cuota Administrativa', currency_field='currency_id', track_visibility='onchange')
+        string='Cuota Administrativa', compute='calcular_valores_contrato', currency_field='currency_id', track_visibility='onchange')
     factura_inscripcion = fields.Many2one(
         'account.move', string='Factura Incripción', track_visibility='onchange')
     active = fields.Boolean(string='Activo', default=True)
@@ -77,7 +77,7 @@ class Contrato(models.Model):
     cuota_capital = fields.Monetary(
         string='Cuota Capital', currency_field='currency_id', compute='calcular_valores_contrato', track_visibility='onchange')
     iva_administrativo = fields.Monetary(
-        string='Iva Administrativo', currency_field='currency_id', track_visibility='onchange')
+        string='Iva Administrativo',  compute='calcular_valores_contrato',currency_field='currency_id', track_visibility='onchange')
     estado_de_cuenta_ids = fields.One2many(
         'contrato.estado.cuenta', 'contrato_id', track_visibility='onchange')
     fecha_adjudicado = fields.Date(
