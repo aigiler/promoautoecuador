@@ -434,7 +434,20 @@ class Contrato(models.Model):
         }
 
 
-    def modificar_contrato_por_rubro_rastreo(self,):
+    def modificar_contrato_por_rubro(self,):
+
+
+        numero_cuota=12
+        month=month
+        year=year
+
+        self.funcion_modificar_contrato_por_rubro_seguro(self.rastreo,'rastreo')
+        self.funcion_modificar_contrato_por_rubro_seguro(self.otro,'otro')
+        self.funcion_modificar_contrato_por_rubro_seguro(self.seguro,'seguro')
+
+
+
+    def funcion_modificar_contrato_por_rubro_seguro(self,valor,variable):
 
 
         numero_cuota=12
@@ -446,54 +459,14 @@ class Contrato(models.Model):
 
         contador=0
 
-        for l in self.tabla_amortizacion.filtered(lambda l: l.numero_cuota>=obj_detalle.numero_cuota)
-            l.rastreo=self.rastreo/12
+        for l in self.tabla_amortizacion.filtered(lambda l: l.numero_cuota>=obj_detalle.numero_cuota):
+            l.write({variable:valor/12})
 
             contador+=1
             if contador==12:
                 break
 
 
-
-    def modificar_contrato_por_rubro_seguro(self,):
-
-
-        numero_cuota=12
-        month=month
-        year=year
-
-        obj_detalle=self.tabla_amortizacion.filtered(lambda l: l.fecha.year==year and l.fecha.month==month)
-
-
-        contador=0
-
-        for l in self.tabla_amortizacion.filtered(lambda l: l.numero_cuota>=obj_detalle.numero_cuota)
-            l.seguro=self.seguro/12
-
-            contador+=1
-            if contador==12:
-                break
-
-
-
-    def modificar_contrato_por_rubro_otros(self,):
-
-
-        numero_cuota=12
-        month=month
-        year=year
-
-        obj_detalle=self.tabla_amortizacion.filtered(lambda l: l.fecha.year==year and l.fecha.month==month)
-
-
-        contador=0
-
-        for l in self.tabla_amortizacion.filtered(lambda l: l.numero_cuota>=obj_detalle.numero_cuota)
-            l.otro=self.otro/12
-
-            contador+=1
-            if contador==12:
-                break
 
 
 
