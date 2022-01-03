@@ -137,9 +137,6 @@ class CrmLead(models.Model):
 
     def write(self, vals):
 
-
-
-
         if vals.get('stage_id',False) and self.stage_id.restringir_movimiento:
             estados_habilitados=[]
             estados_habilitados.append(self.stage_id.stage_anterior_id.id)
@@ -153,63 +150,33 @@ class CrmLead(models.Model):
 
 
         crm = super(CrmLead, self).write(vals)
-        #stage_id = self.env['crm.stage'].browse(vals['stage_id'])
+
+        if  vals.get('stage_id',False):
+            stage_id = self.env['crm.stage'].browse(vals['stage_id'])
+            if stage_id.is_won:
+                if not (self.factura_inscripcion_id.id or True):
+                    raise ValidationError("Debe registrarse la factura de inscripción para que sea marcada como válida")
 
 
 
+                obj_partner=self.partner_id
+                obj_partner.tipo='preAdjudicado'
 
 
+                contrato = self.env['contrato'].create({
+                                            'cliente':obj_partner.id,
+                                            'dia_corte':self.dia_pago,
+                                            'monto_financiamiento':self.planned_revenue,
+                                            'tipo_de_contrato':self.tipo_contrato.id,
+                                            'provincias':self.partner_id.state_id.id,
+                                            'plazo_meses':self.numero_cuotas.id,
+                                            'cuota_capital':self.cuota_capital,
+                                            'iva_administrativo':self.iva,
+                                        })
 
-        if self.stage_id.is_won:
-
-            if not (self.factura_inscripcion_id.id or True):
-                raise ValidationError("Debe registrarse la factura de inscripción para que sea marcada como válida")
-
-
-
-            obj_partner=self.partner_id
-            obj_partner.tipo='preAdjudicado'
-
-
-            contrato = self.env['contrato'].create({
-                                        'cliente':obj_partner.id,
-                                        'dia_corte':self.dia_pago,
-                                        'monto_financiamiento':self.planned_revenue,
-                                        'tipo_de_contrato':self.tipo_contrato.id,
-                                        'provincias':self.partner_id.state_id.id,
-                                        'plazo_meses':self.numero_cuotas.id,
-                                        'cuota_capital':self.cuota_capital,
-                                        'iva_administrativo':self.iva,
-                                    })
-
-
-
-            for l in self.tabla_amortizacion:
-                self.env['contrato.estado.cuenta'].create({
-                                        'contrato_id':contrato.id,
-                                        'numero_cuota':l.numero_cuota,
-                                        'fecha': l.fecha,
-                                        'cuota_capital':l.cuota_capital,
-                                        'cuota_adm':l.cuota_adm,
-                                    })
-            
-
-        if self.stage_id.crear_reunion_en_calendar:
-
-            now=datetime.now()
-
-            id_calendar=self.crear_calendar_event('Reunión Socio {0}'.format(self.partner_id.name),now,24,'Reunión para evidenciar Calidad de la Venta')
-
-
-
-
-
-
-
-
-
-
-
+            if stage_id.crear_reunion_en_calendar:
+                now=datetime.now()
+                id_calendar=self.crear_calendar_event('Reunión Socio {0}'.format(self.partner_id.name),now,24,'Reunión para evidenciar Calidad de la Venta')
         return crm
 
 
