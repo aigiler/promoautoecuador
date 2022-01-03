@@ -24,7 +24,7 @@ class Contrato(models.Model):
         'res.partner', string="Cliente", track_visibility='onchange')
     grupo = fields.Many2one(
         'grupo.adjudicado', string="Grupo", track_visibility='onchange')
-    dia_corte = fields.Char(string='Día de Corte', default=lambda self: self._capturar_valores_por_defecto_dia())
+    dia_corte = fields.Char(string='Día de Corte', default=lambda self: self.capturar_valores_por_defecto_dia())
     saldo_a_favor_de_capital_por_adendum = fields.Monetary(
         string='Saldo a Favor de Capital por Adendum', currency_field='currency_id', track_visibility='onchange')
     pago = fields.Selection(selection=[
