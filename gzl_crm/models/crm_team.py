@@ -17,5 +17,9 @@ class Team(models.Model):
     member_ids = fields.Many2many('res.users', string='Miembros del Equipo' )
 
     @api.onchange("member_ids")
-    
+    def actualizar_correos_team(self,):
+        correos=self.member_ids.mapped('email')
+        correo=""
+        for correo in correos:
+            correos=correos+corr
 
