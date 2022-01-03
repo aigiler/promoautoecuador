@@ -143,6 +143,376 @@
                             <div class="row">
                             </div>
                         </page>
+                        <!-- CALIFICADOR DE COMPRA -->
+                        <page string="Calificador de Compra" attrs="{'invisible': [('state', 'in', ('inicio','borrador','revision_documentos','requisitos_de_aprobación','informe_credito_cobranza'))],'readonly': [('id', '!=', False)]}">
+                            <separator class="text-center" string="CALIFICADOR PARA COMPRA DEL BIEN"/>
+                            <div class="row" style="border: 1px solid black;">
+                                <div class="col-xs-12 col-md-12">
+                                    <group>
+                                        <field name="nombreSocioAdjudicado" readonly="1" force_save="1"/>
+                                    </group>
+                                </div>
+                                <div class="col-xs-12 col-sm-4">
+                                    <group>
+                                        <field name="vatAdjudicado" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                </div>
+                                <div class="col-xs-4">
+                                    <group>
+                                        <field name="codigoAdjudicado" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                </div>
+                                <div class="col-xs-12 col-md-12">
+                                    <table style=" border-collapse: collapse; width:100%">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <label for="montoAdjudicado"/>
+                                                </td>
+                                                <td>
+                                                    <field name="montoAdjudicado" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td>
+                                                    <label for="plazoMeses"/>
+                                                </td>
+                                                <td>
+                                                    <label for="tipoAdj"/>
+                                                </td>
+                                                <td>
+                                                    <label for="fechaAdj"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label for="valorCuota"/>
+                                                </td>
+                                                <td>
+                                                    <field name="valorCuota" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td>
+                                                    <field name="plazoMeses" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td>
+                                                    <field name="tipoAdj" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td>
+                                                    <field name="fechaAdj" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <separator/>
+                            <div class="row" style="border: 1px solid black;">
+                                <div class="col-xs-4 col-sm-9">
+                                    <table style=" border-collapse: collapse;width:100%">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <label for="valorTotalPlan"/>
+                                                </td>
+                                                <td>
+                                                    <field name="valorTotalPlan" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td>
+                                                    <field name="plazoMeses" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+ Cuotas</td>
+                                                <td>
+                                                    <field name="porcentajeTotal" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+%</td>
+                                            </tr>
+                                            <tr class="font-weight-bold">
+                                                <td>
+                                                    <label for="montoCuotasCanceladas" />
+                                                </td>
+                                                <td>
+                                                    <field name="montoCuotasCanceladas" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td>
+                                                    <field name="cuotasCanceladas" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+ Cuotas</td>
+                                                <td>
+                                                    <field name="porcentajeCancelado" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label for="montoCuotasPendientes" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td>
+                                                    <field name="montoCuotasPendientes" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td>
+                                                    <field name="cuotasPendientes" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+ Cuotas</td>
+                                                <td>
+                                                    <field name="porcentajePendiente" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+%</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
+                                    <group>
+                                        <field name="puntosPorcentajeCancelado" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                </div>
+                            </div>
+                            <separator/>
+                            <div class="row" style="border: 1px solid black;">
+                                <div class="col-xs-12 col-sm-9">
+                                    <table style=" border-collapse: collapse; width:90%">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <label for="valorDelBien"/>
+                                                </td>
+                                                <td>
+                                                    <field name="valorDelBien" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td style="width:10%"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr class="font-weight-bold">
+                                                <td>
+                                                    <label for="saldoPlan"/>
+                                                </td>
+                                                <td>
+                                                    <field name="saldoPlan" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td style="width:10%"></td>
+                                                <td>
+                                                    <field name="porcentajeSaldoPlan" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+%</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
+                                    <group>
+                                        <field name="puntosPorcentajSaldos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                </div>
+                            </div>
+                            <separator/>
+                            <div class="row" style="border: 1px solid black;">
+                                <div class="col-xs-12 col-sm-9">
+                                    <table style=" border-collapse: collapse; width:100%">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <label for="ingresosFamiliares" string="Ingresos familiares"/>
+                                                </td>
+                                                <td>
+                                                    <field name="ingresosFamiliares" string="Ingresos familiares"/>
+                                                </td>
+                                                <td>
+                                                    <field name="porcentajeIngresos" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td>
+                                                    <text>Comprometido</text>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label for="gastosFamiliares" string="Gastos familiares"/>
+                                                </td>
+                                                <td>
+                                                    <field name="gastosFamiliares" string ="Gastos familiares" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td>
+                                                    <field name="porcentajeGastos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td>
+                                                    <text>Cuota Plan</text>
+                                                </td>
+                                            </tr>
+                                            <tr class="font-weight-bold">
+                                                <td>
+                                                    <label for="disponibilidad" string="Disponibilidad" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td style="border-top: 0.5px solid">
+                                                    <field name="disponibilidad" string="Disponibilidad" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td>
+                                                    <field name="porcentajeDisponibilidad" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td>
+                                                    <field name="porcentajeCuotaPlan" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+%</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
+                                    <group>
+                                        <field name="puntosCuotaIngresos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                </div>
+                            </div>
+                            <separator/>
+                            <div class="row" style="border: 1px solid black;">
+                                <div class="col-xs-12 col-sm-4">
+                                    <text class="align-baseline">
+                                        <strong>Score de Credito Mayor a 800 puntos</strong>
+                                    </text>
+                                </div>
+                                <div class="col-xs-12 col-sm-5">
+                                    <group>
+                                        <field name="scoreCredito" nolabel="1" string="Score de Credito Mayor a 800 puntos " />
+                                    </group>
+                                </div>
+                                <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
+                                    <group>
+                                        <field name="puntosScoreCredito" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                </div>
+                            </div>
+                            <separator/>
+                            <div class="row" style="border: 1px solid black;">
+                                <div class="col-xs-12 col-sm-4">
+                                    <text class="align-baseline">
+                                        <strong>Antigüedad Laboral o Comercial Mayor a 2 años</strong>
+                                    </text>
+                                </div>
+                                <div class="col-xs-12 col-sm-5">
+                                    <group>
+                                        <field name="antiguedadLaboral" nolabel="1" string="Antigüedad Laboral o Comercial Mayor a 2 años " />
+                                        <text>Años</text>
+                                    </group>
+                                </div>
+                                <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
+                                    <group>
+                                        <field name="puntosAntiguedadLaboral" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                </div>
+                            </div>
+                            <separator/>
+                            <div class="row" style="border: 1px solid black;">
+                                <div class="col-xs-12 col-sm-3">
+                                    <text>
+                                        <strong>Posee Bienes</strong>
+                                    </text>
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    <text>
+                                        <strong>Si/No</strong>
+                                    </text>
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    <text>
+                                        <strong>Ptos.</strong>
+                                    </text>
+                                </div>
+                                <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
+                                    <group>
+                                        <field name="totalPuntosBienesAdj" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-3">
+                                    <text>
+                                        <strong>Casa</strong>
+                                    </text>
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    <field name="poseeCasa" nolabel="1"/>
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    <field name="puntosCasa" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-3">
+                                    <text>
+                                        <strong>Terreno</strong>
+                                    </text>
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    <field name="poseeTerreno" nolabel="1"/>
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    <field name="puntosTerreno" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-3">
+                                    <text>
+                                        <strong>Vehiculo</strong>
+                                    </text>
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    <field name="poseeVehiculo" nolabel="1"/>
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    <field name="puntosVehiculo" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-3">
+                                    <text>
+                                        <strong>Motos</strong>
+                                    </text>
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    <field name="poseeMotos" nolabel="1"/>
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    <field name="puntosMotos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-3">
+                                    <group>
+                                        <text>
+                                            <strong>Muebles y Enseres</strong>
+                                        </text>
+                                    </group>
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    <group>
+                                        <field name="poseeMueblesEnseres" nolabel="1"/>
+                                    </group>
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    <field name="puntosMueblesEnseres" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </div>
+                            </div>
+                            <separator/>
+                            <div class="row" style="border: 1px solid black;">
+                                <div class="col-xs-12 col-sm-9">
+                                    <text class="text-center">
+                                        <strong>TOTAL PUNTOS</strong>
+                                    </text>
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    <field name="totalPuntosCalificador" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </div>
+                            </div>
+                            <separator/>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12">
+                                    <field class="font-weight-bold" name="aplicaGarante" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                </div>
+
+                            </div>
+                            <separator/>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12" style="border-bottom: 1px solid black;">
+                                    <text class="text-center">
+                                        <strong>Observaciones:</strong>
+                                    </text>
+                                </div>
+                                <div class="col-xs-12 col-sm-12">
+                                    <field name="observacionesCalificador" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </div>
+                            </div>
+                            <separator class="text-center" string="COMITÉ DE APROBACION"/>
+                            <div class="row">
+                            </div>
+                        </page> 
                     </notebook>
 
                 </sheet>
