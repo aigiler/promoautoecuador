@@ -18,6 +18,7 @@
                     'data/data_configuracion_adicional.xml',
                     'data/data_numero_meses.xml' ,   
                     'data/data_roles.xml',
+                    'data/ir_cron.xml',
 
 
                     'security/ir.model.access.csv',
@@ -38,6 +39,10 @@
                     'views/roles_view.xml',
                     'views/items_patrimonio.xml',
                     'views/paginas_de_control.xml',
+
+
+
+                    'wizard/wizard_pago_contrato.xml',
                     ],
     
     'installable': True,

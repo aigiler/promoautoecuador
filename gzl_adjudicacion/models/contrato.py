@@ -13,6 +13,7 @@ class Contrato(models.Model):
     _description = 'Contrato'
     _rec_name = 'secuencia'
     _inherit = ['mail.thread', 'mail.activity.mixin']
+    en_mora = fields.Boolean(stirng="Contrato en Mora")
 
     secuencia = fields.Char(index=True)
     currency_id = fields.Many2one(
@@ -55,9 +56,11 @@ class Contrato(models.Model):
     active = fields.Boolean(string='Activo', default=True)
     state = fields.Selection(selection=[
         ('borrador', 'Borrador'),
+        ('activo', 'Activo'),
         ('congelar_contrato', 'Congelar Contrato'),
         ('adjudicar', 'Adjudicado'),
         ('adendum', 'Realizar Adendum'),
+        ('cerrado', 'Cerrado'),
         ('desistir', 'Desistir'),
     ], string='Estado', default='borrador', track_visibility='onchange')
     observacion = fields.Char(string='Observación',
@@ -257,6 +260,105 @@ class Contrato(models.Model):
 
 
 
+    def job_colocar_contratos_en_mora(self, ):
+
+        hoy=date.today()
+        contratos=self.env['contrato'].search([('state','in',['adjudicado','activo'])])
+
+        for contrato in contratos:
+            mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month)
+            if len(mes_estado_cuenta)>0:
+                if not mes_estado_cuenta=='pagado':
+                    contrato.en_mora=True
+                else:
+                    contrato.en_mora=False
+
+
+    def job_registrar_calificacion_contratos_en_mora(self, ):
+
+        hoy=date.today()
+        contratos=self.env['contrato'].search([('en_mora','=',True)])
+
+        for contrato in contratos:
+            obj_calificador=self.env['calificador.cliente']
+            motivo=self.env.ref('gzl_adjudicacion.calificacion_2')
+            obj_calificador.create({'partner_id': contrato.cliente.id,'motivo':motivo.motivo,'calificacion':motivo.calificacion})
+
+
+        contratos=self.env['contrato'].search([('state','in',['adjudicado','activo'])])
+
+        for contrato in contratos:
+            mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month)
+            if len(mes_estado_cuenta)>0:
+                if  mes_estado_cuenta=='pagado':
+                    obj_calificador=self.env['calificador.cliente']
+                    motivo=self.env.ref('gzl_adjudicacion.calificacion_1')
+                    obj_calificador.create({'partner_id': contrato.cliente.id,'motivo':motivo.motivo,'calificacion':motivo.calificacion})
+
+
+
+
+    def job_enviar_correos_contratos_en_mora(self, ):
+
+        hoy=date.today()
+        contratos=self.env['contrato'].search([('en_mora','=',True)])
+
+        for contrato in contratos:
+                 
+            self.envio_correos_plantilla('email_contrato_en_mora',contrato.id)
+
+
+
+    def job_enviar_correos_contratos_pago_por_vencer(self, ):
+
+        hoy=date.today()
+        contratos=self.env['contrato'].search([('state','in',['adjudicado','activo'])])
+
+        for contrato in contratos:
+            mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month)
+            if len(mes_estado_cuenta)>0:
+                self.envio_correos_plantilla('email_contrato_notificacion_de_pago',contrato.id)
+
+
+
+
+
+
+
+
+
+
+
+
+    @api.multi
+    def envio_correos_plantilla(self, plantilla,id_envio):
+
+        try:
+            ir_model_data = self.env['ir.model.data']
+            template_id = ir_model_data.get_object_reference('gzl_adjudicacion', plantilla)[1]
+        except ValueError:
+            template_id = False
+#Si existe capturo el template
+        if template_id:
+            obj_template=self.env['mail.template'].browse(template_id)
+
+            email_id=obj_template.send_mail(id_envio)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 class ContratoEstadoCuenta(models.Model):
@@ -292,7 +394,7 @@ class ContratoEstadoCuenta(models.Model):
         view_id = self.env.ref('gzl_crm.wizard_pago_cuota_amortizaciones').id
         return {'type': 'ir.actions.act_window',
                 'name': 'Validar Pago',
-                'res_model': 'wizard.pago.cuota.amortizacion',
+                'res_model': 'wizard.pago.cuota.amortizacion.contrato',
                 'target': 'new',
                 'view_mode': 'form',
                 'views': [[view_id, 'form']],
