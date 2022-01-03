@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="wizard_adelantar_cuotas_form" model="ir.ui.view">
-        <field name="name"wizard.adelantar.cuotas.form</field>
+        <field name="name">wizard.adelantar.cuotas.form</field>
         <field name="model">wizard.adelantar.cuotas</field>
         <field name="arch" type="xml">
             <form>
