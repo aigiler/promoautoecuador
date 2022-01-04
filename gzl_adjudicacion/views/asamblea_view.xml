@@ -45,7 +45,7 @@
                             </group>
                         </group>
 
-                            <group   attrs="{'readonly': [('state', '=', 'cerrado')],'invisible': [('state', '!=', 'en_curso')]}">
+                            <group   attrs="{'readonly': [('state', '=', 'cerrado')],'invisible': [('state', 'not in', ['pre_cierre','cerrado'])]}">
                                 <field name="ganadores" nolabel="1">
                                     <tree string="Ganadores" editable="top">
                                         <field name="grupo_adjudicado_id" />
