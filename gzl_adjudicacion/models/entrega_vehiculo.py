@@ -34,7 +34,7 @@ class EntegaVehiculo(models.Model):
         
     documentos = fields.Many2many('ir.attachment', string='Carga Documentos', track_visibility='onchange')
     active = fields.Boolean(string='Activo', default=True)
-    state = fields.Selection(selection=[
+    estado = fields.Selection(selection=[
         ('borrador', 'Borrador'),
         ('revision_documentos', 'Revisión documentos'),
         ('informe_de_créditos_y_cobranzas', 'Informe de Crédito y Cobranza'),

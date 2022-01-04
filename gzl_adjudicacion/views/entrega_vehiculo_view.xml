@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <tree string="Entrega Vehiculo">
                 <field name="secuencia" />
-                <field name="state" />
+                <field name="estado" />
                 <field name="nombreSocioAdjudicado" />
                 <field name="active"/>
             </tree>
@@ -20,25 +20,21 @@
         <field name="arch" type="xml">
             <form string="Entrega Vehiculo">
                 <header>
-                    <button name="cambio_estado_boton_borrador" string="Borrador" type="object" states="borrador" class="oe_highlight"/>
-                    <button name="cambio_estado_boton_revision" string="Revisión documentos" states="revision_documentos" type="object" class="oe_highlight"/>
-                    <button name="cambio_estado_boton_informe" string="Informe de Crédito y Cobranza" type="object" states="informe_credito_cobranza" class="oe_highlight"/>
-                    <button name="cambio_estado_boton_caificador" string="Calificador para compra del bien" type="object" states="calificador_compra" class="oe_highlight"/>
-                    <button name="cambio_estado_boton_liquidacion" string="Liquidación de compra y orden de compra" type="object" states="liquidacion_orden_compra" class="oe_highlight"/>
-                    <button name="cambio_estado_boton_entrega" string="Entrega de Vehiculo" type="object" states="entrega_vehiculo" class="oe_highlight"/>
                     <field name="state" widget="statusbar"/>
-                    <!-- <field name="state" widget="statusbar" options="{'clickable':'1'}" /> -->
                 </header>
 
                 <!-- sheet principal-->
                 <sheet>
+                    <field name="estado" invisible="1"/>
+
+
                     <notebook>
-                        <page string="Entrega de Requisitos" attrs="{'readonly':[('state', 'in', ('inicio', 'borrador','revision_documentos') )]}">
+                        <page string="Entrega de Requisitos" attrs="{'readonly':[('estado', 'in', ('inicio', 'borrador','revision_documentos') )]}">
                             <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
                             <field name="requisitosPoliticasCredito" widget="html" nolabel="1" force_save="1" readonly="1"/>
                         </page>
                         <!-- INFORME DE CREDITO Y COBRANZAS -->
-                        <page string="Informe de Credito y Cobranza" attrs="{'invisible': [('state', 'in', ('inicio','borrador','revision_documentos','requisitos_de_aprobación'))],'readonly': [('id', '!=', False)]}">
+                        <page string="Informe de Credito y Cobranza" attrs="{'invisible': [('estado', 'in', ('inicio','borrador','revision_documentos','requisitos_de_aprobación'))],'readonly': [('id', '!=', False)]}">
                             <separator class="text-center" string="ANTECEDENTES DEL ASOCIADO"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
@@ -48,7 +44,7 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
                                     <group>
-                                        <field name="vatAdjudicado" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' attrs="{'readonly':[('state', 'in', ('informe_credito_cobranza'))]}"/>
+                                        <field name="vatAdjudicado" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
                                         <field name="fechaNacimientoAdj" options="{'no_create': True, 'no_open': True}"/>
                                         <field name="estadoCivilAdj" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
@@ -65,13 +61,13 @@
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <group>
-                                        <field name="nombreConyuge" string="Nombre del Cónyuge" attrs="{'readonly':[('state', 'in', ('informe_credito_cobranza'))]}"/>
+                                        <field name="nombreConyuge" string="Nombre del Cónyuge" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
                                     <group>
-                                        <field name="vatConyuge" string="Cedula de Ciudadanía" attrs="{'readonly':[('state', 'in', ('informe_credito_cobranza'))]}"/>
-                                        <field name="estadoCivilConyuge" string="Estado Civil" attrs="{'readonly':[('state', 'in', ('informe_credito_cobranza'))]}"/>
+                                        <field name="vatConyuge" string="Cedula de Ciudadanía" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
+                                        <field name="estadoCivilConyuge" string="Estado Civil" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-4">
@@ -83,7 +79,7 @@
                             </div>
                             <separator class="text-center fw-bold" string="DATOS DOMICIARIOS"/>
                             <div class="row" style="border: 1px solid black;">
-                                <field name="referenciaDomiciliaria" widget="pad" string='Referencias indican:' attrs="{'readonly':[('state', 'in', ('informe_credito_cobranza'))]}"/>
+                                <field name="referenciaDomiciliaria" widget="pad" string='Referencias indican:' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
                             </div>
                             <separator class="text-center fw-bold" string="DATOS LABORALES"/>
                             <div class="row" style="border: 1px solid black;">
@@ -145,7 +141,7 @@
                             </div>
                         </page>
                         <!-- CALIFICADOR DE COMPRA -->
-                        <page string="Calificador de Compra" attrs="{'invisible': [('state', 'in', ('inicio','borrador','revision_documentos','requisitos_de_aprobación','informe_credito_cobranza'))],'readonly': [('id', '!=', False)]}">
+                        <page string="Calificador de Compra" attrs="{'invisible': [('estado', 'in', ('inicio','borrador','revision_documentos','requisitos_de_aprobación','informe_credito_cobranza'))],'readonly': [('id', '!=', False)]}">
                             <separator class="text-center" string="CALIFICADOR PARA COMPRA DEL BIEN"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
