@@ -32,11 +32,8 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
     
     def validar_pago(self):
 
-        saldo_restante=sum(self.tabla_amortizacion_id.pago_ids.mapped('amount'))
-        if saldo_restante <= self.tabla_amortizacion_id.saldo:
-            saldo_a_pagar= self.tabla_amortizacion_id.saldo - saldo_restante
-            if not self.amount <= saldo_a_pagar:
-                raise ValidationError("Ingrese una Cantidad menor al saldo a pagar.")
+        if not (self.amount <= self.tabla_amortizacion_id.saldo):
+            raise ValidationError("Ingrese una Cantidad menor al saldo a pagar.")
 
 
         pago = self.env['account.payment'].create({
@@ -65,11 +62,11 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
 
             factura = self.env['account.move'].create({
                         'type': 'out_invoice',
-                        'partner_id': self.tabla_amortizacion_id.oportunidad_id.partner_id.id,
+                        'partner_id': self.tabla_amortizacion_id.contrato_id.cliente.id,
                         'invoice_line_ids': [(0, 0, {
                             'quantity': 1,
                             'price_unit': self.tabla_amortizacion_id.cuota,
-                            'name': self.tabla_amortizacion_id.oportunidad_id.name+' - Cuota '+self.tabla_amortizacion_id.numero_cuota,
+                            'name': self.tabla_amortizacion_id.contrato_id.cliente.name+' - Cuota '+self.tabla_amortizacion_id.numero_cuota,
                         })],
                         'journal_id':self.journal_id,
                         'invoice_date':self.payment_date,
