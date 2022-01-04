@@ -55,12 +55,14 @@ class EntegaVehiculo(models.Model):
     ], string='Estado', default='borrador', track_visibility='onchange')
     # datos del socio adjudicado
     nombreSocioAdjudicado = fields.Many2one('res.partner', string="Nombre del Socio Adj.", track_visibility='onchange')
-    codigoAdjudicado = fields.Char(related="nombreSocioAdjudicado.codigo_cliente", string='Código', track_visibility='onchange')
-    fechaNacimientoAdj = fields.Date(related="nombreSocioAdjudicado.fecha_nacimiento", string='Fecha de Nacimiento')
-    vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía')
-    estadoCivilAdj = fields.Selection(related="nombreSocioAdjudicado.estado_civil")
+    codigoAdjudicado = fields.Char(related="nombreSocioAdjudicado.codigo_cliente", string='Código', track_visibility='onchange',store=True)
+    fechaNacimientoAdj = fields.Date(related="nombreSocioAdjudicado.fecha_nacimiento", string='Fecha de Nacimiento',store=True)
+    vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía',store=True)
+    estadoCivilAdj = fields.Selection(related="nombreSocioAdjudicado.estado_civil" ,store=True)
     edadAdjudicado = fields.Integer(compute='calcular_edad', string="Edad", readonly=True, store=True)
     cargasFamiliares = fields.Integer(string="Cargas Fam.")
+
+    
     # datos del conyuge
     nombreConyuge = fields.Char(string="Nombre del Conyuge")
     fechaNacimientoConyuge = fields.Date(string='Fecha de Nacimiento')
