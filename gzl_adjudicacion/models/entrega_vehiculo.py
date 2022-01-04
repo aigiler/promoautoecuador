@@ -62,7 +62,7 @@ class EntegaVehiculo(models.Model):
     edadAdjudicado = fields.Integer(compute='calcular_edad', string="Edad", readonly=True, store=True)
     cargasFamiliares = fields.Integer(string="Cargas Fam.")
 
-    
+
     # datos del conyuge
     nombreConyuge = fields.Char(string="Nombre del Conyuge")
     fechaNacimientoConyuge = fields.Date(string='Fecha de Nacimiento')
@@ -94,11 +94,25 @@ class EntegaVehiculo(models.Model):
             self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id})
         
 
-    institucionFinanciera = fields.Char(string='Institución')
-    direccion = fields.Char(string='Direccion')
-    direccion1 = fields.Char(string='Direccion')
-    placa = fields.Char(string='Placa')
-    totalActivosAdj = fields.Float(string='TOTAL ACTIVOS', digits=(6, 2))
+    institucionFinanciera = fields.Many2one('res.bank',string='Institución')
+    direccion = fields.Char(string='Direccion de Casa')
+    direccion1 = fields.Char(string='Direccion de Terreno')
+    placa = fields.Char(string='Placa de Vehículo')
+    totalActivosAdj = fields.Float(compute="calculo_total_activos_adj",store=True,string='TOTAL ACTIVOS', digits=(6, 2))
+
+
+    @api.depends("montoAhorroInversiones")
+    def calculo_total_activos_adj(self):
+        for rec in self:
+            rec.totalActivosAdj=sum(rec.totalActivosAdj.mapped('valor'))
+    
+    
+
+
+
+
+
+
 
     # REVISION EN PAGINAS DE CONTROL
     paginasDeControl = fields.One2many('paginas.de.control.entrega.vehiculo','entrega_id',track_visibility='onchange')
@@ -275,6 +289,65 @@ class EntegaVehiculo(models.Model):
     ], default = 'saldo_a_favor', compute='calcular_monto_a_favor')
     
     
+
+    matriculacion = fields.Boolean(string="Matriculación", track_visibility="onchange")
+    rastreo = fields.Boolean(string="Rastreo",track_visibility="onchange")
+    seguro = fields.Boolean(string="Seguro",track_visibility="onchange")
+
+
+    def validacion_matriculacion_rastreo_seguro(self):
+        if not (self.matriculacion and self.rastreo and self.seguro):
+            raise ValidationError("Debe registrar la matriculación, rastreo y seguro para pasar al siguiente estado")
+
+
+    estado_anterior_requisitos = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
+    estado_anterior_informe_credito = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
+    estado_anterior_liquidacion = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
+    estado_anterior_calificador = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
+    estado_anterior_factura = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
+    estado_anterior_matriculacion = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
+    estado_anterior_requisitos = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
+    estado_anterior_orden_compra = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
+
+
+
+
+
+    def consultar_estado_anterior_requisitos(self):
+        for l in self:
+
+            self.env.cr.execute("""select mtv.new_value_char 
+                                            from 
+                                                mail_tracking_value mtv, 
+                                                mail_message mm 
+                                            where 
+                                                mtv.mail_message_id=mm.id and 
+                                                mm.model='entrega.vehiculo' and
+                                                mm.res_id={0}""".format(l.id))
+
+
+
+            estados = self.env.cr.dictfetchall()
+            result = map(lambda x: x['new_value_char'], estados)
+
+            if 'Revisión documentos' in result:
+                l.estado_anterior_requisitos=True
+            if 'Informe de Crédito y Cobranza' in result:
+                l.estado_anterior_informe_credito=True
+            if 'Calificador para compra del bien' in result:
+                l.estado_anterior_calificador=True
+
+            if 'Liquidación de compra y orden de compra' in result:
+                l.estado_anterior_liquidacion=True
+
+            if 'Orden de compra' in result:
+                l.estado_anterior_orden_compra=True
+                l.estado_anterior_factura=True
+                l.estado_anterior_matriculacion=True
+
+
+
+
     @api.depends('montoVehiculo', 'montoAdjudicado')
     def calcular_monto_a_favor(self):
         for rec in self:
@@ -572,7 +645,6 @@ class EntegaVehiculo(models.Model):
    
 
 
-    @api.onchange('fechaNacimientoAdj')    
     @api.depends('fechaNacimientoAdj')
     def calcular_edad(self):
         edad = 0
@@ -616,7 +688,7 @@ class ItemPatrimonioEntregaVehiculo(models.Model):
         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
     entrega_id = fields.Many2one('entrega.vehiculo')
     patrimonio_id = fields.Many2one('items.patrimonio')
-    valor  = fields.Monetary(digits=(6, 2))
+    valor  = fields.Monetary(string="Monto($)",digits=(6, 2))
     
 class PaginasDeControlEntregaVehiculo(models.Model):
     _name = 'paginas.de.control.entrega.vehiculo'
@@ -648,8 +720,8 @@ class PuntosBienesEntregaVehiculo(models.Model):
                 rec.valorBien = rec.valorBien 
                 
             
-    
-    
+
+
         
 
 
