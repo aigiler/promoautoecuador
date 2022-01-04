@@ -11,9 +11,14 @@ from dateutil.parser import parse
 class PuntosBienes(models.Model):
     _name = 'puntos.bienes'
     _description = 'Bienes'
-
+    _rec_name= 'nombre'
     
     #items bienes
+    nombre = fields.Char('Nombre',  required=True)
+    valorPuntos=fields.Text('Valor Puntos',  required=True)
+    poseeBien = fields.Char()
+    
+    
     poseeCasa = fields.Selection(selection=[
         ('si', 'SI'),
         ('no', 'NO')
