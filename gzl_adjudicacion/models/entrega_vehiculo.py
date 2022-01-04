@@ -189,7 +189,12 @@ class EntegaVehiculo(models.Model):
     
     tablaPuntosBienes = fields.One2many('puntos.bienes.entrega.vehiculo','entrega_id',track_visibility='onchange')
     
-
+    def llenar_tabla_puntos_bienes(self):
+            obj_puntos_bienes=self.env['puntos.bienes'].search([])
+            for bienes in obj_puntos_bienes:
+                self.env['puntos.bienes.entrega.vehiculo'].create({'bien_id':bienes.id,'entrega_id':self.id})
+        
+    
     totalPuntosBienesAdj = fields.Integer(compute='calcular_puntos_bienes')
 
     poseeCasa = fields.Selection(selection=[
