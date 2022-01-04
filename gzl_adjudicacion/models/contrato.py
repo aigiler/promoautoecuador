@@ -95,14 +95,18 @@ class Contrato(models.Model):
 
 
     numero_cuotas_pagadas = fields.Integer(
-        string='Monto Pagado', compute="calcular_cuotas_pagadas", store=True, track_visibility='onchange')
+        string='Cuotas Pagadas', compute="calcular_cuotas_pagadas", store=True, track_visibility='onchange')
 
 
-    @api.depends('tabla_amortizacion')
+    @api.depends('tabla_amortizacion.saldo')
     def calcular_cuotas_pagadas(self):
         for rec in self:
             cuotas=rec.tabla_amortizacion.filtered(lambda l: l.saldo==0)
             rec.numero_cuotas_pagadas=len(cuotas)
+
+    def actualizar_calcular_cuotas_pagadas(self):
+        for rec in self:
+            rec.calcular_cuotas_pagadas()
 
 
 
