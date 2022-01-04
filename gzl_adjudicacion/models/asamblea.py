@@ -14,6 +14,7 @@ class Asamblea(models.Model):
     integrantes = fields.One2many(
         'integrante.grupo.adjudicado.asamblea', 'asamblea_id',track_visibility='onchange')
     # integrantes = fields.Many2many('integrante.grupo.adjudicado')
+    codigo_tipo_contrato = fields.Char(related="tipo_asamblea.code", string='Tipo de Asamblea' )
 
     junta = fields.One2many('junta.grupo.asamblea', 'asamblea_id',track_visibility='onchange')
     ganadores = fields.One2many('gana.grupo.adjudicado.asamblea.clientes', 'grupo_id',track_visibility='onchange')

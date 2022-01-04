@@ -42,6 +42,9 @@
                                 <field name="fecha_inicio" required="1" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
                                 <field name="fecha_fin" required="1" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
                                 <field name="active" invisible="1 "/>
+                                <field name="codigo_tipo_contrato" invisible="1 "/>
+
+
                             </group>
                         </group>
 
@@ -50,7 +53,10 @@
                                     <tree string="Ganadores" editable="top">
                                         <field name="grupo_adjudicado_id" />
                                         <field name="adjudicado_id"/>
-                                        <field name="puntos" string="Nro. Cuotas" column_invisible=""/>
+                                        <field name="puntos" string="Nro. Cuotas"  attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'evaluacion')]}"/>
+                                        <field name="puntos" string="Calificación"  attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'licitacion')]}"/>
+
+
                                     </tree>
                                 </field>
                             </group>
