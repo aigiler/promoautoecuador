@@ -39,6 +39,7 @@
                     'views/roles_view.xml',
                     'views/items_patrimonio.xml',
                     'views/paginas_de_control.xml',
+                    'views/calificaciones_clientes_view.xml',
 
 
 
