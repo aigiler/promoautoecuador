@@ -54,7 +54,7 @@
                                         <field name="grupo_adjudicado_id" />
                                         <field name="adjudicado_id"/>
                                         <field name="puntos" string="Nro. Cuotas"  attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'evaluacion')]}"/>
-                                        <field name="puntos" string="Calificación"  attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'licitacion')]}"/>
+                                        <field name="calificacion" string="Calificación"  attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'licitacion')]}"/>
 
 
                                     </tree>

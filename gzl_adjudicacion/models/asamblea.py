@@ -200,6 +200,7 @@ class GanadoresAsamblea(models.Model):
     adjudicado_id = fields.Many2one('res.partner', string="Nombre")
     grupo_adjudicado_id = fields.Many2one('grupo.adjudicado',string="Grupo")
     puntos = fields.Integer(string='Nro de Cuotas a Licitar')
+    calificacion = fields.Integer(related='puntos',string='Calificación')
 
 
 
