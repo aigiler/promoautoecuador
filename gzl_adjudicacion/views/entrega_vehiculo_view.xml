@@ -23,7 +23,6 @@
                     <field name="state" widget="statusbar"/>
                 </header>
 
-                    <field name="estado" invisible="1"/>
 
 
                     <notebook>
@@ -392,6 +391,23 @@
                             <div class="row">
                             </div>
                         </page> 
+
+                        
+                        <page string="Otros Campos"   >
+
+                            <group>
+                                <group>
+
+                                    <field name="estado"  />
+                                </group>
+                            </group>
+
+
+                        </page>
+                        
+
+
+
                     </notebook>
 
                 <!-- Attachment preview -->
