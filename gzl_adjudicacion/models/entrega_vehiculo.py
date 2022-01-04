@@ -654,15 +654,18 @@ class PuntosBienesEntregaVehiculo(models.Model):
     
     entrega_id = fields.Many2one('entrega.vehiculo')
     bien_id = fields.Many2one('puntos.bienes')
-    valorBien  = fields.Integer(string='Ptos.', related='bien_id.valorPuntos')
-    poseeBien = fields.Selection(selection=[ ('si', 'SI'),('no', 'NO')], string='SI/NO', default='no', compute = 'set_puntos_bienes')
+    valorBien  = fields.Integer(string='Ptos.', related='bien_id.valorPuntos', compute = 'set_puntos_bienes')
+    poseeBien = fields.Selection(selection=[ ('si', 'SI'),('no', 'NO')], string='SI/NO', default='no')
     
-    
+
+    @api.depends('poseeBien')
     def set_puntos_bienes(self):
         valorDefault = 0
         for rec in self:
             if rec.poseeBien == 'no':
                 rec.valorBien = valorDefault
+            else:
+                rec.valorBien = rec.valorBien 
                 
             
     
