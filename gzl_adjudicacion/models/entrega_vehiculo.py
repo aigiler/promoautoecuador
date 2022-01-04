@@ -147,11 +147,10 @@ class EntegaVehiculo(models.Model):
     observaciones = fields.Text(string='Observaciones')
 
     # calificador compras
-    clienteContrato = fields.Char(compute='set_campos_cliente_informe_credito', string="Nombre del Socio Adj.")
     cedulaContrato = fields.Char()
     codClienteContrado = fields.Char()
     contratoCliente = fields.Char()
-    montoAdjudicado = fields.Monetary(compute='buscar_parner', currency_field='currency_id', string='Monto Adjudicado')
+    montoAdjudicado = fields.Monetary(compute='buscar_contrato_partner', currency_field='currency_id', string='Monto Adjudicado')
     plazoMeses = fields.Integer(string='Plazo')
     tipoAdj = fields.Char(string='Tipo Adj.')
     valorCuota = fields.Monetary(string='Valor de Cuota')
@@ -558,7 +557,7 @@ class EntegaVehiculo(models.Model):
 
     @api.onchange('nombreSocioAdjudicado')
     @api.depends('nombreSocioAdjudicado')
-    def buscar_parner(self):
+    def buscar_contrato_partner(self):
         for rec in self:
             contrato = self.env['contrato'].search(
                 [('cliente', '=', rec.nombreSocioAdjudicado.id)], limit=1)
@@ -569,29 +568,8 @@ class EntegaVehiculo(models.Model):
 
             rec.plazoMeses = contrato.plazo_meses.numero
    
-    @api.onchange('nombreSocioAdjudicado')
-    @api.depends('nombreSocioAdjudicado')
-    def set_campos_cliente_informe_credito(self):
-        for rec in self:
-            if rec.nombreSocioAdjudicado:
-                contrato = self.env['contrato'].search(
-                [('cliente', '=', rec.nombreSocioAdjudicado.id)], limit=1)
-                rec.clienteContrato = contrato
-                rec.cedulaContrato = contrato.cliente.vat
-                rec.codClienteContrado = contrato.codigoAdjudicado
-            else:
-                rec.clienteContrato = ''
-                rec.cedulaContrato = ''
-                rec.codClienteContrado = ''
 
-    # @api.depends('montoAhorroInversiones', 'casaValor', 'terrenoValor', 'montoMueblesEnseres', 'vehiculoValor', 'inventarios')
-    # def calcular_total_activos(self):
-    #     totalActivos = 0
-    #     for rec in self:
-    #         totalActivos = rec.montoAhorroInversiones + rec.casaValor + rec.terrenoValor + \
-    #             rec.vehiculoValor + rec.montoMueblesEnseres + rec.inventarios
-    #         rec.totalActivosAdj = totalActivos
-    
+
     @api.onchange('fechaNacimientoAdj')    
     @api.depends('fechaNacimientoAdj')
     def calcular_edad(self):
