@@ -176,32 +176,23 @@ class CrmLead(models.Model):
 
             if stage_id.crear_reunion_en_calendar:
                 now=datetime.now()
-                id_calendar=self.crear_calendar_event('Reunión Socio {0}'.format(self.partner_id.name),now,24,'Reunión para evidenciar Calidad de la Venta')
+                calendar=self.crear_calendar_event('Reunión Socio {0}'.format(self.partner_id.name),now,1,'Reunión para evidenciar Calidad de la Venta')
         return crm
 
 
     def crear_calendar_event(self,name,fecha,duracion,descripcion):
 
 
-        start_datetime = datetime.strptime(str(fecha), '%Y-%m-%d')
-        start_datetime= start_datetime + timedelta(hours=6)
-        stop= start_datetime + timedelta(hours=duracion)
+        stop= fecha + timedelta(hours=duracion)
 
-
-        asign=self.env['calendar.event']
-        x=asign.create({                
-                'name':name,
-                'start_datetime':start_datetime,
-                'duration': duracion,
-                'start':str(start_datetime),
-                'stop':str(stop),
-                'description': descripcion,
-                'allday':False,
-
-                })
-        return x.id
-
-
+        
+        self.env.cr.execute("insert into calendar_event (name,start_datetime,duration,start,stop,description,allday,active) values('{0}','{1}',{2},'{3}','{4}','{5}',{6},{7})".format(name,fecha,duracion,fecha,stop,descripcion,False,True))
+        
+        self.env.cr.execute("""select id from calendar_event order by id desc limit 1""")
+        calendar = self.env.cr.dictfetchall()
+        if len(calendar)>0:
+            obj=self.env['calendar.event'].browse(calendar[0]['id'])
+            obj.partner_ids=self.env['res.users'].browse(self._uid).partner_id
 
 
 
