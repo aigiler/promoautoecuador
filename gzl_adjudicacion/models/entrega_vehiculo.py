@@ -577,7 +577,7 @@ class EntegaVehiculo(models.Model):
                 contrato = self.env['contrato'].search(
                 [('cliente', '=', rec.nombreSocioAdjudicado.id)], limit=1)
                 rec.clienteContrato = contrato
-                rec.cedulaContrato = contrato.vatAdjudicado
+                rec.cedulaContrato = contrato.cliente.vat
                 rec.codClienteContrado = contrato.codigoAdjudicado
             else:
                 rec.clienteContrato = ''
