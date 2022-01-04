@@ -57,7 +57,7 @@
 
                     <button name="cambio_estado_boton_desistir" string="Desistir" type="object" states="inactivar"  class="oe_highlight"/>
                     
-                    <button name="detalle_tabla_amortizacion" string="Generar estado cuenta contrato" states="borrador" type="object" class="oe_highlight"/>
+                    <button name="detalle_tabla_amortizacion" string="Generar estado cuenta contrato" invisible="1" type="object" class="oe_highlight"/>
                     <button name="pagar_cuotas_por_adelantado" string="Pagar Cuotas por Adelantado" states="activo,adjudicar" type="object" class="oe_highlight"/>
 
                     <field name="state" widget="statusbar" statusbar_visible="borrador,activo,congelar_contrato,adjudicar,adendum,desistir"/>

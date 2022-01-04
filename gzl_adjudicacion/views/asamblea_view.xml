@@ -21,11 +21,11 @@
         <field name="arch" type="xml">
             <form string="Asamblea">
                 <header>
-                    <button name="cambio_estado_boton_pre_cierre" string="Pre cierre" type="object" states="en_curso" class="oe_highlight"/>
+                    <button name="cambio_estado_boton_precierre" string="Pre cierre" type="object" states="inicio" class="oe_highlight"/>
                     <button name="cambio_estado_boton_cerrado" string="Cerrado" type="object" states="pre_cierre"   class="oe_highlight"/>
 
 
-                    <field name="state" widget="statusbar" statusbar_visible="en_curso,pre_cierre,cerrado"/>
+                    <field name="state" widget="statusbar" statusbar_visible="inicio,pre_cierre,cerrado"/>
                 </header>
 
                 <sheet>

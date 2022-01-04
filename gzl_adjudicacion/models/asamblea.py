@@ -24,10 +24,11 @@ class Asamblea(models.Model):
         'tipo.contrato.adjudicado', string='Tipo de Asamblea',track_visibility='onchange')
     state = fields.Selection(selection=[
             ('borrador', 'Borrador'),
+            ('inicio', 'Ingreso de Socios'),
             ('en_curso', 'En Curso'),
             ('pre_cierre', 'Pre cierre'),
             ('cerrado', 'Cerrado')
-            ], string='Estado', copy=False, tracking=True, default='en_curso',track_visibility='onchange')
+            ], string='Estado', copy=False, tracking=True, default='inicio',track_visibility='onchange')
 
     @api.model
     def create(self, vals):
@@ -40,10 +41,9 @@ class Asamblea(models.Model):
         res = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc")
 
 
-    def cambio_estado_boton_borrador(self):
-        return self.write({"state": "en_curso"})
 
-    def cambio_estado_boton_en_curso(self):
+
+    def cambio_estado_boton_precierre(self):
         self.write({"state": "pre_cierre"})
         if self.tipo_asamblea.id==self.env.ref('gzl_adjudicacion.tipo_contrato1').id:
             listaGanadores=[]
@@ -82,14 +82,9 @@ class Asamblea(models.Model):
 
 
 
-
-
-
-
-
-    def cambio_estado_boton_pre_cierre(self):
+    def cambio_estado_boton_cerrado(self):
         entrega_vehiculo=self.env['entrega.vehiculo']
-        listaGanadores=self.ganadores.mapped()
+        listaGanadores=[]
 
 
         for l in self.ganadores:
@@ -106,8 +101,6 @@ class Asamblea(models.Model):
 
         self.write({"state": "cerrado"})
 
-    def cambio_estado_boton_cerrado(self):
-        return self.write({"state": "cerrado"})
 
 
 
