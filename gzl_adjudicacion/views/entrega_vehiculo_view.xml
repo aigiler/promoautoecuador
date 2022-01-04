@@ -8,6 +8,7 @@
             <tree string="Entrega Vehiculo">
                 <field name="secuencia" />
                 <field name="state" />
+                <field name="nombreSocioAdjudicado" />
                 <field name="active"/>
             </tree>
         </field>
