@@ -46,7 +46,7 @@
                         </group>
 
                             <group   attrs="{'readonly': [('state', '=', 'cerrado')],'invisible': [('state', 'not in', ['pre_cierre','cerrado'])]}">
-                                <field name="ganadores" nolabel="1">
+                                <field name="ganadores" nolabel="1" attrs="{'readonly': [('state', '=', 'cerrado')]}">
                                     <tree string="Ganadores" editable="top">
                                         <field name="grupo_adjudicado_id" />
                                         <field name="adjudicado_id"/>
@@ -96,8 +96,8 @@
 
 
 
-                            <group string="Junta" attrs="{'readonly': [('state', '=', 'cerrado')]}">
-                                <field name="junta" nolabel="1">
+                            <group string="Junta" >
+                                <field name="junta" nolabel="1" attrs="{'readonly': [('state', '=', 'cerrado')]}">
                                     <tree string="Junta" editable="top">
                                         <field name="asamblea_id" invisible="1"/>
                                         <field name="empleado_id"/>
