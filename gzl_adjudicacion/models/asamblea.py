@@ -120,9 +120,7 @@ class GrupoAsamblea(models.Model):
     tipo_contrato = fields.Many2one(
         'tipo.contrato.adjudicado', string='Tipo de Asamblea',track_visibility='onchange')
 
-    codigo_tipo_contrato = fields.Char(related="tipo_contrato.code", string='Tipo de Asamblea',store=True )
-
-
+    codigo_tipo_contrato = fields.Char(related="tipo_contrato.name", string='Tipo de Asamblea' )
 
 
     integrantes_g = fields.One2many('integrante.grupo.adjudicado.asamblea.clientes','grupo_id')
