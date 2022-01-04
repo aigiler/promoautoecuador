@@ -76,6 +76,10 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
 
 
             hoy=date.today()
+            self.tabla_amortizacion_id.fecha_pagada=hoy
+
+
+
             obj_calificador=self.env['calificador.cliente']
 
             if hoy<self.tabla_amortizacion_id.fecha:
