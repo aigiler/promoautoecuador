@@ -41,7 +41,17 @@ class EntegaVehiculo(models.Model):
         ('calificador_compra', 'Calificador para compra del bien'),
         ('liquidacion_orden_compra', 'Liquidación de compra y orden de compra'),
         ('orden_compra', 'Orden de compra'),
-        ('entrega_vehiculo', 'Entrega de Vehiculo'),
+        ('factura', 'Factura de Vehículo'),
+        ('firma', 'Firma de Contrato'),
+        ('legalizar', 'Legalización de Contrato'),
+        ('matriculacion', 'Matriculacion, Seguro y Rastreo'),
+
+        ('orden_salida', 'Orden de Salida'),
+
+        ('entrega_vehiculo', 'Entrega de Vehículo'),
+
+
+
     ], string='Estado', default='borrador', track_visibility='onchange')
     # datos del socio adjudicado
     nombreSocioAdjudicado = fields.Many2one('res.partner', string="Nombre del Socio Adj.", track_visibility='onchange')
