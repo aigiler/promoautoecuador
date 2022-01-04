@@ -356,6 +356,35 @@ class TablaAmortizacion(models.Model):
                     l.pago_id = pago
     
     
+
+
+    def enviar_correos_contrato(self,):
+
+
+        rolCredito=self.env.ref('gzl_adjudicacion.tipo_rol3').correos
+        rolGerenciaAdmin=self.env.ref('gzl_adjudicacion.tipo_rol1').correos
+        rolGerenciaFin=self.env.ref('gzl_adjudicacion.tipo_rol4').correos
+        rolAdjudicacion=self.env.ref('gzl_adjudicacion.tipo_rol2').correos
+
+        correos=rolCredito+','+rolGerenciaAdmin+','+rolGerenciaFin+','rolAdjudicacion
+
+        return correos
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 

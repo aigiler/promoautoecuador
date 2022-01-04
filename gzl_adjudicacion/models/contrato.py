@@ -460,6 +460,18 @@ class Contrato(models.Model):
 
 
 
+    def enviar_correos_contrato(self,):
+
+
+        rolCredito=self.env.ref('gzl_adjudicacion.tipo_rol3').correos
+        rolGerenciaAdmin=self.env.ref('gzl_adjudicacion.tipo_rol1').correos
+        rolGerenciaFin=self.env.ref('gzl_adjudicacion.tipo_rol4').correos
+        rolAdjudicacion=self.env.ref('gzl_adjudicacion.tipo_rol2').correos
+
+        correos=rolCredito+','+rolGerenciaAdmin+','+rolGerenciaFin+','rolAdjudicacion
+
+        return correos
+
 
 
 
@@ -475,10 +487,6 @@ class ContratoCongelamiento(models.Model):
     contrato_id = fields.Many2one('contrato')
     fecha = fields.Date(String='Fecha Congelamiento')
     pendiente = fields.Boolean(String='Pendiente de Activación')
-
-
-
-
 
 
 

@@ -29,3 +29,14 @@ class AdjudicacionTeam(models.Model):
     member_ids = fields.Many2many('res.users', string='Miembros del Equipo' )
 
 
+    correos = fields.Char( string='Correos' )
+
+    @api.onchange("member_ids")
+    def actualizar_correos_team(self,):
+        correos=self.member_ids.mapped('email')
+        correoCadena=""
+        for correo in correos:
+            correoCadena=correoCadena+correo+','
+        correoCadena=correoCadena.strip(',')
+        self.correos=correoCadena
+

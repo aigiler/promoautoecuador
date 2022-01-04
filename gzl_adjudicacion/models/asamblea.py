@@ -122,7 +122,8 @@ class Asamblea(models.Model):
         numero_ganadores=self.tipo_asamblea.numero_ganadores
 
         for l in  listaGanadores[:numero_ganadores]:
-            entrega_vehiculo.create({'nombreSocioAdjudicado':l['adjudicado_id']})
+            rol_asignado=self.env.ref('gzl_adjudicacion.tipo_rol3')
+            entrega_vehiculo.create({'nombreSocioAdjudicado':l['adjudicado_id'],'rolAsignado':rol_asignado})
 
         self.write({"state": "cerrado"})
 
