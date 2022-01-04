@@ -539,7 +539,7 @@ class EntegaVehiculo(models.Model):
             [('cliente', '=', self.nombreSocioAdjudicado.id)], limit=1)
         now=date.today()
         contrato.fecha_adjudicado=now
-        contrato.state='adjudicar'
+        contrato.estado='adjudicar'
 
 
     @api.onchange('nombreSocioAdjudicado')
@@ -612,23 +612,7 @@ class EntegaVehiculo(models.Model):
         return super(EntegaVehiculo, self).create(vals)
 
 
-    def cambio_estado_boton_borrador(self):
-        return self.write({"state": "revision_documentos"})
-
-    def cambio_estado_boton_revision(self):
-        return self.write({"state": "informe_credito_cobranza"})
-
-    def cambio_estado_boton_informe(self):
-        return self.write({"state": "calificador_compra"})
-
-    def cambio_estado_boton_caificador(self):
-        return self.write({"state": "liquidacion_orden_compra"})
-
-    def cambio_estado_boton_liquidacion(self):
-        return self.write({"state": "entrega_vehiculo"})
-
-    def cambio_estado_boton_entrega(self):
-        return self.write({"state": "entrega_vehiculo"})
+ 
 
 class ItemPatrimonioEntregaVehiculo(models.Model):
     _name = 'items.patrimonio.entrega.vehiculo'
