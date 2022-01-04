@@ -106,6 +106,9 @@
                                     <field name="fecha_inicio_pago" readonly="0"/>
                                     <field name="cuota_capital"/>
                                     <field name="iva_administrativo" />
+                                    <field name="numero_cuotas_pagadas" />
+
+                                    
                                 </group>
                             </div>
 
