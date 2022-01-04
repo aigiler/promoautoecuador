@@ -649,7 +649,7 @@ class PuntosBienesEntregaVehiculo(models.Model):
     
     entrega_id = fields.Many2one('entrega.vehiculo')
     bien_id = fields.Many2one('puntos.bienes')
-    valorBien  = fields.Integer(related='bien_id.valorPuntos')
+    valorBien  = fields.Integer(string='Ptos.', related='bien_id.valorPuntos')
     poseeBien = fields.Selection(selection=[ ('si', 'SI'),('no', 'NO')], string='SI/NO', default='no')
     
     
