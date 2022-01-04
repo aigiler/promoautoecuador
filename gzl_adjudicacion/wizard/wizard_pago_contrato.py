@@ -41,7 +41,7 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
 
         pago = self.env['account.payment'].create({
                 'payment_date': self.payment_date,
-                'communication':self.tabla_amortizacion_id.contrato_id.partner_id.name+' - Cuota '+self.tabla_amortizacion_id.numero_cuota,
+                'communication':self.tabla_amortizacion_id.contrato_id.cliente.name+' - Cuota '+self.tabla_amortizacion_id.numero_cuota,
                # 'invoice_ids': [(6, 0, [factura.id])],
                 'payment_type': 'inbound',
                 'amount': self.amount ,
