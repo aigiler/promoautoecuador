@@ -57,7 +57,7 @@
 
                     <button name="cambio_estado_boton_desistir" string="Desistir" type="object" states="inactivar"  class="oe_highlight"/>
                     
-                    <button name="detalle_tabla_amortizacion" string="Generar estado cuenta contrato" type="object" class="oe_highlight"/>
+                    <button name="detalle_tabla_amortizacion" string="Generar estado cuenta contrato" states="borrador" type="object" class="oe_highlight"/>
                     <button name="pagar_cuotas_por_adelantado" string="Pagar Cuotas por Adelantado" type="object" class="oe_highlight"/>
 
                     <field name="state" widget="statusbar" statusbar_visible="borrador,congelar_contrato,adjudicar,adendum,desistir"/>
@@ -117,7 +117,7 @@
                         <separator string="Estado de Cuenta de Aportes"></separator>
 
                         <field name="estado_de_cuenta_ids" nolabel="1">
-                            <tree string="Estado de Cuenta" editable="bottom" limit="100" delete="0">
+                            <tree string="Estado de Cuenta" create="0" editable="bottom" limit="100" delete="0">
                                 <field name="contrato_id" invisible="1" readonly="1"/>
                                 <field name="numero_cuota" string="Nro." readonly="1"/>
                                 <field name="fecha" readonly="1"/>

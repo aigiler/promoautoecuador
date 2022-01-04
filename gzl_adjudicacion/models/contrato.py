@@ -216,7 +216,9 @@ class Contrato(models.Model):
 
 
     def cambio_estado_boton_borrador(self):
-        return self.write({"state": "activo"})
+
+        self.detalle_tabla_amortizacion()
+        self.write({"state": "activo"})
 
 
 
