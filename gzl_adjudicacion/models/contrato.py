@@ -559,7 +559,7 @@ class ContratoEstadoCuenta(models.Model):
                 'context': {
                     'default_tabla_amortizacion_id': self.id,
                     'default_amount': self.saldo,
-                    'default_payment_method_idt': 2,
+                    'default_payment_method_id': 2,
 
 
                 }
