@@ -63,7 +63,7 @@ class Asamblea(models.Model):
             # This changes the list a
 
             # This returns a new list (a is not modified)
-            listaGanadores=sorted(listaGanadores, key=lambda k : k['numeroCuota'],reverse=True) 
+            listaGanadores=sorted(listaGanadores, key=lambda k : k['puntos'],reverse=True) 
             self.ganadores = [(6, 0, listaGanadores[:4])]
 
         else:
@@ -84,7 +84,7 @@ class Asamblea(models.Model):
             # This changes the list a
 
             # This returns a new list (a is not modified)
-            listaGanadores=sorted(listaGanadores, key=lambda k : k['calificacion'],reverse=True) 
+            listaGanadores=sorted(listaGanadores, key=lambda k : k['puntos'],reverse=True) 
             self.ganadores = [(6, 0, listaGanadores[:4])]
 
 
