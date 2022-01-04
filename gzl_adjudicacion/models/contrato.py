@@ -468,7 +468,7 @@ class Contrato(models.Model):
         rolGerenciaFin=self.env.ref('gzl_adjudicacion.tipo_rol4').correos
         rolAdjudicacion=self.env.ref('gzl_adjudicacion.tipo_rol2').correos
 
-        correos=rolCredito+','+rolGerenciaAdmin+','+rolGerenciaFin+','rolAdjudicacion
+        correos=rolCredito+','+rolGerenciaAdmin+','+rolGerenciaFin+','+rolAdjudicacion
 
         return correos
 
