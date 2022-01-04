@@ -54,8 +54,8 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
 
         #factura.action_post()
         #pago.post()
-        self.tabla_amortizacion_id.estado_pago='pagado'
         self.tabla_amortizacion_id.calcular_monto_pagado()
+            self.tabla_amortizacion_id.estado_pago='pendiente'
 
 
         if self.tabla_amortizacion_id.saldo==0:
@@ -71,6 +71,7 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
                         'invoice_date':self.payment_date,
                     })
             self.tabla_amortizacion_id.factura_id=factura.id
+            self.tabla_amortizacion_id.estado_pago='pagado'
 
 
 
