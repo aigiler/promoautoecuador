@@ -68,7 +68,6 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
                             'price_unit': self.tabla_amortizacion_id.cuota_adm + self.tabla_amortizacion_id.iva_adm,
                             'name': self.tabla_amortizacion_id.contrato_id.cliente.name+' - Cuota '+self.tabla_amortizacion_id.numero_cuota,
                         })],
-                        'journal_id':self.journal_id.id,
                         'invoice_date':self.payment_date,
                     })
             self.tabla_amortizacion_id.factura_id=factura.id
