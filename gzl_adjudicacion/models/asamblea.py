@@ -66,7 +66,9 @@ class Asamblea(models.Model):
             
             listaGanadores=sorted(listaGanadores, key=lambda k : k['puntos'],reverse=True) 
 
-            for ganador in listaGanadores[:4]:
+
+            numero_ganadores=self.tipo_asamblea.numero_ganadores*2
+            for ganador in listaGanadores[:numero_ganadores]:
                 ganador['grupo_id']=self.id
                 self.env['gana.grupo.adjudicado.asamblea.clientes'].create(ganador)
 
@@ -92,7 +94,10 @@ class Asamblea(models.Model):
 
             # This returns a new list (a is not modified)
             listaGanadores=sorted(listaGanadores, key=lambda k : k['puntos'],reverse=True) 
-            for ganador in listaGanadores[:4]:
+            numero_ganadores=self.tipo_asamblea.numero_ganadores*2
+
+
+            for ganador in listaGanadores[:numero_ganadores]:
                 ganador['grupo_id']=self.id
                 self.env['gana.grupo.adjudicado.asamblea.clientes'].create(ganador)
 
@@ -113,8 +118,9 @@ class Asamblea(models.Model):
 
 
         listaGanadores=sorted(listaGanadores, key=lambda k : k['puntos'],reverse=True) 
+        numero_ganadores=self.tipo_asamblea.numero_ganadores
 
-        for l in  listaGanadores[:2]:
+        for l in  listaGanadores[:numero_ganadores]:
             entrega_vehiculo.create({'nombreSocioAdjudicado':l['adjudicado_id']})
 
         self.write({"state": "cerrado"})
