@@ -108,7 +108,7 @@
                                     <field name="iva_administrativo" />
                                     <field name="numero_cuotas_pagadas" />
 
-                                    
+
                                 </group>
                             </div>
 
@@ -133,7 +133,7 @@
                                 <field name="monto_pagado" sum="monto_pagado" readonly="1"/>
                                 <field name="saldo" sum="saldo" readonly="1"/>
                                 <field name="estado_pago"   readonly="1"/>
-                                <button name="pagar_cuota" type="object" string="Pagar"/>
+                                <button name="pagar_cuota" attrs="{'invisible':[('estado_pago','=','pagado')]}"  type="object" string="Pagar"/>
                             </tree>
                         </field>
 
