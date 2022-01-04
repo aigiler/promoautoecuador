@@ -558,6 +558,8 @@ class ContratoEstadoCuenta(models.Model):
                 'views': [[view_id, 'form']],
                 'context': {
                     'default_tabla_amortizacion_id': self.id,
+                    'default_amount': self.saldo,
+
                 }
         }
 
