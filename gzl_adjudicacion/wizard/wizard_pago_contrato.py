@@ -32,8 +32,8 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
     
     def validar_pago(self):
 
-        saldo_restante=self.tabla_amortizacion_id.pago_ids.mapped('amount')
-        if sum(saldo_restante) <= self.tabla_amortizacion_id.saldo:
+        saldo_restante=sum(self.tabla_amortizacion_id.pago_ids.mapped('amount'))
+        if saldo_restante <= self.tabla_amortizacion_id.saldo:
             saldo_a_pagar= self.tabla_amortizacion_id.saldo - saldo_restante
             if not self.amount <= saldo_a_pagar:
                 raise ValidationError("Ingrese una Cantidad menor al saldo a pagar.")
