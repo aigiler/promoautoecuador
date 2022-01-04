@@ -54,7 +54,7 @@ class Asamblea(models.Model):
                         [('cliente', '=', integrante.adjudicado_id.id)], limit=1)
 
                     dct['adjudicado_id']=integrante.adjudicado_id.id
-                    dct['grupo_id']=contrato.grupo.id
+                    dct['grupo_adjudicado_id']=contrato.grupo.id
                     dct['puntos']=integrante.nro_cuota_licitar
                     listaGanadores.append(dct)
 
@@ -83,7 +83,7 @@ class Asamblea(models.Model):
                         [('cliente', '=', integrante.adjudicado_id.id)], limit=1)
 
                     dct['adjudicado_id']=integrante.adjudicado_id.id
-                    dct['grupo_id']=contrato.grupo.id
+                    dct['grupo_adjudicado_id']=contrato.grupo.id
                     dct['puntos']=integrante.adjudicado_id.calificacion
                     listaGanadores.append(dct)
 
