@@ -15,5 +15,5 @@ class PuntosBienes(models.Model):
     
     #items bienes
     nombre = fields.Char('Nombre',  required=True)
-    valorPuntos = fields.Integer('Valor Puntos',  required=True)
+    valorPuntos = fields.Integer('Ptos.',  required=True)
     poseeBien = fields.Char()

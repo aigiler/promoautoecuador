@@ -190,9 +190,10 @@ class EntegaVehiculo(models.Model):
     tablaPuntosBienes = fields.One2many('puntos.bienes.entrega.vehiculo','entrega_id',track_visibility='onchange')
     
     def llenar_tabla_puntos_bienes(self):
-            obj_puntos_bienes=self.env['puntos.bienes'].search([])
-            for bienes in obj_puntos_bienes:
-                self.env['puntos.bienes.entrega.vehiculo'].create({'bien_id':bienes.id,'entrega_id':self.id})
+        obj_puntos_bienes=self.env['puntos.bienes'].search([])
+        for bien in obj_puntos_bienes:
+            self.env['puntos.bienes.entrega.vehiculo'].create({'bien_id':bien.id,'entrega_id':self.id})
+    
         
     
     totalPuntosBienesAdj = fields.Integer(compute='calcular_puntos_bienes')
@@ -652,12 +653,6 @@ class PuntosBienesEntregaVehiculo(models.Model):
     poseeBien = fields.Selection(selection=[ ('si', 'SI'),('no', 'NO')], string='SI/NO', default='no')
     
     
-    @api.depends('bien_id', 'poseeBien')
-    def asignarValorBien(self):
-        for rec in self:
-            if rec.poseeBien  == 'no':
-                rec.valorBien = 0
-            
         
 
 
