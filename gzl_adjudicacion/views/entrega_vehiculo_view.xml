@@ -400,6 +400,245 @@
                             <separator class="text-center" string="COMITÉ DE APROBACION"/>
                             <div class="row">
                             </div>
+                        </page>
+                        <page string="Liquidación Orden de Compra">
+                            <separator class="text-center" string="LIQUIDACION DE COMPRA"/>
+                            <div style="border: 1px solid black;">
+                                <div class="row">
+                                    <div class="col-xs-12 col-md-12">
+                                        <group>
+                                            <field name="nombreSocioAdjudicado" readonly="1" force_save="1"/>
+                                        </group>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-4">
+                                        <group>
+                                            <field name="vatAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                        </group>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <group>
+                                            <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                        </group>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-12">
+                                    <table style=" border-collapse: collapse; width:100%">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <label for="montoAdjudicado"/>
+                                                </td>
+                                                <td>
+                                                    <field name="montoAdjudicado" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td>
+                                                    <label for="plazoMeses"/>
+                                                </td>
+                                                <td>
+                                                    <label for="tipoAdj"/>
+                                                </td>
+                                                <td>
+                                                    <label for="fechaAdj"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label for="valorCuota"/>
+                                                </td>
+                                                <td>
+                                                    <field name="valorCuota" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td>
+                                                    <field name="plazoMeses" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td>
+                                                    <field name="tipoAdj" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td>
+                                                    <field name="fechaAdj" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <separator/>
+                            <div style="border: 1px solid black;">
+                                <div class="col-xs-4 col-sm-9">
+                                    <table style=" border-collapse: collapse;width:100%">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <label for="valorTotalPlan"/>
+                                                </td>
+                                                <td>
+                                                    <field name="valorTotalPlan" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td>
+                                                    <field name="plazoMeses" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+ Cuotas</td>
+                                                <td>
+                                                    <field name="porcentajeTotal" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+%</td>
+                                            </tr>
+                                            <tr class="font-weight-bold">
+                                                <td>
+                                                    <label for="montoCuotasCanceladas" />
+                                                </td>
+                                                <td>
+                                                    <field name="montoCuotasCanceladas" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td>
+                                                    <field name="cuotasCanceladas" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+ Cuotas</td>
+                                                <td>
+                                                    <field name="porcentajeCancelado" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label for="montoCuotasPendientes" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td>
+                                                    <field name="montoCuotasPendientes" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                                </td>
+                                                <td>
+                                                    <field name="cuotasPendientes" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+ Cuotas</td>
+                                                <td>
+                                                    <field name="porcentajePendiente" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+%</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <separator/>
+                            <div class="col-xs-12 col-sm-9">
+                                <table style=" border-collapse: collapse;width:100%">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <text>MONTO DEL PLAN ADJUDICADO</text>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <field name="montoAdjudicado" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <text>VALOR DEL VEHICULO</text>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <field name="montoVehiculo" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <field name="montoPagoConsesionario" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <field name="montoAFavor" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                            </td>
+                                        </tr>
+                                        <separator/>
+                                        <tr>
+                                            <td>
+                                                <text>VALOR ADJUDICADO PARA LA COMPRA DEL VEHICULO</text>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <field name="valorAdjParaCompra" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <text>ANTICIPO AL CONCESIONARIO</text>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <field name="montoAnticipoConsesionaria" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <text>COMISION FACTURA A NOMBRE CONCESIONARIO</text>
+                                            </td>
+                                            <td style="width:25%">
+                                                <field name="comisionFacturaConcesionario" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+%</td>
+                                            <td>
+                                                <field name="valorComisionFactura" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <text>COMISION POR DISPOSITIVO DE RASTREO</text>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <field name="comisionDispositivoRastreo" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                            </td>
+                                        </tr>
+                                        <separator/>
+                                        <tr>
+                                            <td>
+                                                <text>CHEQUE AL CONCESIONARIO</text>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <field name="montoChequeConsesionario" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                            </td>
+                                        </tr>
+                                        <!-- 
+                                    <tr>
+                                        <td><text>COMISION POR DISPOSITIVO DE RASTREO</text> </td>
+                                        <td> </td>
+                                        <td><field name="comisionDispositivoRastreo" nolabel="1" options="{'no_create': True, 'no_open': True}"/> </td>
+                                    </tr> -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <separator/>
+                            <div style="border: 1px solid black;">
+                                <div class="col-xs-12 col-sm-12">
+                                    <group>
+                                        <field name="nombreConsesionario" domain = "[('tipo', '=', 'concesionario')]"/>
+                                    </group>
+                                </div>
+                            </div>
+                            <separator/>
+                            <separator/>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12" style="border-bottom: 1px solid black;">
+                                    <text class="text-center">
+                                        <strong>Observaciones:</strong>
+                                    </text>
+                                </div>
+                                <div class="col-xs-12 col-sm-12">
+                                    <field name="observacionesLiquidacion" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </div>
+                            </div>
+                            <separator class="text-center" string="COMITÉ DE APROBACION"/>
+                            <div class="row">
+                            </div>
+                        </page>
+                        <!-- ORDEN DE COMPRA -->
+                        <page string ="Orden de Compra">
+                            <separator class="text-center" string="ORDEN DE COMPRA"/>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12">
+                                    <text class="text-center">
+                                        <strong>Observaciones:</strong>
+                                    </text>
+                                </div>
+                                <div class="col-xs-12 col-sm-12">
+                                    <field name="observacionesLiquidacion" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </div>
+                            </div>
                         </page> 
 
                         
