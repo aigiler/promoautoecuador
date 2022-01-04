@@ -50,8 +50,12 @@ class Asamblea(models.Model):
             for grupo in self.integrantes:
                 for integrante in grupo.integrantes_g:
                     dct={}
+
+                    contrato = self.env['contrato'].search(
+                        [('cliente', '=', integrante.adjudicado_id.id)], limit=1)
+
                     dct['adjudicado_id']=integrante.adjudicado_id.id
-                    dct['grupo_id']=integrante.adjudicado_id.contrato.grupo.id
+                    dct['grupo_id']=contrato.grupo.id
                     dct['puntos']=integrante.nro_cuota_licitar
                     listaGanadores.append(dct)
 
@@ -67,8 +71,12 @@ class Asamblea(models.Model):
             for grupo in self.integrantes:
                 for integrante in grupo.integrantes_g:
                     dct={}
+
+                    contrato = self.env['contrato'].search(
+                        [('cliente', '=', integrante.adjudicado_id.id)], limit=1)
+
                     dct['adjudicado_id']=integrante.adjudicado_id.id
-                    dct['grupo_id']=integrante.adjudicado_id.contrato.grupo.id
+                    dct['grupo_id']=contrato.grupo.id
                     dct['puntos']=integrante.adjudicado_id.calificacion
                     listaGanadores.append(dct)
 
