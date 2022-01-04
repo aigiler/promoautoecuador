@@ -503,15 +503,37 @@ class ContratoEstadoCuenta(models.Model):
     rastreo = fields.Monetary(string='Rastreo', currency_field='currency_id')
     otro = fields.Monetary(string='Otro', currency_field='currency_id')
     monto_pagado = fields.Monetary(
-        string='Monto Pagado', currency_field='currency_id')
-    saldo = fields.Monetary(string='Saldo', currency_field='currency_id')
+        string='Monto Pagado', currency_field='currency_id',compute="calcular_monto_pagado",store=True)
+    saldo = fields.Monetary(string='Saldo', currency_field='currency_id' ,compute="calcular_monto_pagado",store=True)
     certificado = fields.Binary(string='Certificado')
     estado_pago = fields.Selection([('pendiente', 'Pendiente'),
                                     ('pagado', 'Pagado')
                                     ], string='Estado de Pago', default='pendiente')
 
-
+    pago_ids = fields.One2many(
+        'account.payment', 'pago_id', track_visibility='onchange')
     
+
+
+
+
+
+
+    @api.depends("pago_ids")
+    def calcular_monto_pagado(self):
+
+        for l in self:
+            monto=sum(l.pago_ids.mapped("amount"))
+            l.monto_pagado=monto
+
+            l.saldo=l.cuota_capital+l.cuota_adm+l.iva_adm + seguro+ rastreo + otro - l.monto_pagado
+
+
+
+
+
+
+
     def pagar_cuota(self):
         view_id = self.env.ref('gzl_adjudicacion.wizard_pago_cuota_amortizaciones_contrato').id
 
@@ -534,3 +556,12 @@ class ContratoEstadoCuenta(models.Model):
                     'default_tabla_amortizacion_id': self.id,
                 }
         }
+
+class PagoContratoEstadoCuenta(models.Model):
+    _inherit = 'account.payment'
+
+    pago_id = fields.Many2one('contrato.estado.cuenta', string="Detalle Estado de Cuenta")
+    
+
+
+
