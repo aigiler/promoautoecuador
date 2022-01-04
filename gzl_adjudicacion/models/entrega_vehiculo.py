@@ -186,6 +186,9 @@ class EntegaVehiculo(models.Model):
     antiguedadLaboral = fields.Integer(string="Antigüedad Laboral o Comercial Mayor a 2 años")
     puntosAntiguedadLaboral = fields.Integer(
         compute='calcular_puntos_antiguedad_laboral')
+    
+    tablaPuntosBienes = fields.One2many('puntos.bienes.entrega.vehiculo','entrega_id',track_visibility='onchange')
+    
 
     totalPuntosBienesAdj = fields.Integer(compute='calcular_puntos_bienes')
 
@@ -632,8 +635,25 @@ class PaginasDeControlEntregaVehiculo(models.Model):
     pagina_id = fields.Many2one('paginas.de.control')
     descripcion  = fields.Char(related='pagina_id.descripcion')
     pagina = fields.Selection(selection=[ ('si', 'SI'),('no', 'NO')], default='no')
+
+
+class PuntosBienesEntregaVehiculo(models.Model):
+    _name = 'puntos.bienes.entrega.vehiculo'
+    _description = 'Tabla de puntos Bienes'
+    
+    entrega_id = fields.Many2one('entrega.vehiculo')
+    bien_id = fields.Many2one('puntos.bienes')
+    valorBien  = fields.Integer(related='bien_id.valorPuntos')
+    poseeBien = fields.Selection(selection=[ ('si', 'SI'),('no', 'NO')], default='no')
     
     
+    @api.depends('bien_id', 'poseeBien')
+    def asignarValorBien(self):
+        for rec in self:
+            if rec.poseeBien  == 'no':
+                rec.valorBien = 0
+            
+        
 
 
 
