@@ -139,28 +139,7 @@ class EntegaVehiculo(models.Model):
     
     
     scoreBuroCredito = fields.Integer(string='Buró de Crédito')
-    posee = fields.Char(string='Posee')
-    score = fields.Char(string='Posee')
-    poseeAntecedentesPenales = fields.Selection(selection=[
-        ('si', 'SI'),
-        ('no', 'NO')
-    ], string='Policía Nacional antecedentes', default='no')
-
-    estadoTributario = fields.Selection(selection=[
-        ('atrasado', 'ATRASADO'),
-        ('no_activo', 'NO ACTIVO'),
-        ('al_dia', 'AL DIA')
-    ], string='SRI, deudas firmes y estado Tributario', default='al_dia')
-
-    funcionJudicial = fields.Selection(selection=[
-        ('si', 'SI'),
-        ('no', 'NO')
-    ], string='Función Judicial', default='no')
-
-    fiscaliaGeneral = fields.Selection(selection=[
-        ('si', 'SI'),
-        ('no', 'NO')
-    ], string='Fiscalia General del Estado', default='no')
+   
 
     # observaciones
     observaciones = fields.Text(string='Observaciones')
@@ -192,7 +171,7 @@ class EntegaVehiculo(models.Model):
     #saldosBien
     valorDelBien = fields.Monetary(string='Valor del Bien', compute='set_valor_del_bien')
     saldoPlan = fields.Monetary(string='Saldo del Plan', compute='set_valor_saldo_plan')
-    porcentajeSaldoPlan = fields.Float(digits=(6, 2), compute='calcular_porcentaj_saldo_plan', default=0.00)
+    porcentajeSaldoPlan = fields.Float(digits=(3, 2), compute='calcular_porcentaj_saldo_plan', default=0.00)
     #puntos saldos
     puntosPorcentajSaldos = fields.Integer(compute='calcular_puntos_porcentaje_saldos')
     
@@ -220,35 +199,6 @@ class EntegaVehiculo(models.Model):
     
     
 
-    poseeCasa = fields.Selection(selection=[
-        ('si', 'SI'),
-        ('no', 'NO')
-    ], string='Fiscalia General del Estado', default='no')
-
-    puntosCasa = fields.Integer(compute='set_puntos_casa')
-
-    poseeTerreno = fields.Selection(selection=[
-        ('si', 'SI'),
-        ('no', 'NO')
-    ], string='Fiscalia General del Estado', default='no')
-
-    puntosTerreno = fields.Integer(compute='set_puntos_terreno')
-
-    poseeVehiculo = fields.Selection(selection=[
-        ('si', 'SI'),
-        ('no', 'NO')
-    ], string='Fiscalia General del Estado', default='no')
-    puntosVehiculo = fields.Integer(compute='set_puntos_vehiculo')
-    poseeMotos = fields.Selection(selection=[
-        ('si', 'SI'),
-        ('no', 'NO')
-    ], string='Fiscalia General del Estado', default='no')
-    puntosMotos = fields.Integer(compute='set_puntos_motos')
-    poseeMueblesEnseres = fields.Selection(selection=[
-        ('si', 'SI'),
-        ('no', 'NO')
-    ], string='Fiscalia General del Estado', default='no')
-    puntosMueblesEnseres = fields.Integer(compute='set_puntos_muebles')
 
     totalPuntosCalificador = fields.Integer(compute='calcular_total_puntos')
 
