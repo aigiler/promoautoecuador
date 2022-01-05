@@ -344,7 +344,7 @@ class EntegaVehiculo(models.Model):
                 l.estado_anterior_factura=True
                 l.estado_anterior_matriculacion=True
 
-    @api.onchange('scoreCredito')
+    @api.onchange('scoreBuroCredito')
     def calculo_scoreCredito(self):
         if self.scoreBuroCredito:
             self.scoreCredito= self.scoreBuroCredito    
