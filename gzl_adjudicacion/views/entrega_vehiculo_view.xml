@@ -395,7 +395,7 @@
                                     <tree create='0' delete='0' editable='top'>
                                         <field name="bien_id" readonly='1'/>
                                         <field name="poseeBien"/>
-                                        <field name="valorBien" readonly='1'/>
+                                        <field name="puntosBien" readonly='1'/>
                                         
                                     </tree>
                                 </field>
