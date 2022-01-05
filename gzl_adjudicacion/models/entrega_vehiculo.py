@@ -213,7 +213,6 @@ class EntegaVehiculo(models.Model):
         compute='calcular_puntos_antiguedad_laboral')
     
     
-    
         
     
     totalPuntosBienesAdj = fields.Integer(compute='calcular_puntos_bienes')
@@ -345,7 +344,10 @@ class EntegaVehiculo(models.Model):
                 l.estado_anterior_factura=True
                 l.estado_anterior_matriculacion=True
 
-
+    @api.onchange('scoreCredito')
+    def calculo_scoreCredito(self):
+        if self.scoreBuroCredito:
+            self.scoreCredito= self.scoreBuroCredito    
 
 
     @api.depends('montoVehiculo', 'montoAdjudicado')
@@ -710,7 +712,7 @@ class PuntosBienesEntregaVehiculo(models.Model):
     poseeBien = fields.Selection(selection=[ ('si', 'SI'),('no', 'NO')], string='SI/NO', default='no')
     
 
-    @api.depends('poseeBien', 'valorBien')
+    @api.depends('poseeBien')
     def set_puntos_bienes(self):
         valorDefault = 0
         for rec in self:

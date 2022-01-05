@@ -49,7 +49,7 @@
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <group>
-                                        <field name="nombreSocioAdjudicado" options="{'no_open': True, 'no_create': True}"/>
+                                        <field name="nombreSocioAdjudicado" required="1" options="{'no_open': True, 'no_create': True}"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
@@ -323,9 +323,7 @@
                                     <field name="observacionesCalificador" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                 </div>
                             </div>
-                            <separator class="text-center" string="COMITÉ DE APROBACION"/>
-                            <div class="row">
-                            </div>
+
                         </page>
                         <page string="Liquidación Orden de Compra">
                             <separator class="text-center" string="LIQUIDACION DE COMPRA"/>
@@ -548,9 +546,7 @@
                                     <field name="observacionesLiquidacion" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                 </div>
                             </div>
-                            <separator class="text-center" string="COMITÉ DE APROBACION"/>
-                            <div class="row">
-                            </div>
+
                         </page>
                         <!-- ORDEN DE COMPRA -->
                         <page string ="Orden de Compra">
