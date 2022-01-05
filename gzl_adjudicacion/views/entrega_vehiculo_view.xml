@@ -24,7 +24,7 @@
                 </header>
 
 
-
+                <sheet>
                     <notebook>
 
                         <page string="Matriculacion, Rastreo, Seguro"  >
@@ -631,7 +631,7 @@
                         </page> 
 
                         
-                        <page string="Otros Campos"   >
+                        <page string="Otros Campos"  invisible='1' >
 
                             <group>
                                 <group>
@@ -647,6 +647,7 @@
 
 
                     </notebook>
+                </sheet>
 
                 <!-- Attachment preview -->
                 <div class="o_attachment_preview" />
