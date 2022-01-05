@@ -390,15 +390,19 @@
                                 </div>
                             </div>
                             <separator/>
-                            <div class="col-xs-12 col-sm-8">
-                                <field name="tablaPuntosBienes" nolabel="1">
-                                    <tree create='0' delete='0' editable='top'>
-                                        <field name="bien_id" readonly='1'/>
-                                        <field name="poseeBien"/>
-                                        <field name="puntosBien" readonly='1'/>
-                                        
-                                    </tree>
-                                </field>
+                            <div class="row" style="border: 1px solid black;">
+                                <div class="col-xs-12 col-sm-8">
+                                    <field name="tablaPuntosBienes" nolabel="1">
+                                        <tree create='0' delete='0' editable='top'>
+                                            <field name="bien_id" readonly='1'/>
+                                            <field name="poseeBien"/>
+                                            <field name="puntosBien" readonly='1'/>
+                                        </tree>
+                                    </field>
+                                </div>
+                                <div class="col-xs-12 col-sm-4" style="border: 0.05px solid black;">
+                                    <field name="totalPuntosBienesAdj" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                </div>
                             </div>
                             <separator/>
                             <div class="row" style="border: 1px solid black;">

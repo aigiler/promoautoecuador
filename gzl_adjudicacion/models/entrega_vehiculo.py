@@ -108,9 +108,12 @@ class EntegaVehiculo(models.Model):
     
     
 
+    totalPuntosBienesAdj = fields.Integer(compute='calcular_puntos_bienes',store=True)
 
-
-
+    @api.depends('tablaPuntosBienes')
+    def calcular_puntos_bienes(self):
+        for rec in self:
+            rec.totalPuntosBienesAdj = sum(rec.tablaPuntosBienes.mapped('puntosBien'))
 
 
 
@@ -215,7 +218,7 @@ class EntegaVehiculo(models.Model):
     
         
     
-    totalPuntosBienesAdj = fields.Integer(compute='calcular_puntos_bienes')
+    
 
     poseeCasa = fields.Selection(selection=[
         ('si', 'SI'),
@@ -435,11 +438,7 @@ class EntegaVehiculo(models.Model):
             else:
                 rec.puntosMueblesEnseres = 0
 
-    @api.depends('puntosMueblesEnseres', 'puntosVehiculo', 'puntosMotos', 'puntosTerreno', 'puntosCasa')
-    def calcular_puntos_bienes(self):
-        for rec in self:
-            rec.totalPuntosBienesAdj = rec.puntosCasa + rec.puntosTerreno + \
-                rec.puntosVehiculo + rec.puntosMotos + rec.puntosMueblesEnseres
+    
 
     @api.depends('antiguedadLaboral')
     def calcular_puntos_antiguedad_laboral(self):
@@ -707,7 +706,7 @@ class PuntosBienesEntregaVehiculo(models.Model):
     entrega_id = fields.Many2one('entrega.vehiculo')
     bien_id = fields.Many2one('puntos.bienes')
     valorBien  = fields.Integer(related='bien_id.valorPuntos')
-    puntosBien = fields.Integer(string='Ptos.', compute = 'set_puntos_bienes') 
+    puntosBien = fields.Integer(string='Ptos.', compute = 'set_puntos_bienes', store = True) 
     poseeBien = fields.Selection(selection=[ ('si', 'SI'),('no', 'NO')], string='SI/NO', default='no')
     
 
