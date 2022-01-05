@@ -613,7 +613,6 @@ class EntegaVehiculo(models.Model):
     def calcular_valor_cuotas_canceladas(self):
         for rec in self:
             rec.porcentajeTotal = 100.00
-            rec.cuotasCanceladas = 31
             rec.montoCuotasCanceladas = rec.valorCuota * rec.cuotasCanceladas
 
     @api.depends('valorCuota', 'plazoMeses')
@@ -640,7 +639,7 @@ class EntegaVehiculo(models.Model):
             rec.valorCuota = contrato.cuota_capital
             rec.tipoAdj = contrato.tipo_de_contrato.name
             rec.fechaAdj = contrato.fecha_adjudicado
-
+            rec.cuotasCanceladas = contrato.numero_cuotas_pagadas
             rec.plazoMeses = contrato.plazo_meses.numero
    
 
