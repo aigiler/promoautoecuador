@@ -104,7 +104,7 @@ class EntegaVehiculo(models.Model):
     @api.depends("montoAhorroInversiones")
     def calculo_total_activos_adj(self):
         for rec in self:
-            rec.totalActivosAdj=sum(rec.totalActivosAdj.mapped('valor'))
+            rec.totalActivosAdj=sum(rec.montoAhorroInversiones.mapped('valor'))
     
     
 
