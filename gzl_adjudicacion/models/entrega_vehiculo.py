@@ -346,8 +346,7 @@ class EntegaVehiculo(models.Model):
 
     @api.onchange('scoreBuroCredito')
     def calculo_scoreCredito(self):
-        if self.scoreBuroCredito:
-            self.scoreCredito= self.scoreBuroCredito    
+        self.scoreCredito= self.scoreBuroCredito    
 
 
     @api.depends('montoVehiculo', 'montoAdjudicado')
