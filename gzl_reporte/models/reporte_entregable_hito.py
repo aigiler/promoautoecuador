@@ -133,46 +133,46 @@ class ReporteEntregable(models.TransientModel):
 
 
 	
-	def generar_word_hito(self):
-		dct=self.crear_informe_entrega_hito()
+	# def generar_word_hito(self):
+	# 	dct=self.crear_informe_entrega_hito()
 
-		self.env.cr.execute("""select * from ir_attachment where res_id='{0}' and res_model='{1}'   """.format(self.id,'reporte.entregable.hito'))
-		res=self.env.cr.dictfetchall()	
+	# 	self.env.cr.execute("""select * from ir_attachment where res_id='{0}' and res_model='{1}'   """.format(self.id,'reporte.entregable.hito'))
+	# 	res=self.env.cr.dictfetchall()	
 
 
 
-		obj=self.env['reporte.entregable.hito'].browse(self.id)
-		if len(res) == 0:
-			obj_attach=self.env['ir.attachment']
-			obj_xls_attach=obj_attach.create({'name':dct['docx_filename'],
-										'res_model':'reporte.entregable.hito',
-										'res_id':self.id,
-										'datas':dct['archivo_docx'],
-										'type':'binary',
-										'datas_fname':dct['docx_filename']})
+	# 	obj=self.env['reporte.entregable.hito'].browse(self.id)
+	# 	if len(res) == 0:
+	# 		obj_attach=self.env['ir.attachment']
+	# 		obj_xls_attach=obj_attach.create({'name':dct['docx_filename'],
+	# 									'res_model':'reporte.entregable.hito',
+	# 									'res_id':self.id,
+	# 									'datas':dct['archivo_docx'],
+	# 									'type':'binary',
+	# 									'datas_fname':dct['docx_filename']})
 
-		else:
-			obj_attach=self.env['ir.attachment'].browse(res[0]['id'])
-			obj_attach.write({'name':dct['docx_filename'],
-					'res_model':'reporte.entregable.hito',
-					'res_id':self.id,
-					'datas':dct['archivo_docx'],
-					'type':'binary',
-					'datas_fname':dct['docx_filename']})
-			obj_xls_attach=obj_attach
+	# 	else:
+	# 		obj_attach=self.env['ir.attachment'].browse(res[0]['id'])
+	# 		obj_attach.write({'name':dct['docx_filename'],
+	# 				'res_model':'reporte.entregable.hito',
+	# 				'res_id':self.id,
+	# 				'datas':dct['archivo_docx'],
+	# 				'type':'binary',
+	# 				'datas_fname':dct['docx_filename']})
+	# 		obj_xls_attach=obj_attach
 
-		if not self.env['project.project'].IP_servidor() or not self.env['project.project'].Puerto_servidor():
+	# 	if not self.env['project.project'].IP_servidor() or not self.env['project.project'].Puerto_servidor():
 
-			raise ValidationError(_('AVISO! \n \n No se ha registrado la ip del servidor ni el puerto para generar el documento \n \n Vaya al menu Facturacion/Configuraciones/Ip Reportes/Registro Ip \n \n Registre la Ip y el Puerto para descargar el Documento'))
+	# 		raise ValidationError(_('AVISO! \n \n No se ha registrado la ip del servidor ni el puerto para generar el documento \n \n Vaya al menu Facturacion/Configuraciones/Ip Reportes/Registro Ip \n \n Registre la Ip y el Puerto para descargar el Documento'))
 
-		else:
+	# 	else:
 
-			enlace="""http://{0}:{1}/web/content/{2}?download=true""".format(self.env['project.project'].IP_servidor(),self.env['project.project'].Puerto_servidor(),obj_xls_attach.id)
-			return{
-				"type": "ir.actions.act_url",
-				"url": enlace,
-				"target": "new",
-				}
+	# 		enlace="""http://{0}:{1}/web/content/{2}?download=true""".format(self.env['project.project'].IP_servidor(),self.env['project.project'].Puerto_servidor(),obj_xls_attach.id)
+	# 		return{
+	# 			"type": "ir.actions.act_url",
+	# 			"url": enlace,
+	# 			"target": "new",
+	# 			}
 
 
 
