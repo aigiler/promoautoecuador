@@ -17,7 +17,6 @@ import itertools
 
 class ReporteAnticipo(models.TransientModel):
     _name = "reporte.anticipo"
-    _inherit = "reporte.proveedor.cliente"
 
 
     def obtener_listado_partner_payment(self,filtro):
