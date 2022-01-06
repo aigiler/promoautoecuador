@@ -16,7 +16,7 @@ import itertools
 class ReporteAnticipo(models.TransientModel):
     _name = "reporte.anticipo"
 
-
+    partner_id =  fields.Many2one('res.partner',string='Socio',)
     def obtener_listado_partner_payment(self,filtro):
         
 

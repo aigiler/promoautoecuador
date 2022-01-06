@@ -6,14 +6,9 @@
             <field name="arch" type="xml">
                 <form string="Reporte de Anticipo">
                     <group>
-                        <group col="2">
+                         <group col="2">
 
-                            <field name="tipo_empresa" required="1"/>
-                            <field name="date_from" required="1"/>
-                            <field name="date_to" required="1"/>
-                            <field name="partner_ids" attrs="{'invisible':[('tipo_empresa','!=','cliente')]}"  domain="dominio" widget='many2many_tags'/>
-                            <field name="partner_ids" attrs="{'invisible':[('tipo_empresa','!=','proveedor')]}"  domain="dominio" widget='many2many_tags'/>
-                            <field name="dominio" invisible="1"/>
+                            <field name="partner_id" required="1"/>
 
                         </group>
 
