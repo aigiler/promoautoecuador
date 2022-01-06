@@ -132,7 +132,6 @@
     <record model='ir.actions.act_window' id='action_informe_dinamico'>
         <field name="name">Plantillas</field>
         <field name="res_model">plantillas.dinamicas.informes</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 
