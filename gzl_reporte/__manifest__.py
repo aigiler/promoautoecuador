@@ -18,9 +18,6 @@
             'views/menu_view.xml',
 
 			'views/fields_view.xml',
-        
-            'security/ir.model.access.csv',
-
             'wizard/gzl_reporte_anticipo_view.xml',
             'report/reporte_anticipo_template.xml',
             'report/reporte_anticipo.xml',
