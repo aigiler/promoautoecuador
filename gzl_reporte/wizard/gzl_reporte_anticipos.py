@@ -71,20 +71,10 @@ class ReporteAnticipo(models.TransientModel):
             dct['fecha_emision']=payment.payment_date
             dct['fecha_vencimiento']=payment.date_to
 ##### Calculo de pagos
-            pagos=0
-            if payment.state not in ['draft']:
-                if payment.invoice_id.id in payment.invoice_ids.ids:
-                    pagos=payment.amount
-                else:
-                    pagos=sum(list(self.env['account.payment.line'].search([('payment_id','=',payment.id)]).mapped('amount')))
-                if pagos==0 and len(payment.reconciled_invoice_ids)>0:
-                    pagos=payment.amount
-            else:
-                pagos=0
 
 
-            dct['monto_adeudado']=payment.amount - pagos
-            dct['monto_aplicado']=pagos
+            dct['monto_adeudado']=payment.amount_residual
+            dct['monto_aplicado']=payment.amount - payment.amount_residual
             dct['monto_anticipo']=payment.amount
 
             dct['observaciones']=payment.communication

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="reporte_entregable_hito_form" model="ir.ui.view">
+        <field name="name">reporte.entregable.hito.form</field>
+        <field name="model">reporte.entregable.hito</field>
+        <field name="arch" type="xml">
+              <form string="Test" create="0">
+
+                <sheet>
+
+
+
+                <group >
+                    <group >
+                        
+                        <field name="project_id"  required="1" options="{'no_create': True,'no_open': True}"/>
+                        <field name="hito_id" domain="[('project_id','=',project_id),('tipo','=','epica')]" required="1" options="{'no_create': True,'no_open': True}"/>
+
+
+                        <separator string="Elaborado por" />
+
+                        <field name="elaborado_por" string="Nombre"  required="1" options="{'no_create': True,'no_open': True}"/>
+                        <field name="compania_id" string="Empresa" domain="[('is_company','=',True)]"  required="1" options="{'no_create': True,'no_open': True}"/>
+                        <field name="cargo"  required="1" />
+
+                        <separator string="Revisador por " />
+
+                        <field name="revisado_por" string="Nombre" required="1" domain="[('parent_id','=',compania_revisado_por_id)]" context="{'default_parent_id':compania_revisado_por_id}"  options="{'no_open': True}"/>
+                        <field name="compania_revisado_por_id" readonly="1" domain="[('is_company','=',True)]" string="Empresa" required="1" options="{'no_create': True,'no_open': True}"/>
+                        <field name="cargo_revisado_por" string="Cargo"  required="1" />
+                    </group>
+                </group>
+
+                
+
+                <button name="generar_word_hito"  string="Exportar Word"  type="object" class="btn-info" />
+
+                  <field name="docx_filename" invisible="1" /> 
+                  <field name="archivo_docx" nolabel="1" filename="docx_filename" readonly="1"  invisible="1"/> 
+
+
+
+            
+                <separator/>
+
+                 <p>Informacion de Hito:
+
+                 </p>
+
+
+                    <div class="row" >
+                        <div class="col-xs-6">
+
+                        <label for="descripcion" />
+                        <field name="descripcion"  required="1" options="{'no_create': True,'no_open': True}"/>
+
+
+                        </div>
+
+                       <div class="col-xs-6">
+                        <label for="observaciones" />
+
+                        <field name="observaciones"  required="1" options="{'no_create': True,'no_open': True}"/>
+
+
+
+                        </div>
+                    </div>
+
+
+                         
+
+
+          
+
+
+
+             
+                </sheet>
+            </form>
+        </field>        
+    </record>
+
+
+
+    <record model="ir.actions.act_window" id="reporte_entregable_hito_action">
+            <field name="name">Entregable Hito</field>
+            <field name="res_model">reporte.entregable.hito</field>  
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            
+    </record>
+
+     <record model="ir.actions.act_window.view" id="reporte_entregable_hito_action_form">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="reporte_entregable_hito_form"/>
+        <field name="act_window_id" ref="reporte_entregable_hito_action"/>
+    </record>
+
+
+            
+    <menuitem 
+        name='Entregable Hito' 
+        action="reporte_entregable_hito_action" 
+        id="reporte_reporte_entregable_hito_menu" 
+        parent='menu_reporte'  
+        sequence="1"/> 
+
+</odoo>
