@@ -13,8 +13,6 @@ import datetime as tiempo
 import itertools
 
 
-
-
 class ReporteAnticipo(models.TransientModel):
     _name = "reporte.anticipo"
 
