@@ -7,14 +7,14 @@
             <form string="Informe">
                 <sheet>
                     <separator string="Informe"/>
-                    <field name="name"  />
-                    <group>
+                    <field name="name" />
+                    <!-- <group>
                         <group>
 
 
-                            <field name="archivos_ids" >
+                            <field name="archivos_ids">
 
-                                <tree  editable="bottom">
+                                <tree editable="bottom">
                                     <field name="plantilla" required="1"/>
                                     <field name="company_id" required="1"/>
                                     <field name="color" required="1"/>
@@ -33,19 +33,19 @@
 
                         </group>
                     </group>
-                                
+
 
 
 
                     <group>
-                        
+
                         <group>
 
 
 
 
                             <separator string="Identificadores para Informe generado" />
-                            <field name="campos_ids"  >
+                            <field name="campos_ids">
                                 <tree >
                                     <field name="name"/>
                                     <field name="fila"/>
@@ -98,13 +98,13 @@
                         </group>
                     </group>
 
-                     <group>
+                    <group>
                         <group>
-                        <field name="identificador_clave" required="1"/>
-                             
+                            <field name="identificador_clave" required="1"/>
+
                         </group>
-                   </group>
- 
+                    </group> -->
+
 
 
 
@@ -120,7 +120,7 @@
         <field name="name">view.informe.dinamico.tree</field>
         <field name="model">plantillas.dinamicas.informes</field>
         <field name="arch" type="xml">
-            <tree string="tipo_informe" >
+            <tree string="tipo_informe">
                 <field name="name"/>
             </tree>
         </field>
@@ -137,7 +137,7 @@
     </record>
 
 
-    <menuitem id="menu_plantillas_corporativas"  parent="menu_ajustes_documentos_corporativos" name="Plantillas" action="action_informe_dinamico"/>
+    <menuitem id="menu_plantillas_corporativas" parent="menu_ajustes_documentos_corporativos" name="Plantillas" action="action_informe_dinamico"/>
 
 
 

@@ -5,9 +5,6 @@ from odoo import api, models, fields, _
 from odoo.exceptions import ValidationError, except_orm
 
 
-
-
-
 class PlantillasDinamicasInformes(models.Model):
     _name = 'plantillas.dinamicas.informes' 
     _description = 'Plantillas dinamicas para Informes'
