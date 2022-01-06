@@ -132,7 +132,7 @@ class ReporteEntregable(models.TransientModel):
 
 
 
-	@api.multi
+	
 	def generar_word_hito(self):
 		dct=self.crear_informe_entrega_hito()
 
