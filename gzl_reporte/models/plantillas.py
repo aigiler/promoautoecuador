@@ -9,7 +9,7 @@ from odoo.exceptions import ValidationError, except_orm
 
 
 class PlantillasDinamicasInformes(models.Model):
-    _name = 'plantillas.dinamicas.informes'
+    _name = 'plantillas.dinamicas.informes' 
     _description = 'Plantillas dinamicas para Informes'
 
     name = fields.Char( string='Nombre',required=True)
@@ -20,7 +20,8 @@ class PlantillasDinamicasInformes(models.Model):
     campos_ids = fields.One2many('campos.informe', 'informe_id', string='Identificadores para Informe')  
     archivos_ids = fields.One2many('archivos.plantilla.informe', 'informe_id', string='Archivos para Informe')  
 
-    directorio = fields.Many2one('muk_dms.directory',string='directorio')  
+    #directorio = fields.Many2one('muk_dms.directory',string='directorio') 
+    directorio = fields.Char(string='directorio')  
 
 class CamposInforme(models.Model):
     _name = "campos.informe"
