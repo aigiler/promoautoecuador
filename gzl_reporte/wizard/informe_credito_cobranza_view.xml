@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-        <record id="reporte_anticipo_form" model="ir.ui.view">
-            <field name="name">reporte.anticipo.form</field>
-            <field name="model">reporte.anticipo</field>
+        <record id="informe_credito_cobranza_form" model="ir.ui.view">
+            <field name="name">informe.credito.cobranza.form</field>
+            <field name="model">informe.credito.cobranza</field>
             <field name="arch" type="xml">
-                <form string="Reporte de Anticipo">
+                <form string="Informe Credito y Cobranza">
                     <group>
                          <group col="2">
 
@@ -32,9 +32,9 @@
             </field>
         </record>
 
-        <record id="action_reporte_anticipo" model="ir.actions.act_window">
+        <record id="action_informe_credito_cobranza_form" model="ir.actions.act_window">
             <field name="name">Anticipo</field>
-            <field name="res_model">reporte.anticipo</field>
+            <field name="res_model">informe.credito.cobranza</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>
@@ -42,11 +42,11 @@
 
 
         <menuitem 
-        id = "reporte_report_entregable_anticipo_menu"
-        name = "Reporte Anticipo"  
+        id = "menu_action_informe_credito_cobranza_form"
+        name = "Informe Credito y Cobranza"  
         parent="menu_reporte" 
         sequence="1" 
-        action="action_reporte_anticipo"/>
+        action="action_informe_credito_cobranza_form"/>
 
 
 </odoo>
