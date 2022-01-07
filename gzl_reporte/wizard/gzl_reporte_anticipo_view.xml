@@ -8,7 +8,7 @@
                     <group>
                          <group col="2">
 
-                            <field name="partner_id" required="1" domain="[('tipo', '=', 'contact')]" />
+                            <field name="partner_id" required="1" domain="[('tipo','=','preAdjudicado')]" />
 
                         </group>
 
