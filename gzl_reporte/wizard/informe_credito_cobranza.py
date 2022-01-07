@@ -14,8 +14,6 @@ from datetime import datetime,timedelta,date
 import time
 from odoo import _
 from odoo.exceptions import ValidationError, except_orm
-from xhtml2pdf import pisa
-from odoo.http import request
 from dateutil.relativedelta import *
 from . import informe_excel
 
