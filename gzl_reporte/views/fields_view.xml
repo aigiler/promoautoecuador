@@ -8,7 +8,7 @@
                 <sheet>
                     <separator string="Informe"/>
                     <field name="name" />
-                    <!-- <group>
+                     <group>
                         <group>
 
 
@@ -103,7 +103,7 @@
                             <field name="identificador_clave" required="1"/>
 
                         </group>
-                    </group> -->
+                    </group> 
 
 
 
