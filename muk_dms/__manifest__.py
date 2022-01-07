@@ -34,7 +34,6 @@
     ],
     "depends": [
         "muk_security",
-        "muk_web_searchpanel",
     ],
     "data": [
         "security/security.xml",
