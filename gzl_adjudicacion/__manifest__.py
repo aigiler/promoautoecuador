@@ -2,7 +2,7 @@
     "name" : "gzl_adjudicacion",
     'category': 'Adjudicaciones',
     "version" : "0.1",
-    'depends' :['base','mail','portal','base_setup','l10n_ec_tree','report_xlsx'],
+    'depends' :['base','mail','portal','base_setup','l10n_ec_tree','report_xlsx',],
     "author" : "Yadira Quimis Gizlo",
     "description" : """
     product
