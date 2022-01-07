@@ -41,7 +41,12 @@
 
 
 
-        <menuitem id="menu_action_reporte_anticipo"  parent="account_reports.account_reports_partners_reports_menu" sequence="5" action="action_reporte_anticipo"/>
+        <menuitem 
+        id = "reporte_report_entregable_anticipo_menu"
+        name = "Reporte Anticipo"  
+        parent="menu_reporte" 
+        sequence="1" 
+        action="action_reporte_anticipo"/>
 
 
 </odoo>
