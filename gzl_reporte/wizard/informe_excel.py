@@ -71,7 +71,7 @@ def informe_credito_cobranza(ruta,lista):
         cell.value = campo['valor']
 
 
-    sheet = workbook[1]
+    sheet = workbook['Aprobacion']
     listaSheet2 = list(filter(lambda x: (x['hoja']==2), lista)) 
 
 ###########Llenar segundo sheet

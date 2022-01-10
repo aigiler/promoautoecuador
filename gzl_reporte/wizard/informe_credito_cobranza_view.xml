@@ -8,7 +8,7 @@
                     <group>
                          <group col="2">
 
-                            <field name="entrega_vehiculo_id" required="1" domain="[('tipo','=','preAdjudicado')]" options="{'no_open': True, 'no_create': True}" />
+                            <field name="entrega_vehiculo_id" required="1"   options="{'no_open': True, 'no_create': True}" />
 
                         </group>
 

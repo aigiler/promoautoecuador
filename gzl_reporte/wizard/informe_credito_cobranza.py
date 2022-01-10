@@ -54,26 +54,14 @@ class InformeCreditoCrobranza(models.TransientModel):
         obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','informe_credito_cobranza')],limit=1)
         if obj_plantilla:
 
-            plantilla=obj_plantilla.archivos_ids
-            if len(plantilla):
-                lista=[]
-                #Crea el documento en la muk_dms.file para poderlo instanciar
 
-                
+            shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
 
-          #      some_bytes = plantilla.plantilla
-
-                # Open in "wb" mode to
-                # write a new file, or 
-                # "ab" mode to append
-
-        #        f = open("/src/user/gzl_reporte/reports/Informe_Credito_Cobranza.xlsx", "wb")
-       #         f.write(some_bytes)
-
-                # f.read()
-
-     #           f.close()
-                shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
+                    
+                    
+                    
+            #####Campos de Cabecera
+            campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
 
                     
                     
