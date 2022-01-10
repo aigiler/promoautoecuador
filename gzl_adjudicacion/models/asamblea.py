@@ -30,9 +30,6 @@ class Asamblea(models.Model):
             ('cerrado', 'Cerrado')
             ], string='Estado', copy=False, tracking=True, default='inicio',track_visibility='onchange')
 
-    currency_id = fields.Many2one(
-        'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
-
 
 
 
@@ -175,6 +172,9 @@ class GrupoAsamblea(models.Model):
 
 
     integrantes_g = fields.One2many('integrante.grupo.adjudicado.asamblea.clientes','grupo_id')
+    currency_id = fields.Many2one(
+        'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
+
 
     recuperacionCartera = fields.Monetary(compute='calculo_recuperacion_cartera',string='Recuperación de Cartera', currency_field='currency_id', track_visibility='onchange')
 
