@@ -484,7 +484,7 @@ class EntegaVehiculo(models.Model):
     def calcular_porcentaje_cuota_plan(self):
         for rec in self:
             if rec.ingresosFamiliares:
-                rec.porcentajeCuotaPlan = (rec.valorCuota/rec.ingresosFamiliares) * 100
+                rec.porcentajeCuotaPlan = round(((rec.valorCuota/rec.ingresosFamiliares) * 100), 2) 
             else:
                 rec.porcentajeCuotaPlan = 0.0
 
