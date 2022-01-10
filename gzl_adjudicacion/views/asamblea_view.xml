@@ -42,7 +42,7 @@
                                 <field name="fecha_inicio" required="1" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
                                 <field name="fecha_fin" required="1" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
                                 <field name="active" invisible="1 "/>
-                                <field name="codigo_tipo_contrato" invisible="1 "/>
+                                <field name="codigo_tipo_contrato" invisible="1"/>
 
 
                             </group>
@@ -72,6 +72,9 @@
                                 <field name="integrantes"  context="{'default_tipo_contrato':tipo_asamblea}" nolabel="1" attrs="{'readonly': [('state', '=', 'cerrado')],'invisible':[('tipo_asamblea','=',False)]}"  >
                                     <tree string="Integrantes" >
                                         <field name="grupo_adjudicado_id" string="Grupo Participante"/>
+                                        <field name="recuperacionCartera"  />
+
+
                                     </tree>
                                     <form>
                                         <group>
@@ -79,6 +82,7 @@
                                             <field name="grupo_adjudicado_id" options="{'no_open': True, 'no_create': True}" required="1" string="Grupo Participante"/>
                                             <field name="tipo_contrato" options="{'no_open': True, 'no_create': True}" invisible="1" required="1"/>
                                             <field name="codigo_tipo_contrato" />
+                                            <field name="recuperacionCartera"  />
 
 
                                         </group>

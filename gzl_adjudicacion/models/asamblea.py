@@ -30,6 +30,17 @@ class Asamblea(models.Model):
             ('cerrado', 'Cerrado')
             ], string='Estado', copy=False, tracking=True, default='inicio',track_visibility='onchange')
 
+    currency_id = fields.Many2one(
+        'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
+
+
+
+
+
+
+
+
+
     @api.model
     def create(self, vals):
         vals['secuencia'] = self.env['ir.sequence'].next_by_code('asamblea')
@@ -164,6 +175,15 @@ class GrupoAsamblea(models.Model):
 
 
     integrantes_g = fields.One2many('integrante.grupo.adjudicado.asamblea.clientes','grupo_id')
+
+    recuperacionCartera = fields.Monetary(compute='calculo_recuperacion_cartera',string='Recuperación de Cartera', currency_field='currency_id', track_visibility='onchange')
+
+    @api.depends('integrantes')
+    def calculo_recuperacion_cartera(self):
+        for l in self:
+            hoy=date.today()
+            grupoParticipante=l.grupo_adjudicado_id.transacciones.filtered(lambda l: l.create_date.month==hoy.month and l.create_date.year==hoy.year)
+            recuperacionCartera=sum(grupoParticipante.mapped('haber'))- sum(grupoParticipante.mapped('debe'))
 
 
 
