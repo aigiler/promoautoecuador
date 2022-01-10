@@ -99,21 +99,6 @@ def informe_credito_cobranza(ruta,lista):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def informe_formato_alarmas(ruta,lista,detalle):
 
     workbook = openpyxl.load_workbook('/mnt/extra-addons/muk_dms/static/src/php/Gestor_Informes'+ruta)
