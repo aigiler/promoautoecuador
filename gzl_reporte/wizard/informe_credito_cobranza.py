@@ -44,7 +44,8 @@ class InformeCreditoCrobranza(models.TransientModel):
     def print_report_xls(self):
 
         if self.clave=='informe_credito_cobranza':
-            self.crear_plantilla_informe_credito_cobranza()
+            dct=self.crear_plantilla_informe_credito_cobranza()
+            return dct
 
 
 
@@ -62,7 +63,7 @@ class InformeCreditoCrobranza(models.TransientModel):
 
                 obj_file=self.env['ir.attachment'].create({
 
-                                                        
+
 
                                                          'name':'Informe_Credito_Cobranza.xlsx',
                                                           'datas':plantilla.plantilla,
