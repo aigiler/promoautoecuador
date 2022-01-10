@@ -25,14 +25,6 @@ import shutil
 
 
 
-
-
-
-
-
-
-
-
 class InformeCreditoCrobranza(models.TransientModel):
     _name = "informe.credito.cobranza"
 
@@ -57,16 +49,11 @@ class InformeCreditoCrobranza(models.TransientModel):
 
             shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
 
-                    
-                    
-                    
+
             #####Campos de Cabecera
             campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
 
-                    
-                    
-                    
-            #####Campos de Cabecera
+de Cabecera
             campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
 
             lista_campos=[]
@@ -104,17 +91,12 @@ class InformeCreditoCrobranza(models.TransientModel):
 
 
         obj_attch=self.env['ir.attachment'].create({
-                                                     'name':'Informe_Credito_Cobranza.xlsx',
-                                                      'datas':file,
-                                                      'type':'binary', 
-                                                      'store_fname':'Informe_Credito_Cobranza.xlsx'
-                                                      })
+                                                    'name':'Informe_Credito_Cobranza.xlsx',
+                                                    'datas':file,
+                                                    'type':'binary', 
+                                                    'store_fname':'Informe_Credito_Cobranza.xlsx'
+                                                    })
 
-
-                
-
-            
-           
         url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         url += "/web/content/%s?download=true" %(obj_attch.id)
         return{
@@ -126,7 +108,7 @@ class InformeCreditoCrobranza(models.TransientModel):
 
 
         #except:
-         #   raise ValidationError(_('No existe informacion para generar el informe'))
+        #   raise ValidationError(_('No existe informacion para generar el informe'))
 
 
 
