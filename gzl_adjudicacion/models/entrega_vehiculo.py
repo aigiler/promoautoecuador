@@ -579,6 +579,17 @@ class EntegaVehiculo(models.Model):
         contrato.estado='adjudicar'
 
 
+
+    def rechazo_setear_fecha_adjudicado(self):
+        contrato = self.env['contrato'].search(
+            [('cliente', '=', self.nombreSocioAdjudicado.id)], limit=1)
+        contrato.fecha_adjudicado=False
+        contrato.estado='activo'
+
+
+
+
+
     @api.onchange('nombreSocioAdjudicado')
     @api.depends('nombreSocioAdjudicado')
     def buscar_contrato_partner(self):

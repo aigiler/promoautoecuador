@@ -55,6 +55,9 @@
                                         <field name="adjudicado_id"/>
                                         <field name="puntos" string="Nro. Cuotas"  attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'evaluacion')]}"/>
                                         <field name="calificacion" string="Calificación"  attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'licitacion')]}"/>
+                                        <field name="contrato_id" readonly='1'/>
+                                        <field name="monto_financiamiento" readonly='1'/>
+                                        <field name="monto_adjudicar"/>
 
 
                                     </tree>

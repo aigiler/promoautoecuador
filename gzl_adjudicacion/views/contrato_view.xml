@@ -69,6 +69,22 @@
                                 <field name="secuencia" class="oe_inline" readonly="1"/>
                             </h1>
                         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         <div class="row">
                             <group string="Información del Contrato"/>
                             <div class="col-xs-12 col-sm-4">

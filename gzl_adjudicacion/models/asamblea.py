@@ -53,7 +53,7 @@ class Asamblea(models.Model):
 
                     contrato = self.env['contrato'].search(
                         [('cliente', '=', integrante.adjudicado_id.id)], limit=1)
-
+                    dct['contrato_id']=contrato.id
                     dct['adjudicado_id']=integrante.adjudicado_id.id
                     dct['grupo_adjudicado_id']=contrato.grupo.id
                     dct['puntos']=integrante.nro_cuota_licitar
@@ -88,6 +88,7 @@ class Asamblea(models.Model):
                     dct['adjudicado_id']=integrante.adjudicado_id.id
                     dct['grupo_adjudicado_id']=contrato.grupo.id
                     dct['puntos']=integrante.adjudicado_id.calificacion
+                    dct['contrato_id']=contrato.id
                     listaGanadores.append(dct)
 
 
@@ -115,6 +116,8 @@ class Asamblea(models.Model):
             dct={}
             dct['adjudicado_id']=l.adjudicado_id.id
             dct['puntos']=l.puntos
+            dct['contrato_id']=l.contrato_id.id
+            dct['monto']=l.monto_adjudicar
             listaGanadores.append(dct)
 
 
@@ -123,7 +126,25 @@ class Asamblea(models.Model):
 
         for l in  listaGanadores[:numero_ganadores]:
             rol_asignado=self.env.ref('gzl_adjudicacion.tipo_rol3')
-            entrega_vehiculo.create({'nombreSocioAdjudicado':l['adjudicado_id'],'rolAsignado':rol_asignado})
+            entrega_vehiculo.create({'nombreSocioAdjudicado':l['adjudicado_id'],'rolAsignado':rol_asignado.id})
+
+
+
+            transacciones=self.env['transaccion.grupo.adjudicado']
+            contrato_id=self.env['contrato'].browse(l['contrato_id'])
+            dct={
+            'grupo_id':self.grupo.id,
+            'debe':l['monto'],
+            'adjudicado_id':l['adjudicado_id'],
+            'contrato_id':l['contrato_id'],
+            'state':contrato_id.state
+
+
+            }
+
+
+            transacciones.create(dct)
+
 
         self.write({"state": "cerrado"})
 
@@ -199,12 +220,17 @@ class GanadoresAsamblea(models.Model):
 
     grupo_id = fields.Many2one('asamblea')
     adjudicado_id = fields.Many2one('res.partner', string="Nombre")
+    contrato_id = fields.Many2one('contrato', string="Nombre")
+    monto_financiamiento = fields.Float(related='contrato_id.monto_financiamiento', string="Nombre")
+    monto_adjudicar = fields.Float( string="Nombre")
     grupo_adjudicado_id = fields.Many2one('grupo.adjudicado',string="Grupo")
     puntos = fields.Integer(string='Nro de Cuotas a Licitar')
     calificacion = fields.Integer(related='puntos',string='Calificación')
 
 
-
+    @api.constrains('contrato_id')
+    def actualizar_monto_financiamiento(self):
+        self.monto_adjudicar=self.contrato_id.monto_financiamiento
 
 
 

@@ -2,6 +2,7 @@
 from . import socio
 from . import tipo_contrato
 from . import grupo_adjudicado
+from . import transacciones_grupos
 from . import asamblea
 from . import contrato
 from . import entrega_vehiculo

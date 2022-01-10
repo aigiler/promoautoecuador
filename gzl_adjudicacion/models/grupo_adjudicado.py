@@ -4,7 +4,7 @@ from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
-class GrupoAdjudicado(models.Model):
+class GrupoSocios(models.Model):
     _name = 'grupo.adjudicado'
     _description = 'Grupo  para proceso adjudicacion'
     _inherit = ['mail.thread', 'mail.activity.mixin']
@@ -25,10 +25,43 @@ class GrupoAdjudicado(models.Model):
     cantidad_integrantes = fields.Integer(string='Cantidad de Integrantes',track_visibility='onchange')
     maximo_integrantes = fields.Integer(string='Máximo de Integrantes',track_visibility='onchange')
 
+    integrantes = fields.One2many('integrante.grupo.adjudicado','grupo_id',track_visibility='onchange')
+    transacciones_ids = fields.One2many('transaccion.grupo.adjudicado','grupo_id',track_visibility='onchange')
+
+
+
+
+
     _sql_constraints = [
         ('codigo_uniq', 'unique (codigo)', 'El código ya existe.')
     ]
     
+
+    contador_transacciones = fields.Interger(string='Contador de Transacciones',compute="calcular_transacciones",store=True)
+
+
+    @api.depends("transacciones_ids")
+    def calcular_transacciones(self,):
+        for l in self:
+            l.contador_transacciones=len(self.transacciones_ids)
+
+
+    def action_transacciones_grupo(self):
+
+
+        return {
+            'name': _('Transacciones Grupo'),
+            'view_mode': 'tree,form',
+            'res_model': 'transaccion.grupo.adjudicado',
+            'view_id': False,
+            'type': 'ir.actions.act_window',
+            'domain': [('grupo_id', '=',self.id)],
+        }
+
+
+
+
+
     @api.depends('integrantes.monto')
     def compute_monto_cartera(self):
         num_integrantes=0
@@ -43,10 +76,10 @@ class GrupoAdjudicado(models.Model):
     monto_grupo = fields.Float(string='Monto Pagado',compute="calcular_monto_pagado",store=True)
 
 
-    @api.depends("integrantes")
+    @api.depends("integrantes.contrato_id.state","integrantes")
     def calcular_monto_pagado(self,):
         for l in self:
-            monto=round(sum(l.integrantes.mapped("contrato_id").mapped("monto_pagado")),2)
+            monto=sum(l.transacciones_ids.mapped('haber'))-sum(l.transacciones_ids.mapped('debe'))
             l.monto_grupo=monto
 
 
@@ -72,6 +105,7 @@ class IntegrantesGrupo(models.Model):
     adjudicado_id = fields.Many2one('res.partner', string="Nombre", domain="[('tipo','=','adjudicado')]")
     mobile = fields.Char(string='Móvil', related='adjudicado_id.mobile')
     contrato_id = fields.Many2one('contrato', string='Contrato')
+    estadoContrato = fields.Char(related="contrato_id.state", string='Contrato')
     cupo = fields.Selection(selection=[
             ('ocupado', 'Ocupado'),
             ('desocupado', 'Desocupado')

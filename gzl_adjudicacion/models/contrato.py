@@ -98,6 +98,43 @@ class Contrato(models.Model):
         string='Cuotas Pagadas', compute="calcular_cuotas_pagadas", store=True, track_visibility='onchange')
 
 
+
+    @api.constrains('state')
+    def crear_registro_fondo_grupo(self):
+        self.contrato.grupo_id.calcular_monto_pagado()
+
+        if self.state in ['desistir','inactivo','congelar_contrato']:
+            transacciones=self.env['transaccion.grupo.adjudicado']
+
+            dct={
+            'grupo_id':self.grupo.id,
+            'debe':self.monto_pagado ,
+            'adjudicado_id':self.cliente.id,
+            'contrato_id':self.id,
+            'state':self.state
+            }
+
+
+            transacciones.create(dct)
+
+        if self.state in ['activo']:
+            transacciones=self.env['transaccion.grupo.adjudicado']
+
+            dct={
+            'grupo_id':self.grupo.id,
+            'haber':self.monto_pagado ,
+            'adjudicado_id':self.cliente.id,
+            'contrato_id':self.id,
+            'state':self.state
+            }
+
+
+            transacciones.create(dct)
+
+
+
+
+
     @api.depends('tabla_amortizacion.saldo')
     def calcular_cuotas_pagadas(self):
         for rec in self:

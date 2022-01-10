@@ -34,7 +34,21 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
 
         if not (self.amount <= self.tabla_amortizacion_id.saldo):
             raise ValidationError("Ingrese una Cantidad menor al saldo a pagar.")
+        
 
+        transacciones=self.env['transaccion.grupo.adjudicado']
+
+
+        dct={
+        'grupo_id':self.tabla_amortizacion_id.contrato_id.grupo.id,
+        'haber':self.amount ,
+        'adjudicado_id':self.tabla_amortizacion_id.contrato_id.cliente.id,
+        'contrato_id':self.tabla_amortizacion_id.contrato_id.id,
+        'state':self.tabla_amortizacion_id.contrato_id.state
+        }
+
+
+        transacciones.create(dct)
 
         pago = self.env['account.payment'].create({
                 'payment_date': self.payment_date,
