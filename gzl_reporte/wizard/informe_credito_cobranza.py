@@ -57,226 +57,63 @@ class InformeCreditoCrobranza(models.TransientModel):
             if len(plantilla):
                 lista=[]
                 #Crea el documento en la muk_dms.file para poderlo instanciar
-                dct={
 
-                'name':'Informes_Entregable_hito.docx',         
-                'content':plantilla.plantilla,
-                'directory':int(obj_plantilla.directorio.id),
-                }
 
-                obj_file=self.env['muk_dms.file'].create(dct)
+
+                obj_file=self.env['ir.attachment'].create({
+
+                                                        
+
+                                                         'name':'Informe_Credito_Cobranza.xlsx',
+                                                          'datas':plantilla.plantilla,
+                                                          'type':'binary', 
+                                                          'store_fname':'Informe_Credito_Cobranza.xlsx'
+                                                          })
 
 
                 #Se captura la ruta del documento duplicado
-                ruta_del_documento=obj_file.path
+                ruta_del_documento=obj_file._get_path(obj_file.datas,obj_file.checksum)[1]
 
 
 
-                #####Se sacan los campos de la plantilla del objeto plantillas.dinamicas.informes
-                campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
+            #####Campos de Cabecera
+            campos=self.plantilla_dinamica.campos_ids.filtered(lambda l: len(l.child_ids)==0)
 
-                lista_campos=[]
-                for campo in campos:
+            lista_campos=[]
+            for campo in campos:
 
-                    dct={}
-                    resultado=self.mapped(campo.name)
-                    if len(resultado)>0:
-                        dct['valor']=resultado[0]
-                    else:
-                        dct['valor']=''
+                print(campo.name, campo.fila)
+                dct={}
+                resultado=self.mapped(campo.name)
+                if len(resultado)>0:
+                    dct['valor']=resultado[0]
+                else:
+                    dct['valor']=''
 
-                    dct['identificar_docx']=campo.identificar_docx
-                    lista_campos.append(dct)
+                dct['fila']=campo.fila
+                dct['columna']=campo.columna
+                lista_campos.append(dct)
 
 
 
-                contador=0
-                lista_detalle=[]
-                dct_caracteristica={}
-                dct_final={}
+            informe_excel.informe_credito_cobranza(ruta_del_documento,lista_campos)
 
 
 
-
-
-
-                for caracteristica in self.hito_id.epica_id:
-                    contador+=1
-
-                    dct_caracteristica={
-                        'item':'ARD'+' '+str(contador),
-                        'name':caracteristica.name,
-                        'reporte_ram_ids':self.id
-                    }
-                    self.env['consultar.historias'].create(dct_caracteristica)
-
-                    lista_historias=[]
-                    contador_historia=1
-                    for historia in caracteristica.id_historia:
-                        dct={
-                        'item':str(contador_historia),
-                        'name':historia.name,
-                        'estado':historia.estado_histora_id.name or "",
-                        'observaciones':historia.observaciones or ""
-                        }
-                        lista_historias.append(dct)
-                        contador_historia+=1
-
-
-                    dct_caracteristica['detalle_historias']=lista_historias
-
-                    lista_detalle.append(dct_caracteristica)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                #Llamo al word del reporte
-                formato_documento_entregable_hito.crear_reporte_entregable_hito(obj_plantilla.directorio.settings.complete_base_path+ruta_del_documento,lista_campos,lista_detalle)
-
-
-                with open(obj_plantilla.directorio.settings.complete_base_path+ruta_del_documento, "rb") as f:
-                    data = f.read()
-                    file=bytes(base64.b64encode(data))  
-                    
-
-
-                dct={'docx_filename':'Informes_Entregable_hito.docx','archivo_docx':file}
-
-                self.write({'docx_filename':'Informes_Entregable_hito.docx','archivo_docx':file})
-
-                obj_file.unlink()
-
-
-            return dct
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#     def crear_plantilla_informe_credito_cobranza(self):
-#         if len(self.plantilla_dinamica.plantilla)>0:
-#             plantilla= self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','informe_credito_cobranza')])
-
-
-#         lista=[]
-#         for l in plantilla:
-#             lista.append(l.id)
-#         if len(lista)>0:
-#             obj=self.env['ir.attachment'].browse(lista[0])
-
-#             dct={
-
-#             'name':obj.datas_fname,            
-#             'content':obj.datas,
-#             'directory':int(self.id),
-#             }
-
-#             obj_file=self.env['muk_dms.file'].create(dct)
-
-
-#             ruta_del_documento=obj_file.path
-
-#             #####Campos de Cabecera
-#             campos=self.plantilla_dinamica.campos_ids.filtered(lambda l: len(l.child_ids)==0)
-
-#             lista_campos=[]
-#             for campo in campos:
-
-#                 print(campo.name, campo.fila)
-#                 dct={}
-#                 resultado=self.mapped(campo.name)
-#                 if len(resultado)>0:
-#                     dct['valor']=resultado[0]
-#                 else:
-#                     dct['valor']=''
-
-#                 dct['fila']=campo.fila
-#                 dct['columna']=campo.columna
-#                 lista_campos.append(dct)
-
-
-
-# ########Checklist Habilitacion
-#             lista_checklist=[]
-#             dvr_ids=self.mapped('x_detalle_checklist_habilitacion')
-
-#             for dvr in dvr_ids:
-
-#                 campos_dvr=self.plantilla_dinamica.campos_ids.filtered(lambda l: 'x_detalle_checklist_habilitacion' in l.name )
-#                 dct_dvr={}
-#                 lista_campos_detalle=[]
-#                 for campo in campos_dvr.child_ids:
-#                     dct_campos_dvr={}
-#                     resultado=dvr.mapped(campo.name)
-#                     if len(resultado)>0:
-#                         dct_campos_dvr['valor']=resultado[0]
-#                     else:
-#                         dct_campos_dvr['valor']=''
-
-#                     dct_campos_dvr['fila']=campo.fila
-#                     dct_campos_dvr['columna']=campo.columna
-#                     lista_campos_detalle.append(dct_campos_dvr)
-#                 dct_dvr['nombre']=dvr.mapped('x_parametro.x_name')[0]
-#                 dct_dvr['campos']=lista_campos_detalle
-#                 lista_checklist.append(dct_dvr)
-#             print(lista_checklist)
-
-#             informe_excel.informe_formato_checklist_habilitacion(ruta_del_documento,lista_campos,lista_checklist)
-
-
-
-#         with open('/mnt/extra-addons/muk_dms/static/src/php/Gestor_Informes'+ruta_del_documento, "rb") as f:
-#             data = f.read()
-#             file=bytes(base64.b64encode(data))
            
-
-
-#         #except:
-#          #   raise ValidationError(_('No existe informacion para generar el informe'))
-#         obj_file.unlink()
-
-#         dct={
-
-#         'name':obj.datas_fname,            
-#         'content':file,
-#         'directory':int(self.id),
-#         }
-
-#         obj_file_nuevo=self.env['muk_dms.file'].create(dct)
+        url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        url += "/web/content/%s?download=true" %(obj_file.id)
+        return{
+            "type": "ir.actions.act_url",
+            "url": url,
+            "target": "new",
+        }
 
 
 
+
+        #except:
+         #   raise ValidationError(_('No existe informacion para generar el informe'))
 
 
 

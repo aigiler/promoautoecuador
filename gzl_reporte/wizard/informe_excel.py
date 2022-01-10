@@ -52,28 +52,15 @@ def ajustar_hoja(sheet, flag, celda, value):
 
 
 
-def informe_formato_checklist_habilitacion(ruta,lista,detalle):
+def informe_credito_cobranza(ruta,lista):
 
-    workbook = openpyxl.load_workbook('/mnt/extra-addons/muk_dms/static/src/php/Gestor_Informes'+ruta)
+    workbook = openpyxl.load_workbook(ruta)
 
     sheet = workbook.active
 
     for campo in lista:
-        
-        fila=capturar_fila_de_valor_a_buscar_en_hoja_calculo(sheet,18,20,1,campo['valor'])
 
-        if fila:
-            cell = sheet.cell(row=campo['fila'], column=campo['columna'])
-            cell.value = ''
-            cell = sheet.cell(row=fila, column=campo['columna'])
-            cell.value = 'X'
-            continue
-        else:
-            cell = sheet.cell(row=campo['fila'], column=campo['columna'])
-            cell.value = campo['valor']
-
-
-        fila=capturar_fila_de_valor_a_buscar_en_hoja_calculo(sheet,22,24,1,campo['valor'])
+        fila=capturar_fila_de_valor_a_buscar_en_hoja_calculo(sheet,5,8,2,campo['valor'])
 
         if fila:
             cell = sheet.cell(row=campo['fila'], column=campo['columna'])
@@ -88,19 +75,8 @@ def informe_formato_checklist_habilitacion(ruta,lista,detalle):
 
 
 
-    for linea in detalle:
-        nombre_zona=linea['nombre']
 
-
-        fila=capturar_fila_de_valor_a_buscar_en_hoja_calculo(sheet,37,56,1,nombre_zona)
-        if fila:
-            for campo in linea['campos']:
-                cell = sheet.cell(row=fila, column=campo['columna'])
-                print(fila,campo['columna'])
-                cell.value = campo['valor']
-
-
-    workbook.save('/mnt/extra-addons/muk_dms/static/src/php/Gestor_Informes'+ruta)
+    workbook.save(ruta)
 
 
 
