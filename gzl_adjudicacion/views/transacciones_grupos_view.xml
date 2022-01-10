@@ -4,7 +4,7 @@
 
     <record id="view_transacciones_grupo_tree" model= "ir.ui.view">
         <field name="name">view.transacciones.grupo.tree</field>
-        <field name="model">transacciones.grupo.adjudicado</field>
+        <field name="model">transaccion.grupo.adjudicado</field>
         <field name="arch" type="xml">
             <tree string="Transacciones Grupo" >
                 <field name="grupo_id" />
