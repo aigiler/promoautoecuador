@@ -221,7 +221,7 @@ class GanadoresAsamblea(models.Model):
     grupo_id = fields.Many2one('asamblea')
     adjudicado_id = fields.Many2one('res.partner', string="Nombre")
     contrato_id = fields.Many2one('contrato', string="Nombre")
-    monto_financiamiento = fields.Float(related='contrato_id.monto_financiamiento', string="Nombre")
+    monto_financiamiento = fields.Monetary(related='contrato_id.monto_financiamiento', string="Nombre")
     monto_adjudicar = fields.Float( string="Nombre")
     grupo_adjudicado_id = fields.Many2one('grupo.adjudicado',string="Grupo")
     puntos = fields.Integer(string='Nro de Cuotas a Licitar')
