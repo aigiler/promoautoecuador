@@ -26,4 +26,9 @@ class TransaccionesGrupoSocio(models.Model):
 
     debe=fields.Float('Débito')
     haber=fields.Float('Crédito')
-    saldo=fields.Float('Saldo')
+    saldo=fields.Float('Saldo',compute="calculo_saldo",store=True)
+
+    @api.depends('debe','haber')
+    def calculo_saldo(self):
+        for l in self:
+            l.saldo=l.haber - l.debe
