@@ -73,7 +73,7 @@ class InformeCreditoCrobranza(models.TransientModel):
                 # f.read()
 
      #           f.close()
-                shutil.copy2('Informe_Credito_Cobranza_plantilla.xlsx','Informe_Credito_Cobranza.xlsx')
+                shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
 
                     
                     
@@ -98,10 +98,10 @@ class InformeCreditoCrobranza(models.TransientModel):
 
 
 
-            informe_excel.informe_credito_cobranza("Informe_Credito_Cobranza.xlsx",lista_campos)
+            informe_excel.informe_credito_cobranza(obj_plantilla.directorio_out,lista_campos)
 
 
-            with open('Informe_Credito_Cobranza.xlsx', "rb") as f:
+            with open(obj_plantilla.directorio_out, "rb") as f:
                 data = f.read()
                 file=bytes(base64.b64encode(data))
 
@@ -125,15 +125,6 @@ class InformeCreditoCrobranza(models.TransientModel):
             "url": url,
             "target": "new",
         }
-
-
-
-        #except:
-         #   raise ValidationError(_('No existe informacion para generar el informe'))
-
-
-
-
 
 
 

@@ -28,6 +28,7 @@
 
 
                             <field name="directorio" invisible="0"/>
+                            <field name="directorio_out" invisible="0"/>
 
 
 

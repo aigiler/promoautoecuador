@@ -18,7 +18,8 @@ class PlantillasDinamicasInformes(models.Model):
     archivos_ids = fields.One2many('archivos.plantilla.informe', 'informe_id', string='Archivos para Informe')  
 
     #directorio = fields.Many2one('muk_dms.directory',string='directorio') 
-    directorio = fields.Char(string='directorio')  
+    directorio = fields.Char(string='Directorio de Plantilla')  
+    directorio_out = fields.Char(string='Directorio de Salida de Informe')  
 
 class CamposInforme(models.Model):
     _name = "campos.informe"
