@@ -41,6 +41,7 @@
                     'views/paginas_de_control.xml',
                     'views/calificaciones_clientes_view.xml',
                     'views/puntos_bienes.xml',
+                    'views/transacciones_grupos_view.xml',
 
                     
                     'wizard/wizard_pago_contrato_view.xml',
