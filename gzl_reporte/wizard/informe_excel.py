@@ -55,44 +55,59 @@ def ajustar_hoja(sheet, flag, celda, value):
 def informe_credito_cobranza(ruta,lista):
 
     workbook = openpyxl.load_workbook(ruta)
+
     sheet = workbook.active
-    listaSheet1 = list(filter(lambda x: (x['hoja']==1), lista))
+
+    listaSheet1 = list(filter(lambda x: (x['hoja']==1), lista)) 
+
 
 
     for campo in listaSheet1:
-        # fila=capturar_fila_de_valor_a_buscar_en_hoja_calculo(sheet,5,8,3,campo['valor'])
+
+       # fila=capturar_fila_de_valor_a_buscar_en_hoja_calculo(sheet,5,8,3,campo['valor'])
+
+
         cell = sheet.cell(row=campo['fila'], column=campo['columna'])
         cell.value = campo['valor']
 
 
     sheet = workbook['Aprobacion']
-    listaSheet2 = list(filter(lambda x: (x['hoja']==2), lista))
+    sheet = workbook['Liquidacion']
+    sheet = workbook['Orden Compra']
+    listaSheet2 = list(filter(lambda x: (x['hoja']==2), lista)) 
+    listaSheet3 = list(filter(lambda x: (x['hoja']==3), lista)) 
+    listaSheet4 = list(filter(lambda x: (x['hoja']==4), lista)) 
 
-    ###########Llenar segundo sheet
+###########Llenar segundo sheet
     for campos in listaSheet2:
         cell = sheet.cell(row=campos['fila'], column=campos['columna'])
         cell.value = campos['valor']
-    
-    
-    
-    
-    sheet = workbook['Liquidacion']
-    # sheet = workbook['Orden Compra']
-    listaSheet3 = list(filter(lambda x: (x['hoja']==3), lista))
-    # listaSheet4 = list(filter(lambda x: (x['hoja']==4), lista))
 
     for camposLiq in listaSheet3:
         cell = sheet.cell(row=camposLiq['fila'], column=camposLiq['columna'])
         cell.value = camposLiq['valor']
-        #cell = sheet.cell(row=camposLiq['fila'], column=camposLiq['columna'])
-        #cell.value = camposLiq['valor']
 
 
-    # for camposOrden in listaSheet4:
-    #     cell = sheet.cell(row=camposOrden['fila'], column=camposOrden['columna'])
-    #     cell.value = camposOrden['valor']
+    for camposOrden in listaSheet2:
+        cell = sheet.cell(row=camposOrden['fila'], column=camposOrden['columna'])
+        cell.value = camposOrden['valor']
 
     workbook.save(ruta)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
