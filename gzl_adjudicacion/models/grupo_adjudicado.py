@@ -37,7 +37,7 @@ class GrupoSocios(models.Model):
     ]
     
 
-    contador_transacciones = fields.Interger(string='Contador de Transacciones',compute="calcular_transacciones",store=True)
+    contador_transacciones = fields.Integer(string='Contador de Transacciones',compute="calcular_transacciones",store=True)
 
 
     @api.depends("transacciones_ids")
