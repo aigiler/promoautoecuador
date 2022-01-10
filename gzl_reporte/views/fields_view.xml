@@ -12,20 +12,6 @@
                         <group>
 
 
-                            <field name="archivos_ids">
-
-                                <tree editable="bottom">
-                                    <field name="plantilla" required="1"/>
-                                    <field name="company_id" required="1"/>
-                                    <field name="color" required="1"/>
-                                </tree>
-                            </field>
-
-
-
-
-
-
 
                             <field name="directorio" invisible="0"/>
                             <field name="directorio_out" invisible="0"/>
@@ -53,6 +39,7 @@
                                     <field name="columna"/>
                                     <field name="identificar_docx"/>
                                     <field name="label"/>
+                                    <field name="hoja_excel"/>
 
                                 </tree>
 

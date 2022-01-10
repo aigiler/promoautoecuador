@@ -36,7 +36,7 @@ import shutil
 class InformeCreditoCrobranza(models.TransientModel):
     _name = "informe.credito.cobranza"
 
-    partner_id =  fields.Many2one('res.partner',string='Socio',)
+    entrega_vehiculo_id =  fields.Many2one('entrega.vehiculo',string='Entrega Vehiculo',)
     clave =  fields.Char( default="informe_credito_cobranza")
 
 
@@ -86,7 +86,7 @@ class InformeCreditoCrobranza(models.TransientModel):
 
                 print(campo.name, campo.fila)
                 dct={}
-                resultado=self.mapped(campo.name)
+                resultado=self.entrega_vehiculo_id.mapped(campo.name)
                 if len(resultado)>0:
                     dct['valor']=resultado[0]
                 else:
@@ -94,7 +94,16 @@ class InformeCreditoCrobranza(models.TransientModel):
 
                 dct['fila']=campo.fila
                 dct['columna']=campo.columna
+                dct['hoja']=campo.hoja_excel
                 lista_campos.append(dct)
+
+# [
+
+# {'valor':'Alava','fila':5,'columna':3}
+# {'valor':'099919199','fila':6,'columna':3}
+# {'valor':'2000-07-21','fila':7,'columna':3}
+# ]
+
 
 
 

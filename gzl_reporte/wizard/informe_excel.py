@@ -58,20 +58,33 @@ def informe_credito_cobranza(ruta,lista):
 
     sheet = workbook.active
 
-    for campo in lista:
+    listaSheet1 = list(filter(lambda x: (x['hoja']==1), lista)) 
 
-        fila=capturar_fila_de_valor_a_buscar_en_hoja_calculo(sheet,5,8,3,campo['valor'])
 
-        if fila:
-            cell = sheet.cell(row=campo['fila'], column=campo['columna'])
-            cell.value = ''
-            cell = sheet.cell(row=fila, column=campo['columna'])
-            cell.value = 'X'
-            continue
 
-        else:
-            cell = sheet.cell(row=campo['fila'], column=campo['columna'])
-            cell.value = campo['valor']
+    for campo in listaSheet1:
+
+       # fila=capturar_fila_de_valor_a_buscar_en_hoja_calculo(sheet,5,8,3,campo['valor'])
+
+
+        cell = sheet.cell(row=campo['fila'], column=campo['columna'])
+        cell.value = campo['valor']
+
+
+    sheet = workbook[1]
+    listaSheet2 = list(filter(lambda x: (x['hoja']==2), lista)) 
+
+###########Llenar segundo sheet
+
+
+
+
+
+
+
+
+
+
 
 
 
