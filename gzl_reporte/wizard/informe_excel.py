@@ -88,7 +88,7 @@ def informe_credito_cobranza(ruta,lista):
         cell.value = camposLiq['valor']
 
 
-    for camposOrden in listaSheet2:
+    for camposOrden in listaSheet4:
         cell = sheet.cell(row=camposOrden['fila'], column=camposOrden['columna'])
         cell.value = camposOrden['valor']
 
