@@ -41,14 +41,14 @@ class InformeCreditoCrobranza(models.TransientModel):
 
 
 
-    def crear_plantilla_informe(self):
+    def print_report_xls(self):
 
         if self.clave=='informe_credito_cobranza':
             self.crear_plantilla_informe_credito_cobranza()
 
 
 
-    def crear_informe_entrega_hito(self,):
+    def crear_plantilla_informe_credito_cobranza(self,):
         #Instancia la plantilla
         obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','informe_credito_cobranza')],limit=1)
         if obj_plantilla:
