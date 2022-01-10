@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-	<menuitem id="menu_documentos_coporativos_principal" name="Reportes" web_icon="rt_documentos_corporativos,static/description/resumen.jpg"/>
+	<menuitem id="menu_documentos_coporativos_principal" name="Reportes" web_icon="gzl_reporte,static/description/resumen.jpg"/>
 
 		/>
 
