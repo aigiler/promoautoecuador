@@ -78,7 +78,7 @@ class InformeCreditoCrobranza(models.TransientModel):
 
 
             #####Campos de Cabecera
-            campos=self.plantilla_dinamica.campos_ids.filtered(lambda l: len(l.child_ids)==0)
+            campos=plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
 
             lista_campos=[]
             for campo in campos:
