@@ -20,7 +20,7 @@ from . import informe_excel
 import base64
 from base64 import urlsafe_b64decode
 
-
+import shutil
 
 
 
@@ -59,26 +59,27 @@ class InformeCreditoCrobranza(models.TransientModel):
                 lista=[]
                 #Crea el documento en la muk_dms.file para poderlo instanciar
 
+                
 
+          #      some_bytes = plantilla.plantilla
 
-                obj_file=self.env['ir.attachment'].create({
+                # Open in "wb" mode to
+                # write a new file, or 
+                # "ab" mode to append
 
+        #        f = open("/src/user/gzl_reporte/reports/Informe_Credito_Cobranza.xlsx", "wb")
+       #         f.write(some_bytes)
 
+                # f.read()
 
-                                                         'name':'Informe_Credito_Cobranza.xlsx',
-                                                          'datas':plantilla.plantilla,
-                                                          'type':'binary', 
-                                                          'store_fname':'Informe_Credito_Cobranza.xlsx'
-                                                          })
+     #           f.close()
+                shutil.copy2('Informe_Credito_Cobranza_plantilla.xlsx','Informe_Credito_Cobranza.xlsx')
 
-
-                #Se captura la ruta del documento duplicado
-                ruta_del_documento=obj_file._get_path(obj_file.datas,obj_file.checksum)[1]
-
-
-
+                    
+                    
+                    
             #####Campos de Cabecera
-            campos=plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
+            campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
 
             lista_campos=[]
             for campo in campos:
@@ -97,18 +98,41 @@ class InformeCreditoCrobranza(models.TransientModel):
 
 
 
-            informe_excel.informe_credito_cobranza(ruta_del_documento,lista_campos)
+            informe_excel.informe_credito_cobranza("Informe_Credito_Cobranza.xlsx",lista_campos)
 
 
+            with open('Informe_Credito_Cobranza.xlsx', "rb") as f:
+                data = f.read()
+                file=bytes(base64.b64encode(data))
 
+
+        obj_attch=self.env['ir.attachment'].create({
+                                                     'name':'Informe_Credito_Cobranza.xlsx',
+                                                      'datas':file,
+                                                      'type':'binary', 
+                                                      'store_fname':'Informe_Credito_Cobranza.xlsx'
+                                                      })
+
+
+                
+
+            
            
         url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-        url += "/web/content/%s?download=true" %(obj_file.id)
+        url += "/web/content/%s?download=true" %(obj_attch.id)
         return{
             "type": "ir.actions.act_url",
             "url": url,
             "target": "new",
         }
+
+
+
+        #except:
+         #   raise ValidationError(_('No existe informacion para generar el informe'))
+
+
+
 
 
 
