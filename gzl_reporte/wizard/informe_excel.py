@@ -60,7 +60,7 @@ def informe_credito_cobranza(ruta,lista):
 
     for campo in lista:
 
-        fila=capturar_fila_de_valor_a_buscar_en_hoja_calculo(sheet,5,8,2,campo['valor'])
+        fila=capturar_fila_de_valor_a_buscar_en_hoja_calculo(sheet,5,8,3,campo['valor'])
 
         if fila:
             cell = sheet.cell(row=campo['fila'], column=campo['columna'])
