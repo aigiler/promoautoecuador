@@ -33,7 +33,7 @@
         </record>
 
         <record id="action_informe_credito_cobranza_form" model="ir.actions.act_window">
-            <field name="name">Anticipo</field>
+            <field name="name">Informe Credito y Cobranza</field>
             <field name="res_model">informe.credito.cobranza</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>

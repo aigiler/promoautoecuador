@@ -52,6 +52,7 @@
                                             <field name="columna"/>
                                             <field name="identificar_docx"/>
                                             <field name="label"/>
+                                            <field name="hoja_excel"/>
 
 
                                         </group>
