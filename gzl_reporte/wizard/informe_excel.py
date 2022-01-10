@@ -55,18 +55,12 @@ def ajustar_hoja(sheet, flag, celda, value):
 def informe_credito_cobranza(ruta,lista):
 
     workbook = openpyxl.load_workbook(ruta)
-
     sheet = workbook.active
-
-    listaSheet1 = list(filter(lambda x: (x['hoja']==1), lista)) 
-
+    listaSheet1 = list(filter(lambda x: (x['hoja']==1), lista))
 
 
     for campo in listaSheet1:
-
-       # fila=capturar_fila_de_valor_a_buscar_en_hoja_calculo(sheet,5,8,3,campo['valor'])
-
-
+        # fila=capturar_fila_de_valor_a_buscar_en_hoja_calculo(sheet,5,8,3,campo['valor'])
         cell = sheet.cell(row=campo['fila'], column=campo['columna'])
         cell.value = campo['valor']
 
