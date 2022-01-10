@@ -105,7 +105,6 @@ class IntegrantesGrupo(models.Model):
     adjudicado_id = fields.Many2one('res.partner', string="Nombre", domain="[('tipo','=','adjudicado')]")
     mobile = fields.Char(string='Móvil', related='adjudicado_id.mobile')
     contrato_id = fields.Many2one('contrato', string='Contrato')
-    estadoContrato = fields.Char(related="contrato_id.state", string='Contrato')
     cupo = fields.Selection(selection=[
             ('ocupado', 'Ocupado'),
             ('desocupado', 'Desocupado')
