@@ -224,7 +224,7 @@ class GanadoresAsamblea(models.Model):
     currency_id = fields.Many2one(
         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
 
-    monto_financiamiento = fields.Float(related='contrato_id.monto_financiamiento',string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
+    monto_financiamiento = fields.Monetary(related='contrato_id.monto_financiamiento',string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
     monto_adjudicar = fields.Float( string="Monto a Adjudicar")
     grupo_adjudicado_id = fields.Many2one('grupo.adjudicado',string="Grupo")
     puntos = fields.Integer(string='Nro de Cuotas a Licitar')
