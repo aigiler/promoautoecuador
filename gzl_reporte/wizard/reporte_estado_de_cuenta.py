@@ -19,18 +19,18 @@ import itertools
 class ReporteEstadoDeCuenta(models.TransientModel):
     _name = "reporte.estado.de.cuenta"
     #_inherit = ""
+    
+    cliente_id = fields.Many2one('res.partner',string='Socio')
+    
+    contrato_id = cliente = fields.Many2one('contrato',string='Contrato',)
 
-
-    def obtener_listado_partner_payment(self,filtro):
+    def obtener_contato(self, filtro, socio):
+        contrato = self.env['contrato'].search([('cliente_id','=',socio)]).ids
         
-
-        if self.tipo_empresa=='proveedor':
-            filtro.append(('partner_type','=','supplier'))            
-        else:
-            filtro.append(('partner_type','=','customer'))      
-
-        if len(self.partner_ids.mapped("id"))!=0:
-            filtro.append(('partner_id','in',self.partner_ids.mapped("id")))
+        estado_cuenta = fields.One2many(
+        'contrato.estado.cuenta', 'contrato_id', track_visibility='onchange')
+        
+        
         
 
 #######filtro de facturas
@@ -143,8 +143,7 @@ class ReporteEstadoCuentaDetalle(models.TransientModel):
     _name = "reporte.estado.de.cuenta.detalle"
 
     numero_documento = fields.Char('Nro. Documento')
-    fecha_emision = fields.Date('Fc. Emision')
-    fecha_vencimiento = fields.Date('Fc. Vencimiento')
+
     monto_anticipo = fields.Float('Monto Anticipo')
     monto_aplicado = fields.Float('Monto Aplicado')
     monto_adeudado = fields.Float('Monto Adeudado')
