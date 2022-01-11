@@ -16,7 +16,7 @@ import itertools
 
 
 
-class ReporteAnticipo(models.TransientModel):
+class ReporteEstadoDeCuenta(models.TransientModel):
     _name = "reporte.estado.de.cuenta"
     #_inherit = ""
 
