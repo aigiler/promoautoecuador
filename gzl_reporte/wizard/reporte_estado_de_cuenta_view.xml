@@ -41,14 +41,16 @@
             <field name="name">Estado de Cuenta</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">reporte.estado.de.cuenta</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
         </record>
 
+
         <menuitem 
-        id="action_reporte_estado_de_cuenta_form"
-        name = "Reporte Estado de Cuenta" 
+        id = "menu_action_reporte_estado_de_cuenta_form"
+        name = "Reporte Estado de Cuenta"  
         parent="menu_reporte" 
-        sequence="2" 
+        sequence="1" 
         action="action_reporte_estado_de_cuenta_form"/>
 
 </odoo>
