@@ -36,7 +36,7 @@
             <field name="name">Informe Credito y Cobranza</field>
             <field name="res_model">informe.credito.cobranza</field>
             <field name="view_mode">form</field>
-            <field name="target">new</field>
+            <!-- <field name="target">new</field> -->
         </record>
 
 

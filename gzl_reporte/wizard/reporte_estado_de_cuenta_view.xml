@@ -50,7 +50,7 @@
         id="action_reporte_estado_de_cuenta_form"
         name = "Reporte Estado de Cuenta" 
         parent="menu_reporte" 
-        sequence="1" 
+        sequence="2" 
         action="action_reporte_estado_de_cuenta_form"/>
 
 </odoo>
