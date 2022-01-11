@@ -19,12 +19,13 @@
 
 			'views/fields_view.xml',
             'wizard/informe_credito_cobranza_view.xml',
-         #  'report/reporte_anticipo_template.xml',
-         #   'report/reporte_anticipo.xml',
-          #  'wizard/report_entregable_hito.xml',
+            'wizard/reporte_estado_de_cuenta_view.xml',
+        #  'report/reporte_anticipo_template.xml',
+        #   'report/reporte_anticipo.xml',
+        #  'wizard/report_entregable_hito.xml',
 
-            
-             ],
+
+            ],
     'installable': True,
     'auto_install': False,
     
