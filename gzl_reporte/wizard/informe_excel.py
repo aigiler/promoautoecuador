@@ -80,17 +80,18 @@ def informe_credito_cobranza(ruta,lista):
     
     
     
-    sheet = workbook['Liquidacion']
-    listaSheet3 = list(filter(lambda x: (x['hoja']==3), lista)) 
-    for camposLiq in listaSheet3:
-        cell = sheet.cell(row=camposLiq['fila'], column=camposLiq['columna'])
-        cell.value = camposLiq['valor']
+    # sheet = workbook['Liquidacion']
+    # listaSheet3 = list(filter(lambda x: (x['hoja']==3), lista)) 
+    # for camposLiq in listaSheet3:
+    #     cell = sheet.cell(row=camposLiq['fila'], column=camposLiq['columna'])
+    #     cell.value = camposLiq['valor']
     
-    sheet = workbook['Orden Compra']
-    listaSheet4 = list(filter(lambda x: (x['hoja']==4), lista)) 
-    for camposOrden in listaSheet2:
-        cell = sheet.cell(row=camposOrden['fila'], column=camposOrden['columna'])
-        cell.value = camposOrden['valor']
+    # sheet = workbook['Orden Compra']
+    # listaSheet4 = list(filter(lambda x: (x['hoja']==4), lista)) 
+    
+    # for camposOrden in listaSheet4:
+    #     cell = sheet.cell(row=camposOrden['fila'], column=camposOrden['columna'])
+    #     cell.value = camposOrden['valor']
 
     workbook.save(ruta)
 

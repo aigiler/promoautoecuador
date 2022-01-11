@@ -72,17 +72,8 @@ class InformeCreditoCrobranza(models.TransientModel):
                 dct['hoja']=campo.hoja_excel
                 lista_campos.append(dct)
 
-# [
 
-# {'valor':'Alava','fila':5,'columna':3}
-# {'valor':'099919199','fila':6,'columna':3}
-# {'valor':'2000-07-21','fila':7,'columna':3}
-# ]
-
-
-
-
-            informe_excel.informe_credito_cobranza(obj_plantilla.directorio_out,lista_campos)
+        informe_excel.informe_credito_cobranza(obj_plantilla.directorio_out,lista_campos)
 
 
             with open(obj_plantilla.directorio_out, "rb") as f:
