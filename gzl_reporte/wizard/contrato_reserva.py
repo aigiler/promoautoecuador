@@ -41,30 +41,30 @@ class ContratoResrva(models.TransientModel):
             shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
 
 
-			#####Se sacan los campos de la plantilla del objeto plantillas.dinamicas.informes
-			campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
+            #####Se sacan los campos de la plantilla del objeto plantillas.dinamicas.informes
+            campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
 
-		
-			lista_campos=[]
-			for campo in campos:
+        
+            lista_campos=[]
+            for campo in campos:
 
-				dct={}
-				resultado=self.mapped(campo.name)
-				if campo.name!=False:
-					if len(resultado)>0:
+                dct={}
+                resultado=self.mapped(campo.name)
+                if campo.name!=False:
+                    if len(resultado)>0:
 
-						dct['valor']=resultado[0]
+                        dct['valor']=resultado[0]
 
-					else:
-						dct['valor']=''
+                    else:
+                        dct['valor']=''
 
-					
+                    
 
 
-				dct['identificar_docx']=campo.identificar_docx
-				lista_campos.append(dct)
+                dct['identificar_docx']=campo.identificar_docx
+                lista_campos.append(dct)
 
-			estado_cuenta=self.contrato_id.estado_de_cuenta_ids
+            estado_cuenta=self.contrato_id.estado_de_cuenta_ids
 
             crear_documento_contrato_reserva.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
 
