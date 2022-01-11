@@ -1,4 +1,4 @@
 # -*- coding: utf-8 -*-
 
-from . import plantillas
+from . import plantillas_dinamicas_informes
 #from . import reporte_entregable_hito
