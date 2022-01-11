@@ -16,7 +16,6 @@ class GrupoSocios(models.Model):
     descripcion=fields.Text('Descripcion', required=True)
     active=fields.Boolean(default=True, string='Activo',track_visibility='onchange')
     integrantes = fields.One2many('integrante.grupo.adjudicado','grupo_id',track_visibility='onchange')
-    monto_grupo = fields.Float(String="Cartera del grupo",default=0, compute="compute_monto_cartera",track_visibility='onchange',store=True)
     asamblea_id = fields.Many2one('asamblea')
     estado = fields.Selection(selection=[
             ('en_conformacion', 'En Conformación'),
@@ -36,6 +35,26 @@ class GrupoSocios(models.Model):
         ('codigo_uniq', 'unique (codigo)', 'El código ya existe.')
     ]
     
+
+
+
+    currency_id = fields.Many2one(
+        'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
+
+
+    recuperacionCartera = fields.Monetary(compute='calculo_recuperacion_cartera',string='Recuperación de Cartera', currency_field='currency_id', track_visibility='onchange')
+
+    @api.depends('grupo_adjudicado_id')
+    def calculo_recuperacion_cartera(self):
+        for l in self:
+            hoy=date.today()
+            grupoParticipante=l.transacciones.filtered(lambda l: l.create_date.month==hoy.month and l.create_date.year==hoy.year)
+            recuperacionCartera=sum(grupoParticipante.mapped('haber'))- sum(grupoParticipante.mapped('debe'))
+
+
+
+
+
 
     contador_transacciones = fields.Integer(string='Contador de Transacciones',compute="calcular_transacciones",store=True)
 
