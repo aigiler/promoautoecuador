@@ -86,12 +86,6 @@ def informe_credito_cobranza(ruta,lista):
         cell = sheet.cell(row=camposLiq['fila'], column=camposLiq['columna'])
         cell.value = camposLiq['valor']
     
-    # sheet = workbook['Orden Compra']
-    # listaSheet4 = list(filter(lambda x: (x['hoja']==4), lista)) 
-    
-    # for camposOrden in listaSheet4:
-    #     cell = sheet.cell(row=camposOrden['fila'], column=camposOrden['columna'])
-    #     cell.value = camposOrden['valor']
 
     workbook.save(ruta)
 
