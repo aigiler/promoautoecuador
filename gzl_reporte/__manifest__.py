@@ -16,8 +16,10 @@
     'data': [
 
             'security/ir.model.access.csv',
-            'views/menu_view.xml',
+            'data/data_grupo.xml',
 
+            
+            'views/menu_view.xml',
 			'views/fields_view.xml',
             'wizard/informe_credito_cobranza_view.xml',
             'wizard/reporte_estado_de_cuenta_view.xml',
