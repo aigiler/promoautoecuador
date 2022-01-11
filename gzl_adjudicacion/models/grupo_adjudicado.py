@@ -44,7 +44,7 @@ class GrupoSocios(models.Model):
 
     recuperacionCartera = fields.Monetary(compute='calculo_recuperacion_cartera',string='Recuperación de Cartera', currency_field='currency_id', track_visibility='onchange')
 
-    @api.depends('grupo_adjudicado_id')
+    @api.depends('transacciones_ids')
     def calculo_recuperacion_cartera(self):
         for l in self:
             hoy=date.today()
