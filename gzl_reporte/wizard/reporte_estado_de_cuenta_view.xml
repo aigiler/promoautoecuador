@@ -7,7 +7,7 @@
                 <form string="Reporte Estado de Cuenta">
                     <group>
                         <group col="2">
-                            <field name="cliente_id" required="1" domain = "[('tipo','=','preAdjudicado')]"/>
+                            <field name="contrato_id" required="1"  />
                         </group>
 
                     </group>
