@@ -7,7 +7,7 @@ import json
 import base64
 import logging
 import mimetypes
-import odoo.tools 
+import odoo.tools
 import hashlib
 from odoo import api, fields, models, tools, SUPERUSER_ID
 from datetime import datetime,timedelta,date
@@ -21,7 +21,6 @@ import base64
 from base64 import urlsafe_b64decode
 
 import shutil
-
 
 
 
@@ -53,7 +52,8 @@ class InformeCreditoCrobranza(models.TransientModel):
             #####Campos de Cabecera
             campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
 
-de Cabecera
+
+            #####Campos de Cabecera
             campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
 
             lista_campos=[]
