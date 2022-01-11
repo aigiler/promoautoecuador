@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
         <record id="reporte_estado_de_cuenta_form" model="ir.ui.view">
-            <field name="name">reporte.estado.de.cuenta</field>
+            <field name="name">reporte.estado.de.cuenta.form</field>
             <field name="model">reporte.estado.de.cuenta</field>
             <field name="arch" type="xml">
                 <form string="Reporte Estado de Cuenta">
@@ -37,7 +37,7 @@
             </field>
         </record>
 
-        <record id="action_reporte_estado_de_cuenta" model="ir.actions.act_window">
+        <record id="action_reporte_estado_de_cuenta_form" model="ir.actions.act_window">
             <field name="name">Estado de Cuenta</field>
             <field name="res_model">reporte.estado.de.cuenta</field>
             <field name="view_mode">form</field>
@@ -46,10 +46,11 @@
 
 
 
-        <menuitem id="menu_action_reporte_estado_de_cuenta"  
-        name = "Informe Estado de Cuenta"
+        <menuitem 
+        id="action_reporte_estado_de_cuenta_form"
+        name = "Reporte Estado de Cuenta" 
         parent="menu_reporte" 
-        sequence="5" 
-        action="action_reporte_estado_de_cuenta"/>
+        sequence="1" 
+        action="action_reporte_estado_de_cuenta_form"/>
 
 </odoo>
