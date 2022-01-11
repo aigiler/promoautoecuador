@@ -12,11 +12,11 @@
 
                     </group>
                     <footer>
-                        <!-- <button name="print_report_xls"
+                        <button name="print_report_xls"
                                 string="Imprimir Excel"
                                 type="object"
                                 class="oe_highlight" />
-                        or -->
+                        or 
                         <button name="print_report_pdf"
                                 string="Imprimir PDF"
                                 type="object"

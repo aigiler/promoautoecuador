@@ -84,7 +84,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
 
         sheet.merge_range('A2:I2', 'Estado de Cuenta', bold)
         sheet.merge_range('A3:C3', 'Monto:', bold)
-        sheet.merge_range('D3:E3', self.contrato_id.monto_financimiento, date_format_title)      
+        sheet.merge_range('D3:E3', self.contrato_id.monto_financiamiento, date_format_title)      
 
         title_main=['No','Fecha','Fecha Pagada','Cuota Capital' ,'Cuota Administrativa', 'Iva Adm.', 'Factura','Seguro','Rastreo','Otros','Monto Pagado','Saldo','Estado de Pago']
 
@@ -106,7 +106,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             sheet.write(current_line, 3, linea.cuota_capital , currency_format)
             sheet.write(current_line, 4, linea.cuota_adm ,currency_format)
             sheet.write(current_line, 5, linea.iva_adm ,currency_format)
-            sheet.write(current_line, 6, linea.factura_id.name  , body)
+            sheet.write(current_line, 6, linea.factura_id.name or ''  , body)
             sheet.write(current_line, 7, linea.seguro,currency_format)
             sheet.write(current_line, 8, linea.rastreo,currency_format)
             sheet.write(current_line, 9, linea.otro, currency_format)
