@@ -39,12 +39,10 @@
 
         <record id="action_reporte_estado_de_cuenta_form" model="ir.actions.act_window">
             <field name="name">Estado de Cuenta</field>
+            <field name="type">ir.actions.act_window</field>
             <field name="res_model">reporte.estado.de.cuenta</field>
-            <field name="view_mode">form</field>
-            <field name="target">new</field>
+            <field name="view_mode">tree,form</field>
         </record>
-
-
 
         <menuitem 
         id="action_reporte_estado_de_cuenta_form"
