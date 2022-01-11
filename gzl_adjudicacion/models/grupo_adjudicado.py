@@ -49,7 +49,7 @@ class GrupoSocios(models.Model):
     def calculo_recuperacion_cartera(self):
         for l in self:
             hoy=date.today()
-            grupoParticipante=l.transacciones.filtered(lambda l: l.create_date.month==hoy.month and l.create_date.year==hoy.year)
+            grupoParticipante=l.transacciones_ids.filtered(lambda l: l.create_date.month==hoy.month and l.create_date.year==hoy.year)
             recuperacionCartera=sum(grupoParticipante.mapped('haber'))- sum(grupoParticipante.mapped('debe'))
 
 
