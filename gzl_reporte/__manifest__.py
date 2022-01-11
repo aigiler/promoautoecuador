@@ -14,9 +14,8 @@
                 ],
     'update_xml': [],
     'data': [
-
-            'security/ir.model.access.csv',
             'data/data_grupo.xml',
+            'security/ir.model.access.csv',
 
             
             'views/menu_view.xml',

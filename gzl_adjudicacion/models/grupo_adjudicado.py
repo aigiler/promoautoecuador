@@ -70,7 +70,7 @@ class GrupoSocios(models.Model):
 
 
         return {
-            'name': _('Transacciones Grupo'),
+            'name': ('Transacciones Grupo'),
             'view_mode': 'tree,form',
             'res_model': 'transaccion.grupo.adjudicado',
             'view_id': False,
