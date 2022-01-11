@@ -8,7 +8,7 @@ import xlsxwriter
 from io import BytesIO
 import base64
 from odoo.exceptions import AccessError, UserError, ValidationError
-from .funciones import *
+
 import calendar
 import datetime as tiempo
 import itertools
