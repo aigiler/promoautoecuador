@@ -22,8 +22,6 @@ class ReporteEstadoDeCuenta(models.TransientModel):
     
     cliente_id = fields.Many2one('res.partner',string='Socio')
     
-    contrato_id = cliente = fields.Many2one('contrato',string='Contrato',)
-
     def obtener_contato(self, filtro, socio):
         contrato = self.env['contrato'].search([('cliente_id','=',socio)]).ids
         
