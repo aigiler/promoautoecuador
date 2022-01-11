@@ -2,7 +2,8 @@
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
-
+from datetime import date, timedelta
+import datetime
 
 class GrupoSocios(models.Model):
     _name = 'grupo.adjudicado'

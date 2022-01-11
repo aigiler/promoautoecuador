@@ -1,6 +1,10 @@
 from odoo import api, fields, models
 import json
 from odoo.exceptions import UserError, ValidationError
+from datetime import date, timedelta
+import datetime
+
+
 
 class Asamblea(models.Model):
     _name = 'asamblea'
