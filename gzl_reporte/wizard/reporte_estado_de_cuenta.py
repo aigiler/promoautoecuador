@@ -77,13 +77,13 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.merge_range('A5:I5', 'AV. JUAN TANCA MARENGO Y 2DO CALLEJON PLAZA SAI BABA', format_datos)
         sheet.merge_range('A6:C6', 'GUAYAQUIL - Ecuador', format_datos)
         sheet.merge_range('A7:C7', 'RUC: 0993261564001', format_datos)
-        sheet.merge_range('K6:M6', self.create_date, date_format_title)
+        sheet.merge_range('K6:M6', self.create_date.strftime('%Y-%m-%d'), format_datos)
         sheet.merge_range('A8:M8', 'ESTADO DE CUENTA DE APORTES', format_subtitle)
         sheet.merge_range('A9:I9', 'Cliente: '+ self.contrato_id.cliente.name, format_datos)
         sheet.merge_range('A10:I10', 'Grupo: '+'['+ self.contrato_id.grupo.codigo+']'+ self.contrato_id.grupo.name, format_datos)
         #sheet.merge_range('A11:I11', 'Estado: '+ self.contrato_id.state+'('+self.contrato_id.fecha_adjudicado+')', format_datos)
         sheet.merge_range('A11:I11', 'Estado: '+ self.contrato_id.state , format_datos)
-        sheet.merge_range('A12:I12', 'Valor Inscripción: $'+ self.contrato_id.valor_inscripcion, format_datos)
+        sheet.merge_range('A12:I12', 'Valor Inscripción: $'+ str(self.contrato_id.valor_inscripcion), format_datos)
         #sheet.merge_range('D3:E3', self.contrato_id.monto_financiamiento, format_datos)
 
         title_main=['No','Fecha','Fecha Pagada','Cuota Capital' ,'Cuota Administrativa', 'Iva Adm.', 'Factura','Seguro','Rastreo','Otros','Monto Pagado','Saldo','Estado de Pago']
