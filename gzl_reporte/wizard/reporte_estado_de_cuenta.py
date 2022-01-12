@@ -53,7 +53,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         bold.set_center_across()
         format_title = workbook.add_format({'font_name':'Cambria','font_size':  16,'bold':True})
         format_title.set_center_across()
-        format_subtitle = workbook.add_format({'font_name':'Cambria','font_size':  12,'bold':True})
+        format_subtitle = workbook.add_format({'font_name':'Cambria','font_size':  12,'bold':True, 'bottom':1})
         format_subtitle.set_center_across()
         format_datos = workbook.add_format({'align': 'left'})
         currency_format = workbook.add_format({'num_format': '[$$-409]#,##0.00','border':1,'text_wrap': True })
@@ -78,8 +78,8 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.merge_range('A6:C6', 'GUAYAQUIL - Ecuador', format_datos)
         sheet.merge_range('A7:C7', 'RUC: 0993261564001', format_datos)
         sheet.merge_range('K6:M6', self.create_date, date_format_title)
-        sheet.merge_range('A8:M8', 'ESTADO DE CUENTA DE APORTES', format_subtitle.set_bottom(1))
-
+        sheet.merge_range('A8:M8', 'ESTADO DE CUENTA DE APORTES', format_subtitle)
+        sheet.merge_range('A9:I9', 'Cliente: '+ self.contrato_id.cliente.name, format_datos)
 
         #sheet.merge_range('D3:E3', self.contrato_id.monto_financiamiento, format_datos)      
 
