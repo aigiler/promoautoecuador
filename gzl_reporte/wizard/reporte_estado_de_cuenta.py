@@ -78,7 +78,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.merge_range('A6:C6', 'GUAYAQUIL - Ecuador', format_datos)
         sheet.merge_range('A7:C7', 'RUC: 0993261564001', format_datos)
         sheet.merge_range('K6:M6', self.create_date, date_format_title)
-        sheet.merge_range('A8:M8', 'ESTADO DE CUENTA DE APORTES', format_subtitle. set_bottom(1))
+        sheet.merge_range('A8:M8', 'ESTADO DE CUENTA DE APORTES', format_subtitle.set_bottom(1))
 
 
         #sheet.merge_range('D3:E3', self.contrato_id.monto_financiamiento, format_datos)      
@@ -89,9 +89,9 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         colspan=13
         for col, head in enumerate(title_main):
             sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))), len(head) + 13)
-            sheet.write(5, col, head, bold)
+            sheet.write(13, col, head, bold)
 
-        line = itertools.count(start=15)
+        line = itertools.count(start=14)
 
 
         for linea in self.contrato_id.estado_de_cuenta_ids:
