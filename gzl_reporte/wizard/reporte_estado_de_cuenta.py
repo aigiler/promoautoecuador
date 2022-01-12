@@ -76,7 +76,6 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.merge_range('A6:C6', 'GUAYAQUIL - Ecuador', format_datos)
         sheet.merge_range('A7:C7', 'RUC: 0993261564001', format_datos)
         sheet.merge_range('K6:M6', self.create_date, date_format_title)
-        sheet.merge_range('C1:I1', 'GUAYAQUIL' self.create_date, date_format_title)
 
 
         sheet.merge_range('A2:I2', 'Estado de Cuenta', bold)
