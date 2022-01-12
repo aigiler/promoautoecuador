@@ -78,9 +78,8 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.merge_range('K6:M6', self.create_date, date_format_title)
 
 
-        sheet.merge_range('A2:I2', 'Estado de Cuenta', bold)
-        sheet.merge_range('A3:C3', 'Monto:', bold)
-        sheet.merge_range('D3:E3', self.contrato_id.monto_financiamiento, format_datos)      
+
+        #sheet.merge_range('D3:E3', self.contrato_id.monto_financiamiento, format_datos)      
 
         title_main=['No','Fecha','Fecha Pagada','Cuota Capital' ,'Cuota Administrativa', 'Iva Adm.', 'Factura','Seguro','Rastreo','Otros','Monto Pagado','Saldo','Estado de Pago']
 
