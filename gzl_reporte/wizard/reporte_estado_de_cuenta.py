@@ -53,9 +53,9 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         bold.set_center_across()
         format_title = workbook.add_format({'font_name':'Cambria','font_size':  16,'bold':True})
         format_title.set_center_across()
-        format_subtitle = workbook.add_format({'font_name':'Cambria','font_size':  12,'bold':True, 'bottom':1})
+        format_subtitle = workbook.add_format({'font_name':'Cambria','font_size':  14,'bold':True, 'bottom':1})
         format_subtitle.set_center_across()
-        format_datos = workbook.add_format({'align': 'left'})
+        format_datos = workbook.add_format({'font_name':'Arial','font_size':  14,'align': 'left'})
         currency_format = workbook.add_format({'num_format': '[$$-409]#,##0.00','border':1,'text_wrap': True })
         currency_format.set_align('vcenter')
 
@@ -80,7 +80,9 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.merge_range('K6:M6', self.create_date, date_format_title)
         sheet.merge_range('A8:M8', 'ESTADO DE CUENTA DE APORTES', format_subtitle)
         sheet.merge_range('A9:I9', 'Cliente: '+ self.contrato_id.cliente.name, format_datos)
-
+        sheet.merge_range('A10:I10', 'Grupo: '+'['+ self.contrato_id.grupo.codigo+']'+ self.contrato_id.grupo.name, format_datos)
+        sheet.merge_range('A11:I11', 'Estado: '+ self.contrato_id.state+'('+self.contrato_id.fecha_adjudicado+')', format_datos)
+        sheet.merge_range('A12:I12', 'Valor Inscripción: $'+ self.contrato_id.valor_inscripcion, format_datos)
         #sheet.merge_range('D3:E3', self.contrato_id.monto_financiamiento, format_datos)      
 
         title_main=['No','Fecha','Fecha Pagada','Cuota Capital' ,'Cuota Administrativa', 'Iva Adm.', 'Factura','Seguro','Rastreo','Otros','Monto Pagado','Saldo','Estado de Pago']
