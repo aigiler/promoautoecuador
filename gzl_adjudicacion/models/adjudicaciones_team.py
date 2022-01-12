@@ -41,4 +41,3 @@ class AdjudicacionTeam(models.Model):
         correoCadena=correoCadena.strip(',')
         self.correos=correoCadena
 
-actualizar_correos_team
