@@ -18,25 +18,24 @@ import itertools
 
 class ReporteEstadoDeCuenta(models.TransientModel):
     _name = "reporte.estado.de.cuenta"
-    #_inherit = ""
-    
-    contrato_id = fields.Many2one('contrato',string='Contrato')
-    
 
- 
+    contrato_id = fields.Many2one('contrato',string='Contrato')
+
+
+
 
     def print_report_xls(self):
         file_data = BytesIO()
         workbook = xlsxwriter.Workbook(file_data)
         name = 'Estado de Cuenta'
         self.xslx_body(workbook, name)
-        
+
 
         workbook.close()
         file_data.seek(0)
-        
 
-        
+
+
         attachment = self.env['ir.attachment'].create({
             'datas': base64.b64encode(file_data.getvalue()),
             'name': name,
@@ -52,10 +51,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         }
 
 
- 
- 
-        
-        
+
     def xslx_body(self, workbook, name):
         bold = workbook.add_format({'bold':True,'border':1})
         bold.set_center_across()
@@ -64,7 +60,6 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         currency_format = workbook.add_format({'num_format': '[$$-409]#,##0.00','border':1,'text_wrap': True })
         currency_format.set_align('vcenter')
 
-        
         date_format = workbook.add_format({'num_format': 'dd/mm/yy', 'align': 'right','border':1,'text_wrap': True })
         date_format.set_align('vcenter')
         date_format_day = workbook.add_format({'align': 'right','border':1,'text_wrap': True })
@@ -93,7 +88,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         for col, head in enumerate(title_main):
             sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))), len(head) + 4)
             sheet.write(5, col, head, bold)
-        
+
         line = itertools.count(start=6)
 
 
@@ -113,8 +108,8 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             sheet.write(current_line, 10, linea.monto_pagado, currency_format)
             sheet.write(current_line, 11, linea.saldo, currency_format)
             if linea.estado_pago=='pendiente':
-            	sheet.write(current_line, 12, 'Pendiente', body)
+                sheet.write(current_line, 12, 'Pendiente', body)
             else:
-            	sheet.write(current_line, 12, 'Pagado', body)
+                sheet.write(current_line, 12, 'Pagado', body)
 
 
