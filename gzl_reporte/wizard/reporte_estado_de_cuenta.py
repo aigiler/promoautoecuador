@@ -51,8 +51,10 @@ class ReporteEstadoDeCuenta(models.TransientModel):
     def xslx_body(self, workbook, name):
         bold = workbook.add_format({'bold':True,'border':1})
         bold.set_center_across()
-        format_title = workbook.add_format({'font_name':'Times New Roman','font_size':  30,'bold':True})
+        format_title = workbook.add_format({'font_name':'Cambria','font_size':  16,'bold':True})
         format_title.set_center_across()
+        format_subtitle = workbook.add_format({'font_name':'Cambria','font_size':  12,'bold':True})
+        format_subtitle.set_center_across()
         format_datos = workbook.add_format({'align': 'left'})
         currency_format = workbook.add_format({'num_format': '[$$-409]#,##0.00','border':1,'text_wrap': True })
         currency_format.set_align('vcenter')
@@ -76,7 +78,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.merge_range('A6:C6', 'GUAYAQUIL - Ecuador', format_datos)
         sheet.merge_range('A7:C7', 'RUC: 0993261564001', format_datos)
         sheet.merge_range('K6:M6', self.create_date, date_format_title)
-
+        sheet.merge_range('A8:M8', 'ESTADO DE CUENTA DE APORTES', format_subtitle. set_bottom(1))
 
 
         #sheet.merge_range('D3:E3', self.contrato_id.monto_financiamiento, format_datos)      
@@ -84,12 +86,12 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         title_main=['No','Fecha','Fecha Pagada','Cuota Capital' ,'Cuota Administrativa', 'Iva Adm.', 'Factura','Seguro','Rastreo','Otros','Monto Pagado','Saldo','Estado de Pago']
 
         ##Titulos
-        colspan=4
+        colspan=13
         for col, head in enumerate(title_main):
-            sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))), len(head) + 4)
+            sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))), len(head) + 13)
             sheet.write(5, col, head, bold)
 
-        line = itertools.count(start=6)
+        line = itertools.count(start=15)
 
 
         for linea in self.contrato_id.estado_de_cuenta_ids:
