@@ -77,7 +77,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.merge_range('A5:I5', 'AV. JUAN TANCA MARENGO Y 2DO CALLEJON PLAZA SAI BABA', format_datos)
         sheet.merge_range('A6:C6', 'GUAYAQUIL - Ecuador', format_datos)
         sheet.merge_range('A7:C7', 'RUC: 0993261564001', format_datos)
-        sheet.merge_range('K6:M6', self.contrato_id.ciudad.name +', ' + self.create_date.strftime('%Y-%m-%d'), format_datos)
+        sheet.merge_range('K6:M6', self.contrato_id.ciudad +', ' + self.create_date.strftime('%Y-%m-%d'), format_datos)
         sheet.merge_range('A8:M8', 'ESTADO DE CUENTA DE APORTES', format_subtitle)
         sheet.merge_range('A9:I9', 'Cliente: '+ self.contrato_id.cliente.name, format_datos)
         sheet.merge_range('J9:J9', 'Ced/RUC: '+ self.contrato_id.cliente.vat, format_datos)
