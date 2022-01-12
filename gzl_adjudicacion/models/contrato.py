@@ -101,7 +101,7 @@ class Contrato(models.Model):
 
     @api.constrains('state')
     def crear_registro_fondo_grupo(self):
-        if self.grupo:
+        if self.grupo and self.state!='borrador':
             self.grupo.calcular_monto_pagado()
 
             if self.state in ['desistir','inactivo','congelar_contrato']:
@@ -500,13 +500,10 @@ class Contrato(models.Model):
 
     def enviar_correos_contrato(self,):
 
-
-        rolCredito=self.env.ref('gzl_adjudicacion.tipo_rol3').correos
-        rolGerenciaAdmin=self.env.ref('gzl_adjudicacion.tipo_rol1').correos
-        rolGerenciaFin=self.env.ref('gzl_adjudicacion.tipo_rol4').correos
-        rolAdjudicacion=self.env.ref('gzl_adjudicacion.tipo_rol2').correos
-
-        correos=rolCredito+','+rolGerenciaAdmin+','+rolGerenciaFin+','+rolAdjudicacion
+        obj_rol=self.env['adjudicaciones.team'].search([('active','=',True),('correos','!=',False)]).mapped('correos')
+        correos=''
+        for correo in obj_rol:
+            correos=correos+correo+','
 
         return correos
 
