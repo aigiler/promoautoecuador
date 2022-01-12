@@ -101,35 +101,36 @@ class Contrato(models.Model):
 
     @api.constrains('state')
     def crear_registro_fondo_grupo(self):
-        self.contrato.grupo_id.calcular_monto_pagado()
+        if self.grupo:
+            self.grupo.calcular_monto_pagado()
 
-        if self.state in ['desistir','inactivo','congelar_contrato']:
-            transacciones=self.env['transaccion.grupo.adjudicado']
+            if self.state in ['desistir','inactivo','congelar_contrato']:
+                transacciones=self.env['transaccion.grupo.adjudicado']
 
-            dct={
-            'grupo_id':self.grupo.id,
-            'debe':self.monto_pagado ,
-            'adjudicado_id':self.cliente.id,
-            'contrato_id':self.id,
-            'state':self.state
-            }
-
-
-            transacciones.create(dct)
-
-        if self.state in ['activo']:
-            transacciones=self.env['transaccion.grupo.adjudicado']
-
-            dct={
-            'grupo_id':self.grupo.id,
-            'haber':self.monto_pagado ,
-            'adjudicado_id':self.cliente.id,
-            'contrato_id':self.id,
-            'state':self.state
-            }
+                dct={
+                'grupo_id':self.grupo.id,
+                'debe':self.monto_pagado ,
+                'adjudicado_id':self.cliente.id,
+                'contrato_id':self.id,
+                'state':self.state
+                }
 
 
-            transacciones.create(dct)
+                transacciones.create(dct)
+
+            if self.state in ['activo']:
+                transacciones=self.env['transaccion.grupo.adjudicado']
+
+                dct={
+                'grupo_id':self.grupo.id,
+                'haber':self.monto_pagado ,
+                'adjudicado_id':self.cliente.id,
+                'contrato_id':self.id,
+                'state':self.state
+                }
+
+
+                transacciones.create(dct)
 
 
 
