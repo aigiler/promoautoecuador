@@ -16,7 +16,7 @@
                                 string="Imprimir Excel"
                                 type="object"
                                 class="oe_highlight" />
-                        or 
+                        or
                         <button name="print_report_pdf"
                                 string="Imprimir PDF"
                                 type="object"
@@ -39,11 +39,11 @@
         </record>
 
 
-        <menuitem 
+        <menuitem
         id = "menu_action_reporte_estado_de_cuenta_form"
-        name = "Reporte Estado de Cuenta"  
-        parent="menu_reporte" 
-        sequence="1" 
+        name = "Reporte Estado de Cuenta"
+        parent="menu_reporte"
+        sequence="1"
         action="action_reporte_estado_de_cuenta_form"/>
 
 </odoo>

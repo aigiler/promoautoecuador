@@ -14,14 +14,10 @@ import datetime as tiempo
 import itertools
 
 
-
-
 class ReporteEstadoDeCuenta(models.TransientModel):
     _name = "reporte.estado.de.cuenta"
 
     contrato_id = fields.Many2one('contrato',string='Contrato')
-
-
 
 
     def print_report_xls(self):
@@ -55,8 +51,9 @@ class ReporteEstadoDeCuenta(models.TransientModel):
     def xslx_body(self, workbook, name):
         bold = workbook.add_format({'bold':True,'border':1})
         bold.set_center_across()
-        format_title = workbook.add_format({'bold':True,'border':1})
+        format_title = workbook.add_format({'font_name':'Times New Roman','font_size':  30,'bold':True})
         format_title.set_center_across()
+        format_datos = workbook.add_format({'align': 'left'})
         currency_format = workbook.add_format({'num_format': '[$$-409]#,##0.00','border':1,'text_wrap': True })
         currency_format.set_align('vcenter')
 
@@ -64,7 +61,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         date_format.set_align('vcenter')
         date_format_day = workbook.add_format({'align': 'right','border':1,'text_wrap': True })
         date_format_day.set_align('vcenter')
-        date_format_title = workbook.add_format({'num_format': 'dd/mm/yy', 'align': 'left','text_wrap': True})
+        date_format_title = workbook.add_format({'num_format': 'yyyy-mm-dd', 'align': 'justify','text_wrap': True})
         date_format_title.set_align('vcenter')
 
         body = workbook.add_format({'align': 'center' , 'border':1,'text_wrap': True})
@@ -73,13 +70,18 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         body_left = workbook.add_format({'align': 'left','bold':True})
         format_title2 = workbook.add_format({'align': 'center', 'bold':True,'border':1 })
         sheet = workbook.add_worksheet(name)
-        sheet.merge_range('A1:B1', 'Fecha del informe:', bold)
-        sheet.merge_range('C1:I1', self.create_date, date_format_title)
+        sheet.insert_image('A1', 'resumen.jpg')
+        sheet.merge_range('A3:M3', 'PROMOAUTO ECUADOR PROMOAUTOECUADOR S.A', format_title)
+        sheet.merge_range('A5:I5', 'AV. JUAN TANCA MARENGO Y 2DO CALLEJON PLAZA SAI BABA', format_datos)
+        sheet.merge_range('A6:C6', 'GUAYAQUIL - Ecuador', format_datos)
+        sheet.merge_range('A7:C7', 'RUC: 0993261564001', format_datos)
+        sheet.merge_range('K6:M6', self.create_date, date_format_title)
+        sheet.merge_range('C1:I1', 'GUAYAQUIL'+self.create_date, date_format_title)
 
 
         sheet.merge_range('A2:I2', 'Estado de Cuenta', bold)
         sheet.merge_range('A3:C3', 'Monto:', bold)
-        sheet.merge_range('D3:E3', self.contrato_id.monto_financiamiento, date_format_title)      
+        sheet.merge_range('D3:E3', self.contrato_id.monto_financiamiento, format_datos)      
 
         title_main=['No','Fecha','Fecha Pagada','Cuota Capital' ,'Cuota Administrativa', 'Iva Adm.', 'Factura','Seguro','Rastreo','Otros','Monto Pagado','Saldo','Estado de Pago']
 
