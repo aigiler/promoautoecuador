@@ -21,7 +21,7 @@ class Team(models.Model):
         correos=self.member_ids.mapped('email')
         correoCadena=""
         for correo in correos:
-            correoCadena=correoCadena+correo+','
+            if correo:
+                correoCadena=correoCadena+correo+','
         correoCadena=correoCadena.strip(',')
         self.correos=correoCadena
-
