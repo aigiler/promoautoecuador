@@ -101,6 +101,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             sheet.write(13, col, head.upper(), formato_cabecera_tabla)
 
         line = itertools.count(start=14)
+        fila = 14
         fila_current=0
 
         for linea in self.contrato_id.estado_de_cuenta_ids:
@@ -130,7 +131,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             col_formula = {
                             'from_col': chr(65 +col),
                             'to_col': chr(65 +col),
-                            'from_row': line+1,
+                            'from_row': fila+1,
                             'to_row': fila_current+1,
 
                         }
