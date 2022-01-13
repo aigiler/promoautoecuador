@@ -125,7 +125,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             fila_current=current_line
 
 
-        sheet.merge_range('A{0}:C{0}'.format(fila_current+1), 'TOTALES: ', formato_cabecera_tabla)
+        sheet.merge_range('A{0}:B{0}'.format(fila_current+2), 'TOTALES: ', formato_cabecera_tabla)
         lista_col_formulas=[2,3,4,5,6,7,8]
         for col in lista_col_formulas:
             col_formula = {
