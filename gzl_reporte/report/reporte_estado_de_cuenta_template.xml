@@ -5,20 +5,36 @@
             <t t-foreach="docs" t-as="o">
                 <t t-call="web.external_layout">
                     <div class="page" style="font-size: 14px">
-                    <span><center><h1>Reporte de Estado de cuenta</h1></center></span><br/><br/>
-                    <span><strong>Desde: </strong></span> <span t-esc="o.contrato_id.cliente.name"/><br/>
-                    <span><strong>Hasta: </strong></span> <span t-esc="o.contrato_id.cliente.vat"/><br/>
-
+                    <span><center><h1>PROMOAUTO ECUADOR PROMOAUTOECUADOR S.A</h1></center></span><br/><br/>
+                    <span>AV. JUAN TANCA MARENGO Y 2DO CALLEJON PLAZA SAI BABA</span>
+                    <span>GUAYAQUIL - Ecuador</span>
+                    <span>RUC: 0993261564001</span>
+                    <span><center><h3>ESTADO DE CUENTA DE APORTES</h3></center></span><br/><br/>
+                    <div class="col-xs-12 col-sm-8">
+                        <span>Cliente: </span> <span t-esc="o.contrato_id.cliente.name"/><br/>
+                        <span>Grupo: </span> <span t-esc="o.contrato_id.cliente.vat"/><br/>
+                        <span>Estado: </span> <span t-esc="o.contrato_id.state"/><br/>
+                        <span>Valor Inscripción: </span> <span t-esc="o.contrato_id.valor_inscripcion"/><br/>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <span>Cliente: </span> <span t-esc="o.contrato_id.cliente.name"/><br/>
+                        <span>Grupo: </span> <span t-esc="o.contrato_id.cliente.vat"/><br/>
+                        <span>Estado: </span> <span t-esc="o.contrato_id.state"/><br/>
+                        <span>Valor Inscripción: </span> <span t-esc="o.contrato_id.valor_inscripcion"/><br/>
+                    </div>
+                    
 
                     <table class="table table-condensed">
                     <thead style="text-align: center; margin-bottom: 10px ">
-                        <th>Documento</th>
-                        <th>Fc. Emisión</th>
-                        <th>Fc.Vencimiento</th>
-                        <th>Anticipo</th>
-                        <th>Aplicación</th>
-                        <th>Saldo</th>
-                        <th>Observaciones</th>
+                        <th>CUOTA</th>
+                        <th>FECHA PAGO</th>
+                        <th>CUOTA CAPITAL</th>
+                        <th>CUOTA ADM.</th>
+                        <th>IVA</th>
+                        <th>SEGURO</th>
+                        <th>RASTREO</th>
+                        <th>OTRO</th>
+                        <th>SALDO</th>
                     </thead>
                     <tbody>
                     <!-- <tr t-foreach="o.obtenerDatos()" t-as="anticipo">
