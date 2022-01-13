@@ -59,6 +59,8 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         currency_format = workbook.add_format({'num_format': '[$$-409]#,##0.00','border':1,'text_wrap': True })
         currency_format.set_align('vcenter')
 
+        formato_cabecera_tabla = workbook.add_format({'font_name':'Arial','font_size':  14,'align': 'center','bold':True, 'bottom':1, 'top':1}
+
         date_format = workbook.add_format({'num_format': 'dd/mm/yy', 'align': 'right','border':1,'text_wrap': True })
         date_format.set_align('vcenter')
         date_format_day = workbook.add_format({'align': 'right','border':1,'text_wrap': True })
@@ -103,7 +105,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         colspan=13
         for col, head in enumerate(title_main):
             sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))), len(head) + 13)
-            sheet.write(13, col, head.upper(), bold)
+            sheet.write(13, col, head.upper(), formato_cabecera_tabla)
 
         line = itertools.count(start=14)
 
