@@ -6,8 +6,8 @@
                 <t t-call="web.external_layout">
                     <div class="page" style="font-size: 14px">
                     <span><center><h1>Reporte de Estado de cuenta</h1></center></span><br/><br/>
-                    <span><strong>Desde: </strong></span> <span t-esc="o.contrato_id.contrato_id.cliente.name"/><br/>
-                    <span><strong>Hasta: </strong></span> <span t-esc="o.contrato_id.contrato_id.cliente.vat"/><br/>
+                    <span><strong>Desde: </strong></span> <span t-esc="o.contrato_id.cliente.name"/><br/>
+                    <span><strong>Hasta: </strong></span> <span t-esc="o.contrato_id.cliente.vat"/><br/>
 
 
                     <table class="table table-condensed">
