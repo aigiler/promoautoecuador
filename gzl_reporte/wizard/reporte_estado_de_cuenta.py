@@ -130,7 +130,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             col_formula = {
                             'from_col': chr(65 +col),
                             'to_col': chr(65 +col),
-                            'from_row': fila+1,
+                            'from_row': line+1,
                             'to_row': fila_current+1,
 
                         }
