@@ -23,7 +23,6 @@ class ReporteEstadoDeCuenta(models.TransientModel):
     
 
     def print_report_pdf(self):
-        grupo = '['+ self.contrato_id.grupo.codigo+'] '+ self.contrato_id.grupo.name
         return self.env.ref('gzl_reporte.reporte_estado_de_cuenta_pdf_id').report_action(self)
 
 

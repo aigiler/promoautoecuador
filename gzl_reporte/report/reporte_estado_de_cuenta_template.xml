@@ -25,27 +25,24 @@
                             </tr>
                             <tr>
                                 <td colspan="2" style="text-align: left"><span>Cliente: </span> <span t-esc="o.contrato_id.cliente.name"/></td>
-                                <td><span>Grupo: </span> <span t-esc="o.contrato_id.cliente.vat"/></td>
+                                <td><span>Ced/RUC: </span> <span t-esc="o.contrato_id.cliente.vat"/></td>
                             </tr>
                             <tr>
-                                <td colspan="2" style="text-align: left"><span>Cliente: </span> <span t-esc="o.contrato_id.cliente.name"/></td>
-                                <td><span>Grupo: </span> <span t-esc="o.grupo"/></td>
+                                <td colspan="2" style="text-align: left"><span>Grupo: </span><text>[</text><span t-esc="o.contrato_id.grupo.codigo"/><text>] </text><span t-esc="o.contrato_id.grupo.name"/></td>
+                                <td><span>Tipo de contrato: </span> <span t-esc="o.contrato_id.tipo_de_contrato.name"/></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: left"><span>Estado: </span><span t-esc="o.contrato_id.state"/></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <tdstyle="text-align: left"><span>Valor Inscripción: </span><span t-esc="o.contrato_id.monto_financiamiento"/></tdstyle=>
+                                <td><span>Monto financiamiento: </span><span t-esc="o.contrato_id.plazo_meses.numero"/></td>
+                                <td><span>Plazo: </span><span t-esc="o.contrato_id.monto_financiamiento"/><span> Meses</span></td>
                             </tr>
                         </tbody>
                     </table>
                     <br/><br/>
-                    <div class="col-xs-12 col-sm-8">
-                        <span>Cliente: </span> <span t-esc="o.contrato_id.cliente.name"/><br/>
-                        <span>Grupo: </span> <span t-esc="o.contrato_id.cliente.vat"/><br/>
-                        <span>Estado: </span> <span t-esc="o.contrato_id.state"/><br/>
-                        <span>Valor Inscripción: </span> <span t-esc="o.contrato_id.valor_inscripcion"/><br/>
-                    </div>
-                    <div class="col-xs-12 col-sm-4">
-                        <br/>
-                        <br/>
-                        <span>Estado: </span> <span t-esc="o.contrato_id.state"/><br/>
-                        <span>Valor Inscripción: </span> <span t-esc="o.contrato_id.valor_inscripcion"/><br/>
-                    </div>
                     <table class="table table-condensed">
                     <thead style="text-align: center; margin-bottom: 10px ">
                         <th>CUOTA</th>
