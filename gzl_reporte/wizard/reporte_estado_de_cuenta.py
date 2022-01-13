@@ -70,7 +70,8 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         body = workbook.add_format({'font_name':'Arial','font_size':  12,'align': 'left', 'indent':3 , 'border':0,'text_wrap': True})
         body.set_align('vcenter')
         sheet = workbook.add_worksheet(name)
-        sheet.insert_image('A1', 'resumen.jpg')
+        
+        sheet.insert_image('A1', '/gzl_reporte/static/description/resumen.jpg')
         sheet.merge_range('A3:I3', 'PROMOAUTO ECUADOR PROMOAUTOECUADOR S.A', format_title)
         sheet.merge_range('A5:I5', 'AV. JUAN TANCA MARENGO Y 2DO CALLEJON PLAZA SAI BABA', format_datos)
         sheet.merge_range('A6:C6', 'GUAYAQUIL - Ecuador', format_datos)
