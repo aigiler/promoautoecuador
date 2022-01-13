@@ -90,7 +90,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.write('M12', 'Plazo: '+ str(self.contrato_id.plazo_meses.numero)+ ' Meses' , format_datos)
         sheet.merge_range('A10:I10', 'Grupo: '+'['+ self.contrato_id.grupo.codigo+'] '+ self.contrato_id.grupo.name, format_datos)
         #sheet.merge_range('A11:I11', 'Estado: '+ self.contrato_id.state+'('+self.contrato_id.fecha_adjudicado+')', format_datos)
-        sheet.merge_range('A11:I11', 'Estado: '+ self.contrato_id.state , format_datos)
+        sheet.merge_range('A11:I11', 'Estado: '+ self.contrato_id.state.upper() +'(' +self.contrato_id.fecha_adjudicado.strftime('%Y-%m-%d')+')' , format_datos)
         sheet.merge_range('A12:I12', 'Valor Inscripción: $'+ str(self.contrato_id.valor_inscripcion), format_datos)
         #sheet.merge_range('D3:E3', self.contrato_id.monto_financiamiento, format_datos)
 
