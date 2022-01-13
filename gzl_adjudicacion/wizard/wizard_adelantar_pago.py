@@ -38,7 +38,7 @@ class WizardAdelantarCuotas(models.TransientModel):
             saldo=rec.contrato_id.tabla_amortizacion.mapped('saldo')
             if len(saldo)>0:
                 valor_saldo=saldo[0]
-                rec.numero_cuotas=monto_a_pagar/saldo
+                rec.numero_cuotas=recmonto_a_pagar/saldo
 
 
 
