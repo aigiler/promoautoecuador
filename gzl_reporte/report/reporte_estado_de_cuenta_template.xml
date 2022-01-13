@@ -6,8 +6,8 @@
                 <t t-call="web.external_layout">
                     <div class="page" style="font-size: 14px">
                     <span><center><h1>Reporte de Estado de cuenta</h1></center></span><br/><br/>
-                    <span><strong>Desde: </strong></span> <span t-esc="o.date_from"/><br/>
-                    <span><strong>Hasta: </strong></span> <span t-esc="o.date_to"/><br/>
+                    <span><strong>Desde: </strong></span> <span t-esc="o.contrato_id.contrato_id.cliente.name"/><br/>
+                    <span><strong>Hasta: </strong></span> <span t-esc="o.contrato_id.contrato_id.cliente.vat"/><br/>
 
 
                     <table class="table table-condensed">
@@ -21,7 +21,7 @@
                         <th>Observaciones</th>
                     </thead>
                     <tbody>
-                    <tr t-foreach="o.obtenerDatos()" t-as="anticipo">
+                    <!-- <tr t-foreach="o.obtenerDatos()" t-as="anticipo">
                         <td><span t-esc="anticipo.numero_documento" /></td>
                         <td><span t-esc="anticipo.fecha_emision"  /></td>
                         <td><span t-esc="anticipo.fecha_vencimiento"   /></td>
@@ -29,7 +29,7 @@
                         <td><span t-esc="'%.2f' %(anticipo.monto_aplicado)"  t-if="anticipo.reglon != 'titulo'" /></td>
                         <td><span t-esc="'%.2f' %(anticipo.monto_adeudado)"  t-if="anticipo.reglon != 'titulo'" /></td>
                         <td><span t-esc="anticipo.observaciones"  /></td>
-                    </tr>
+                    </tr> -->
                     </tbody>
                     </table>
                     </div>

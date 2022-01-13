@@ -19,6 +19,9 @@ class ReporteEstadoDeCuenta(models.TransientModel):
 
     contrato_id = fields.Many2one('contrato',string='Contrato')
 
+    def print_report_pdf(self):
+        return self.env.ref('gzl_reporte.reporte_estado_de_cuenta_pdf_id').report_action(self)
+
 
     def print_report_xls(self):
         file_data = BytesIO()
@@ -70,7 +73,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         body = workbook.add_format({'font_name':'Arial','font_size':  12,'align': 'left', 'indent':4 , 'border':0,'text_wrap': True})
         body.set_align('vcenter')
         sheet = workbook.add_worksheet(name)
-        
+
         sheet.insert_image('A2', '../static/description/promoauto.png')
         sheet.merge_range('A3:I3', 'PROMOAUTO ECUADOR PROMOAUTOECUADOR S.A', format_title)
         sheet.merge_range('A5:I5', 'AV. JUAN TANCA MARENGO Y 2DO CALLEJON PLAZA SAI BABA', format_datos)
