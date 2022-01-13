@@ -553,7 +553,7 @@ class ContratoEstadoCuenta(models.Model):
 
 
 
-    @api.depends("pago_ids.seguro","pago_ids.rastreo","pago_ids.otros","pago_ids")
+    @api.depends("seguro","rastreo","otros","pago_ids")
     def calcular_monto_pagado(self):
 
         for l in self:
