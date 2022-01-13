@@ -7,7 +7,11 @@
             <form>
                 <sheet>
                     <group string="Indique el numero de Cuotas"> 
+
+
+                        <field name="monto_a_pagar" required="1"/>
                         <field name="numero_cuotas" required="1"/>
+                        <field name="diferencia" required="1"/>
                         <field name="contrato_id" invisible="1"/>
                         <field name="journal_id" required="1"/>
                         <field name="payment_method_id" widget="radio" required="1" /> 

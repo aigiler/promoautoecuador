@@ -12,7 +12,8 @@ class WizardAdelantarCuotas(models.TransientModel):
     _name = 'wizard.adelantar.cuotas'
     
     contrato_id = fields.Many2one('contrato')
-    numero_cuotas = fields.Integer( string='Nro. Cuotas',compute='calcular_numero_cuotas_a_cancelar',store=True)
+    numero_cuotas = fields.Integer( string='Nro. Cuotas a Pagar',compute='calcular_numero_cuotas_a_cancelar',store=True)
+    diferencia=fields.Float( string='Saldo de Pago que se acredita a una cuota',compute='calcular_numero_cuotas_a_cancelar',store=True)
     monto_a_pagar = fields.Float( string='Monto a Pagar')
     payment_date = fields.Date(required=True, default=fields.Date.context_today)
     journal_id = fields.Many2one('account.journal', required=True, string='Diario', domain=[('type', 'in', ('bank', 'cash'))])
@@ -38,13 +39,16 @@ class WizardAdelantarCuotas(models.TransientModel):
             saldo=rec.contrato_id.tabla_amortizacion.mapped('saldo')
             if len(saldo)>0:
                 valor_saldo=saldo[0]
-                rec.numero_cuotas=rec.monto_a_pagar/saldo
+                rec.numero_cuotas=rec.monto_a_pagar/valor_saldo
+                diferencia=(valor_saldo*rec.numero_cuotas) - rec.monto_a_pagar
+
+                rec.diferencia=diferencia
 
 
 
     def validar_pago(self):
 
-        if self.numero_cuotas!=0 and monto_a_pagar>0:
+        if self.numero_cuotas==0 and self.monto_a_pagar>0:
             raise ValidationError('El número de cuotas debe ser diferente de 0')
 
         tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')],order='fecha desc')
@@ -57,24 +61,28 @@ class WizardAdelantarCuotas(models.TransientModel):
         valor_saldo=saldo[0]
 
 
-        lista_pagos=[]
+        lista_pagos={}
         for i  in range(0,self.numero_cuotas):
             dct={
-            i:saldo
+            i:valor_saldo
             }
-            lista_pagos.append(dct)
+            lista_pagos.update(dct)
 
-        diferencia=(saldo*self.numero_cuotas) - monto_a_pagar
+        diferencia=(valor_saldo*self.numero_cuotas) - self.monto_a_pagar
 
         if not (diferencia==0):
             cuota_adicional=self.numero_cuotas+1
-            lista_pagos.append({cuota_adicional:abs(diferencia)})
+            lista_pagos.update({cuota_adicional:abs(diferencia)})
 
 
 
         contador=0
+       # raise ValidationError(str(lista_pagos))
 
-        for detalle in tabla[len(lista_pagos)]:
+        if len(lista_pagos.keys())>len(tabla):
+            raise ValidationError('Ingrese un monto menor')
+
+        for detalle in tabla[:len(lista_pagos.keys())]:
             dct={
 
             'tabla_amortizacion_id':detalle.id,
@@ -86,6 +94,7 @@ class WizardAdelantarCuotas(models.TransientModel):
             }
             pago=self.env['wizard.pago.cuota.amortizacion.contrato'].create(dct)
             pago.validar_pago(True)
+            contador+=1
 
 
 
