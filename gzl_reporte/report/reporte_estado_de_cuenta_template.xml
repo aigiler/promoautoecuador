@@ -36,7 +36,7 @@
                                 <td></td>
                             </tr>
                             <tr>
-                                <tdstyle="text-align: left"><span>Valor Inscripción: </span><span t-esc="o.contrato_id.monto_financiamiento"/></tdstyle=>
+                                <td style="text-align: left"><span>Valor Inscripción: </span><span t-esc="o.contrato_id.monto_financiamiento"/></td>
                                 <td><span>Monto financiamiento: </span><span t-esc="o.contrato_id.plazo_meses.numero"/></td>
                                 <td><span>Plazo: </span><span t-esc="o.contrato_id.monto_financiamiento"/><span> Meses</span></td>
                             </tr>
