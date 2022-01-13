@@ -53,7 +53,14 @@
                                     <tree string="Ganadores" editable="top">
                                         <field name="grupo_adjudicado_id" />
                                         <field name="adjudicado_id"/>
-                                        <field name="puntos" string="Nro. Cuotas"  attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'evaluacion')]}"/>
+                                        <field name="fecha_antiguedad"/>
+
+                                        <field name="puntos" string="Nro. Cuotas Licitadas"  attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'evaluacion')]}"/>
+                                        <field name="nro_cuotas_adelantadas"    attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'evaluacion')]}"/>
+
+                                        <field name="total_cuotas"    attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'evaluacion')]}"/>
+
+
                                         <field name="calificacion" string="Calificación"  attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'licitacion')]}"/>
                                         <field name="contrato_id" readonly='1'/>
                                         <field name="monto_financiamiento" readonly='1'/>

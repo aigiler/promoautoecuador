@@ -10,9 +10,9 @@
                 <field name="grupo_id" />
                 <field name="adjudicado_id" />
                 <field name="contrato_id" />
-                <field name="debe" />
-                <field name="haber" />
-                <field name="saldo" />
+                <field name="debe" sum="debe"/>
+                <field name="haber" sum="haber"/>
+                <field name="saldo" sum="saldo"/>
 
 
             </tree>

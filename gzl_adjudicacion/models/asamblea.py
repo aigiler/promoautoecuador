@@ -186,7 +186,7 @@ class GrupoAsamblea(models.Model):
     def calculo_recuperacion_cartera(self):
         for l in self:
             hoy=date.today()
-            grupoParticipante=l.grupo_adjudicado_id.transacciones.filtered(lambda l: l.create_date.month==hoy.month and l.create_date.year==hoy.year)
+            grupoParticipante=l.grupo_adjudicado_id.transacciones_ids.filtered(lambda l: l.create_date.month==hoy.month and l.create_date.year==hoy.year)
             l.recuperacionCartera=sum(grupoParticipante.mapped('haber'))- sum(grupoParticipante.mapped('debe'))
 
 
@@ -245,6 +245,7 @@ class GanadoresAsamblea(models.Model):
     grupo_id = fields.Many2one('asamblea')
     adjudicado_id = fields.Many2one('res.partner', string="Nombre")
     contrato_id = fields.Many2one('contrato', string="Nombre")
+    fecha_antiguedad = fields.Many2one(related='contrato_id.create_date', string="Fecha de Antiguedad")
     currency_id = fields.Many2one(
         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
 
@@ -254,12 +255,19 @@ class GanadoresAsamblea(models.Model):
     puntos = fields.Integer(string='Nro de Cuotas a Licitar')
     calificacion = fields.Integer(related='puntos',string='Calificación')
 
+    nro_cuotas_adelantadas = fields.Integer(string='Nro de Cuotas Pagadas por Adelantado',compute="calcular_cuotas")
+    total_cuotas = fields.Integer(string='Total de Cuotas',compute="calcular_cuotas")
 
     @api.constrains('contrato_id')
     def actualizar_monto_financiamiento(self):
         self.monto_adjudicar=self.contrato_id.monto_financiamiento
 
 
+    @api.depends('contrato_id')
+    def calcular_cuotas(self):
+        for l in self:
+            l.nro_cuotas_adelantadas=len(self.contrato_id.tabla_amortizacion.filtered(lambda m: m.cuotaAdelantada))
+            l.total_cuotas=l.nro_cuotas_adelantadas + l.puntos
 
 
 

@@ -93,7 +93,7 @@ class GrupoSocios(models.Model):
    
 
 
-    monto_grupo = fields.Float(string='Monto Pagado',compute="calcular_monto_pagado")
+    monto_grupo = fields.Float(string='Fondo',compute="calcular_monto_pagado")
 
 
     @api.depends("integrantes.contrato_id.state","integrantes")
