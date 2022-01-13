@@ -8,8 +8,8 @@ from odoo.exceptions import ValidationError
 import numpy_financial as npf
 
 
-class WizardPagoCuotaAmortizacion(models.TransientModel):
-    _name = 'wizard.pago.cuota.amortizacion.contrato'
+class WizardActualizarRubro(models.TransientModel):
+    _name = 'wizard.actualizar.rubro'
     
     contrato_id = fields.Many2one('contrato')
     monto = fields.Float(string='Monto')
