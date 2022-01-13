@@ -33,7 +33,7 @@ class WizardAdelantarCuotas(models.TransientModel):
 
     def validar_pago(self):
 
-        tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.id),('estado_pago','=','pendiente')],order='fecha desc')
+        tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')],order='fecha desc')
 
         for detalle in tabla[:self.numero_cuotas]:
             dct={
