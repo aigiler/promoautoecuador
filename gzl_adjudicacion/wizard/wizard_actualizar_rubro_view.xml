@@ -9,9 +9,13 @@
                     <group string="Indique el numero de Cuotas"> 
 
 
-                        <field name="month" required="1"/>
-                        <field name="year" required="1"/>
+                        <field name="mes" required="1"/>
+                        <field name="anio" required="1"/>
                         <field name="rubro" required="1"/>
+                        <field name="monto" required="1"/>
+                        <field name="diferido" required="1"/>
+                        <field name="contrato_id" invisible="1"/>
+
                         
                     </group>
                 </sheet>
