@@ -67,7 +67,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         date_format_title = workbook.add_format({'num_format': 'yyyy-mm-dd', 'align': 'justify','text_wrap': True})
         date_format_title.set_align('vcenter')
 
-        body = workbook.add_format({'font_name':'Arial','font_size':  12,'align': 'left', 'indent':3 , 'border':0,'text_wrap': True})
+        body = workbook.add_format({'font_name':'Arial','font_size':  12,'align': 'left', 'indent':4 , 'border':0,'text_wrap': True})
         body.set_align('vcenter')
         sheet = workbook.add_worksheet(name)
         
