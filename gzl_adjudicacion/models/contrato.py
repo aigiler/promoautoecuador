@@ -463,37 +463,21 @@ class Contrato(models.Model):
         }
 
 
-    def modificar_contrato_por_rubro(self,):
+    def actualizar_rubros_por_adelantado(self):
+        view_id = self.env.ref('gzl_adjudicacion.wizard_actualizar_rubro_view').id
 
 
-        numero_cuota=12
-        month=month
-        year=year
+        return {'type': 'ir.actions.act_window',
+                'name': 'Validar Pago',
+                'res_model': 'wizard.actualizar.rubro',
+                'target': 'new',
+                'view_mode': 'form',
+                'views': [[view_id, 'form']],
+                'context': {
+                    'default_contrato_id': self.id,
+                }
+        }
 
-        self.funcion_modificar_contrato_por_rubro_seguro(self.rastreo,'rastreo')
-        self.funcion_modificar_contrato_por_rubro_seguro(self.otro,'otro')
-        self.funcion_modificar_contrato_por_rubro_seguro(self.seguro,'seguro')
-
-
-
-    def funcion_modificar_contrato_por_rubro_seguro(self,valor,variable):
-
-
-        numero_cuota=12
-        month=month
-        year=year
-
-        obj_detalle=self.tabla_amortizacion.filtered(lambda l: l.fecha.year==year and l.fecha.month==month)
-
-
-        contador=0
-
-        for l in self.tabla_amortizacion.filtered(lambda l: l.numero_cuota>=obj_detalle.numero_cuota):
-            l.write({variable:valor/12})
-
-            contador+=1
-            if contador==12:
-                break
 
 
 

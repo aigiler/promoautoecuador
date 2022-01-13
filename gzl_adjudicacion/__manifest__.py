@@ -46,6 +46,9 @@
                     
                     'wizard/wizard_pago_contrato_view.xml',
                     'wizard/wizard_adelantar_pago_view.xml',
+                    'wizard/wizard_actualizar_rubro_view.xml',
+
+                    
                     ],
     
     'installable': True,
