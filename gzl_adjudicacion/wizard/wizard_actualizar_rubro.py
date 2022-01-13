@@ -46,7 +46,7 @@ class WizardActualizarRubro(models.TransientModel):
 
 
         contador=0
-        detalle_a_pagar=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.numero_cuota>=obj_detalle.numero_cuota)
+        detalle_a_pagar=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota)>=int(obj_detalle.numero_cuota))
         for detalle in detalle_a_pagar:
             detalle.write({variable:valor})
             contador+=1
