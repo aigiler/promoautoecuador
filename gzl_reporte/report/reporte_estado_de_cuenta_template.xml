@@ -7,21 +7,29 @@
                     <div class="page" style="font-size: 14px">
                     <span><center><h3>PROMOAUTO ECUADOR PROMOAUTOECUADOR S.A</h3></center></span><br/><br/>
                     <table>
-                        <tbody style="text-align: left">
+                        <tbody>
                             <tr>
-                                <td>AV. JUAN TANCA MARENGO Y 2DO CALLEJON PLAZA SAI BABA</td>
+                                <td colspan="2" style="text-align: left">AV. JUAN TANCA MARENGO Y 2DO CALLEJON PLAZA SAI BABA</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td>GUAYAQUIL - Ecuador</td>
-                                <td><span t-esc="o.contrato_id.ciudad.nombre_ciudad"/></td>
+                                <td colspan="2" style = "width:100%; text-align: left">>GUAYAQUIL - Ecuador</td>
+                                <td style = "width:20%; text-align: left"><span t-esc="o.contrato_id.ciudad.nombre_ciudad"/></td>
                             </tr>
                             <tr>
-                                <td>RUC: 0993261564001</td>
+                                <td colspan="2" style="text-align: left">RUC: 0993261564001</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td colspan="2"><span><center><h3>ESTADO DE CUENTA DE APORTES</h3></center></span></td>
+                                <td colspan="3"><span><center><h3>ESTADO DE CUENTA DE APORTES</h3></center></span></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: left"><span>Cliente: </span> <span t-esc="o.contrato_id.cliente.name"/></td>
+                                <td><span>Grupo: </span> <span t-esc="o.contrato_id.cliente.vat"/></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: left"><span>Cliente: </span> <span t-esc="o.contrato_id.cliente.name"/></td>
+                                <td><span>Grupo: </span> <span t-esc="o.grupo"/></td>
                             </tr>
                         </tbody>
                     </table>
@@ -33,8 +41,8 @@
                         <span>Valor Inscripción: </span> <span t-esc="o.contrato_id.valor_inscripcion"/><br/>
                     </div>
                     <div class="col-xs-12 col-sm-4">
-                        <span>Cliente: </span> <span t-esc="o.contrato_id.cliente.name"/><br/>
-                        <span>Grupo: </span> <span t-esc="o.contrato_id.cliente.vat"/><br/>
+                        <br/>
+                        <br/>
                         <span>Estado: </span> <span t-esc="o.contrato_id.state"/><br/>
                         <span>Valor Inscripción: </span> <span t-esc="o.contrato_id.valor_inscripcion"/><br/>
                     </div>
@@ -51,15 +59,17 @@
                         <th>SALDO</th>
                     </thead>
                     <tbody>
-                    <!-- <tr t-foreach="o.obtenerDatos()" t-as="anticipo">
-                        <td><span t-esc="anticipo.numero_documento" /></td>
-                        <td><span t-esc="anticipo.fecha_emision"  /></td>
-                        <td><span t-esc="anticipo.fecha_vencimiento"   /></td>
-                        <td><span t-esc="'%.2f' %(anticipo.monto_anticipo)" t-if="anticipo.reglon != 'titulo'"/></td>
-                        <td><span t-esc="'%.2f' %(anticipo.monto_aplicado)"  t-if="anticipo.reglon != 'titulo'" /></td>
-                        <td><span t-esc="'%.2f' %(anticipo.monto_adeudado)"  t-if="anticipo.reglon != 'titulo'" /></td>
-                        <td><span t-esc="anticipo.observaciones"  /></td>
-                    </tr> -->
+                    <tr t-foreach="o.contrato_id.estado_de_cuenta_ids" t-as="estado_cuenta">
+                        <td><span t-esc="estado_cuenta.numero_cuota" /></td>
+                        <td><span t-esc="estado_cuenta.fecha"  /></td>
+                        <td><span t-esc="estado_cuenta.cuota_capital"   /></td>
+                        <td><span t-esc="estado_cuenta.cuota_adm" /></td>
+                        <td><span t-esc="estado_cuenta.iva_adm"  /></td>
+                        <td><span t-esc="estado_cuenta.seguro"   /></td>
+                        <td><span t-esc="estado_cuenta.rastreo"  /></td>
+                        <td><span t-esc="estado_cuenta.otro"   /></td>
+                        <td><span t-esc="estado_cuenta.saldo"  /></td>
+                    </tr>
                     </tbody>
                     </table>
                     </div>
