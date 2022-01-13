@@ -59,7 +59,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         currency_format = workbook.add_format({'num_format': '[$$-409]#,##0.00','text_wrap': True,'align':'center' })
         currency_format.set_align('vcenter')
         formato_cabecera_tabla = workbook.add_format({'font_name':'Arial','font_size':  12,'align':'center','bold':True, 'bottom':1, 'top':1})
-
+        formato_pie_tabla = workbook.add_format({'font_name':'Arial','font_size':  12,'align':'left','bold':True, 'bottom':1, 'top':1})
         date_format = workbook.add_format({'num_format': 'yyyy-mm-dd', 'align': 'center','text_wrap': True })
         date_format.set_align('vcenter')
         date_format_day = workbook.add_format({'align': 'right','border':1,'text_wrap': True })
@@ -125,7 +125,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             fila_current=current_line
 
 
-        sheet.merge_range('A{0}:B{0}'.format(fila_current+2), 'TOTALES: ', formato_cabecera_tabla)
+        sheet.merge_range('A{0}:B{0}'.format(fila_current+2), 'TOTALES: ', formato_pie_tabla)
         lista_col_formulas=[2,3,4,5,6,7,8]
         for col in lista_col_formulas:
             col_formula = {
@@ -135,7 +135,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
                             'to_row': fila_current+1,
 
                         }
-            currency_bold=workbook.add_format({'num_format': '[$$-409]#,##0.00','border':1,'text_wrap': True ,'bold':True})
+            currency_bold=workbook.add_format({'num_format': '[$$-409]#,##0.00','border':1,'text_wrap': True ,'font_name':'Arial','font_size':  12,'align':'center','bold':True, 'bottom':1, 'top':1})
             currency_bold.set_bg_color('d9d9d9')
             sheet.write_formula(
                                     fila_current+1 ,col ,
