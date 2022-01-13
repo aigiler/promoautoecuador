@@ -53,7 +53,7 @@
                                     <tree string="Ganadores" editable="top">
                                         <field name="grupo_adjudicado_id" />
                                         <field name="adjudicado_id"/>
-                                        <field name="fecha_antiguedad"/>
+                                        <field name="fecha_antiguedad" widget="date"/>
 
                                         <field name="puntos" string="Nro. Cuotas Licitadas"  attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'evaluacion')]}"/>
                                         <field name="nro_cuotas_adelantadas"    attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'evaluacion')]}"/>

@@ -245,7 +245,7 @@ class GanadoresAsamblea(models.Model):
     grupo_id = fields.Many2one('asamblea')
     adjudicado_id = fields.Many2one('res.partner', string="Nombre")
     contrato_id = fields.Many2one('contrato', string="Nombre")
-    fecha_antiguedad = fields.Many2one(related='contrato_id.create_date', string="Fecha de Antiguedad")
+    fecha_antiguedad = fields.Datetime(related='contrato_id.create_date', string="Fecha de Antiguedad")
     currency_id = fields.Many2one(
         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
 
