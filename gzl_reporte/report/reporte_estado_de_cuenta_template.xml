@@ -38,8 +38,6 @@
                         <span>Estado: </span> <span t-esc="o.contrato_id.state"/><br/>
                         <span>Valor Inscripción: </span> <span t-esc="o.contrato_id.valor_inscripcion"/><br/>
                     </div>
-                    
-
                     <table class="table table-condensed">
                     <thead style="text-align: center; margin-bottom: 10px ">
                         <th>CUOTA</th>
