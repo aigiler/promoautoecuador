@@ -97,7 +97,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.merge_range('A12:I12', 'Valor Inscripción: $'+ str(self.contrato_id.valor_inscripcion), format_datos)
         #sheet.merge_range('D3:E3', self.contrato_id.monto_financiamiento, format_datos)
 
-        title_main=['No','Fecha','Fecha Pagada','Cuota Capital' ,'Cuota Administrativa', 'Iva Adm.', 'Factura','Seguro','Rastreo','Otros','Monto Pagado','Saldo','Estado de Pago']
+        title_main=['cuota','Fecha pago','Cuota Capital' ,'Cuota Adm.', 'Iva','Seguro','Rastreo','Otros','Monto Pagado','Saldo']
 
         ##Titulos
         colspan=13
@@ -113,19 +113,19 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             current_line = next(line)
             sheet.write(current_line, 0, linea.numero_cuota ,body)
             sheet.write(current_line, 1, linea.fecha, date_format)
-            sheet.write(current_line, 2, linea.fecha_pagada or ''  , date_format)
+            #sheet.write(current_line, 2, linea.fecha_pagada or ''  , date_format)
             sheet.write(current_line, 3, linea.cuota_capital , currency_format)
             sheet.write(current_line, 4, linea.cuota_adm ,currency_format)
             sheet.write(current_line, 5, linea.iva_adm ,currency_format)
-            sheet.write(current_line, 6, linea.factura_id.name or ''  , body)
+            #sheet.write(current_line, 6, linea.factura_id.name or ''  , body)
             sheet.write(current_line, 7, linea.seguro,currency_format)
             sheet.write(current_line, 8, linea.rastreo,currency_format)
             sheet.write(current_line, 9, linea.otro, currency_format)
-            sheet.write(current_line, 10, linea.monto_pagado, currency_format)
+            #sheet.write(current_line, 10, linea.monto_pagado, currency_format)
             sheet.write(current_line, 11, linea.saldo, currency_format)
-            if linea.estado_pago=='pendiente':
-                sheet.write(current_line, 12, 'Pendiente', body)
-            else:
-                sheet.write(current_line, 12, 'Pagado', body)
+            # if linea.estado_pago=='pendiente':
+            #     sheet.write(current_line, 12, 'Pendiente', body)
+            # else:
+            #     sheet.write(current_line, 12, 'Pagado', body)
 
 
