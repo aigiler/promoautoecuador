@@ -59,6 +59,10 @@
                     
                     <button name="detalle_tabla_amortizacion" string="Generar estado cuenta contrato" invisible="1" type="object" class="oe_highlight"/>
                     <button name="pagar_cuotas_por_adelantado" string="Pagar Cuotas por Adelantado" states="activo,adjudicar" type="object" class="oe_highlight"/>
+                    <button name="actualizar_rubros_por_adelantado" string="Actualizar Rubros" states="activo,adjudicar" type="object" class="oe_highlight"/>
+
+
+
 
                     <field name="state" widget="statusbar" statusbar_visible="borrador,activo,congelar_contrato,adjudicar,adendum,desistir"/>
                 </header>
