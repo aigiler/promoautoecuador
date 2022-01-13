@@ -145,7 +145,7 @@ class Asamblea(models.Model):
             transacciones=self.env['transaccion.grupo.adjudicado']
             contrato_id=self.env['contrato'].browse(l['contrato_id'])
             dct={
-            'grupo_id':self.grupo.id,
+            'grupo_id':contrato_id.grupo.id,
             'debe':l['monto'],
             'adjudicado_id':l['adjudicado_id'],
             'contrato_id':l['contrato_id'],
@@ -187,7 +187,7 @@ class GrupoAsamblea(models.Model):
         for l in self:
             hoy=date.today()
             grupoParticipante=l.grupo_adjudicado_id.transacciones_ids.filtered(lambda l: l.create_date.month==hoy.month and l.create_date.year==hoy.year)
-            l.recuperacionCartera=sum(grupoParticipante.mapped('haber'))- sum(grupoParticipante.mapped('debe'))
+            l.recuperacionCartera= sum(grupoParticipante.mapped('debe'))
 
 
 
