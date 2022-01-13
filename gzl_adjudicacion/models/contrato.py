@@ -464,7 +464,7 @@ class Contrato(models.Model):
 
 
     def actualizar_rubros_por_adelantado(self):
-        view_id = self.env.ref('gzl_adjudicacion.wizard_actualizar_rubro_view').id
+        view_id = self.env.ref('gzl_adjudicacion.wizard_actualizar_rubro_form').id
 
 
         return {'type': 'ir.actions.act_window',

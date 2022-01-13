@@ -42,15 +42,15 @@ class WizardActualizarRubro(models.TransientModel):
         month=month
         year=year
 
-        obj_detalle=self.tabla_amortizacion.filtered(lambda l: l.fecha.year==year and l.fecha.month==month)
+        obj_detalle=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.fecha.year==year and l.fecha.month==month)
 
 
         contador=0
-
-        for l in self.tabla_amortizacion.filtered(lambda l: l.numero_cuota>=obj_detalle.numero_cuota):
-            l.write({variable:valor})
-
+        detalle_a_pagar=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.numero_cuota>=obj_detalle.numero_cuota)
+        for detalle in detalle_a_pagar:
+            detalle.write({variable:valor})
             contador+=1
+
             if contador==numero_cuota:
                 break
 
