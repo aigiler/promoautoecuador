@@ -135,8 +135,8 @@ class ReporteEstadoDeCuenta(models.TransientModel):
                             'to_row': fila_current+1,
 
                         }
-            currency_bold=workbook.add_format({'num_format': '[$$-409]#,##0.00','border':1,'text_wrap': True ,'font_name':'Arial','font_size':  12,'align':'center','bold':True, 'bottom':1, 'top':1})
-            currency_bold.set_bg_color('d9d9d9')
+            currency_bold=workbook.add_format({'num_format': '[$$-409]#,##0.00','text_wrap': True ,'font_name':'Arial','font_size':  12,'align':'center','bold':True, 'bottom':1, 'top':1})
+
             sheet.write_formula(
                                     fila_current+1 ,col ,
                                     '=SUM({from_col}{from_row}:{to_col}{to_row})'.format(
