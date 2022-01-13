@@ -42,7 +42,7 @@ class WizardAdelantarCuotas(models.TransientModel):
                 rec.numero_cuotas=rec.monto_a_pagar/valor_saldo
                 diferencia=(valor_saldo*rec.numero_cuotas) - rec.monto_a_pagar
 
-                rec.diferencia=diferencia
+                rec.diferencia=abs(diferencia)
 
 
 
@@ -70,9 +70,9 @@ class WizardAdelantarCuotas(models.TransientModel):
 
         diferencia=(valor_saldo*self.numero_cuotas) - self.monto_a_pagar
 
-        if not (diferencia==0):
-            cuota_adicional=self.numero_cuotas+1
-            lista_pagos.update({cuota_adicional:abs(diferencia)})
+        #if not (diferencia==0):
+        #    cuota_adicional=self.numero_cuotas
+        #    lista_pagos.update({cuota_adicional:abs(diferencia)})
 
 
 
@@ -96,5 +96,17 @@ class WizardAdelantarCuotas(models.TransientModel):
             pago.validar_pago(True)
             contador+=1
 
+        if abs(diferencia)>0:
+            tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')],order='fecha asc')
+            if len(tabla)>1:
+                dct={
 
+                'tabla_amortizacion_id':tabla.id,
+                'payment_date':self.payment_date,
+                'journal_id':self.journal_id.id,
+                'payment_method_id':self.payment_method_id.id,
+                'amount':diferencia
 
+                }
+                pago=self.env['wizard.pago.cuota.amortizacion.contrato'].create(dct)
+                pago.validar_pago()
