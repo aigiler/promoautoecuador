@@ -90,7 +90,10 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.write('M12', 'Plazo: '+ str(self.contrato_id.plazo_meses.numero)+ ' Meses' , format_datos)
         sheet.merge_range('A10:I10', 'Grupo: '+'['+ self.contrato_id.grupo.codigo+'] '+ self.contrato_id.grupo.name, format_datos)
         #sheet.merge_range('A11:I11', 'Estado: '+ self.contrato_id.state+'('+self.contrato_id.fecha_adjudicado+')', format_datos)
-        sheet.merge_range('A11:I11', 'Estado: '+ self.contrato_id.state.upper() +'(' +self.contrato_id.fecha_adjudicado.strftime('%Y-%m-%d')+')' , format_datos)
+        if self.contrato_id.state == 'adjudicar':
+            sheet.merge_range('A11:I11', 'Estado: '+ self.contrato_id.state.upper() +'(' +self.contrato_id.fecha_adjudicado.strftime('%Y-%m-%d')+')' , format_datos)
+        else:
+            sheet.merge_range('A11:I11', 'Estado: '+ self.contrato_id.state.upper(), format_datos)
         sheet.merge_range('A12:I12', 'Valor Inscripción: $'+ str(self.contrato_id.valor_inscripcion), format_datos)
         #sheet.merge_range('D3:E3', self.contrato_id.monto_financiamiento, format_datos)
 
@@ -99,7 +102,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         ##Titulos
         colspan=13
         for col, head in enumerate(title_main):
-            sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))), len(head) + 13)
+            sheet.set_column('{0}:{0}'.format(chr(col + ord('A')).upper()), len(head) + 13)
             sheet.write(13, col, head, bold)
 
         line = itertools.count(start=14)
