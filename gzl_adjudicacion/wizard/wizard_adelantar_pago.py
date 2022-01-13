@@ -97,7 +97,7 @@ class WizardAdelantarCuotas(models.TransientModel):
             contador+=1
 
         if abs(diferencia)>0:
-            tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')],order='fecha asc')
+            tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')],order='fecha asc',limit=1)
             if len(tabla)>1:
                 dct={
 
@@ -105,7 +105,7 @@ class WizardAdelantarCuotas(models.TransientModel):
                 'payment_date':self.payment_date,
                 'journal_id':self.journal_id.id,
                 'payment_method_id':self.payment_method_id.id,
-                'amount':diferencia
+                'amount':abs(diferencia)
 
                 }
                 pago=self.env['wizard.pago.cuota.amortizacion.contrato'].create(dct)
