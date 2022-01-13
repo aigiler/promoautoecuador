@@ -101,10 +101,9 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             sheet.write(13, col, head.upper(), formato_cabecera_tabla)
 
         line = itertools.count(start=14)
-
+        fila_current=0
 
         for linea in self.contrato_id.estado_de_cuenta_ids:
-
             current_line = next(line)
             sheet.write(current_line, 0, linea.numero_cuota ,body)
             sheet.write(current_line, 1, linea.fecha, date_format)
@@ -122,5 +121,25 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             #     sheet.write(current_line, 12, 'Pendiente', body)
             # else:
             #     sheet.write(current_line, 12, 'Pagado', body)
+            fila_current=current_line
+
+
+        sheet.merge_range('A{0}:C{0}'.format(fila_current+1), 'TOTALES: '+ partner['nombre'], formato_cabecera_tabla)
+        lista_col_formulas=[2,3,4,5,6,7,8]
+                for col in lista_col_formulas:
+                    col_formula = {
+                            'from_col': chr(65 +col),
+                            'to_col': chr(65 +col),
+                            'from_row': fila+1,
+                            'to_row': fila_current+1,
+
+                        }
+        currency_bold=workbook.add_format({'num_format': '[$$-409]#,##0.00','border':1,'text_wrap': True ,'bold':True})
+        currency_bold.set_bg_color('d9d9d9')
+        sheet.write_formula(
+                                fila_current+1 ,col ,
+                                '=SUM({from_col}{from_row}:{to_col}{to_row})'.format(
+                                    **col_formula
+                                ), currency_bold)
 
 
