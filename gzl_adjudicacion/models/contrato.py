@@ -555,6 +555,7 @@ class ContratoEstadoCuenta(models.Model):
         string='Monto Pagado', currency_field='currency_id',compute="calcular_monto_pagado",store=True)
     saldo = fields.Monetary(string='Saldo', currency_field='currency_id' ,compute="calcular_monto_pagado",store=True)
     certificado = fields.Binary(string='Certificado')
+    cuotaAdelantada = fields.Boolean(string='Cuota Adelantada')
     estado_pago = fields.Selection([('pendiente', 'Pendiente'),
                                     ('pagado', 'Pagado')
                                     ], string='Estado de Pago', default='pendiente')

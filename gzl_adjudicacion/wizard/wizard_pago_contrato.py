@@ -30,7 +30,7 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
                 return {'domain': {'payment_method_id': [('id', 'in', list_method)]}}
 
     
-    def validar_pago(self):
+    def validar_pago(self,cuotaAdelantada=False):
 
         if not (self.amount <= self.tabla_amortizacion_id.saldo):
             raise ValidationError("Ingrese una Cantidad menor al saldo a pagar.")
@@ -86,6 +86,7 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
                     })
             self.tabla_amortizacion_id.factura_id=factura.id
             self.tabla_amortizacion_id.estado_pago='pagado'
+            self.tabla_amortizacion_id.cuotaAdelantada=cuotaAdelantada
 
 
 

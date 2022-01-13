@@ -45,7 +45,7 @@ class WizardAdelantarCuotas(models.TransientModel):
 
             }
             pago=self.env['wizard.pago.cuota.amortizacion.contrato'].create(dct)
-            pago.validar_pago()
+            pago.validar_pago(True)
 
 
 
