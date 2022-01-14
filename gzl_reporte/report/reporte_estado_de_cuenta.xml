@@ -8,7 +8,7 @@
           name="gzl_reporte.template_estado_de_cuenta_reporte"
           file="gzl_reporte.template_estado_de_cuenta_reporte"
           menu="False"
-          attachment_use="False"
+          attachment_use="True"
           attachment="('Reporte Estado de Cuenta.pdf')"
         />
 
