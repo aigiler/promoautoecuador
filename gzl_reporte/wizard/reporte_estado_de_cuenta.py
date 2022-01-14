@@ -5,8 +5,10 @@ from odoo import api, fields, models, tools
 from datetime import date, timedelta,datetime
 from dateutil.relativedelta import relativedelta
 import xlsxwriter
+
 from io import BytesIO
 import base64
+import os
 from odoo.exceptions import AccessError, UserError, ValidationError
 
 import calendar
@@ -77,8 +79,9 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         body.set_align('vcenter')
         sheet = workbook.add_worksheet(name)
         #
-        buf_image=io.BytesIO(self.env.company.image_1920)
-        sheet.insert_image('A2',base64.b64encode(buf_image.getvalue()),{'image_data': buf_image})
+        #buf_image=io.BytesIO(self.env.company.image_1920)
+       # sheet.insert_image('A2',base64.b64encode(buf_image.getvalue()),{'image_data': buf_image})
+        sheet.add_image(Image('promoauto.png'),'A1')
         sheet.merge_range('A3:I3', self.env.company.name.upper(), format_title)
         sheet.merge_range('A5:I5', self.env.company.street.upper(), format_datos)
         # self.env.company.city.name
