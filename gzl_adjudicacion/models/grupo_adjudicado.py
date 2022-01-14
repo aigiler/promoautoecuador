@@ -50,7 +50,7 @@ class GrupoSocios(models.Model):
         for l in self:
             hoy=date.today()
             grupoParticipante=l.transacciones_ids.filtered(lambda l: l.create_date.month==hoy.month and l.create_date.year==hoy.year)
-            l.recuperacionCartera=sum(grupoParticipante.mapped('debe'))
+            l.recuperacionCartera=sum(grupoParticipante.mapped('haber'))
 
 
 
