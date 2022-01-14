@@ -86,7 +86,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         # img.width = 72 * 7
         # img.height = 25 * 10
         
-        sheet.write('A2', self.env.company.image_1920)
+        sheet.write('A2', self.env.company.name.image_1920)
         sheet.merge_range('A3:I3', self.env.company.name.upper(), format_title)
         sheet.merge_range('A5:I5', self.env.company.street.upper(), format_datos)
         # self.env.company.city.name
