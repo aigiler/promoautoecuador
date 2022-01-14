@@ -29,7 +29,8 @@ class ReporteEstadoDeCuenta(models.TransientModel):
 
 
     def print_report_xls(self):
-        file_data = BytesIO()
+        file_data = io.BytesIO()
+        #file_data = BytesIO()
         workbook = xlsxwriter.Workbook(file_data)
         name = 'Estado de Cuenta'
         self.xslx_body(workbook, name)
@@ -78,10 +79,10 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         body = workbook.add_format({'font_name':'Arial','font_size':  12,'align': 'left', 'indent':4 , 'border':0,'text_wrap': True})
         body.set_align('vcenter')
         sheet = workbook.add_worksheet(name)
-        #
-        #buf_image=io.BytesIO(self.env.company.image_1920)
-       # sheet.insert_image('A2',base64.b64encode(buf_image.getvalue()),{'image_data': buf_image})
-        sheet.add_image(Image('promoauto.png'),'A1')
+        # 
+        buf_image=io.BytesIO(base64.b64decode(self.env.company.image_1920))
+        sheet.insert_image('A2', "any_name.png",{'image_data': buf_image})
+
         sheet.merge_range('A3:I3', self.env.company.name.upper(), format_title)
         sheet.merge_range('A5:I5', self.env.company.street.upper(), format_datos)
         # self.env.company.city.name
