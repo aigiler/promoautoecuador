@@ -85,7 +85,8 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         img = openpyxl.drawing.image.Image("../static/description/promoauto.png")
         img.width = 72 * 7
         img.height = 25 * 10
-        sheet.insert_image('A2', img)
+        
+        sheet.write('A2', img)
         sheet.merge_range('A3:I3', self.env.company.name.upper(), format_title)
         sheet.merge_range('A5:I5', self.env.company.street.upper(), format_datos)
         # self.env.company.city.name
