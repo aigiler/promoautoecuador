@@ -32,7 +32,9 @@
                                 <td><span>Tipo de contrato: </span> <span t-esc="o.contrato_id.tipo_de_contrato.name"/></td>
                             </tr>
                             <tr>
-                                <td colspan="2" style="text-align: left"><span>Estado: </span><span t-esc="o.contrato_id.state"/></td>
+                                <td colspan="2" style="text-align: left"><span>Estado: </span>
+                                <!-- t-if="user.birthday == today()" -->
+                                <span t-esc="o.contrato_id.state"/></td>
                                 <td></td>
                             </tr>
                             <tr>
