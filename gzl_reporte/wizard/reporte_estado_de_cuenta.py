@@ -29,7 +29,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
 
 
     def print_report_xls(self):
-        file_data = io.BytesIO()
+        file_data = BytesIO()
         #file_data = BytesIO()
         workbook = xlsxwriter.Workbook(file_data)
         name = 'Estado de Cuenta'
