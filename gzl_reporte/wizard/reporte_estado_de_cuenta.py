@@ -80,9 +80,9 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         body.set_align('vcenter')
         sheet = workbook.add_worksheet(name)
         # 
-        buf_image= BytesIO(base64.b64decode(self.env.company.image_1920))
+        buf_image= BytesIO(base64.b64decode(self.env.company.image))
         # sheet.insert_image('A2', "any_name.png",{'image_data': buf_image})
-        img = openpyxl.drawing.image.Image("../static/description/promoauto.png")
+        img = openpyxl.drawing.image.Image('../static/description/promoauto.png')
         img.width = 72 * 7
         img.height = 25 * 10
         
