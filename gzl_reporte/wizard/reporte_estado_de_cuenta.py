@@ -76,8 +76,9 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         body = workbook.add_format({'font_name':'Arial','font_size':  12,'align': 'left', 'indent':4 , 'border':0,'text_wrap': True})
         body.set_align('vcenter')
         sheet = workbook.add_worksheet(name)
-
-        sheet.insert_image('A2', '../static/description/promoauto.png')
+        #
+        buf_image=io.BytesIO(self.env.company.image_1920)
+        sheet.insert_image('A2',base64.b64encode(buf_image.getvalue()),{'image_data': buf_image})
         sheet.merge_range('A3:I3', self.env.company.name.upper(), format_title)
         sheet.merge_range('A5:I5', self.env.company.street.upper(), format_datos)
         # self.env.company.city.name
