@@ -82,7 +82,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.merge_range('A3:I3', self.env.company.name.upper(), format_title)
         #sheet.merge_range('A5:I5', 'AV. JUAN TANCA MARENGO Y 2DO CALLEJON PLAZA SAI BABA', format_datos) self.env.company.city.name + 
         sheet.merge_range('A5:I5', self.env.company.street.upper(), format_datos)
-        sheet.merge_range('A6:C6', ' - ' +self.env.company.country_id.name, format_datos)
+        sheet.merge_range('A6:C6', self.env.company.city.nombre_ciudad + ' - ' +self.env.company.country_id.name, format_datos)
         sheet.merge_range('A7:C7', self.env.company.vat, format_datos)
         sheet.merge_range('H6:I6', self.contrato_id.ciudad.nombre_ciudad +', ' + self.create_date.strftime('%Y-%m-%d'), format_datos)
         sheet.merge_range('A8:I8', 'ESTADO DE CUENTA DE APORTES', format_subtitle)
