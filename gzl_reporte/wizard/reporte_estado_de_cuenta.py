@@ -84,9 +84,14 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         # # sheet.insert_image('A2', "any_name.png",{'image_data': buf_image})
         # img = openpyxl.drawing.image.Image('../static/description/promoauto.png')
         # img.width = 72 * 7
-        # img.height = 25 * 10
+        # img.height = 25 * 10 
         
-        sheet.write('A2', self.env.company.name.image_1920)
+        # sheet.write('A2', )
+        
+        url = 'https://python.org/logo.png'
+        image_data = io.BytesIO(urllib2.urlopen(url).read())
+
+        worksheet.insert_image('A1', url, {'image_data': image_data})
         sheet.merge_range('A3:I3', self.env.company.name.upper(), format_title)
         sheet.merge_range('A5:I5', self.env.company.street.upper(), format_datos)
         # self.env.company.city.name
