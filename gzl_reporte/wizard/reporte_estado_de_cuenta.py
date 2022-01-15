@@ -89,7 +89,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         # sheet.write('A2', )
         
         url = 'https://python.org/logo.png'
-        image_data = io.BytesIO(urllib2.urlopen(url).read())
+        image_data = BytesIO(urllib2.urlopen(url).read())
 
         worksheet.insert_image('A1', url, {'image_data': image_data})
         sheet.merge_range('A3:I3', self.env.company.name.upper(), format_title)
