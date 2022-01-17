@@ -12,7 +12,7 @@ class PaymentLineAccount(models.Model):
 
     cuenta = fields.Many2one('account.account',string='Cuentas' )
     name = fields.Char(string='Descripcion' )
-    cuenta_analitica = fields.Many2one('account.analytic.account',string='Cuenta Analítica' )
-    analytic_tag_ids = fields.Many2many('account.analytic.tag',string='Cuenta Analítica' )
+    cuenta_analitica = fields.Many2one('account.analytic.account',string='Cuenta Analitica' )
+    analytic_tag_ids = fields.Many2many('account.analytic.tag',string='Etiqueta Analitica' )
     debit = fields.Float(string='Débito' )
     credit = fields.Float(string='Crédito' )
