@@ -14,8 +14,6 @@ import calendar
 import locale
 
 
-global root
-
 
 def crear_wb():
     wb = Workbook(write_only=False, iso_dates=False)
@@ -83,7 +81,7 @@ def informe_credito_cobranza(ruta,lista):
         cell = sheet.cell(row=campos['fila'], column=campos['columna'])
         try:
             cell.value = campo['valor']
-        except:,
+        except:
             raise ValidationErorr("""El valor {0} en la fila {1} columna {2} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna']))
 
     
