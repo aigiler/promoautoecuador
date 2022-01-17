@@ -17,7 +17,6 @@
         
             'security/ir.model.access.csv',
 
-            'wizard/gzl_reporte_subproyectos_por_mes_view.xml',
             'wizard/report_of_debts_due_views.xml',
             'wizard/gzl_reporte_proveedores_clientes_view.xml',
             'wizard/gzl_reporte_anticipo_view.xml',
