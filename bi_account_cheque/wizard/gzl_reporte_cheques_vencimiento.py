@@ -19,7 +19,7 @@ class ChequesVencimiento(models.TransientModel):
     date_to = fields.Date('Hasta')
     tipo_empresa = fields.Selection([('proveedor','Proveedor'),('cliente','Cliente')])
     conciliado = fields.Selection([('si','Si'),('no','No'),('ambos','Ambos')],default='ambos')
-    bank_ids = fields.Many2many('res.bank',string='Banco')
+    bank_ids = fields.Many2many('account.journal',string='Banco')
 
     @api.constrains('date_from','date_to' )
     def validacion_fechas(self):
@@ -40,7 +40,7 @@ class ChequesVencimiento(models.TransientModel):
 
 
         if len(self.bank_ids.mapped("id"))!=0:
-            filtro.append(('journal_id.bank_id','in',self.bank_ids.mapped("id")))
+            filtro.append(('journal_id','in',self.bank_ids.mapped("id")))
         
 
 
@@ -167,7 +167,6 @@ class ChequesVencimiento(models.TransientModel):
         lista_cheques=self.obtener_listado_cheques()
         line = itertools.count(start=6)
 
-
         for cheque in lista_cheques:
 
             current_line = next(line)
@@ -182,6 +181,29 @@ class ChequesVencimiento(models.TransientModel):
             sheet.write(current_line, 8, cheque['monto'] ,currency_format)
             sheet.write(current_line, 9, cheque['conciliado'] or "", body)
 
+        fila_current=current_line+1
+        bold_right=workbook.add_format({'bold':True,'border':1,'align':'right'})
+        bold_right.set_bg_color('d9d9d9')
+
+        sheet.merge_range('A{0}:H{0}'.format(fila_current+1), 'Total ', bold_right)
+
+        lista_col_formulas=[8]
+        for col in lista_col_formulas:
+            col_formula = {
+                    'from_col': chr(65 +col),
+                    'to_col': chr(65 +col),
+                    'from_row': 7,
+                    'to_row': fila_current,                
+                
+                }
+            currency_bold=workbook.add_format({'num_format': '[$$-409]#,##0.00','border':1,'text_wrap': True ,'bold':True})
+            currency_bold.set_bg_color('d9d9d9')
+
+            sheet.write_formula(
+                        fila_current ,col ,
+                        '=SUM({from_col}{from_row}:{to_col}{to_row})'.format(
+                            **col_formula
+                        ), currency_bold)
 
 
 

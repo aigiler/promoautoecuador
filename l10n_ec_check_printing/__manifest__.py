@@ -6,6 +6,7 @@
     'complexity': 'normal',
     'data': [
         'security/ir.model.access.csv',
+        'data/ir_cron_data.xml',
         'views/report_check_pacifico.xml',
         'views/reports.xml',
         'views/account_view.xml',

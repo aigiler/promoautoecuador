@@ -47,8 +47,8 @@
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>
-
-        <menuitem action="action_export_ats" id="menu_export_ats" parent="account.menu_finance_reports" sequence="100"/>
+        <!--cambio de parent acunalema-->
+        <menuitem action="action_export_ats" id="menu_export_ats" parent="gzl_facturacion_electronica.menu_impuestos_informe" sequence="100"/>
 
     </data>
 </openerp>

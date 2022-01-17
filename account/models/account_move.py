@@ -76,7 +76,7 @@ class AccountMove(models.Model):
 
     @api.model
     def _get_default_invoice_date(self):
-        return fields.Date.today() if self._context.get('default_type', 'entry') in ('in_invoice', 'in_refund', 'in_receipt') else False
+        return fields.Date.today() if self._context.get('default_type', 'entry') in ('in_invoice', 'in_refund', 'in_receipt','out_invoice','out_refund','out_debit','liq_purchase') else False
 
     @api.model
     def _get_default_currency(self):
@@ -527,7 +527,7 @@ class AccountMove(models.Model):
                 is_refund=is_refund,
                 handle_price_include=handle_price_include,
             )
-
+            
             if move.type == 'entry':
                 repartition_field = is_refund and 'refund_repartition_line_ids' or 'invoice_repartition_line_ids'
                 repartition_tags = base_line.tax_ids.mapped(repartition_field).filtered(lambda x: x.repartition_type == 'base').tag_ids
@@ -566,6 +566,7 @@ class AccountMove(models.Model):
                     # foreign currency.
                     if tax.amount_type == 'fixed':
                         b_tax_res['amount'] = base_line.currency_id._convert(b_tax_res['amount'], move.company_id.currency_id, move.company_id, move.date)
+            
 
             return balance_taxes_res
 
@@ -625,7 +626,7 @@ class AccountMove(models.Model):
                 taxes_map_entry['tax_base_amount'] += tax_vals['base']
                 taxes_map_entry['grouping_dict'] = grouping_dict
             line.tax_exigible = tax_exigible
-
+        
         # ==== Process taxes_map ====
         for taxes_map_entry in taxes_map.values():
             # Don't create tax lines with zero balance.
@@ -944,15 +945,15 @@ class AccountMove(models.Model):
         '''
         for invoice in self:
             # Dispatch lines and pre-compute some aggregated values like taxes.
+            
             for line in invoice.line_ids:
-                if line.recompute_tax_line:
+                if line.recompute_tax_line and line.tax_line_id.tax_group_id.code not in ['ret_vat_b', 'ret_vat_srv', 'ret_ir','no_ret_ir']:
                     recompute_all_taxes = True
                     line.recompute_tax_line = False
-
-            # Compute taxes.
+            
             if recompute_all_taxes:
                 invoice._recompute_tax_lines()
-            if recompute_tax_base_amount:
+            if recompute_tax_base_amount:#no
                 invoice._recompute_tax_lines(recompute_tax_base_amount=True)
 
             if invoice.is_invoice(include_receipts=True):
@@ -1768,6 +1769,7 @@ class AccountMove(models.Model):
             'in_invoice': _('Vendor Bill Created'),
             'in_refund': _('Refund Created'),
             'out_receipt': _('Sales Receipt Created'),
+            'liq_purchase': _('Liquidation Purchase Created'),
             'in_receipt': _('Purchase Receipt Created'),
         }[self.type]
 
@@ -1777,7 +1779,7 @@ class AccountMove(models.Model):
 
     @api.model
     def get_invoice_types(self, include_receipts=False):
-        return ['out_invoice', 'out_refund','out_debit', 'in_refund', 'in_invoice','in_debit'] + (include_receipts and ['out_receipt', 'in_receipt'] or [])
+        return ['out_invoice', 'out_refund','out_debit', 'in_refund', 'in_invoice','in_debit','liq_purchase'] + (include_receipts and ['out_receipt', 'in_receipt'] or [])
 
     def is_invoice(self, include_receipts=False):
         return self.type in self.get_invoice_types(include_receipts)

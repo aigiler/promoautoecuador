@@ -54,13 +54,13 @@
                         </div>
                        <group>
                             <group>
-                                <field name="partner_id" select="1" domain="[('customer_rank','!=',0)]" attrs="{'required':[('to_cancel','=',False)]}"/>
-                                <field name="company_id" readonly="1"/>
+                                <field name="partner_id" select="1" domain="[('supplier_rank','!=',0)]" attrs="{'required':[('to_cancel','=',False)],'readonly': [('state', '!=', 'draft')]}" />
+                                <field name="company_id" readonly="1" invisible="1"/>
                                 <field name="invoice_id"
-                                       domain="[('partner_id','=',partner_id),('type','=','in_invoice'),('retention_id','=',False)]"
+                                       domain="[('partner_id','=',partner_id),('retention_id','=',False),('type','=','in_invoice'),('state','=','posted')]"
                                        options="{'no_create': True, 'no_create_edit': True}"
-                                       attrs="{'required':[('to_cancel','=',False)], 'invisible':[('to_cancel','=',True)]}"/>
-                                <label for="manual_establishment" attrs="{'invisible': [('state', '=', 'done')]}"/>
+                                       attrs="{'required':[('to_cancel','=',False)], 'invisible':[('to_cancel','=',True)],'readonly': [('state', '!=', 'draft')]}"/>
+                                <label for="manual_establishment" attrs="{'invisible': [('state', '=', 'done')],'readonly': [('state', '!=', 'draft')]}"/>
                                 <div class="d-flex" attrs="{'invisible': [('state', '=', 'done')]}" >
                                     <field name="manual_establishment" readonly="1" placeholder="001" force_save="1"/>
                                     <span class="o_form_label mx-1 oe_edit_only" >-</span>
@@ -70,10 +70,10 @@
                                 </div>
                            </group>
                             <group>
-                                <field name="auth_id" select="1" />
+                                <field name="auth_id" select="1"  attrs="{'readonly': [('state', '!=', 'draft')]}" />
                                 <field name="type" invisible="1"/>
-                                <field name="date"/>
-                                <field name="in_type"/>
+                                <field name="date"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="in_type"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
 
 
                                 <field name="manual" invisible="1"/>
@@ -86,35 +86,50 @@
                         </group>
                         <notebook colspan="4">
                             <page string="Impuestos">
-                                <field name="tax_ids" nolabel="1">
-                                    <tree string="Impuestos Aplicados">
+
+                                <field name="tax_ids" nolabel="1" domain="[('invoice_id','=',invoice_id),('group_id.code','in',['ret_ir','ret_vat_b','ret_vat_srv'])]" attrs="{'readonly':['|',('invoice_id','=',False),('state', '!=', 'draft')]}"
+                                    context="{'default_invoice_id':invoice_id}">
+
+                                    <tree string="Impuestos Aplicados" edit="false">
                                         <field name="fiscal_year"/>
                                         <field name="group_id"/>
                                         <field name="code"/>
                                         <field name="base_ret"/>
                                         <field name="amount"/>
-                                    
                                     </tree>
-                                    <form >
+                                    <form>
+
+                                        
                                         <group>
                                             <group>
                                                 
-                                                <field name="amount"/>
-                                                <field name="group_id"/>
-                                                <field name="invoice_id"/>
-                                                <field name="fiscal_year"/>
-                                                <field name="name"/>
-                                                <field name="account_id"/>
-                                            </group>
+                                                <field name="group_id" required="1" options="{'no_create': True, 'no_create_edit': True}" domain="[('code','in',['ret_vat_b', 'ret_vat_srv', 'ret_ir'])]"/>
+                                                <field name="tax_id" required="1" options="{'no_create': True, 'no_create_edit': True}" domain="[('tax_group_id','=',group_id),('type_tax_use','=','purchase')]"/>
+                                                <field name="tax_repartition_line_id" invisible="1"/>
 
+
+                                            </group>
+                                        </group>
+
+                                        <group>
                                             <group>
-                                                <field name="base"/>
-                                                <field name="tax_id"/>
-                                                <field name="retention_id"/>
-                                                <field name="num_document"/>
-                                                <field name="code"/>
-                                                <field name="sequence"/>
-                                                <field name="base_ret"/>
+                                                
+                                                <field name="invoice_id" invisible="0" readonly="1"/>
+                                                <field name="name" invisible="1"/>
+                                                <field name="account_id"/>
+                                                <field name="fiscal_year" required="1"/>
+
+
+                                                <field name="num_document" invisible="1"/>
+                                                <field name="code" invisible="1"/>
+                                                <field name="sequence" invisible="1"/>
+                                                <field name="base" string="Base Imponible de factura" required="1"/>
+                                                <field name="base_ret" string="Iva diferente de 0 factura"  required="1" invisible="0"/>
+
+                                                <field name="amount" string="Valor de Retenido" required="1"/>
+
+
+
                                             </group>
                                         </group>
                                     </form>
@@ -127,24 +142,57 @@
                                 </group>
                                 <separator string=""/>
                             </page>
-                            <page string="Facturacion Electronica" attrs="{'invisible': [('is_electronic','!=',True)]}">
+
+
+                            <page string="Tributación" attrs="{'invisible': [('in_type','!=','ret_in_invoice')]}">
                                 <group>
                                     <group>
-                                        <field name="clave_acceso_sri"/>
-                                        <field name="numero_autorizacion_sri"/>
-                                        <field name="fecha_autorizacion_sri"/>
-                                        <field name="estado_autorizacion_sri"/>
+                                        <field name="email_fe" string="Email Cliente" placeholder="Ingresar los email separado por comas" attrs="{'required':[('in_type','=','ret_in_invoice')],'readonly': [('state','!=','draft')]}"/>
+                                    </group>
+                                </group>
+
+
+
+                                <group id="info_adicional">
+                                    <group  >
+                                        <field name="campos_adicionales_facturacion" string="Información Adicional" attrs="{'readonly':[('state','!=','draft')]}" >
+                                            <tree editable="bottom">
+                                                <field name="nombre"/>
+                                                <field name="valor"/>
+                                            </tree>
+                                            <form>
+                                                <group>
+                                                    <group>
+                                                        <field name="nombre"/>
+                                                        <field name="valor"/>
+                                                    </group>                       
+                                                </group>
+
+                                            </form>
+                                        </field>
+                                    </group>
+                                </group>
+                                <group>
+                                    <group>
+                                        <field name="bitacora_id" readonly="1"/>
+                                        <field name="clave_acceso_sri" readonly="1"/>
+                                        <field name="numero_autorizacion_sri" readonly="1"/>
+                                        <field name="fecha_autorizacion_sri" readonly="1"/>
+                                        <field name="estado_autorizacion_sri" readonly="1"/>
                                     </group>
                                 </group>
                             </page>
+
+
+
                         </notebook>
                         </sheet>
-                    <div class="o_attachment_preview" attrs="{'invisible': ['|',('type', '!=', 'in_invoice'),('state', '!=', 'draft')]}" />
-                <!--<div class="oe_chatter">
+                    <div class="o_attachment_preview" />
+                <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="activity_ids" widget="mail_activity"/>
                     <field name="message_ids" widget="mail_thread"/>
-                </div>-->
+                </div>
                 </form>
             </field>
         </record>
@@ -175,8 +223,8 @@
                         <group>
                             <group>
 
-                                <field name="partner_id" placeholder="Seleccione Proveedor" domain="[('customer_rank','!=',0)]" options="{'no_create': True, 'no_create_edit': True}" attrs="{'required':[('to_cancel','=',False)]}"/>
-                                <label for="manual_establishment" attrs="{'invisible': [('state', '=', 'done')]}"/>
+                                <field name="partner_id" placeholder="Seleccione Proveedor" domain="[('customer_rank','!=',0)]" options="{'no_create': True, 'no_create_edit': True}" attrs="{'required':[('to_cancel','=',False)],'readonly': [('state', '!=', 'draft')]}"/>
+                                <label for="manual_establishment" attrs="{'invisible': [('state', '=', 'done')],'readonly': [('state', '!=', 'draft')]}"/>
                                 <div class="d-flex" attrs="{'invisible': [('state', '=', 'done')]}">
                                     <field name="manual_establishment" placeholder="001" required="1"/>
                                     <span class="o_form_label mx-1 oe_edit_only">-</span>
@@ -184,8 +232,8 @@
                                     <span class="o_form_label mx-1 oe_edit_only">-</span>
                                     <field name="manual_sequence" readonly="0" placeholder="1452" force_save="1" required="1"/>
                                 </div>
-                                <field name="auth_number" required="1"/>
-                                <field name="invoice_id" placeholder="Seleccione Factura" domain="[('partner_id','=',partner_id),('retention_id','=',False),('type','=','out_invoice'),('state','=','posted')]" options="{'no_create': True, 'no_create_edit': True}" attrs="{'required':[('to_cancel','=',False)], 'invisible':[('to_cancel','=',True)]}"/>
+                                <field name="auth_number" attrs="{'readonly': [('state', '!=', 'draft')]}" required="1"/>
+                                <field name="invoice_id" placeholder="Seleccione Factura" domain="[('partner_id','=',partner_id),('retention_id','=',False),('type','=','out_invoice'),('state','=','posted')]" options="{'no_create': True, 'no_create_edit': True}" attrs="{'required':[('to_cancel','=',False)], 'invisible':[('to_cancel','=',True)],'readonly': [('state', '!=', 'draft')]}"/>
 
 
                             </group>
@@ -215,7 +263,7 @@
                         <notebook>
                             <page string="Impuestos">
 
-                                <field name="tax_ids" nolabel="1" domain="[('invoice_id','=',invoice_id),('group_id.code','in',['ret_ir','ret_vat_b','ret_vat_srv'])]" attrs="{'readonly':[('invoice_id','=',False)]}"
+                                <field name="tax_ids" nolabel="1" domain="[('invoice_id','=',invoice_id),('group_id.code','in',['ret_ir','ret_vat_b','ret_vat_srv'])]" attrs="{'readonly':['|',('invoice_id','=',False),('state', '!=', 'draft')]}"
                                     context="{'default_invoice_id':invoice_id}">
 
                                     <tree string="Impuestos Aplicados" edit="false">
@@ -232,7 +280,7 @@
                                             <group>
                                                 
                                                 <field name="group_id" required="1" options="{'no_create': True, 'no_create_edit': True}" domain="[('code','in',['ret_vat_b', 'ret_vat_srv', 'ret_ir'])]"/>
-                                                <field name="tax_id" required="1" options="{'no_create': True, 'no_create_edit': True}" domain="[('tax_group_id','=',group_id)]"/>
+                                                <field name="tax_id" required="1" options="{'no_create': True, 'no_create_edit': True}" domain="[('tax_group_id','=',group_id),('type_tax_use','=','sale')]"/>
                                                 <field name="tax_repartition_line_id" invisible="1"/>
 
 
@@ -242,10 +290,8 @@
                                         <group>
                                             <group>
                                                 
-                                                <field name="amount" required="1"/>
                                                 <field name="invoice_id" invisible="0" readonly="1"/>
                                                 <field name="name" invisible="1"/>
-                                                <field name="base" required="1"/>
                                                 <field name="account_id"/>
                                                 <field name="fiscal_year" required="1"/>
 
@@ -253,7 +299,13 @@
                                                 <field name="num_document" invisible="1"/>
                                                 <field name="code" invisible="1"/>
                                                 <field name="sequence" invisible="1"/>
-                                                <field name="base_ret" invisible="1"/>
+                                                <field name="base" string="Base Imponible de factura" required="1"/>
+                                                <field name="base_ret" string="Iva diferente de 0 factura"  required="1" invisible="0"/>
+
+                                                <field name="amount" string="Valor de Retenido" required="1"/>
+
+
+
                                             </group>
                                         </group>
                                     </form>
@@ -265,6 +317,55 @@
                                 </group>
                                 <separator string=""/>
                             </page>
+
+
+                            <page string="Tributación" attrs="{'invisible': [('in_type','!=','ret_in_invoice')]}">
+                                <group>
+                                    <group>
+                                        <field name="email_fe" string="Email Cliente" placeholder="Ingresar los email separado por comas" attrs="{'required':[('in_type','=','ret_in_invoice')],'readonly': [('state','!=','draft')]}"/>
+                                    </group>
+                                </group>
+
+
+
+                                <group id="info_adicional">
+                                    <group  >
+                                        <field name="campos_adicionales_facturacion" string="Información Adicional" attrs="{'readonly':[('state','!=','draft')]}" >
+                                            <tree editable="bottom">
+                                                <field name="nombre"/>
+                                                <field name="valor"/>
+                                            </tree>
+                                            <form>
+                                                <group>
+                                                    <group>
+                                                        <field name="nombre"/>
+                                                        <field name="valor"/>
+                                                    </group>                       
+                                                </group>
+
+                                            </form>
+                                        </field>
+                                    </group>
+                                </group>
+                                <group>
+                                    <group>
+                                        <field name="bitacora_id" readonly="1"/>
+                                        <field name="clave_acceso_sri" readonly="1"/>
+                                        <field name="numero_autorizacion_sri" readonly="1"/>
+                                        <field name="fecha_autorizacion_sri" readonly="1"/>
+                                        <field name="estado_autorizacion_sri" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+
+
+
+
+
+
+
+
+
                             <page string="Info Extra">
                                 <group>
                                     <field name="in_type"/>
@@ -273,12 +374,12 @@
                             </page>
                         </notebook>
                     </sheet>
-                    <!--<div class="o_attachment_preview" attrs="{'invisible': ['|',('type', '!=', 'in_invoice'),('state', '!=', 'draft')]}" />
+                <div class="o_attachment_preview"  />
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="activity_ids" widget="mail_activity"/>
                     <field name="message_ids" widget="mail_thread"/>
-                </div>-->
+                </div>
                 </form>
             </field>
         </record>
@@ -330,6 +431,27 @@
 
         <menuitem action="action_account_retention_customer_tree" id="menu_action_retention_receivable" parent="account.menu_finance_receivables"/>
 
-        
+      <record id="acount_move_view_amount_total" model="ir.ui.view">
+        <field name="name">acount.move.view.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            
+            <xpath  expr="//group[@class='oe_subtotal_footer']/field[@name='amount_total']"  position="attributes">
+                    <attribute name="string">Neto a Pagar</attribute>
+            </xpath>
+            <xpath expr="//group[@class='oe_subtotal_footer']/field[@name='amount_total']" position="before">
+                <field name="view_amount_total" class="oe_subtotal_footer_separator" attrs="{'invisible': [('type', 'not in', ('in_invoice','out_invoice'))]}"/>
+                <!--span><field name="view_amount_tax" string="tax" widget='monetary' /></span-->
+            </xpath>
+
+            <!--field name="invoice_payments_widget" position="after">
+                <field name="view_amount_residual"   class="oe_subtotal_footer_separator" attrs="{'invisible':['|',('type','not in',['in_invoice']),('state','=','draft')]}"/>
+                <field name="amount_by_group" widget="tax-group-custom-field" nolabel="1" colspan="2" invisible="1"/>
+            </-->
+            
+           
+        </field>
+    </record>  
     </data>
 </odoo>

@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-        <menuitem id="menu_contabilidad_tributacion" parent="account.menu_finance_configuration" name="Tributación" sequence="1"/>
+        <!-- Menu acunalema 
+        -->	
+        <menuitem name="Impuestos" id="impuestos_contab" parent="account_accountant.menu_accounting" sequence="1" groups="account.group_account_user"/>
+        <menuitem name="Ejercicio Fiscal" id="impuestos_ejfiscal" parent="impuestos_contab" action="account.actions_account_fiscal_year" sequence="1"/>
+        <menuitem name="Configuracion Tributacion" id="menu_contabilidad_tributacion" parent="impuestos_contab"  sequence="2"/>     
+        <menuitem name="Informe de Impuestos" id="menu_impuestos_informe" parent="impuestos_contab"  sequence="3"/>     
+
+        <menuitem name="PPE" id="ppe_contab" parent="account_accountant.menu_accounting" sequence="2" groups="account.group_account_user"/>
+        <menuitem name="Modelos de Activos" id="ppe_modactivos" parent="ppe_contab" action="account_asset.action_account_asset_model_form" sequence="2"/>
+        <menuitem name="Activos" id="ppe_activos" parent="ppe_contab" action="account_asset.action_account_asset_form" sequence="1"/>
+        <menuitem name="Informe de Activos" id="ppe_infactivos" parent="ppe_contab" action="account_asset.action_account_report_assets" sequence="3"/>
+        <!-- ==-->
+        <!-- Cambio de parent acunalema
+        antes: account.menu_finance_configuration
+        -->
+        <!-- -->
+        <!--menuitem id="menu_contabilidad_tributacion" parent="gzl_facturacion_electronica.impuestos_config" name="Tributación" sequence="1"/-->
+        
         
         <!-- -->
         <!-- SUSTENTO DEL COMPROBANTE SEGUN EL SRI-->

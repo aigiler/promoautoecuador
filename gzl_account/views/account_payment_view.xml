@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="account.view_account_payment_form"/>
         <field name="arch" type="xml">
             <field name="journal_id" position="after">
-                <field name="tipo_transaccion"/>
+                <field name="tipo_transaccion" attrs="{'readonly': [('state','!=','draft')]}"/>
             </field>
 
             <field name="partner_type" position="before">
@@ -22,8 +22,41 @@
             </field>
             
             <field name="partner_id" position="replace">
-                <field name="partner_id" attrs="{'required': [('state', '=', 'draft'), ('payment_type', 'in', ('inbound', 'outbound')),('is_third_name','!=',True)], 'invisible': ['|',('payment_type', 'not in', ('inbound', 'outbound')),('is_third_name','=',True)]}" context="{'default_is_company': True}"/>
-            </field>  
+                <field name="partner_id" attrs="{'required': [('state', '=', 'draft'), ('payment_type', 'in', ('inbound', 'outbound')),('is_third_name','!=',True)], 'invisible': ['|',('payment_type', 'not in', ('inbound', 'outbound')),('is_third_name','=',True)]}" context="{ 'res_partner_search_mode':context.get('res_partner_search_mode',False),                                             'show_address': 1, 'default_is_company': True, 'show_vat': True}" />
+            </field>
+
+
+
+            <field name="partner_id" position="after">
+
+                <separator string="Cuentas Contables" attrs="{'invisible': [ ('tipo_transaccion', '!=', 'movimiento')] }"/>
+                <field name="account_payment_account_ids" nolabel="1" attrs="{'invisible': [('tipo_transaccion', '!=', 'movimiento'))]}">
+                    <tree string="Pagos" editable="bottom" create="0" delete="0" >
+                        <field name="cuenta" required="1" />
+                        <field name="name" required="1" />
+                        <field name="cuenta_analitica" required="1" />
+                        <field name="analytic_tag_ids" widget="many2many_tags" />
+                        <field name="debit"  />
+                        <field name="credit" />
+
+                    </tree>
+
+
+                </field>
+
+            </field>
+
+
+
+
+
+
+
+
+
+
+
+
         </field>
     </record>
 

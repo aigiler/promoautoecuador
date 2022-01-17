@@ -5,15 +5,15 @@
             <field name="name">Envio de Factura Electrónica</field>
             <field name="model_id" ref="gzl_facturacion_electronica.model_bitacora_consumo_servicios"/>
             <field name="email_from">adminaso@fundacionsolidaria.fin.ec</field>
-            <field name="email_to">${object.invoice_id.partner_id.email}</field>
-            <field name="subject">Factura electrónica (Ref ${object.invoice_id.l10n_latam_document_number}) </field>
+            <field name="email_to">${object.invoice_id.email_fe}</field>
+            <field name="subject">Comprobante electrónico(Ref ${object.name}) </field>
             <field name="body_html" >
             <![CDATA[
             <div style="padding:0px;width:600px;margin:auto;background: #FFFFFF repeat top /100%;color:#777777">
             <p>Estimado(a) ${object.invoice_id.partner_id.name},
-                </p><p>Una nueva Factura electrónica está disponible para usted:
+                </p><p>Una nuevo Comprobante electrónico está disponible para usted:
                 <p><strong>REFERENCIAS</strong></p>
-                <p>Numero factura:  ${object.invoice_id.l10n_latam_document_number} </p>
+                <p>Numero :  ${object.name} </p>
                 <p>Fecha: ${object.invoice_id.invoice_date} </p>
                 </p>
                 Saludos,<p>Administrador del Sistema </p>
@@ -34,16 +34,16 @@
             <field name="name">Envio de Retención</field>
             <field name="model_id" ref="gzl_facturacion_electronica.model_bitacora_consumo_servicios"/>
             <field name="email_from">adminaso@fundacionsolidaria.fin.ec</field>
-            <field name="email_to">${object.retencion_id.partner_id.email}</field>
-            <field name="subject">Retención electrónica (Ref ${object.retencion_id.name}) </field>
+            <field name="email_to">${object.retention_id.email_fe}</field>
+            <field name="subject">Retención electrónica (Ref ${object.retention_id.name}) </field>
             <field name="body_html" >
             <![CDATA[
             <div style="padding:0px;width:600px;margin:auto;background: #FFFFFF repeat top /100%;color:#777777">
-            <p>Estimado(a) ${object.retencion_id.partner_id.name},
+            <p>Estimado(a) ${object.retention_id.partner_id.name},
                 </p><p>Una nueva Retención electrónica está disponible para usted:
                 <p><strong>REFERENCIAS</strong></p>
-                <p>Numero Retención:  ${object.retencion_id.name} </p>
-                <p>Fecha: ${object.retencion_id.date} </p>
+                <p>Numero Retención:  ${object.retention_id.name} </p>
+                <p>Fecha: ${object.retention_id.date} </p>
                 </p>
                 Saludos,<p>Administrador del Sistema </p>
 
@@ -62,7 +62,7 @@
             <field name="name">Envio de Guia de Remisión</field>
             <field name="model_id" ref="gzl_facturacion_electronica.model_bitacora_consumo_servicios"/>
             <field name="email_from">adminaso@fundacionsolidaria.fin.ec</field>
-            <field name="email_to">${object.guia_remision_id.partner_id.email}</field>
+            <field name="email_to">${object.guia_remision_id.email_fe}</field>
             <field name="subject">Guia Remisión electrónica (Ref ${object.guia_remision_id.name}) </field>
             <field name="body_html" >
             <![CDATA[
