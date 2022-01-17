@@ -58,6 +58,7 @@ def informe_credito_cobranza(ruta,lista):
 
     sheet = workbook.active
 
+    sheet = workbook['Informe']
     listaSheet1 = list(filter(lambda x: (x['hoja']==1), lista)) 
 
 
