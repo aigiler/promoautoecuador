@@ -69,7 +69,11 @@ def informe_credito_cobranza(ruta,lista):
 
 
         cell = sheet.cell(row=campo['fila'], column=campo['columna'])
-        cell.value = campo['valor']
+        try:
+            cell.value = campo['valor']
+        except:,
+            raise ValidationErorr("""El valor {0} en la fila {1} columna {2} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna']))
+
 
 
     sheet = workbook['Aprobacion']
@@ -77,7 +81,11 @@ def informe_credito_cobranza(ruta,lista):
     ###########Llenar segundo sheet
     for campos in listaSheet2:
         cell = sheet.cell(row=campos['fila'], column=campos['columna'])
-        cell.value = campos['valor']
+        try:
+            cell.value = campo['valor']
+        except:,
+            raise ValidationErorr("""El valor {0} en la fila {1} columna {2} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna']))
+
     
     
     
@@ -85,7 +93,11 @@ def informe_credito_cobranza(ruta,lista):
     listaSheet3 = list(filter(lambda x: (x['hoja']==3), lista)) 
     for camposLiq in listaSheet3:
         cell = sheet.cell(row=camposLiq['fila'], column=camposLiq['columna'])
-        cell.value = camposLiq['valor']
+        try:
+            cell.value = campo['valor']
+        except:,
+            raise ValidationErorr("""El valor {0} en la fila {1} columna {2} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna']))
+
     
 
     workbook.save(ruta)
