@@ -76,19 +76,19 @@ class InformeCreditoCrobranza(models.TransientModel):
                     #######Campo Detalle crear Json
 
                 ###DVR
-                lista_cerradura_electronica=[]
-                dvr_ids=self.mapped('paginasDeControl')
-                for dvr in dvr_ids:
-                    campos_dvr=self.plantilla_dinamica.campos_ids.filtered(lambda l: 'paginasDeControl' in l.name )
-                    dct_dvr={}
-                    lista_campos_detalle=[]
-                    for campo in campos_dvr.child_ids:
-                        dct_campos_dvr={}
-                        resultado=dvr.mapped(campo.name)
-                        if len(resultado)>0:
-                            dct_campos_dvr['valor']=resultado[0]
-                        else:
-                            dct_campos_dvr['valor']=''
+            lista_cerradura_electronica=[]
+            dvr_ids=self.mapped('paginasDeControl')
+            for dvr in dvr_ids:
+                campos_dvr=self.plantilla_dinamica.campos_ids.filtered(lambda l: 'paginasDeControl' in l.name )
+                dct_dvr={}
+                lista_campos_detalle=[]
+                for campo in campos_dvr.child_ids:
+                    dct_campos_dvr={}
+                    resultado=dvr.mapped(campo.name)
+                    if len(resultado)>0:
+                        dct_campos_dvr['valor']=resultado[0]
+                    else:
+                        dct_campos_dvr['valor']=''
                         dct_campos_dvr['fila']=campo.fila
                         dct_campos_dvr['columna']=campo.columna
                         lista_campos_detalle.append(dct_campos_dvr)
