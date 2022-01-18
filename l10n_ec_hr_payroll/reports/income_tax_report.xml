@@ -52,7 +52,7 @@
                         </div>
                         <div class="col-4" style="border: 1px solid black; font-size: 14px"> 
                             <span>RUC</span><br/>
-                            <span t-esc="res_company.partner_id.identifier"/>
+                            <span t-esc="res_company.partner_id.vat"/>
                         </div>
                         <div class="col-1" style="border: 1px solid black; font-size: 14px"> 
                             <span><strong>106</strong></span>

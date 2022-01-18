@@ -97,7 +97,7 @@ class Contrato(models.Model):
     numero_cuotas_pagadas = fields.Integer(
         string='Cuotas Pagadas', compute="calcular_cuotas_pagadas", store=True, track_visibility='onchange')
 
-
+    aplicaGarante  = fields.Boolean(string='Garante', default = True, track_visibility='onchange')
 
     @api.constrains('state')
     def crear_registro_fondo_grupo(self):

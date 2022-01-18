@@ -11,7 +11,8 @@ from base64 import b64decode,b64encode
 class BitacoraConsumoServicios(models.Model):   
      
     _name = 'bitacora.consumo.servicios'    
-  
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _order= 'id desc'
 
     name = fields.Char( string='Comprobante',)
     invoice_id = fields.Many2one( 'account.move',string='Factura')
@@ -21,8 +22,12 @@ class BitacoraConsumoServicios(models.Model):
                                  ], string='Estado', required=True, default='pendiente',track_visibility='onchange')
 
     codigo_respuesta_web_service = fields.Char( string='Codigo Respueta',track_visibility='onchange')
+
+    url = fields.Char( string='URL',track_visibility='onchange')
+    header = fields.Char( string='Header',track_visibility='onchange')
+    request = fields.Char( string='Petición',track_visibility='onchange')
     response = fields.Char( string='Response',track_visibility='onchange')
-    respuesta = fields.Char( string='Respueta',track_visibility='onchange')
+    respuesta = fields.Char( string='Mensaje de SRI',track_visibility='onchange')
     etapa = fields.Char( string='Etapa',track_visibility='onchange')
 
     clave_acceso_sri = fields.Char( string='Clave de Acceso',track_visibility='onchange')
@@ -66,12 +71,25 @@ class BitacoraConsumoServicios(models.Model):
         if self.invoice_id.id:
             comprobante=self.invoice_id
             model='account.move'
-            nombreComprobante='Factura-{0}'.format(self.invoice_id.l10n_latam_document_number)
             dctCodDoc={
                 'out_invoice':'facturas',
                 'out_refund':'notasCredito',
                 'out_debit':'notasDebito',
+                'liq_purchase':'liquidacionesCompras',
                 }
+            dctCodNombre={
+                'out_invoice':'Factura',
+                'out_refund':'Nota de Credito',
+                'out_debit':'Nota de Debito',
+                'liq_purchase':'Liquidación de Compra',
+                }
+
+
+            nombreComprobante='{0}-{1}'.format(dctCodNombre[self.invoice_id.type],self.invoice_id.l10n_latam_document_number)
+
+
+
+
 
             responseKey=dctCodDoc[self.invoice_id.type]
             template_id = self.env.ref('gzl_facturacion_electronica.facturacion_electronica_email_template').id
@@ -87,7 +105,7 @@ class BitacoraConsumoServicios(models.Model):
         if self.retention_id.id:
             comprobante=self.retention_id
             model='account.retention'
-            nombreComprobante='Retencion-{0}'.format(self.retention_id.l10n_latam_document_number)
+            nombreComprobante='Retencion-{0}'.format(self.retention_id.name)
             responseKey='retenciones'
             template_id = self.env.ref('gzl_facturacion_electronica.retencion_electronica_email_template').id
         return comprobante,model,nombreComprobante,responseKey,template_id
@@ -101,6 +119,9 @@ class BitacoraConsumoServicios(models.Model):
         self.etapa='Procesar Comprobante'
         if not self.numero_autorizacion_sri:
             url,header,diccionarioRequest=comprobante.procesarComprobante()
+            self.url=url
+            self.header=header
+            self.request=diccionarioRequest
             response=comprobante.postJson(url,header,diccionarioRequest)
 
 
@@ -140,6 +161,9 @@ class BitacoraConsumoServicios(models.Model):
 
 
         url,header,diccionarioRequest=comprobante.validarComprobante()
+        self.url=url
+        self.header=header
+        self.request=diccionarioRequest
         response=comprobante.postJson(url,header,diccionarioRequest)
         self.codigo_respuesta_web_service=str(response.status_code)
         self.response=str(json.loads(response.text))
@@ -178,6 +202,8 @@ class BitacoraConsumoServicios(models.Model):
         if comprobante.estado_autorizacion_sri=='AUT':
 
             url,header=comprobante.descargarXML()
+            self.url=url
+            self.header=header
             response=comprobante.getJson(url,header)
             self.codigo_respuesta_web_service=str(response.status_code)
             self.response=str(json.loads(response.text))
@@ -192,6 +218,7 @@ class BitacoraConsumoServicios(models.Model):
                 f.write(binario)
                 f.close()
 
+                self.state='generada'
 
                 with open('file.xml', "rb") as f:
                     data = f.read()
@@ -207,6 +234,16 @@ class BitacoraConsumoServicios(models.Model):
                                                           'type':'binary', 
                                                           'store_fname':'{0}.xml'.format(nombreComprobante)})
 
+                self.env['ir.attachment'].create({
+                                                         'res_id':self.id,
+                                                         'res_model':'bitacora.consumo.servicios',
+                                                         'name':'{0}.xml'.format(nombreComprobante),
+                                                          'datas':file,
+                                                          'type':'binary', 
+                                                          'store_fname':'{0}.xml'.format(nombreComprobante)})
+
+
+
                 
     def descargarRide(self):
         comprobante,model,nombreComprobante,responseKey,template_id=self.seleccionComprobante()
@@ -216,6 +253,9 @@ class BitacoraConsumoServicios(models.Model):
 
 
             url,header=comprobante.descargarRide()
+            self.url=url
+            self.header=header
+            
             response=comprobante.getJson(url,header)
             self.codigo_respuesta_web_service=str(response.status_code)
             self.response=str(json.loads(response.text))
@@ -237,6 +277,7 @@ class BitacoraConsumoServicios(models.Model):
                     data = f.read()
                     file=bytes(b64encode(data))
 
+                self.state='generada'
 
 
                 self.env['ir.attachment'].create({
@@ -248,8 +289,14 @@ class BitacoraConsumoServicios(models.Model):
                                                           'store_fname':'{0}.pdf'.format(nombreComprobante)
                                                           })
 
-            
-
+                self.env['ir.attachment'].create({
+                                                         'res_id':self.id,
+                                                         'res_model':'bitacora.consumo.servicios',
+                                                         'name':'{0}.pdf'.format(nombreComprobante),
+                                                          'datas':file,
+                                                          'type':'binary', 
+                                                          'store_fname':'{0}.pdf'.format(nombreComprobante)
+                                                          })
     def jobEnvioServicioProcesarFactura(self,):
         
         self.env.cr.execute("""select * from bitacora_consumo_servicios where state='pendiente'  """)
@@ -272,6 +319,35 @@ class BitacoraConsumoServicios(models.Model):
         for registro in registros:
             bitacora=self.env['bitacora.consumo.servicios'].browse(registro['id'])
             bitacora.validarComprobante()
+            if bitacora.estado_autorizacion_sri=='AUT':
+                bitacora.state='generada'
+                bitacora.descargarXML()
+                bitacora.descargarRide()
+                comprobante,model,nombreComprobante,responseKey,template_id=bitacora.seleccionComprobante()
+
+                template = self.env['mail.template'].browse(template_id)
+
+                email_id=template.send_mail(registro['id'])
+                
+                obj_mail=self.env['mail.mail'].browse(email_id)
+                obj_attach_pdf=self.env['ir.attachment'].search([('res_model','=','bitacora.consumo.servicios'),('res_id','=',registro['id']),('mimetype','=','application/pdf')],limit=1)
+                obj_attach_xml=self.env['ir.attachment'].search([('res_model','=','bitacora.consumo.servicios'),('res_id','=',registro['id']),('mimetype','=','application/xml')],limit=1)
+                obj_mail.attachment_ids=self.env['ir.attachment'].browse([obj_attach_pdf.id,obj_attach_xml.id])
+                
+
+                obj_mail_invoice=obj_mail.copy({'state':'cancel'})
+                obj_mail_invoice.model=model
+                obj_mail_invoice.res_id=comprobante.id
+
+                try:
+                    obj_mail.send()
+                except:
+                    pass
+
+
+
+
+
 
 
     def jobEnvioServicioDescargarRideXML(self,):
@@ -292,7 +368,15 @@ class BitacoraConsumoServicios(models.Model):
             email_id=template.send_mail(registro['id'])
             
             obj_mail=self.env['mail.mail'].browse(email_id)
-            obj_mail.attachment_ids=self.env['ir.attachment'].search([('res_model','=','account.move'),('res_id','=',registro['invoice_id'])])
+            obj_attach_pdf=self.env['ir.attachment'].search([('res_model','=','bitacora.consumo.servicios'),('res_id','=',registro['id']),('mimetype','=','application/pdf')],limit=1)
+            obj_attach_xml=self.env['ir.attachment'].search([('res_model','=','bitacora.consumo.servicios'),('res_id','=',registro['id']),('mimetype','=','application/xml')],limit=1)
+            obj_mail.attachment_ids=self.env['ir.attachment'].browse([obj_attach_pdf.id,obj_attach_xml.id])
+            
+
+            obj_mail_invoice=obj_mail.copy({'state':'cancel'})
+            obj_mail_invoice.model=model
+            obj_mail_invoice.res_id=comprobante.id
+
             try:
                 obj_mail.send()
             except:

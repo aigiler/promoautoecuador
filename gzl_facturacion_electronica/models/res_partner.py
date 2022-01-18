@@ -25,4 +25,20 @@ class ResPartner(models.Model):
     pag_ext_suj_ret_nor_leg = fields.Boolean('Sujeto a retencion', help='Pago al exterior sujeto a retención en aplicación a la norma legal', default=False)
     pago_reg_fis = fields.Boolean('Regimen Fiscal Preferente', help='El pago es a un régimen fiscal preferente o de menor imposición?', default=False)
     method_payment = fields.Many2one('account.epayment', string="Forma de Pago")
-    
+    ats_country = fields.Many2one('ats.country', string='Pais')
+    tipo_proveedor_reembolso_id = fields.Many2one('tipo.proveedor.reembolso', string='Tipo de Proveedor de Reembolso')
+
+    """@api.onchange('l10n_latam_identification_type_id')
+    def act_ident(self):
+        for s in self:
+            if s.l10n_latam_identification_type_id.name  == 'Ced':
+                s.type_identifier=='ruc'
+            if s.l10n_latam_identification_type_id.name   == 'RUC':
+                s.type_identifier=='cedula'  """
+
+    @api.constrains('company_type')
+    def ingresar_tipo_proveedor_reembolso(self,):
+        if self.company_type=='company':
+            self.tipo_proveedor_reembolso_id=self.env.ref('gzl_facturacion_electronica.tipo_proveedor_reembolso_sociedad').id
+        else:
+            self.tipo_proveedor_reembolso_id=self.env.ref('gzl_facturacion_electronica.tipo_proveedor_reembolso_persona').id

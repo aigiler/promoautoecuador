@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api
 from datetime import date, datetime
+import re
 
 from odoo.exceptions import (
     Warning as UserError,
@@ -11,6 +12,8 @@ from odoo.exceptions import (
 class AccountGuiaRemision(models.Model):
     _name = 'account.guia.remision'
     _inherit = ['mail.thread', 'mail.activity.mixin']
+    _order="id desc"
+
     
     name =  fields.Char('Número', default="*")
     state = fields.Selection([
@@ -41,17 +44,56 @@ class AccountGuiaRemision(models.Model):
                                                 ('AUT', 'Autorizado'),
                                                 ('NAT', 'No Autorizado'),],
                                     string='Estado de Autorización del Sri')
+    email_fe = fields.Char('Email Factura Electronica')
+
+
+
+
+
+
+
+
+
+
+    
+    @api.onchange("auth_id")
+    def actualizar_es_electronico(self):
+        if self.auth_id.is_electronic:
+            self.is_electronic=True
+
+            
+
+    @api.onchange('partner_id')
+    def actualizar_email_factura(self):
+        self.email_fe=self.partner_id.email
+
+
+
+
+
 
     def validate(self):
-            self.name="%s%s%09s"%(self.auth_id.serie_establecimiento,self.auth_id.serie_emision,self.auth_id.sequence_id.next_by_id())
-            for line in self.guia_remision_line_ids:
-                if line.invoice_id:
-                    line.invoice_id.guia_ids = [(4,self.id)]
-            return self.write({ 'state': 'valid'})
-    
+        for detalle in self.guia_remision_line_ids:
+            if len(detalle.guia_remision_line_quantity_ids)==0:
+                raise ValidationError("Ingresar el detalle de productos a enviar en el detalle de la Guia de Remisión")
+
+
+        self.name="%s%s%09s"%(self.auth_id.serie_establecimiento,self.auth_id.serie_emision,self.auth_id.sequence_id.next_by_id())
+        if self.is_electronic:
+            self.procesoComprobanteElectronico()
+        for line in self.guia_remision_line_ids:
+            if line.invoice_id:
+                line.invoice_id.guia_ids = [(4,self.id)]
+        return self.write({ 'state': 'valid'})
+
 
     def cancel(self):
         return self.write({ 'state': 'cancel'})
+
+    campos_adicionales_facturacion = fields.One2many('campos.adicionales.facturacion', inverse_name = 'remision_id')
+
+
+
 
 
 class AccountGuiaRemisionLine(models.Model):
@@ -59,16 +101,28 @@ class AccountGuiaRemisionLine(models.Model):
 
     guia_id = fields.Many2one('account.guia.remision', string = 'Guia de Remisión')
     picking_id = fields.Many2one('stock.picking', 'Despacho')
-    partner_id = fields.Many2one('res.partner', related='picking_id.partner_id', readonly=True)
+    partner_id = fields.Many2one('res.partner' )
     invoice_id = fields.Many2one('account.move', string="Factura")
     exit_route = fields.Char('Ruta de Salida')
     arrival_route = fields.Char('Ruta de Llegada')
     motivo_id = fields.Many2one('reason.guia.remision', string="Motivo")
     origin = fields.Char('Documento Origen', related='picking_id.origin')
     documento_aduanero = fields.Char('Documento Aduanero')
-    cod_establecimiento_destino = fields.Char('Codigo Establecimiento Destino')
+    cod_establecimiento_destino = fields.Char('Codigo Establecimiento Destino',size=3)
 
     guia_remision_line_quantity_ids = fields.One2many('detalle.productos.guia.remision', inverse_name = 'linea_guia_id')
+
+
+    @api.constrains('cod_establecimiento_destino')
+    def es_codigo_establecimiento(self, ):
+        pattern ="^[0-9]{3}$"
+        if re.match(pattern, self.cod_establecimiento_destino):
+            return True
+        else:
+            raise ValidationError("Ingresar solo caracteres numéricos")
+
+
+
 
 
 

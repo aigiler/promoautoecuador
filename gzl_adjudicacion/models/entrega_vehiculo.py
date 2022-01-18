@@ -149,6 +149,7 @@ class EntegaVehiculo(models.Model):
     codClienteContrado = fields.Char()
     contratoCliente = fields.Char()
     montoAdjudicado = fields.Monetary(compute='buscar_contrato_partner', currency_field='currency_id', string='Monto Adjudicado')
+    garante  = fields.Boolean(string='Garante')
     plazoMeses = fields.Integer(string='Plazo')
     tipoAdj = fields.Char(string='Tipo Adj.')
     valorCuota = fields.Monetary(string='Valor de Cuota')
@@ -602,6 +603,7 @@ class EntegaVehiculo(models.Model):
             rec.fechaAdj = contrato.fecha_adjudicado
             rec.cuotasCanceladas = contrato.numero_cuotas_pagadas
             rec.plazoMeses = contrato.plazo_meses.numero
+            rec.garante = contrato.aplicaGarante
    
 
 

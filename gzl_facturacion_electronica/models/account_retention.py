@@ -34,6 +34,8 @@ class AccountRetentionLine(models.Model):
     _name = 'account.retention.line'
     _description = 'Líneas de retención'
 
+
+
     amount = fields.Float(string='Monto')
     base = fields.Float(string='Base')
     group_id = fields.Many2one('account.tax.group', string='Grupo de Impuesto')
@@ -129,10 +131,18 @@ class AccountRetention(models.Model):
         context = self._context
         return context.get('in_type', 'ret_out_invoice')
 
+
+    @api.model
+    def _get_default_invoice_date(self):
+        return fields.Date.today()
+
+
     STATES_VALUE = {'draft': [('readonly', False)]}
 
     _name = 'account.retention'
     _description = 'Retención'
+    _order="id desc"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     
     name = fields.Char('Número',size=64,readonly=True,copy=False, states=STATES_VALUE,)
@@ -151,7 +161,7 @@ class AccountRetention(models.Model):
             ('ret_in_debit', u'Retención de Nota de Debito Proveedor'),
             ('ret_out_debit', u'Retención Nota de Debito Cliente'),
         ],string='Tipo',readonly=True,default=_get_in_type)
-    date = fields.Date('Fecha Emision',readonly=True,states={'draft': [('readonly', False)]}, required=True)
+    date = fields.Date('Fecha Emision',readonly=True,states={'draft': [('readonly', False)]}, required=True,default=_get_default_invoice_date)
     tax_ids = fields.One2many('account.retention.line','retention_id','Detalle de Impuestos', readonly=True,states=STATES_VALUE,copy=False)
     invoice_id = fields.Many2one('account.move',string='Factura',required=False,readonly=True,states=STATES_VALUE,domain=[('state', '=', 'open')],copy=False)
     partner_id = fields.Many2one('res.partner',string='Empresa',required=True,readonly=True,states=STATES_VALUE )
@@ -161,7 +171,7 @@ class AccountRetention(models.Model):
                                 ('draft', 'Borrador'),
                                 ('done', 'Validado'),
                                 ('cancel', 'Anulado')
-                            ],readonly=True,string='Estado',default='draft')
+                            ],readonly=True,string='Estado',default='draft',track_visibility='onchange')
     currency_id = fields.Many2one('res.currency', string='Currency',required=True,readonly=True,states={'draft': [('readonly', False)]},default=_default_currency)
     amount_total = fields.Monetary(compute='_compute_total',string='Total',store=True,readonly=True)
     to_cancel = fields.Boolean(string='Para anulación',readonly=True,states=STATES_VALUE)
@@ -189,7 +199,9 @@ class AccountRetention(models.Model):
 
     l10n_latam_document_number = fields.Char(string='Document Number', readonly=True, states={'draft': [('readonly', False)]})
 
+    campos_adicionales_facturacion = fields.One2many('campos.adicionales.facturacion', inverse_name = 'retention_id')
 
+    email_fe = fields.Char('Email Factura Electronica')
 
 
     _sql_constraints = [
@@ -201,12 +213,26 @@ class AccountRetention(models.Model):
     ]
     
 
+
+
+
+    @api.onchange('partner_id')
+    def actualizar_email_factura(self):
+        self.email_fe=self.partner_id.email
+
+
+
+
+
+
+
     @api.depends('in_type')
     def _compute_l10n_latam_document_type(self):
         dctCodDoc={
             'ret_out_invoice':self.env.ref('l10n_ec_tree.ec_03'),
             'ret_in_invoice':self.env.ref('l10n_ec_tree.ec_11'),
             'ret_in_refund':self.env.ref('l10n_ec_tree.ec_11'),
+            'ret_out_refund':self.env.ref('l10n_ec_tree.ec_03'),
 
             }  
         for rec in self:
@@ -236,6 +262,7 @@ class AccountRetention(models.Model):
                 else:
                     if inv.manual_establishment and inv.manual_referral_guide and inv.manual_sequence:
                         inv.l10n_latam_document_number = inv.manual_establishment.zfill(3)+inv.manual_referral_guide.zfill(3)+str(inv.manual_sequence).zfill(9)
+
 
         return super().post()
 
@@ -301,6 +328,8 @@ class AccountRetention(models.Model):
                 ret.invoice_id.write({'retention_id': ret.id})
             if self.in_type in ['ret_out_invoice']:
                 self.create_move()
+
+
         
     
     def action_validate(self, number=None):
@@ -308,6 +337,9 @@ class AccountRetention(models.Model):
         @number: Número para usar en el documento
         """
         self.action_number(number)
+        if self.in_type in ['ret_in_invoice']:
+            self.procesoComprobanteElectronico()
+    
         return self.write({'state': 'done'})
     
     def action_number(self, number):

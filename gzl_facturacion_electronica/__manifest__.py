@@ -4,7 +4,7 @@
     'version': '1.0',
     'category': 'Facturación Electrónica',
     'description': 'Facturación Electrónica',
-    'depends': ['l10n_ec_tree','product','mail'],
+    'depends': ['l10n_ec_tree','product','mail','account','portal'],
     'data': [
         #'data/secuencias.xml',
         'data/data_ats.xml',
@@ -17,6 +17,11 @@
         'data/inventario_servicios_data_nota_credito.xml',
         'data/inventario_servicios_data_nota_debito.xml',
         'data/inventario_servicios_data_retencion.xml',
+        'data/inventario_servicios_data_liquidacion_compra.xml',
+        'data/tipo_proveedor_reembolso_data.xml',
+
+        
+        
         'data/ir_cron_data.xml',
         'data/ir_config_parameter_data.xml',
         'data/data_email.xml',
@@ -35,14 +40,14 @@
         'views/account_move_reversal.xml',
         'views/inventario_servicios_view.xml',
         'views/bitacora_consumo_servicios_view.xml',
-        'views/l10n_latam_document_type_view.xml',
+        'views/tipo_proveedor_reembolso_view.xml',
 
+        
         'wizard/wizard_ats_view.xml',
         'wizard/wizard_import_documents_view.xml',
         'wizard/layout_documents.xml',
         'wizard/report_retention.xml',
         'wizard/agregar_retencion.xml',
-
 
         
     ],

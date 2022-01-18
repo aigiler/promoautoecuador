@@ -17,3 +17,6 @@ from . import comprobante_electronico_guia_remision
 from . import comprobante_electronico_nota_credito
 from . import comprobante_electronico_nota_debito
 from . import comprobante_electronico_retencion
+from . import comprobante_electronico_liquidacion_compra
+from . import account_liquidacion_compra
+from . import tipo_proveedor_reembolso

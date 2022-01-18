@@ -23,7 +23,7 @@ class FacturacionElectronica(models.Model):
 
     xls_filename1 = fields.Char('Nombre Archivo excel')
     archivo_xls1 = fields.Binary('Archivo excel')
-    
+    bitacora_id = fields.Many2one('bitacora.consumo.servicios')
 
     def procesoComprobanteElectronico(self):
         dctCodDoc={
@@ -48,11 +48,12 @@ class FacturacionElectronica(models.Model):
         if contador[0]['contador']>0:
             raise ValidationError('El Comprobante Electrónico está en proceso')
         else:
-            instanaciaBitacora=self.env['bitacora.consumo.servicios'].create(dct)
+            instanciaBitacora=self.env['bitacora.consumo.servicios'].create(dct)
+            self.bitacora_id=instanciaBitacora.id
             try:
-                instanaciaBitacora.procesarComprobante()
+                instanciaBitacora.procesarComprobante()
             except json.decoder.JSONDecodeError:
-                instanaciaBitacora.response='Error 500 al consumir el servicio'
+                instanciaBitacora.response='Error 500 al consumir el servicio'
 
 
 
@@ -85,8 +86,8 @@ class FacturacionElectronica(models.Model):
             url,headers,requestDct=self.validarComprobanteNotaCredito()
         elif self.type=='out_debit':
             url,headers,requestDct=self.validarComprobanteNotaDebito()
-#        elif self.type=='liq_purchase':
-#            url,headers,requestDct=self.procesarDocumentoLiquidacionCompra()
+        elif self.type=='liq_purchase':
+            url,headers,requestDct=self.validarComprobanteLiquidacionCompra()
         return url,headers,requestDct
 
 
@@ -100,7 +101,7 @@ class FacturacionElectronica(models.Model):
         body_vf = {
                       "facturas": [
                         {
-                          "codigoExterno": self.l10n_latam_document_number[0:3]+'-'+self.l10n_latam_document_number[3:6]+'-'+self.l10n_latam_document_number[6:],
+                          "codigoExterno": self.l10n_latam_document_number[0:3]+self.l10n_latam_document_number[3:6]+self.l10n_latam_document_number[6:],
                           "ruc": self.env.user.company_id.vat,
 
                         }
@@ -128,8 +129,8 @@ class FacturacionElectronica(models.Model):
             url,headers,requestDct=self.procesarDocumentoNotaCredito()
         elif self.type=='out_debit':
             url,headers,requestDct=self.procesarDocumentoNotaDebito()
-#        elif self.type=='liq_purchase':
-#            url,headers,requestDct=self.procesarDocumentoLiquidacionCompra()
+        elif self.type=='liq_purchase':
+            url,headers,requestDct=self.procesarDocumentoLiquidacionCompra()
         return url,headers,requestDct
 
 
@@ -174,9 +175,9 @@ class FacturacionElectronica(models.Model):
             estadoPago='Pendiente'
         else:
             estadoPago='Pagada'
-        listaPrecios=self.invoice_line_ids.mapped('discount')
-        listaDescuentos=self.invoice_line_ids.mapped('quantity')
-        listaCantidad=self.invoice_line_ids.mapped('price_unit')
+        listaDescuento=self.invoice_line_ids.mapped('discount')
+        listaCantidad=self.invoice_line_ids.mapped('quantity')
+        listaPrecios=self.invoice_line_ids.mapped('price_unit')
 
         descuento = round(sum([a * b*c/100 for a, b ,c in zip(listaPrecios,listaDescuentos,listaCantidad)]),2)
 
@@ -220,7 +221,6 @@ class FacturacionElectronica(models.Model):
 
 
                 dctPago={}
-                #dctPago['id']=str(pago['account_payment_id'] or '')
                 dctPago['banco']=funciones.elimina_tildes(obj_account_payment.journal_id.bank_id.name)or ''
                 fechaDate=datetime.strptime(pago['date'], '%Y-%m-%d')
                 dctPago['fechaAbono']='%s-%s-%s 00:00' % (fechaDate.year, str(fechaDate.month).zfill(2),str(fechaDate.day).zfill(2))
@@ -237,14 +237,13 @@ class FacturacionElectronica(models.Model):
 
         listaDetalleFormaPago=[]
         dctFormaPago={}
-        #dctFormaPago['id']=str(self.method_payment.id or '' ) 
         dctFormaPago['formaPago']=str(self.method_payment.code or '')
 
 
         if self.invoice_payment_term_id.id:
             dctFormaPago['plazo']=max(self.invoice_payment_term_id.line_ids.mapped('days'))
         else:
-            dctFormaPago['plazo']=(self.invoice_date - self.invoice_date_due).days
+            dctFormaPago['plazo']=(self.invoice_date_due  - self.invoice_date ).days
 
         dctFormaPago['sucursal']=''
         dctFormaPago['tiempo']='dias'
@@ -266,44 +265,43 @@ class FacturacionElectronica(models.Model):
             dctDetalle['codigoPrincipal']=str(detalle.id)
             dctDetalle['descripcion']=funciones.elimina_tildes(detalle.name) or ""
             dctDetalle['descuento']=(detalle.discount*detalle.price_unit/100) 
-            #dctDetalle['id']=str(detalle.id)
 
 
 
             listadctDetalleAdicional=[]
             dctDetalleAdicional={}
-           # dctDetalleAdicional['id']=str(detalle.move_id.id)
-         #   dctDetalleAdicional['codigoPrincipal']=str(detalle.id)
-         #   dctDetalleAdicional['codigoAuxiliar']=str(detalle.id)
-        #    dctDetalleAdicional['descripcion']=funciones.elimina_tildes(detalle.name)  or ""
-         #   dctDetalleAdicional['cantidad']=round(detalle.quantity,2)
 
-        #    dctDetalleAdicional['precioUnitario']=round(detalle.price_unit ,2)
-        #    dctDetalleAdicional['descuento']=round((detalle.discount*detalle.price_unit/100),2)
-        #    dctDetalleAdicional['precioTotalSinImpuesto']=round(detalle.price_subtotal,2)
-       #     listadctDetalleAdicional.append(dctDetalleAdicional)
-
-            #dctDetalle['detallesAdicional']=[{"nombre": "","valor": ""}]
             listaImpuesto=[]
             for impuesto in detalle.tax_ids:
                 dctImpuesto={}
-                #dctImpuesto['id']=str(impuesto.id)
                 dctImpuesto['baseImponible']=round(detalle.price_subtotal,2)
                 dctImpuesto['codigoImpuesto']=impuesto.l10n_ec_code_base or ""
                 dctImpuesto['codigoPorcentaje']=impuesto.l10n_ec_code_applied or ""
-                dctImpuesto['tarifa']=str(impuesto.amount)
-                dctImpuesto['valor']=round(detalle.price_subtotal*impuesto.amount/100,2)
-                # dctImpuesto['detalleFactura']={}
+                dctImpuesto['tarifa']=impuesto.tarifa
+                obj_impuesto=self.env['account.tax'].browse(impuesto.id)
+                valor=obj_impuesto._compute_amount(round(detalle.price_subtotal,2),0)        
+                dctImpuesto['valor']=round(valor,2)
 
-                # dctImpuesto['detalleFactura']['id']=detalle.move_id.id
-                # dctImpuesto['detalleFactura']['codigoPrincipal']=''
-                # dctImpuesto['detalleFactura']['codigoAuxiliar']=''
-                # dctImpuesto['detalleFactura']['descripcion']=detalle.name or ''
-                # dctImpuesto['detalleFactura']['cantidad']=detalle.quantity 
-                # dctImpuesto['detalleFactura']['precioUnitario']=detalle.price_unit 
-                # dctImpuesto['detalleFactura']['descuento']=(detalle.discount*detalle.price_unit) 
-                #dctImpuesto['detalleFactura']['precioTotalSinImpuesto']=detalle.price_subtotal
                 listaImpuesto.append(dctImpuesto)
+
+
+
+            if len(listaImpuesto)==0:
+                dctListaImpuesto={
+                "baseImponible":self.amount_untaxed,
+                "codigoImpuesto":'2',
+                "codigoPorcentaje":'0',
+                "tarifa":'0',
+                "valor":0.0,
+                }
+                listaImpuesto.append(dctListaImpuesto)
+
+
+
+
+
+
+
 
             dctDetalle['detallesImpuesto']=listaImpuesto
             dctDetalle['iva']=''
@@ -319,6 +317,7 @@ class FacturacionElectronica(models.Model):
             listaDetalle.append(dctDetalle)
 
 
+
 ###################################################
 
         listaTipoImpuestos=list(set(listaTipoImpuestos))
@@ -332,40 +331,54 @@ class FacturacionElectronica(models.Model):
             valor=obj_impuesto._compute_amount(subtotal,0)
 
             dctTotalConImpuestos={}
-           # dctTotalConImpuestos['id']=str(obj_impuesto.id) 
             dctTotalConImpuestos['baseImponible']=round(subtotal,2)
             dctTotalConImpuestos['codigoImpuesto']=str(obj_impuesto.l10n_ec_code_base)
             dctTotalConImpuestos['codigoPorcentaje']=str(obj_impuesto.l10n_ec_code_applied)
             dctTotalConImpuestos['tarifa']= round(float(obj_impuesto.tarifa),2)
-            #dctTotalConImpuestos['total']=round(subtotal,2)+round(valor,2)
             dctTotalConImpuestos['valor']=round(valor,2)
             dctTotalConImpuestos['valorDevolucionIva']=0
 
             listaTotalConImpuestos.append(dctTotalConImpuestos)
 
 
+        if len(listaTipoImpuestos)==0:
+            impuesto_cero=self.env['account.tax'].search([('description','=','403')],limit=1)
+            listaTipoImpuestos.append(impuesto_cero.id)
+
+            for impuesto in listaTipoImpuestos:
+                dctTotalConImpuestos={}
+                dctTotalConImpuestos['baseImponible']=self.amount_untaxed
+                dctTotalConImpuestos['codigoImpuesto']='2'
+                dctTotalConImpuestos['codigoPorcentaje']='0'
+                dctTotalConImpuestos['tarifa']='0'
+                dctTotalConImpuestos['valor']=0.0
+                dctTotalConImpuestos['valorDevolucionIva']=0
+
+                listaTotalConImpuestos.append(dctTotalConImpuestos)
 
 
 
 
-        dctFactura['adicionales']=[]
+
+
+        listaAdicionales=[]
+        for campo in self.campos_adicionales_facturacion:
+            dctAdicional={'nombre':campo.nombre,'value':campo.valor}
+            listaAdicionales.append(dctAdicional)
+        
+
+
+        dctFactura['adicionales']=listaAdicionales
         dctFactura['agencia']=""
-       # dctFactura['archivo']=""
-       # dctFactura['archivoLegible']=""        
-        #dctFactura['claveAcceso']=""
-        #dctFactura['codDoc']=dctCodDoc[self.type]
         dctFactura['cliente']={}
         dctFactura['codPuntoEmision']=self.journal_id.auth_out_invoice_id.serie_emision
         dctFactura['codigoExterno']= self.l10n_latam_document_number or ""
-       # dctFactura['contribuyenteEspecial']= '313'
         dctFactura['correoNotificacion']=self.env.user.email or ""
         dctFactura['detalleFormaPagoFacturas']=listaDetalleFormaPago
         dctFactura['detalles']=listaDetalle
         dctFactura['dirEstablecimiento']=funciones.elimina_tildes(self.env.user.company_id.street) or ""
         dctFactura['direccionComprodar']=funciones.elimina_tildes(self.partner_id.street )or ""
         dctFactura['establecimiento']=self.l10n_latam_document_number[0:3]
-       # dctFactura['estado']=""
-      #  dctFactura['estadoOffline']=""
         dctFactura['estadoPago']= estadoPago
         dctFactura['fechaEmisionBase']='%s-%s-%s 00:00' % (self.invoice_date.year, str(self.invoice_date.month).zfill(2),str(self.invoice_date.day).zfill(2))
         
@@ -384,31 +397,22 @@ class FacturacionElectronica(models.Model):
 
 
         dctFactura['guiaRemision']=guia_remision
-      #  dctFactura['id']=""
         dctFactura['identificacionComprador']=self.partner_id.vat or ""
         dctFactura['identificadorUsuario']= self.env.user.partner_id.vat or ""
         dctFactura['importeTotal']=round(self.amount_total,2)
-      #  dctFactura['mensajeRespuesta']=""
         dctFactura['moneda']= 'DOLAR'
-       # dctFactura['notificado']=False
-       # dctFactura['numeroAutorizacion']=''
-       # dctFactura['obligadoContabilidad']= "SI"
         dctFactura['propina']=0
         dctFactura['puntoEmision']= self.l10n_latam_document_number[3:6]
-        #dctFactura['razonSocial']= funciones.elimina_tildes(self.env.user.company_id.name)
         dctFactura['razonSocialComprador']= funciones.elimina_tildes(self.partner_id.name)
         dctFactura['ruc']= self.env.user.company_id.vat
         dctFactura['secuencial']=self.l10n_latam_document_number[6:]
         dctFactura['telefonoComprodar']=self.partner_id.phone
-        #dctFactura['tipoAmbiente']=self.env['ir.config_parameter'].get_param('tipoAmbiente')
-        #dctFactura['tipoEmision']="1"
 
         dctFactura['tipoIdentificacionComprador']=self.partner_id.l10n_latam_identification_type_id.code_venta
         dctFactura['tipoOperacion']="COM"
         dctFactura['totalConImpuestos']=listaTotalConImpuestos
         dctFactura['totalDescuento']=descuento
         dctFactura['totalSinImpuestos']=round(self.amount_untaxed,2)
-        #dctFactura['userName']= self.env.user.name
         dctFactura['valorPagar']=  round(self.amount_total,0)
         dctFactura['valorRetencion']=  round(self.ret_amount_total,2)
 
@@ -448,8 +452,8 @@ class FacturacionElectronica(models.Model):
             url,headers=self.descargarXMLNotaCredito()
         elif self.type=='out_debit':
             url,headers=self.descargarXMLNotaDebito()
-#        elif self.type=='liq_purchase':
-#            url,headers,requestDct=self.procesarDocumentoLiquidacionCompra()
+        elif self.type=='liq_purchase':
+            url,headers,requestDct=self.descargarXMLLiquidacionCompra()
         return url,headers
 
 
@@ -476,8 +480,8 @@ class FacturacionElectronica(models.Model):
             url,headers=self.descargarRideNotaCredito()
         elif self.type=='out_debit':
             url,headers=self.descargarRideNotaDebito()
-#        elif self.type=='liq_purchase':
-#            url,headers,requestDct=self.procesarDocumentoLiquidacionCompra()
+        elif self.type=='liq_purchase':
+            url,headers,requestDct=self.descargarRideLiquidacionCompra()
         return url,headers
 
 

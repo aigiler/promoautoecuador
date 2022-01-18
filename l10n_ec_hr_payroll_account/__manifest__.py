@@ -14,6 +14,7 @@
     # always loaded
     'data': [
         'data/account.journal.csv',
+		'data/account_journal_data.xml',
         'views/res_config_settings.xml',
         'views/tenths_report.xml',
         'views/liquidation_settlement.xml',
