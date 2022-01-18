@@ -79,16 +79,15 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         body = workbook.add_format({'font_name':'Arial','font_size':  12,'align': 'left', 'indent':4 , 'border':0,'text_wrap': True})
         body.set_align('vcenter')
         sheet = workbook.add_worksheet(name)
-        # 
+        #
         # buf_image= BytesIO(base64.b64decode(self.env.company.image_1920))
         # # sheet.insert_image('A2', "any_name.png",{'image_data': buf_image})
         # img = openpyxl.drawing.image.Image('../static/description/promoauto.png')
         # img.width = 72 * 7
-        # img.height = 25 * 10 
-        
+        # img.height = 25 * 10
         # sheet.write('A2', )
-        
-        sheet.write('A1', '/gzl_reporte/static/description/promoauto.png')
+        img = Image('/gzl_reporte/static/description/promoauto.png', size=(200, 200))
+        sheet.add_image(img,'A1')
 
         sheet.merge_range('A3:I3', self.env.company.name.upper(), format_title)
         sheet.merge_range('A5:I5', self.env.company.street.upper(), format_datos)
