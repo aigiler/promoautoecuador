@@ -98,7 +98,9 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         # self.env.company.city.name
         sheet.merge_range('A6:C6', self.env.company.city.upper() + ' - ' +self.env.company.country_id.name.upper(), format_datos)
         sheet.merge_range('A7:C7', self.env.company.vat, format_datos)
-        sheet.merge_range('H6:I6', self.contrato_id.ciudad.nombre_ciudad +', ' + self.create_date.strftime('%Y-%m-%d'), format_datos)
+        #         sheet.merge_range('H6:I6', self.contrato_id.ciudad.nombre_ciudad +', ' + self.create_date.strftime('%Y-%m-%d'), format_datos)
+
+        sheet.merge_range('H6:I6', self.env.company.city.upper() +', ' + self.create_date.strftime('%Y-%m-%d'), format_datos)
         sheet.merge_range('A8:I8', 'ESTADO DE CUENTA DE APORTES', format_subtitle)
         sheet.write('H9', 'Ced/RUC: '+ self.contrato_id.cliente.vat, format_datos)
         sheet.merge_range('A9:C9', 'Cliente: '+ self.contrato_id.cliente.name, format_datos)
