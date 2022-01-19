@@ -73,179 +73,179 @@ class InformeCreditoCrobranza(models.TransientModel):
             informe_excel.informe_credito_cobranza(obj_plantilla.directorio_out,lista_campos)
             
             
-                #######Campo Detalle crear Json
-                ###DVR
-                lista_dvr=[]
-                dvr_ids=self.mapped('campos_ids')
+#                 #######Campo Detalle crear Json
+#                 ###DVR
+#                 lista_dvr=[]
+#                 dvr_ids=self.mapped('campos_ids')
 
-                for dvr in dvr_ids:
+#                 for dvr in dvr_ids:
 
-                    campos_dvr=self.plantilla_dinamica.campos_ids.filtered(lambda l: 'campos_ids' in l.name )
-                    dct_dvr={}
-                    lista_campos_detalle=[]
-                    for campo in campos_dvr.child_ids:
-                        dct_campos_dvr={}
-                        resultado=dvr.mapped(campo.name)
-                        if len(resultado)>0:
-                            dct_campos_dvr['valor']=resultado[0]
-                        else:
-                            dct_campos_dvr['valor']=''
+#                     campos_dvr=self.plantilla_dinamica.campos_ids.filtered(lambda l: 'campos_ids' in l.name )
+#                     dct_dvr={}
+#                     lista_campos_detalle=[]
+#                     for campo in campos_dvr.child_ids:
+#                         dct_campos_dvr={}
+#                         resultado=dvr.mapped(campo.name)
+#                         if len(resultado)>0:
+#                             dct_campos_dvr['valor']=resultado[0]
+#                         else:
+#                             dct_campos_dvr['valor']=''
 
-                        dct_campos_dvr['fila']=campo.fila
-                        dct_campos_dvr['columna']=campo.columna
-                        lista_campos_detalle.append(dct_campos_dvr)
-                    dct_dvr['campos']=lista_campos_detalle
+#                         dct_campos_dvr['fila']=campo.fila
+#                         dct_campos_dvr['columna']=campo.columna
+#                         lista_campos_detalle.append(dct_campos_dvr)
+#                     dct_dvr['campos']=lista_campos_detalle
+#                     # {"campos"["valor":"value", "fila": "value", "columna": "value"]}
 
+#                     canales=dvr.mapped('x_canales_ids')
+#                     campos_canales=self.plantilla_dinamica.campos_ids.filtered(lambda l: 'x_canales_ids' in l.name )
+#                     lista_canales_dvr=[]
 
-                    canales=dvr.mapped('x_canales_ids')
-                    campos_canales=self.plantilla_dinamica.campos_ids.filtered(lambda l: 'x_canales_ids' in l.name )
-                    lista_canales_dvr=[]
+#                     for canal in canales:
 
-                    for canal in canales:
+#                         dct_canal={}
+#                         lista_campos_detalle=[]
+#                         for campo in campos_canales.child_ids:
+#                             dct_campos_canales={}
+#                             resultado=canal.mapped(campo.name)
+#                             if len(resultado)>0:
+#                                 dct_campos_canales['valor']=resultado[0]
+#                             else:
+#                                 dct_campos_canales['valor']=''
 
-                        dct_canal={}
-                        lista_campos_detalle=[]
-                        for campo in campos_canales.child_ids:
-                            dct_campos_canales={}
-                            resultado=canal.mapped(campo.name)
-                            if len(resultado)>0:
-                                dct_campos_canales['valor']=resultado[0]
-                            else:
-                                dct_campos_canales['valor']=''
+#                             dct_campos_canales['fila']=campo.fila
+#                             dct_campos_canales['columna']=campo.columna
+#                             lista_campos_detalle.append(dct_campos_canales)
+#                         dct_canal['campos']=lista_campos_detalle
+#                         dct_canal['nombre']=canal.mapped('x_canal_nombre')[0]
+#                         lista_canales_dvr.append(dct_canal)
 
-                            dct_campos_canales['fila']=campo.fila
-                            dct_campos_canales['columna']=campo.columna
-                            lista_campos_detalle.append(dct_campos_canales)
-                        dct_canal['campos']=lista_campos_detalle
-                        dct_canal['nombre']=canal.mapped('x_canal_nombre')[0]
-                        lista_canales_dvr.append(dct_canal)
+#                     dct_dvr['canales']=lista_canales_dvr
+#                     lista_dvr.append(dct_dvr)
 
-                    dct_dvr['canales']=lista_canales_dvr
-                    lista_dvr.append(dct_dvr)
+# ##########Controles de Acceso
 
-##########Controles de Acceso
+#                 lista_controles=[]
+#                 dvr_ids=self.mapped('x_control_acceso_ids')
 
-                lista_controles=[]
-                dvr_ids=self.mapped('x_control_acceso_ids')
+#                 for dvr in dvr_ids:
 
-                for dvr in dvr_ids:
+#                     campos_dvr=self.plantilla_dinamica.campos_ids.filtered(lambda l: 'x_control_acceso_ids' in l.name )
+#                     dct_dvr={}
+#                     lista_campos_detalle=[]
+#                     for campo in campos_dvr.child_ids:
+#                         dct_campos_dvr={}
+#                         resultado=dvr.mapped(campo.name)
+#                         if len(resultado)>0:
+#                             dct_campos_dvr['valor']=resultado[0]
+#                         else:
+#                             dct_campos_dvr['valor']=''
 
-                    campos_dvr=self.plantilla_dinamica.campos_ids.filtered(lambda l: 'x_control_acceso_ids' in l.name )
-                    dct_dvr={}
-                    lista_campos_detalle=[]
-                    for campo in campos_dvr.child_ids:
-                        dct_campos_dvr={}
-                        resultado=dvr.mapped(campo.name)
-                        if len(resultado)>0:
-                            dct_campos_dvr['valor']=resultado[0]
-                        else:
-                            dct_campos_dvr['valor']=''
-
-                        dct_campos_dvr['fila']=campo.fila
-                        dct_campos_dvr['columna']=campo.columna
-                        lista_campos_detalle.append(dct_campos_dvr)
-                    dct_dvr['campos']=lista_campos_detalle
-
-
-                    canales=dvr.mapped('x_puertas_ids')
-                    campos_canales=self.plantilla_dinamica.campos_ids.filtered(lambda l: 'x_puertas_ids' in l.name )
-                    lista_canales_dvr=[]
-
-                    for canal in canales:
-
-                        dct_canal={}
-                        lista_campos_detalle=[]
-                        for campo in campos_canales.child_ids:
-                            dct_campos_canales={}
-                            resultado=canal.mapped(campo.name)
-                            if len(resultado)>0:
-                                dct_campos_canales['valor']=resultado[0]
-                            else:
-                                dct_campos_canales['valor']=''
-
-                            dct_campos_canales['fila']=campo.fila
-                            dct_campos_canales['columna']=campo.columna
-                            lista_campos_detalle.append(dct_campos_canales)
-                        dct_canal['campos']=lista_campos_detalle
-                        dct_canal['nombre']=canal.mapped('x_puerta_nombre')[0]
-                        lista_canales_dvr.append(dct_canal)
-
-                    dct_dvr['puertas']=lista_canales_dvr
-                    lista_controles.append(dct_dvr)
-                    print(lista_controles)
+#                         dct_campos_dvr['fila']=campo.fila
+#                         dct_campos_dvr['columna']=campo.columna
+#                         lista_campos_detalle.append(dct_campos_dvr)
+#                     dct_dvr['campos']=lista_campos_detalle
 
 
+#                     canales=dvr.mapped('x_puertas_ids')
+#                     campos_canales=self.plantilla_dinamica.campos_ids.filtered(lambda l: 'x_puertas_ids' in l.name )
+#                     lista_canales_dvr=[]
+
+#                     for canal in canales:
+
+#                         dct_canal={}
+#                         lista_campos_detalle=[]
+#                         for campo in campos_canales.child_ids:
+#                             dct_campos_canales={}
+#                             resultado=canal.mapped(campo.name)
+#                             if len(resultado)>0:
+#                                 dct_campos_canales['valor']=resultado[0]
+#                             else:
+#                                 dct_campos_canales['valor']=''
+
+#                             dct_campos_canales['fila']=campo.fila
+#                             dct_campos_canales['columna']=campo.columna
+#                             lista_campos_detalle.append(dct_campos_canales)
+#                         dct_canal['campos']=lista_campos_detalle
+#                         dct_canal['nombre']=canal.mapped('x_puerta_nombre')[0]
+#                         lista_canales_dvr.append(dct_canal)
+
+#                     dct_dvr['puertas']=lista_canales_dvr
+#                     lista_controles.append(dct_dvr)
+#                     print(lista_controles)
 
 
-########Sargent
-                lista_sargent=[]
-                dvr_ids=self.mapped('x_llave_sargent_ids')
-
-                for dvr in dvr_ids:
-
-                    campos_dvr=self.plantilla_dinamica.campos_ids.filtered(lambda l: 'x_llave_sargent_ids' in l.name )
-                    dct_dvr={}
-                    lista_campos_detalle=[]
-                    for campo in campos_dvr.child_ids:
-                        dct_campos_dvr={}
-                        resultado=dvr.mapped(campo.name)
-                        if len(resultado)>0:
-                            dct_campos_dvr['valor']=resultado[0]
-                        else:
-                            dct_campos_dvr['valor']=''
-
-                        dct_campos_dvr['fila']=campo.fila
-                        dct_campos_dvr['columna']=campo.columna
-                        lista_campos_detalle.append(dct_campos_dvr)
-                    dct_dvr['campos']=lista_campos_detalle
-                    lista_sargent.append(dct_dvr)
-
-########Cyber Keys
-                lista_cyber_keys=[]
-                dvr_ids=self.mapped('x_cyber_key_ids')
-
-                for dvr in dvr_ids:
-
-                    campos_dvr=self.plantilla_dinamica.campos_ids.filtered(lambda l: 'x_cyber_key_ids' in l.name )
-                    dct_dvr={}
-                    lista_campos_detalle=[]
-                    for campo in campos_dvr.child_ids:
-                        dct_campos_dvr={}
-                        resultado=dvr.mapped(campo.name)
-                        if len(resultado)>0:
-                            dct_campos_dvr['valor']=resultado[0]
-                        else:
-                            dct_campos_dvr['valor']=''
-
-                        dct_campos_dvr['fila']=campo.fila
-                        dct_campos_dvr['columna']=campo.columna
-                        lista_campos_detalle.append(dct_campos_dvr)
-                    dct_dvr['campos']=lista_campos_detalle
-                    lista_cyber_keys.append(dct_dvr)
 
 
-########Cerradura
-                lista_cerradura_electronica=[]
-                dvr_ids=self.mapped('x_cerradura_electro')
+# ########Sargent
+#                 lista_sargent=[]
+#                 dvr_ids=self.mapped('x_llave_sargent_ids')
 
-                for dvr in dvr_ids:
+#                 for dvr in dvr_ids:
 
-                    campos_dvr=self.plantilla_dinamica.campos_ids.filtered(lambda l: 'x_cerradura_electro' in l.name )
-                    dct_dvr={}
-                    lista_campos_detalle=[]
-                    for campo in campos_dvr.child_ids:
-                        dct_campos_dvr={}
-                        resultado=dvr.mapped(campo.name)
-                        if len(resultado)>0:
-                            dct_campos_dvr['valor']=resultado[0]
-                        else:
-                            dct_campos_dvr['valor']=''
+#                     campos_dvr=self.plantilla_dinamica.campos_ids.filtered(lambda l: 'x_llave_sargent_ids' in l.name )
+#                     dct_dvr={}
+#                     lista_campos_detalle=[]
+#                     for campo in campos_dvr.child_ids:
+#                         dct_campos_dvr={}
+#                         resultado=dvr.mapped(campo.name)
+#                         if len(resultado)>0:
+#                             dct_campos_dvr['valor']=resultado[0]
+#                         else:
+#                             dct_campos_dvr['valor']=''
 
-                        dct_campos_dvr['fila']=campo.fila
-                        dct_campos_dvr['columna']=campo.columna
-                        lista_campos_detalle.append(dct_campos_dvr)
-                    dct_dvr['campos']=lista_campos_detalle
-                    lista_cerradura_electronica.append(dct_dvr)
+#                         dct_campos_dvr['fila']=campo.fila
+#                         dct_campos_dvr['columna']=campo.columna
+#                         lista_campos_detalle.append(dct_campos_dvr)
+#                     dct_dvr['campos']=lista_campos_detalle
+#                     lista_sargent.append(dct_dvr)
+
+# ########Cyber Keys
+#                 lista_cyber_keys=[]
+#                 dvr_ids=self.mapped('x_cyber_key_ids')
+
+#                 for dvr in dvr_ids:
+
+#                     campos_dvr=self.plantilla_dinamica.campos_ids.filtered(lambda l: 'x_cyber_key_ids' in l.name )
+#                     dct_dvr={}
+#                     lista_campos_detalle=[]
+#                     for campo in campos_dvr.child_ids:
+#                         dct_campos_dvr={}
+#                         resultado=dvr.mapped(campo.name)
+#                         if len(resultado)>0:
+#                             dct_campos_dvr['valor']=resultado[0]
+#                         else:
+#                             dct_campos_dvr['valor']=''
+
+#                         dct_campos_dvr['fila']=campo.fila
+#                         dct_campos_dvr['columna']=campo.columna
+#                         lista_campos_detalle.append(dct_campos_dvr)
+#                     dct_dvr['campos']=lista_campos_detalle
+#                     lista_cyber_keys.append(dct_dvr)
+
+
+# ########Cerradura
+#                 lista_cerradura_electronica=[]
+#                 dvr_ids=self.mapped('x_cerradura_electro')
+
+#                 for dvr in dvr_ids:
+
+#                     campos_dvr=self.plantilla_dinamica.campos_ids.filtered(lambda l: 'x_cerradura_electro' in l.name )
+#                     dct_dvr={}
+#                     lista_campos_detalle=[]
+#                     for campo in campos_dvr.child_ids:
+#                         dct_campos_dvr={}
+#                         resultado=dvr.mapped(campo.name)
+#                         if len(resultado)>0:
+#                             dct_campos_dvr['valor']=resultado[0]
+#                         else:
+#                             dct_campos_dvr['valor']=''
+
+#                         dct_campos_dvr['fila']=campo.fila
+#                         dct_campos_dvr['columna']=campo.columna
+#                         lista_campos_detalle.append(dct_campos_dvr)
+#                     dct_dvr['campos']=lista_campos_detalle
+#                     lista_cerradura_electronica.append(dct_dvr)
 
 
                 informe_excel.informe_formato_cctv(ruta_del_documento,lista_campos,lista_dvr,lista_controles,lista_sargent,lista_cyber_keys,lista_cerradura_electronica)
