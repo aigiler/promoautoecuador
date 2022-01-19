@@ -4,8 +4,10 @@
 from odoo import api, fields, models, tools
 from datetime import date, timedelta,datetime
 from dateutil.relativedelta import relativedelta
+
 import xlsxwriter
 import openpyxl
+from openpyxl.drawing.image import Image
 from io import BytesIO
 import base64
 import os
