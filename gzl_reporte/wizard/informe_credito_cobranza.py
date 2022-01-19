@@ -248,7 +248,7 @@ class InformeCreditoCrobranza(models.TransientModel):
 #                     lista_cerradura_electronica.append(dct_dvr)
 
 
-                informe_excel.informe_formato_cctv(ruta_del_documento,lista_campos,lista_dvr,lista_controles,lista_sargent,lista_cyber_keys,lista_cerradura_electronica)
+                #informe_excel.informe_formato_cctv(ruta_del_documento,lista_campos,lista_dvr,lista_controles,lista_sargent,lista_cyber_keys,lista_cerradura_electronica)
 
 
             with open('/mnt/extra-addons/muk_dms/static/src/php/Gestor_Informes'+ruta_del_documento, "rb") as f:
