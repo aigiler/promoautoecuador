@@ -102,7 +102,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         # sheet.insert_image('B1', '../static/description/promoauto.png', {'x_offset': 15, 'y_offset': 10})
         #sheet.add_image(img,'A1')
         #product_image = BytesIO(base64.b64decode(self.env.company.id.image_1920))
-        img = Image('../static/description/promoauto.png', size=(200, 200))
+        img = Image('/gzl_reporte/static/description/promoauto.png')
         sheet.insert_image('B1', img)
 
         sheet.merge_range('A3:I3', self.env.company.name.upper(), format_title)
