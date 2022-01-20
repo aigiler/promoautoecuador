@@ -6,8 +6,8 @@ from datetime import date, timedelta,datetime
 from dateutil.relativedelta import relativedelta
 
 import xlsxwriter
-import openpyxl
-from openpyxl.drawing.image import Image
+from PIL import Image
+import xlwt
 from io import BytesIO
 import base64
 import os
@@ -89,10 +89,20 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         # img.height = 25 * 10
         # sheet.write('A2', ) /gzl_reporte/static/description/promoauto.png
         #img = openpyxl.drawing.Image('/gzl_reporte/static/description/promoauto.png')
-        sheet.insert_image('A1', '../static/description/promoauto.png')
-        sheet.insert_image('B1', '../static/description/promoauto.png', {'x_offset': 15, 'y_offset': 10})
-        #sheet.add_image(img,'A1')
+        # binaryData=partner.image_medium
+        # data=base64.b64decode(binaryData)
+
+        # im = PILImage.open(BytesIO(data))
+        # img = OPYImage(im)
+        # sheet.add_image(img, "A3")
+        # width, height = im.size
         
+        
+        # sheet.insert_image('A1', '../static/description/promoauto.png')
+        # sheet.insert_image('B1', '../static/description/promoauto.png', {'x_offset': 15, 'y_offset': 10})
+        #sheet.add_image(img,'A1')
+        product_image = io.BytesIO(base64.b64decode(self.env.company.image_1920))
+        sheet.insert_image('B1', "image.png", {'image_data': product_image})
 
         sheet.merge_range('A3:I3', self.env.company.name.upper(), format_title)
         sheet.merge_range('A5:I5', self.env.company.street.upper(), format_datos)
