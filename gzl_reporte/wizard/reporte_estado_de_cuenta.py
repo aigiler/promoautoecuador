@@ -82,29 +82,8 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         body.set_align('vcenter')
         sheet = workbook.add_worksheet(name)
         #
-        # buf_image= BytesIO(base64.b64decode(self.env.company.image_1920))
-        # # sheet.insert_image('A2', "any_name.png",{'image_data': buf_image})
-        # img = openpyxl.drawing.image.Image('../static/description/promoauto.png')
-        # img.width = 72 * 7
-        # img.height = 25 * 10
-        # sheet.write('A2', ) /gzl_reporte/static/description/promoauto.png
-        #img = openpyxl.drawing.Image('/gzl_reporte/static/description/promoauto.png')
-        # binaryData=partner.image_medium
-        # data=base64.b64decode(binaryData)
-
-        # im = PILImage.open(BytesIO(data))
-        # img = OPYImage(im)
-        # sheet.add_image(img, "A3")
-        # width, height = im.size
-        
-        
-        # sheet.insert_image('A1', '../static/description/promoauto.png')
-        # sheet.insert_image('B1', '../static/description/promoauto.png', {'x_offset': 15, 'y_offset': 10})
-        #sheet.add_image(img,'A1')
-        #product_image = BytesIO(base64.b64decode(self.env.company.id.image_1920))
-        img = Image('/gzl_reporte/static/description/promoauto.png')
-        sheet.insert_image('B1', img)
-
+        #img = Image('/gzl_reporte/static/description/promoauto.png')
+        sheet.insert_image('B1', '../static/description/promoauto.png', {'x_offset': 15, 'y_offset': 10})
         sheet.merge_range('A3:I3', self.env.company.name.upper(), format_title)
         sheet.merge_range('A5:I5', self.env.company.street.upper(), format_datos)
         # self.env.company.city.name
@@ -114,28 +93,32 @@ class ReporteEstadoDeCuenta(models.TransientModel):
 
         sheet.merge_range('H6:I6', self.env.company.city.upper() +', ' + self.create_date.strftime('%Y-%m-%d'), format_datos)
         sheet.merge_range('A8:I8', 'ESTADO DE CUENTA DE APORTES', format_subtitle)
-        sheet.write('H9', 'Ced/RUC: '+ self.contrato_id.cliente.vat, format_datos)
+        #
         sheet.merge_range('A9:C9', 'Cliente: '+ self.contrato_id.cliente.name, format_datos)
-        sheet.write('H10', 'Tipo de contrato: '+ self.contrato_id.tipo_de_contrato.name.upper(), format_datos)
+        sheet.merge_range('A10:C10', 'Dirección: '+ self.contrato_id.cliente.street.upper(), format_datos)
+        sheet.merge_range('A11:C11', 'Grupo: '+'['+ self.contrato_id.grupo.codigo+'] '+ self.contrato_id.grupo.name, format_datos)
+        if self.contrato_id.state == 'adjudicar':
+            sheet.merge_range('A12:C12', 'Estado: '+ self.contrato_id.state.upper() +'(' +self.contrato_id.fecha_adjudicado.strftime('%Y-%m-%d')+')' , format_datos)
+        else:
+            sheet.merge_range('A12:C12', 'Estado: '+ self.contrato_id.state.upper(), format_datos)
+        sheet.merge_range('A13:C13', 'Valor Inscripción: $'+ str(self.contrato_id.valor_inscripcion), format_datos)
+        #
+        sheet.write('H9', 'Ced/RUC: '+ self.contrato_id.cliente.vat, format_datos)
+        sheet.write('H10', 'Telefonos: '+ self.contrato_id.tipo_de_contrato.phone+' - '+ self.contrato_id.tipo_de_contrato.mobile, format_datos)
+        sheet.write('H11', 'Tipo de contrato: '+ self.contrato_id.tipo_de_contrato.name.upper(), format_datos)
         sheet.write('G12', 'Monto financiamiento: $'+ str(self.contrato_id.monto_financiamiento), format_datos)
         sheet.write('I12', 'Plazo: '+ str(self.contrato_id.plazo_meses.numero)+ ' Meses' , format_datos)
-        sheet.merge_range('A10:C10', 'Grupo: '+'['+ self.contrato_id.grupo.codigo+'] '+ self.contrato_id.grupo.name, format_datos)
-        if self.contrato_id.state == 'adjudicar':
-            sheet.merge_range('A11:C11', 'Estado: '+ self.contrato_id.state.upper() +'(' +self.contrato_id.fecha_adjudicado.strftime('%Y-%m-%d')+')' , format_datos)
-        else:
-            sheet.merge_range('A11:C11', 'Estado: '+ self.contrato_id.state.upper(), format_datos)
-        sheet.merge_range('A12:C12', 'Valor Inscripción: $'+ str(self.contrato_id.valor_inscripcion), format_datos)
-
+        #
         title_main=['cuota','Fecha pago','Cuota Capital' ,'Cuota Adm.', 'Iva','Seguro','Rastreo','Otro','Saldo']
 
         ##Titulos
-        colspan=13
+        colspan=14
         for col, head in enumerate(title_main):
-            sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))), len(head) + 13)
-            sheet.write(13, col, head.upper(), formato_cabecera_tabla)
+            sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))), len(head) + 14)
+            sheet.write(14, col, head.upper(), formato_cabecera_tabla)
 
-        line = itertools.count(start=14)
-        fila = 14
+        line = itertools.count(start=15)
+        fila = 15
         fila_current=0
 
         for linea in self.contrato_id.estado_de_cuenta_ids:
