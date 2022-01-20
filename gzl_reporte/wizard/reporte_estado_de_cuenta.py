@@ -95,7 +95,10 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.merge_range('A8:I8', 'ESTADO DE CUENTA DE APORTES', format_subtitle)
         #
         sheet.merge_range('A9:C9', 'Cliente: '+ self.contrato_id.cliente.name, format_datos)
-        sheet.merge_range('A10:C10', 'Dirección: '+ self.contrato_id.cliente.street.upper(), format_datos)
+        if self.contrato_id.cliente.street!=False:
+			sheet.merge_range('A10:C10', 'Dirección: '+ self.contrato_id.cliente.street.upper(), format_datos)
+        else:
+			sheet.merge_range('A10:C10', 'Dirección: ', format_datos)
         sheet.merge_range('A11:C11', 'Grupo: '+'['+ self.contrato_id.grupo.codigo+'] '+ self.contrato_id.grupo.name, format_datos)
         if self.contrato_id.state == 'adjudicar':
             sheet.merge_range('A12:C12', 'Estado: '+ self.contrato_id.state.upper() +'(' +self.contrato_id.fecha_adjudicado.strftime('%Y-%m-%d')+')' , format_datos)
@@ -104,7 +107,11 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.merge_range('A13:C13', 'Valor Inscripción: $'+ str(self.contrato_id.valor_inscripcion), format_datos)
         #
         sheet.write('H9', 'Ced/RUC: '+ self.contrato_id.cliente.vat, format_datos)
-        sheet.write('H10', 'Telefonos: '+ self.contrato_id.tipo_de_contrato.phone+' - '+ self.contrato_id.tipo_de_contrato.mobile, format_datos)
+        if self.contrato_id.cliente.phone!=False and self.contrato_id.cliente.mobile!=False :
+			sheet.write('H10', 'Telefonos: '+ self.contrato_id.tipo_de_contrato.phone+' - '+ self.contrato_id.tipo_de_contrato.mobile, format_datos)
+        else:
+			sheet.write('H10', 'Telefonos: ', format_datos)
+        
         sheet.write('H11', 'Tipo de contrato: '+ self.contrato_id.tipo_de_contrato.name.upper(), format_datos)
         sheet.write('G12', 'Monto financiamiento: $'+ str(self.contrato_id.monto_financiamiento), format_datos)
         sheet.write('I12', 'Plazo: '+ str(self.contrato_id.plazo_meses.numero)+ ' Meses' , format_datos)
