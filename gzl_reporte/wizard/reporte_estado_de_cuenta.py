@@ -83,16 +83,9 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet = workbook.add_worksheet(name)
         #
         #img = Image('/gzl_reporte/static/description/promoauto.png')
-        filename   = 'promoauto.png'
-
-        image_file = open(filename, 'rb')
-        image_data = BytesIO(image_file.read())
-        image_file.close()
-
-
         # Write the byte stream image to a cell. The filename must  be specified.
-        sheet.insert_image('A2', filename, {'image_data': image_data})
-        #heet.insert_image('B1', '../static/description/promoauto.png', {'x_offset': 15, 'y_offset': 10})
+        #sheet.insert_image('A2', filename, {'image_data': image_data})
+        heet.insert_image('B1', '../static/description/promoauto.png', {'x_offset': 15, 'y_offset': 10})
         sheet.merge_range('A3:I3', self.env.company.name.upper(), format_title)
         sheet.merge_range('A5:I5', self.env.company.street.upper(), format_datos)
         # self.env.company.city.name

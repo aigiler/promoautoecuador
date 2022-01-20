@@ -5,6 +5,10 @@
             <t t-foreach="docs" t-as="o">
                 <t t-call="web.external_layout">
                     <div class="page" style="font-size: 14px">
+                    <div class="col-xs-6 text-right">
+                        <img class="img-responsive" src="/lt_sales/static/src/img/logo.png" style="max-height: 50px;" />
+                    </div>
+
                     <span><center><h3>PROMOAUTO ECUADOR PROMOAUTOECUADOR S.A</h3></center></span><br/><br/>
                     <table>
                         <tbody>
@@ -14,7 +18,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2" style = "width:100%; text-align: left">>GUAYAQUIL - Ecuador</td>
-                                <td style = "width:20%; text-align: left"><span t-esc="o.contrato_id.ciudad.nombre_ciudad"/></td>
+                                <!-- <td style = "width:20%; text-align: left"><span t-esc="o.contrato_id.ciudad.nombre_ciudad"/></td> -->
                             </tr>
                             <tr>
                                 <td colspan="2" style="text-align: left">RUC: 0993261564001</td>
