@@ -95,10 +95,12 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.merge_range('A8:I8', 'ESTADO DE CUENTA DE APORTES', format_subtitle)
         #
         sheet.merge_range('A9:C9', 'Cliente: '+ self.contrato_id.cliente.name, format_datos)
+
         if self.contrato_id.cliente.street!=False:
-			sheet.merge_range('A10:C10', 'Dirección: '+ self.contrato_id.cliente.street.upper(), format_datos)
+            sheet.merge_range('A10:C10', 'Dirección: '+ self.contrato_id.cliente.street.upper(), format_datos)
         else:
-			sheet.merge_range('A10:C10', 'Dirección: ', format_datos)
+            sheet.merge_range('A10:C10', 'Dirección: ', format_datos)
+
         sheet.merge_range('A11:C11', 'Grupo: '+'['+ self.contrato_id.grupo.codigo+'] '+ self.contrato_id.grupo.name, format_datos)
         if self.contrato_id.state == 'adjudicar':
             sheet.merge_range('A12:C12', 'Estado: '+ self.contrato_id.state.upper() +'(' +self.contrato_id.fecha_adjudicado.strftime('%Y-%m-%d')+')' , format_datos)
