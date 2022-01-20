@@ -89,7 +89,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         # img.height = 25 * 10
         # sheet.write('A2', ) /gzl_reporte/static/description/promoauto.png
         #img = openpyxl.drawing.Image('/gzl_reporte/static/description/promoauto.png')
-        sheet.insert_image('B20', r'/gzl_reporte/static/description/promoauto.png')
+        sheet.insert_image('B20', '../static/description/promoauto.png')
         #sheet.add_image(img,'A1')
         
 
