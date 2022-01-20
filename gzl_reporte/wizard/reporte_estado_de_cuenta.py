@@ -83,7 +83,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet = workbook.add_worksheet(name)
         #
         #img = Image('/gzl_reporte/static/description/promoauto.png')
-        filename   = '/gzl_reporte/static/description/promoauto.png'
+        filename   = 'promoauto.png'
 
         image_file = open(filename, 'rb')
         image_data = BytesIO(image_file.read())
