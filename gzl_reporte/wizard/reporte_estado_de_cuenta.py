@@ -109,11 +109,13 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.merge_range('A13:C13', 'Valor Inscripción: $'+ str(self.contrato_id.valor_inscripcion), format_datos)
         #
         sheet.write('H9', 'Ced/RUC: '+ self.contrato_id.cliente.vat, format_datos)
-        if self.contrato_id.cliente.phone!=False and self.contrato_id.cliente.mobile!=False :
-			sheet.write('H10', 'Telefonos: '+ self.contrato_id.tipo_de_contrato.phone+' - '+ self.contrato_id.tipo_de_contrato.mobile, format_datos)
+
+        if self.contrato_id.cliente.phone!=False and self.contrato_id.cliente.mobile!=False:
+            sheet.write('H10', 'Telefonos: '+ self.contrato_id.tipo_de_contrato.phone+' - '+ self.contrato_id.tipo_de_contrato.mobile, format_datos)
         else:
 			sheet.write('H10', 'Telefonos: ', format_datos)
-        
+
+
         sheet.write('H11', 'Tipo de contrato: '+ self.contrato_id.tipo_de_contrato.name.upper(), format_datos)
         sheet.write('G12', 'Monto financiamiento: $'+ str(self.contrato_id.monto_financiamiento), format_datos)
         sheet.write('I12', 'Plazo: '+ str(self.contrato_id.plazo_meses.numero)+ ' Meses' , format_datos)
