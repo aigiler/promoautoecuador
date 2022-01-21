@@ -15,7 +15,7 @@
                                 <td></td>
                             </tr>
                             <tr>
-                                <td colspan="2" style = "width:100%; text-align: left"><span t-esc="o.env.company.city" style="text-transform: uppercase;"/><span> - </span><span t-esc="o.company.country_id.name"/></td>
+                                <td colspan="2" style = "width:100%; text-align: left"><span t-esc="o.env.company.city" style="text-transform: uppercase;"/><span> - </span><span t-esc="o.env.company.country_id.name"/></td>
                                 <!-- <td style = "width:20%; text-align: left"><span t-esc="o.contrato_id.ciudad.nombre_ciudad"/></td> -->
                             </tr>
                             <tr>
