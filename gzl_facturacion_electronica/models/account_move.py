@@ -395,9 +395,10 @@ class AccountMove(models.Model):
             self.action_withholding_create()        
         self.post()
         if self.type in ['out_refund','in_refund'] :
-            lines = self.reversed_entry_id.mapped('line_ids')[0]
-            for l in lines:
-                self.js_assign_outstanding_line(l.id)     
+            if self.reversed_entry_id.id:
+                lines = self.reversed_entry_id.mapped('line_ids')[0]
+                for l in lines:
+                    self.js_assign_outstanding_line(l.id)     
 
     def action_withholding_create(self):
         TYPES_TO_VALIDATE = ['in_invoice', 'liq_purchase', 'in_debit']
