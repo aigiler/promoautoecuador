@@ -77,15 +77,15 @@
                     </tr>
                     </tbody>
                     <tfoot>
-                        <tr>
-                            <td style="text-transform: uppercase;" colspan="2" >totales:</td>
-                            <td t-esc="sum(m.cuota_capital for m in o.contrato_id.estado_de_cuenta_ids)"></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                        <tr style="text-transform: uppercase; font-weight: bold;">
+                            <td  colspan="2" >totales:</td>
+                            <td t-esc="round(sum(m.cuota_capital for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
+                            <td t-esc="round(sum(m.cuota_adm for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
+                            <td t-esc="round(sum(m.iva_adm for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
+                            <td t-esc="round(sum(m.seguro for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
+                            <td t-esc="round(sum(m.rastreo for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
+                            <td t-esc="round(sum(m.otro for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
+                            <td t-esc="round(sum(m.saldo for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
                         </tr>
                     </tfoot>
                     </table>
