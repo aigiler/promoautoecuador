@@ -52,42 +52,42 @@
                     </table>
                     <br/><br/>
                     <table class="table table-condensed">
-                    <thead style="text-align: center; margin-bottom: 10px ">
-                        <th>CUOTA</th>
-                        <th>FECHA PAGO</th>
-                        <th>CUOTA CAPITAL</th>
-                        <th>CUOTA ADM.</th>
-                        <th>IVA</th>
-                        <th>SEGURO</th>
-                        <th>RASTREO</th>
-                        <th>OTRO</th>
-                        <th>SALDO</th>
-                    </thead>
-                    <tbody>
-                    <tr t-foreach="o.contrato_id.estado_de_cuenta_ids" t-as="estado_cuenta">
-                        <td><span t-esc="estado_cuenta.numero_cuota"/></td>
-                        <td><span t-esc="estado_cuenta.fecha"/></td>
-                        <td><span t-esc="estado_cuenta.cuota_capital"/></td>
-                        <td><span t-esc="estado_cuenta.cuota_adm"/></td>
-                        <td><span t-esc="estado_cuenta.iva_adm"/></td>
-                        <td><span t-esc="estado_cuenta.seguro"/></td>
-                        <td><span t-esc="estado_cuenta.rastreo"/></td>
-                        <td><span t-esc="estado_cuenta.otro"/></td>
-                        <td><span t-esc="estado_cuenta.saldo"/></td>
-                    </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr style="text-transform: uppercase; font-weight: bold;">
-                            <td  colspan="2" >totales:</td>
-                            <td t-esc="round(sum(m.cuota_capital for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
-                            <td t-esc="round(sum(m.cuota_adm for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
-                            <td t-esc="round(sum(m.iva_adm for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
-                            <td t-esc="round(sum(m.seguro for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
-                            <td t-esc="round(sum(m.rastreo for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
-                            <td t-esc="round(sum(m.otro for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
-                            <td t-esc="round(sum(m.saldo for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
+                        <thead style="text-align: center; margin-bottom: 10px ">
+                            <th>CUOTA</th>
+                            <th>FECHA PAGO</th>
+                            <th>CUOTA CAPITAL</th>
+                            <th>CUOTA ADM.</th>
+                            <th>IVA</th>
+                            <th>SEGURO</th>
+                            <th>RASTREO</th>
+                            <th>OTRO</th>
+                            <th>SALDO</th>
+                        </thead>
+                        <tfoot>
+                            <tr style="text-transform: uppercase; font-weight: bold;">
+                                <td  colspan="2" >totales:</td>
+                                <td t-esc="round(sum(m.cuota_capital for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
+                                <td t-esc="round(sum(m.cuota_adm for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
+                                <td t-esc="round(sum(m.iva_adm for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
+                                <td t-esc="round(sum(m.seguro for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
+                                <td t-esc="round(sum(m.rastreo for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
+                                <td t-esc="round(sum(m.otro for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
+                                <td t-esc="round(sum(m.saldo for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                        <tr t-foreach="o.contrato_id.estado_de_cuenta_ids" t-as="estado_cuenta">
+                            <td><span t-esc="estado_cuenta.numero_cuota"/></td>
+                            <td><span t-esc="estado_cuenta.fecha"/></td>
+                            <td><span t-esc="estado_cuenta.cuota_capital"/></td>
+                            <td><span t-esc="estado_cuenta.cuota_adm"/></td>
+                            <td><span t-esc="estado_cuenta.iva_adm"/></td>
+                            <td><span t-esc="estado_cuenta.seguro"/></td>
+                            <td><span t-esc="estado_cuenta.rastreo"/></td>
+                            <td><span t-esc="estado_cuenta.otro"/></td>
+                            <td><span t-esc="estado_cuenta.saldo"/></td>
                         </tr>
-                    </tfoot>
+                        </tbody>
                     </table>
                     </div>
                 </t>
