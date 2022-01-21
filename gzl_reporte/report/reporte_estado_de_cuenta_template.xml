@@ -10,8 +10,8 @@
                     <span><center><h3><span t-esc="o.env.company.name"/></h3></center></span><br/>
                     <table>
                         <tbody>
-                            <tr style="width:33.33% !important;">
-                                <td colspan="2" style="text-align: left; text-transform: uppercase;"><span t-esc="o.env.company.street"/></td>
+                            <tr style="">
+                                <td colspan="2" style="text-align: left; text-transform: uppercase; width:33.33% !important;"><span t-esc="o.env.company.street"/></td>
                                 <td></td>
                             </tr>
                             <tr>
@@ -26,8 +26,8 @@
                                 <td colspan="3"><span><center><h3>ESTADO DE CUENTA DE APORTES</h3></center></span></td>
                             </tr>
                             <tr>
-                                <td colspan="2" style="text-align: left"><span>Cliente: </span> <span t-esc="o.contrato_id.cliente.name"/></td>
-                                <td><span>Ced/RUC: </span> <span t-esc="o.contrato_id.cliente.vat"/></td>
+                                <td colspan="2" style="text-align: left; width:33.33% !important;"><span>Cliente: </span> <span t-esc="o.contrato_id.cliente.name"/></td>
+                                <td style="text-align: left; width:50.33% !important;"><><span>Ced/RUC: </span> <span t-esc="o.contrato_id.cliente.vat"/></td>
                             </tr>
                             <tr>
                                 <td colspan="2" style="text-align: left"><span>Dirección: </span><span style="text-transform: uppercase;" t-esc="o.contrato_id.cliente.street"/></td>
