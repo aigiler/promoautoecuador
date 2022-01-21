@@ -11,7 +11,7 @@
                     <table>
                         <tbody>
                             <tr>
-                                <td colspan="2" style="text-align: left">AV. JUAN TANCA MARENGO Y 2DO CALLEJON PLAZA SAI BABA</td>
+                                <td colspan="2" style="text-align: left; text-transform: uppercase;"><span t-esc=".env.company.street"/></td>
                                 <td></td>
                             </tr>
                             <tr>
