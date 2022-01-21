@@ -41,9 +41,9 @@
                                 <td></td>
                             </tr>
                             <tr>
-                                <td style = "width:70% !important; text-align: left"><span>Valor Inscripción: </span><span t-esc="o.contrato_id.monto_financiamiento"/></td>
-                                <td style = "width:15% !important; text-align: left"><span>Monto financiamiento: </span><span t-esc="o.contrato_id.monto_financiamiento"/></td>
-                                <td style = "width:15% !important; text-align: left"><span>Plazo: </span><span t-esc="o.contrato_id.plazo_meses.numero"/><span> Meses</span></td>
+                                <td style = "text-align: left"><span>Valor Inscripción: </span><span t-esc="o.contrato_id.monto_financiamiento"/></td>
+                                <td style = "text-align: left"><span>Monto financiamiento: </span><span t-esc="o.contrato_id.monto_financiamiento"/></td>
+                                <td style = "text-align: left"><span>Plazo: </span><span t-esc="o.contrato_id.plazo_meses.numero"/><span> Meses</span></td>
                             </tr>
                         </tbody>
                     </table>
