@@ -10,7 +10,7 @@
                     <span><center><h3><span t-esc="o.env.company.name"/></h3></center></span><br/>
                     <table>
                         <tbody>
-                            <tr>
+                            <tr style="width:33.33% !important;">
                                 <td colspan="2" style="text-align: left; text-transform: uppercase;"><span t-esc="o.env.company.street"/></td>
                                 <td></td>
                             </tr>
@@ -63,7 +63,7 @@
                             <th>OTRO</th>
                             <th>SALDO</th>
                         </thead>
-                        <tfoot style="text-align: center; margin-bottom: 10px ">
+                        <tfoot style="margin-bottom: 10px; ">
                             <tr style="text-transform: uppercase; font-weight: bold;">
                                 <td  colspan="2" >totales:</td>
                                 <td t-esc="round(sum(m.cuota_capital for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
