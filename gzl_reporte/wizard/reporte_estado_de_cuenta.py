@@ -113,7 +113,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.write('H9', 'Ced/RUC: '+ self.contrato_id.cliente.vat, format_datos)
 
         if self.contrato_id.cliente.phone!=False and self.contrato_id.cliente.mobile!=False:
-            sheet.write('H10', 'Telefonos: '+ self.contrato_id.tipo_de_contrato.phone+' - '+ self.contrato_id.tipo_de_contrato.mobile, format_datos)
+            sheet.write('H10', 'Telefonos: '+ self.contrato_id.cliente.phone+' - '+ self.contrato_id.cliente.mobile, format_datos)
         else:
             sheet.write('H10', 'Telefonos: '+' - ', format_datos)
 

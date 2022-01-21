@@ -71,8 +71,7 @@ class InformeCreditoCrobranza(models.TransientModel):
                 lista_campos.append(dct)
             #{"valor":"value", "fila": "value", "columna": "value", "hoja": "value"}
             informe_excel.informe_credito_cobranza(obj_plantilla.directorio_out,lista_campos)
-            
-            
+3
 #                 #######Campo Detalle crear Json
 #                 ###DVR
 #                 lista_dvr=[]
@@ -254,126 +253,16 @@ class InformeCreditoCrobranza(models.TransientModel):
             with open('/mnt/extra-addons/muk_dms/static/src/php/Gestor_Informes'+ruta_del_documento, "rb") as f:
                 data = f.read()
                 file=bytes(base64.b64encode(data))
-               
+
 
             obj_file.unlink()
 
             dct={
 
-            'name':obj.datas_fname,            
+            'name':obj.datas_fname,
             'content':file,
             'directory':int(self.id),
             }
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
 
 
 
