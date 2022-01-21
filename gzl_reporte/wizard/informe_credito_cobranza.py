@@ -40,6 +40,7 @@ class InformeCreditoCrobranza(models.TransientModel):
 
 
 
+
     def crear_plantilla_informe_credito_cobranza(self,):
         #Instancia la plantilla
         obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','informe_credito_cobranza')],limit=1)
