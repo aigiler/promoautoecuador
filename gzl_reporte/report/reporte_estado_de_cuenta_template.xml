@@ -7,7 +7,7 @@
                     <div class="page" style="font-size: 14px">
                     
 
-                    <span><center><h3><span t-esc="o.env.company.name"/></h3></center></span><br/><br/>
+                    <span><center><h3><span t-esc="o.env.company.name"/></h3></center></span><br/>
                     <table>
                         <tbody>
                             <tr>
@@ -30,17 +30,17 @@
                                 <td><span>Ced/RUC: </span> <span t-esc="o.contrato_id.cliente.vat"/></td>
                             </tr>
                             <tr>
-                                <td colspan="2" style="text-align: left"><span>Dirección: </span><span t-esc="o.contrato_id.cliente.street"/></td>
+                                <td colspan="2" style="text-align: left"><span>Dirección: </span><span style="text-transform: uppercase;" t-esc="o.contrato_id.cliente.street"/></td>
                                 <td><span>Telefono: </span><span t-esc="o.contrato_id.cliente.phone"/><text> - </text><span t-esc="o.contrato_id.cliente.mobile"/></td>
                             </tr>
                             <tr>
                                 <td colspan="2" style="text-align: left"><span>Grupo: </span><text>[</text><span t-esc="o.contrato_id.grupo.codigo"/><text>] </text><span t-esc="o.contrato_id.grupo.name"/></td>
-                                <td><span>Tipo de contrato: </span> <span t-esc="o.contrato_id.tipo_de_contrato.name"/></td>
+                                <td><span>Tipo de contrato: </span> <span style="text-transform: uppercase;" t-esc="o.contrato_id.tipo_de_contrato.name"/></td>
                             </tr>
                             <tr>
                                 <td colspan="2" style="text-align: left"><span>Estado: </span>
                                 <!-- t-if="user.birthday == today()" -->
-                                <span t-esc="o.contrato_id.state"/></td>
+                                <span style="text-transform: uppercase;" t-esc="o.contrato_id.state"/></td>
                                 <td></td>
                             </tr>
                             <tr>
@@ -65,17 +65,29 @@
                     </thead>
                     <tbody>
                     <tr t-foreach="o.contrato_id.estado_de_cuenta_ids" t-as="estado_cuenta">
-                        <td><span t-esc="estado_cuenta.numero_cuota" /></td>
-                        <td><span t-esc="estado_cuenta.fecha"  /></td>
-                        <td><span t-esc="estado_cuenta.cuota_capital"   /></td>
-                        <td><span t-esc="estado_cuenta.cuota_adm" /></td>
-                        <td><span t-esc="estado_cuenta.iva_adm"  /></td>
-                        <td><span t-esc="estado_cuenta.seguro"   /></td>
-                        <td><span t-esc="estado_cuenta.rastreo"  /></td>
-                        <td><span t-esc="estado_cuenta.otro"   /></td>
-                        <td><span t-esc="estado_cuenta.saldo"  /></td>
+                        <td><span t-esc="estado_cuenta.numero_cuota"/></td>
+                        <td><span t-esc="estado_cuenta.fecha"/></td>
+                        <td><span t-esc="estado_cuenta.cuota_capital"/></td>
+                        <td><span t-esc="estado_cuenta.cuota_adm"/></td>
+                        <td><span t-esc="estado_cuenta.iva_adm"/></td>
+                        <td><span t-esc="estado_cuenta.seguro"/></td>
+                        <td><span t-esc="estado_cuenta.rastreo"/></td>
+                        <td><span t-esc="estado_cuenta.otro"/></td>
+                        <td><span t-esc="estado_cuenta.saldo"/></td>
                     </tr>
                     </tbody>
+                    <tfoot>
+                        <tr t-foreach="o.contrato_id.estado_de_cuenta_ids" t-as="estado_cuenta">
+                            <td style="text-transform: uppercase;" colspan="2" >totales:</td>
+                            <td t-esc="sum(estado_cuenta.numero_cuota)"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
                     </table>
                     </div>
                 </t>
