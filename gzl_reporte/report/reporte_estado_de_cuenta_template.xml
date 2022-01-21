@@ -79,7 +79,7 @@
                     <tfoot>
                         <tr t-foreach="o.contrato_id.estado_de_cuenta_ids" t-as="estado_cuenta">
                             <td style="text-transform: uppercase;" colspan="2" >totales:</td>
-                            <td t-esc="sum(estado_cuenta.numero_cuota)"></td>
+                            <td t-esc="sum(m.cuota_capital for m in o.contrato_id.estado_de_cuenta_ids)"></td>
                             <td></td>
                             <td></td>
                             <td></td>
