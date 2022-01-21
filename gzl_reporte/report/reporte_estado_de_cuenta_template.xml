@@ -11,7 +11,7 @@
                     <table>
                         <tbody>
                             <tr>
-                                <td colspan="2" style="text-align: left; text-transform: uppercase;"><span t-esc=".env.company.street"/></td>
+                                <td colspan="2" style="text-align: left; text-transform: uppercase;"><span t-esc="o.env.company.street"/></td>
                                 <td></td>
                             </tr>
                             <tr>
