@@ -77,8 +77,8 @@ def informe_credito_cobranza(ruta,lista):
     sheet = workbook['Aprobacion']
     listaSheet2 = list(filter(lambda x: (x['hoja']==2), lista)) 
     ###########Llenar segundo sheet
-    for campos in listaSheet2:
-        cell = sheet.cell(row=campos['fila'], column=campos['columna'])
+    for campo in listaSheet2:
+        cell = sheet.cell(row=campo['fila'], column=campo['columna'])
         try:
             cell.value = campo['valor']
         except:
@@ -89,8 +89,8 @@ def informe_credito_cobranza(ruta,lista):
     
     sheet = workbook['Liquidacion']
     listaSheet3 = list(filter(lambda x: (x['hoja']==3), lista)) 
-    for camposLiq in listaSheet3:
-        cell = sheet.cell(row=camposLiq['fila'], column=camposLiq['columna'])
+    for campo in listaSheet3:
+        cell = sheet.cell(row=campo['fila'], column=campo['columna'])
         try:
             cell.value = campo['valor']
         except:

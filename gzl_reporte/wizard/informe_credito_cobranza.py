@@ -70,21 +70,9 @@ class InformeCreditoCrobranza(models.TransientModel):
                 dct['hoja']=campo.hoja_excel
                 lista_campos.append(dct)
             #{"valor":"value", "fila": "value", "columna": "value", "hoja": "value"}
+            
+          #  raise ValidationError(str(lista_campos))
             informe_excel.informe_credito_cobranza(obj_plantilla.directorio_out,lista_campos)
-
-            with open('/mnt/extra-addons/muk_dms/static/src/php/Gestor_Informes'+ruta_del_documento, "rb") as f:
-                data = f.read()
-                file=bytes(base64.b64encode(data))
-
-
-            obj_file.unlink()
-
-            dct={
-
-            'name':obj.datas_fname,
-            'content':file,
-            'directory':int(self.id),
-            }
 
 
 
