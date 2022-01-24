@@ -37,5 +37,5 @@ class CalculoComision(models.TransientModel):
         return action 
 class DetalleOportunidades(models.TransientModel):
     _name = 'detalle.oportunidades'
-    _inherit = ["crm.lead"]
-    crmlead = fields.Many2many('crm.lead', string='Oportunidad')
+    #_inherit = ["crm.lead"]
+    crmlead = fields.Many2one('crm.lead', string='Oportunidad')
