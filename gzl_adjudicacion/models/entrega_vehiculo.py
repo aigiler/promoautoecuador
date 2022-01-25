@@ -216,7 +216,7 @@ class EntegaVehiculo(models.Model):
             self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'entrega_id':self.id})
     
     observacionesInformeGarante = fields.Text(String ='Observaciones')
-    ga
+
     ################### calificador compras GARANTE
     cedulaGarante = fields.Char()
     codigoGarante = fields.Char()
