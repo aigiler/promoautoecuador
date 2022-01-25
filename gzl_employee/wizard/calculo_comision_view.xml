@@ -8,8 +8,13 @@
                     <group>
                         <group col="2">
                             <field name="name"/>
-                        </group>                    
-                    </group>                        
+                           <field name="partner" />
+                        </group>      
+                        
+                    </group>   
+                     <field name="det" widget="section_and_note_one2many">
+                         <field name="crmlead"/>
+                    </field>
                     <footer>
                         <button name="calculo_comision"
                                 string="Consultar"
@@ -32,21 +37,22 @@
         </record>
 
 
-        <record id="report_calculo_comision_detalle_form" model="ir.ui.view">
+        <!--record id="report_calculo_comision_detalle_form" model="ir.ui.view">
             <field name="name">Calculo de Comision Detalle</field>
             <field name="model">detalle.oportunidades</field>
             <field name="arch" type="xml">
                 <form string="Calculo de Comision detalle">
                     <group>
                         <group col="2">
-                            <field name="crmlead"/>
+                            <field name="crmlead" />
+                            
                         </group>                    
                     </group>                        
                     <footer>
-                        <!--button name="calculo_comision"
+                        <button name="calculo_comision"
                                 string="Consultar"
                                 type="object"
-                                class="oe_highlight" /-->
+                                class="oe_highlight" />
 
                         <button special="cancel"
                                 string="Cancelar"
@@ -61,7 +67,8 @@
             <field name="res_model">detalle.oportunidades</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
-        </record>
+            <field name="context">{}</field>
+        </record-->
         <menuitem action="action_calculo_comision" 
                   id="menu_action_calculo_comision" 
                   parent="hr_payroll.menu_hr_payroll_report" 

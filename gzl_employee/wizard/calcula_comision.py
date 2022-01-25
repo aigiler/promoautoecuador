@@ -1,17 +1,23 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, fields, models, tools
+from odoo import api, _, fields, models, tools
 from datetime import date, timedelta
 from dateutil.relativedelta import relativedelta
 import xlsxwriter
 from io import BytesIO
 import base64
 from calendar import monthrange
+import ast
+from odoo.exceptions import ValidationError, except_orm
+
 
 class CalculoComision(models.TransientModel):
     _name = "calcula.comision"
     name = fields.Many2one('hr.employee', string='Empleado', required=True)
-    date = fields.Selection(selection=[
+    partner = fields.Many2one('res.partner', string='partner', required=True,track_visibility='onchange')
+    det = fields.One2many('detalle.oportunidades', 'sale_id')
+    #detalle_op = fields.One2many('crm.lead','partner_id',track_visibility='onchange')
+    """date = fields.Selection(selection=[
             ('01', 'Enero'),
             ('02', 'Febrero'),
             ('03', 'Marzo'),
@@ -24,18 +30,62 @@ class CalculoComision(models.TransientModel):
             ('10', 'Octubre'),
             ('11', 'Noviembre'),
             ('12', 'Diciembre'),
-        ], string='Fecha', required=True)
+        ], string='Fecha', required=True)"""
 
     def calculo_comision(self):
         dct={}
         lis=[]
         cont=0
+        self.ensure_one()
         partner_ids = self.env['res.partner']
         partner = partner_ids.search([('active','=',True),('vat','=',self.name.identification_id)])
-        #self.env['detalle.oportunidades']
-        action = self.env.ref('gzl_employee.action_calculo_comision_detalle_crm').read()[0]
+        crm = self.env['crm.lead'].search([('partner_id','=',partner.id),('active','=',True)])
+        #for l in crm:
+            
+        detalle =self.env['detalle.oportunidades']
+        #action = self.env.ref('gzl_employee.action_calculo_comision_detalle_crm').read()[0]
+       
         return action 
+        """return {'name': _('Picking Prices'),
+                'view_type': 'form',
+                'view_mode': 'form',
+                'target': 'new',
+                'res_model': 'detalle.oportunidades',
+                'view_id': action.id,
+                'views': [(action.id, 'form')],
+                'type': 'ir.actions.act_window',
+                'context': {'default_crmlead': self.name.id}}"""
+    @api.onchange('partner')
+    def _onchange_name(self):
+        for e in self:
+            lines =[(5,0,0)]
+            partner_ids = self.env['res.partner']
+            partner = partner_ids.search([('active','=',True),('vat','=',self.name.identification_id)])
+            #for m in partner:
+            crm = self.env['crm.lead'].search([('partner_id','=',self.partner.id),('active','=',True)])
+            
+            for l in crm :
+                #raise ValidationError(str(l.partner_id))
+                vals= {
+                    'crmlead':l.id
+                    
+                }
+                lines.append((0,0,vals))
+            #raise ValidationError(str(lines))
+            e.det = lines
+                #raise ValidationError(str(l.partner_id))
+                #hi = self.env['crm.lead'].filtered(lambda h:  h.partner_id == l.partner_id.id)
+                #raise ValidationError(str(hi))
+    #    data = []
+    #    crm = self.env['crm.lead'].search([('id','=',self.cemlead.id),('active','=',True)])
+        
 class DetalleOportunidades(models.TransientModel):
     _name = 'detalle.oportunidades'
     #_inherit = ["crm.lead"]
     crmlead = fields.Many2one('crm.lead', string='Oportunidad')
+    sale_id = fields.Many2one('calcula.comision')
+    #@api.onchange('crmlead')
+    #def _onchange_picking_id(self):
+    #    data = []
+    #    crm = self.env['crm.lead'].search([('id','=',self.cemlead.id),('active','=',True)])
+        
