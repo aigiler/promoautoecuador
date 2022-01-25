@@ -54,7 +54,7 @@
                                     </group>
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
-                                    <groupattrs="{'invisible':[('garante', '=', 'False')]}"/> 
+                                    <group attrs="{'invisible':[('garante', '=', 'False')]}"/> 
                                         <field name="vatAdjudicado" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
                                         <field name="fechaNacimientoAdj" options="{'no_create': True, 'no_open': True}"/>
                                         <field name="estadoCivilAdj" options="{'no_create': True, 'no_open': True}"/>
@@ -66,15 +66,7 @@
                                     </group>
 
                                         nombreGarante = fields.Many2one('res.partner', string="Nombre del Garante", track_visibility='onchange',store=True)
-    vatGarante = fields.Char(related="nombreGarante.vat", string='Cedula de Ciudadanía',store=True)    
-    fechaNacimientoGarante = fields.Date(String='Fecha de Nacimiento')
-    edadGarante  = fields.Integer(String='Edad')wwwwwwwwwwwwwwicado.estado_civil" ,store=True)
-    cargasFamiliaresGarante = fields.Integer(String = 'Cargas Fam.')
-    
-    # datos del conyuge
-    nombreConyugeGarante = fields.Char(String='Nombre del Cónyuge')
-    vatConyugeGarante = fields.Char(String='Cedula de Ciudadanía')
-    estadoCivilConyugeGarante = fields.Selection(selection=[
+   
                                 </div>
                                 <div class="col-xs-4" attrs="{'invisible':[('garante', '=', 'False')]}"/> 
                                     <group>
@@ -84,8 +76,8 @@
                                     </group>
                                     <group attrs="{'invisible':[('garante', '=', 'True')]}"/> 
                                         <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
-                                        <field name="edadAdjudicado" string="Edad"/>
-                                        <field name="cargasFamiliares" />
+                                        <field name="edadGarante" string="Edad"/>
+                                        <field name="cargasFamiliaresGarante" />
                                     </group>
                                 </div>
                             </div>
