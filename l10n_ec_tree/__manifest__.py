@@ -64,6 +64,7 @@ Authors:
         #'data/res_country.xml', #move into Odoo core
         #Partners data
         'data/res.country.state.csv',
+        'data/res.country.city.csv',
         'data/res_bank_data.xml',
         'data/l10n_latam_identification_type_data.xml',
         #'data/res_partner_data.xml',

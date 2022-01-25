@@ -109,6 +109,7 @@
                                     <field name="tipo_de_contrato" options="{'no_create': True, 'no_open': True}" />
                                     <field name="codigo_grupo" />
                                     <field name="provincias" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="ciudad" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="archivo" filename="name"/>
                                     <field name="fecha_contrato" />
                                     <field name="plazo_meses" widget="selection" />
@@ -122,14 +123,13 @@
                                     <field name="active" />
                                     <field name="observacion"/>
                                     <field name="aplicaGarante"/>
-                                    <field name="ciudad" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="garante" attrs="{'invisible': [('aplicaGarante', '=', False)]}"/>
+                                    
                                     <field name="archivo_adicional" filename="name"/>
                                     <field name="fecha_inicio_pago" readonly="0"/>
                                     <field name="cuota_capital"/>
                                     <field name="iva_administrativo" />
                                     <field name="numero_cuotas_pagadas" />
-
-
                                 </group>
                             </div>
 
