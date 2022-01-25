@@ -13,16 +13,16 @@
                         
                     </group>   
                      <field name="det" widget="section_and_note_one2many" >
-                         <tree delete="false" editable="false" string="Journal Items">
-                             <field name="name"/>
-                             <field name="planned_revenue" />
+                         <tree delete="false" editable="false" create="false" string="Journal Items">
+                             <field name="name" readonly="1"/>
+                             <field name="planned_revenue" readonly="1"/>
                         </tree>
                     </field>
                     <footer>
-                        <button name="calculo_comision"
+                        <!--button name="calculo_comision"
                                 string="Consultar"
                                 type="object"
-                                class="oe_highlight" />
+                                class="oe_highlight" /-->
 
                         <button special="cancel"
                                 string="Cancelar"
