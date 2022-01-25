@@ -70,7 +70,6 @@ class CalculoComision(models.TransientModel):
                     vals= {
                         'name':l.name,
                         'planned_revenue':l.planned_revenue,
-                        'valor':str(l.planned_revenue),
                         'crmlead':l.id,
                         'company_id':l.company_id.id,
                         'company_currency':l.company_currency.id
