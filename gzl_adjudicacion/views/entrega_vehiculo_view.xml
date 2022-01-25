@@ -64,8 +64,6 @@
                                         <field name="fechaNacimientoGarante" options="{'no_create': True, 'no_open': True}"/>
                                         <field name="estadoCivilGarante" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
-
-                                        nombreGarante = fields.Many2one('res.partner', string="Nombre del Garante", track_visibility='onchange',store=True)
    
                                 </div>
                                 <div class="col-xs-4" attrs="{'invisible':[('garante', '=', 'False')]}"/> 
