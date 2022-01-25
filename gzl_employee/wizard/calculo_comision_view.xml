@@ -14,7 +14,7 @@
                     </group>   
                      <field name="det" widget="section_and_note_one2many">
                          <field name="oportunidad"/>
-                         <field name="monto"/>
+                         <field name="valor"/>
                     </field>
                     <footer>
                         <button name="calculo_comision"
