@@ -16,12 +16,10 @@ class EntegaVehiculo(models.Model):
 
 
     rolAsignado = fields.Many2one('adjudicaciones.team', string="Rol Asignado", track_visibility='onchange')
-
     rolCredito = fields.Many2one('adjudicaciones.team', string="Rol Credito", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol3'))
     rolGerenciaAdmin = fields.Many2one('adjudicaciones.team', string="Rol Gerencia Admin", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol1'))
     rolGerenciaFin = fields.Many2one('adjudicaciones.team', string="Rol Gerencia Financiera", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol4'))
     rolAdjudicacion = fields.Many2one('adjudicaciones.team', string="Rol Adjudicacion", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol2'))
-
 
 
     secuencia = fields.Char(index=True)
@@ -157,11 +155,9 @@ class EntegaVehiculo(models.Model):
     # valores del plan
     valorTotalPlan = fields.Monetary(compute='calcular_valor_total_plan', string='Valor Total del Plan')
     porcentajeTotal = fields.Float(default=100.00)
-    
     montoCuotasCanceladas = fields.Monetary(string='Cuotas Canceladas', compute='calcular_valor_cuotas_canceladas')
     cuotasCanceladas = fields.Integer()
     porcentajeCancelado = fields.Float(digits=(6, 2), compute='calcular_porcentaj_cuotas_canc')
-
     montoCuotasPendientes = fields.Monetary(string='Cuotas Pendientes', compute='calcular_valor_cuotas_pendientes')
     cuotasPendientes = fields.Integer(compute='calcular_cuotas_pendientes')
     porcentajePendiente = fields.Float(digits=(6, 2), compute='calcular_porcentaj_pendiente')
@@ -169,9 +165,8 @@ class EntegaVehiculo(models.Model):
     
     ################### Informe GARANTE
     # antecedentes
-    nombreGarante = fields.Char(String='Nombre del Garante') 
-    cedulaGarante = fields.Char(String='Cedula de Ciudadanía')
-    codigoGarante = fields.Char(String='Código')
+    nombreGarante = fields.Many2one('res.partner', string="Nombre del Garante", track_visibility='onchange',store=True)
+    vatGarante = fields.Char(related="nombreGarante.vat", string='Cedula de Ciudadanía',store=True)    
     fechaNacimientoGarante = fields.Date(String='Fecha de Nacimiento')
     edadGarante  = fields.Integer(String='Edad')
     estadoCivilGarante = fields.Selection(related="nombreSocioAdjudicado.estado_civil" ,store=True)
@@ -221,7 +216,7 @@ class EntegaVehiculo(models.Model):
             self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'entrega_id':self.id})
     
     observacionesInformeGarante = fields.Text(String ='Observaciones')
-    
+    ga
     ################### calificador compras GARANTE
     cedulaGarante = fields.Char()
     codigoGarante = fields.Char()

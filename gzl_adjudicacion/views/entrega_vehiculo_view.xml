@@ -49,18 +49,40 @@
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <group>
-                                        <field name="nombreSocioAdjudicado" required="1" options="{'no_open': True, 'no_create': True}"/>
+                                        <field name="nombreSocioAdjudicado" required="1" options="{'no_open': True, 'no_create': True}" attrs="{'invisible':[('garante', '=', 'False')]}"/>
+                                        <field name="nombreGarante" required="1" options="{'no_open': True, 'no_create': True}" attrs="{'invisible':[('garante', '=', 'True')]}"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
-                                    <group>
+                                    <groupattrs="{'invisible':[('garante', '=', 'False')]}"/> 
                                         <field name="vatAdjudicado" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
                                         <field name="fechaNacimientoAdj" options="{'no_create': True, 'no_open': True}"/>
                                         <field name="estadoCivilAdj" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
+                                    <group attrs="{'invisible':[('garante', '=', 'True')]}"/> 
+                                        <field name="vatGarante" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
+                                        <field name="fechaNacimientoGarante" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="estadoCivilGarante" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+
+                                        nombreGarante = fields.Many2one('res.partner', string="Nombre del Garante", track_visibility='onchange',store=True)
+    vatGarante = fields.Char(related="nombreGarante.vat", string='Cedula de Ciudadanía',store=True)    
+    fechaNacimientoGarante = fields.Date(String='Fecha de Nacimiento')
+    edadGarante  = fields.Integer(String='Edad')wwwwwwwwwwwwwwicado.estado_civil" ,store=True)
+    cargasFamiliaresGarante = fields.Integer(String = 'Cargas Fam.')
+    
+    # datos del conyuge
+    nombreConyugeGarante = fields.Char(String='Nombre del Cónyuge')
+    vatConyugeGarante = fields.Char(String='Cedula de Ciudadanía')
+    estadoCivilConyugeGarante = fields.Selection(selection=[
                                 </div>
-                                <div class="col-xs-4">
+                                <div class="col-xs-4" attrs="{'invisible':[('garante', '=', 'False')]}"/> 
                                     <group>
+                                        <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="edadAdjudicado" string="Edad"/>
+                                        <field name="cargasFamiliares" />
+                                    </group>
+                                    <group attrs="{'invisible':[('garante', '=', 'True')]}"/> 
                                         <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
                                         <field name="edadAdjudicado" string="Edad"/>
                                         <field name="cargasFamiliares" />
