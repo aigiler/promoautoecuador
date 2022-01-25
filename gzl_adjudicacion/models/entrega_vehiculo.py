@@ -166,6 +166,92 @@ class EntegaVehiculo(models.Model):
     cuotasPendientes = fields.Integer(compute='calcular_cuotas_pendientes')
     porcentajePendiente = fields.Float(digits=(6, 2), compute='calcular_porcentaj_pendiente')
     
+    
+    ################### Informe GARANTE
+    # antecedentes
+    nombreGarante = fields.Char(String='Nombre del Garante') 
+    cedulaGarante = fields.Char(String='Cedula de Ciudadanía')
+    codigoGarante = fields.Char(String='Código')
+    fechaNacimientoGarante = fields.Date(String='Fecha de Nacimiento')
+    edadGarante  = fields.Integer(String='Edad')
+    estadoCivilGarante = fields.Selection(related="nombreSocioAdjudicado.estado_civil" ,store=True)
+    cargasFamiliaresGarante = fields.Integer(String = 'Cargas Fam.')
+    
+    # datos del conyuge
+    nombreConyugeGarante = fields.Char(String='Nombre del Cónyuge')
+    vatConyugeGarante = fields.Char(String='Cedula de Ciudadanía')
+    estadoCivilConyugeGarante = fields.Selection(selection=[
+        ('soltero', 'Soltero/a'),
+        ('union_libre', 'Unión libre'),
+        ('casado', 'Casado/a'),
+        ('divorciado', 'Divorciado/a'),
+        ('viudo', 'Viudo/a')
+    ], string='Estado Civil', default='soltero')
+    edadConyugeGarante  = fields.Integer(string='Edad')
+    #datos domiciliaros
+    domicilioGarante = fields.Text(String='Referencias indican:')
+    #datos laborales
+    refLaboralesGarante = fields.Text(String='Referencias indican:')
+    #patrimonio
+    instFinancieraGarante = fields.Many2one('res.bank',string='Institución')
+    direccionCasaGarante = fields.Char(string='Direccion de Casa')
+    direccionTerrenoGarante = fields.Char(string='Direccion de Terreno')
+    placaVehiculoGarante = fields.Char(string='Placa') 
+    totalActivosGarante = fields.Float(compute="calculo_total_activos_garante", store=True, string='TOTAL ACTIVOS', digits=(6, 2))
+    valoresPatrimonio = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',track_visibility='onchange')
+    
+    def llenar_patrimonio_patrimonio(self):
+        obj_patrimonio=self.env['items.patrimonio'].search([])  
+        for patrimonio in obj_patrimonio:
+            self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id})
+        
+
+    @api.depends("valoresPatrimonio")
+    def calculo_total_activos_garante(self):
+        for rec in self:
+            rec.totalActivosGarante = sum(rec.valoresPatrimonio.mapped('valor'))
+    
+    #revision paginas de controle
+    scoreCreditoGarante = fields.Integer(String='Buró de Crédito')
+    paginasDeControlGarante = fields.One2many('paginas.de.control.entrega.vehiculo','entrega_id',track_visibility='onchange')
+    
+    def paginas_control_garante(self):
+        obj_paginas_de_control=self.env['paginas.de.control'].search([])
+        for paginas in obj_paginas_de_control:
+            self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'entrega_id':self.id})
+    
+    observacionesInformeGarante = fields.Text(String ='Observaciones')
+    
+    ################### calificador compras GARANTE
+    cedulaGarante = fields.Char()
+    codigoGarante = fields.Char()
+    contratoGarante = fields.Char()
+    #ingresos Familiares
+    ingresosFamiliaresGarante = fields.Monetary(string='Ingresos familiares')
+    gastosFamiliaresGarante = fields.Monetary(string='Gastos familiares', compute='calcular_valor_gastos_familiares')
+    disponibilidadGarante = fields.Monetary(string='Disponibilidad', compute='calcular_valor_gastos_familiares')
+    porcentajDisponGarante = fields.Monetary(string='Porcentaje Disponibilidad', compute='calcular_porcentaje_gastos_familiares')
+    puntosDisponibilidadGarante = fields.Integer(String='Puntos Porcentaje Disponibilidad Garante')
+    #score credito
+    puntosScoreCreditoGarante = fields.Integer(String='Puntos Score Credito Garante')
+    #antiguedad laboral
+    antiguedadLaboralGarante = fields.Integer(String='Antiguedad Laboral Garante')
+    puntosAntiguedadGarante = fields.Integer(String='Puntos Antiguedad Laboral Garante')
+    #posee bienes
+    puntosBienesGarante = fields.One2many('puntos.bienes.entrega.vehiculo','entrega_id',track_visibility='onchange')
+    totalPuntosBienesGarante = fields.Integer(compute='calcular_puntos_bienes_garante',store=True)
+
+    @api.depends('puntosBienesGarante')
+    def calcular_puntos_bienes_garante(self):
+        for rec in self:
+            rec.totalPuntosBienesGarante = sum(rec.puntosBienesGarante.mapped('puntosBien'))
+
+    
+    puntosCalificadorGarante = fields.Integer(String = 'Total Puntos', compute='total_puntos_garante')
+    
+    
+    
+    
     #puntos valor cancelado del plan
     puntosPorcentajeCancelado = fields.Integer(string = 'puntos', compute='calcular_puntos_porcentaje_cancelado')
 

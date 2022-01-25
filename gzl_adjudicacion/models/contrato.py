@@ -98,6 +98,10 @@ class Contrato(models.Model):
         string='Cuotas Pagadas', compute="calcular_cuotas_pagadas", store=True, track_visibility='onchange')
 
     aplicaGarante  = fields.Boolean(string='Garante', default = True, track_visibility='onchange')
+    
+    garante =  fields.Many2one('res.partner', string="Garante", track_visibility='onchange')
+    
+    vatGarante = fields.Char(string='Identificacion Garante')
 
     @api.constrains('state')
     def crear_registro_fondo_grupo(self):
