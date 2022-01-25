@@ -69,11 +69,8 @@ class WizardAts(models.TransientModel):
     def act_cancel(self):
         return {'type': 'ir.actions.act_window_close'}
 
-    def process_lines(self, lines):
-        """
-        @temp: {'332': {baseImpAir: 0,}}
-        @data_air: [{baseImpAir: 0, ...}]
-        """
+    """def process_lines(self, lines):
+        
         data_air = []
         temp = {}
         for line in lines:
@@ -89,8 +86,30 @@ class WizardAts(models.TransientModel):
                 temp[line.tax_id.description]['valRetAir'] += abs(float(line.amount))
         for k, v in temp.items():
             data_air.append(v)
+        return data_air"""
+    def process_lines(self, invoice):
+        """
+        @temp: {'332': {baseImpAir: 0,}}
+        @data_air: [{baseImpAir: 0, ...}]
+        """
+        data_air = []
+        temp = {}
+        for line in invoice.invoice_line_ids:
+            for tax in line.tax_ids:
+        #for line in lines:
+                if tax.tax_group_id.code in ['ret_ir', 'no_ret_ir']:
+                    if not temp.get(tax.name):
+                        temp[tax.name] = {
+                            'baseImpAir': 0,
+                            'valRetAir': 0
+                        }
+                    temp[tax.name]['baseImpAir'] += line.price_subtotal
+                    temp[tax.name]['codRetAir'] = tax.name # noqa
+                    temp[tax.name]['porcentajeAir'] = abs(int(tax.amount))  # noqa
+                    temp[tax.name]['valRetAir'] += abs(float(tax.amount))
+        for k, v in temp.items():
+            data_air.append(v)
         return data_air
-
     @api.model
     def _get_ventas(self, start, end):
         sql_ventas = "SELECT inv.type, sum(amount_untaxed) AS base \
@@ -301,6 +320,7 @@ class WizardAts(models.TransientModel):
                         'pagoRegFis': self.si_no(inv.partner_id.pago_reg_fis)
                     },
                     'formaPago': inv.method_payment.code,
+                    'detalleAir': self.process_lines(inv)
                   #  'detalleAir': self.process_lines(inv.l10n_latam_tax_ids)
                 })
                 if inv.retention_id:

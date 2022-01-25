@@ -27,7 +27,12 @@ class ResPartner(models.Model):
     method_payment = fields.Many2one('account.epayment', string="Forma de Pago")
     ats_country = fields.Many2one('ats.country', string='Pais')
     tipo_proveedor_reembolso_id = fields.Many2one('tipo.proveedor.reembolso', string='Tipo de Proveedor de Reembolso')
-
+    type_identifier = fields.Selection(
+        [
+            ('cedula', 'CEDULA'),
+            ('ruc', 'RUC'),
+        ],
+        'Tipo ID')
     """@api.onchange('l10n_latam_identification_type_id')
     def act_ident(self):
         for s in self:
