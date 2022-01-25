@@ -55,19 +55,20 @@ class CalculoComision(models.TransientModel):
                 'views': [(action.id, 'form')],
                 'type': 'ir.actions.act_window',
                 'context': {'default_crmlead': self.name.id}}"""
-    @api.onchange('partner')
+    @api.onchange('name')
     def _onchange_name(self):
         for e in self:
             lines =[(5,0,0)]
-            partner_ids = self.env['res.partner']
-            partner = partner_ids.search([('active','=',True),('vat','=',self.name.identification_id)])
+            partner_ids = self.env['res.users']
+            partner = partner_ids.search([('active','=',True),('id','=',self.name.user_id)])
             #for m in partner:
-            crm = self.env['crm.lead'].search([('partner_id','=',self.partner.id),('active','=',True)])
+            crm = self.env['crm.lead'].search([('user_id','=',self.partner.id),('active','=',True)])
             
             for l in crm :
                 #raise ValidationError(str(l.partner_id))
                 vals= {
-                    'crmlead':l.id
+                    'oportunidad':l.name,
+                    'monto':l.planned_revenue
                     
                 }
                 lines.append((0,0,vals))
@@ -83,6 +84,10 @@ class DetalleOportunidades(models.TransientModel):
     _name = 'detalle.oportunidades'
     #_inherit = ["crm.lead"]
     crmlead = fields.Many2one('crm.lead', string='Oportunidad')
+    oportunidad = fields.Char(string='Oportunidad')
+    company_id = fields.Many2one('res.company', string='Company', index=True, default=lambda self: self.env.company.id)
+    company_currency = fields.Many2one(string='Currency', related='company_id.currency_id', readonly=True, relation="res.currency")
+    monto=fields.Monetary('Monto del Plan',currency_field='company_currency')
     sale_id = fields.Many2one('calcula.comision')
     #@api.onchange('crmlead')
     #def _onchange_picking_id(self):
