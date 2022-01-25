@@ -122,7 +122,7 @@
                                     <field name="active" />
                                     <field name="observacion"/>
                                     <field name="aplicaGarante"/>
-                                    <field name="garante" attrs="{'aplicaGarante': [('sale_ok', '=', True)]}"/>
+                                    <field name="garante" attrs="{'invisible': [('aplicaGarante', '=', True)]}"/>
                                     <field name="ciudad" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="archivo_adicional" filename="name"/>
                                     <field name="fecha_inicio_pago" readonly="0"/>
