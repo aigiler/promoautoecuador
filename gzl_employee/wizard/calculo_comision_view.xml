@@ -12,9 +12,11 @@
                         </group>      
                         
                     </group>   
-                     <field name="det" >
-                         <field name="name"/>
-                         <field name="planned_revenue" />
+                     <field name="det" widget="section_and_note_one2many" >
+                         <tree delete="false" editable="false" string="Journal Items">
+                             <field name="name"/>
+                             <field name="planned_revenue" />
+                        </tree>
                     </field>
                     <footer>
                         <button name="calculo_comision"
