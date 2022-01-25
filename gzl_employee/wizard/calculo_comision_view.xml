@@ -8,13 +8,13 @@
                     <group>
                         <group col="2">
                             <field name="name"/>
-                           <field name="planned_revenue" />
+                           
                         </group>      
                         
                     </group>   
                      <field name="det" >
                          <field name="name"/>
-                         <field name="valor"/>
+                         <field name="planned_revenue" />
                     </field>
                     <footer>
                         <button name="calculo_comision"
