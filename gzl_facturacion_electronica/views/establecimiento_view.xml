@@ -70,8 +70,14 @@
             parent="gzl_facturacion_electronica.menu_contabilidad_tributacion" 
             sequence="1"/>
 
-    <menuitem
+    <menuitem 
+
             action="account.action_account_fiscal_position_form"
-            id="menu_action_account_fiscal_position_form"
+            id="account.menu_action_account_fiscal_position_form"
             parent="gzl_facturacion_electronica.menu_contabilidad_tributacion" sequence="3"/>
+	
+    
+    <menuitem action="account.action_tax_form" id="account.menu_action_tax_form" parent="gzl_facturacion_electronica.impuestos_contab" sequence="2"/>
+    <menuitem id="account_reports.menu_action_account_report_aged_receivable" name="Vencida por Cobrar" action="account_reports.action_account_report_ar" parent="account.menu_finance_receivables"/>
+    <menuitem id="account_reports.menu_action_account_report_aged_payable" name="Vencida por Pagar" action="account_reports.action_account_report_ap" parent="account.menu_finance_payables"/>
 </odoo>

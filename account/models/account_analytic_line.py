@@ -1,97 +1,94 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, _, fields, models, tools
-from datetime import date, timedelta
-from dateutil.relativedelta import relativedelta
-import xlsxwriter
-from io import BytesIO
-import base64
-from calendar import monthrange
-import ast
-from odoo.exceptions import ValidationError, except_orm
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 
-class CalculoComision(models.TransientModel):
-    _name = "calcula.comision"
-    name = fields.Many2one('hr.employee', string='Empleado', required=True)
-    partner = fields.Many2one('res.partner', string='partner', required=True,track_visibility='onchange')
-    det = fields.One2many('detalle.oportunidades', 'sale_id')
-    #detalle_op = fields.One2many('crm.lead','partner_id',track_visibility='onchange')
-    """date = fields.Selection(selection=[
-            ('01', 'Enero'),
-            ('02', 'Febrero'),
-            ('03', 'Marzo'),
-            ('04', 'Abril'),
-            ('05', 'Mayo'),
-            ('06', 'Junio'),
-            ('07', 'Julio'),
-            ('08', 'Agosto'),
-            ('09', 'Septiembre'),
-            ('10', 'Octubre'),
-            ('11', 'Noviembre'),
-            ('12', 'Diciembre'),
-        ], string='Fecha', required=True)"""
+class AccountAnalyticAccount(models.Model):
+    _inherit = 'account.analytic.account'
 
-    def calculo_comision(self):
-        dct={}
-        lis=[]
-        cont=0
-        self.ensure_one()
-        partner_ids = self.env['res.partner']
-        partner = partner_ids.search([('active','=',True),('vat','=',self.name.identification_id)])
-        crm = self.env['crm.lead'].search([('partner_id','=',partner.id),('active','=',True)])
-        #for l in crm:
-            
-        detalle =self.env['detalle.oportunidades']
-        #action = self.env.ref('gzl_employee.action_calculo_comision_detalle_crm').read()[0]
-       
-        return action 
-        """return {'name': _('Picking Prices'),
-                'view_type': 'form',
-                'view_mode': 'form',
-                'target': 'new',
-                'res_model': 'detalle.oportunidades',
-                'view_id': action.id,
-                'views': [(action.id, 'form')],
-                'type': 'ir.actions.act_window',
-                'context': {'default_crmlead': self.name.id}}"""
-    @api.onchange('name')
-    def _onchange_name(self):
-        for e in self:
-            lines =[(5,0,0)]
-            partner_ids = self.env['res.users']
-            users = partner_ids.search([('active','=',True),('id','=',self.name.user_id.id)])
-            #raise ValidationError(str(users.id))
-            crm = self.env['crm.lead'].search([('user_id','=',users.id),('active','=',True)])
-            #raise ValidationError(str(crm))
-            if crm :
-                for l in crm :
-                    #raise ValidationError(str(l.partner_id))
-                    vals= {
-                        'name':l.name,
-                        'planned_revenue':l.planned_revenue,
-                        'crmlead':l.id,
-                        'company_id':l.company_id.id,
-                        'company_currency':l.company_currency.id
+    @api.constrains('company_id')
+    def _check_company_consistency(self):
+        analytic_accounts = self.filtered('company_id')
 
-                    }
-                    lines.append((0,0,vals))
-            
-            e.det = lines
-        
-class DetalleOportunidades(models.TransientModel):
-    _name = 'detalle.oportunidades'
-    #_inherit = ["crm.lead"]
-    crmlead = fields.Many2one('crm.lead', string='Oportunidad')
-    #oportunidad = fields.Char(string='Oportunidad')
-    name = fields.Char('Oportunidad')
-    planned_revenue = fields.Monetary('Monto del Plan', currency_field='company_currency', tracking=True)
-    company_id = fields.Many2one('res.company', string='Company', index=True, default=lambda self: self.env.company.id)
-    company_currency = fields.Many2one(string='Currency', related='company_id.currency_id', readonly=True, relation="res.currency")
-    #valor = fields.Char('Monto')
-    sale_id = fields.Many2one('calcula.comision')
-    #@api.onchange('crmlead')
-    #def _onchange_picking_id(self):
-    #    data = []
-    #    crm = self.env['crm.lead'].search([('id','=',self.cemlead.id),('active','=',True)])
-        
+        if not analytic_accounts:
+            return
+
+        self.flush(['company_id'])
+        self._cr.execute('''
+            SELECT line.id
+            FROM account_move_line line
+            JOIN account_analytic_account account ON account.id = line.analytic_account_id
+            WHERE line.analytic_account_id IN %s
+            AND line.company_id != account.company_id
+        ''', [tuple(analytic_accounts.ids)])
+
+        if self._cr.fetchone():
+            raise UserError(_("You can't set a different company on your analytic account since there are some journal items linked to it."))
+
+
+class AccountAnalyticTag(models.Model):
+    _inherit = 'account.analytic.tag'
+
+    @api.constrains('company_id')
+    def _check_company_consistency(self):
+        analytic_tags = self.filtered('company_id')
+
+        if not analytic_tags:
+            return
+
+        self.flush(['company_id'])
+        self._cr.execute('''
+            SELECT line.id
+            FROM account_analytic_tag_account_move_line_rel tag_rel
+            JOIN account_analytic_tag tag ON tag.id = tag_rel.account_analytic_tag_id
+            JOIN account_move_line line ON line.id = tag_rel.account_move_line_id
+            WHERE tag_rel.account_analytic_tag_id IN %s
+            AND line.company_id != tag.company_id
+        ''', [tuple(analytic_tags.ids)])
+
+        if self._cr.fetchone():
+            raise UserError(_("You can't set a different company on your analytic tags since there are some journal items linked to it."))
+
+
+class AccountAnalyticLine(models.Model):
+    _inherit = 'account.analytic.line'
+    _description = 'Analytic Line'
+    _order = 'date desc'
+
+    product_id = fields.Many2one('product.product', string='Product', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    general_account_id = fields.Many2one('account.account', string='Financial Account', ondelete='restrict', readonly=True,
+                                         related='move_id.account_id', store=True, domain=[('deprecated', '=', False)],
+                                         compute_sudo=True)
+    move_id = fields.Many2one('account.move.line', string='Journal Item', ondelete='cascade', index=True)
+    code = fields.Char(size=8)
+    ref = fields.Char(string='Ref.')
+
+    @api.onchange('product_id', 'product_uom_id', 'unit_amount', 'currency_id')
+    def on_change_unit_amount(self):
+        if not self.product_id:
+            return {}
+
+        result = 0.0
+        prod_accounts = self.product_id.product_tmpl_id._get_product_accounts()
+        unit = self.product_uom_id
+        account = prod_accounts['expense']
+        if not unit or self.product_id.uom_po_id.category_id.id != unit.category_id.id:
+            unit = self.product_id.uom_po_id
+
+        # Compute based on pricetype
+        amount_unit = self.product_id.price_compute('standard_price', uom=unit)[self.product_id.id]
+        amount = amount_unit * self.unit_amount or 0.0
+        result = (self.currency_id.round(amount) if self.currency_id else round(amount, 2)) * -1
+        self.amount = result
+        self.general_account_id = account
+        self.product_uom_id = unit
+
+    @api.model
+    def view_header_get(self, view_id, view_type):
+        context = (self._context or {})
+        header = False
+        if context.get('account_id', False):
+            analytic_account = self.env['account.analytic.account'].search([('id', '=', context['account_id'])], limit=1)
+            header = _('Entries: ') + (analytic_account.name or '')
+        return header

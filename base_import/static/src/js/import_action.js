@@ -87,8 +87,8 @@ var DataImport = AbstractAction.extend({
         {name: 'datetime_format', label: _lt("Datetime Format:"), value: ''},
     ],
     parse_opts_separators: [
-        {name: 'float_thousand_separator', label: _lt("Thousands Separator:"), value: ','},
-        {name: 'float_decimal_separator', label: _lt("Decimal Separator:"), value: '.'}
+        {name: 'float_thousand_separator', label: _lt("Thousands Separator:"), value: '.'},
+        {name: 'float_decimal_separator', label: _lt("Decimal Separator:"), value: ','}
     ],
     events: {
         // 'change .oe_import_grid input': 'import_dryrun',

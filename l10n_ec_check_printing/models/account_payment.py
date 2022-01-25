@@ -70,6 +70,41 @@ class AccountPayment(models.Model):
         'account.payment.anticipo.valor', 'payment_id',
         'Anticipos')
 
+    account_payment_account_ids = fields.One2many('account.payment.line.account','payment_id', string="Cuentas Contables")
+
+
+
+
+
+
+
+    @api.constrains('account_payment_account_ids' )
+    def calcular_monto(self):
+        total=0
+
+
+        if self.payment_type=='outbound':
+            for line in self.account_payment_account_ids:
+                total += line.debit
+        elif  self.payment_type=='inbound':
+            for line in self.account_payment_account_ids:
+                total += line.credit
+
+        if total!=self.amount and self.tipo_transaccion=='movimiento':
+            raise ValidationError('El valor ingresado en el detalle de cuentas contables la suma debe ser igual al monto a pagar.')
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     @api.depends('anticipo_ids','amount')
@@ -753,72 +788,72 @@ class AccountPayment(models.Model):
                     ],
                 }
 
-
-
-
-                if self.tipo_transaccion=='movimiento':
-
-
-                    journal = payment.destination_journal_id
-
-                    # Manage custom currency on journal for liquidity line.
-                    if journal.currency_id and payment.currency_id != journal.currency_id:
-                        # Custom currency on journal.
-                        liquidity_line_currency_id = journal.currency_id.id
-                        transfer_amount = company_currency._convert(balance, journal.currency_id, payment.company_id, payment.payment_date)
-                    else:
-                        # Use the payment currency.
-                        liquidity_line_currency_id = currency_id
-                        transfer_amount = counterpart_amount
-
-                    transfer_move_vals = {
-                        'date': payment.payment_date,
-                        'ref': payment.communication,
-                        'partner_id': payment.partner_id.id,
-                        'journal_id': payment.destination_journal_id.id,
-                        'line_ids': [
-                            # Transfer debit line.
-                            (0, 0, {
-                                'name': payment.name,
-                                'amount_currency': -counterpart_amount if currency_id else 0.0,
-                                'currency_id': currency_id,
-                                'debit': balance < 0.0 and -balance or 0.0,
-                                'credit': balance > 0.0 and balance or 0.0,
-                                'date_maturity': payment.payment_date,
-                                'partner_id': payment.partner_id.commercial_partner_id.id,
-                                'account_id': payment.company_id.transfer_account_id.id,
-                                'payment_id': payment.id,
-                            }),
-                            # Liquidity credit line.
-                            (0, 0, {
-                                'name': _('Transfer from %s') % payment.journal_id.name,
-                                'amount_currency': transfer_amount if liquidity_line_currency_id else 0.0,
-                                'currency_id': liquidity_line_currency_id,
-                                'debit': balance > 0.0 and balance or 0.0,
-                                'credit': balance < 0.0 and -balance or 0.0,
-                                'date_maturity': payment.payment_date,
-                                'partner_id': payment.partner_id.commercial_partner_id.id,
-                                'account_id': payment.destination_journal_id.default_credit_account_id.id,
-                                'payment_id': payment.id,
-                            }),
-                        ],
-                    }
-
-
-
-
-
-
-
-
-
-
-
-
                 if move_names and len(move_names) == 2:
                     transfer_move_vals['name'] = move_names[1]
 
                 all_move_vals.append(transfer_move_vals)
+
+
+
+
+            if self.tipo_transaccion=='movimiento':
+
+        # ==== 'inbound' / 'outbound' ==== para múltiples cuentas
+
+                listaMovimientos=[
+
+                        #  Este se envía al banco 
+                        (0, 0, {
+                            'name': liquidity_line_name,
+                            'amount_currency': -liquidity_amount if liquidity_line_currency_id else 0.0,
+                            'currency_id': liquidity_line_currency_id,
+                            'debit': balance < 0.0 and -balance or 0.0,
+                            'credit': balance > 0.0 and balance or 0.0,
+                            'date_maturity': payment.payment_date,
+                            'partner_id': payment.partner_id.commercial_partner_id.id,
+                            'account_id': liquidity_line_account.id,
+                            'payment_id': payment.id,
+                            'analytic_account_id':payment.cuenta_analitica.id or False,
+                        })
+                    ]
+
+
+                for linea in self.account_payment_account_ids:
+
+                        # Receivable / Payable / Transfer line. Este se envia al proveedor
+                        tupla=(0, 0, {
+                            'name': rec_pay_line_name,
+                            'amount_currency':  0.0,
+                            'currency_id': currency_id,
+                            'debit': linea.debit ,
+                            'credit':  linea.credit,
+                            'date_maturity': payment.payment_date,
+                            'partner_id': False,
+                            'account_id': linea.cuenta.id,
+                            'payment_id': payment.id,
+                            'account_id': linea.cuenta.id,
+                            'analytic_account_id':linea.cuenta_analitica.id or False,
+
+
+
+                        })
+
+                        listaMovimientos.append(tupla)
+                #raise ValidationError(str(listaMovimientos))
+                
+                move_vals = {
+                    'date': payment.payment_date,
+                    'ref': payment.communication,
+                    'journal_id': payment.journal_id.id,
+                    'currency_id': payment.journal_id.currency_id.id or payment.company_id.currency_id.id,
+                    'partner_id': payment.partner_id.id,
+                    'line_ids': listaMovimientos,
+                }
+                all_move_vals=[]
+                all_move_vals.append(move_vals)
+
+       # raise ValidationError(str(all_move_vals))
+
         return all_move_vals
 
 

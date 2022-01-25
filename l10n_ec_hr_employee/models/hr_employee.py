@@ -88,7 +88,7 @@ class HrEmployee(models.Model):
         if not partner_id:
             dct = {
                 'company_type':'person',
-                'l10n_latam_identification_type_id':4 ,
+                'l10n_latam_identification_type_id':self.type_identifier ,
                 'vat': self.identification_id,
                 'mobile':self.mobile_phone,
                 'phone':self.work_phone,
