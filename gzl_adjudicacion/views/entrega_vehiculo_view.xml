@@ -21,6 +21,7 @@
             <form string="Entrega Vehiculo">
                 <header>
                     <field name="state" widget="statusbar"/>
+                    <field name="garante" invisible="1"/>
                 </header>
 
 
