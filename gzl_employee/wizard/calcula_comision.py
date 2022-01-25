@@ -68,8 +68,8 @@ class CalculoComision(models.TransientModel):
                 for l in crm :
                     #raise ValidationError(str(l.partner_id))
                     vals= {
-                        'oportunidad':l.name,
-                        'valor':l.planned_revenue
+                        'name':l.name,
+                        'planned_revenue':l.planned_revenue
 
                     }
                     lines.append((0,0,vals))
@@ -84,10 +84,12 @@ class CalculoComision(models.TransientModel):
 class DetalleOportunidades(models.TransientModel):
     _name = 'detalle.oportunidades'
     #_inherit = ["crm.lead"]
-    #crmlead = fields.Many2one('crm.lead', string='Oportunidad')
-    oportunidad = fields.Char(string='Oportunidad')
-    #company_id = fields.Many2one('res.company', string='Company', index=True, default=lambda self: self.env.company.id)
-    #company_currency = fields.Many2one(string='Currency', related='company_id.currency_id', readonly=True, relation="res.currency")
+    crmlead = fields.Many2one('crm.lead', string='Oportunidad')
+    #oportunidad = fields.Char(string='Oportunidad')
+    name = fields.Char('name')
+    planned_revenue = fields.Monetary('Expected Revenue', currency_field='company_currency', tracking=True)
+    company_id = fields.Many2one('res.company', string='Company', index=True, default=lambda self: self.env.company.id)
+    company_currency = fields.Many2one(string='Currency', related='company_id.currency_id', readonly=True, relation="res.currency")
     valor = fields.Char('Monto')
     sale_id = fields.Many2one('calcula.comision')
     #@api.onchange('crmlead')

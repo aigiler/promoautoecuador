@@ -8,12 +8,12 @@
                     <group>
                         <group col="2">
                             <field name="name"/>
-                           <field name="partner" />
+                           <field name="planned_revenue" />
                         </group>      
                         
                     </group>   
-                     <field name="det" widget="section_and_note_one2many">
-                         <field name="oportunidad"/>
+                     <field name="det" >
+                         <field name="name"/>
                          <field name="valor"/>
                     </field>
                     <footer>
