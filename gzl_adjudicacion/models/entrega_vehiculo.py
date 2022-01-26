@@ -716,8 +716,8 @@ class EntegaVehiculo(models.Model):
                 rec.edadConyuge = edad
             else:
                 rec.edadConyuge = 0
-                
-    @api.depends('fechaNacimientoGarante')
+    
+    @api.onchange('fechaNacimientoGarante')
     def calcular_edad_garante(self):
         edad = 0
         for rec in self:
