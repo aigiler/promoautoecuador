@@ -76,7 +76,7 @@
                                     <group attrs="{'invisible':[('garante', '=', False)]}"> 
                                         <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
                                         <field name="edadGarante" string="Edad"/>
-                                        <field name="cargasFamiliaresGarante" />
+                                        <field name="cargasFamiliaresGarante" string ="Cargas Fam." />
                                     </group>
                                 </div>
                             </div>
@@ -170,8 +170,17 @@
                                     </tr>
                                 </tbody>
                             </div>
-                            <div class="col-xs-12 col-sm-12">
+                            <div class="col-xs-12 col-sm-12" attrs="{'invisible':[('garante', '=', True)]}"> 
                                 <field name="paginasDeControl" nolabel="1">
+                                    <tree create='0' delete='0' editable='top'>
+                                        <field name="pagina_id" readonly='1'/>
+                                        <field name="descripcion" readonly='1'/>
+                                        <field name="pagina"/>
+                                    </tree>
+                                </field>
+                            </div>
+                            <div class="col-xs-12 col-sm-12" attrs="{'invisible':[('garante', '=', False)]}"> 
+                                <field name="paginasDeControlGarante" nolabel="1">
                                     <tree create='0' delete='0' editable='top'>
                                         <field name="pagina_id" readonly='1'/>
                                         <field name="descripcion" readonly='1'/>
@@ -194,7 +203,8 @@
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <group>
-                                        <field name="nombreSocioAdjudicado" readonly="1" force_save="1"/>
+                                        <field name="nombreSocioAdjudicado" readonly="1" force_save="1" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))], 'invisible':[('garante', '=', True)]}"/>
+                                        <field name="nombreGarante" readonly="1" force_save="1" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))], 'invisible':[('garante', '=', False)]}"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
