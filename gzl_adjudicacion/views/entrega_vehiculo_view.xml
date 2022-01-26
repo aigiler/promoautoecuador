@@ -163,8 +163,10 @@
                                         <td class="col-xs-12 col-sm-4">
                                             <text>Score</text>
                                         </td>
-                                        <td class="col-xs-12 col-sm-3"> 
+                                        <td class="col-xs-12 col-sm-3" attrs="{'invisible':[('garante', '=', True)]}"> 
                                             <field name="scoreBuroCredito" nolabel="1" attrs="{'invisible':[('garante', '=', True)]}"/>
+                                        </td>
+                                        <td class="col-xs-12 col-sm-3" attrs="{'invisible':[('garante', '=', False)]}"> 
                                             <field name="scoreCreditoGarante" nolabel="1" attrs="{'invisible':[('garante', '=', False)]}"/>
                                         </td>
                                     </tr>
@@ -207,9 +209,14 @@
                                         <field name="nombreGarante" readonly="1" force_save="1" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))], 'invisible':[('garante', '=', False)]}"/>
                                     </group>
                                 </div>
-                                <div class="col-xs-12 col-sm-4">
+                                <div class="col-xs-12 col-sm-4" attrs="{'invisible':[('garante', '=', True)]}"> 
                                     <group>
                                         <field name="vatAdjudicado" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                </div>
+                                <div class="col-xs-12 col-sm-4" attrs="{'invisible':[('garante', '=', False)]}"> 
+                                    <group>
+                                        <field name="vatGarante" readonly="1" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-4">
@@ -360,10 +367,11 @@
                                                     <label for="ingresosFamiliares" string="Ingresos familiares"/>
                                                 </td>
                                                 <td>
-                                                    <field name="ingresosFamiliares" string="Ingresos familiares"/>
+                                                    <field name="ingresosFamiliares" string="Ingresos familiares"  attrs="{'invisible':[('garante', '=', True)]}"/>
+                                                    <field name="ingresosFamiliaresGarante" string="Ingresos familiares"  attrs="{'invisible':[('garante', '=', False)]}"/>
                                                 </td>
                                                 <td>
-                                                    <field name="porcentajeIngresos" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                    <field name="porcentajeIngresos" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}" /><text>%</text>
                                                 </td>
                                                 <td>
                                                     <text>Comprometido</text>
@@ -374,10 +382,11 @@
                                                     <label for="gastosFamiliares" string="Gastos familiares"/>
                                                 </td>
                                                 <td>
-                                                    <field name="gastosFamiliares" string ="Gastos familiares" options="{'no_create': True, 'no_open': True}"/>
+                                                    <field name="gastosFamiliares" string ="Gastos familiares" readonly="1" readoptions="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('garante', '=', True)]}"/>
+                                                    <field name="gastosFamiliares" string ="Gastos familiares" readonly="1" readoptions="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('garante', '=', False)]}"/>
                                                 </td>
                                                 <td>
-                                                    <field name="porcentajeGastos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                    <field name="porcentajeGastos" nolabel="1" options="{'no_create': True, 'no_open': True}"/><text>%</text>
                                                 </td>
                                                 <td>
                                                     <text>Cuota Plan</text>
@@ -388,21 +397,26 @@
                                                     <label for="disponibilidad" string="Disponibilidad" options="{'no_create': True, 'no_open': True}"/>
                                                 </td>
                                                 <td style="border-top: 0.5px solid">
-                                                    <field name="disponibilidad" string="Disponibilidad" options="{'no_create': True, 'no_open': True}"/>
+                                                    <field name="disponibilidad" string="Disponibilidad" options="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('garante', '=', True)]}" />
+                                                    <field name="disponibilidadGarante" string="Disponibilidad" options="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('garante', '=', False)]}"/>
                                                 </td>
                                                 <td>
                                                     <field name="porcentajeDisponibilidad" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                                 </td>
                                                 <td>
-                                                    <field name="porcentajeCuotaPlan" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                    <field name="porcentajeCuotaPlan" nolabel="1" options="{'no_create': True, 'no_open': True}"  attrs="{'invisible':[('garante', '=', True)]}" />
+                                                    <field name="porcentajDisponGarante" nolabel="1" options="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('garante', '=', False)]}"/>
 %</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
                                 <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <group>
+                                    <group  attrs="{'invisible':[('garante', '=', True)]}">
                                         <field name="puntosCuotaIngresos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                    <group  attrs="{'invisible':[('garante', '=', False)]}">
+                                        <field name="puntosDisponibilidadGarante" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
                                 </div>
                             </div>
@@ -415,6 +429,7 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-5">
                                     <field name="scoreCredito" nolabel="1" string="Score de Credito Mayor a 800 puntos " />
+                                    <field name="scoreCreditoGarante" nolabel="1" string="Score de Credito Mayor a 800 puntos " />
                                 </div>
                                 <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
                                     <field name="puntosScoreCredito" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
