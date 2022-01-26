@@ -62,7 +62,7 @@
                                     </group>
                                     <group attrs="{'invisible':[('garante', '=', False)]}"> 
                                         <field name="vatGarante" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
-                                        <field name="fechaNacimientoGarante" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="fechaNacimientoGarante" string="Fecha de Nacimiento" options="{'no_create': True, 'no_open': True}"/>
                                         <field name="estadoCivilGarante" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
    
@@ -104,8 +104,8 @@
                                         <field name="edadConyuge" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
                                     <group attrs="{'invisible':[('garante', '=', False)]}"> 
-                                        <field name="fechaNacimientoConyuge" string="Fecha de Nacimiento"/>
-                                        <field name="edadConyuge" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="fechaNacimientoConyugeGarante" string="Fecha de Nacimiento"/>
+                                        <field name="edadConyugeGarante" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
                                 </div>
                             </div>
@@ -146,9 +146,9 @@
                                     </group>
                                     <group attrs="{'invisible':[('garante', '=', False)]}"> 
                                         <field name="instFinancieraGarante"/>
-                                        <field name="direccionCasaGarante"/>
-                                        <field name="direccionTerrenoGarante"/>
-                                        <field name="placaVehiculoGarante"/>
+                                        <field name="direccionCasaGarante" string = "Dirección: "/>
+                                        <field name="direccionTerrenoGarante" string = "Dirección: "/>
+                                        <field name="placaVehiculoGarante" string = "Placa: "/>
                                     </group>
                                 </div>
                             </div>

@@ -168,13 +168,16 @@ class EntegaVehiculo(models.Model):
     nombreGarante = fields.Many2one('res.partner', string="Nombre del Garante", track_visibility='onchange',store=True)
     vatGarante = fields.Char(related="nombreGarante.vat", string='Cedula de Ciudadanía',store=True)    
     fechaNacimientoGarante = fields.Date(String='Fecha de Nacimiento')
-    edadGarante  = fields.Integer(String='Edad')
+    edadGarante  = fields.Integer(String='Edad', compute='calcular_edad_garante')
+    
+
     estadoCivilGarante = fields.Selection(related="nombreSocioAdjudicado.estado_civil" ,store=True)
     cargasFamiliaresGarante = fields.Integer(String = 'Cargas Fam.')
     
     # datos del conyuge
     nombreConyugeGarante = fields.Char(String='Nombre del Cónyuge')
     vatConyugeGarante = fields.Char(String='Cedula de Ciudadanía')
+    fechaNacimientoConyugeGarante = fields.Date(string='Fecha de Nacimiento')
     estadoCivilConyugeGarante = fields.Selection(selection=[
         ('soltero', 'Soltero/a'),
         ('union_libre', 'Unión libre'),
@@ -182,7 +185,7 @@ class EntegaVehiculo(models.Model):
         ('divorciado', 'Divorciado/a'),
         ('viudo', 'Viudo/a')
     ], string='Estado Civil', default='soltero')
-    edadConyugeGarante  = fields.Integer(string='Edad')
+    edadConyugeGarante  = fields.Integer(string='Edad', compute='calcular_edad_conyuge_garante')
     #datos domiciliaros
     domicilioGarante = fields.Text(String='Referencias indican:')
     #datos laborales
@@ -713,6 +716,32 @@ class EntegaVehiculo(models.Model):
                 rec.edadConyuge = edad
             else:
                 rec.edadConyuge = 0
+                
+    @api.depends('fechaNacimientoGarante')
+    def calcular_edad_garante(self):
+        edad = 0
+        for rec in self:
+            today = date.today()
+            if rec.fechaNacimientoGarante:
+                edad = today.year - rec.fechaNacimientoGarante.year - \
+                    ((today.month, today.day) < (
+                        rec.fechaNacimientoGarante.month, rec.fechaNacimientoGarante.day))
+                rec.edadGarante = edad
+            else:
+                rec.edadGarante = 0
+
+    @api.onchange('fechaNacimientoConyugeGarante')
+    def calcular_edad_conyuge_garante(self):
+        edad = 0
+        for rec in self:
+            today = date.today()
+            if rec.fechaNacimientoConyugeGarante:
+                edad = today.year - rec.fechaNacimientoConyugeGarante.year - \
+                    ((today.month, today.day) < (
+                        rec.fechaNacimientoConyugeGarante.month, rec.fechaNacimientoConyugeGarante.day))
+                rec.edadConyugeGarante = edad
+            else:
+                rec.edadConyugeGarante = 0
 
     @api.model
     def create(self, vals):
