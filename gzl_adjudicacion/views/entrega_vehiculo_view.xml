@@ -67,13 +67,13 @@
                                     </group>
    
                                 </div>
-                                <div class="col-xs-4" attrs="{'invisible':[('garante', '=', False)]}">
-                                    <group>
+                                <div class="col-xs-4" >
+                                    <group attrs="{'invisible':[('garante', '=', True)]}">
                                         <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
                                         <field name="edadAdjudicado" string="Edad"/>
                                         <field name="cargasFamiliares" />
                                     </group>
-                                    <group attrs="{'invisible':[('garante', '=', True)]}"> 
+                                    <group attrs="{'invisible':[('garante', '=', False)]}"> 
                                         <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
                                         <field name="edadGarante" string="Edad"/>
                                         <field name="cargasFamiliaresGarante" />
