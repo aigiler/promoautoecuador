@@ -130,7 +130,7 @@
                                     </field>
                                 </div>
                                 <div class="col-xs-12 col-sm-8" attrs="{'invisible':[('garante', '=', False)]}"> 
-                                    <field name="montoAhorroInversiones" nolabel="1">
+                                    <field name="valoresPatrimonio" nolabel="1">
                                         <tree create='0' delete='0' editable='top'>
                                             <field name="patrimonio_id" readonly='1'/>
                                             <field name="valor" sum="valor" />
