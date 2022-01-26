@@ -117,7 +117,7 @@
                             <separator class="text-center fw-bold" string="DATOS LABORALES"/>
                             <div class="row" style="border: 1px solid black;">
                                 <field name="referenciasLaborales" widget="pad" string='Referencias indican:' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))], 'invisible':[('garante', '=', True)]}"/>
-                                <field name="referenciasLaborales" widget="pad" string='Referencias indican:' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))], 'invisible':[('garante', '=', False)]}"/>
+                                <field name="refLaboralesGarante" widget="pad" string='Referencias indican:' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))], 'invisible':[('garante', '=', False)]}"/>
                             </div>
                             <separator class="text-center" string="PATRIMONIO"/>
                             <div class="row" style="border: 1px solid black;">
