@@ -49,31 +49,31 @@
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <group>  
-                                        <field name="nombreSocioAdjudicado" required="1" options="{'no_open': True, 'no_create': True}" attrs="{'invisible':[('garante', '=', 'True')]}"/>
+                                        <field name="nombreSocioAdjudicado" required="1" options="{'no_open': True, 'no_create': True}" attrs="{'invisible':[('garante', '=', True)]}"/>
                                         <field name="garante" invisible="1"/>
-                                        <field name="nombreGarante" options="{'no_open': True, 'no_create': True}" attrs="{'invisible':[('garante', '=', 'False')], 'required':[('garante', '=', 'True')]}"/>
+                                        <field name="nombreGarante" options="{'no_open': True, 'no_create': True}" attrs="{'invisible':[('garante', '=', False)], 'required':[('garante', '=', True)]}"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
-                                    <group attrs="{'invisible':[('garante', '=', 'True')]}"> 
+                                    <group attrs="{'invisible':[('garante', '=', True)]}"> 
                                         <field name="vatAdjudicado" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
                                         <field name="fechaNacimientoAdj" options="{'no_create': True, 'no_open': True}"/>
                                         <field name="estadoCivilAdj" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
-                                    <group attrs="{'invisible':[('garante', '=', 'False')]}"> 
+                                    <group attrs="{'invisible':[('garante', '=', False)]}"> 
                                         <field name="vatGarante" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
                                         <field name="fechaNacimientoGarante" options="{'no_create': True, 'no_open': True}"/>
                                         <field name="estadoCivilGarante" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
    
                                 </div>
-                                <div class="col-xs-4" attrs="{'invisible':[('garante', '=', 'False')]}">
+                                <div class="col-xs-4" attrs="{'invisible':[('garante', '=', False)]}">
                                     <group>
                                         <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
                                         <field name="edadAdjudicado" string="Edad"/>
                                         <field name="cargasFamiliares" />
                                     </group>
-                                    <group attrs="{'invisible':[('garante', '=', 'True')]}"> 
+                                    <group attrs="{'invisible':[('garante', '=', True)]}"> 
                                         <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
                                         <field name="edadGarante" string="Edad"/>
                                         <field name="cargasFamiliaresGarante" />
@@ -84,17 +84,26 @@
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <group>
-                                        <field name="nombreConyuge" string="Nombre del Cónyuge" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
+                                        <field name="nombreConyuge" string="Nombre del Cónyuge" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))], 'invisible':[('garante', '=', True)]}"/>
+                                        <field name="nombreConyugeGarante" string="Nombre del Cónyuge" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))], 'invisible':[('garante', '=', False)]}"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
-                                    <group>
+                                    <group attrs="{'invisible':[('garante', '=', True)]}"> 
                                         <field name="vatConyuge" string="Cedula de Ciudadanía" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
+                                        <field name="estadoCivilConyuge" string="Estado Civil" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
+                                    </group>
+                                    <group attrs="{'invisible':[('garante', '=', False)]}"> 
+                                        <field name="vatConyugeGarante" string="Cedula de Ciudadanía" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
                                         <field name="estadoCivilConyuge" string="Estado Civil" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-4">
-                                    <group>
+                                    <group attrs="{'invisible':[('garante', '=', True)]}"> 
+                                        <field name="fechaNacimientoConyuge" string="Fecha de Nacimiento"/>
+                                        <field name="edadConyuge" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                    <group attrs="{'invisible':[('garante', '=', False)]}"> 
                                         <field name="fechaNacimientoConyuge" string="Fecha de Nacimiento"/>
                                         <field name="edadConyuge" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
@@ -102,32 +111,44 @@
                             </div>
                             <separator class="text-center fw-bold" string="DATOS DOMICIARIOS"/>
                             <div class="row" style="border: 1px solid black;">
-                                <field name="referenciaDomiciliaria" widget="pad" string='Referencias indican:' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
+                                <field name="referenciaDomiciliaria" widget="pad" string='Referencias indican:' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))], 'invisible':[('garante', '=', True)]}"/>
+                                <field name="domicilioGarante" widget="pad" string='Referencias indican:' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))], 'invisible':[('garante', '=', False)]}"/>
                             </div>
                             <separator class="text-center fw-bold" string="DATOS LABORALES"/>
                             <div class="row" style="border: 1px solid black;">
-                                <field name="referenciasLaborales" widget="pad" string='Referencias indican:'/>
+                                <field name="referenciasLaborales" widget="pad" string='Referencias indican:' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))], 'invisible':[('garante', '=', True)]}"/>
+                                <field name="referenciasLaborales" widget="pad" string='Referencias indican:' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))], 'invisible':[('garante', '=', False)]}"/>
                             </div>
                             <separator class="text-center" string="PATRIMONIO"/>
                             <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-8">
+                                <div class="col-xs-12 col-sm-8" attrs="{'invisible':[('garante', '=', True)]}"> 
                                     <field name="montoAhorroInversiones" nolabel="1">
                                         <tree create='0' delete='0' editable='top'>
                                             <field name="patrimonio_id" readonly='1'/>
                                             <field name="valor" sum="valor" />
                                         </tree>
                                     </field>
-
-
-
-                                    
+                                </div>
+                                <div class="col-xs-12 col-sm-8" attrs="{'invisible':[('garante', '=', False)]}"> 
+                                    <field name="montoAhorroInversiones" nolabel="1">
+                                        <tree create='0' delete='0' editable='top'>
+                                            <field name="patrimonio_id" readonly='1'/>
+                                            <field name="valor" sum="valor" />
+                                        </tree>
+                                    </field>
                                 </div>
                                 <div class="col-xs-4">
-                                    <group>
+                                    <group attrs="{'invisible':[('garante', '=', True)]}"> 
                                         <field name="institucionFinanciera"/>
                                         <field name="direccion"/>
                                         <field name="direccion1"/>
                                         <field name="placa"/>
+                                    </group>
+                                    <group attrs="{'invisible':[('garante', '=', False)]}"> 
+                                        <field name="instFinancieraGarante"/>
+                                        <field name="direccionCasaGarante"/>
+                                        <field name="direccionTerrenoGarante"/>
+                                        <field name="placaVehiculoGarante"/>
                                     </group>
                                 </div>
                             </div>
@@ -143,7 +164,8 @@
                                             <text>Score</text>
                                         </td>
                                         <td class="col-xs-12 col-sm-3"> 
-                                            <field name="scoreBuroCredito" nolabel="1"/>
+                                            <field name="scoreBuroCredito" nolabel="1" attrs="{'invisible':[('garante', '=', True)]}"/>
+                                            <field name="scoreCreditoGarante" nolabel="1" attrs="{'invisible':[('garante', '=', False)]}"/>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -160,7 +182,8 @@
                             <separator/>
                             <separator class="text-center" string="OBSERVACIONES"/>
                             <div class="row">
-                                <field name="observaciones" />
+                                <field name="observaciones" attrs="{'invisible':[('garante', '=', True)]}"/>
+                                <field name="observacionesInformeGarante" attrs="{'invisible':[('garante', '=', False)]}"/>
                             </div>
                             <separator/>
 
