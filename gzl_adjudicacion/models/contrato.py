@@ -97,7 +97,7 @@ class Contrato(models.Model):
     numero_cuotas_pagadas = fields.Integer(
         string='Cuotas Pagadas', compute="calcular_cuotas_pagadas", store=True, track_visibility='onchange')
 
-    aplicaGarante  = fields.Boolean(string='Garante', default = False, track_visibility='onchange')
+    aplicaGarante  = fields.Boolean(string='Garante',default = False, track_visibility='onchange')
     
     garante =  fields.Many2one('res.partner', string="Garante", track_visibility='onchange')
     
