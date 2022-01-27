@@ -74,22 +74,7 @@ def informe_credito_cobranza(ruta,lista,lista_patrimonio):
 
 
 
-    for linea in lista_patrimonio:
-        nombre_patrimonio=linea['nombre']
-
-
-        fila=capturar_fila_de_valor_a_buscar_en_hoja_calculo(sheet,36,41,2,nombre_patrimonio)
-        if fila:
-            for campo in linea['campos']:
-                cell = sheet.cell(row=fila, column=campo['columna'])
-                print(fila,campo['columna'])
-                cell.value = campo['valor']
-
-
-
-
-
-
+    self.llenar_tabla_excel(lista_patrimonio,sheet,36,41,2)
 
 
 
@@ -118,6 +103,30 @@ def informe_credito_cobranza(ruta,lista,lista_patrimonio):
     
 
     workbook.save(ruta)
+
+
+
+def llenar_tabla_excel(lista,sheet,filaInicioBusqueda,filafinBusqueda,ColumnaEje):
+
+    for linea in lista:
+        nombre_patrimonio=linea['nombre']
+
+
+        fila=capturar_fila_de_valor_a_buscar_en_hoja_calculo(sheet,filaInicioBusqueda,filafinBusqeuda,ColumnaEje,nombre_patrimonio)
+        if fila:
+            for campo in linea['campos']:
+                cell = sheet.cell(row=fila, column=campo['columna'])
+                print(fila,campo['columna'])
+                cell.value = campo['valor']
+
+
+
+
+
+
+
+
+
 
 
 
