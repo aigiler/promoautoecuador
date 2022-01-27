@@ -407,9 +407,9 @@ class EntegaVehiculo(models.Model):
     def set_aplica_garante(self):
         for rec in self:
             if rec.totalPuntosCalificador  >= 700:
-                rec.aplicaGarante = 'no'
+                rec.aplicaGarante = 'NO'
             else:
-                rec.aplicaGarante = 'si'
+                rec.aplicaGarante = 'SI'
     
 
     @api.depends('valorAdjParaCompra', 'valorComisionFactura', 'comisionDispositivoRastreo', 'montoAnticipoConsesionaria')
@@ -442,7 +442,7 @@ class EntegaVehiculo(models.Model):
     @api.depends('poseeCasa')
     def set_puntos_casa(self):
         for rec in self:
-            if rec.poseeCasa == 'si':
+            if rec.poseeCasa == 'SI':
                 rec.puntosCasa = 200
             else:
                 rec.puntosCasa = 0
@@ -450,7 +450,7 @@ class EntegaVehiculo(models.Model):
     @api.depends('poseeTerreno')
     def set_puntos_terreno(self):
         for rec in self:
-            if rec.poseeTerreno == 'si':
+            if rec.poseeTerreno == 'SI':
                 rec.puntosTerreno = 150
             else:
                 rec.puntosTerreno = 0
@@ -458,7 +458,7 @@ class EntegaVehiculo(models.Model):
     @api.depends('poseeMotos')
     def set_puntos_motos(self):
         for rec in self:
-            if rec.poseeMotos == 'si':
+            if rec.poseeMotos == 'SI':
                 rec.puntosMotos = 50
             else:
                 rec.puntosMotos = 0
@@ -466,7 +466,7 @@ class EntegaVehiculo(models.Model):
     @api.depends('poseeVehiculo')
     def set_puntos_vehiculo(self):
         for rec in self:
-            if rec.poseeVehiculo == 'si':
+            if rec.poseeVehiculo == 'SI':
                 rec.puntosVehiculo = 100
             else:
                 rec.puntosVehiculo = 0
@@ -474,7 +474,7 @@ class EntegaVehiculo(models.Model):
     @api.depends('poseeMueblesEnseres')
     def set_puntos_muebles(self):
         for rec in self:
-            if rec.poseeMueblesEnseres == 'si':
+            if rec.poseeMueblesEnseres == 'SI':
                 rec.puntosMueblesEnseres = 25
             else:
                 rec.puntosMueblesEnseres = 0
@@ -841,7 +841,7 @@ class PaginasDeControlEntregaVehiculo(models.Model):
     entrega_id = fields.Many2one('entrega.vehiculo')
     pagina_id = fields.Many2one('paginas.de.control')
     descripcion  = fields.Char(related='pagina_id.descripcion')
-    pagina = fields.Selection(selection=[ ('si', 'SI'),('no', 'NO')], default='no')
+    pagina = fields.Selection(selection=[ ('SI', 'SI'),('NO', 'NO')], default='SI')
 
 
 class PuntosBienesEntregaVehiculo(models.Model):
@@ -852,14 +852,14 @@ class PuntosBienesEntregaVehiculo(models.Model):
     bien_id = fields.Many2one('puntos.bienes')
     valorBien  = fields.Integer(related='bien_id.valorPuntos')
     puntosBien = fields.Integer(string='Ptos.', compute = 'set_puntos_bienes', store = True) 
-    poseeBien = fields.Selection(selection=[ ('si', 'SI'),('no', 'NO')], string='SI/NO', default='no')
+    poseeBien = fields.Selection(selection=[ ('SI', 'SI'),('NO', 'NO')], string='SI/NO', default='NO')
     
 
     @api.depends('poseeBien')
     def set_puntos_bienes(self):
         valorDefault = 0
         for rec in self:
-            if rec.poseeBien == 'no':
+            if rec.poseeBien == 'NO':
                 rec.puntosBien = valorDefault
             else:
                 rec.puntosBien = rec.valorBien 
