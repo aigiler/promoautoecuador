@@ -322,8 +322,8 @@ class EntegaVehiculo(models.Model):
     anio = fields.Char()
     
     aplicaGarante = fields.Selection(selection=[
-        ('no', 'Titular, Conyugue y Depositario'),
-        ('si', 'Titular, Conyugue y Garante Solidario')
+        ('NO', 'Titular, Conyugue y Depositario'),
+        ('SI', 'Titular, Conyugue y Garante Solidario')
     ], compute='set_aplica_garante')
     
     montoPagoConsesionario = fields.Selection(selection=[
@@ -439,47 +439,6 @@ class EntegaVehiculo(models.Model):
         for rec in self:
             rec.totalPuntosCalificador = rec.puntosPorcentajeCancelado + rec.puntosPorcentajSaldos +  rec.puntosCuotaIngresos + rec.puntosScoreCredito +  rec.puntosAntiguedadLaboral + rec.totalPuntosBienesAdj
 
-    @api.depends('poseeCasa')
-    def set_puntos_casa(self):
-        for rec in self:
-            if rec.poseeCasa == 'SI':
-                rec.puntosCasa = 200
-            else:
-                rec.puntosCasa = 0
-
-    @api.depends('poseeTerreno')
-    def set_puntos_terreno(self):
-        for rec in self:
-            if rec.poseeTerreno == 'SI':
-                rec.puntosTerreno = 150
-            else:
-                rec.puntosTerreno = 0
-
-    @api.depends('poseeMotos')
-    def set_puntos_motos(self):
-        for rec in self:
-            if rec.poseeMotos == 'SI':
-                rec.puntosMotos = 50
-            else:
-                rec.puntosMotos = 0
-
-    @api.depends('poseeVehiculo')
-    def set_puntos_vehiculo(self):
-        for rec in self:
-            if rec.poseeVehiculo == 'SI':
-                rec.puntosVehiculo = 100
-            else:
-                rec.puntosVehiculo = 0
-
-    @api.depends('poseeMueblesEnseres')
-    def set_puntos_muebles(self):
-        for rec in self:
-            if rec.poseeMueblesEnseres == 'SI':
-                rec.puntosMueblesEnseres = 25
-            else:
-                rec.puntosMueblesEnseres = 0
-
-    
 
     @api.depends('antiguedadLaboral')
     def calcular_puntos_antiguedad_laboral(self):
