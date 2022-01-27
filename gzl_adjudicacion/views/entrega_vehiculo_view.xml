@@ -454,8 +454,8 @@
                                 </div>
                             </div>
                             <separator/>
-                            <div class="row" style="border: 1px solid black;" attrs="{'invisible':[('garante', '=', True)]}">
-                                <div class="col-xs-12 col-sm-8">
+                            <div class="row" style="border: 1px solid black;">
+                                <div class="col-xs-12 col-sm-8" attrs="{'invisible':[('garante', '=', True)]}">
                                     <field name="tablaPuntosBienes" nolabel="1">
                                         <tree create='0' delete='0' editable='top'>
                                             <field name="bien_id" readonly='1'/>
