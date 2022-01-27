@@ -229,7 +229,7 @@ class EntegaVehiculo(models.Model):
     gastosFamiliaresGarante = fields.Monetary(string='Gastos familiares', compute='calcular_gastos_familiares_garante')
     disponibilidadGarante = fields.Monetary(string='Disponibilidad', compute='calcular_disponibilidad_garante')
     porcentajDisponGarante = fields.Monetary(string='Porcentaje Disponibilidad', compute='calcular_porcentaje_disponibilidad_garante')
-    puntosDisponibilidadGarante = fields.Integer(String='Puntos Porcentaje Disponibilidad Garante')
+    puntosDisponibilidadGarante = fields.Integer(String='Puntos Porcentaje Disponibilidad Garante', compute = 'calcular_puntos_disponibilidad_garante')
     #score credito
     puntosScoreCreditoGarante = fields.Integer(String='Puntos Score Credito Garante')
     #antiguedad laboral
@@ -523,11 +523,11 @@ class EntegaVehiculo(models.Model):
             else:
                 rec.valorDelBien = 0.00
 
-    @api.depends('montoCuotasCanceladas')
+    @api.depends('montoCuotasPendientes')
     def set_valor_saldo_plan(self):
         for rec in self:
-            if rec.montoCuotasCanceladas:
-                rec.saldoPlan = rec.montoCuotasCanceladas
+            if rec.montoCuotasPendientes:
+                rec.saldoPlan = rec.montoCuotasPendientes
             else:
                 rec.saldoPlan = 0.00
 
@@ -593,6 +593,20 @@ class EntegaVehiculo(models.Model):
                 rec.porcentajDisponGarante = round(((rec.valorCuota/rec.ingresosFamiliaresGarante) * 100), 0) 
             else:
                 rec.porcentajDisponGarante = 0.0
+                
+                
+    
+    @api.depends('porcentajDisponGarante')
+    def calcular_puntos_disponibilidad_garante(self):
+        for rec in self:
+            if rec.porcentajDisponGarante >= 0.00 and rec.porcentajDisponGarante <= 30.00:
+                rec.puntosDisponibilidadGarante = 200
+            elif rec.porcentajDisponGarante >= 31.00 and rec.porcentajDisponGarante <= 40.00:
+                rec.puntosDisponibilidadGarante = 100
+            elif rec.porcentajDisponGarante >= 41.00:
+                rec.puntosDisponibilidadGarante = 0
+            else:
+                rec.puntosDisponibilidadGarante = 0
 
     #################################################
 
