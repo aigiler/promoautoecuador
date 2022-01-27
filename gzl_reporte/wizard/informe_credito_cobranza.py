@@ -81,9 +81,9 @@ class InformeCreditoCrobranza(models.TransientModel):
 
             lista_patrimonio= self.obtenerTablas(obj_plantilla,objetos_patrimonio,'montoAhorroInversiones','patrimonio_id.nombre')
 
-            objetos_paginas_de_control=self.entrega_vehiculo_id.paginaDeControl
+            objetos_paginas_de_control=self.entrega_vehiculo_id.paginasDeControl
 
-            lista_paginas= self.obtenerTablas(obj_plantilla,objetos_patrimonio,'paginaDeControl','pagina_id.nombre')
+            lista_paginas= self.obtenerTablas(obj_plantilla,objetos_patrimonio,'paginasDeControl','pagina_id.nombre')
             
             objetos_puntos_bienes=self.entrega_vehiculo_id.tablaPuntosBienes
 
