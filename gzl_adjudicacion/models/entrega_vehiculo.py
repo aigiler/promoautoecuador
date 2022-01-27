@@ -234,7 +234,7 @@ class EntegaVehiculo(models.Model):
     puntosScoreCreditoGarante = fields.Integer(String='Puntos Score Credito Garante', compute='calcular_puntos_score_garante')
     #antiguedad laboral
     antiguedadLaboralGarante = fields.Integer(String='Antiguedad Laboral Garante')
-    puntosAntiguedadGarante = fields.Integer(String='Puntos Antiguedad Laboral Garante')
+    puntosAntiguedadGarante = fields.Integer(String='Puntos Antiguedad Laboral Garante', compute='calcular_puntos_antiguedad_garante')
     #posee bienes
     puntosBienesGarante = fields.One2many('puntos.bienes.entrega.vehiculo','entrega_id',track_visibility='onchange')
     def llenar_puntos_bienes_garante(self):
@@ -623,6 +623,17 @@ class EntegaVehiculo(models.Model):
                 rec.puntosScoreCreditoGarante = 200
             else:
                 rec.puntosScoreCreditoGarante = 0
+                
+    
+    @api.depends('antiguedadLaboralGarante')
+    def calcular_puntos_antiguedad_garante(self):
+        for rec in self:
+            if rec.antiguedadLaboralGarante >= 2:
+                rec.puntosAntiguedadGarante = 200
+            elif rec.antiguedadLaboralGarante >= 1:
+                rec.puntosAntiguedadGarante = 100
+            else:
+                rec.puntosAntiguedadGarante = 0
 
     #################################################
 

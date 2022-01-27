@@ -444,15 +444,17 @@
                                     </text>
                                 </div>
                                 <div class="col-xs-12 col-sm-5">
-                                    <field name="antiguedadLaboral" nolabel="1" string="Antigüedad Laboral o Comercial Mayor a 2 años " />
+                                    <field name="antiguedadLaboral" nolabel="1" string="Antigüedad Laboral o Comercial Mayor a 2 años " attrs="{'invisible':[('garante', '=', True)]}"/>
+                                    <field name="antiguedadLaboralGarante" nolabel="1" string="Antigüedad Laboral o Comercial Mayor a 2 años " attrs="{'invisible':[('garante', '=', False)]}"/>
                                     <text> Años</text>
                                 </div>
                                 <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <field name="puntosAntiguedadLaboral" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="puntosAntiguedadLaboral" nolabel="1" options="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('garante', '=', True)]}"/>
+                                    <field name="puntosAntiguedadLaboralGarante" nolabel="1" options="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('garante', '=', False)]}"/>
                                 </div>
                             </div>
                             <separator/>
-                            <div class="row" style="border: 1px solid black;">
+                            <div class="row" style="border: 1px solid black;" attrs="{'invisible':[('garante', '=', True)]}">
                                 <div class="col-xs-12 col-sm-8">
                                     <field name="tablaPuntosBienes" nolabel="1">
                                         <tree create='0' delete='0' editable='top'>
@@ -462,8 +464,18 @@
                                         </tree>
                                     </field>
                                 </div>
+                                <div class="col-xs-12 col-sm-8" attrs="{'invisible':[('garante', '=', False)]}">
+                                    <field name="puntosBienesGarante" nolabel="1">
+                                        <tree create='0' delete='0' editable='top'>
+                                            <field name="bien_id" readonly='1'/>
+                                            <field name="poseeBien"/>
+                                            <field name="puntosBien" readonly='1'/>
+                                        </tree>
+                                    </field>
+                                </div>
                                 <div class="col-xs-12 col-sm-4" style="border: 0.05px solid black;">
-                                    <field name="totalPuntosBienesAdj" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="totalPuntosBienesAdj" nolabel="1" options="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('garante', '=', True)]}"/>
+                                    <field name="totalPuntosBienesGarante" nolabel="1" options="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('garante', '=', False)]}"/>
                                 </div>
                             </div>
                             <separator/>
