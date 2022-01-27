@@ -237,17 +237,19 @@ class EntegaVehiculo(models.Model):
     puntosAntiguedadGarante = fields.Integer(String='Puntos Antiguedad Laboral Garante', compute='calcular_puntos_antiguedad_garante')
     #posee bienes
     puntosBienesGarante = fields.One2many('puntos.bienes.entrega.vehiculo','entrega_id',track_visibility='onchange')
+        
     def llenar_puntos_bienes_garante(self):
         obj_puntos_bienes=self.env['puntos.bienes'].search([])
         for bienes in obj_puntos_bienes:
             self.env['puntos.bienes.entrega.vehiculo'].create({'bien_id':bienes.id,'entrega_id':self.id})
+    
             
     totalPuntosBienesGarante = fields.Integer(compute='calcular_puntos_bienes_garante',store=True)
 
-    @api.depends('puntosBienesGarante')
+    @api.depends('tablaPuntosBienes')
     def calcular_puntos_bienes_garante(self):
         for rec in self:
-            rec.totalPuntosBienesGarante = sum(rec.puntosBienesGarante.mapped('puntosBien'))
+            rec.totalPuntosBienesGarante = sum(rec.tablaPuntosBienes.mapped('puntosBien'))
 
     
     puntosCalificadorGarante = fields.Integer(String = 'Total Puntos', compute='total_puntos_garante')
