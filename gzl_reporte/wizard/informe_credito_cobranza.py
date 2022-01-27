@@ -81,9 +81,13 @@ class InformeCreditoCrobranza(models.TransientModel):
 
             lista_patrimonio= self.obtenerTablas(obj_plantilla,objetos_patrimonio,'montoAhorroInversiones','patrimonio_id.nombre')
 
+            objetos_paginas_de_control=self.entrega_vehiculo_id.paginaDeControl
 
-            informe_excel.informe_credito_cobranza(obj_plantilla.directorio_out,lista_campos,lista_patrimonio)
+            lista_paginas= self.obtenerTablas(obj_plantilla,objetos_patrimonio,'paginaDeControl','pagina_id.nombre')
+            
+            informe_excel.informe_credito_cobranza(obj_plantilla.directorio_out,lista_campos,lista_patrimonio, lista_paginas)
 
+            
 
 
             with open(obj_plantilla.directorio_out, "rb") as f:

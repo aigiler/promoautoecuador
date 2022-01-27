@@ -50,7 +50,7 @@ def ajustar_hoja(sheet, flag, celda, value):
 
 
 
-def informe_credito_cobranza(ruta,lista,lista_patrimonio):
+def informe_credito_cobranza(ruta,lista,lista_patrimonio, lista_paginas):
 
     workbook = openpyxl.load_workbook(ruta)
 
@@ -75,6 +75,7 @@ def informe_credito_cobranza(ruta,lista,lista_patrimonio):
 
 
     llenar_tabla_excel(lista_patrimonio,sheet,36,41,2)
+    llenar_tabla_excel(lista_paginas,sheet,45,48,6)
 
 
 
