@@ -590,9 +590,9 @@ class EntegaVehiculo(models.Model):
     def calcular_porcentaje_disponibilidad_garante(self):
         for rec in self:
             if rec.ingresosFamiliaresGarante:
-                rec.porcentajeCuotaPlan = round(((rec.valorCuota/rec.ingresosFamiliaresGarante) * 100), 0) 
+                rec.porcentajDisponGarante = round(((rec.valorCuota/rec.ingresosFamiliaresGarante) * 100), 0) 
             else:
-                rec.porcentajeCuotaPlan = 0.0
+                rec.porcentajDisponGarante = 0.0
 
     #################################################
 
