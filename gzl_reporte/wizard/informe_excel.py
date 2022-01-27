@@ -50,7 +50,7 @@ def ajustar_hoja(sheet, flag, celda, value):
 
 
 
-def informe_credito_cobranza(ruta,lista):
+def informe_credito_cobranza(ruta,lista,lista_patrimonio):
 
     workbook = openpyxl.load_workbook(ruta)
 
@@ -71,6 +71,25 @@ def informe_credito_cobranza(ruta,lista):
             cell.value = campo['valor']
         except:
             raise ValidationErorr("""El valor {0} en la fila {1} columna {2} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna']))
+
+
+
+    for linea in lista_patrimonio:
+        nombre_patrimonio=linea['nombre']
+
+
+        fila=capturar_fila_de_valor_a_buscar_en_hoja_calculo(sheet,36,41,2,nombre_patrimonio)
+        if fila:
+            for campo in linea['campos']:
+                cell = sheet.cell(row=fila, column=campo['columna'])
+                print(fila,campo['columna'])
+                cell.value = campo['valor']
+
+
+
+
+
+
 
 
 
