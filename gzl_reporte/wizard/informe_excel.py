@@ -50,7 +50,7 @@ def ajustar_hoja(sheet, flag, celda, value):
 
 
 
-def informe_credito_cobranza(ruta,lista,lista_patrimonio, lista_paginas):
+def informe_credito_cobranza(ruta,lista,lista_patrimonio, lista_paginas, lista_puntos_bienes):
 
     workbook = openpyxl.load_workbook(ruta)
 
@@ -89,7 +89,7 @@ def informe_credito_cobranza(ruta,lista,lista_patrimonio, lista_paginas):
         except:
             raise ValidationErorr("""El valor {0} en la fila {1} columna {2} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna']))
 
-    
+    llenar_tabla_excel(lista_puntos_bienes,sheet,32,36,3)
     
     
     sheet = workbook['Liquidacion']
