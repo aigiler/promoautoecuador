@@ -618,11 +618,11 @@ class EntegaVehiculo(models.Model):
     def calcular_puntos_score_garante(self):
         for rec in self:
             if rec.scoreCreditoGarante >= 500 and rec.scoreCreditoGarante <= 799:
-                rec.puntosScoreCredito = 100
+                rec.puntosScoreCreditoGarante = 100
             elif rec.scoreCreditoGarante >= 800:
-                rec.puntosScoreCredito = 200
+                rec.puntosScoreCreditoGarante = 200
             else:
-                rec.puntosScoreCredito = 0
+                rec.puntosScoreCreditoGarante = 0
 
     #################################################
 
