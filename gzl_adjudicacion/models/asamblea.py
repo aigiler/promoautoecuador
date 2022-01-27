@@ -226,7 +226,7 @@ class IntegrantesGrupoAsamblea(models.Model):
     def _filtro_partner(self):
         numero_cuotas_pagadas_limite =  int(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.numero_cuotas_pagadas'))
         for rec in self:
- 
+
             integrantes=rec.grupo_id.grupo_adjudicado_id.integrantes.filtered(lambda l: l.contrato_id.tipo_de_contrato.id==rec.grupo_id.tipo_contrato.id and l.contrato_id.numero_cuotas_pagadas>=numero_cuotas_pagadas_limite).mapped('adjudicado_id').ids
             integrantes_res=rec.grupo_id.integrantes_g.mapped("adjudicado_id").ids
             if len(integrantes)>0:
@@ -240,7 +240,7 @@ class IntegrantesGrupoAsamblea(models.Model):
 class GanadoresAsamblea(models.Model):
     _name = 'gana.grupo.adjudicado.asamblea.clientes'
     _description = 'Ganadores de la Asamblea'
-  
+
 
     grupo_id = fields.Many2one('asamblea')
     adjudicado_id = fields.Many2one('res.partner', string="Nombre")
