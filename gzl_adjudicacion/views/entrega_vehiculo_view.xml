@@ -383,7 +383,7 @@
                                                 </td>
                                                 <td>
                                                     <field name="gastosFamiliares" string ="Gastos familiares" readonly="1" readoptions="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('garante', '=', True)]}"/>
-                                                    <field name="gastosFamiliares" string ="Gastos familiares" readonly="1" readoptions="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('garante', '=', False)]}"/>
+                                                    <field name="gastosFamiliaresGarante" string ="Gastos familiares" readonly="1" readoptions="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('garante', '=', False)]}"/>
                                                 </td>
                                                 <td>
                                                     <field name="porcentajeGastos" nolabel="1" options="{'no_create': True, 'no_open': True}"/><text>%</text>

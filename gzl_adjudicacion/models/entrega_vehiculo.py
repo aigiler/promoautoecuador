@@ -137,7 +137,7 @@ class EntegaVehiculo(models.Model):
     
     
     scoreBuroCredito = fields.Integer(string='Buró de Crédito')
-   
+
 
     # observaciones
     observaciones = fields.Text(string='Observaciones')
@@ -226,9 +226,9 @@ class EntegaVehiculo(models.Model):
     contratoGarante = fields.Char()
     #ingresos Familiares
     ingresosFamiliaresGarante = fields.Monetary(string='Ingresos familiares')
-    gastosFamiliaresGarante = fields.Monetary(string='Gastos familiares', compute='calcular_valor_gastos_familiares')
-    disponibilidadGarante = fields.Monetary(string='Disponibilidad', compute='calcular_valor_gastos_familiares')
-    porcentajDisponGarante = fields.Monetary(string='Porcentaje Disponibilidad', compute='calcular_porcentaje_gastos_familiares')
+    gastosFamiliaresGarante = fields.Monetary(string='Gastos familiares', compute='calcular_gastos_familiares_garante')
+    disponibilidadGarante = fields.Monetary(string='Disponibilidad', compute='calcular_disponibilidad_garante')
+    porcentajDisponGarante = fields.Monetary(string='Porcentaje Disponibilidad', compute='calcular_porcentaje_disponibilidad_garante')
     puntosDisponibilidadGarante = fields.Integer(String='Puntos Porcentaje Disponibilidad Garante')
     #score credito
     puntosScoreCreditoGarante = fields.Integer(String='Puntos Score Credito Garante')
@@ -276,8 +276,7 @@ class EntegaVehiculo(models.Model):
     scoreCredito = fields.Integer(string="Score de Credito Mayor a 800 puntos")
     puntosScoreCredito = fields.Integer(compute='calcular_punto_score_credito')
     antiguedadLaboral = fields.Integer(string="Antigüedad Laboral o Comercial Mayor a 2 años")
-    puntosAntiguedadLaboral = fields.Integer(
-        compute='calcular_puntos_antiguedad_laboral')
+    puntosAntiguedadLaboral = fields.Integer(compute='calcular_puntos_antiguedad_laboral')
     
     
         
@@ -572,6 +571,20 @@ class EntegaVehiculo(models.Model):
                 rec.porcentajeCuotaPlan = round(((rec.valorCuota/rec.ingresosFamiliares) * 100), 0) 
             else:
                 rec.porcentajeCuotaPlan = 0.0
+
+
+    ###### CALCULO INGRESOS Y GASTOS GARANTE
+
+    @api.depends('ingresosFamiliaresGarante', 'gastosFamiliaresGarante')
+    def calcular_disponibilidad_garante(self):
+        for rec in self:
+            rec.disponibilidadGarante = rec.ingresosFamiliaresGarante - rec.gastosFamiliaresGarante
+
+    @api.depends('ingresosFamiliaresGarante')
+    def calcular_gastos_familiares_garante(self):
+        for rec in self:
+            rec.porcentajeIngresos = 100.00
+            rec.gastosFamiliaresGarante = rec.ingresosFamiliaresGarante * 0.7
 
     @api.depends('porcentajeGastos', 'porcentajeIngresos')
     def calcular_porcentaje_disponibilidad(self):
