@@ -79,7 +79,7 @@ class InformeCreditoCrobranza(models.TransientModel):
 
             objetos_patrimonio=self.entrega_vehiculo_id.montoAhorroInversiones
 
-            lista_patrimonio= self.obtenerTabla(objetos_patrimonio,'montoAhorroInversiones','patrimonio_id.nombre')
+            lista_patrimonio= self.obtenerTablas(obj_plantilla,objetos_patrimonio,'montoAhorroInversiones','patrimonio_id.nombre')
 
 
             informe_excel.informe_credito_cobranza(obj_plantilla.directorio_out,lista_campos,lista_patrimonio)
@@ -109,11 +109,11 @@ class InformeCreditoCrobranza(models.TransientModel):
 
 
 
-    def obtenerTablas(self, objetos,parametro,campoReferencia):
+    def obtenerTablas(self, obj_plantilla, objetos,parametro,campoReferencia):
         lista_patrimonio=[]
         for dvr in objetos:
 
-            campos_dvr=self.plantilla_dinamica.campos_ids.filtered(lambda l: parametro in l.name )
+            campos_dvr=obj_plantilla.campos_ids.filtered(lambda l: parametro in l.name )
             dct_dvr={}
             lista_campos_detalle=[]
             for campo in campos_dvr.child_ids:
@@ -131,13 +131,6 @@ class InformeCreditoCrobranza(models.TransientModel):
             dct_dvr['campos']=lista_campos_detalle
             lista_patrimonio.append(dct_dvr)
         return lista_patrimonio
-
-
-
-
-
-
-
 
 
         #except:
