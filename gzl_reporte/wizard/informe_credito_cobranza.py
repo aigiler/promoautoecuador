@@ -83,11 +83,11 @@ class InformeCreditoCrobranza(models.TransientModel):
 
             objetos_paginas_de_control=self.entrega_vehiculo_id.paginasDeControl
 
-            lista_paginas= self.obtenerTablas(obj_plantilla,objetos_patrimonio,'paginasDeControl','pagina_id.nombre')
+            lista_paginas= self.obtenerTablas(obj_plantilla,objetos_paginas_de_control,'paginasDeControl','pagina_id.nombre')
             
             objetos_puntos_bienes=self.entrega_vehiculo_id.tablaPuntosBienes
 
-            lista_puntos_bienes= self.obtenerTablas(obj_plantilla,objetos_patrimonio,'tablaPuntosBienes','bien_id.nombre')
+            lista_puntos_bienes= self.obtenerTablas(obj_plantilla,objetos_puntos_bienes,'tablaPuntosBienes','bien_id.nombre')
             
             informe_excel.informe_credito_cobranza(obj_plantilla.directorio_out,lista_campos,lista_patrimonio, lista_paginas, lista_puntos_bienes)
 
