@@ -231,12 +231,17 @@ class EntegaVehiculo(models.Model):
     porcentajDisponGarante = fields.Monetary(string='Porcentaje Disponibilidad', compute='calcular_porcentaje_disponibilidad_garante')
     puntosDisponibilidadGarante = fields.Integer(String='Puntos Porcentaje Disponibilidad Garante', compute = 'calcular_puntos_disponibilidad_garante')
     #score credito
-    puntosScoreCreditoGarante = fields.Integer(String='Puntos Score Credito Garante')
+    puntosScoreCreditoGarante = fields.Integer(String='Puntos Score Credito Garante', compute='calcular_puntos_score_garante')
     #antiguedad laboral
     antiguedadLaboralGarante = fields.Integer(String='Antiguedad Laboral Garante')
     puntosAntiguedadGarante = fields.Integer(String='Puntos Antiguedad Laboral Garante')
     #posee bienes
     puntosBienesGarante = fields.One2many('puntos.bienes.entrega.vehiculo','entrega_id',track_visibility='onchange')
+    def llenar_puntos_bienes_garante(self):
+        obj_puntos_bienes=self.env['puntos.bienes'].search([])
+        for bienes in obj_puntos_bienes:
+            self.env['puntos.bienes.entrega.vehiculo'].create({'bien_id':bienes.id,'entrega_id':self.id})
+            
     totalPuntosBienesGarante = fields.Integer(compute='calcular_puntos_bienes_garante',store=True)
 
     @api.depends('puntosBienesGarante')
@@ -607,6 +612,17 @@ class EntegaVehiculo(models.Model):
                 rec.puntosDisponibilidadGarante = 0
             else:
                 rec.puntosDisponibilidadGarante = 0
+                
+                
+    @api.depends('scoreCreditoGarante')
+    def calcular_puntos_score_garante(self):
+        for rec in self:
+            if rec.scoreCreditoGarante >= 500 and rec.scoreCreditoGarante <= 799:
+                rec.puntosScoreCredito = 100
+            elif rec.scoreCreditoGarante >= 800:
+                rec.puntosScoreCredito = 200
+            else:
+                rec.puntosScoreCredito = 0
 
     #################################################
 

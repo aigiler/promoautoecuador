@@ -428,11 +428,12 @@
                                     </text>
                                 </div>
                                 <div class="col-xs-12 col-sm-5">
-                                    <field name="scoreCredito" nolabel="1" string="Score de Credito Mayor a 800 puntos " />
-                                    <field name="scoreCreditoGarante" nolabel="1" string="Score de Credito Mayor a 800 puntos " />
+                                    <field name="scoreCredito" nolabel="1" string="Score de Credito Mayor a 800 puntos " attrs="{'invisible':[('garante', '=', True)]}"/>
+                                    <field name="scoreCreditoGarante" nolabel="1" string="Score de Credito Mayor a 800 puntos " attrs="{'invisible':[('garante', '=', False)]}"/>
                                 </div>
                                 <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <field name="puntosScoreCredito" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="puntosScoreCredito" nolabel="1" options="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('garante', '=', True)]}"/>
+                                    <field name="puntosScoreCreditoGarante" nolabel="1" options="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('garante', '=', False)]}"/>
                                 </div>
                             </div>
                             <separator/>
