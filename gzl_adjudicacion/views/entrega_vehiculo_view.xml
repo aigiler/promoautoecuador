@@ -473,6 +473,7 @@
                                         </tree>
                                     </field>
                                 </div>
+                                
                                 <div class="col-xs-12 col-sm-4" style="border: 0.05px solid black;">
                                     <field name="totalPuntosBienesAdj" nolabel="1" options="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('garante', '=', True)]}"/>
                                     <field name="totalPuntosBienesGarante" nolabel="1" options="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('garante', '=', False)]}"/>
