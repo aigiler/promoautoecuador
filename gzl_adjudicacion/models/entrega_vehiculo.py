@@ -635,6 +635,12 @@ class EntegaVehiculo(models.Model):
             else:
                 rec.puntosAntiguedadGarante = 0
 
+
+    @api.depends('puntosPorcentajeCancelado', 'puntosPorcentajSaldos', 'puntosDisponibilidadGarante', 'puntosScoreCreditoGarante', 'puntosAntiguedadGarante', 'totalPuntosBienesGarante')
+    def total_puntos_garante(self):
+        for rec in self:
+            rec.totalPuntosCalificador = rec.puntosPorcentajeCancelado + rec.puntosPorcentajSaldos +  rec.puntosDisponibilidadGarante + rec.puntosScoreCreditoGarante +  rec.puntosAntiguedadGarante + rec.totalPuntosBienesGarante
+
     #################################################
 
     @api.depends('porcentajeGastos', 'porcentajeIngresos')

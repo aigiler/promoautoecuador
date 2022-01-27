@@ -450,7 +450,7 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
                                     <field name="puntosAntiguedadLaboral" nolabel="1" options="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('garante', '=', True)]}"/>
-                                    <field name="puntosAntiguedadLaboralGarante" nolabel="1" options="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('garante', '=', False)]}"/>
+                                    <field name="puntosAntiguedadGarante" nolabel="1" options="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('garante', '=', False)]}"/>
                                 </div>
                             </div>
                             <separator/>
@@ -486,7 +486,8 @@
                                     </text>
                                 </div>
                                 <div class="col-xs-12 col-sm-3">
-                                    <field name="totalPuntosCalificador" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="totalPuntosCalificador" nolabel="1" options="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('garante', '=', True)]}"/>
+                                    <field name="puntosCalificadorGarante" nolabel="1" options="{'no_create': True, 'no_open': True}" attrs="{'invisible':[('garante', '=', False)]}"/>
                                 </div>
                             </div>
                             <separator/>
