@@ -465,7 +465,7 @@
                                     </field>
                                 </div>
                                 <div class="col-xs-12 col-sm-8" attrs="{'invisible':[('garante', '=', False)]}">
-                                    <field name="puntosBienesGarante" nolabel="1">
+                                    <field name="tablaPuntosBienes" nolabel="1">
                                         <tree create='0' delete='0' editable='top'>
                                             <field name="bien_id" readonly='1'/>
                                             <field name="poseeBien"/>
