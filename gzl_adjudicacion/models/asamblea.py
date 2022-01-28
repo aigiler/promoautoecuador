@@ -19,7 +19,7 @@ class Asamblea(models.Model):
         'integrante.grupo.adjudicado.asamblea', 'asamblea_id',track_visibility='onchange')
     # integrantes = fields.Many2many('integrante.grupo.adjudicado')
     codigo_tipo_contrato = fields.Char(related="tipo_asamblea.code", string='Tipo de Asamblea' )
-    fecha_asamblea = fields.Date(String='Fecha de Asamblea')
+    #fecha_asamblea = fields.Date(String='Fecha de Asamblea')
     junta = fields.One2many('junta.grupo.asamblea', 'asamblea_id',track_visibility='onchange')
     ganadores = fields.One2many('gana.grupo.adjudicado.asamblea.clientes', 'grupo_id',track_visibility='onchange')
     fecha_inicio = fields.Datetime(String='Fecha Inicio',track_visibility='onchange')
