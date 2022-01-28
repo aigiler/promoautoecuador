@@ -168,7 +168,6 @@ class EntegaVehiculo(models.Model):
     nombreGarante = fields.Many2one('res.partner', string="Nombre del Garante", track_visibility='onchange',store=True)
     vatGarante = fields.Char(related="nombreGarante.vat", string='Cedula de Ciudadanía',store=True)    
     fechaNacimientoGarante = fields.Date(String='Fecha de Nacimiento')
-    edadGarante  = fields.Integer(String='Edad', compute='calcular_edad_garante')
     
 
     estadoCivilGarante = fields.Selection(related="nombreGarante.estado_civil" ,store=True)    
@@ -614,19 +613,19 @@ class EntegaVehiculo(models.Model):
                 rec.edadAdjudicado = 0
     
     
-    @api.depends('fechaNacimientoGarante')
-    def calcular_edad_garante(self):
-        edad = 0
-        for rec in self:
-            today = date.today()
-            if rec.garante == True:
-                if rec.fechaNacimientoAdj:
-                    edad = today.year - rec.fechaNacimientoAdj.year - \
-                        ((today.month, today.day) < (
-                            rec.fechaNacimientoAdj.month, rec.fechaNacimientoAdj.day))
-                    rec.edadAdjudicado = edad
-                else:
-                    rec.edadAdjudicado = 0
+    # @api.depends('fechaNacimientoGarante')
+    # def calcular_edad_garante(self):
+    #     edad = 0
+    #     for rec in self:
+    #         today = date.today()
+    #         if rec.garante == True:
+    #             if rec.fechaNacimientoAdj:
+    #                 edad = today.year - rec.fechaNacimientoAdj.year - \
+    #                     ((today.month, today.day) < (
+    #                         rec.fechaNacimientoAdj.month, rec.fechaNacimientoAdj.day))
+    #                 rec.edadAdjudicado = edad
+    #             else:
+    #                 rec.edadAdjudicado = 0
 
     @api.onchange('fechaNacimientoConyuge')
     def calcular_edad_conyuge(self):
