@@ -14,21 +14,27 @@ def crear_documento_reserva(ruta,detalle,lista_estado_cuenta ):
     doc = Document(ruta)
 
     # #Tabla de Alarmas Rojas
-    # tabla=doc.tables[1]
+    tabla=doc.tables[1]
 
 
 
-    # contador=1
-    # for estado_cuenta in lista_estado_cuenta:
-    #     if alarma['item']!=False:
-    #         tabla.cell(contador, 0).text = estado_cuenta.numero_cuota
-    #     if alarma['name']!=False:
-    #         tabla.cell(contador, 1).text = alarma['name']
-    #     if alarma['estado']!=False:
-    #         tabla.cell(contador, 2).text = alarma['estado']
-    #     contador+=1
-    #     if contador!=len(dct_final['detalle_carac_rojo'])+1:
-    #         tabla.add_row() 
+    contador=1
+    for estado_cuenta in lista_estado_cuenta:
+        if estado_cuenta['numero_cuota']!=False:
+            tabla.cell(contador, 0).text = estado_cuenta.numero_cuota
+        if estado_cuenta['fecha']!=False:
+            tabla.cell(contador, 1).text = estado_cuenta.fecha
+        if estado_cuenta['cuota_capital']!=False:
+            tabla.cell(contador, 2).text = estado_cuenta.cuota_capital
+        if estado_cuenta['cuota_adm']!=False:
+            tabla.cell(contador, 3).text = estado_cuenta.cuota_adm
+        if estado_cuenta['iva_adm']!=False:
+            tabla.cell(contador, 4).text = estado_cuenta.iva_adm
+        if estado_cuenta['saldo']!=False:
+            tabla.cell(contador, 5).text = estado_cuenta.saldo
+        contador+=1
+        if contador!=len(dct_final['estado_cuenta'])+1:
+            tabla.add_row() 
 
     for campo in detalle:
         #Redenriza
