@@ -33,7 +33,7 @@ def crear_documento_reserva(ruta,detalle,lista_estado_cuenta ):
         if estado_cuenta['saldo']!=False:
             tabla.cell(contador, 5).text = str(estado_cuenta.saldo)
         contador+=1
-        if contador!=len(dct_final['estado_cuenta'])+1:
+        if contador!=len(lista_estado_cuenta)+1:
             tabla.add_row() 
 
     for campo in detalle:
