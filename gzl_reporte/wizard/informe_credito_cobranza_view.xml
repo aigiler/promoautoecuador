@@ -6,12 +6,9 @@
             <field name="arch" type="xml">
                 <form string="Informe Credito y Cobranza">
                     <group>
-                         <group col="2">
-
+                        <group col="2">
                             <field name="entrega_vehiculo_id" required="1"   options="{'no_open': True, 'no_create': True}" />
-
                         </group>
-
                     </group>
                     <footer>
                         <button name="print_report_xls"
