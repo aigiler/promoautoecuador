@@ -643,12 +643,6 @@
                                                 <field name="montoChequeConsesionario" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                             </td>
                                         </tr>
-                                        <!-- 
-                                    <tr>
-                                        <td><text>COMISION POR DISPOSITIVO DE RASTREO</text> </td>
-                                        <td> </td>
-                                        <td><field name="comisionDispositivoRastreo" nolabel="1" options="{'no_create': True, 'no_open': True}"/> </td>
-                                    </tr> -->
                                     </tbody>
                                 </table>
                             </div>
