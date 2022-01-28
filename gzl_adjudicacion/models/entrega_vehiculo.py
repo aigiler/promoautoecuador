@@ -233,7 +233,7 @@ class EntegaVehiculo(models.Model):
     mes = fields.Char(string='')
     anio = fields.Char()
     
-    nombreInforme =  = fields.Selection(selection=[
+    nombreInforme = fields.Selection(selection=[
         ('NO', 'Nombre del Socio Adj.: '),
         ('SI', 'Nombre del Garante.:')
     ], compute='setea_informe_garante')
