@@ -620,13 +620,13 @@ class EntegaVehiculo(models.Model):
         for rec in self:
             today = date.today()
             if garante == True:
-            if rec.fechaNacimientoAdj:
-                edad = today.year - rec.fechaNacimientoAdj.year - \
-                    ((today.month, today.day) < (
-                        rec.fechaNacimientoAdj.month, rec.fechaNacimientoAdj.day))
-                rec.edadAdjudicado = edad
-            else:
-                rec.edadAdjudicado = 0
+                if rec.fechaNacimientoAdj:
+                    edad = today.year - rec.fechaNacimientoAdj.year - \
+                        ((today.month, today.day) < (
+                            rec.fechaNacimientoAdj.month, rec.fechaNacimientoAdj.day))
+                    rec.edadAdjudicado = edad
+                else:
+                    rec.edadAdjudicado = 0
 
     @api.onchange('fechaNacimientoConyuge')
     def calcular_edad_conyuge(self):
