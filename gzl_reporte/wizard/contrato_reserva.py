@@ -66,8 +66,9 @@ class ContratoResrva(models.TransientModel):
                 lista_campos.append(dct)
 
             estado_cuenta=self.contrato_id.estado_de_cuenta_ids
+            #crear_documento_contrato_reserva.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
 
-            crear_documento_contrato_reserva.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
+            crear_documento_contrato_reserva.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos)
 
 
             with open(obj_plantilla.directorio_out, "rb") as f:
@@ -89,16 +90,3 @@ class ContratoResrva(models.TransientModel):
             "url": url,
             "target": "new",
         }
-
-
-
-        #except:
-        #   raise ValidationError(_('No existe informacion para generar el informe'))
-
-
-
-
-
-
-
-
