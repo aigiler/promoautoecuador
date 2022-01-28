@@ -23,7 +23,7 @@ def crear_documento_reserva(ruta,detalle,lista_estado_cuenta ):
         if estado_cuenta['numero_cuota']!=False:
             tabla.cell(contador, 0).text = estado_cuenta.numero_cuota
         if estado_cuenta['fecha']!=False:
-            tabla.cell(contador, 1).text = estado_cuenta.fecha
+            tabla.cell(contador, 1).text = str(estado_cuenta.fecha)
         if estado_cuenta['cuota_capital']!=False:
             tabla.cell(contador, 2).text = estado_cuenta.cuota_capital
         if estado_cuenta['cuota_adm']!=False:
