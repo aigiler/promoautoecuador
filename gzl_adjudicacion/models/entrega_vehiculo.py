@@ -619,7 +619,7 @@ class EntegaVehiculo(models.Model):
         edad = 0
         for rec in self:
             today = date.today()
-            if garante == True:
+            if rec.garante == True:
                 if rec.fechaNacimientoAdj:
                     edad = today.year - rec.fechaNacimientoAdj.year - \
                         ((today.month, today.day) < (
