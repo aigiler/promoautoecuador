@@ -15,15 +15,10 @@
                     </group>                        
                     <footer>
                         <button name="print_report_xls"
-                                string="Imprimir Excel"
+                                string="Imprimir Word"
                                 type="object"
                                 class="oe_highlight" />
-                        or
-                        <button name="print_report_pdf"
-                                string="Imprimir PDF"
-                                type="object"
-                                class="oe_highlight btn btn-danger" />
-                        or                        
+                                               
                         <button special="cancel"
                                 string="_Cancel"
                                 class="oe_link" />
