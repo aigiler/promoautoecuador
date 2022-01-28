@@ -75,7 +75,7 @@
                                     </group>
                                     <group attrs="{'invisible':[('garante', '=', False)]}"> 
                                         <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
-                                        <field name="edadGarante" string="Edad"/>
+                                        <field name="edadAdjudicado" string="Edad"/>
                                         <field name="cargasFamiliares" string ="Cargas Fam." />
                                     </group>
                                 </div>
