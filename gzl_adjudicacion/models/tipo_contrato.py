@@ -14,3 +14,4 @@ class TipoContratoAdjudicado(models.Model):
     numero_ganadores=fields.Integer('Número Ganadores',  required=True)
     numero_suplentes=fields.Integer('Número Suplentes',  required=True)
     active=fields.Boolean( default=True)
+ 

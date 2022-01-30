@@ -482,6 +482,7 @@ class MrpProduction(models.Model):
         self.move_raw_ids.update({
             'warehouse_id': source_location.get_warehouse().id,
             'location_id': source_location.id,
+            'date': self.date_planned_start,
         })
 
     @api.onchange('picking_type_id')
@@ -555,6 +556,7 @@ class MrpProduction(models.Model):
         return True
 
     def _get_finished_move_value(self, product_id, product_uom_qty, product_uom, operation_id=False, byproduct_id=False):
+        
         return {
             'product_id': product_id,
             'product_uom_qty': product_uom_qty,
@@ -924,9 +926,62 @@ class MrpProduction(models.Model):
     def _cal_price(self, consumed_moves):
         self.ensure_one()
         return True
-
+    def update_date_to_dplannedstart(self):
+        for order in self:
+            #acunalema
+            obj_mline=self.env['stock.move'].search([('production_id','=',order.id)])
+            for ml in obj_mline:
+                
+                ml.write({
+                    'date': order.date_planned_start,
+                }) #stock_valuation_layer_ids
+                self.env.cr.execute('''update stock_valuation_layer set create_date= %s  where stock_move_id = %s ''',[order.date_planned_start,ml.id])
+                self.env.cr.commit() 
+                obj_layer=self.env['stock.valuation.layer'].search([('stock_move_id','=',ml.id)])
+                for layer in obj_layer:
+                    self.env.cr.execute('''update account_move set date= %s  where id = %s ''',[order.date_planned_start,layer.account_move_id.id])
+                    self.env.cr.commit()
+                obj_line=self.env['stock.move.line'].search([('move_id','=',ml.id)])
+                for l in obj_line:
+                    l.write({
+                        'date': order.date_planned_start,
+                    })
+            self.env.cr.execute('''update stock_move_line set date = %s  where reference = %s ''',[self.date_planned_start,self.name])
+            self.env.cr.commit()  
+            
+            self.env.cr.execute('''update stock_move_line set create_date = %s where reference = %s ''',[self.date_planned_start,self.name])
+            self.env.cr.commit() 
+            
+            self.env.cr.execute('''update stock_move set date = %s where reference = %s ''',[self.date_planned_start,self.name])
+            self.env.cr.commit() 
+            #name_ref=""
+            obj_line=self.env['stock.move.line'].search([('production_id','=',self.id)])
+            for l in obj_line:
+                  
+                l.write({
+                    'date': order.date_planned_start,
+                })  
+                #raise UserError(str(l.move_id))
+                
+                obj_layer=self.env['stock.valuation.layer'].search([('stock_move_id','=',l.move_id.id)])
+                for layer in obj_layer:
+                    self.env.cr.execute('''update account_move set date= %s  where id = %s ''',[order.date_planned_start,layer.account_move_id.id])
+                    self.env.cr.commit()
+                    #actualizar account move line 
+                    #obj_moves=self.env['account.move'].search([('id','=',layer.account_move_id.id)])
+                    
+                    #for move in obj_moves:
+                    #    name_ref = move.ref
+                
+                #self.env.cr.execute('''update account_move_line set date= %s  where ref = %s ''',[order.date_planned_start,order.name])
+                #self.env.cr.commit()
+                self.env.cr.execute('''update stock_valuation_layer set create_date= %s  where stock_move_id = %s ''',[order.date_planned_start,l.move_id.id])
+                self.env.cr.commit() 
+            self.env.cr.execute('''update account_move_line set date= %s  where SPLIT_PART(ref,' -',1) = %s ''',[order.date_planned_start,order.name])
+            self.env.cr.commit()
     def post_inventory(self):
         for order in self:
+            
             # In case the routing allows multiple WO running at the same time, it is possible that
             # the quantity produced in one of the workorders is lower than the quantity produced in
             # the MO.
@@ -944,6 +999,8 @@ class MrpProduction(models.Model):
 
             moves_not_to_do = order.move_raw_ids.filtered(lambda x: x.state == 'done')
             moves_to_do = order.move_raw_ids.filtered(lambda x: x.state not in ('done', 'cancel'))
+                
+           # raise UserError( self.moves_to_do.date_planned_start)
             for move in moves_to_do.filtered(lambda m: m.product_qty == 0.0 and m.quantity_done > 0):
                 move.product_uom_qty = move.quantity_done
             # MRP do not merge move, catch the result of _action_done in order
@@ -967,6 +1024,7 @@ class MrpProduction(models.Model):
                 else:
                     # Link with everything
                     moveline.write({'consume_line_ids': [(6, 0, [x for x in consume_move_lines.ids])]})
+            self.update_date_to_dplannedstart() 
         return True
 
     def button_mark_done(self):
@@ -984,7 +1042,11 @@ class MrpProduction(models.Model):
         (self.move_raw_ids | self.move_finished_ids).filtered(lambda x: x.state not in ('done', 'cancel')).write({
             'state': 'done',
             'product_uom_qty': 0.0,
-        })
+        }) #workorder_ids
+        (self.finished_move_line_ids ).write({
+            'date': self.date_planned_start,
+        }) 
+        
         return self.write({'date_finished': fields.Datetime.now()})
 
     def do_unreserve(self):

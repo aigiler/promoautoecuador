@@ -13,9 +13,9 @@
             </xpath>
             
             <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="numero_cuotas" invisible="0" required="1"/>
-                <field name="dia_pago" invisible="0" required="1"/>
-                <field name="tipo_contrato" invisible="0" required="1"/>
+                <field name="numero_cuotas"  options="{'no_create_edit': True, 'no_open': True}"  invisible="0" required="1"/>
+                <field name="dia_pago"  options="{'no_create_edit': True, 'no_open': True}"  invisible="0" required="1"/>
+                <field name="tipo_contrato"  options="{'no_create_edit': True, 'no_open': True}" invisible="0" required="1"/>
 
             </xpath>
 

@@ -1414,8 +1414,8 @@ if records:
             id="menu_action_move_out_invoice_type"
             action="action_move_out_invoice_type"
             parent="account.menu_finance_receivables"
-            sequence="1"/>
-
+            sequence="2"/>
+        
         <menuitem
             id="menu_action_move_out_refund_type"
             action="action_move_out_refund_type"

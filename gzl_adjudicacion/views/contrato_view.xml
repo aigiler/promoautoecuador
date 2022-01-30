@@ -16,29 +16,79 @@
     </record>
 
 
+
+
+
+    <record id="view_contrato_form_inherit_rol_supervisor" model= "ir.ui.view">
+        <field name="name">view.contrato.form.inherit</field>
+        <field name="model">contrato</field>
+        <field name="arch" type="xml">
+            <form string="Contrato">
+                <field   name="tasa_administrativa" position="attributes">
+                    <attributes name="readonly">1</attributes>
+                </field>
+
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+
+
+
+
+
+
+
     <record id="view_contrato_form" model= "ir.ui.view">
         <field name="name">view.contrato.form</field>
         <field name="model">contrato</field>
         <field name="arch" type="xml">
             <form string="Contrato">
                 <header>
-                    <button name="cambio_estado_boton_borrador" string="Borrador" type="object" states="borrador" class="oe_highlight"/>
-                    <button name="cambio_estado_congelar_contrato" string="Congelar Contrato" states="congelar_contrato" type="object" class="oe_highlight"/>
-                    <button name="cambio_estado_boton_adendum" string="Adjudicar" type="object" states="adjudicar" class="oe_highlight"/>
-                    <button name="cambio_estado_boton_desistir" string="Cerrado" type="object" states="adendum" class="oe_highlight"/>
-                    
-                    <button name="detalle_tabla_amortizacion" string="Generar estado cuenta contrato" type="object" class="oe_highlight"/>
+                    <button name="cambio_estado_boton_borrador" string="Activo" type="object" states="borrador" class="oe_highlight"/>
 
-                    <field name="state" widget="statusbar" statusbar_visible="borrador,congelar_contrato,adjudicar,adendum,desistir"/>
+                    <button name="cambio_estado_congelar_contrato" string="Congelar " states="inactivar" type="object" class="oe_highlight"/>
+                    <button name="reactivar_contrato_congelado" string="Reactivar Contrato " states="congelar_contrato" type="object" class="oe_highlight"/>
+
+
+                    <button name="cambio_estado_boton_desistir" string="Desistir" type="object" states="inactivar"  class="oe_highlight"/>
+                    
+                    <button name="detalle_tabla_amortizacion" string="Generar estado cuenta contrato" invisible="1" type="object" class="oe_highlight"/>
+                    <button name="pagar_cuotas_por_adelantado" string="Pagar Cuotas por Adelantado" states="activo,adjudicar" type="object" class="oe_highlight"/>
+                    <button name="actualizar_rubros_por_adelantado" string="Actualizar Rubros" states="activo,adjudicar" type="object" class="oe_highlight"/>
+
+
+
+
+                    <field name="state" widget="statusbar" statusbar_visible="borrador,activo,congelar_contrato,adjudicar,adendum,desistir"/>
                 </header>
 
-                <sheet>
-                    <div states="borrador,congelar_contrato,adjudicar,adendum,desistir">
+                    <div >
                         <div class="oe_title">
                             <h1>
                                 <field name="secuencia" class="oe_inline" readonly="1"/>
                             </h1>
                         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         <div class="row">
                             <group string="Información del Contrato"/>
                             <div class="col-xs-12 col-sm-4">
@@ -49,7 +99,7 @@
                                     <field name="saldo_a_favor_de_capital_por_adendum" />
                                     <field name="pago" />
                                     <field name="monto_financiamiento"/>
-                                    <field name="tasa_administrativa"/>
+                                    <field name="tasa_administrativa" readonly="1"/>
                                     <field name="valor_inscripcion" />
                                 </group>
                             </div>
@@ -59,6 +109,7 @@
                                     <field name="tipo_de_contrato" options="{'no_create': True, 'no_open': True}" />
                                     <field name="codigo_grupo" />
                                     <field name="provincias" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="ciudad" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="archivo" filename="name"/>
                                     <field name="fecha_contrato" />
                                     <field name="plazo_meses" widget="selection" />
@@ -71,39 +122,44 @@
                                 <group>
                                     <field name="active" />
                                     <field name="observacion"/>
-                                    <field name="ciudad" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="aplicaGarante"/>
+                                    <field name="garante" attrs="{'invisible': [('aplicaGarante', '=', False)]}"/>
+                                    
                                     <field name="archivo_adicional" filename="name"/>
                                     <field name="fecha_inicio_pago" readonly="0"/>
                                     <field name="cuota_capital"/>
                                     <field name="iva_administrativo" />
+                                    <field name="numero_cuotas_pagadas" />
                                 </group>
                             </div>
 
                         </div>
 
-                        <group string="Estado de Cuenta de Aportes">
-                            <field name="estado_de_cuenta_ids" nolabel="1">
-                                <tree string="Estado de Cuenta" edit="false">
-                                    <field name="contrato_id" invisible="1"/>
-                                    <field name="numero_cuota"/>
-                                    <field name="fecha"/>
-                                    <field name="fecha_pagada"/>
-                                    <field name="cuota_capital" sum="cuota_capital"/>
-                                    <field name="cuota_adm" sum="cuota_adm"/>
-                                    <field name="factura_id"/>
-                                    <!-- <field name="pago_ids" widget="many2many_tags" /> -->
-                                    <field name="seguro" sum="seguro"/>
-                                    <field name="rastreo" sum="rastreo"/>
-                                    <field name="otro" sum="otro"/>
-                                    <field name="monto_pagado" sum="monto_pagado"/>
-                                    <field name="saldo" sum="saldo"/>
-                                    <field name="certificado"/>
-                                    <field name="estado_pago" invisible="1"/>
-                                </tree>
-                            </field>
-                        </group>
+                        <separator string="Estado de Cuenta de Aportes"></separator>
+
+                        <field name="estado_de_cuenta_ids" nolabel="1">
+                            <tree string="Estado de Cuenta" create="0" editable="bottom" limit="100" delete="0">
+                                <field name="contrato_id" invisible="1" readonly="1"/>
+                                <field name="numero_cuota" string="Nro." readonly="1"/>
+                                <field name="fecha" readonly="1"/>
+                                <field name="fecha_pagada" readonly="1"/>
+                                <field name="cuota_capital" sum="cuota_capital" readonly="1"/>
+                                <field name="cuota_adm" sum="cuota_adm" readonly="1"/>
+                                <field name="iva_adm" sum="iva_adm" readonly="1"/>
+                                <field name="factura_id" />
+                                <!-- <field name="pago_ids" widget="many2many_tags" /> -->
+                                <field name="seguro" sum="seguro" readonly="1"/>
+                                <field name="rastreo" sum="rastreo" readonly="1"/>
+                                <field name="otro" sum="otro" readonly="1"/>
+                                <field name="monto_pagado" sum="monto_pagado" readonly="1"/>
+                                <field name="saldo" sum="saldo" readonly="1"/>
+                                <field name="estado_pago"   readonly="1"/>
+                                <button name="pagar_cuota" attrs="{'invisible':[('estado_pago','=','pagado')]}"  type="object" string="Pagar"/>
+                            </tree>
+                        </field>
+
+
                     </div>
-                </sheet>
                 <!-- Attachment preview -->
                 <div class="o_attachment_preview" />
                 <!-- Chatter -->

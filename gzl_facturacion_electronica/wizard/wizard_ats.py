@@ -69,11 +69,8 @@ class WizardAts(models.TransientModel):
     def act_cancel(self):
         return {'type': 'ir.actions.act_window_close'}
 
-    def process_lines(self, lines):
-        """
-        @temp: {'332': {baseImpAir: 0,}}
-        @data_air: [{baseImpAir: 0, ...}]
-        """
+    """def process_lines(self, lines):
+        
         data_air = []
         temp = {}
         for line in lines:
@@ -89,8 +86,30 @@ class WizardAts(models.TransientModel):
                 temp[line.tax_id.description]['valRetAir'] += abs(float(line.amount))
         for k, v in temp.items():
             data_air.append(v)
+        return data_air"""
+    def process_lines(self, invoice):
+        """
+        @temp: {'332': {baseImpAir: 0,}}
+        @data_air: [{baseImpAir: 0, ...}]
+        """
+        data_air = []
+        temp = {}
+        for line in invoice.invoice_line_ids:
+            for tax in line.tax_ids:
+        #for line in lines:
+                if tax.tax_group_id.code in ['ret_ir', 'no_ret_ir']:
+                    if not temp.get(tax.name):
+                        temp[tax.name] = {
+                            'baseImpAir': 0,
+                            'valRetAir': 0
+                        }
+                    temp[tax.name]['baseImpAir'] += line.price_subtotal
+                    temp[tax.name]['codRetAir'] = tax.name # noqa
+                    temp[tax.name]['porcentajeAir'] = abs(int(tax.amount))  # noqa
+                    temp[tax.name]['valRetAir'] += abs(float(tax.amount))
+        for k, v in temp.items():
+            data_air.append(v)
         return data_air
-
     @api.model
     def _get_ventas(self, start, end):
         sql_ventas = "SELECT inv.type, sum(amount_untaxed) AS base \
@@ -123,36 +142,46 @@ class WizardAts(models.TransientModel):
         retServ100 = 0
         for line in invoice.invoice_line_ids:
             for tax in line.tax_ids:
-                if tax.group_id.code == 'ret_vat_b':
+                if tax.tax_group_id.code == 'ret_vat_b':
                     if abs(tax.amount) == 10:
-                        retBien10 += abs(tax.tax_amount)
+                        retBien10 += abs(tax.amount)
                     else:
-                        retBien += abs(tax.tax_amount)
-                if tax.group_id == 'ret_vat_srv':
+                        retBien += abs(tax.amount)
+                if tax.tax_group_id == 'ret_vat_srv':
                     if abs(tax.amount) == 100:
-                        retServ100 += abs(tax.tax_amount)
+                        retServ100 += abs(tax.amount)
                     elif abs(tax.amount) == 20:
-                        retServ20 += abs(tax.tax_amount)
+                        retServ20 += abs(tax.amount)
                     else:
-                        retServ += abs(tax.tax_amount)
+                        retServ += abs(tax.amount)
         return retBien10, retServ20, retBien, retServ, retServ100
 
     def get_withholding(self, wh):
-        if wh.auth_id.is_electronic:
-            authRetencion = wh.numero_autorizacion
-        #else:
-        #    authRetencion = wh.auth_number
-        return {
-            'estabRetencion1': wh.auth_id.serie_estableciemiento,
-            'ptoEmiRetencion1': wh.auth_id.serie_emision,
-            'secRetencion1': wh.name[6:15],
-            'autRetencion1': authRetencion,
-            'fechaEmiRet1': convertir_fecha(wh.date)
-        }
-
+        if wh.id:
+        
+            authRetencion=''
+            if wh.auth_id.is_electronic:
+                authRetencion = wh.auth_number
+            #else:
+            #    authRetencion = wh.auth_number
+            return {
+                'estabRetencion1': wh.auth_id.serie_establecimiento,
+                'ptoEmiRetencion1': wh.auth_id.serie_emision,
+                'secRetencion1': (wh.name or '000000000000000000')[6:15],
+                'autRetencion1': authRetencion,
+                'fechaEmiRet1': convertir_fecha(wh.date)
+            }
+        else:
+            return {
+                'estabRetencion1': '000',
+                'ptoEmiRetencion1':'000',
+                'secRetencion1': '000000000',
+                'autRetencion1': '000',
+                'fechaEmiRet1': False,
+            }
     def get_refund(self, invoice):
         refund = self.env['account.move'].search([
-            ('number', '=', invoice.origin),('state','not in',('draft','cancel'))
+            ('reversed_entry_id', '=', invoice.id),('state','not in',('draft','cancel'))
         ])
         if refund:
             auth = refund.establecimiento
@@ -174,6 +203,27 @@ class WizardAts(models.TransientModel):
             #     'autModificado': refund.reference
             # }
 
+            
+    def _get_iva_bases(self, invoice):
+        iva12 = 0
+        iva0 = 0
+        novat = 0
+        for line in invoice.invoice_line_ids:
+            for tax in line.tax_ids:
+                if tax.tax_group_id.code == 'vat':
+                    iva12 += abs(line.price_subtotal)
+                if tax.tax_group_id.code == 'vat0':
+                    iva0 += abs(line.price_subtotal)
+                if tax.tax_group_id.code == 'novat':
+                    novat += abs(line.price_subtotal)
+        
+        return iva12, iva0, novat
+                            
+            
+  
+            
+            
+            
     def get_reembolsos(self, invoice):
         if not invoice.establecimiento.type_id.code == '41':
             return False
@@ -221,8 +271,11 @@ class WizardAts(models.TransientModel):
                 detallecompras = {}
                 auth = inv.establecimiento
                 valRetBien10, valRetServ20, valorRetBienes, valorRetServicios, valRetServ100 = self._get_ret_iva(inv)  # noqa
+                baseiva12, baseiva0, basenovat= self._get_iva_bases(inv)
+
+                
                 t_reeb = 0.0
-                if not inv.establecmiento.type_id.code == '41':
+                if not inv.establecimiento.type_id.code == '41':
                     t_reeb = 0.00
                 else:
                     if inv.type == 'liq_purchase':
@@ -230,24 +283,24 @@ class WizardAts(models.TransientModel):
                     else:
                         t_reeb = inv.amount_untaxed
                 detallecompras.update({
-                    'codSustento': inv.sustento_id.code,
-                    'tpIdProv': tpIdProv[inv.partner_id.type_identifier],
-                    'idProv': inv.partner_id.identifier,
+                    'codSustento': inv.sustento_del_comprobante.code,
+                    'tpIdProv': inv.partner_id.l10n_latam_identification_type_id.code_compra,
+                    'idProv': inv.partner_id.vat,
                     'tipoComprobante': inv.type == 'liq_purchase' and '03' or auth.type_id.code,  # noqa
                     'parteRel': 'NO',
                     'fechaRegistro': convertir_fecha(inv.invoice_date),
-                    'establecimiento': inv.invoice_number[:3],
-                    'puntoEmision': inv.invoice_number[3:6],
-                    'secuencial': inv.invoice_number[6:15],
+                    'establecimiento': inv.l10n_latam_document_number[:3],
+                    'puntoEmision': inv.l10n_latam_document_number[3:6],
+                    'secuencial': inv.l10n_latam_document_number[6:15],
                     'fechaEmision': convertir_fecha(inv.invoice_date),
                     'autorizacion': inv.auth_number,
-                    'baseNoGraIva': '%.2f' % inv.amount_novat,
-                    'baseImponible': '%.2f' % inv.amount_vat_cero,
-                    'baseImpGrav': '%.2f' % inv.amount_vat,
+                    'baseNoGraIva': '%.2f' % inv.amount_untaxed,
+                    'baseImponible': '%.2f' % baseiva0,
+                    'baseImpGrav': '%.2f' % (inv.amount_total - inv.amount_untaxed),
                     'baseImpExe': '0.00',
-                    'total': inv.amount_pay,
+                    'total': inv.amount_total,
                     'montoIce': '0.00',
-                    'montoIva': '%.2f' % inv.amount_tax,
+                    'montoIva': '%.2f' %( baseiva12),
                     'valRetBien10': '%.2f' % valRetBien10,
                     'valRetServ20': '%.2f' % valRetServ20,
                     'valorRetBienes': '%.2f' % valorRetBienes,
@@ -256,7 +309,7 @@ class WizardAts(models.TransientModel):
                     'valRetServ100': '%.2f' % valRetServ100,
                     'totbasesImpReemb': '%.2f' % t_reeb,
                     'pagoExterior': {
-                        'pagoLocExt': inv.partner_id.ats_resident,
+                        'pagoLocExt': inv.partner_id.ats_residente,
                         'tipoRegi': inv.partner_id.ats_regimen_fiscal,
                         'pais': inv.partner_id.ats_country,
                         'pais_efec_gen': inv.partner_id.ats_country_efec_gen,
@@ -266,8 +319,9 @@ class WizardAts(models.TransientModel):
                         'pagExtSujRetNorLeg': self._pagExtSujRetNorLeg(inv),
                         'pagoRegFis': self.si_no(inv.partner_id.pago_reg_fis)
                     },
-                    'formaPago': inv.epayment_id.code,
-                    'detalleAir': self.process_lines(inv.tax_line_ids)
+                    'formaPago': inv.method_payment.code,
+                    'detalleAir': self.process_lines(inv)
+                  #  'detalleAir': self.process_lines(inv.l10n_latam_tax_ids)
                 })
                 if inv.retention_id:
                     detallecompras.update({'retencion': True})
@@ -379,10 +433,10 @@ class WizardAts(models.TransientModel):
             aut = auth.is_electronic and inv.numero_autorizacion or auth.name
             detalleanulados = {
                 'tipoComprobante': auth.type_id.code,
-                'establecimiento': auth.serie_entidad,
+                'establecimiento': auth.serie_establecimiento,
                 'ptoEmision': auth.serie_emision,
-                'secuencialInicio': inv.invoice_number[6:].rstrip("0"),
-                'secuencialFin': inv.invoice_number[6:].rstrip("0"),
+                'secuencialInicio': inv.l10n_latam_document_number[6:].rstrip("0"),
+                'secuencialFin': inv.l10n_latam_document_number[6:].rstrip("0"),
                 'autorizacion': aut
             }
             anulados.append(detalleanulados)

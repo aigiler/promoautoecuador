@@ -21,11 +21,11 @@ from odoo.tools.safe_eval import safe_eval
 class Retenciones(models.Model):
     _inherit = 'account.retention'
 
-    
+    bitacora_id = fields.Many2one('bitacora.consumo.servicios')
 
     def procesoComprobanteElectronico(self):
         dctCodDoc={
-            'ret_out_invoice':self.env.ref('l10n_ec_tree.ec_03').name,
+            'ret_in_invoice':self.env.ref('l10n_ec_tree.ec_11').name,
 
             }      
         #Proceso de Comprobante Electrónico
@@ -40,11 +40,12 @@ class Retenciones(models.Model):
         if contador[0]['contador']>0:
             raise ValidationError('El Comprobante Electrónico está en proceso')
         else:
-            instanaciaBitacora=self.env['bitacora.consumo.servicios'].create(dct)
+            instanciaBitacora=self.env['bitacora.consumo.servicios'].create(dct)
+            self.bitacora_id=instanciaBitacora.id
             try:
-                instanaciaBitacora.procesarComprobante()
+                instanciaBitacora.procesarComprobante()
             except json.decoder.JSONDecodeError:
-                instanaciaBitacora.response='Error 500 al consumir el servicio'
+                instanciaBitacora.response='Error 500 al consumir el servicio'
 
 
 
@@ -82,7 +83,7 @@ class Retenciones(models.Model):
         body_vf = {
                       "retenciones": [
                         {
-                          "codigoExterno": self.name[0:3]+'-'+self.name[3:6]+'-'+self.name[6:],
+                          "codigoExterno": self.name[0:3]+self.name[3:6]+self.name[6:],
                           "ruc": self.env.user.company_id.vat,
 
                         }
@@ -141,7 +142,7 @@ class Retenciones(models.Model):
             dctDetalle={}
 
 
-            dctDetalle['baseImponible']=detalle.base
+            dctDetalle['baseImponible']=detalle.base_ret
             dctDetalle['codDocSustento']=dctCodDocSustento[self.invoice_id.type]
             dctDetalle['codigoImpuesto']=detalle.tax_id.l10n_ec_code_base
             dctDetalle['codigoRetencion']=detalle.tax_id.l10n_ec_code_applied
@@ -172,7 +173,20 @@ class Retenciones(models.Model):
 
 
         dctFactura['identificacionSujetoRetenido']=self.partner_id.vat or ""
+
+
+
+        
         dctFactura['impuestos']=listaDetalle
+
+        listaAdicionales=[]
+        for campo in self.campos_adicionales_facturacion:
+            dctAdicional={'nombre':campo.nombre,'value':campo.valor}
+            listaAdicionales.append(dctAdicional)
+        
+
+
+        dctFactura['infoAdicional']=listaAdicionales
 
 
 

@@ -183,8 +183,8 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             has_lines = max_date and max_date >= date_from or False
 
             amount_currency = account_sum.get('amount_currency', 0.0) + account_un_earn.get('amount_currency', 0.0)
-            debit = account_sum.get('debit', 0.0) + account_un_earn.get('debit', 0.0)
-            credit = account_sum.get('credit', 0.0) + account_un_earn.get('credit', 0.0)
+            debit = account_sum.get('debit',0.0) + account_un_earn.get('debit',0.0)
+            credit = account_sum.get('credit',0.0) + account_un_earn.get('credit',0.0)
             balance = account_sum.get('balance', 0.0) + account_un_earn.get('balance', 0.0)
 
             lines.append(self._get_account_title_line(options, account, amount_currency, debit, credit, balance, has_lines))
@@ -202,8 +202,8 @@ class AccountGeneralLedgerReport(models.AbstractModel):
                 lines.append(self._get_initial_balance_line(
                     options, account,
                     account_init_bal.get('amount_currency', 0.0) + account_un_earn.get('amount_currency', 0.0),
-                    account_init_bal.get('debit', 0.0) + account_un_earn.get('debit', 0.0),
-                    account_init_bal.get('credit', 0.0) + account_un_earn.get('credit', 0.0),
+                    account_init_bal.get('debit',0.0) + account_un_earn.get('debit',0.0),
+                    account_init_bal.get('credit',0.0) + account_un_earn.get('credit',0.0),
                     cumulated_balance,
                 ))
 
@@ -238,8 +238,8 @@ class AccountGeneralLedgerReport(models.AbstractModel):
                 lines.append(self._get_account_total_line(
                     options, account,
                     account_sum.get('amount_currency', 0.0),
-                    account_sum.get('debit', 0.0),
-                    account_sum.get('credit', 0.0),
+                    account_sum.get('debit',0.0),
+                    account_sum.get('credit',0.0),
                     account_sum.get('balance', 0.0),
                 ))
 
@@ -779,9 +779,9 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             'title_hover': name,
             'columns': [
                 {'name': has_foreign_currency and self.format_value(amount_currency, currency=account.currency_id, blank_if_zero=True) or '', 'class': 'number'},
-                {'name': self.format_value(debit), 'class': 'number'},
-                {'name': self.format_value(credit), 'class': 'number'},
-                {'name': self.format_value(balance), 'class': 'number'},
+                {'name': self.format_value(debit,0.0), 'class': 'number'},
+                {'name': self.format_value(credit,0.0), 'class': 'number'},
+                {'name': self.format_value(balance,0.0), 'class': 'number'},
             ],
             'level': 2,
             'unfoldable': has_lines,
@@ -799,9 +799,9 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             'parent_id': 'account_%d' % account.id,
             'columns': [
                 {'name': has_foreign_currency and self.format_value(amount_currency, currency=account.currency_id, blank_if_zero=True) or '', 'class': 'number'},
-                {'name': self.format_value(debit), 'class': 'number'},
-                {'name': self.format_value(credit), 'class': 'number'},
-                {'name': self.format_value(balance), 'class': 'number'},
+                {'name': self.format_value(debit,0.0), 'class': 'number'},
+                {'name': self.format_value(credit,0.0), 'class': 'number'},
+                {'name': self.format_value(balance,0.0), 'class': 'number'},
             ],
             'colspan': 4,
         }
@@ -836,14 +836,14 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             'caret_options': caret_type,
             'class': 'top-vertical-align',
             'parent_id': 'account_%d' % aml['account_id'],
-            'name': aml['move_name'],
+            'name':  aml['move_name'],
             'columns': [
                 {'name': format_date(self.env, aml['date']), 'class': 'date'},
                 {'name': self._format_aml_name(aml['name'], aml['ref'], aml['move_name']), 'title': title, 'class': 'whitespace_print'},
                 {'name': aml['partner_name'], 'title': aml['partner_name'], 'class': 'whitespace_print'},
                 {'name': currency and aml['amount_currency'] and self.format_value(aml['amount_currency'], currency=currency, blank_if_zero=True) or '', 'class': 'number'},
-                {'name': self.format_value(aml['debit'], blank_if_zero=True), 'class': 'number'},
-                {'name': self.format_value(aml['credit'], blank_if_zero=True), 'class': 'number'},
+                {'name': self.format_value(aml['debit'],0.0), 'class': 'number'},
+                {'name': self.format_value(aml['credit'],0.0), 'class': 'number'},
                 {'name': self.format_value(cumulated_balance), 'class': 'number'},
             ],
             'level': 4,
@@ -873,9 +873,9 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             'name': _('Total %s' % account.name),
             'columns': [
                 {'name': has_foreign_currency and self.format_value(amount_currency, currency=account.currency_id, blank_if_zero=True) or '', 'class': 'number'},
-                {'name': self.format_value(debit), 'class': 'number'},
-                {'name': self.format_value(credit), 'class': 'number'},
-                {'name': self.format_value(balance), 'class': 'number'},
+                {'name': self.format_value(debit,0.0), 'class': 'number'},
+                {'name': self.format_value(credit,0.0), 'class': 'number'},
+                {'name': self.format_value(balance,0.0), 'class': 'number'},
             ],
             'colspan': 4,
         }
@@ -908,9 +908,9 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             'class': 'total',
             'level': 1,
             'columns': [
-                {'name': self.format_value(debit), 'class': 'number'},
-                {'name': self.format_value(credit), 'class': 'number'},
-                {'name': self.format_value(balance), 'class': 'number'},
+                {'name': self.format_value(debit,0.0), 'class': 'number'},
+                {'name': self.format_value(credit,0.0), 'class': 'number'},
+                {'name': self.format_value(balance,0.0), 'class': 'number'},
             ],
             'colspan': 5,
         }

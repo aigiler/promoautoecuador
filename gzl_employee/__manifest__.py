@@ -18,6 +18,7 @@
             'wizard/report_thirteenth_salary_view.xml',
             'wizard/report_fourteenth_salary_view.xml',
             'wizard/report_payment_file_view.xml',
+            'wizard/calculo_comision_view.xml',
             'wizard/report_vacations_view.xml'
     ],
     'qweb': [],

@@ -1,7 +1,8 @@
 {
     "name" : "gzl_adjudicacion",
+    'category': 'Adjudicaciones',
     "version" : "0.1",
-    'depends' :['base','mail','portal','base_setup'],
+    'depends' :['base','mail','portal','base_setup','l10n_ec_tree','report_xlsx',],
     "author" : "Yadira Quimis Gizlo",
     "description" : """
     product
@@ -17,6 +18,7 @@
                     'data/data_configuracion_adicional.xml',
                     'data/data_numero_meses.xml' ,   
                     'data/data_roles.xml',
+                    'data/ir_cron.xml',
 
 
                     'security/ir.model.access.csv',
@@ -34,8 +36,19 @@
                     'views/calificador_view.xml',
                     'views/stylesheet_view.xml',
                     'views/numero_meses_view.xml',
-                    'views/roles_view.xml',
+                    'views/adjudicaciones_team_view.xml',
+                    'views/items_patrimonio.xml',
+                    'views/paginas_de_control.xml',
+                    'views/calificaciones_clientes_view.xml',
+                    'views/puntos_bienes.xml',
+                    'views/transacciones_grupos_view.xml',
 
+                    
+                    'wizard/wizard_pago_contrato_view.xml',
+                    'wizard/wizard_adelantar_pago_view.xml',
+                    'wizard/wizard_actualizar_rubro_view.xml',
+
+                    
                     ],
     
     'installable': True,

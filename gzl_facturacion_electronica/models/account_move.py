@@ -28,6 +28,14 @@ _DOCUMENTOS_RETENIBLES = (
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
+    _order="id desc"
+    
+    _rec_name="nombre_mostrar"
+
+    email_fe = fields.Char('Email Factura Electronica')
+
+    email_fe2 = fields.Char(string='Email Factura Electronica')
+
 
 
     establecimiento = fields.Many2one('establecimiento')
@@ -97,11 +105,91 @@ class AccountMove(models.Model):
 
 
     tipo_referencia = fields.Char('Tipo de Referencia',compute='_obtener_tipo_referencia',store=True)
+    #acunalema
+    #acunalema
+    view_amount_total = fields.Monetary(string='Total de la Factura',readonly=True,compute='_recompute_dynamic_lines_view',store=True)
+    view_amount_tax_ret = fields.Monetary(string='Amount tax',readonly=True,compute='_compute_invoice_taxes_by_group_view',store=True)
+    #@api.onchange('invoice_line_ids')
+    #def _onchange_recompute_dynamic_lines_view(self):
+    #    self._compute_invoice_taxes_by_group_view()
+    #    self._recompute_dynamic_lines_view()
 
+    def actualizar_retenciones(self):
+        obj=self.env['account.move'].search([('type','in',['in_invoice','out_invoice'])])
+        for l in obj:
+            l._compute_invoice_taxes_by_group_view()
+            l._recompute_dynamic_lines_view()
+            
+        
+    
+    
+    @api.depends('amount_total')
+    def _recompute_dynamic_lines_view(self):
+        for l in self:
+            l.view_amount_total = l.amount_total - l.view_amount_tax_ret               
+    
+
+    @api.depends('line_ids.price_subtotal', 'line_ids.tax_base_amount', 'line_ids.tax_line_id', 'partner_id', 'currency_id')
+    def _compute_invoice_taxes_by_group_view(self):
+        ''' Helper to get the taxes grouped according their account.tax.group.
+        This method is only used when printing the invoice.
+        '''
+        for move in self:
+            lang_env = move.with_context(lang=move.partner_id.lang).env
+            tax_lines = move.line_ids.filtered(lambda line: line.tax_line_id)
+            tax_balance_multiplicator = -1 if move.is_inbound(True) else 1
+            res = {}
+            # There are as many tax line as there are repartition lines
+            done_taxes = set()
+            valor = 0.0
+            for line in tax_lines:
+                res.setdefault(line.tax_line_id.tax_group_id, {'base': 0.0, 'amount': 0.0})
+                res[line.tax_line_id.tax_group_id]['amount'] += tax_balance_multiplicator * (line.amount_currency if line.currency_id else line.balance)
+                tax_key_add_base = tuple(move._get_tax_key_for_group_add_base(line))
+                if tax_key_add_base not in done_taxes:
+                    if line.currency_id and line.company_currency_id and line.currency_id != line.company_currency_id:
+                        amount = line.company_currency_id._convert(line.tax_base_amount, line.currency_id, line.company_id, line.date or fields.Date.today())
+                    else:
+                        amount = line.tax_base_amount
+                    res[line.tax_line_id.tax_group_id]['base'] += amount
+                    # The base should be added ONCE
+                    done_taxes.add(tax_key_add_base)
+                
+            # At this point we only want to keep the taxes with a zero amount since they do not
+            # generate a tax line.
+            zero_taxes = set()
+            for line in move.line_ids:
+                for tax in line.tax_ids.flatten_taxes_hierarchy():
+                    if tax.tax_group_id not in res or tax.id in zero_taxes:
+                        res.setdefault(tax.tax_group_id, {'base': 0.0, 'amount': 0.0})
+                        res[tax.tax_group_id]['base'] += tax_balance_multiplicator * (line.amount_currency if line.currency_id else line.balance)
+                        zero_taxes.add(tax.id)
+
+            res = sorted(res.items(), key=lambda l: l[0].sequence)
+            move.amount_by_group = [(
+                group.name, amounts['amount'],
+                amounts['base'],
+                formatLang(lang_env, amounts['amount'], currency_obj=move.currency_id),
+                formatLang(lang_env, amounts['base'], currency_obj=move.currency_id),
+                len(res),
+                group.id
+            ) for group, amounts in res]
+            
+            amounttot=0.0
+            for group, amounts in res:
+                print( "amount*"+str(amounts['amount'])+ " base "+str(amounts['base']))
+                if group.name == 'Retención Impuesto a la Renta':
+                    amounttot = amounts['amount']
+                    #raise ValidationError(_( str(formatLang(lang_env, amounts['amount'], currency_obj=move.currency_id))+" - "+str(group.name)+ " amount "+str(amounts['amount'])+ " base "+str(amounts['base'])))
+            #raise ValidationError(_(str(cont)+" "+str(amounttot)+" "+str(valor)))
+            move.view_amount_tax_ret =   amounttot
+                    
+                    #raise ValidationError(_( str(formatLang(lang_env, amounts['amount'], currency_obj=move.currency_id))+" - "+str(group.name)+ " amount "+str(amounts['amount'])+ " base "+str(amounts['base'])))
     @api.onchange('partner_id')
     def obtener_method_payment(self):
         self.method_payment=self.partner_id.method_payment
-
+        self.email_fe=self.partner_id.email
+        self.email_fe2=self.partner_id.email
 
     @api.depends('type')
     def _obtener_tipo_referencia(self):
@@ -129,6 +217,72 @@ class AccountMove(models.Model):
 
     initial_balance = fields.Boolean('Balance Inicial', default=False)
     
+
+    nombre_mostrar = fields.Char('Nombre a Mostrar',compute="actualizar_nombre_llamada",store=True)
+
+
+
+    @api.depends('name', 'state')
+    def actualizar_nombre_llamada(self):
+        for move in self:
+            if self._context.get('name_groupby'):
+                name = '**%s**, %s' % (format_date(self.env, move.date), move._get_move_display_name())
+                if move.ref:
+                    name += '     (%s)' % move.ref
+                if move.partner_id.name:
+                    name += ' - %s' % move.partner_id.name
+            else:
+                if not( move.type=='in_invoice' or move.type=='out_invoice'):
+                    name = move._get_move_display_name(show_ref=True)
+                else:
+                    if move.l10n_latam_document_number:
+                        name = move.l10n_latam_document_number
+                    else:
+                        name = move._get_move_display_name(show_ref=True)
+            
+            move.nombre_mostrar=name
+
+    @api.depends('name', 'state')
+    def name_get(self):
+        result = []
+        for move in self:
+            if self._context.get('name_groupby'):
+                name = '**%s**, %s' % (format_date(self.env, move.date), move._get_move_display_name())
+                if move.ref:
+                    name += '     (%s)' % move.ref
+                if move.partner_id.name:
+                    name += ' - %s' % move.partner_id.name
+            else:
+                if not( move.type=='in_invoice' or move.type=='out_invoice'):
+                    name = move._get_move_display_name(show_ref=True)
+                else:
+                    if move.l10n_latam_document_number:
+                        name = move.l10n_latam_document_number
+                    else:
+                        name = move._get_move_display_name(show_ref=True)
+            result.append((move.id, name))
+        return result
+            
+            
+            
+
+
+
+    campos_adicionales_facturacion = fields.One2many('campos.adicionales.facturacion', inverse_name = 'move_id')
+
+    campos_adicionales_facturacion_prove = fields.One2many('campos.adicionales.facturacion', inverse_name = 'move_id')
+
+
+
+
+
+
+
+
+
+
+
+
     #@api.onchange('auth_number','is_electronic')
     def onchange_auth_number(self):
         if self.auth_number:
@@ -176,7 +330,9 @@ class AccountMove(models.Model):
                     else:
                         if inv.manual_establishment and inv.manual_referral_guide and inv.manual_sequence:
                             inv.l10n_latam_document_number = inv.manual_establishment.zfill(3)+inv.manual_referral_guide.zfill(3)+str(inv.manual_sequence).zfill(9)
-
+        if self.is_electronic:
+            self.procesoComprobanteElectronico()
+        
         return super().post()
                         
 
@@ -237,8 +393,13 @@ class AccountMove(models.Model):
     def action_post(self):
         if self.type in _DOCUMENTOS_RETENIBLES:
             self.action_withholding_create()        
-        return self.post()
-                
+        self.post()
+        if self.type in ['out_refund','in_refund'] :
+            if self.reversed_entry_id.id:
+                lines = self.reversed_entry_id.mapped('line_ids')[0]
+                for l in lines:
+                    self.js_assign_outstanding_line(l.id)     
+
     def action_withholding_create(self):
         TYPES_TO_VALIDATE = ['in_invoice', 'liq_purchase', 'in_debit']
         wd_number = False
@@ -312,6 +473,19 @@ class AccountMove(models.Model):
                     withdrawing.action_validate(wd_number)
 
                 inv.write({'retention_id': withdrawing.id})
+                withdrawing.email_fe=inv.email_fe2
+                lines=[]
+                for campo in inv.campos_adicionales_facturacion_prove:
+                    dct_campo={'nombre':campo.nombre,'valor':campo.valor}
+                    lines.append((0, 0, dct_campo))
+
+                withdrawing.update({'campos_adicionales_facturacion': lines})
+
+
+
+ 
+
+
         return True
     
     
@@ -604,3 +778,20 @@ class AccountMove(models.Model):
                         .reconcile()
 
         return reverse_moves
+
+
+
+
+
+
+class CamposAdicionales(models.Model):
+    _name = 'campos.adicionales.facturacion'
+    _description = 'Campos Adicionales Tributacion'
+    
+
+    move_id = fields.Many2one('account.move', string = 'Factura')
+    remision_id = fields.Many2one('account.guia.remision', string = 'Guia Remision')
+    retention_id = fields.Many2one('account.retention', string = 'Retencion')
+    nombre= fields.Char(string="Nombre")
+    valor = fields.Char('Valor')
+

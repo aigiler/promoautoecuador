@@ -150,7 +150,7 @@ class MrpProductProduce(models.TransientModel):
         self._update_moves()
         if self.production_id.state == 'confirmed':
             self.production_id.write({
-                'date_start': datetime.now(),
+                'date_start': datetime.now(),#acunalema
             })
 
 

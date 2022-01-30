@@ -48,8 +48,6 @@ Authors:
         'account_tax_python',
     ],   
     'data': [
-        'security/ir.model.access.csv',
-
         #Chart of Accounts
         #'data/account_chart_template_data.xml',
         #'data/account_group_data.xml',

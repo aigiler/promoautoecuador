@@ -125,7 +125,6 @@
             <field name="inherit_id" ref="account.view_move_form"/>
             <field name="arch" type="xml">
                 <button name="action_reverse" position="after">
-                    <field name="debit_origin_id" invisible="1"/>
                     <button name="%(action_view_account_move_debit)d" string='AGREGAR NOTA DE DÉBITO'
                                     type='action' groups="account.group_account_invoice"
                                     attrs="{'invisible': ['|', '|', ('debit_origin_id', '!=', False),
@@ -139,15 +138,23 @@
                         </div>
                     </button>
                 </div-->
-                <field name="invoice_origin" position="after">
-                    <field name="debit_origin_id" attrs="{'invisible': [('debit_origin_id', '=', False)]}"/>
-                </field>
+
+
+
+                <xpath expr="//field[@name='reversed_entry_id']" position="replace">
+                    <p>Nada</p>
+
+
+                </xpath>
+
+
+
                 <xpath expr="//field[@name='ref']" position="after">
 
                     <field string="Tipo de Facturas referencia" name="tipo_referencia" invisible="1"/>
 
 
-                    <field string="Numero de factura" name="reversed_entry_nc_id" attrs="{'invisible': [('type', 'not in', ('in_refund','out_refund'))],'readonly': [('state', '!=', 'draft')]}" domain="[('partner_id','=',partner_id),('type','=',tipo_referencia),('retention_id','=',False)]"/>
+                    <field string="Número de factura" name="reversed_entry_id" attrs="{'invisible': [('type', 'not in', ('in_refund','out_refund'))],'readonly': [('state', '!=', 'draft')],'required':[('type','=','out_refund'),('is_electronic','=',True)]}" domain="[('partner_id','=',partner_id),('type','=',tipo_referencia),('state','=','posted')]"/>
                 </xpath>
                 <xpath expr="//sheet/group[1]/group[2]/div[1]" position="replace">
                     <div class="o_td_label">

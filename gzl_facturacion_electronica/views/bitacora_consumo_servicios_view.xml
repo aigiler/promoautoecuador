@@ -25,13 +25,27 @@
         <field name="arch" type="xml">
             <form string="Proceso Lote">
                 <sheet>
+
+                    <header>
+                        <button name="token_autorizacion" type="object" string="Token Authenticathor"/>                    
+                        <button name="procesarComprobante" type="object" string="Procesar Factura"/>                    
+                        <button name="validarComprobante" type="object" string="Validar Factura"/>                    
+                        <button name="descargarXML" type="object" string="Descargar XML Factura"/>                    
+                        <button name="descargarRide" type="object" string="Descargar Ride Factura"/>                    
+                        <field name="state" widget="statusbar" statusbar_visible="pendiente,proceso,validar,generada"/>
+                    </header>
+
+
+
                     <group>
                         <field name="name"  />
                         <field name="invoice_id"/>
                         <field name="guia_remision_id"/>
                         <field name="retention_id"/>
-                        <field name="state"/>
                         <field name="codigo_respuesta_web_service"/>
+                        <field name="url"/>
+                        <field name="header"/>
+                        <field name="request"/>
                         <field name="response"/>
                         <field name="respuesta"/>
                         <field name="etapa"/>
@@ -48,17 +62,20 @@
                                         
                     </group>
 
-                        <button name="token_autorizacion" type="object" string="Token Authenticathor"/>                    
-                        <button name="procesarComprobante" type="object" string="Procesar Factura"/>                    
-                        <button name="validarComprobante" type="object" string="Validar Factura"/>                    
-                        <button name="descargarXML" type="object" string="Descargar XML Factura"/>                    
-                        <button name="descargarRide" type="object" string="Descargar Ride Factura"/>                    
-                        <button name="reenvioComprobante" type="object" string="Reenvío Factura"/>                    
 
 
 
 
                 </sheet>
+
+                    <!-- Attachment preview -->
+                    <div class="o_attachment_preview" />
+                    <!-- Chatter -->
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
             </form>
         </field>
     </record>

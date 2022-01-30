@@ -16,49 +16,53 @@ class EntegaVehiculo(models.Model):
 
 
     rolAsignado = fields.Many2one('adjudicaciones.team', string="Rol Asignado", track_visibility='onchange')
-
     rolCredito = fields.Many2one('adjudicaciones.team', string="Rol Credito", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol3'))
     rolGerenciaAdmin = fields.Many2one('adjudicaciones.team', string="Rol Gerencia Admin", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol1'))
     rolGerenciaFin = fields.Many2one('adjudicaciones.team', string="Rol Gerencia Financiera", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol4'))
     rolAdjudicacion = fields.Many2one('adjudicaciones.team', string="Rol Adjudicacion", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol2'))
 
 
-
-
-
-
-
-
     secuencia = fields.Char(index=True)
-    requisitosPoliticasCredito = fields.Text(string='Informacion Cobranzas', default=lambda self: self._capturar_valores_por_defecto())
+    requisitosPoliticasCredito = fields.Html(string='Informacion Cobranzas', default=lambda self: self._capturar_valores_por_defecto())
     
     def _capturar_valores_por_defecto(self):
         referencia=self.env.ref('gzl_adjudicacion.configuracion_adicional1')
-        
         return referencia.requisitosPoliticasCredito
 
         
     documentos = fields.Many2many('ir.attachment', string='Carga Documentos', track_visibility='onchange')
     active = fields.Boolean(string='Activo', default=True)
-    state = fields.Selection(selection=[
+    estado = fields.Selection(selection=[
         ('borrador', 'Borrador'),
         ('revision_documentos', 'Revisión documentos'),
         ('informe_de_créditos_y_cobranzas', 'Informe de Crédito y Cobranza'),
         ('calificador_compra', 'Calificador para compra del bien'),
         ('liquidacion_orden_compra', 'Liquidación de compra y orden de compra'),
         ('orden_compra', 'Orden de compra'),
-        ('entrega_vehiculo', 'Entrega de Vehiculo'),
+        ('factura', 'Factura de Vehículo'),
+        ('firma', 'Firma de Contrato'),
+        ('legalizar', 'Legalización de Contrato'),
+        ('matriculacion', 'Matriculacion, Seguro y Rastreo'),
+
+        ('orden_salida', 'Orden de Salida'),
+
+        ('entrega_vehiculo', 'Entrega de Vehículo'),
+
+
+
     ], string='Estado', default='borrador', track_visibility='onchange')
     # datos del socio adjudicado
     nombreSocioAdjudicado = fields.Many2one('res.partner', string="Nombre del Socio Adj.", track_visibility='onchange')
-    codigoAdjudicado = fields.Char(related="nombreSocioAdjudicado.codigo_cliente", string='Código', track_visibility='onchange')
-    fechaNacimientoAdj = fields.Date(related="nombreSocioAdjudicado.fecha_nacimiento", string='Fecha de Nacimiento')
-    vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía')
-    estadoCivilAdj = fields.Selection(related="nombreSocioAdjudicado.estado_civil")
-    edadAdjudicado = fields.Integer(compute='calcular_edad', string="Edad")
-    cargasFamiliares = fields.Integer(string="Cargas Fam.")
+    codigoAdjudicado = fields.Char(related="nombreSocioAdjudicado.codigo_cliente", string='Código', track_visibility='onchange',store=True)
+    fechaNacimientoAdj = fields.Date(related="nombreSocioAdjudicado.fecha_nacimiento", string='Fecha de Nacimiento',store=True)
+    vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía',store=True)
+    estadoCivilAdj = fields.Selection(related="nombreSocioAdjudicado.estado_civil" ,store=True)
+    edadAdjudicado = fields.Integer(compute='calcular_edad', string="Edad", readonly=True, store=True, default = 0)
+    cargasFamiliares = fields.Integer(string="Cargas Fam." , default = 0)
+
+
     # datos del conyuge
-    nombreConyuge = fields.Char(string="Nombre del Conyuge")
+    nombreConyuge = fields.Char(string="Nombre del Conyuge", default = 'N/A')
     fechaNacimientoConyuge = fields.Date(string='Fecha de Nacimiento')
     vatConyuge = fields.Char(string='Cedula de Ciudadanía')
     estadoCivilConyuge = fields.Selection(selection=[
@@ -68,62 +72,82 @@ class EntegaVehiculo(models.Model):
         ('divorciado', 'Divorciado/a'),
         ('viudo', 'Viudo/a')
     ], string='Estado Civil', default='soltero')
-    edadConyuge = fields.Integer(compute='calcular_edad_conyuge', string="Edad")
+    edadConyuge = fields.Integer(compute='calcular_edad_conyuge', string="Edad", default = 0)
 
     # datos domiciliarios
-    referenciaDomiciliaria = fields.Text(string='Referencias indican:')
+    referenciaDomiciliaria = fields.Text(string='Referencias indican:', default=' ')
 
     # datos laborales
-    referenciasLaborales = fields.Text(string='Referencias indican:')
+    referenciasLaborales = fields.Text(string='Referencias indican:', default=' ')
 
     # datos del patrimonio del socio
     currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
-    montoAhorroInversiones = fields.Monetary(string='Ahorro o Inversiones')
-    casaValor = fields.Monetary(string='Casa Valor', default=0.00)
-    terrenoValor = fields.Monetary(string='Terreno Valor', default=0.00)
-    montoMueblesEnseres = fields.Monetary( string='Muebles y Enseres', default=0.00)
-    vehiculoValor = fields.Monetary(string='Vehiculo Valor',  default=0.00)
-    inventarios = fields.Monetary(string='Inventarios',  default=0.00)
-    institucionFinanciera = fields.Char(string='Institución')
-    direccion = fields.Char(string='Direccion')
-    direccion1 = fields.Char(string='Direccion')
-    placa = fields.Char(string='Placa')
-    totalActivosAdj = fields.Float(compute='calcular_total_activos', string='TOTAL ACTIVOS', digits=(6, 2))
+    #    junta = fields.One2many('junta.grupo.asamblea', 'asamblea_id',track_visibility='onchange')
+
+    montoAhorroInversiones = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',track_visibility='onchange')
+    
+    def llenar_tabla(self):
+        obj_patrimonio=self.env['items.patrimonio'].search([])  
+        for patrimonio in obj_patrimonio:
+            self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id})
+        
+
+    institucionFinanciera = fields.Many2one('res.bank',string='Institución')
+    direccion = fields.Char(string='Direccion de Casa' , default=' ')
+    direccion1 = fields.Char(string='Direccion de Terreno', default=' ')
+    placa = fields.Char(string='Placa de Vehículo', default=' ')
+    totalActivosAdj = fields.Float(compute="calculo_total_activos_adj",store=True,string='TOTAL ACTIVOS', digits=(6, 2))
+
+
+    @api.depends("montoAhorroInversiones")
+    def calculo_total_activos_adj(self):
+        for rec in self:
+            rec.totalActivosAdj=sum(rec.montoAhorroInversiones.mapped('valor'))
+    
+    
+
+    totalPuntosBienesAdj = fields.Integer(compute='calcular_puntos_bienes',store=True)
+
+    @api.depends('tablaPuntosBienes')
+    def calcular_puntos_bienes(self):
+        for rec in self:
+            rec.totalPuntosBienesAdj = sum(rec.tablaPuntosBienes.mapped('puntosBien'))
+
+
 
     # REVISION EN PAGINAS DE CONTROL
-    scoreBuroCredito = fields.Integer(string='Score')
-    posee = fields.Char(string='Posee')
-    score = fields.Char(string='Posee')
-    poseeAntecedentesPenales = fields.Selection(selection=[
-        ('si', 'SI'),
-        ('no', 'NO')
-    ], string='Policía Nacional antecedentes', default='no')
+    paginasDeControl = fields.One2many('paginas.de.control.entrega.vehiculo','entrega_id',track_visibility='onchange')
+    
+    def llenar_tabla_paginas(self):
+        obj_paginas_de_control=self.env['paginas.de.control'].search([])
+        for paginas in obj_paginas_de_control:
+            self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'entrega_id':self.id})
+    
+    
+    
+    
+    
+    tablaPuntosBienes = fields.One2many('puntos.bienes.entrega.vehiculo','entrega_id',track_visibility='onchange')
+    
+    def llenar_tabla_puntos_bienes(self):
+        obj_puntos_bienes=self.env['puntos.bienes'].search([])
+        for bienes in obj_puntos_bienes:
+            self.env['puntos.bienes.entrega.vehiculo'].create({'bien_id':bienes.id,'entrega_id':self.id})
+    
+    
+    
+    scoreBuroCredito = fields.Integer(string='Buró de Crédito')
 
-    estadoTributario = fields.Selection(selection=[
-        ('atrasado', 'ATRASADO'),
-        ('no_activo', 'NO ACTIVO'),
-        ('al_dia', 'AL DIA')
-    ], string='SRI, deudas firmes y estado Tributario', default='al_dia')
-
-    funcionJudicial = fields.Selection(selection=[
-        ('si', 'SI'),
-        ('no', 'NO')
-    ], string='Función Judicial', default='no')
-
-    fiscaliaGeneral = fields.Selection(selection=[
-        ('si', 'SI'),
-        ('no', 'NO')
-    ], string='Fiscalia General del Estado', default='no')
 
     # observaciones
     observaciones = fields.Text(string='Observaciones')
 
     # calificador compras
-    clienteContrato = fields.Char(compute='set_campos_cliente_informe_credito', string="Nombre del Socio Adj.")
     cedulaContrato = fields.Char()
     codClienteContrado = fields.Char()
     contratoCliente = fields.Char()
-    montoAdjudicado = fields.Monetary(compute='buscar_parner', currency_field='currency_id', string='Monto Adjudicado')
+    montoAdjudicado = fields.Monetary(compute='buscar_contrato_partner', currency_field='currency_id', string='Monto Adjudicado')
+    garante  = fields.Boolean(string='Garante')
     plazoMeses = fields.Integer(string='Plazo')
     tipoAdj = fields.Char(string='Tipo Adj.')
     valorCuota = fields.Monetary(string='Valor de Cuota')
@@ -131,22 +155,31 @@ class EntegaVehiculo(models.Model):
     # valores del plan
     valorTotalPlan = fields.Monetary(compute='calcular_valor_total_plan', string='Valor Total del Plan')
     porcentajeTotal = fields.Float(default=100.00)
-    
     montoCuotasCanceladas = fields.Monetary(string='Cuotas Canceladas', compute='calcular_valor_cuotas_canceladas')
     cuotasCanceladas = fields.Integer()
     porcentajeCancelado = fields.Float(digits=(6, 2), compute='calcular_porcentaj_cuotas_canc')
-
     montoCuotasPendientes = fields.Monetary(string='Cuotas Pendientes', compute='calcular_valor_cuotas_pendientes')
     cuotasPendientes = fields.Integer(compute='calcular_cuotas_pendientes')
     porcentajePendiente = fields.Float(digits=(6, 2), compute='calcular_porcentaj_pendiente')
     
+    
+    ################### Informe GARANTE
+    # antecedentes
+    nombreGarante = fields.Many2one('res.partner', string="Nombre del Garante", track_visibility='onchange',store=True)
+    vatGarante = fields.Char(related="nombreGarante.vat", string='Cedula de Ciudadanía',store=True)    
+    fechaNacimientoGarante = fields.Date(String='Fecha de Nacimiento')
+    
+
+    estadoCivilGarante = fields.Selection(related="nombreGarante.estado_civil" ,store=True)    
+    
+    
     #puntos valor cancelado del plan
-    puntosPorcentajeCancelado = fields.Integer(compute='calcular_puntos_porcentaje_cancelado')
+    puntosPorcentajeCancelado = fields.Integer(string = 'puntos', compute='calcular_puntos_porcentaje_cancelado')
 
     #saldosBien
     valorDelBien = fields.Monetary(string='Valor del Bien', compute='set_valor_del_bien')
     saldoPlan = fields.Monetary(string='Saldo del Plan', compute='set_valor_saldo_plan')
-    porcentajeSaldoPlan = fields.Float(digits=(6, 2), compute='calcular_porcentaj_saldo_plan', default=0.00)
+    porcentajeSaldoPlan = fields.Float(digits=(3, 2), compute='calcular_porcentaj_saldo_plan', default=0.00)
     #puntos saldos
     puntosPorcentajSaldos = fields.Integer(compute='calcular_puntos_porcentaje_saldos')
     
@@ -166,40 +199,8 @@ class EntegaVehiculo(models.Model):
     scoreCredito = fields.Integer(string="Score de Credito Mayor a 800 puntos")
     puntosScoreCredito = fields.Integer(compute='calcular_punto_score_credito')
     antiguedadLaboral = fields.Integer(string="Antigüedad Laboral o Comercial Mayor a 2 años")
-    puntosAntiguedadLaboral = fields.Integer(
-        compute='calcular_puntos_antiguedad_laboral')
+    puntosAntiguedadLaboral = fields.Integer(compute='calcular_puntos_antiguedad_laboral')
 
-    totalPuntosBienesAdj = fields.Integer(compute='calcular_puntos_bienes')
-
-    poseeCasa = fields.Selection(selection=[
-        ('si', 'SI'),
-        ('no', 'NO')
-    ], string='Fiscalia General del Estado', default='no')
-
-    puntosCasa = fields.Integer(compute='set_puntos_casa')
-
-    poseeTerreno = fields.Selection(selection=[
-        ('si', 'SI'),
-        ('no', 'NO')
-    ], string='Fiscalia General del Estado', default='no')
-
-    puntosTerreno = fields.Integer(compute='set_puntos_terreno')
-
-    poseeVehiculo = fields.Selection(selection=[
-        ('si', 'SI'),
-        ('no', 'NO')
-    ], string='Fiscalia General del Estado', default='no')
-    puntosVehiculo = fields.Integer(compute='set_puntos_vehiculo')
-    poseeMotos = fields.Selection(selection=[
-        ('si', 'SI'),
-        ('no', 'NO')
-    ], string='Fiscalia General del Estado', default='no')
-    puntosMotos = fields.Integer(compute='set_puntos_motos')
-    poseeMueblesEnseres = fields.Selection(selection=[
-        ('si', 'SI'),
-        ('no', 'NO')
-    ], string='Fiscalia General del Estado', default='no')
-    puntosMueblesEnseres = fields.Integer(compute='set_puntos_muebles')
 
     totalPuntosCalificador = fields.Integer(compute='calcular_total_puntos')
 
@@ -231,9 +232,14 @@ class EntegaVehiculo(models.Model):
     mes = fields.Char(string='')
     anio = fields.Char()
     
+    nombreInforme = fields.Selection(selection=[
+        ('NO', 'Nombre del Socio Adj.: '),
+        ('SI', 'Nombre del Garante.:')
+    ], compute='setea_informe_garante')
+    
     aplicaGarante = fields.Selection(selection=[
-        ('no', 'Titular, Conyugue y Depositario'),
-        ('si', 'Titular, Conyugue y Garante Solidario')
+        ('NO', 'Titular, Conyugue y DepositarioTitular, Conyugue y Depositario'),
+        ('SI', 'Titular, Conyugue y Garante Solidario')
     ], compute='set_aplica_garante')
     
     montoPagoConsesionario = fields.Selection(selection=[
@@ -242,6 +248,90 @@ class EntegaVehiculo(models.Model):
     ], default = 'saldo_a_favor', compute='calcular_monto_a_favor')
     
     
+
+    matriculacion = fields.Boolean(string="Matriculación", track_visibility="onchange")
+    rastreo = fields.Boolean(string="Rastreo",track_visibility="onchange")
+    seguro = fields.Boolean(string="Seguro",track_visibility="onchange")
+
+
+    def validacion_matriculacion_rastreo_seguro(self):
+        if not (self.matriculacion and self.rastreo and self.seguro):
+            raise ValidationError("Debe registrar la matriculación, rastreo y seguro para pasar al siguiente estado")
+
+
+    estado_anterior_requisitos = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
+    estado_anterior_informe_credito = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
+    estado_anterior_liquidacion = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
+    estado_anterior_calificador = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
+    estado_anterior_factura = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
+    estado_anterior_matriculacion = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
+    estado_anterior_requisitos = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
+    estado_anterior_orden_compra = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
+
+    
+    
+    @api.depends('garante')
+    def setea_valores_informe(self):
+        for rec in self:
+            if rec.garante == False:
+                rec.fechaNacimientoAdj = rec.nombreSocioAdjudicado.fecha_nacimiento
+            elif rec.garante == True:
+                rec.fechaNacimientoAdj = rec.nombreGarante.fecha_nacimiento
+            else:
+                rec.fechaNacimientoAdj = ''
+        
+        
+        
+        
+        
+        
+        
+    @api.depends('garante')
+    def setea_informe_garante(self):
+        for rec in self:
+            if rec.garante == False:
+                rec.nombreInforme = 'NO'
+            else:
+                rec.nombreInforme = 'SI'
+        
+
+    def consultar_estado_anterior_requisitos(self):
+        for l in self:
+
+            self.env.cr.execute("""select mtv.new_value_char 
+                                            from 
+                                                mail_tracking_value mtv, 
+                                                mail_message mm 
+                                            where 
+                                                mtv.mail_message_id=mm.id and 
+                                                mm.model='entrega.vehiculo' and
+                                                mm.res_id={0}""".format(l.id))
+
+
+
+            estados = self.env.cr.dictfetchall()
+            result = map(lambda x: x['new_value_char'], estados)
+
+            if 'Revisión documentos' in result:
+                l.estado_anterior_requisitos=True
+            if 'Informe de Crédito y Cobranza' in result:
+                l.estado_anterior_informe_credito=True
+            if 'Calificador para compra del bien' in result:
+                l.estado_anterior_calificador=True
+
+            if 'Liquidación de compra y orden de compra' in result:
+                l.estado_anterior_liquidacion=True
+
+            if 'Orden de compra' in result:
+                l.estado_anterior_orden_compra=True
+                l.estado_anterior_factura=True
+                l.estado_anterior_matriculacion=True
+
+    @api.onchange('scoreBuroCredito')
+    def calculo_scoreCredito(self):
+        self.scoreCredito= self.scoreBuroCredito    
+
+
     @api.depends('montoVehiculo', 'montoAdjudicado')
     def calcular_monto_a_favor(self):
         for rec in self:
@@ -256,9 +346,9 @@ class EntegaVehiculo(models.Model):
     def set_aplica_garante(self):
         for rec in self:
             if rec.totalPuntosCalificador  >= 700:
-                rec.aplicaGarante = 'no'
+                rec.aplicaGarante = 'NO'
             else:
-                rec.aplicaGarante = 'si'
+                rec.aplicaGarante = 'SI'
     
 
     @api.depends('valorAdjParaCompra', 'valorComisionFactura', 'comisionDispositivoRastreo', 'montoAnticipoConsesionaria')
@@ -288,51 +378,6 @@ class EntegaVehiculo(models.Model):
         for rec in self:
             rec.totalPuntosCalificador = rec.puntosPorcentajeCancelado + rec.puntosPorcentajSaldos +  rec.puntosCuotaIngresos + rec.puntosScoreCredito +  rec.puntosAntiguedadLaboral + rec.totalPuntosBienesAdj
 
-    @api.depends('poseeCasa')
-    def set_puntos_casa(self):
-        for rec in self:
-            if rec.poseeCasa == 'si':
-                rec.puntosCasa = 200
-            else:
-                rec.puntosCasa = 0
-
-    @api.depends('poseeTerreno')
-    def set_puntos_terreno(self):
-        for rec in self:
-            if rec.poseeTerreno == 'si':
-                rec.puntosTerreno = 150
-            else:
-                rec.puntosTerreno = 0
-
-    @api.depends('poseeMotos')
-    def set_puntos_motos(self):
-        for rec in self:
-            if rec.poseeMotos == 'si':
-                rec.puntosMotos = 50
-            else:
-                rec.puntosMotos = 0
-
-    @api.depends('poseeVehiculo')
-    def set_puntos_vehiculo(self):
-        for rec in self:
-            if rec.poseeVehiculo == 'si':
-                rec.puntosVehiculo = 100
-            else:
-                rec.puntosVehiculo = 0
-
-    @api.depends('poseeMueblesEnseres')
-    def set_puntos_muebles(self):
-        for rec in self:
-            if rec.poseeMueblesEnseres == 'si':
-                rec.puntosMueblesEnseres = 25
-            else:
-                rec.puntosMueblesEnseres = 0
-
-    @api.depends('puntosMueblesEnseres', 'puntosVehiculo', 'puntosMotos', 'puntosTerreno', 'puntosCasa')
-    def calcular_puntos_bienes(self):
-        for rec in self:
-            rec.totalPuntosBienesAdj = rec.puntosCasa + rec.puntosTerreno + \
-                rec.puntosVehiculo + rec.puntosMotos + rec.puntosMueblesEnseres
 
     @api.depends('antiguedadLaboral')
     def calcular_puntos_antiguedad_laboral(self):
@@ -383,11 +428,11 @@ class EntegaVehiculo(models.Model):
             else:
                 rec.valorDelBien = 0.00
 
-    @api.depends('montoCuotasCanceladas')
+    @api.depends('montoCuotasPendientes')
     def set_valor_saldo_plan(self):
         for rec in self:
-            if rec.montoCuotasCanceladas:
-                rec.saldoPlan = rec.montoCuotasCanceladas
+            if rec.montoCuotasPendientes:
+                rec.saldoPlan = rec.montoCuotasPendientes
             else:
                 rec.saldoPlan = 0.00
 
@@ -428,9 +473,13 @@ class EntegaVehiculo(models.Model):
     def calcular_porcentaje_cuota_plan(self):
         for rec in self:
             if rec.ingresosFamiliares:
-                rec.porcentajeCuotaPlan = (rec.valorCuota/rec.ingresosFamiliares) * 100
+                rec.porcentajeCuotaPlan = round(((rec.valorCuota/rec.ingresosFamiliares) * 100), 0) 
             else:
                 rec.porcentajeCuotaPlan = 0.0
+
+
+   
+    #################################################
 
     @api.depends('porcentajeGastos', 'porcentajeIngresos')
     def calcular_porcentaje_disponibilidad(self):
@@ -507,7 +556,6 @@ class EntegaVehiculo(models.Model):
     def calcular_valor_cuotas_canceladas(self):
         for rec in self:
             rec.porcentajeTotal = 100.00
-            rec.cuotasCanceladas = 31
             rec.montoCuotasCanceladas = rec.valorCuota * rec.cuotasCanceladas
 
     @api.depends('valorCuota', 'plazoMeses')
@@ -515,8 +563,29 @@ class EntegaVehiculo(models.Model):
         for rec in self:
             rec.valorTotalPlan = rec.valorCuota * rec.plazoMeses
 
+
+    def setear_fecha_adjudicado(self):
+        contrato = self.env['contrato'].search(
+            [('cliente', '=', self.nombreSocioAdjudicado.id)], limit=1)
+        now=date.today()
+        contrato.fecha_adjudicado=now
+        contrato.estado='adjudicar'
+
+
+
+    def rechazo_setear_fecha_adjudicado(self):
+        contrato = self.env['contrato'].search(
+            [('cliente', '=', self.nombreSocioAdjudicado.id)], limit=1)
+        contrato.fecha_adjudicado=False
+        contrato.estado='activo'
+
+
+
+
+
+    @api.onchange('nombreSocioAdjudicado')
     @api.depends('nombreSocioAdjudicado')
-    def buscar_parner(self):
+    def buscar_contrato_partner(self):
         for rec in self:
             contrato = self.env['contrato'].search(
                 [('cliente', '=', rec.nombreSocioAdjudicado.id)], limit=1)
@@ -524,31 +593,11 @@ class EntegaVehiculo(models.Model):
             rec.valorCuota = contrato.cuota_capital
             rec.tipoAdj = contrato.tipo_de_contrato.name
             rec.fechaAdj = contrato.fecha_adjudicado
-
+            rec.cuotasCanceladas = contrato.numero_cuotas_pagadas
             rec.plazoMeses = contrato.plazo_meses.numero
+            rec.garante = contrato.aplicaGarante
+   
 
-
-    @api.depends('nombreSocioAdjudicado')
-    def set_campos_cliente_informe_credito(self):
-        for rec in self:
-            if rec.nombreSocioAdjudicado:
-                contrato = self.env['contrato'].search(
-                [('cliente', '=', rec.nombreSocioAdjudicado.id)], limit=1)
-                rec.clienteContrato = contrato
-                rec.cedulaContrato = rec.vatAdjudicado
-                rec.codClienteContrado = rec.codigoAdjudicado
-            else:
-                rec.clienteContrato = ''
-                rec.cedulaContrato = ''
-                rec.codClienteContrado = ''
-
-    @api.depends('montoAhorroInversiones', 'casaValor', 'terrenoValor', 'montoMueblesEnseres', 'vehiculoValor', 'inventarios')
-    def calcular_total_activos(self):
-        totalActivos = 0
-        for rec in self:
-            totalActivos = rec.montoAhorroInversiones + rec.casaValor + rec.terrenoValor + \
-                rec.vehiculoValor + rec.montoMueblesEnseres + rec.inventarios
-            rec.totalActivosAdj = totalActivos
 
     @api.depends('fechaNacimientoAdj')
     def calcular_edad(self):
@@ -562,6 +611,21 @@ class EntegaVehiculo(models.Model):
                 rec.edadAdjudicado = edad
             else:
                 rec.edadAdjudicado = 0
+    
+    
+    # @api.depends('fechaNacimientoGarante')
+    # def calcular_edad_garante(self):
+    #     edad = 0
+    #     for rec in self:
+    #         today = date.today()
+    #         if rec.garante == True:
+    #             if rec.fechaNacimientoAdj:
+    #                 edad = today.year - rec.fechaNacimientoAdj.year - \
+    #                     ((today.month, today.day) < (
+    #                         rec.fechaNacimientoAdj.month, rec.fechaNacimientoAdj.day))
+    #                 rec.edadAdjudicado = edad
+    #             else:
+    #                 rec.edadAdjudicado = 0
 
     @api.onchange('fechaNacimientoConyuge')
     def calcular_edad_conyuge(self):
@@ -575,6 +639,8 @@ class EntegaVehiculo(models.Model):
                 rec.edadConyuge = edad
             else:
                 rec.edadConyuge = 0
+    
+
 
     @api.model
     def create(self, vals):
@@ -583,20 +649,52 @@ class EntegaVehiculo(models.Model):
         return super(EntegaVehiculo, self).create(vals)
 
 
-    def cambio_estado_boton_borrador(self):
-        return self.write({"state": "revision_documentos"})
+ 
 
-    def cambio_estado_boton_revision(self):
-        return self.write({"state": "informe_credito_cobranza"})
+class ItemPatrimonioEntregaVehiculo(models.Model):
+    _name = 'items.patrimonio.entrega.vehiculo'
+    _description = 'Items de Patrimonio '
 
-    def cambio_estado_boton_informe(self):
-        return self.write({"state": "calificador_compra"})
+    currency_id = fields.Many2one(
+        'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
+    entrega_id = fields.Many2one('entrega.vehiculo')
+    patrimonio_id = fields.Many2one('items.patrimonio')
+    valor  = fields.Monetary(string="Monto($)",digits=(6, 2))
+    
+class PaginasDeControlEntregaVehiculo(models.Model):
+    _name = 'paginas.de.control.entrega.vehiculo'
+    _description = 'Revisión de páginas de control en Entrega de vehiculo'
+    
+    entrega_id = fields.Many2one('entrega.vehiculo')
+    pagina_id = fields.Many2one('paginas.de.control')
+    descripcion  = fields.Char(related='pagina_id.descripcion')
+    pagina = fields.Selection(selection=[ ('SI', 'SI'),('NO', 'NO')], default='SI')
 
-    def cambio_estado_boton_caificador(self):
-        return self.write({"state": "liquidacion_orden_compra"})
 
-    def cambio_estado_boton_liquidacion(self):
-        return self.write({"state": "entrega_vehiculo"})
+class PuntosBienesEntregaVehiculo(models.Model):
+    _name = 'puntos.bienes.entrega.vehiculo'
+    _description = 'Tabla de puntos Bienes'
+    
+    entrega_id = fields.Many2one('entrega.vehiculo')
+    bien_id = fields.Many2one('puntos.bienes')
+    valorBien  = fields.Integer(related='bien_id.valorPuntos')
+    puntosBien = fields.Integer(string='Ptos.', compute = 'set_puntos_bienes', store = True) 
+    poseeBien = fields.Selection(selection=[ ('SI', 'SI'),('NO', 'NO')], string='SI/NO', default='NO')
+    
 
-    def cambio_estado_boton_entrega(self):
-        return self.write({"state": "entrega_vehiculo"})
+    @api.depends('poseeBien')
+    def set_puntos_bienes(self):
+        valorDefault = 0
+        for rec in self:
+            if rec.poseeBien == 'NO':
+                rec.puntosBien = valorDefault
+            else:
+                rec.puntosBien = rec.valorBien 
+                
+            
+
+
+        
+
+
+

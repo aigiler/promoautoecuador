@@ -32,8 +32,7 @@
                         <field name="mobile" widget="phone"/>
                         <field name="direccion" string="Dirección"/>
                         <field name="tipo" invisible="1" />
-                        <field name="monto" />
-                        <field name="tipo_contrato" options="{'no_open': True, 'no_create': True}" />
+
                     </group>
                 </form>
             </field>

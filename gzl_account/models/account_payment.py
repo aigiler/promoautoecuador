@@ -7,7 +7,7 @@ class AccountJournal(models.Model):
     _inherit = 'account.payment'
 
     tipo_transaccion = fields.Selection([('Pago', 'Pago'), 
-                                        ('Anticipo', 'Anticipo')],
+                                        ('Anticipo', 'Anticipo'),('movimiento','Movimiento entre cuentas')],
                                     string='Tipo de Transacción', default='Pago')
 
     is_third_name = fields.Boolean(string='Dirigido a 3ra persona?', default=False)
@@ -16,6 +16,8 @@ class AccountJournal(models.Model):
     analytic_account_id = fields.Many2one('account.analytic.account', string="Cuenta Analítica")
     check_analytic = fields.Boolean(string='Habilitar Cta Analítica', compute="_compute_check_analytic", default=False)
     
+    account_payment_account_ids = fields.One2many('account.payment.line.account','payment_id', string="Cuentas Contables")
+
     @api.depends('third_account_id')
     def _compute_check_analytic(self):
         for l in self:
@@ -215,6 +217,68 @@ class AccountJournal(models.Model):
                         }),
                     ],
                 }
+
+
+
+
+                if self.tipo_transaccion=='movimiento':
+
+
+                    journal = payment.destination_journal_id
+
+                    # Manage custom currency on journal for liquidity line.
+                    if journal.currency_id and payment.currency_id != journal.currency_id:
+                        # Custom currency on journal.
+                        liquidity_line_currency_id = journal.currency_id.id
+                        transfer_amount = company_currency._convert(balance, journal.currency_id, payment.company_id, payment.payment_date)
+                    else:
+                        # Use the payment currency.
+                        liquidity_line_currency_id = currency_id
+                        transfer_amount = counterpart_amount
+
+                    transfer_move_vals = {
+                        'date': payment.payment_date,
+                        'ref': payment.communication,
+                        'partner_id': payment.partner_id.id,
+                        'journal_id': payment.destination_journal_id.id,
+                        'line_ids': [
+                            # Transfer debit line.
+                            (0, 0, {
+                                'name': payment.name,
+                                'amount_currency': -counterpart_amount if currency_id else 0.0,
+                                'currency_id': currency_id,
+                                'debit': balance < 0.0 and -balance or 0.0,
+                                'credit': balance > 0.0 and balance or 0.0,
+                                'date_maturity': payment.payment_date,
+                                'partner_id': payment.partner_id.commercial_partner_id.id,
+                                'account_id': payment.company_id.transfer_account_id.id,
+                                'payment_id': payment.id,
+                            }),
+                            # Liquidity credit line.
+                            (0, 0, {
+                                'name': _('Transfer from %s') % payment.journal_id.name,
+                                'amount_currency': transfer_amount if liquidity_line_currency_id else 0.0,
+                                'currency_id': liquidity_line_currency_id,
+                                'debit': balance > 0.0 and balance or 0.0,
+                                'credit': balance < 0.0 and -balance or 0.0,
+                                'date_maturity': payment.payment_date,
+                                'partner_id': payment.partner_id.commercial_partner_id.id,
+                                'account_id': payment.destination_journal_id.default_credit_account_id.id,
+                                'payment_id': payment.id,
+                            }),
+                        ],
+                    }
+
+
+
+
+
+
+
+
+
+
+
 
                 if move_names and len(move_names) == 2:
                     transfer_move_vals['name'] = move_names[1]

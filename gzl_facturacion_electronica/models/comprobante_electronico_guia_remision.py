@@ -21,6 +21,7 @@ from odoo.tools.safe_eval import safe_eval
 class AccountGuiaRemision(models.Model):
     _inherit = 'account.guia.remision'
 
+    bitacora_id = fields.Many2one('bitacora.consumo.servicios')
 
 
     def procesoComprobanteElectronico(self):
@@ -40,11 +41,14 @@ class AccountGuiaRemision(models.Model):
         if contador[0]['contador']>0:
             raise ValidationError('El Comprobante Electrónico está en proceso')
         else:
-            instanaciaBitacora=self.env['bitacora.consumo.servicios'].create(dct)
+            instanciaBitacora=self.env['bitacora.consumo.servicios'].create(dct)
+            self.bitacora_id=instanciaBitacora.id
+
+            
             try:
-                instanaciaBitacora.procesarComprobante()
+                instanciaBitacora.procesarComprobante()
             except json.decoder.JSONDecodeError:
-                instanaciaBitacora.response='Error 500 al consumir el servicio'
+                instanciaBitacora.response='Error 500 al consumir el servicio'
 
 
 
@@ -58,7 +62,7 @@ class AccountGuiaRemision(models.Model):
         body_vf = {
                       "guiasRemision": [
                         {
-                          "codigoExterno": self.name[0:3]+'-'+self.name[3:6]+'-'+self.name[6:],
+                          "codigoExterno": self.name[0:3]+self.name[3:6]+self.name[6:],
                           "ruc": self.env.user.company_id.vat,
 
                         }
@@ -143,7 +147,14 @@ class AccountGuiaRemision(models.Model):
 
             listaDetalle.append(dctDetalle)
 
-        dctFactura['adicionales']=[]
+        listaAdicionales=[]
+        for campo in self.campos_adicionales_facturacion:
+            dctAdicional={'nombre':campo.nombre,'value':campo.valor}
+            listaAdicionales.append(dctAdicional)
+        
+
+
+        dctFactura['adicionales']=listaAdicionales
         dctFactura['agencia']= ""
         dctFactura['codigoExterno']= self.name or ""
 

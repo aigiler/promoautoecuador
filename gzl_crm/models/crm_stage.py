@@ -37,3 +37,6 @@ class Stage(models.Model):
     solicitar_adjunto_documento = fields.Boolean( string='Solicitar Adjunto de Documentos' )
 
     correos = fields.Text( string='')
+
+
+    crear_reunion_en_calendar = fields.Boolean( string='Crear Reunión con Cliente para llamada de Calidad' )

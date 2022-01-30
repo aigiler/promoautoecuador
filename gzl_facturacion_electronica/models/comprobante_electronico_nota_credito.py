@@ -31,7 +31,7 @@ class FacturacionElectronica(models.Model):
         body_vf = {
                       "notasCredito": [
                         {
-                          "codigoExterno": self.l10n_latam_document_number[0:3]+'-'+self.l10n_latam_document_number[3:6]+'-'+self.l10n_latam_document_number[6:],
+                          "codigoExterno": self.l10n_latam_document_number[0:3]+self.l10n_latam_document_number[3:6]+self.l10n_latam_document_number[6:],
                           "ruc": self.env.user.company_id.vat,
 
                         }
@@ -76,7 +76,7 @@ class FacturacionElectronica(models.Model):
 
 
 
-        facturaReferenciada=self.reversed_entry_nc_id
+        facturaReferenciada=self.reversed_entry_id
 
 
         body_pf={}
@@ -106,14 +106,30 @@ class FacturacionElectronica(models.Model):
 
             listaImpuesto=[]
             for impuesto in detalle.tax_ids:
+
+                obj_impuesto=self.env['account.tax'].browse(impuesto.id)
+                valor=obj_impuesto._compute_amount(round(detalle.price_subtotal,2),0)
+                    
                 dctImpuesto={}
                 dctImpuesto['baseImponible']=round(detalle.price_subtotal,2)
                 dctImpuesto['codigoImpuesto']=impuesto.l10n_ec_code_base or ""
                 dctImpuesto['codigoPorcentaje']=impuesto.l10n_ec_code_applied or ""
-                dctImpuesto['tarifa']=str(impuesto.amount)
-                dctImpuesto['valor']=round(detalle.price_subtotal*impuesto.amount/100,2)
+                dctImpuesto['tarifa']=str(impuesto.tarifa)
+                dctImpuesto['valor']=round(valor,2)
 
                 listaImpuesto.append(dctImpuesto)
+
+
+            if len(listaImpuesto)==0:
+                dctListaImpuesto={
+                "baseImponible":self.amount_untaxed,
+                "codigoImpuesto":'2',
+                "codigoPorcentaje":'0',
+                "tarifa":'0',
+                "valor":0.0
+                }
+                listaImpuesto.append(dctListaImpuesto)
+
 
             dctDetalle['detallesImpuesto']=listaImpuesto
             dctDetalle['iva']=''
@@ -147,12 +163,25 @@ class FacturacionElectronica(models.Model):
 
             listaTotalConImpuestos.append(dctTotalConImpuestos)
 
+        if len(listaTotalConImpuestos)==0:
+            dctListaImpuesto={
+            "baseImponible":self.amount_untaxed,
+            "codigoImpuesto":'2',
+            "codigoPorcentaje":'0',
+            "valor":0.0,
+            "valorDevolucionIva":0.0
+            }
+            listaTotalConImpuestos.append(dctListaImpuesto)
 
 
+        listaAdicionales=[]
+        for campo in self.campos_adicionales_facturacion:
+            dctAdicional={'nombre':campo.nombre,'value':campo.valor}
+            listaAdicionales.append(dctAdicional)
+        
 
 
-
-        dctFactura['adicionales']=[]
+        dctFactura['adicionales']=listaAdicionales
         dctFactura['codDocModificado']=dctCodDoc[facturaReferenciada.type]
         dctFactura['codigoExterno']= self.l10n_latam_document_number or ""
 
@@ -163,7 +192,7 @@ class FacturacionElectronica(models.Model):
         dctFactura['establecimiento']=self.l10n_latam_document_number[0:3]
 
         dctFactura['fechaEmision']='%s-%s-%s 00:00' % (self.invoice_date.year, str(self.invoice_date.month).zfill(2),str(self.invoice_date.day).zfill(2))
-        dctFactura['fechaEmisionDocSustento']='%s-%s-%s 00:00' % (self.reversed_entry_nc_id.invoice_date.year, str(self.reversed_entry_nc_id.invoice_date.month).zfill(2),str(self.reversed_entry_nc_id.invoice_date.day).zfill(2))
+        dctFactura['fechaEmisionDocSustento']='%s-%s-%s 00:00' % (self.reversed_entry_id.invoice_date.year, str(self.reversed_entry_id.invoice_date.month).zfill(2),str(self.reversed_entry_id.invoice_date.day).zfill(2))
 
 
 
