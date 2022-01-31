@@ -11,11 +11,26 @@ import ast
 from odoo.exceptions import ValidationError, except_orm
 
 
-class CalculoComision(models.TransientModel):
+class CalculoComision(models.Model):
     _name = "calcula.comision"
     name = fields.Many2one('hr.employee', string='Empleado', required=True)
     partner = fields.Many2one('res.partner', string='partner', required=True,track_visibility='onchange')
     det = fields.One2many('detalle.oportunidades', 'sale_id')
+    fechaInicio= fields.Date('Fecha Inicio')
+    fechaFin = fields.Date( 'Fecha Fin')
+
+    comision = fields.Monetary(string='Comision',compute="calcular_monto_pagado",store="True")
+
+    @api.depends("det.comision")
+    def calcular_monto_pagado(self):
+        for l in self:
+            l.comision=sum(l.det.mapped("comision"))
+
+
+
+
+
+
     #detalle_op = fields.One2many('crm.lead','partner_id',track_visibility='onchange')
     """date = fields.Selection(selection=[
             ('01', 'Enero'),
@@ -62,7 +77,7 @@ class CalculoComision(models.TransientModel):
             partner_ids = self.env['res.users']
             users = partner_ids.search([('active','=',True),('id','=',self.name.user_id.id)])
             #raise ValidationError(str(users.id))
-            crm = self.env['crm.lead'].search([('user_id','=',users.id),('active','=',True)])
+            crm = self.env['crm.lead'].search([('user_id','=',users.id),('active','=',True),('create_date','=',self.fechaInicio),('create_date','=',self.fechaFin)])
             #raise ValidationError(str(crm))
             if crm :
                 for l in crm :
@@ -85,12 +100,21 @@ class CalculoComision(models.TransientModel):
     #    data = []
     #    crm = self.env['crm.lead'].search([('id','=',self.cemlead.id),('active','=',True)])
         
-class DetalleOportunidades(models.TransientModel):
+class DetalleOportunidades(models.Model):
     _name = 'detalle.oportunidades'
     crmlead = fields.Many2one('crm.lead', string='Oportunidad')
-    name = fields.Char('name')
+    name = fields.Char('Oportunidad')
     planned_revenue = fields.Monetary('Monto del Plan', currency_field='company_currency', tracking=True)
+    porcentaje_comision = fields.Float('Porcentaje de Comisión',  tracking=True)
     company_id = fields.Many2one('res.company', string='Company', index=True, default=lambda self: self.env.company.id)
     company_currency = fields.Many2one(string='Currency', related='company_id.currency_id', readonly=True, relation="res.currency")
     sale_id = fields.Many2one('calcula.comision')
-        
+    comision = fields.Monetary(string='Comision',compute="calcular_monto_pagado",store="True")
+
+    @api.depends("porcentaje_comision")
+    def calcular_monto_pagado(self):
+        for l in self:
+            l.comision=l.porcentaje_comision*planned_revenue
+
+
+
