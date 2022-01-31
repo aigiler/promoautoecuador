@@ -232,10 +232,7 @@ class EntegaVehiculo(models.Model):
     mes = fields.Char(string='')
     anio = fields.Char()
     
-    nombreInforme = fields.Selection(selection=[
-        ('NO', 'Nombre del Socio Adj.: '),
-        ('SI', 'Nombre del Garante.:')
-    ], compute='setea_informe_garante')
+    nombreInforme = fields.Char(compute='setea_informe_garante')
     
     aplicaGarante = fields.Selection(selection=[
         ('NO', 'Titular, Conyugue y DepositarioTitular, Conyugue y Depositario'),
@@ -290,9 +287,9 @@ class EntegaVehiculo(models.Model):
     def setea_informe_garante(self):
         for rec in self:
             if rec.garante == False:
-                rec.nombreInforme = 'NO'
+                rec.nombreInforme = 'Nombre del Socio Adj.: '
             else:
-                rec.nombreInforme = 'SI'
+                rec.nombreInforme = 'Nombre del Garante.:'
         
 
     def consultar_estado_anterior_requisitos(self):
@@ -612,20 +609,7 @@ class EntegaVehiculo(models.Model):
             else:
                 rec.edadAdjudicado = 0
     
-    
-    # @api.depends('fechaNacimientoGarante')
-    # def calcular_edad_garante(self):
-    #     edad = 0
-    #     for rec in self:
-    #         today = date.today()
-    #         if rec.garante == True:
-    #             if rec.fechaNacimientoAdj:
-    #                 edad = today.year - rec.fechaNacimientoAdj.year - \
-    #                     ((today.month, today.day) < (
-    #                         rec.fechaNacimientoAdj.month, rec.fechaNacimientoAdj.day))
-    #                 rec.edadAdjudicado = edad
-    #             else:
-    #                 rec.edadAdjudicado = 0
+
 
     @api.onchange('fechaNacimientoConyuge')
     def calcular_edad_conyuge(self):
