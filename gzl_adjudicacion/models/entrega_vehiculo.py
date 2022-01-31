@@ -54,7 +54,7 @@ class EntegaVehiculo(models.Model):
     # datos del socio adjudicado
     nombreSocioAdjudicado = fields.Many2one('res.partner', string="Nombre del Socio Adj.", track_visibility='onchange')
     codigoAdjudicado = fields.Char(related="nombreSocioAdjudicado.codigo_cliente", string='Código', track_visibility='onchange',store=True)
-    fechaNacimientoAdj = fields.Date(related="nombreSocioAdjudicado.fecha_nacimiento", string='Fecha de Nacimiento',store=True)
+    fechaNacimientoAdj = fields.Date(string='Fecha de Nacimiento',compute = 'setea_valores_informe', store=True)
     vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía',store=True)
     estadoCivilAdj = fields.Selection(related="nombreSocioAdjudicado.estado_civil" ,store=True)
     edadAdjudicado = fields.Integer(compute='calcular_edad', string="Edad", readonly=True, store=True, default = 0)
@@ -165,7 +165,7 @@ class EntegaVehiculo(models.Model):
     
     ################### Informe GARANTE
     # antecedentes
-    nombreGarante = fields.Many2one('res.partner', string="Nombre del Garante", track_visibility='onchange',store=True)
+    nombreGarante = fields.Many2one('res.partner', string="Nombre del Garante", track_visibility='onchange')
     vatGarante = fields.Char(related="nombreGarante.vat", string='Cedula de Ciudadanía',store=True)    
     fechaNacimientoGarante = fields.Date(String='Fecha de Nacimiento')
     
@@ -267,8 +267,7 @@ class EntegaVehiculo(models.Model):
     estado_anterior_requisitos = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
     estado_anterior_orden_compra = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
 
-    
-    
+
     @api.depends('garante')
     def setea_valores_informe(self):
         for rec in self:
@@ -293,10 +292,10 @@ class EntegaVehiculo(models.Model):
     def setea_datos_informe(self):
         for rec in self:
             if rec.garante == False:
-                rec.nombresInforme = rec.nombreSocioAdjudicado
+                rec.nombresInforme = rec.nombreSocioAdjudicado.name
                 rec.vatInforme = rec.vatAdjudicado
             else:
-                rec.nombresInforme = rec.nombreGarante
+                rec.nombresInforme = rec.nombreGarante.name
                 rec.vatInforme = rec.vatGarante
 
 
