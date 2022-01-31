@@ -271,7 +271,35 @@ class Contrato(models.Model):
 
 
     def cambio_estado_boton_desistir(self):
+
+
+
+        transacciones=self.env['transaccion.grupo.adjudicado']
+        contrato_id=self.env['contrato'].browse(self.id)
+        pagos=self.detalle_tabla_amortizacion.filtered(lambda l: l.state=='pagado')
+        pago=sum(pagos.mapped("cuota_capital"))+sum(pagos.mapped("cuota_adm"))+sum(pagos.mapped("cuota_adm"))+sum(pagos.mapped("iva_adm"))+sum(pagos.mapped("seguro"))+sum(pagos.mapped("rastreo"))+sum(pagos.mapped("otro"))
+
+
+        dct={
+            'grupo_id':contrato_id.grupo.id,
+            'debe':pago,
+            'adjudicado_id':self.cliente.id,
+            'contrato_id':contrato_id.id,
+            'state':contrato_id.state
+
+
+        }
+
+
+        transacciones.create(dct)
+
+
         return self.write({"state": "desistir"})
+
+
+    def cambio_estado_boton_inactivar(self):
+        return self.write({"state": "inactivo"})
+
 
 
 
@@ -298,6 +326,9 @@ class Contrato(models.Model):
 
             obj_cliente_integrante=self.env['integrante.grupo.adjudicado'].create(dctCliente)
             obj_cliente_integrante.agregar_contrato()
+
+
+
 
 
 
@@ -359,13 +390,14 @@ class Contrato(models.Model):
         dateMonthStart="%s-%s-01" % (hoy.year, hoy.mes)
         dateMonthStart=datetime.strptime(dateMonthStart, '%Y-%m-%d') 
 
+        numeroCuotasMaximo =  int(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.maximo_cuotas_vencidas'))
 
         contratos=self.env['contrato'].search([('state','in',['activo'])])
 
         for contrato in contratos:
                  
             lineas_pendientes=contrato.tabla_amortizacion.filtered(lambda l: l.fecha<dateMonthStart and estado_pago=='pendiente')
-            if len(lineas_pendientes)>=3:
+            if len(lineas_pendientes)>=numeroCuotasMaximo:
                 contrato.state='inactivo'
 
 
@@ -495,6 +527,62 @@ class Contrato(models.Model):
         return correos
 
 
+#CRUD METHODS
+
+    def write(self, vals):
+
+        if vals.get('grupo',False) :
+            transacciones=self.env['transaccion.grupo.adjudicado']
+
+            contrato_id=self.env['contrato'].browse(self.id)
+            pagos=self.detalle_tabla_amortizacion.filtered(lambda l: l.state=='pagado')
+            pago=sum(pagos.mapped("cuota_capital"))+sum(pagos.mapped("cuota_adm"))+sum(pagos.mapped("cuota_adm"))+sum(pagos.mapped("iva_adm"))+sum(pagos.mapped("seguro"))+sum(pagos.mapped("rastreo"))+sum(pagos.mapped("otro"))
+
+
+            dct={
+                'grupo_id':contrato_id.grupo.id,
+                'debe':pago,
+                'adjudicado_id':self.cliente.id,
+                'contrato_id':contrato_id.id,
+                'state':contrato_id.state
+
+
+            }
+
+
+            transacciones.create(dct)
+
+            dct={
+                'grupo_id':vals['grupo'],
+                'haber':pago,
+                'adjudicado_id':self.cliente.id,
+                'contrato_id':contrato_id.id,
+                'state':contrato_id.state
+
+
+            }
+
+
+            transacciones.create(dct)
+
+
+
+        crm = super(Contrato, self).write(vals)
+        return crm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -605,4 +693,43 @@ class PagoContratoEstadoCuenta(models.Model):
     
 
 
+
+
+
+
+class ContratoEstadoCuentaHsitorico(models.Model):
+    _name = 'contrato.estado.cuenta.historico'
+    _description = 'Contrato Historico Tabla de estado de cuenta de Aporte'
+
+    contrato_id = fields.Many2one('contrato')
+    numero_cuota = fields.Char(String='Número de Cuota')
+    fecha = fields.Date(String='Fecha Pago')
+    fecha_pagada = fields.Date(String='Fecha Pagada')
+    currency_id = fields.Many2one(
+        'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
+    cuota_capital = fields.Monetary(
+        string='Cuota Capital', currency_field='currency_id')
+    cuota_adm = fields.Monetary(
+        string='Cuota Adm', currency_field='currency_id')
+
+    iva_adm = fields.Monetary(
+        string='Iva Adm', currency_field='currency_id')
+
+    factura_id = fields.Many2one('account.move', string='Factura')
+    # pago_ids = fields.Many2many('account.payment','contrato_estado_cuenta_payment_rel', 'estado_cuenta_id','payment_id', string='Pagos')
+    seguro = fields.Monetary(string='Seguro', currency_field='currency_id')
+    rastreo = fields.Monetary(string='Rastreo', currency_field='currency_id')
+    otro = fields.Monetary(string='Otro', currency_field='currency_id')
+    monto_pagado = fields.Monetary(
+        string='Monto Pagado', currency_field='currency_id',compute="calcular_monto_pagado",store=True)
+    saldo = fields.Monetary(string='Saldo', currency_field='currency_id' ,compute="calcular_monto_pagado",store=True)
+    certificado = fields.Binary(string='Certificado')
+    cuotaAdelantada = fields.Boolean(string='Cuota Adelantada')
+    estado_pago = fields.Selection([('pendiente', 'Pendiente'),
+                                    ('pagado', 'Pagado')
+                                    ], string='Estado de Pago', default='pendiente')
+
+    pago_ids = fields.One2many(
+        'account.payment', 'pago_id', track_visibility='onchange')
+    
 

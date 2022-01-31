@@ -13,5 +13,6 @@ class ResConfigSettings(models.TransientModel):
 
     numero_cuotas_pagadas = fields.Integer(string='Cantidad de Cuotas Mínimas Licitar',default=0, config_parameter="gzl_adjudicacion.numero_cuotas_pagadas")
 
+    numero_cuotas_para_inactivar = fields.Integer(string='Máximo de cuotas vencidas para Inactivar Contrato',default=0, config_parameter="gzl_adjudicacion.maximo_cuotas_vencidas")
 
 
