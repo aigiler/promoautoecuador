@@ -37,6 +37,16 @@
                                 </group>
                             </group>
                         </page>
+                        <page string="Información del Vehiculo"  >
+
+                            <group>
+                                <group>
+                                    <field name="matriculacion" />
+                                    <field name="rastreo" />
+                                    <field name="seguro" />
+                                </group>
+                            </group>
+                        </page>
 
 
                         <page string="Entrega de Requisitos" attrs="{'readonly':[('estado', 'in', ('inicio', 'borrador','revision_documentos') )]}">

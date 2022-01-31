@@ -269,6 +269,12 @@ class EntegaVehiculo(models.Model):
     estado_anterior_requisitos = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
     estado_anterior_orden_compra = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
 
+    # informacion de vehiculo
+    tipoVehiculo = fields.Char(string='Tipo:')
+    claseVehiculo = fields.Char(string='Clase:')
+    marcaVehiculo = fields.Char(string='Marca:')
+    modeloVehiculo  = fields.Char(string='Modelo registrado SRI:')
+    modeloHomologado  = fields.Char(string='')
 
     @api.depends('garante')
     def setea_valores_informe(self):
