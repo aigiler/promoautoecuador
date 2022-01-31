@@ -277,8 +277,6 @@ class EntegaVehiculo(models.Model):
                 rec.fechaNacimientoAdj = rec.nombreSocioAdjudicado.fecha_nacimiento
             elif rec.garante == True:
                 rec.fechaNacimientoAdj = rec.nombreGarante.fecha_nacimiento
-            else:
-                rec.fechaNacimientoAdj = ''
 
 
     @api.depends('garante')
