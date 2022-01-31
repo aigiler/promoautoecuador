@@ -600,7 +600,9 @@ class EntegaVehiculo(models.Model):
             rec.cuotasCanceladas = contrato.numero_cuotas_pagadas
             rec.plazoMeses = contrato.plazo_meses.numero
             rec.garante = contrato.aplicaGarante
-   
+            if  contrato.aplicaGarante = True:
+                rec.nombreGarante = contrato.garante
+
 
 
     @api.depends('fechaNacimientoAdj')
