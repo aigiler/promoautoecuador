@@ -40,8 +40,7 @@ class Contrato(models.Model):
         string='Valor Inscripción', currency_field='currency_id', track_visibility='onchange')
     tipo_de_contrato = fields.Many2one(
         'tipo.contrato.adjudicado', string='Tipo de Contrato', track_visibility='onchange')
-    codigo_grupo = fields.Char(compute='setear_codigo_grupo'
-        string='Código de Grupo', track_visibility='onchange')
+    codigo_grupo = fields.Char(compute='setear_codigo_grupo', string='Código de Grupo', track_visibility='onchange')
     provincias = fields.Many2one(
         'res.country.state', string='Provincia', track_visibility='onchange')
     archivo = fields.Binary(string='Archivo')
