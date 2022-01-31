@@ -243,8 +243,10 @@ class EntegaVehiculo(models.Model):
         ('saldo_a_favor', 'SALDO A FAVOR APLICA A CUOTAS FINALES DEL PLAN'),
         ('diferencia', 'DIFERENCIA PAGA AL CONCESIONARIO')
     ], default = 'saldo_a_favor', compute='calcular_monto_a_favor')
-    
-    
+
+
+    nombresInforme = fields.Char(compute='setea_datos_informe')
+    vatInforme = fields.Char()
 
     matriculacion = fields.Boolean(string="Matriculación", track_visibility="onchange")
     rastreo = fields.Boolean(string="Rastreo",track_visibility="onchange")
@@ -276,13 +278,8 @@ class EntegaVehiculo(models.Model):
                 rec.fechaNacimientoAdj = rec.nombreGarante.fecha_nacimiento
             else:
                 rec.fechaNacimientoAdj = ''
-        
-        
-        
-        
-        
-        
-        
+
+
     @api.depends('garante')
     def setea_informe_garante(self):
         for rec in self:
@@ -290,7 +287,18 @@ class EntegaVehiculo(models.Model):
                 rec.nombreInforme = 'Nombre del Socio Adj.: '
             else:
                 rec.nombreInforme = 'Nombre del Garante.:'
-        
+
+
+    @api.depends('garante', 'nombreSocioAdjudicado', 'nombreGarante')
+    def setea_datos_informe(self):
+        for rec in self:
+            if rec.garante == False:
+                rec.nombresInforme = rec.nombreSocioAdjudicado
+                rec.vatInforme = rec.vatAdjudicado
+            else:
+                rec.nombresInforme = rec.nombreGarante
+                rec.vatInforme = rec.vatGarante
+
 
     def consultar_estado_anterior_requisitos(self):
         for l in self:
