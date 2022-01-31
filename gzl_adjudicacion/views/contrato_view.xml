@@ -62,7 +62,7 @@
                     <button name="actualizar_rubros_por_adelantado" string="Actualizar Rubros" states="activo,adjudicar" type="object" class="oe_highlight"/>
                     <button name="cambio_estado_boton_inactivar" string="Inactivar" states="activo" type="object" class="oe_highlight"/>
 
-
+                    <button name="crear_adendum" string="Crear Adendum" states="activo" type="object" class="oe_highlight"/>
 
 
                     <field name="state" widget="statusbar" statusbar_visible="borrador,activo,congelar_contrato,adjudicar,adendum,desistir"/>
