@@ -18,6 +18,9 @@ class CalculoComision(models.Model):
     det = fields.One2many('detalle.oportunidades', 'sale_id')
     fechaInicio= fields.Date('Fecha Inicio')
     fechaFin = fields.Date( 'Fecha Fin')
+    
+    company_id = fields.Many2one('res.company', string='Company', index=True, default=lambda self: self.env.company.id)
+    company_currency = fields.Many2one(string='Currency', related='company_id.currency_id', readonly=True, relation="res.currency")
 
     comision = fields.Monetary(string='Comision',compute="calcular_monto_pagado",store="True",currency_field='company_currency',)
 
@@ -70,14 +73,18 @@ class CalculoComision(models.Model):
                 'views': [(action.id, 'form')],
                 'type': 'ir.actions.act_window',
                 'context': {'default_crmlead': self.name.id}}"""
-    @api.onchange('name')
+        
+        
+        
+        
+    @api.onchange('name','fechaInicio','fechaFin')
     def _onchange_name(self):
         for e in self:
             lines =[(5,0,0)]
             partner_ids = self.env['res.users']
             users = partner_ids.search([('active','=',True),('id','=',self.name.user_id.id)])
             #raise ValidationError(str(users.id))
-            crm = self.env['crm.lead'].search([('user_id','=',users.id),('active','=',True),('create_date','=',self.fechaInicio),('create_date','=',self.fechaFin)])
+            crm = self.env['crm.lead'].search([('user_id','=',users.id),('active','=',True),('create_date','>=',self.fechaInicio),('create_date','<=',self.fechaFin)])
             #raise ValidationError(str(crm))
             if crm :
                 for l in crm :
@@ -114,7 +121,7 @@ class DetalleOportunidades(models.Model):
     @api.depends("porcentaje_comision")
     def calcular_monto_pagado(self):
         for l in self:
-            l.comision=l.porcentaje_comision*planned_revenue
+            l.comision=l.porcentaje_comision*l.planned_revenue/100
 
 
 

@@ -20,6 +20,12 @@
                          <tree delete="false" editable="false" create="false" string="Journal Items">
                              <field name="name" readonly="1"/>
                              <field name="planned_revenue" readonly="1"/>
+                             <field name="porcentaje_comision" readonly="0"/>
+                             <field name="comision" readonly="1"/>
+
+
+
+
                         </tree>
                     </field>
                     <footer>
