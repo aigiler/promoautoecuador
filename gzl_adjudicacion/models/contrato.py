@@ -40,7 +40,7 @@ class Contrato(models.Model):
         string='Valor Inscripción', currency_field='currency_id', track_visibility='onchange')
     tipo_de_contrato = fields.Many2one(
         'tipo.contrato.adjudicado', string='Tipo de Contrato', track_visibility='onchange')
-    codigo_grupo = fields.Char(
+    codigo_grupo = fields.Char(compute='setear_codigo_grupo'
         string='Código de Grupo', track_visibility='onchange')
     provincias = fields.Many2one(
         'res.country.state', string='Provincia', track_visibility='onchange')
@@ -107,7 +107,11 @@ class Contrato(models.Model):
     aplicaGarante  = fields.Boolean(string='Garante',default = False, track_visibility='onchange')
     
     garante =  fields.Many2one('res.partner', string="Garante", track_visibility='onchange')
-    
+
+    @api.depends('grupo')
+    def setear_codigo_grupo(self):
+        for rec in self:
+            rec.codigo_grupo = "["+rec.grupo.codigo+"] - "+ rec.grupo.name 
 
     @api.constrains('state')
     def crear_registro_fondo_grupo(self):
