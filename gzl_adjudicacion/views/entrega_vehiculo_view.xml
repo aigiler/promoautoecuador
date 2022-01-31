@@ -57,12 +57,12 @@
                                 <div class="col-xs-12 col-sm-4">
                                     <group attrs="{'invisible':[('garante', '=', True)]}"> 
                                         <field name="vatAdjudicado" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
-                                        <field name="fechaNacimientoAdj" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="fechaNacimientoAdj" readonly="1"/>
                                         <field name="estadoCivilAdj" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
                                     <group attrs="{'invisible':[('garante', '=', False)]}"> 
                                         <field name="vatGarante" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
-                                        <field name="fechaNacimientoAdj" string="Fecha de Nacimiento" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="fechaNacimientoAdj" string="Fecha de Nacimiento" readonly="1"/>
                                         <field name="estadoCivilGarante" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
    
