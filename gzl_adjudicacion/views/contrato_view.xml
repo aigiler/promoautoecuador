@@ -52,7 +52,7 @@
                     <button name="cambio_estado_boton_borrador" string="Activo" type="object" states="borrador" class="oe_highlight"/>
 
                     <button name="cambio_estado_congelar_contrato" string="Congelar " states="inactivar" type="object" class="oe_highlight"/>
-                    <button name="reactivar_contrato_congelado" string="Reactivar Contrato " states="Congelar" type="object" class="oe_highlight"/>
+                    <button name="reactivar_contrato_congelado" string="Reactivar Contrato " states="congelar_contrato" type="object" class="oe_highlight"/>
 
 
                     <button name="cambio_estado_boton_desistir" string="Desistir" type="object" states="inactivar"  class="oe_highlight"/>
