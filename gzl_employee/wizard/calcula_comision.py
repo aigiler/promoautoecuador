@@ -19,7 +19,7 @@ class CalculoComision(models.Model):
     fechaInicio= fields.Date('Fecha Inicio')
     fechaFin = fields.Date( 'Fecha Fin')
 
-    comision = fields.Monetary(string='Comision',compute="calcular_monto_pagado",store="True")
+    comision = fields.Monetary(string='Comision',compute="calcular_monto_pagado",store="True",currency_field='company_currency',)
 
     @api.depends("det.comision")
     def calcular_monto_pagado(self):
@@ -109,7 +109,7 @@ class DetalleOportunidades(models.Model):
     company_id = fields.Many2one('res.company', string='Company', index=True, default=lambda self: self.env.company.id)
     company_currency = fields.Many2one(string='Currency', related='company_id.currency_id', readonly=True, relation="res.currency")
     sale_id = fields.Many2one('calcula.comision')
-    comision = fields.Monetary(string='Comision',compute="calcular_monto_pagado",store="True")
+    comision = fields.Monetary(string='Comision',compute="calcular_monto_pagado",store="True",currency_field='company_currency',)
 
     @api.depends("porcentaje_comision")
     def calcular_monto_pagado(self):
