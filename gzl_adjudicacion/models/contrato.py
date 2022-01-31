@@ -92,6 +92,13 @@ class Contrato(models.Model):
     congelar_contrato_ids = fields.One2many(
         'contrato.congelamiento', 'contrato_id', track_visibility='onchange')
 
+    adendums_contrato_ids = fields.One2many(
+        'contrato.adendum', 'contrato_id', track_visibility='onchange')
+
+
+
+
+
 
 
     numero_cuotas_pagadas = fields.Integer(
@@ -498,6 +505,42 @@ class Contrato(models.Model):
         }
 
 
+
+    def crear_adendum(self):
+        if len(self.adendums_contrato_ids)>1:
+            raise ValidationError("El contrato solo puede realizar un adendum")
+
+
+        view_id = self.env.ref('gzl_adjudicacion.wizard_crear_adendum_form').id
+
+
+        return {'type': 'ir.actions.act_window',
+                'name': 'Crear Adendum',
+                'res_model': 'wizard.adendum',
+                'target': 'new',
+                'view_mode': 'form',
+                'views': [[view_id, 'form']],
+                'context': {
+                    'default_contrato_id': self.id,
+                    'default_socio_id': self.cliente.id,
+                    'default_monto_financiamiento': self.monto_financiamiento,
+                    'default_plazo_meses': self.plazo_meses.id,
+                }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     def actualizar_rubros_por_adelantado(self):
         view_id = self.env.ref('gzl_adjudicacion.wizard_actualizar_rubro_form').id
 
@@ -693,15 +736,40 @@ class PagoContratoEstadoCuenta(models.Model):
     
 
 
+    
+class ContratoAdendum(models.Model):
+    _name = 'contrato.adendum'
+    _description = 'Contrato Adendum'
 
+
+    contrato_id = fields.Many2one('contrato',string="Contrato")
+    socio_id = fields.Many2one('res.partner',string="Socio")
+
+    monto_financiamiento = fields.Monetary(
+        string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
+    plazo_meses = fields.Many2one('numero.meses',default=lambda self: self.env.ref('gzl_adjudicacion.{0}'.format('numero_meses60')).id ,track_visibility='onchange' )
+
+    currency_id = fields.Many2one(
+        'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
+
+
+
+class ContratoHistorio(models.Model):
+    _name = 'contrato.estado.cuenta.historico.cabecera'
+    _description = 'Contrato Historico Tabla de estado de cuenta de Aporte'
+
+
+    contrato_id = fields.Many2one('contrato')
+    tabla_amortizacion = fields.One2many(
+        'contrato.estado.cuenta.historico.detalle', 'contrato_id', track_visibility='onchange')
 
 
 
 class ContratoEstadoCuentaHsitorico(models.Model):
-    _name = 'contrato.estado.cuenta.historico'
+    _name = 'contrato.estado.cuenta.historico.detalle'
     _description = 'Contrato Historico Tabla de estado de cuenta de Aporte'
 
-    contrato_id = fields.Many2one('contrato')
+    contrato_id = fields.Many2one('contrato.estado.cuenta.historico.cabecera')
     numero_cuota = fields.Char(String='Número de Cuota')
     fecha = fields.Date(String='Fecha Pago')
     fecha_pagada = fields.Date(String='Fecha Pagada')
