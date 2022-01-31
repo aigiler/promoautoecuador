@@ -516,7 +516,7 @@ class Contrato(models.Model):
 
         return {'type': 'ir.actions.act_window',
                 'name': 'Crear Adendum',
-                'res_model': 'wizard.adendum',
+                'res_model': 'wizard.contrato.adendum',
                 'target': 'new',
                 'view_mode': 'form',
                 'views': [[view_id, 'form']],
