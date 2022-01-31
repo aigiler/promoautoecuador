@@ -247,6 +247,8 @@ class EntegaVehiculo(models.Model):
 
     nombresInforme = fields.Char(compute='setea_datos_informe')
     vatInforme = fields.Char()
+    estadoCivilInforme = fields.Char()
+    edadInforme = fields.Integer()
 
     matriculacion = fields.Boolean(string="Matriculación", track_visibility="onchange")
     rastreo = fields.Boolean(string="Rastreo",track_visibility="onchange")
@@ -294,9 +296,13 @@ class EntegaVehiculo(models.Model):
             if rec.garante == False:
                 rec.nombresInforme = rec.nombreSocioAdjudicado.name
                 rec.vatInforme = rec.vatAdjudicado
+                rec.estadoCivilInforme = rec.estadoCivilAdj
+                rec.edadInforme 
+                
             else:
                 rec.nombresInforme = rec.nombreGarante.name
                 rec.vatInforme = rec.vatGarante
+                rec.estadoCivilInforme = rec.estadoCivilGarante
 
 
     def consultar_estado_anterior_requisitos(self):
@@ -683,11 +689,5 @@ class PuntosBienesEntregaVehiculo(models.Model):
                 rec.puntosBien = valorDefault
             else:
                 rec.puntosBien = rec.valorBien 
-                
-            
-
-
-        
-
 
 

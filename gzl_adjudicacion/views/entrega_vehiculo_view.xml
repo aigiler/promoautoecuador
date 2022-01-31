@@ -84,7 +84,7 @@
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <group>
-                                        <field name="nombreConyuge" string="Nombre del Cónyuge" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))], 'invisible':[('garante', '=', True)]}"/>
+                                        <field name="nombreConyuge" string="Nombre del Cónyuge" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
