@@ -9,11 +9,12 @@
                     <group string="Ingrese la modificación del contrato"> 
 
 
-                        <field name="monto_a_pagar" required="1"/>
-                        <field name="numero_cuotas" required="1"/>
-                        <field name="diferencia" required="1"/>
-                        <field name="contrato_id" invisible="1"/>
-                        
+                        <field name="contrato_id" required="1"/>
+                        <field name="socio_id" invisible="1"/>
+                        <field name="monto_financiamiento" required="1"/>
+                        <field name="plazo_meses" invisible="1"/>
+
+
                     </group>
                 </sheet>
                 <footer>
