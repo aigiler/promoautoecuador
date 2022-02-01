@@ -57,6 +57,8 @@ class EntegaVehiculo(models.Model):
     codigoAdjudicado = fields.Char(related="nombreSocioAdjudicado.codigo_cliente", string='Código', track_visibility='onchange',store=True, default=' ') 
     fechaNacimientoAdj = fields.Date(string='Fecha de Nacimiento',compute = 'setea_valores_informe', store=True)
     vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía',store=True, default=' ')
+    direccionAdjudicado  = fields.Char(related="nombreSocioAdjudicado.direccion", string='Dirección')
+    telefonosAdj =  = fields.Char(string='Celular', compute = 'numeros_socio')
     estadoCivilAdj = fields.Selection(related="nombreSocioAdjudicado.estado_civil" ,store=True)
     edadAdjudicado = fields.Integer(compute='calcular_edad', string="Edad", readonly=True, store=True, default = 0)
     cargasFamiliares = fields.Integer(string="Cargas Fam." , default = 0)
@@ -99,7 +101,14 @@ class EntegaVehiculo(models.Model):
     placa = fields.Char(string='Placa de Vehículo', default=' ')
     totalActivosAdj = fields.Float(compute="calculo_total_activos_adj",store=True,string='TOTAL ACTIVOS', digits=(6, 2))
 
-
+    
+    @api.depends("montoAhorroInversiones")
+    def numeros_socio(self):
+        
+    
+    
+    
+    
     @api.depends("montoAhorroInversiones")
     def calculo_total_activos_adj(self):
         for rec in self:
@@ -693,6 +702,7 @@ class EntegaVehiculo(models.Model):
             rec.cuotasCanceladas = contrato.numero_cuotas_pagadas
             rec.plazoMeses = contrato.plazo_meses.numero
             rec.garante = contrato.aplicaGarante
+            rec.telefonosAdj = contrato.cliente.phone+' - '+ contrato.cliente.mobile
             if rec.garante == True:
                 rec.nombreGarante = contrato.garante
 
