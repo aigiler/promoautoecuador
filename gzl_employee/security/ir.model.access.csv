@@ -1,5 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-hr_employee_children,hr.employee.children,model_hr_employee_children,,1,1,1,1
-hr_employee_comision,hr.employee.comision,model_calcula_comision,,1,1,1,1
+hr_employee_children,hr.employee.children,model_hr_employee_children,1,1,1,1
+hr_employee_comision,hr.employee.comision,model_calcula_comision,1,1,1,1
 hr_employee_comision_detalle,hr.employee.comision.detalle,model_detalle_oportunidades,1,1,1,1
 hr_employee_comision,comision,model_comision,1,1,1,1
