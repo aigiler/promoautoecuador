@@ -287,7 +287,8 @@ class Contrato(models.Model):
 
         # transacciones=self.env['transaccion.grupo.adjudicado']
         # contrato_id=self.env['contrato'].browse(self.id)
-        # pagos=self.detalle_tabla_amortizacion.filtered(lambda l: l.state=='pagado')
+
+
         # pago=sum(pagos.mapped("cuota_capital"))+sum(pagos.mapped("cuota_adm"))+sum(pagos.mapped("cuota_adm"))+sum(pagos.mapped("iva_adm"))+sum(pagos.mapped("seguro"))+sum(pagos.mapped("rastreo"))+sum(pagos.mapped("otro"))
 
 

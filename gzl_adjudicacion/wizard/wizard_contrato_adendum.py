@@ -28,3 +28,22 @@ class WizardContratoAdendum(models.Model):
 
     def ejecutar_cambio(self,):
         obj=self.contrato_id
+
+        pagos=self.contrato_id.detalle_tabla_amortizacion.filtered(lambda l: l.state=='pagado')
+        pago_capital=sum(pagos.mapped("cuota_capital"))
+
+        nuevoMontoReeestructura=monto_financiamiento-pago_capital
+
+
+        cuotasPagadas=self.contrato_id.detalle_tabla_amortizacion.filtered(lambda l: l.state=='pagado' and l.adelanto==False)
+
+
+        cuotasAdelantadas=self.contrato_id.detalle_tabla_amortizacion.filtered(lambda l: l.state=='pagado' and l.cuotaAdelantada==True)
+
+
+        numeroCuotasPagadaTotal=len(cuotaAdelantada) + len(cuotasPagadas)
+
+
+        diferenciaPlazoAdendum= abs(self.contrato_id.plazo_meses.numero - self.plazo_mesesplazo_meses.numero)
+
+        numeroCuotasTotal=diferenciaPlazoAdendum
