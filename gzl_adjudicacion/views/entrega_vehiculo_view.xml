@@ -52,7 +52,7 @@
                                         <field name="colorVehiculo" />
 
                                         <field name="anioVehiculo" />
-                                        <field name="paisOrigenVehiculo" />
+                                        <field name="paisOrigenVehiculo" options="{'no_open': True, 'no_create': True}" />
                                         <field name="conbustibleVehiculo" />
                                         <field name="numPasajeros" />
 

@@ -340,10 +340,17 @@ class EntegaVehiculo(models.Model):
     colorVehiculo = fields.Char(string='Color:')
     anioVehiculo = fields.Selection(year_selection, string="Año:", default="2019")
     paisOrigenVehiculo = fields.Many2one('res.country', string='País origen:')
-    conbustibleVehiculo = fields.Char(string='Combustible:')
-    numPasajeros = fields.Integer(string='Pasajeros:')
+    conbustibleVehiculo = fields.Selection(string='Combustible:',
+    selection=[('DIESEL', 'DIESEL'), 
+                ('GASOLINA', 'GASOLINA'),
+                ('HIBRIDO', 'HÍBRIDO'),
+                ('ELECTRICO', 'ELÉCTRICO'),
+                ('GAS LICUADO DE PETROLEO', 'GAS LICUADO DE PETROLEO'),
+                ('OTRO', 'OTRO')
+                ], default = "AUTO")
+    numPasajeros = fields.Integer(string='Pasajeros:', default=4)
     tonelajeVehiculo = fields.Char(string='Tonelaje:')
-    numEjesVehiculo = fields.Integer(string='Número de eje:')
+    numEjesVehiculo = fields.Integer(string='Número de eje:', default=1)
 
 
     
