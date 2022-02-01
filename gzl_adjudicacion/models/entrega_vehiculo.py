@@ -273,8 +273,32 @@ class EntegaVehiculo(models.Model):
     tipoVehiculo = fields.Char(string='Tipo:')
     claseVehiculo = fields.Char(string='Clase:')
     marcaVehiculo = fields.Char(string='Marca:')
-    modeloVehiculo  = fields.Char(string='Modelo registrado SRI:')
-    modeloHomologado  = fields.Char(string='')
+    modeloVehiculoSRI = fields.Char(string='Modelo registrado SRI:')
+    modeloHomologado  = fields.Char(string='Modelo homologado ANT:')
+    serieVehiculo = fields.Char(string='Serie:')
+    motorVehiculo = fields.Char(string='Motor:')
+    colorVehiculo = fields.Char(string='Color:')
+    anioVehiculo = fields.Selection(string="Año:", default="2000")
+    paisOrigenVehiculo = fields.Char(string='País origen:')
+    conbustibleVehiculo = fields.Char(string='Combustible:')
+    numPasajeros = fields.Integer(string='Pasajeros:')
+    tonelajeVehiculo = fields.Char(string='Tonelaje:')
+    numEjesVehiculo = fields.Integer(string='Número de eje:')
+
+
+    @api.model
+    def year_selection(self):
+        year = 2000 # año de inicio
+        year_list = []
+        while year != 2030: # año de fin
+            year_list.append((str(year), str(year)))
+            year += 1
+        return year_list
+
+    anioVehiculo = fields.Selection(year_selection, string="Año:", default="2019")
+    
+
+    
 
     @api.depends('garante')
     def setea_valores_informe(self):
