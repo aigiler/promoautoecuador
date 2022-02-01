@@ -38,27 +38,28 @@
                             </group>
                         </page>
                         <page string="Información del Vehiculo"  >
-                            <group>
+                            <separator class="text-center" string="Información del Vehiculo"/>
+                            <div class="col-xs-12 col-md-12">
                                 <group>
                                     <field name="tipoVehiculo" />
-                                    <field name="claseVehiculo" />
-                                    <field name="marcaVehiculo" />
-                                    <field name="modeloVehiculoSRI" />
+                                        <field name="claseVehiculo" />
+                                        <field name="marcaVehiculo" />
+                                        <field name="modeloVehiculoSRI" />
 
-                                    <field name="modeloHomologado" />
-                                    <field name="serieVehiculo" />
-                                    <field name="motorVehiculo" />
-                                    <field name="colorVehiculo" />
+                                        <field name="modeloHomologado" />
+                                        <field name="serieVehiculo" />
+                                        <field name="motorVehiculo" />
+                                        <field name="colorVehiculo" />
 
-                                    <field name="anioVehiculo" />
-                                    <field name="paisOrigenVehiculo" />
-                                    <field name="conbustibleVehiculo" />
-                                    <field name="numPasajeros" />
+                                        <field name="anioVehiculo" />
+                                        <field name="paisOrigenVehiculo" />
+                                        <field name="conbustibleVehiculo" />
+                                        <field name="numPasajeros" />
 
-                                    <field name="tonelajeVehiculo" />
-                                    <field name="numEjesVehiculo" />
+                                        <field name="tonelajeVehiculo" />
+                                        <field name="numEjesVehiculo" />
                                 </group>
-                            </group>
+                            </div>
                         </page>
 
                         <page string="Entrega de Requisitos" attrs="{'readonly':[('estado', 'in', ('inicio', 'borrador','revision_documentos') )]}">

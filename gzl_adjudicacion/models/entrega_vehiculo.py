@@ -282,7 +282,19 @@ class EntegaVehiculo(models.Model):
             year += 1
         return year_list
 
-    tipoVehiculo = fields.Char(string='Tipo:')
+    tipoVehiculo = fields.Selection(string='Tipo:',
+        selection=[('MOTO', 'MOTO'), 
+                    ('AUTO', 'AUTO'),
+                    ('JEEP', 'JEEP'),
+                    ('CAMIONETA', 'CAMIONETA'),
+                    ('MICROBUS', 'MICROBUS'),
+                    ('MICROBUS', 'MICROBUS'),
+                    ('BUS', 'BUS'),
+                    ('LIVIANO DE CARGA', 'LIVIANO DE CARGA'),
+                    ('CAMION DE CARGA', 'CAMIÓN DE CARGA'),
+                    ('CAMION DE CARGA PESADA', 'CAMIÓN DE CARGA PESADA')
+                    ], default = "AUTO"
+    )
     claseVehiculo = fields.Selection(string='Clase:',
         selection=[('TRICIMOTO', 'TRICI MOTO'), 
                     ('MOTOCICLETA', 'MOTOCICLETA'),
@@ -327,7 +339,7 @@ class EntegaVehiculo(models.Model):
     motorVehiculo = fields.Char(string='Motor:')
     colorVehiculo = fields.Char(string='Color:')
     anioVehiculo = fields.Selection(year_selection, string="Año:", default="2019")
-    paisOrigenVehiculo = fields.Char(string='País origen:')
+    paisOrigenVehiculo = fields.Many2one('res.country.country_id', string='País origen:')
     conbustibleVehiculo = fields.Char(string='Combustible:')
     numPasajeros = fields.Integer(string='Pasajeros:')
     tonelajeVehiculo = fields.Char(string='Tonelaje:')
