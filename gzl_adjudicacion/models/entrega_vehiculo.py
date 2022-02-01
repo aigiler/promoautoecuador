@@ -349,18 +349,11 @@ class EntegaVehiculo(models.Model):
             ('ELECTRICO', 'ELÉCTRICO'),
             ('GAS LICUADO DE PETROLEO', 'GAS LICUADO DE PETROLEO'),
             ('OTRO', 'OTRO')
-        ], default = 'GASOLINA')
+        ], default = 'GASOLINA', string = 'Combustible:')
     numPasajeros = fields.Integer(string='Pasajeros:', default = 4)
     tonelajeVehiculo = fields.Char(string='Tonelaje:', default=' ')
-    numEjesVehiculo = fields.Integer(string='Número de eje:', default = 1)
+    numEjesVehiculo = fields.Integer(string='Número de eje:', default = 2)
 
-
-    
-
-    
-    
-
-    
 
     @api.depends('garante')
     def setea_valores_informe(self):
