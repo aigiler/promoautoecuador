@@ -43,20 +43,20 @@
                                 <group>
                                     <field name="tipoVehiculo" />
                                         <field name="claseVehiculo" />
-                                        <field name="marcaVehiculo" />
-                                        <field name="modeloVehiculoSRI" />
+                                        <field name="marcaVehiculo" placeholder="MARCA.. SUZUKI" />
+                                        <field name="modeloVehiculoSRI" placeholder="MODELO REGISTRADO SRI" />
 
-                                        <field name="modeloHomologado" />
-                                        <field name="serieVehiculo" />
-                                        <field name="motorVehiculo" />
-                                        <field name="colorVehiculo" />
+                                        <field name="modeloHomologado" placeholder="MODELO HOMOLOGADO ANT" />
+                                        <field name="serieVehiculo" placeholder="SERIE"/>
+                                        <field name="motorVehiculo" placeholder="MOTOR"/>
+                                        <field name="colorVehiculo" placeholder="COLOR" />
 
                                         <field name="anioVehiculo" />
                                         <field name="paisOrigenVehiculo" options="{'no_open': True, 'no_create': True}" />
                                         <field name="conbustibleVehiculo" />
                                         <field name="numPasajeros" />
 
-                                        <field name="tonelajeVehiculo" />
+                                        <field name="tonelajeVehiculo" placeholder="TONELAJE" />
                                         <field name="numEjesVehiculo" />
                                 </group>
                             </div>

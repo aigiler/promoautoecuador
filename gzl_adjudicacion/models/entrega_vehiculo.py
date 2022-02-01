@@ -293,7 +293,7 @@ class EntegaVehiculo(models.Model):
                     ('LIVIANO DE CARGA', 'LIVIANO DE CARGA'),
                     ('CAMION DE CARGA', 'CAMIÓN DE CARGA'),
                     ('CAMION DE CARGA PESADA', 'CAMIÓN DE CARGA PESADA')
-                    ], default = "AUTO"
+                    ], default='AUTO'
     )
     claseVehiculo = fields.Selection(string='Clase:',
         selection=[('TRICIMOTO', 'TRICI MOTO'), 
@@ -330,7 +330,7 @@ class EntegaVehiculo(models.Model):
                     ('CHASIS MOTORIZADO', 'CHASIS MOTORIZADO'),
                     ('CHASIS CABINADO', 'CHASIS CABINADO'),
                     ('OTROS USOS ESPECIALES', 'OTROS USOS ESPECIALES'),
-                    ], default = "VEHICULO UTILITARIO"
+                    ], default='VEHICULO UTILITARIO'
     )
     marcaVehiculo = fields.Char(string='Marca:')
     modeloVehiculoSRI = fields.Char(string='Modelo registrado SRI:')
@@ -347,7 +347,7 @@ class EntegaVehiculo(models.Model):
                 ('ELECTRICO', 'ELÉCTRICO'),
                 ('GAS LICUADO DE PETROLEO', 'GAS LICUADO DE PETROLEO'),
                 ('OTRO', 'OTRO')
-                ], default = "GASOLINA")
+                ], default='GASOLINA')
     numPasajeros = fields.Integer(string='Pasajeros:', default=4)
     tonelajeVehiculo = fields.Char(string='Tonelaje:')
     numEjesVehiculo = fields.Integer(string='Número de eje:', default=1)
