@@ -38,16 +38,28 @@
                             </group>
                         </page>
                         <page string="Información del Vehiculo"  >
-
                             <group>
                                 <group>
-                                    <field name="matriculacion" />
-                                    <field name="rastreo" />
-                                    <field name="seguro" />
+                                    <field name="tipoVehiculo" />
+                                    <field name="claseVehiculo" />
+                                    <field name="marcaVehiculo" />
+                                    <field name="modeloVehiculoSRI" />
+
+                                    <field name="modeloHomologado" />
+                                    <field name="serieVehiculo" />
+                                    <field name="motorVehiculo" />
+                                    <field name="colorVehiculo" />
+
+                                    <field name="anioVehiculo" />
+                                    <field name="paisOrigenVehiculo" />
+                                    <field name="conbustibleVehiculo" />
+                                    <field name="numPasajeros" />
+
+                                    <field name="tonelajeVehiculo" />
+                                    <field name="numEjesVehiculo" />
                                 </group>
                             </group>
                         </page>
-
 
                         <page string="Entrega de Requisitos" attrs="{'readonly':[('estado', 'in', ('inicio', 'borrador','revision_documentos') )]}">
                             <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>

@@ -259,6 +259,7 @@ class EntegaVehiculo(models.Model):
         if not (self.matriculacion and self.rastreo and self.seguro):
             raise ValidationError("Debe registrar la matriculación, rastreo y seguro para pasar al siguiente estado")
 
+    
 
     estado_anterior_requisitos = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
     estado_anterior_informe_credito = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
@@ -270,21 +271,6 @@ class EntegaVehiculo(models.Model):
     estado_anterior_orden_compra = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
 
     # informacion de vehiculo
-    tipoVehiculo = fields.Char(string='Tipo:')
-    claseVehiculo = fields.Char(string='Clase:')
-    marcaVehiculo = fields.Char(string='Marca:')
-    modeloVehiculoSRI = fields.Char(string='Modelo registrado SRI:')
-    modeloHomologado  = fields.Char(string='Modelo homologado ANT:')
-    serieVehiculo = fields.Char(string='Serie:')
-    motorVehiculo = fields.Char(string='Motor:')
-    colorVehiculo = fields.Char(string='Color:')
-    anioVehiculo = fields.Selection(string="Año:", default="2000")
-    paisOrigenVehiculo = fields.Char(string='País origen:')
-    conbustibleVehiculo = fields.Char(string='Combustible:')
-    numPasajeros = fields.Integer(string='Pasajeros:')
-    tonelajeVehiculo = fields.Char(string='Tonelaje:')
-    numEjesVehiculo = fields.Integer(string='Número de eje:')
-
 
     @api.model
     def year_selection(self):
@@ -295,7 +281,25 @@ class EntegaVehiculo(models.Model):
             year += 1
         return year_list
 
+    tipoVehiculo = fields.Char(string='Tipo:')
+    claseVehiculo = fields.Char(string='Clase:')
+    marcaVehiculo = fields.Char(string='Marca:')
+    modeloVehiculoSRI = fields.Char(string='Modelo registrado SRI:')
+    modeloHomologado  = fields.Char(string='Modelo homologado ANT:')
+    serieVehiculo = fields.Char(string='Serie:')
+    motorVehiculo = fields.Char(string='Motor:')
+    colorVehiculo = fields.Char(string='Color:')
     anioVehiculo = fields.Selection(year_selection, string="Año:", default="2019")
+    paisOrigenVehiculo = fields.Char(string='País origen:')
+    conbustibleVehiculo = fields.Char(string='Combustible:')
+    numPasajeros = fields.Integer(string='Pasajeros:')
+    tonelajeVehiculo = fields.Char(string='Tonelaje:')
+    numEjesVehiculo = fields.Integer(string='Número de eje:')
+
+
+    
+
+    
     
 
     
