@@ -365,10 +365,7 @@ class EntegaVehiculo(models.Model):
         for rec in self:
             if rec.garante == False:
                 rec.fechaNacimientoAdj = rec.nombreSocioAdjudicado.fecha_nacimiento
-            elif rec.garante == True:
-                rec.fechaNacimientoAdj = rec.nombreGarante.fecha_nacimiento
-            else:
-                rec.fechaNacimientoAdj =fields.Date.today()
+            
 
 
     @api.depends('garante')
