@@ -68,7 +68,7 @@ def informe_credito_cobranza(ruta,lista,lista_patrimonio, lista_paginas, lista_p
 
         cell = sheet.cell(row=campo['fila'], column=campo['columna'])
         try:
-            cell.value = campo['valor']
+            cell.value = campo['valor'] or ''
         except:
             raise ValidationErorr("""El valor {0} en la fila {1} columna {2} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna']))
 
@@ -85,7 +85,7 @@ def informe_credito_cobranza(ruta,lista,lista_patrimonio, lista_paginas, lista_p
     for campo in listaSheet2:
         cell = sheet.cell(row=campo['fila'], column=campo['columna'])
         try:
-            cell.value = campo['valor']
+            cell.value = campo['valor'] or ''
         except:
             raise ValidationErorr("""El valor {0} en la fila {1} columna {2} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna']))
 
@@ -97,7 +97,7 @@ def informe_credito_cobranza(ruta,lista,lista_patrimonio, lista_paginas, lista_p
     for campo in listaSheet3:
         cell = sheet.cell(row=campo['fila'], column=campo['columna'])
         try:
-            cell.value = campo['valor']
+            cell.value = campo['valor'] or ''
         except:
             raise ValidationErorr("""El valor {0} en la fila {1} columna {2} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna']))
 
