@@ -695,7 +695,7 @@ class EntegaVehiculo(models.Model):
             rec.cuotasCanceladas = contrato.numero_cuotas_pagadas
             rec.plazoMeses = contrato.plazo_meses.numero
             rec.garante = contrato.aplicaGarante
-            rec.telefonosAdj = contrato.cliente.phone+' - '+ contrato.cliente.mobile
+            rec.telefonosAdj = str(contrato.cliente.phone) +' - '+ str(contrato.cliente.mobile)
             if rec.garante == True:
                 rec.nombreGarante = contrato.garante
 
