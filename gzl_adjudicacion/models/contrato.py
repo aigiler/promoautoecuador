@@ -63,6 +63,7 @@ class Contrato(models.Model):
         ('adjudicar', 'Adjudicado'),
         ('adendum', 'Realizar Adendum'),
         ('cerrado', 'Cerrado'),
+        ('cedido', 'Cesión de Derecho'),
         ('desistir', 'Desistir'),
     ], string='Estado', default='borrador', track_visibility='onchange')
     observacion = fields.Char(string='Observación',
@@ -284,24 +285,24 @@ class Contrato(models.Model):
 
 
 
-        transacciones=self.env['transaccion.grupo.adjudicado']
-        contrato_id=self.env['contrato'].browse(self.id)
-        pagos=self.detalle_tabla_amortizacion.filtered(lambda l: l.state=='pagado')
-        pago=sum(pagos.mapped("cuota_capital"))+sum(pagos.mapped("cuota_adm"))+sum(pagos.mapped("cuota_adm"))+sum(pagos.mapped("iva_adm"))+sum(pagos.mapped("seguro"))+sum(pagos.mapped("rastreo"))+sum(pagos.mapped("otro"))
+        # transacciones=self.env['transaccion.grupo.adjudicado']
+        # contrato_id=self.env['contrato'].browse(self.id)
+        # pagos=self.detalle_tabla_amortizacion.filtered(lambda l: l.state=='pagado')
+        # pago=sum(pagos.mapped("cuota_capital"))+sum(pagos.mapped("cuota_adm"))+sum(pagos.mapped("cuota_adm"))+sum(pagos.mapped("iva_adm"))+sum(pagos.mapped("seguro"))+sum(pagos.mapped("rastreo"))+sum(pagos.mapped("otro"))
 
 
-        dct={
-            'grupo_id':contrato_id.grupo.id,
-            'debe':pago,
-            'adjudicado_id':self.cliente.id,
-            'contrato_id':contrato_id.id,
-            'state':contrato_id.state
+        # dct={
+        #     'grupo_id':contrato_id.grupo.id,
+        #     'debe':pago,
+        #     'adjudicado_id':self.cliente.id,
+        #     'contrato_id':contrato_id.id,
+        #     'state':contrato_id.state
 
 
-        }
+        # }
 
 
-        transacciones.create(dct)
+        # transacciones.create(dct)
 
 
         return self.write({"state": "desistir"})
@@ -531,6 +532,29 @@ class Contrato(models.Model):
                 }
         }
 
+
+    def cesion_derecho(self):
+
+
+        view_id = self.env.ref('gzl_adjudicacion.wizard_cesion_derecho_form').id
+
+        pagos=self.detalle_tabla_amortizacion.filtered(lambda l: l.state=='pagado')
+        pago=sum(pagos.mapped("cuota_capital"))
+
+
+
+
+        return {'type': 'ir.actions.act_window',
+                'name': 'Crear Cesión de Derecho',
+                'res_model': 'wizard.cesion.derecho',
+                'target': 'new',
+                'view_mode': 'form',
+                'views': [[view_id, 'form']],
+                'context': {
+                    'default_contrato_id': self.id,
+                    'default_monto_financiamiento': pago,
+                }
+        }
 
 
 

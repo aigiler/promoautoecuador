@@ -62,6 +62,16 @@
                     <button name="actualizar_rubros_por_adelantado" string="Actualizar Rubros" states="activo,adjudicar" type="object" class="oe_highlight"/>
                     <button name="cambio_estado_boton_inactivar" string="Inactivar" states="activo" type="object" class="oe_highlight"/>
 
+
+
+                    <button name="cesion_derecho" string="Cesión de Derecho" states="inactivo,desistir,congelar" type="object" class="oe_highlight"/>
+
+
+
+
+
+
+
                     <button name="crear_adendum" string="Crear Adendum" states="activo" type="object" class="oe_highlight"/>
 
 

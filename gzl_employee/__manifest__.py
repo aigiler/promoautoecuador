@@ -14,6 +14,7 @@
             'views/hr_payslip_view.xml',
             'views/ir_attachment_view.xml',
             'views/res_bank_view.xml',
+            'views/comision_view.xml',
             
             'wizard/report_thirteenth_salary_view.xml',
             'wizard/report_fourteenth_salary_view.xml',
