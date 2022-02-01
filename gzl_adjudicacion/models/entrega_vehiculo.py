@@ -332,14 +332,14 @@ class EntegaVehiculo(models.Model):
                     ('OTROS USOS ESPECIALES', 'OTROS USOS ESPECIALES')
                     ], default = 'VEHICULO UTILITARIO')
     
-    marcaVehiculo = fields.Char(string='Marca:')
-    modeloVehiculoSRI = fields.Char(string='Modelo registrado SRI:')
-    modeloHomologado  = fields.Char(string='Modelo homologado ANT:')
-    serieVehiculo = fields.Char(string='Serie:')
-    motorVehiculo = fields.Char(string='Motor:')
-    colorVehiculo = fields.Char(string='Color:')
+    marcaVehiculo = fields.Char(string='Marca:', default=' ')
+    modeloVehiculoSRI = fields.Char(string='Modelo registrado SRI:', default=' ')
+    modeloHomologado  = fields.Char(string='Modelo homologado ANT:', default=' ')
+    serieVehiculo = fields.Char(string='Serie:', default=' ')
+    motorVehiculo = fields.Char(string='Motor:', default=' ')
+    colorVehiculo = fields.Char(string='Color:', default=' ')
     anioVehiculo = fields.Selection(year_selection, string="Año:", default="2019")
-    paisOrigenVehiculo = fields.Many2one('res.country', string='País origen:')
+    paisOrigenVehiculo = fields.Many2one('res.country', string='País origen:', , default='Ecuador')
     conbustibleVehiculo = fields.Selection(selection=
         [('DIESEL', 'DIESEL'), 
             ('GASOLINA', 'GASOLINA'),
@@ -349,7 +349,7 @@ class EntegaVehiculo(models.Model):
             ('OTRO', 'OTRO')
         ], default = 'GASOLINA')
     numPasajeros = fields.Integer(string='Pasajeros:', default = 4)
-    tonelajeVehiculo = fields.Char(string='Tonelaje:')
+    tonelajeVehiculo = fields.Char(string='Tonelaje:', default=' ')
     numEjesVehiculo = fields.Integer(string='Número de eje:', default = 1)
 
 
