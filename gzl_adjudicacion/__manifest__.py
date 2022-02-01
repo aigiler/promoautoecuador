@@ -48,6 +48,7 @@
                     'wizard/wizard_adelantar_pago_view.xml',
                     'wizard/wizard_actualizar_rubro_view.xml',
                     'wizard/wizard_contrato_adendum_view.xml',
+                    'wizard/wizard_cesion_derecho_view.xml',
 
                     
                     ],

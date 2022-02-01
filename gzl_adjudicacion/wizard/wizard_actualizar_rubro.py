@@ -8,7 +8,7 @@ from odoo.exceptions import ValidationError
 import numpy_financial as npf
 
 
-class WizardActualizarRubro(models.TransientModel):
+class WizardActualizarRubro(models.Model):
     _name = 'wizard.actualizar.rubro'
     
     contrato_id = fields.Many2one('contrato')

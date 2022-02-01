@@ -10,7 +10,7 @@ import numpy_financial as npf
 
 
 
-class WizardContratoAdendum(models.TransientModel):
+class WizardContratoAdendum(models.Model):
     _name = 'wizard.contrato.adendum'
     _description = 'Contrato Adendum'
 

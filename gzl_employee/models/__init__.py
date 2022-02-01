@@ -2,3 +2,4 @@
 from . import hr_employee
 from . import ir_attachment
 from . import res_bank
+from . import tabla_comision
