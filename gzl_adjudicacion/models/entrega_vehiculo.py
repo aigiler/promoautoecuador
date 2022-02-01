@@ -293,7 +293,7 @@ class EntegaVehiculo(models.Model):
                     ('LIVIANO DE CARGA', 'LIVIANO DE CARGA'),
                     ('CAMION DE CARGA', 'CAMIÓN DE CARGA'),
                     ('CAMION DE CARGA PESADA', 'CAMIÓN DE CARGA PESADA')
-                    ], string='Tipo:', default='AUTO')
+                    ], string='Tipo:', default ='AUTO')
 
     claseVehiculo = fields.Selection(string='Clase:',
         selection=[('TRICIMOTO', 'TRICI MOTO'), 
@@ -330,7 +330,7 @@ class EntegaVehiculo(models.Model):
                     ('CHASIS MOTORIZADO', 'CHASIS MOTORIZADO'),
                     ('CHASIS CABINADO', 'CHASIS CABINADO'),
                     ('OTROS USOS ESPECIALES', 'OTROS USOS ESPECIALES')
-                    ], default='VEHICULO UTILITARIO')
+                    ], default = 'VEHICULO UTILITARIO')
     
     marcaVehiculo = fields.Char(string='Marca:')
     modeloVehiculoSRI = fields.Char(string='Modelo registrado SRI:')
@@ -340,17 +340,17 @@ class EntegaVehiculo(models.Model):
     colorVehiculo = fields.Char(string='Color:')
     anioVehiculo = fields.Selection(year_selection, string="Año:", default="2019")
     paisOrigenVehiculo = fields.Many2one('res.country', string='País origen:')
-    conbustibleVehiculo = fields.Selection(string='Combustible:',
-    selection=[('DIESEL', 'DIESEL'), 
-                ('GASOLINA', 'GASOLINA'),
-                ('HIBRIDO', 'HÍBRIDO'),
-                ('ELECTRICO', 'ELÉCTRICO'),
-                ('GAS LICUADO DE PETROLEO', 'GAS LICUADO DE PETROLEO'),
-                ('OTRO', 'OTRO')
-                ], default='GASOLINA')
-    numPasajeros = fields.Integer(string='Pasajeros:', default=4)
+    conbustibleVehiculo = fields.Selection(selection=
+        [('DIESEL', 'DIESEL'), 
+            ('GASOLINA', 'GASOLINA'),
+            ('HIBRIDO', 'HÍBRIDO'),
+            ('ELECTRICO', 'ELÉCTRICO'),
+            ('GAS LICUADO DE PETROLEO', 'GAS LICUADO DE PETROLEO'),
+            ('OTRO', 'OTRO')
+        ], default = 'GASOLINA')
+    numPasajeros = fields.Integer(string='Pasajeros:', default = 4)
     tonelajeVehiculo = fields.Char(string='Tonelaje:')
-    numEjesVehiculo = fields.Integer(string='Número de eje:', default=1)
+    numEjesVehiculo = fields.Integer(string='Número de eje:', default = 1)
 
 
     
