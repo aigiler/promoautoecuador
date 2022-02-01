@@ -54,9 +54,9 @@ class EntegaVehiculo(models.Model):
     ], string='Estado', default='borrador', track_visibility='onchange')
     # datos del socio adjudicado
     nombreSocioAdjudicado = fields.Many2one('res.partner', string="Nombre del Socio Adj.", track_visibility='onchange')
-    codigoAdjudicado = fields.Char(related="nombreSocioAdjudicado.codigo_cliente", string='Código', track_visibility='onchange',store=True)
-    fechaNacimientoAdj = fields.Date(string='Fecha de Nacimiento',compute = 'setea_valores_informe', store=True)
-    vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía',store=True)
+    codigoAdjudicado = fields.Char(related="nombreSocioAdjudicado.codigo_cliente", string='Código', track_visibility='onchange',store=True, default=' ') 
+    fechaNacimientoAdj = fields.Date(string='Fecha de Nacimiento',compute = 'setea_valores_informe', store=True, default=fields.Date.today())
+    vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía',store=True, default=' ')
     estadoCivilAdj = fields.Selection(related="nombreSocioAdjudicado.estado_civil" ,store=True)
     edadAdjudicado = fields.Integer(compute='calcular_edad', string="Edad", readonly=True, store=True, default = 0)
     cargasFamiliares = fields.Integer(string="Cargas Fam." , default = 0)
@@ -65,7 +65,7 @@ class EntegaVehiculo(models.Model):
     # datos del conyuge
     nombreConyuge = fields.Char(string="Nombre del Conyuge", default = 'N/A')
     fechaNacimientoConyuge = fields.Date(string='Fecha de Nacimiento')
-    vatConyuge = fields.Char(string='Cedula de Ciudadanía')
+    vatConyuge = fields.Char(string='Cedula de Ciudadanía', default = 'N/A')
     estadoCivilConyuge = fields.Selection(selection=[
         ('soltero', 'Soltero/a'),
         ('union_libre', 'Unión libre'),
@@ -141,7 +141,7 @@ class EntegaVehiculo(models.Model):
 
 
     # observaciones
-    observaciones = fields.Text(string='Observaciones')
+    observaciones = fields.Text(string='Observaciones', default=' ')
 
     # calificador compras
     cedulaContrato = fields.Char()
@@ -205,7 +205,7 @@ class EntegaVehiculo(models.Model):
 
     totalPuntosCalificador = fields.Integer(compute='calcular_total_puntos')
 
-    observacionesCalificador = fields.Text(string="Observaciones")
+    observacionesCalificador = fields.Text(string="Observaciones", default=' ')
 
     titularConyugePuntos = fields.Char(
         string="Titular, Conyugue y Depositario")
@@ -225,7 +225,7 @@ class EntegaVehiculo(models.Model):
     montoChequeConsesionario = fields.Monetary(compute='calcular_valor_cheque')
     nombreConsesionario = fields.Many2one(
         'res.partner', string="NOMBRE DEL CONCESIONARIO:")
-    observacionesLiquidacion = fields.Text(string="Observaciones")
+    observacionesLiquidacion = fields.Text(string="Observaciones", default=' ')
     
     liquidacionCompra = fields.Many2one('account.move', string="LIquidación de Compra")
     ordenCompra  = fields.Many2one('account.move', string="Orden de Compra")
@@ -367,6 +367,8 @@ class EntegaVehiculo(models.Model):
                 rec.fechaNacimientoAdj = rec.nombreSocioAdjudicado.fecha_nacimiento
             elif rec.garante == True:
                 rec.fechaNacimientoAdj = rec.nombreGarante.fecha_nacimiento
+            else:
+                rec.fechaNacimientoAdj =fields.Date.today()
 
 
     @api.depends('garante')
