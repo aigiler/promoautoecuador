@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import date, timedelta
 import datetime
+from email.policy import default
 from logging import StringTemplateStyle
 import logging
 from odoo import api, fields, models
@@ -276,13 +277,49 @@ class EntegaVehiculo(models.Model):
     def year_selection(self):
         year = 2000 # año de inicio
         year_list = []
-        while year != 2030: # año de fin
+        while year != ((date.today().year) +1) : # año de fin
             year_list.append((str(year), str(year)))
             year += 1
         return year_list
 
     tipoVehiculo = fields.Char(string='Tipo:')
-    claseVehiculo = fields.Char(string='Clase:')
+    claseVehiculo = fields.Selection(string='Clase:',
+        selection=[('TRICIMOTO', 'TRICI MOTO'), 
+                    ('MOTOCICLETA', 'MOTOCICLETA'),
+                    ('TRICAR', 'TRICAR'),
+                    ('CUATRIMOTO', 'CUATRIMOTO'),
+                    ('SEDAN', 'SEDAN'),
+                    ('COUPE', 'COUPE'),
+                    ('CONVERTIBLE', 'CONVERTIBLE'),
+                    ('HATCHBACK', 'HATCHBACK'),
+                    ('MINIVAN', 'MINIVAN'),
+                    ('VEHICULO UTILITARIO', 'VEHICULO UTILITARIO'),
+                    ('LIMOSINA', 'LIMOSINA'),
+                    ('FUNERARIO', 'FUNERARIO'),
+                    ('CAMIONETA', 'CAMIONETA'),
+                    ('FURGONETA DE PASAJEROS', 'FURGONETA DE PASAJEROS'),
+                    ('FURGONETA DE CARGA', 'FURGONETA DE CARGA'),
+                    ('AMBULANCIA', 'AMBULANCIA'),
+                    ('MICROBUS', 'MICROBUS'),
+                    ('MINIBUS', 'MINIBUS'),
+                    ('BUS', 'BUS'),
+                    ('BUS COSTA', 'BUS COSTA'),
+                    ('ARTICULADO', 'ARTICULADO'),
+                    ('CAMION LIGERO', 'CAMIÓN LIGERO'),
+                    ('CAMION MEDIANO', 'CAMIÓN MEDIANO'),
+                    ('CAMION PESADO', 'CAMIÓN PESADO'),
+                    ('TRACTO CAMION', 'TRACTO CAMIÓN'),
+                    ('SEMIRREMOLQUE', 'SEMIRREMOLQUE'),
+                    ('REMOLQUE', 'REMOLQUE'),
+                    ('VEHICULO UTILITARIO ESPECIAL', 'VEHICULO UTILITARIO ESPECIAL'),
+                    ('COMPETENCIA', 'COMPETENCIA'),
+                    ('MULTIFUNCION', 'MULTIFUNCIÓN'),
+                    ('CASA RODANTE', 'CASA RODANTE'),
+                    ('CHASIS MOTORIZADO', 'CHASIS MOTORIZADO'),
+                    ('CHASIS CABINADO', 'CHASIS CABINADO'),
+                    ('OTROS USOS ESPECIALES', 'OTROS USOS ESPECIALES'),
+                    ], default = "VEHICULO UTILITARIO"
+    )
     marcaVehiculo = fields.Char(string='Marca:')
     modeloVehiculoSRI = fields.Char(string='Modelo registrado SRI:')
     modeloHomologado  = fields.Char(string='Modelo homologado ANT:')
