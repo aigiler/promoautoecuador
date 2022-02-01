@@ -55,7 +55,7 @@ class EntegaVehiculo(models.Model):
     # datos del socio adjudicado
     nombreSocioAdjudicado = fields.Many2one('res.partner', string="Nombre del Socio Adj.", track_visibility='onchange')
     codigoAdjudicado = fields.Char(related="nombreSocioAdjudicado.codigo_cliente", string='Código', track_visibility='onchange',store=True, default=' ') 
-    fechaNacimientoAdj = fields.Date(string='Fecha de Nacimiento',compute = 'setea_valores_informe', store=True, default=fields.Date.today())
+    fechaNacimientoAdj = fields.Date(string='Fecha de Nacimiento',compute = 'setea_valores_informe', store=True)
     vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía',store=True, default=' ')
     estadoCivilAdj = fields.Selection(related="nombreSocioAdjudicado.estado_civil" ,store=True)
     edadAdjudicado = fields.Integer(compute='calcular_edad', string="Edad", readonly=True, store=True, default = 0)
@@ -339,7 +339,7 @@ class EntegaVehiculo(models.Model):
     motorVehiculo = fields.Char(string='Motor:', default=' ')
     colorVehiculo = fields.Char(string='Color:', default=' ')
     anioVehiculo = fields.Selection(year_selection, string="Año:", default="2019")
-    paisOrigenVehiculo = fields.Many2one('res.country', string='País origen:', default='Ecuador')
+    paisOrigenVehiculo = fields.Many2one('res.country', string='País origen:')
     conbustibleVehiculo = fields.Selection(selection=
         [('DIESEL', 'DIESEL'), 
             ('GASOLINA', 'GASOLINA'),
