@@ -58,7 +58,7 @@ class EntegaVehiculo(models.Model):
     fechaNacimientoAdj = fields.Date(string='Fecha de Nacimiento',compute = 'setea_valores_informe', store=True)
     vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía',store=True, default=' ')
     direccionAdjudicado  = fields.Char(related="nombreSocioAdjudicado.direccion", string='Dirección')
-    telefonosAdj =  = fields.Char(string='Celular', compute = 'numeros_socio')
+    telefonosAdj = fields.Char(string='Celular', compute = 'numeros_socio')
     estadoCivilAdj = fields.Selection(related="nombreSocioAdjudicado.estado_civil" ,store=True)
     edadAdjudicado = fields.Integer(compute='calcular_edad', string="Edad", readonly=True, store=True, default = 0)
     cargasFamiliares = fields.Integer(string="Cargas Fam." , default = 0)
