@@ -282,8 +282,8 @@ class EntegaVehiculo(models.Model):
             year += 1
         return year_list
 
-    tipoVehiculo = fields.Selection(string='Tipo:',
-        selection=[('MOTO', 'MOTO'), 
+    tipoVehiculo = fields.Selection(selection=
+                    [('MOTO', 'MOTO'), 
                     ('AUTO', 'AUTO'),
                     ('JEEP', 'JEEP'),
                     ('CAMIONETA', 'CAMIONETA'),
@@ -293,8 +293,8 @@ class EntegaVehiculo(models.Model):
                     ('LIVIANO DE CARGA', 'LIVIANO DE CARGA'),
                     ('CAMION DE CARGA', 'CAMIÓN DE CARGA'),
                     ('CAMION DE CARGA PESADA', 'CAMIÓN DE CARGA PESADA')
-                    ], default='AUTO'
-    )
+                    ], string='Tipo:', default='AUTO')
+
     claseVehiculo = fields.Selection(string='Clase:',
         selection=[('TRICIMOTO', 'TRICI MOTO'), 
                     ('MOTOCICLETA', 'MOTOCICLETA'),
@@ -329,9 +329,9 @@ class EntegaVehiculo(models.Model):
                     ('CASA RODANTE', 'CASA RODANTE'),
                     ('CHASIS MOTORIZADO', 'CHASIS MOTORIZADO'),
                     ('CHASIS CABINADO', 'CHASIS CABINADO'),
-                    ('OTROS USOS ESPECIALES', 'OTROS USOS ESPECIALES'),
-                    ], default='VEHICULO UTILITARIO'
-    )
+                    ('OTROS USOS ESPECIALES', 'OTROS USOS ESPECIALES')
+                    ], default='VEHICULO UTILITARIO')
+    
     marcaVehiculo = fields.Char(string='Marca:')
     modeloVehiculoSRI = fields.Char(string='Modelo registrado SRI:')
     modeloHomologado  = fields.Char(string='Modelo homologado ANT:')

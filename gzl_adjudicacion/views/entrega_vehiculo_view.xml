@@ -41,8 +41,8 @@
                             <separator class="text-center" string="Información del Vehiculo"/>
                             <div class="col-xs-12 col-md-12">
                                 <group>
-                                    <field name="tipoVehiculo" />
-                                        <field name="claseVehiculo" />
+                                    <field name="tipoVehiculo" placeholder="AUTO" />
+                                        <field name="claseVehiculo" placeholder="VEHICULO UTILITARIO"/>
                                         <field name="marcaVehiculo" placeholder="MARCA.. SUZUKI" />
                                         <field name="modeloVehiculoSRI" placeholder="MODELO REGISTRADO SRI" />
 
@@ -53,7 +53,7 @@
 
                                         <field name="anioVehiculo" />
                                         <field name="paisOrigenVehiculo" options="{'no_open': True, 'no_create': True}" />
-                                        <field name="conbustibleVehiculo" />
+                                        <field name="conbustibleVehiculo" placeholder="GASOLINA"/>
                                         <field name="numPasajeros" />
 
                                         <field name="tonelajeVehiculo" placeholder="TONELAJE" />
