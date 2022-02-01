@@ -12,7 +12,7 @@ class WizardAdelantarCuotas(models.Model):
     _name = 'wizard.cesion.derecho'
     
     contrato_id = fields.Many2one('contrato')
-    monto_a_ceder = fields.Float( string='Monto a Ceder'store=True)
+    monto_a_ceder = fields.Float( string='Monto a Ceder',store=True)
     contrato_a_ceder= fields.Many2one('contrato',string="Contrato a Ceder")
     carta_adjunto = fields.Binary('Carta de Cesión', attachment=True)
     
