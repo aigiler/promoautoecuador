@@ -347,7 +347,7 @@ class EntegaVehiculo(models.Model):
                 ('ELECTRICO', 'ELÉCTRICO'),
                 ('GAS LICUADO DE PETROLEO', 'GAS LICUADO DE PETROLEO'),
                 ('OTRO', 'OTRO')
-                ], default = "AUTO")
+                ], default = "GASOLINA")
     numPasajeros = fields.Integer(string='Pasajeros:', default=4)
     tonelajeVehiculo = fields.Char(string='Tonelaje:')
     numEjesVehiculo = fields.Integer(string='Número de eje:', default=1)
