@@ -16,7 +16,6 @@ class AccountJournal(models.Model):
     analytic_account_id = fields.Many2one('account.analytic.account', string="Cuenta Analítica")
     check_analytic = fields.Boolean(string='Habilitar Cta Analítica', compute="_compute_check_analytic", default=False)
     
-    account_payment_account_ids = fields.One2many('account.payment.line.account','payment_id', string="Cuentas Contables")
 
     @api.depends('third_account_id')
     def _compute_check_analytic(self):
