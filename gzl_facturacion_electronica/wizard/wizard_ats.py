@@ -104,7 +104,7 @@ class WizardAts(models.TransientModel):
                             'valRetAir': 0
                         }
                     temp[tax.name]['baseImpAir'] += line.price_subtotal
-                    temp[tax.name]['codRetAir'] = tax.name # noqa
+                    temp[tax.name]['codRetAir'] = tax.description # noqa
                     temp[tax.name]['porcentajeAir'] = abs(int(tax.amount))  # noqa
                     temp[tax.name]['valRetAir'] += abs(float(tax.amount))
         for k, v in temp.items():
@@ -164,18 +164,26 @@ class WizardAts(models.TransientModel):
                 authRetencion = wh.auth_number
             #else:
             #    authRetencion = wh.auth_number
+            secret=''
+            
+            if not wh.name:
+                
+                secret='000000001'
+            else:
+                #raise ValidationError((str((wh.name)[6:15])+'kdkd'))
+                secret=wh.name[6:15]
             return {
                 'estabRetencion1': wh.auth_id.serie_establecimiento,
                 'ptoEmiRetencion1': wh.auth_id.serie_emision,
-                'secRetencion1': (wh.name or '000000000000000000')[6:15],
-                'autRetencion1': authRetencion,
+                'secRetencion1': secret,#(wh.name )[6:15] or '000000000000000000',
+                'autRetencion1': authRetencion or '000',
                 'fechaEmiRet1': convertir_fecha(wh.date)
             }
         else:
             return {
                 'estabRetencion1': '000',
                 'ptoEmiRetencion1':'000',
-                'secRetencion1': '000000000',
+                'secRetencion1': '000000001',
                 'autRetencion1': '000',
                 'fechaEmiRet1': False,
             }
@@ -283,20 +291,20 @@ class WizardAts(models.TransientModel):
                     else:
                         t_reeb = inv.amount_untaxed
                 detallecompras.update({
-                    'codSustento': inv.sustento_del_comprobante.code,
+                    'codSustento': inv.sustento_del_comprobante.code or '00',
                     'tpIdProv': inv.partner_id.l10n_latam_identification_type_id.code_compra,
                     'idProv': inv.partner_id.vat,
-                    'tipoComprobante': inv.type == 'liq_purchase' and '03' or auth.type_id.code,  # noqa
+                    'tipoComprobante': inv.type == 'liq_purchase' and '03' or auth.type_id.code or '00',  # noqa
                     'parteRel': 'NO',
                     'fechaRegistro': convertir_fecha(inv.invoice_date),
                     'establecimiento': inv.l10n_latam_document_number[:3],
                     'puntoEmision': inv.l10n_latam_document_number[3:6],
                     'secuencial': inv.l10n_latam_document_number[6:15],
                     'fechaEmision': convertir_fecha(inv.invoice_date),
-                    'autorizacion': inv.auth_number,
-                    'baseNoGraIva': '%.2f' % inv.amount_untaxed,
+                    'autorizacion': inv.auth_number or '000000',
+                    'baseNoGraIva':'%.2f' % inv.amount_untaxed,
                     'baseImponible': '%.2f' % baseiva0,
-                    'baseImpGrav': '%.2f' % (inv.amount_total - inv.amount_untaxed),
+                    'baseImpGrav': '%.2f' % baseiva0,#  (inv.amount_total - inv.amount_untaxed),
                     'baseImpExe': '0.00',
                     'total': inv.amount_total,
                     'montoIce': '0.00',
@@ -309,17 +317,23 @@ class WizardAts(models.TransientModel):
                     'valRetServ100': '%.2f' % valRetServ100,
                     'totbasesImpReemb': '%.2f' % t_reeb,
                     'pagoExterior': {
-                        'pagoLocExt': inv.partner_id.ats_residente,
-                        'tipoRegi': inv.partner_id.ats_regimen_fiscal,
-                        'pais': inv.partner_id.ats_country,
-                        'pais_efec_gen': inv.partner_id.ats_country_efec_gen,
-                        'pais_efec_par_fic': inv.partner_id.ats_country_efec_parfic,
-                        'aplicConvDobTrib': self.si_no(inv.partner_id.ats_doble_trib),
-                        'denopago': inv.partner_id.denopago,
-                        'pagExtSujRetNorLeg': self._pagExtSujRetNorLeg(inv),
-                        'pagoRegFis': self.si_no(inv.partner_id.pago_reg_fis)
+                        'pagoLocExt':'01',# inv.partner_id.ats_residente,
+                        'paisEfecPago': 'NA',#inv.partner_id.ats_country ,
+                        'aplicConvDobTrib': 'NA',#self.si_no(inv.partner_id.ats_doble_trib),
+                        'pagExtSujRetNorLeg': 'NA',#self._pagExtSujRetNorLeg(inv),
                     },
-                    'formaPago': inv.method_payment.code,
+                    #'pagoExterior': {
+                    #    'pagoLocExt': inv.partner_id.ats_residente,
+                    #    'tipoRegi': inv.partner_id.ats_regimen_fiscal,
+                    #    'pais': inv.partner_id.ats_country,
+                    #    'pais_efec_gen': inv.partner_id.ats_country_efec_gen,
+                    #    'pais_efec_par_fic': inv.partner_id.ats_country_efec_parfic,
+                    #    'aplicConvDobTrib': self.si_no(inv.partner_id.ats_doble_trib),
+                    #    'denopago': inv.partner_id.denopago,
+                    #    'pagExtSujRetNorLeg': self._pagExtSujRetNorLeg(inv),
+                    #    'pagoRegFis': self.si_no(inv.partner_id.pago_reg_fis)
+                    #},
+                    'formaPago': inv.method_payment.code or '00',
                     'detalleAir': self.process_lines(inv)
                   #  'detalleAir': self.process_lines(inv.l10n_latam_tax_ids)
                 })
@@ -347,7 +361,7 @@ class WizardAts(models.TransientModel):
     
     def read_ventas(self, start, end):
         dmn = [
-            ('state', 'in', ['open', 'paid']),
+            ('state', '=', 'posted'),
             ('invoice_date','>=', '%s'%start),
             ('invoice_date', '<=', '%s'%end),
             ('type', '=', 'out_invoice'),
@@ -355,24 +369,26 @@ class WizardAts(models.TransientModel):
         ]
         ventas = []
         for inv in self.env['account.move'].search(dmn):
+            valRetBien10, valRetServ20, valorRetBienes, valorRetServicios, valRetServ100 = self._get_ret_iva(inv)
+            baseiva12, baseiva0, basenovat= self._get_iva_bases(inv)
             detalleventas = {
-                'tpIdCliente': tpIdCliente[inv.partner_id.type_identifier],
-                'idCliente': inv.partner_id.identifier,
+                'tpIdCliente': inv.partner_id.l10n_latam_identification_type_id.code_compra,
+                'idCliente': inv.partner_id.vat,
                 'parteRelVtas': 'NO',
                 'partner': inv.partner_id,
                 'auth': inv.establecimiento,
-                'tipoComprobante': inv.establecimiento.type_id.code,
+                'tipoComprobante': inv.sustento_del_comprobante.code or '00',
                 'tipoEmision': inv.establecimiento.is_electronic and 'E' or 'F',
                 'numeroComprobantes': 1,
-                'baseNoGraIva': inv.amount_novat,
-                'baseImponible': inv.amount_vat_cero,
-                'baseImpGrav': inv.amount_vat,
+                'baseNoGraIva':  inv.amount_untaxed,
+                'baseImponible': inv.amount_untaxed,
+                'baseImpGrav':  baseiva0,#(inv.amount_total - inv.amount_untaxed),
                 'montoIva': inv.amount_tax,
                 'montoIce': '0.00',
-                'valorRetIva': (abs(inv.taxed_ret_vatb) + abs(inv.taxed_ret_vatsrv)),  # noqa
-                'valorRetRenta': abs(inv.taxed_ret_ir),
+                'valorRetIva': (abs(valorRetBienes) + abs(valorRetServicios)),  # noqa
+                'valorRetRenta': 0,#abs(inv.taxed_ret_ir),
                 'formasDePago': {
-                    'formaPago': inv.epayment_id.code
+                    'formaPago': inv.method_payment.id
                 }
             }
             ventas.append(detalleventas)
@@ -380,7 +396,7 @@ class WizardAts(models.TransientModel):
         ventas_end = []
         for ruc, grupo in groupby(ventas, key=itemgetter('idCliente')):
             baseimp = 0
-            nograviva = 0
+            nograviva = 0.00
             montoiva = 0
             retiva = 0
             impgrav = 0
@@ -398,11 +414,13 @@ class WizardAts(models.TransientModel):
                 numComp += 1
                 partner_temp = i['partner']
                 auth_temp = i['auth']
+            #if inv.partner_id.l10n_latam_identification_type_id.code_venta =='04':
+            #    raise ValidationError((str((inv.partner_id.l10n_latam_identification_type_id.code_compra)+'====')))
             detalle = {
-                'tpIdCliente': tpIdCliente[partner_temp.type_identifier],
-                'idCliente': ruc,
+                'tpIdCliente': inv.partner_id.l10n_latam_identification_type_id.code_venta,
+                'idCliente': inv.partner_id.vat,
                 'parteRelVtas': 'NO',
-                'tipoComprobante': auth_temp.type_id.code,
+                'tipoComprobante': inv.sustento_del_comprobante.code or '00',
                 'tipoEmision': auth_temp.is_electronic and 'E' or 'F',
                 'numeroComprobantes': numComp,
                 'baseNoGraIva': '%.2f' % nograviva,
@@ -432,12 +450,12 @@ class WizardAts(models.TransientModel):
             auth = inv.establecimiento
             aut = auth.is_electronic and inv.numero_autorizacion or auth.name
             detalleanulados = {
-                'tipoComprobante': auth.type_id.code,
+                'tipoComprobante': auth.type_id.code or '00',
                 'establecimiento': auth.serie_establecimiento,
                 'ptoEmision': auth.serie_emision,
                 'secuencialInicio': inv.l10n_latam_document_number[6:].rstrip("0"),
                 'secuencialFin': inv.l10n_latam_document_number[6:].rstrip("0"),
-                'autorizacion': aut
+                'autorizacion': aut or '000000'
             }
             anulados.append(detalleanulados)
 
@@ -451,7 +469,7 @@ class WizardAts(models.TransientModel):
             auth = ret.auth_id
             aut = auth.is_electronic and inv.numero_autorizacion or auth.name
             detalleanulados = {
-                'tipoComprobante': auth.type_id.code,
+                'tipoComprobante': auth.type_id.code or '00',
                 'establecimiento': auth.serie_entidad,
                 'ptoEmision': auth.serie_emision,
                 'secuencialInicio': ret.name[6:9],

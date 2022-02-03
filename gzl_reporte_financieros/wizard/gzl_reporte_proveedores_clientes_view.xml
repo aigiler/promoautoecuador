@@ -49,7 +49,7 @@
 
 
 
-        <menuitem id="menu_report_ancitipo_saldo_detallado"  parent="account_reports.account_reports_partners_reports_menu" sequence="5" action="action_report_ancitipo_saldo_detallado"/>
+        <menuitem id="menu_report_ancitipo_saldo_detallado"  parent="bi_account_cheque.menu_informes_tesoreria" sequence="5" action="action_report_ancitipo_saldo_detallado"/>
 
 
 </odoo>

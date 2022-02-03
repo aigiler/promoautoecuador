@@ -47,7 +47,7 @@
 
 
 
-        <menuitem id="menu_action_reporte_estado_cuenta"  parent="account_reports.account_reports_partners_reports_menu" sequence="5" action="action_reporte_estado_cuenta"/>
+        <menuitem id="menu_action_reporte_estado_cuenta"  parent="bi_account_cheque.menu_informes_tesoreria" sequence="5" action="action_reporte_estado_cuenta"/>
 
 
 </odoo>

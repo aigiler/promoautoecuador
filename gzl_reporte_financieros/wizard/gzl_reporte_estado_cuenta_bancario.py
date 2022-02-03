@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 
 from odoo import api, fields, models, tools
@@ -21,7 +20,7 @@ class ReporteEstadoCuentaBancario(models.TransientModel):
     _name = "reporte.estado.cuenta.bancario"
     _inherit = "reporte.proveedor.cliente"
 
-    bank_id = fields.Many2one('res.bank',string='Banco')
+    bank_id = fields.Many2one('account.journal',string='Diario')
 
         
     def obtener_listado_meses_saldo_inicial(self,):
@@ -38,8 +37,10 @@ class ReporteEstadoCuentaBancario(models.TransientModel):
 
         print(num_months)
 
-        monthly_daterange = [datetime(start_date.year,i, start_date.day) for i in num_months]
-        print(monthly_daterange)
+        
+
+        
+        monthly_daterange = [start_date + relativedelta(months=+i) for i in range(0,len(num_months))]
 
         lista_mes=[]
         dct_nombre_mes={
@@ -86,7 +87,7 @@ class ReporteEstadoCuentaBancario(models.TransientModel):
 
 
         for mes in lista_mes:
-            filtro=""" where fecha<='{0}' """.format(mes['fecha_inicio'])
+            filtro=""" where fecha<'{0}' """.format(mes['fecha_inicio'])
 
             mes['saldo_inicial']=self.obtener_saldo_inicial(filtro,self.bank_id.id)
 
@@ -114,7 +115,7 @@ class ReporteEstadoCuentaBancario(models.TransientModel):
 
     def obtener_saldo_inicial(self,filtro,banco):
 
-        cuentas=self.env['account.journal'].search([('bank_id','=',banco)]).ids
+        cuentas=self.env['account.journal'].search([('id','=',banco)]).mapped('default_debit_account_id').ids
 
         sql=self.obtener_sql_de_listas(cuentas)
         query_final=sql + ' select coalesce (sum(debe) - sum(haber),0) as saldo_inicial from lista_movimientos {0}  '.format(filtro)
@@ -136,7 +137,7 @@ class ReporteEstadoCuentaBancario(models.TransientModel):
             
     def obtener_listado_movimientos(self,filtro,banco):
 
-        cuentas=self.env['account.journal'].search([('bank_id','=',banco)]).ids
+        cuentas=self.env['account.journal'].search([('id','=',banco)]).mapped('default_debit_account_id').ids
 
         sql=self.obtener_sql_de_listas(cuentas)
         query_final=sql + ' select * from lista_movimientos {0} order by fecha '.format(filtro)
@@ -152,99 +153,145 @@ class ReporteEstadoCuentaBancario(models.TransientModel):
 
 
 
-        filtro_tipo_documento=" and am.type = ANY (array['in_refund','in_debit','out_refund','out_debit'])"
+        #filtro_tipo_documento=" and am.type = ANY (array['in_refund','in_debit','out_refund','out_debit'])"
 
-        query_facturas=(""" select 
-                                    am.name as secuencia,
-                                    am.l10n_latam_document_number as numero_documento, 
-                                    am.invoice_date as fecha, 
-                                    aj.name as documento_contable, 
-                                    rpb.acc_number as numero_cuenta, 
-                                    am.ref as detalle, 
-                                    rp.name as orden,
-                                    '' as numero_cheque,
+        # query_facturas=(""" select 
+        #                             am.name as secuencia,
+        #                             am.l10n_latam_document_number as numero_documento, 
+        #                             am.invoice_date as fecha, 
+        #                             aj.name as documento_contable, 
+        #                             rpb.acc_number as numero_cuenta, 
+        #                             am.ref as detalle, 
+        #                             rp.name as orden,
+        #                             '' as numero_cheque,
 
-                                    case    when am.type = ANY (array['in_invoice','out_invoice','in_debit','out_debit']) then am.amount_total 
-                                            else 0 end as debe ,
-
-
-                                    case    when am.type = ANY (array['in_refund','out_refund']) then am.amount_total 
-                                            else 0  end as haber ,
-
-                                    case    when am.type = ANY (array['in_refund','out_refund']) then 'NCR' 
-                                            when am.type = ANY (array['in_debit','out_debit']) then 'NDB' 
-                                            else ''  end as tt ,
-                                    case    
-                                            when am.state='posted' then 'Si' 
-                                            else 'No'  end as conciliado 
+        #                             case    when am.type = ANY (array['in_invoice','out_invoice','in_debit','out_debit']) then am.amount_total 
+        #                                     else 0 end as debe ,
 
 
-                                    from 
-                                        account_move am, 
-                                        account_journal aj ,
-                                        res_partner_bank rpb,
-                                        res_partner rp 
-                                    where 
-                                        am.journal_id=aj.id and
-                                        am.partner_id=rp.id and
-                                        aj.bank_account_id=rpb.id and
+        #                             case    when am.type = ANY (array['in_refund','out_refund']) then am.amount_total 
+        #                                     else 0  end as haber ,
 
-                                        am.journal_id=ANY (array{0}) {1}  """.format(cuentas,filtro_tipo_documento))
+        #                             case    when am.type = ANY (array['in_refund','out_refund']) then 'NCR' 
+        #                                     when am.type = ANY (array['in_debit','out_debit']) then 'NDB' 
+        #                                     else ''  end as tt ,
+        #                             case    
+        #                                     when am.state='posted' then 'Si' 
+        #                                     else 'No'  end as conciliado 
 
+
+        #                             from 
+        #                                 account_move am, 
+        #                                 account_journal aj ,
+        #                                 res_partner_bank rpb,
+        #                                 res_partner rp 
+        #                             where 
+        #                                 am.journal_id=aj.id and
+        #                                 am.partner_id=rp.id and
+        #                                 am.journal_id=ANY (array{0}) {1}  """.format(cuentas,filtro_tipo_documento))
+
+
+
+
+        # query_pagos=(""" select 
+        #                             '' as secuencia,
+        #                             ap.name as numero_documento, 
+        #                             ap.payment_date as fecha, 
+
+        #                             ap.communication as detalle, 
+
+        #                             case    
+        #                                     when ap.to_third_party =True  then ap.third_party_name                                       
+        #                                     else rp.name  end as orden ,
+        #                             ap.check_number as numero_cheque,
+
+
+        #                             case    when ap.payment_type = ANY   (array['inbound'])  then ap.amount 
+        #                                     else 0 end as debe ,
+
+
+        #                             case    when ap.payment_type = ANY (array['outbound','transfer']) then ap.amount 
+        #                                     else 0  end as haber ,
+
+
+        #                             case    
+        #                                     when ap.check_number  is not null  then 'CHQ' 
+        #                                     when ap.payment_type = ANY (array['outbound','transfer']) then 'DEB'                                            
+        #                                     else ''  end as tt ,
+
+
+        #                             case    
+        #                                     when ap.state='reconciled' then 'Si' 
+        #                                     else 'No'  end as conciliado 
+
+        #                             from 
+        #                                 account_payment ap, 
+        #                                 account_journal aj ,
+        #                                 res_partner_bank rpb,
+        #                                 res_partner rp 
+
+        #                             where 
+        #                                 ap.journal_id=aj.id and
+        #                                 ap.partner_id=rp.id and
+        #                                 aj.bank_account_id=rpb.id and
+
+        #                                 ap.journal_id=ANY (array{0})   """.format(cuentas))
 
 
 
         query_pagos=(""" select 
                                     '' as secuencia,
-                                    ap.name as numero_documento, 
-                                    ap.payment_date as fecha, 
-                                    aj.name as documento_contable, 
-                                    rpb.acc_number as numero_cuenta, 
-                                    ap.communication as detalle, 
+                                   ap.name as numero_documento,
+                                    aml.date as fecha, 
+                                     aj.name as documento_contable, 
+                                     rpb.acc_number as numero_cuenta, 
+                                   ap.communication as detalle, 
+                                   rp.name as orden,
+                                     case    
+                                             when ap.to_third_party =True  then ap.third_party_name                                       
+                                             else rp.name  end as orden ,
+                                     ap.check_number as numero_cheque,
 
-                                    case    
-                                            when ap.to_third_party =True  then ap.third_party_name                                       
-                                            else rp.name  end as orden ,
-                                    ap.check_number as numero_cheque,
-
-
-                                    case    when ap.payment_type = ANY (array['out_bound','transfer']) then ap.amount 
-                                            else 0 end as debe ,
+                                    aml.debit as  debe ,
 
 
-                                    case    when ap.payment_type = ANY (array['in_bound']) then ap.amount 
-                                            else 0  end as haber ,
+                                    aml.credit as haber ,
 
 
                                     case    
-                                            when ap.check_number  is not null  then 'CHQ' 
-                                            when ap.payment_type = ANY (array['out_bound','transfer']) then 'DEB'                                            
-                                            else ''  end as tt ,
+                                             when ap.check_number  is not null  then 'CHQ' 
+                                             when ap.payment_type = ANY (array['outbound','transfer']) then 'DEB'                                            
+                                             else ''  end as tt ,
 
 
                                     case    
                                             when ap.state='reconciled' then 'Si' 
-                                            else 'No'  end as conciliado 
+                                             else 'No'  end as conciliado 
 
                                     from 
-                                        account_payment ap, 
-                                        account_journal aj ,
-                                        res_partner_bank rpb,
-                                        res_partner rp 
+                                        account_move_line aml
+                                        LEFT JOIN account_journal aj
+                                            ON aml.journal_id=aj.id
+                                        LEFT JOIN res_partner rp
+                                            ON rp.id =aml.partner_id
+                                        LEFT JOIN res_partner_bank rpb
+                                            ON rpb.id =aj.bank_account_id                                        
+                                        LEFT JOIN account_payment ap
+                                           ON  ap.id=aml.payment_id 
 
                                     where 
-                                        ap.journal_id=aj.id and
-                                        ap.partner_id=rp.id and
-                                        aj.bank_account_id=rpb.id and
 
-                                        ap.journal_id=ANY (array{0})   """.format(cuentas))
+
+                                        aml.account_id=ANY (array{0})   """.format(cuentas))
 
 
 
+        #query_final='with lista_movimientos as ( '+query_facturas+' union all ' +query_pagos  +' )'
 
-        query_final='with lista_movimientos as ( '+query_facturas+' union all ' +query_pagos  +' )'
+        
+        query_final='with lista_movimientos as ( ' +query_pagos  +' )'
 
-    
+
 
         return query_final
 
@@ -443,8 +490,10 @@ class ReporteEstadoCuentaBancario(models.TransientModel):
                 filas_total_meses.append(fila_current+2)
 
                 fila=fila_current+3
-
-
+            else:
+                fila_current=9
+        if fila==8:
+            fila_current=8
                 
         lista_col_formulas=[9,10]
         
@@ -452,7 +501,7 @@ class ReporteEstadoCuentaBancario(models.TransientModel):
             bold_right=workbook.add_format({'bold':True,'border':1,'align':'right'})
             bold_right.set_bg_color('d9d9d9')
 
-            sheet.merge_range('A{0}:I{0}'.format(fila_current+3), 'Saldo General', bold_right)
+            sheet.merge_range('A{0}:I{0}'.format(fila+3), 'Saldo General', bold_right)
 
 
 
@@ -467,7 +516,92 @@ class ReporteEstadoCuentaBancario(models.TransientModel):
                     formula=formula+'{0}{1}'.format(chr(65 +columna),fila_total)+'+'
                 formula=formula.rstrip('+')
                 sheet.write(
-                            fila_current+2 ,columna ,
+                            fila+2 ,columna ,
                             formula, currency_bold)
 
 
+
+    def print_report_pdf(self):
+        return self.env.ref('gzl_reporte.repote_estado_cuenta_bancario_pdf_id').report_action(self)
+
+
+
+        
+    def obtenerDatos(self,):
+
+        lista_meses=self.obtener_listado_meses_saldo_inicial()
+
+
+        lines=[]
+        
+
+        for mes in lista_meses:
+
+            filtro=""" where fecha>='{0}' and fecha<='{1}' """.format(mes['fecha_inicio'],mes['fecha_fin'])
+            
+            lista_facturas=self.obtener_listado_movimientos(filtro,self.bank_id.id)
+
+
+            lines.append({'documento_contable':mes['nombre'] +' ' +str(mes['anio']),'reglon':'titulo'})
+            lines.append({'reglon':'detalle','detalle':'Saldo Inicial','saldo':mes['saldo_inicial']})
+            saldo=mes['saldo_inicial']
+            for dct in lista_facturas:
+                dct.pop('secuencia')
+                
+                dct['debe']=abs(dct['debe'])
+                dct['haber']=abs(dct['haber'])
+
+                dct['reglon']='detalle'
+                dct['saldo']=saldo+abs(dct['debe']) - abs(dct['haber'])
+                saldo=dct['saldo']
+                lines.append(dct)
+
+
+
+            dctTotal={}
+            dctTotal['detalle']='Total '+ mes['nombre'] +' ' +str(mes['anio'])
+
+
+            dctTotal['debe']=round(sum(map(lambda x:x['debe'],lista_facturas)),2)
+            dctTotal['haber']=round(sum(map(lambda x:x['haber'],lista_facturas)),2)
+            dctTotal['reglon']='total_detalle'
+
+
+            lines.append(dctTotal)
+        dctTotalGeneral={}
+        dctTotalGeneral['detalle']='Total General'
+
+        dctTotalGeneral['debe']=round(sum(map(lambda x:x['debe'],list(filter(lambda x: x['reglon']=='total_detalle', lines)))),2)
+        dctTotalGeneral['haber']=round(sum(map(lambda x:x['haber'],list(filter(lambda x: x['reglon']=='total_detalle', lines)))),2)
+        dctTotalGeneral['reglon']='total_general'
+
+        lines.append(dctTotalGeneral)
+        lista_obj=[]
+        for l in lines:
+            obj_detalle=self.env['reporte.estado.cuenta.bancario.detalle'].create(l)
+            lista_obj.append(obj_detalle)
+
+        return lista_obj
+
+
+
+class ReporteEstadoCuentaDetalleBancario(models.TransientModel):
+    _name = "reporte.estado.cuenta.bancario.detalle"
+
+
+    documento_contable = fields.Char('Cuenta')
+    numero_cuenta = fields.Char('Nombre Cuenta')
+    fecha = fields.Date('Fecha')
+    numero_documento = fields.Char('No. Doc.')
+    tt = fields.Char('T. T.')
+    numero_cheque = fields.Char('No. Cheque')
+    conciliado = fields.Char('Conciliado')
+    orden = fields.Char('Orden')
+    detalle = fields.Char('Detalle')
+    debe = fields.Float('Debe')
+    haber = fields.Float('Haber')
+    saldo = fields.Float('Saldo')
+
+    
+    
+    reglon = fields.Char('Reglon')

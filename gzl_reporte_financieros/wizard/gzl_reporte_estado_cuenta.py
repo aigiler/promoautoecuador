@@ -176,7 +176,7 @@ class ReporteEstadoCuenta(models.TransientModel):
                                     where 
                                         ap.journal_id=aj.id and
 
-                                        ap.state=ANY (array['posted', 'anticipo']) and
+                                        ap.state=ANY (array['reconciled','posted', 'anticipo']) and
 
 
                                         ap.partner_id={0} {1}   """.format(partner_id,filtro_tipo_empresa_pago))
@@ -218,7 +218,7 @@ class ReporteEstadoCuenta(models.TransientModel):
                                         ap.id=apav.payment_id and
                                         ap.journal_id=aj.id and
 
-                                        ap.state=ANY (array['posted', 'anticipo']) and
+                                        ap.state=ANY (array['reconciled','posted', 'anticipo']) and
 
 
                                         ap.partner_id={0} {1}   """.format(partner_id,filtro_tipo_empresa_pago))
@@ -579,6 +579,7 @@ class ReporteEstadoCuenta(models.TransientModel):
             for dct in lista_facturas:
                 dct.pop('secuencia')
                 dct.pop('fecha_vencimiento')
+                dct.pop('modelo')
                 dct['monto_adeudado']=abs(dct['monto_adeudado'])
                 dct['debe']=abs(dct['debe'])
                 dct['haber']=abs(dct['haber'])

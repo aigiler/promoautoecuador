@@ -13,8 +13,15 @@ class bankStatementReport(models.TransientModel):
     _description = _('Report Bank Statement')
     _rec_name = 'journal_id'
     _inherit = "reporte.proveedor.cliente"
+
+
+    extracto_saldo= fields.Many2one('account.bank.statement', string="Extracto")
+
+
     journal_id = fields.Many2one('account.journal', string="Diario", domain="[('type','=','bank')]")
     date = fields.Date(string="Corte",default=fields.Date.context_today)
+    fecha_inicio = fields.Date(string="Desde")
+    fecha_fin = fields.Date(string="Hasta")
     date_reporte = fields.Char(string="Corte")
     saldo_cuenta = fields.Float(string="Saldo Segun Estado de cuenta")
     total_conciliado = fields.Float(string="Total Conciliado")
@@ -37,6 +44,30 @@ class bankStatementReport(models.TransientModel):
                           ('9', 'Septiembre'), ('10', 'Octubre'), ('11', 'Noviembre'), ('12', 'Diciembre'), ], 
                          string='Mes')
     
+    def capturar_anio(self):
+        dct={
+
+        '1':'Enero',
+        '2':'Febrero',
+        '3':'Marzo',
+        '4':'Abril',
+        '5':'Mayo',
+        '6':'Junio',
+        '7':'Julio',
+        '8':'Agosto',
+        '9':'Septiembre',
+        '10':'Octubre',
+        '11':'Noviembre',
+        '12':'Diciembre'
+
+        }
+        return dct[self.month]
+
+
+
+
+
+
     @api.model
     def year_selection(self):
         year = 2000 # replace 2000 with your a start year
@@ -72,9 +103,35 @@ class bankStatementReport(models.TransientModel):
 
         return self.env.ref('gzl_reporte.bank_statement_report').report_action(self)
 
+
+    @api.onchange("extracto_saldo")
+    def onchange_saldo_estado_cuenta_contable(self):
+        if self.extracto_saldo.id:
+
+            self.saldo_cuenta=self.extracto_saldo.balance_end_real
+
+
+
+    @api.onchange("year_date","month")
+    def onchange_dates(self):
+        if self.year_date and self.month:
+            dateMonthStart = "%s-%s-01" % (self.year_date, self.month)
+            dateMonthStart = datetime.strptime(dateMonthStart,'%Y-%m-%d')
+            dateMonthEnd=dateMonthStart+relativedelta(months=1, day=1, days=-1)
+            self.date_reporte = str(dateMonthStart)+'-'+str(dateMonthEnd)
+            self.fecha_inicio = dateMonthStart.strftime("%Y-%m-%d")
+            self.fecha_fin = dateMonthEnd.strftime("%Y-%m-%d")
+
+
+            obj_statement=self.env['account.bank.statement'].search([('date','>=',self.fecha_inicio),('date','<=',self.fecha_fin),('state','=','confirm')],order="date desc",limit=1)
+            
+
+            if len(obj_statement)>0:
+                self.saldo_cuenta=obj_statement.balance_end_real
+            else:
+                self.saldo_cuenta=0
+
     def saldo_cuenta_calculo(self):
-        dct=self._get_bank_rec_report_data({'all_entries':False},self.journal_id)
-        self.saldo_cuenta=dct['total_already_accounted']
 
         self.subtotal_depositos_no_cobrados=self.body_report('deposito',True)
         self.subtotal_debitos_no_cobrados=self.body_report('debito',True)
@@ -107,10 +164,10 @@ class bankStatementReport(models.TransientModel):
         dateMonthStart = dateMonthStart.strftime("%Y-%m-%d")
         dateMonthEnd = dateMonthEnd.strftime("%Y-%m-%d")
         
-        #Depositos No Incluidos
+        #Depositos No registrados en estado de cuenta
         if ref=='deposito':
 
-            filtro=[('payment_date','>=',dateMonthStart),('payment_date','<=',dateMonthEnd),('invoice_id.type','!=','out_refund'),('payment_type','=','inbound'),('state','=',state_deposito),('check_number','=',False)]
+            filtro=[('journal_id','=',self.journal_id.id),('payment_date','<=',dateMonthEnd),('payment_method_id.code','!=','N/C'),('payment_type','=','inbound'),('state','=',state_deposito),('check_number','=',False)]
 
             depositos=self.env['account.payment'].search(filtro)
             if not valores:
@@ -129,18 +186,13 @@ class bankStatementReport(models.TransientModel):
                     lista_obj.append(obj)
 
 
-        #Creditos No Incluidos
+        #Cheques Girados y no cobrados (Cheques ingresados en el sistema pero que no ha aparecen en el estado de cuenta del banco)
 
 
-
-
-
-
-        #Creditos No Incluidos
         if ref=='cheque':
             filtro=[]
             if self.journal_id.id:
-                filtro=[('journal_id','=',self.journal_id.id),('cheque_date','>=',dateMonthStart),('cheque_date','<=',dateMonthEnd),('status','=',state_cheque)]
+                filtro=[('journal_id','=',self.journal_id.id),('cheque_date','<=',dateMonthEnd),('status','=',state_cheque)]
     #######filtro de cheques
             cheques=self.env['account.cheque'].search(filtro)
             
@@ -184,10 +236,10 @@ class bankStatementReport(models.TransientModel):
                     lista_obj.append(obj)
 
 
-        #Debitos No Incluidos
+        #Notas de Debito  No registrados en estado de cuenta
         if ref=='debito':
 
-            filtro=[('payment_date','>=',dateMonthStart),('payment_date','<=',dateMonthEnd),('payment_type','in',['outbound','transfer']),('state','=',state_deposito),('check_number','=',False)]
+            filtro=[('journal_id','=',self.journal_id.id),('payment_date','<=',dateMonthEnd),('payment_type','in',['outbound','transfer']),('state','=',state_deposito),('check_number','=',False)]
 
             debitos=self.env['account.payment'].search(filtro)
             lista_obj=[]
@@ -209,10 +261,10 @@ class bankStatementReport(models.TransientModel):
 
 
 
-        #Debitos No Incluidos
-        if ref=='credito':
+        #Notas de Credito  No registrados en estado de cuenta
+        if ref=='credito' :
 
-            filtro=[('payment_date','>=',dateMonthStart),('payment_date','<=',dateMonthEnd),('invoice_id.type','=','out_refund'),('payment_type','in',['inbound']),('state','=',state_credito),('check_number','=',False)]
+            filtro=[('journal_id','=',self.journal_id.id),('payment_method_id.code','=','N/C'),('payment_date','<=',dateMonthEnd),('payment_type','in',['inbound']),('state','=',state_credito),('check_number','=',False)]
 
             creditos=self.env['account.payment'].search(filtro)
             lista_obj=[]

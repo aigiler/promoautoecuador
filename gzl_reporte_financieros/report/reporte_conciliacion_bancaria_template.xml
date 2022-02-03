@@ -6,19 +6,20 @@
                 <t t-call="web.external_layout">
                     <div class="page" style="font-size: 14px">
                     <span><center><h1>Conciliacion Bancaria</h1></center></span><br/><br/>
-                    <span><strong>Corte: </strong></span> <span t-esc="o.date_reporte"/><br/>
+                    <span><strong>Año: </strong></span> <span t-esc="o.year_date"/><br/>
+                    <span><strong>Mes: </strong></span> <span t-esc="o.capturar_anio()"/><br/>
                     <span><strong>Cuenta: </strong></span> <span t-esc="o.journal_id.name"/><br/>
                     <span><strong>Saldo Estado de cuenta Inicial </strong></span> <span t-esc="o.saldo_cuenta"/><br/>
                     <span><strong>Diferencia </strong></span> <span t-esc="o.saldo_cuenta - o.diferencia"/><br/>
                     <span><strong>Cheques No Cobrados </strong></span> <span t-esc="o.subtotal_cheques_no_cobrados"/><br/>
-                    <span><strong>Notas Débito No Incluídas </strong></span> <span t-esc="o.subtotal_debitos_no_cobrados"/><br/>
-                    <span><strong>Depósitos No Incluídos </strong></span> <span t-esc="o.subtotal_depositos_no_cobrados"/><br/>
-                    <span><strong>Créditos No Incluídos </strong></span> <span t-esc="o.subtotal_creditos_no_cobrados"/><br/>
+                    <span><strong>N/D No Incluídas en estado de cuenta </strong></span> <span t-esc="o.subtotal_debitos_no_cobrados"/><br/>
+                    <span><strong>Depósitos No Incluídos en estado de cuenta </strong></span> <span t-esc="o.subtotal_depositos_no_cobrados"/><br/>
+                    <span><strong>N/C No Incluídos en estado de cuenta </strong></span> <span t-esc="o.subtotal_creditos_no_cobrados"/><br/>
 
 
-                    <span><strong>Notas Débito (No Contabilizadas)</strong></span> <span t-esc="o.subtotal_cheques_no_cobrados_no_cont"/><br/>
+                    <span><strong>N/D (No Contabilizadas)</strong></span> <span t-esc="o.subtotal_cheques_no_cobrados_no_cont"/><br/>
                     <span><strong>Cheques No Contabilizados </strong></span> <span t-esc="o.subtotal_debitos_no_cobrados_no_cont"/><br/>
-                    <span><strong>Notas Crédito (No Contabilizadas)</strong></span> <span t-esc="o.subtotal_depositos_no_cobrados_no_cont"/><br/>
+                    <span><strong>N/C (No Contabilizadas)</strong></span> <span t-esc="o.subtotal_depositos_no_cobrados_no_cont"/><br/>
                     <span><strong>Depósitos No Contabilizado</strong></span> <span t-esc="o.subtotal_creditos_no_cobrados_no_cont"/><br/>
 
 

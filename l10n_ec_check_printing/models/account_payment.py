@@ -59,8 +59,8 @@ class AccountPayment(models.Model):
         'account.payment', 'parent_id',
         'Pagos relacionados anticipo')
 
-    state = fields.Selection(selection_add=[('anticipo', 'Anticipo Pendiente')])
 
+    estado_anticipo = fields.Selection([('draft','Borrador'),('anticipo', 'Anticipo Pendiente'),('posted', 'Validado')],default="draft")
 
     anticipo_ids = fields.One2many(
         'account.payment.anticipo', 'payment_id',
@@ -119,7 +119,7 @@ class AccountPayment(models.Model):
 
 
     def job_actualizar_pagos_facturas_pendientes(self):
-        obj=self.env['account.payment'].search([('state','=','anticipo')])
+        obj=self.env['account.payment'].search([('estado_anticipo','=','anticipo')])
         for l in obj:
             l.onchange_partner_id()
 
@@ -422,13 +422,13 @@ class AccountPayment(models.Model):
         for pago in self.payment_line_ids:
             pago.amount=0
 
-        if self.state=='posted' and self.amount_residual==0:
-            self.state='posted'
+        if self.estado_anticipo=='posted' and self.amount_residual==0:
+            self.estado_anticipo='posted'
         else:
-            self.state='anticipo'
+            self.estado_anticipo='anticipo'
 
-        if self.state=='anticipo' and  self.amount_residual==0 :
-            self.state='posted'
+        if self.estado_anticipo=='anticipo' and  self.amount_residual==0 :
+            self.estado_anticipo='posted'
 
 
 
@@ -513,6 +513,7 @@ class AccountPayment(models.Model):
 
             super(AccountPayment, self.with_context({'multi_payment': invoice_id and True or False})).post()
             if self.tipo_transaccion=='Anticipo':
+                self.estado_anticipo='posted'
                 self.aplicar_anticipo_pagos()
 
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-        <record id="reporte_anticipo_form" model="ir.ui.view">
-            <field name="name">reporte.anticipo.form</field>
+        <record id="reporte_anticipo_form_nuevo" model="ir.ui.view">
+            <field name="name">reporte.anticipo.form.nuevo</field>
             <field name="model">reporte.anticipo</field>
             <field name="arch" type="xml">
                 <form string="Reporte de Anticipo">
@@ -37,7 +37,7 @@
             </field>
         </record>
 
-        <record id="action_reporte_anticipo" model="ir.actions.act_window">
+        <record id="action_reporte_anticipo_nuevo" model="ir.actions.act_window">
             <field name="name">Anticipo</field>
             <field name="res_model">reporte.anticipo</field>
             <field name="view_mode">form</field>
@@ -46,7 +46,7 @@
 
 
 
-        <menuitem id="menu_action_reporte_anticipo"  parent="account_reports.account_reports_partners_reports_menu" sequence="5" action="action_reporte_anticipo"/>
+        <menuitem id="menu_action_reporte_anticipo"  parent="bi_account_cheque.menu_informes_tesoreria" sequence="5" action="action_reporte_anticipo_nuevo"/>
 
 
 </odoo>

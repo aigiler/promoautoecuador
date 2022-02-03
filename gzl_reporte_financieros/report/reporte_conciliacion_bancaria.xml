@@ -18,13 +18,31 @@
             <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <group col="4" colspan="2">
-                        <field name="journal_id" required="1" options="{'no_create':True, 'no_open':True}" />
-                        
-                        <field name="month" required="1"  />
-                        <field name="year_date" required="1" />
-                        <field name="date" required="0" invisible='1'/>
+                    <group >
+                        <group >
+                            <field name="journal_id" required="1" options="{'no_create':True, 'no_open':True}" domain="[('type', '=', 'bank')]" />
+                            
+                            <field name="month" required="1"  />
+                            <field name="year_date" required="1" />
+                            <p>Saldo según último extracto del mes, si selecciona un extracto se toma el balance final del mismo.</p>
+
+                            <field name="saldo_cuenta" required="1" invisible='0'/>
+                            <field name="fecha_inicio" invisible='1'/>
+                            <field name="fecha_fin" invisible='1' />
+
+
+                            <field name="date" required="0" invisible='1'/>
+                        </group>
                     </group>
+
+                    <group >
+                        <group >
+                            <p>Si selecciona un extracto se tomará como saldo contable el balance final del extracto</p>
+                            <field name="extracto_saldo"  options="{'no_create':True, 'no_open':True}" required="0"  domain="[('journal_id.id', '=', journal_id),('date','&gt;=',fecha_inicio),('date','&lt;=',fecha_fin)]"/>
+                        </group>
+                    </group>
+
+
                 </sheet>
                 <footer>
                     <button name="print_report" string="Imprimir Pdf" type="object" context="{'month': month, 'year_date':year_date}"  class="btn btn-primary"/>
@@ -48,5 +66,5 @@
             <field name="target">new</field>
         </record>
 
-        <menuitem id="bank_statement_report_menu" action="bank_statemnet_report_action" parent="account_reports.account_reports_audit_reports_menu"/>
+        <menuitem id="bank_statement_report_menu" action="bank_statemnet_report_action" parent="bi_account_cheque.menu_conciliacion_bancaria"/>
 </odoo>

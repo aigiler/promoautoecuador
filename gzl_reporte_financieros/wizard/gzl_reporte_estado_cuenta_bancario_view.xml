@@ -10,7 +10,7 @@
 
                             <field name="date_from" required="1"/>
                             <field name="date_to" required="1"/>
-                            <field name="bank_id" required="1"/>
+                            <field name="bank_id" required="1" domain="[('type', '=', 'bank')]"/>
 
 
                         </group>
@@ -23,6 +23,11 @@
                                 class="oe_highlight" />
                         or
 
+                        <button name="print_report_pdf"
+                                string="Imprimir Pdf"
+                                type="object"
+                                class="oe_highlight btn btn-danger" />
+                        or
 
                         <button special="cancel"
                                 string="_Cancel"
@@ -41,7 +46,7 @@
 
 
 
-        <menuitem id="menu_action_reporte_estado_cuenta_banario"  parent="account_reports.account_reports_audit_reports_menu" sequence="5" action="action_reporte_estado_cuenta_bancario"/>
+        <menuitem id="menu_action_reporte_estado_cuenta_banario"  parent="bi_account_cheque.menu_conciliacion_bancaria" sequence="5" action="action_reporte_estado_cuenta_bancario"/>
 
 
 </odoo>

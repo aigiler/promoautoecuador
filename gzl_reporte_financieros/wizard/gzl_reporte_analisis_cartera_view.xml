@@ -41,7 +41,7 @@
 
 
 
-        <menuitem id="menu_action_reporte_analisis_cartera"  parent="account_reports.account_reports_partners_reports_menu" sequence="5" action="action_reporte_analisis_cartera"/>
+        <menuitem id="menu_action_reporte_analisis_cartera"  parent="bi_account_cheque.menu_informes_tesoreria" sequence="5" action="action_reporte_analisis_cartera"/>
 
 
 </odoo>
