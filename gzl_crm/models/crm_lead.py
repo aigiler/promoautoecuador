@@ -19,6 +19,24 @@ class CrmLead(models.Model):
     tasa_interes = fields.Integer(string='Tasa de Interés',track_visibility='onchange')
     numero_cuotas = fields.Many2one('numero.meses',default=lambda self: self.env.ref('gzl_adjudicacion.{0}'.format('numero_meses60')).id ,track_visibility='onchange' )
 
+    supervisor = fields.Many2one('res.users',string="Supervisor",track_visibility='onchange' )
+    fecha_ganada = fields.Date(string='Fecha Ganada',track_visibility='onchange')
+
+    @api.constrains("is_won")
+    def guardar_fecha_como_ganada(self, ):
+        hoy=date.today()
+        self.fecha_ganada=hoy
+
+
+
+
+
+    @api.constrains("team_id")
+    def guardar_supervisor_actual(self, ):
+        self.supervisor=self.team_id.user_id
+
+
+
 
 
     dia_pago = fields.Integer(string='Día de Pagos', default=lambda self: self._capturar_dia_pago(),track_visibility='onchange')
@@ -37,7 +55,6 @@ class CrmLead(models.Model):
     @api.constrains("stage_id")
     def cambio_colocar_venta_como_ganada(self, ):
         self.colocar_venta_como_ganada=self.stage_id.colocar_venta_como_ganada
-
 
 
 

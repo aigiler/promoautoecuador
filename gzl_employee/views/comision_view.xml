@@ -12,6 +12,8 @@
                 <field name="valor_min"/>
                 <field name="comision"/>
                 <field name="bono"/>
+                <field name="logica"/>
+                
 
                 
             </tree>
