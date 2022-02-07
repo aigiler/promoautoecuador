@@ -2,8 +2,8 @@
 <odoo noupdate="1">
 <!-- Documento pdf - saas -->
     <record id="attachment_sign_saas" model="ir.attachment">
-        <field name="name">Saas.pdf</field>
-        <field name="datas" type="base64" file="sign_gzl/static/demo/saas.pdf"/>
+        <field name="name">Contrato Demo.pdf</field>
+        <field name="datas" type="base64" file="sign_gzl/static/demo/contrato_demo.pdf"/>
         <field name="mimetype">application/pdf;base64</field>
         <field name="tipo_plantilla">adjudicacion</field>
     </record>
