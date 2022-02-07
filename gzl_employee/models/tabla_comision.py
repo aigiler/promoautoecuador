@@ -13,3 +13,10 @@ class Comision(models.Model):
 
     comision = fields.Float('Comisión')
     bono = fields.Float('Bono')
+    logica = fields.Selection(selection=[
+        ('asesor', 'Borrador'),
+        ('supervisor', 'Activo'),
+        ('jefe', 'Inactivo'),
+        ('gerente', 'Congelar Contrato'),
+
+    ], string='Logica', default='asesor', track_visibility='onchange')
