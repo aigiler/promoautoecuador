@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
-    'name': 'Fundacion Solidaria Report',
+    'name': 'Reportes Financieros',
     'version': '1.0',
     'category': 'Reportes',
-    'summary': 'Reportes Solidaria',
+    'summary': 'Reportes ',
     'description': """
 ===========================================================================
  """,

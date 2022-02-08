@@ -12,6 +12,7 @@ class Comision(models.Model):
     valor_max = fields.Float('Máximo')
     valor_min = fields.Float('Mìnimo')
 
+
     comision = fields.Float('Comisión')
     bono = fields.Float('Bono')
     logica = fields.Selection(selection=[
