@@ -16,14 +16,21 @@ class Comision(models.Model):
     comision = fields.Float('Comisión')
     bono = fields.Float('Bono')
     logica = fields.Selection(selection=[
-        ('asesor', 'Borrador'),
-        ('supervisor', 'Activo'),
-        ('jefe', 'Inactivo'),
-        ('gerente', 'Congelar Contrato'),
+        ('asesor', 'Asesor'),
+        ('supervisor', 'Supervisor'),
+        ('jefe', 'Jefe'),
+        ('gerente', 'Gerente'),
 
     ], string='Logica', default='asesor', track_visibility='onchange')
 
     active = fields.Boolean('Bono',default=True)
+
+
+
+
+
+
+
 
 
     def job_para_crear_comisiones_por_contrato(self, ):
