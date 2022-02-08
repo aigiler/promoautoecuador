@@ -26,18 +26,18 @@ class ReporteCompras(models.TransientModel):
                           ('9', 'Septiembre'), ('10', 'Octubre'), ('11', 'Noviembre'), ('12', 'Diciembre'), ], 
                          string='Mes')
     year_date = fields.Selection([
-						('2020','2020'),
-						('2021','2021'),
-						('2022','2022'),
-						('2023','2023'),
-						('2024','2024'),
-						('2025','2025'),
-						('2026','2026'),
-						('2027','2027'),
-						('2028','2028'),
-						('2029','2029'),
-						('2030','2030')
-						],string="Año")
+                        ('2020','2020'),
+                        ('2021','2021'),
+                        ('2022','2022'),
+                        ('2023','2023'),
+                        ('2024','2024'),
+                        ('2025','2025'),
+                        ('2026','2026'),
+                        ('2027','2027'),
+                        ('2028','2028'),
+                        ('2029','2029'),
+                        ('2030','2030')
+                        ],string="Año")
 
     def obtener_listado(self):
 #######filtro de facturas
@@ -51,11 +51,12 @@ class ReporteCompras(models.TransientModel):
         dateMonthEnd = dateMonthEnd.strftime("%Y-%m-%d")
        
         move=self.env['account.move'].search([('invoice_date','>=',dateMonthStart),
-            ('invoice_date','<=',dateMonthEnd),('company_id', '=', self.env.company.id),('type','in',('in_invoice','in_debit')),('state','=','posted')])
+            ('invoice_date','<=',dateMonthEnd),('company_id', '=', self.env.company.id),('type','in',('in_invoice','in_refund')),('state','=','posted')])
     #raise ValidationError((str((move))))
         cont=0
         dct={}
         num_sub =0.00
+        RETS = ['ret_vat_b', 'ret_vat_srv', 'ret_ir', 'no_ret_ir'] 
         for m in move:
             dct={}
             dct['fcaducidad']=' '
@@ -91,7 +92,10 @@ class ReporteCompras(models.TransientModel):
                 dct['state']='P'
             else:
                 dct['state']= m.state 
-            dct['nombre_doc']=m.journal_id.name
+            if m.type == 'in_invoice':
+                dct['nombre_doc']='Factura Proveedor'
+            elif m.type == 'in_refund':
+                dct['nombre_doc']='N/C Proveedor'
             dct['num_doc']=m.l10n_latam_document_number
             dct['pais']=m.partner_id.country_id.name
             dct['ret_auth_number']=m.ret_auth_number
@@ -124,21 +128,37 @@ class ReporteCompras(models.TransientModel):
             num_sub+=m.amount_untaxed
             no_obj = 0.00
             no_ext = 0.00
+            no_ret =False
+            biva0= 0.00
+            bagrav= 0.00
+
+
             for i in m.invoice_line_ids:
-                if i.tax_ids:
-                    for f in i.tax_ids:
+                taxes=i.tax_ids.filtered(lambda l: l.tax_group_id.code in ['vat0','novat','vat'])
+
+                if len(taxes)>0:
+                    for f in taxes:
                         if  f.tax_group_id.code =='novat' and f.description == '531':
-                            no_obj+= i.price_subtotal * 0.10
+                            no_obj+= i.price_subtotal
                         elif f.tax_group_id.code =='novat' and f.description == '532':
-                            no_ext += i.price_subtotal * 0.10
+                            no_ext += i.price_subtotal 
+                            
+                        else:
+                            bagrav += i.price_subtotal 
+
+
+                else:
+                    biva0+=i.price_subtotal
+                            
             dct['noobj'] = no_obj
             dct['no_ext'] = no_ext
             dct['bn_trf'] =0
             dct['srv_trf'] =0
             dct['srv_trf_dif']=0
             dct['bn_trf_dif']= 0
+            dct['biva0']=biva0
+            dct['bgrav']=bagrav
             if m.ret_tax_ids:
-                dct['bgrav']=m.amount_untaxed
                 for l in m.ret_tax_ids:
                     
                     #if l.group_id.code != 'ret_ir':
@@ -153,19 +173,25 @@ class ReporteCompras(models.TransientModel):
                         dct['retb']=l.tax_id.tarifa
                         dct['porctrets']='0'
                         dct['retserv']=l.amount  
-                    if l.group_id.code =='ret_vat_srv':
+                    if l.group_id.code =='ret_vat_srv' and dct['bgrav']!=0:
                         dct['bn_trf_dif']=  m.amount_untaxed
-                        dct['bn_trf']=  m.amount_untaxed
-                    if l.group_id.code =='ret_vat_b':
+                        dct['bn_trf']=  0
+                    if l.group_id.code =='ret_vat_b'and dct['bgrav']!=0:
                         dct['srv_trf_dif']=  m.amount_untaxed   
-                        dct['srv_trf']=  m.amount_untaxed
+                        dct['srv_trf']=  0
+                    if l.group_id.code =='ret_vat_srv' and dct['biva0']!=0:
+                        dct['bn_trf_dif']= 0
+                        dct['bn_trf']=  m.amount_untaxed  
+                    if l.group_id.code =='ret_vat_b'and dct['biva0']!=0:
+                        dct['srv_trf_dif']= 0
+                        dct['srv_trf']=  m.amount_untaxed  
                     valor= (-1)*l.amount
                     if valor == l.base:
                         dct['retiva100']=l.base
-            if dct['bgrav']==0 :
-                dct['biva0']=m.amount_untaxed
-                dct['bn_trf_dif']= 0
-                dct['srv_trf_dif']=0
+            #if dct['bgrav']==0 :
+            #    dct['biva0']=m.amount_untaxed
+            #    dct['bn_trf_dif']= 0
+            #    dct['srv_trf_dif']=0
             #raise ValidationError((str((dct['dct']))))
             lista_retenciones.append(dct)
             
@@ -260,7 +286,7 @@ class ReporteCompras(models.TransientModel):
         sheet.write(4,1, 'PERIODO: '+str(date_reporte), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
  
 
-        title_main2=['Sustento.','Tipo',	
+        title_main2=['Sustento.','Tipo',    
         'Identificacion','Razon Social','Cont. Especiales',
         'Tipo ID','Parte Rel.','Tip. Anexo','Tip. Comp.',
         'Serie','Secuencial','Autorización','Fch. Emi.'
@@ -463,8 +489,12 @@ class ReporteCompras(models.TransientModel):
             sheet.write(fila,17, '=+SUM(R'+str(9)+':R'+str(fila)+')', currency_format)
             sheet.write(fila,18, '=+SUM(S'+str(9)+':S'+str(fila)+')', currency_format)
             sheet.write(fila,19, '=+SUM(T'+str(9)+':T'+str(fila)+')', currency_format)
+            sheet.write(fila,36, '=+SUM(AK'+str(9)+':AK'+str(fila)+')', currency_format)
             sheet.write(fila,37, '=+SUM(AL'+str(9)+':AL'+str(fila)+')', currency_format)
+            sheet.write(fila,38, '=+SUM(AM'+str(9)+':AM'+str(fila)+')', currency_format)
+            sheet.write(fila,39, '=+SUM(AN'+str(9)+':AN'+str(fila)+')', currency_format)
             sheet.write(fila,40, '=+SUM(AO'+str(9)+':AO'+str(fila)+')', currency_format)
+            sheet.write(fila,41, '=+SUM(AP'+str(9)+':AP'+str(fila)+')', currency_format)
             sheet.write(fila,49, '=+SUM(AX'+str(9)+':AX'+str(fila)+')', currency_format)
             sheet.write(fila,51, '=+SUM(AZ'+str(9)+':AZ'+str(fila)+')', currency_format)
             sheet.merge_range('B'+str(fila+1)+':N'+str(fila+1), 'TOTALES', workbook.add_format({'bold':True,'border':0,'align': 'center','size': 14}))

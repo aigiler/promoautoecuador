@@ -68,7 +68,20 @@ class WizardAts(models.TransientModel):
 
     def act_cancel(self):
         return {'type': 'ir.actions.act_window_close'}
-
+    def _get_iva_types(self, invoice):
+        iva12 = 0
+        iva0 = 0
+        novat = 0
+        for line in invoice.invoice_line_ids:
+            for tax in line.tax_ids:
+                if tax.tax_group_id.code == 'vat':
+                    iva12 += abs(tax._compute_amount(line.price_subtotal, line.price_unit, line.quantity, line.product_id))
+                if tax.tax_group_id.code == 'vat0':
+                    iva0 += abs(tax._compute_amount(line.price_subtotal, line.price_unit, line.quantity, line.product_id))
+                if tax.tax_group_id.code == 'novat':
+                    novat += abs(tax._compute_amount(line.price_subtotal, line.price_unit, line.quantity, line.product_id))
+        
+        return iva12, iva0, novat
     """def process_lines(self, lines):
         
         data_air = []
@@ -98,15 +111,15 @@ class WizardAts(models.TransientModel):
             for tax in line.tax_ids:
         #for line in lines:
                 if tax.tax_group_id.code in ['ret_ir', 'no_ret_ir']:
-                    if not temp.get(tax.name):
-                        temp[tax.name] = {
+                    if not temp.get(tax.description):
+                        temp[tax.description] = {
                             'baseImpAir': 0,
                             'valRetAir': 0
                         }
-                    temp[tax.name]['baseImpAir'] += line.price_subtotal
-                    temp[tax.name]['codRetAir'] = tax.description # noqa
-                    temp[tax.name]['porcentajeAir'] = abs(int(tax.amount))  # noqa
-                    temp[tax.name]['valRetAir'] += abs(float(tax.amount))
+                    temp[tax.description]['baseImpAir'] += line.price_subtotal
+                    temp[tax.description]['codRetAir'] = tax.description # noqa
+                    temp[tax.description]['porcentajeAir'] = abs(float(tax.tarifa))  # noqa
+                    temp[tax.description]['valRetAir'] += abs(tax._compute_amount(line.price_subtotal, line.price_unit, line.quantity, line.product_id))
         for k, v in temp.items():
             data_air.append(v)
         return data_air
@@ -129,6 +142,32 @@ class WizardAts(models.TransientModel):
         resultado = sum(map(lambda x: x[0] == 'out_refund' and x[1] * -1 or x[1], res))  # noqa
         return resultado
 
+    #def _get_ret_iva(self, invoice):
+    #    """
+    #    Return (valRetBien10, valRetServ20,
+    #    valorRetBienes,
+    #    valorRetServicios, valorRetServ100)
+    #    """
+    #    retBien10 = 0
+    #    retServ20 = 0
+    #    retBien = 0
+    #    retServ = 0
+    #    retServ100 = 0
+    #    for line in invoice.invoice_line_ids:
+    #        for tax in line.tax_ids:
+    #            if tax.tax_group_id.code == 'ret_vat_b':
+    #                if abs(tax.amount) == 10:
+    #                    retBien10 += abs(tax.amount)
+    #                else:
+    #                    retBien += abs(tax.amount)
+    #            if tax.tax_group_id == 'ret_vat_srv':
+    #                if abs(tax.amount) == 100:
+    #                    retServ100 += abs(tax.amount)
+    #                elif abs(tax.amount) == 20:
+    #                    retServ20 += abs(tax.amount)
+    #                else:
+    #                    retServ += abs(tax.amount)
+    #    return retBien10, retServ20, retBien, retServ, retServ100
     def _get_ret_iva(self, invoice):
         """
         Return (valRetBien10, valRetServ20,
@@ -144,18 +183,17 @@ class WizardAts(models.TransientModel):
             for tax in line.tax_ids:
                 if tax.tax_group_id.code == 'ret_vat_b':
                     if abs(tax.amount) == 10:
-                        retBien10 += abs(tax.amount)
+                        retBien10 += abs(tax._compute_amount(line.price_subtotal, line.price_unit, line.quantity, line.product_id))*0.12
                     else:
-                        retBien += abs(tax.amount)
-                if tax.tax_group_id == 'ret_vat_srv':
+                        retBien += abs(tax._compute_amount(line.price_subtotal, line.price_unit, line.quantity, line.product_id))*0.12
+                if tax.tax_group_id.code == 'ret_vat_srv':
                     if abs(tax.amount) == 100:
-                        retServ100 += abs(tax.amount)
+                        retServ100 += abs(tax._compute_amount(line.price_subtotal, line.price_unit, line.quantity, line.product_id))*0.12
                     elif abs(tax.amount) == 20:
-                        retServ20 += abs(tax.amount)
+                        retServ20 += abs(tax._compute_amount(line.price_subtotal, line.price_unit, line.quantity, line.product_id))*0.12
                     else:
-                        retServ += abs(tax.amount)
+                        retServ += abs(tax._compute_amount(line.price_subtotal, line.price_unit, line.quantity, line.product_id))*0.12
         return retBien10, retServ20, retBien, retServ, retServ100
-
     def get_withholding(self, wh):
         if wh.id:
         
@@ -217,13 +255,21 @@ class WizardAts(models.TransientModel):
         iva0 = 0
         novat = 0
         for line in invoice.invoice_line_ids:
+            
+            cont_vats=0
             for tax in line.tax_ids:
                 if tax.tax_group_id.code == 'vat':
+                    cont_vats+=1
                     iva12 += abs(line.price_subtotal)
                 if tax.tax_group_id.code == 'vat0':
+                    cont_vats+=1
                     iva0 += abs(line.price_subtotal)
                 if tax.tax_group_id.code == 'novat':
+                    cont_vats+=1
                     novat += abs(line.price_subtotal)
+            #raise ValidationError((str(len(line.tax_ids))+'kdkd'))
+            if cont_vats==0:
+                iva0 += abs(line.price_subtotal)
         
         return iva12, iva0, novat
                             
@@ -280,7 +326,7 @@ class WizardAts(models.TransientModel):
                 auth = inv.establecimiento
                 valRetBien10, valRetServ20, valorRetBienes, valorRetServicios, valRetServ100 = self._get_ret_iva(inv)  # noqa
                 baseiva12, baseiva0, basenovat= self._get_iva_bases(inv)
-
+                iva12, iva0, novat = self._get_iva_types(inv)
                 
                 t_reeb = 0.0
                 if not inv.establecimiento.type_id.code == '41':
@@ -290,25 +336,32 @@ class WizardAts(models.TransientModel):
                         t_reeb = 0.0
                     else:
                         t_reeb = inv.amount_untaxed
+                secu =''
+                if len (inv.l10n_latam_document_number[6:15])==9:
+                    secu =inv.l10n_latam_document_number[6:15]
+                else:
+                    secu ='0'+inv.l10n_latam_document_number[6:15]
+                #if secu == '`00000355':
+                #    raise ValidationError((str(len(secu))+'=='+str(inv.invoice_date)+'=='+str(inv.name)))
                 detallecompras.update({
                     'codSustento': inv.sustento_del_comprobante.code or '00',
                     'tpIdProv': inv.partner_id.l10n_latam_identification_type_id.code_compra,
                     'idProv': inv.partner_id.vat,
-                    'tipoComprobante': inv.type == 'liq_purchase' and '03' or auth.type_id.code or '00',  # noqa
+                    'tipoComprobante': inv.type == 'liq_purchase' and '03' or auth.type_id.code or inv.l10n_latam_document_type_id.code,  # noqa
                     'parteRel': 'NO',
                     'fechaRegistro': convertir_fecha(inv.invoice_date),
                     'establecimiento': inv.l10n_latam_document_number[:3],
                     'puntoEmision': inv.l10n_latam_document_number[3:6],
-                    'secuencial': inv.l10n_latam_document_number[6:15],
+                    'secuencial':secu,# inv.l10n_latam_document_number[6:15],
                     'fechaEmision': convertir_fecha(inv.invoice_date),
                     'autorizacion': inv.auth_number or '000000',
-                    'baseNoGraIva':'%.2f' % inv.amount_untaxed,
+                    'baseNoGraIva':'%.2f' % basenovat,
                     'baseImponible': '%.2f' % baseiva0,
-                    'baseImpGrav': '%.2f' % baseiva0,#  (inv.amount_total - inv.amount_untaxed),
+                    'baseImpGrav': '%.2f' % baseiva12,#  (inv.amount_total - inv.amount_untaxed),
                     'baseImpExe': '0.00',
                     'total': inv.amount_total,
                     'montoIce': '0.00',
-                    'montoIva': '%.2f' %( baseiva12),
+                    'montoIva': '%.2f' %( iva12),
                     'valRetBien10': '%.2f' % valRetBien10,
                     'valRetServ20': '%.2f' % valRetServ20,
                     'valorRetBienes': '%.2f' % valorRetBienes,
@@ -333,7 +386,7 @@ class WizardAts(models.TransientModel):
                     #    'pagExtSujRetNorLeg': self._pagExtSujRetNorLeg(inv),
                     #    'pagoRegFis': self.si_no(inv.partner_id.pago_reg_fis)
                     #},
-                    'formaPago': inv.method_payment.code or '00',
+                    'formaPago': inv.method_payment.code or '20',
                     'detalleAir': self.process_lines(inv)
                   #  'detalleAir': self.process_lines(inv.l10n_latam_tax_ids)
                 })
@@ -371,22 +424,23 @@ class WizardAts(models.TransientModel):
         for inv in self.env['account.move'].search(dmn):
             valRetBien10, valRetServ20, valorRetBienes, valorRetServicios, valRetServ100 = self._get_ret_iva(inv)
             baseiva12, baseiva0, basenovat= self._get_iva_bases(inv)
+            iva12, iva0, novat = self._get_iva_types(inv)
             detalleventas = {
                 'tpIdCliente': inv.partner_id.l10n_latam_identification_type_id.code_compra,
                 'idCliente': inv.partner_id.vat,
                 'parteRelVtas': 'NO',
                 'partner': inv.partner_id,
-                'auth': inv.establecimiento,
-                'tipoComprobante': inv.sustento_del_comprobante.code or '00',
-                'tipoEmision': inv.establecimiento.is_electronic and 'E' or 'F',
+                'auth': inv.auth_number,#inv.establecimiento,
+                'tipoComprobante': inv.l10n_latam_document_type_id.code, # inv.sustento_del_comprobante.code or 
+                'tipoEmision': inv.journal_id.auth_out_invoice_id.is_electronic and 'E' or 'F',
                 'numeroComprobantes': 1,
-                'baseNoGraIva':  inv.amount_untaxed,
-                'baseImponible': inv.amount_untaxed,
-                'baseImpGrav':  baseiva0,#(inv.amount_total - inv.amount_untaxed),
-                'montoIva': inv.amount_tax,
+                'baseNoGraIva': basenovat,# inv.amount_untaxed,
+                'baseImponible': baseiva0,#inv.amount_untaxed,
+                'baseImpGrav':  baseiva12,#(inv.amount_total - inv.amount_untaxed),
+                'montoIva':iva12,# baseiva12,#inv.amount_tax,
                 'montoIce': '0.00',
                 'valorRetIva': (abs(valorRetBienes) + abs(valorRetServicios)),  # noqa
-                'valorRetRenta': 0,#abs(inv.taxed_ret_ir),
+                'valorRetRenta': abs(valRetBien10)+abs(valRetServ20)+abs(valRetServ100),#,#0,#abs(inv.taxed_ret_ir),
                 'formasDePago': {
                     'formaPago': inv.method_payment.id
                 }
@@ -421,7 +475,7 @@ class WizardAts(models.TransientModel):
                 'idCliente': inv.partner_id.vat,
                 'parteRelVtas': 'NO',
                 'tipoComprobante': inv.sustento_del_comprobante.code or '00',
-                'tipoEmision': auth_temp.is_electronic and 'E' or 'F',
+                'tipoEmision': inv.journal_id.auth_out_invoice_id.is_electronic and 'E' or 'F',
                 'numeroComprobantes': numComp,
                 'baseNoGraIva': '%.2f' % nograviva,
                 'baseImponible': '%.2f' % baseimp,

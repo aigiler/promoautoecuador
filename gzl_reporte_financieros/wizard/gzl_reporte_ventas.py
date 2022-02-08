@@ -53,6 +53,7 @@ class ReporteVentas(models.TransientModel):
             dct['miva']=0
             dct['biva0']=0
             dct['reiva']=0
+            dct['noobj']=0.0
             #raise ValidationError((str((m.create_date))))
             dct['tipo_id']= m.partner_id.l10n_latam_identification_type_id.name
             dct['ident']= m.partner_id.vat
@@ -75,21 +76,45 @@ class ReporteVentas(models.TransientModel):
                 dct['state']=m.state
             dct['nombre_doc']=m.journal_id.name
             dct['num_doc']=m.l10n_latam_document_number
-            dct['base_grav']=m.amount_untaxed
+            
             dct['vr']=m.amount_residual
             dct['sustento']= m.sustento_del_comprobante.code
             if m.invoice_origin:
                 dct['origen']= m.invoice_origin
             else:
                 dct['origen']=' '
+            biva0= 0.00
+            bagrav= 0.00
+            no_ext =0.00
+            no_obj=0.00
+            for i in m.invoice_line_ids:
+                taxes=i.tax_ids.filtered(lambda l: l.tax_group_id.code in ['vat0','novat','vat'] and l.type_tax_use == 'sale')
+
+                if len(taxes)>0:
+                    for f in taxes:
+                        if  f.tax_group_id.code =='novat' and f.description == '531':
+                            no_obj+= i.price_subtotal
+                        elif f.tax_group_id.code =='novat' and f.description == '532':
+                            no_ext += i.price_subtotal 
+                            
+                        else:
+                            bagrav += i.price_subtotal 
+
+
+                else:
+                    biva0+=i.price_subtotal
+            dct['base_grav']=bagrav
+            dct['biva0']=biva0
+            dct['miva']=bagrav * 0.12
+            dct['noobj']=no_obj
             if m.ret_tax_ids:
                 for l in m.ret_tax_ids:
                     if l.group_id.code =='ret_vat_b' or l.group_id.code =='ret_vat_srv':
-                        dct['miva']=l.base
+                        
                         dct['reiva']=l.amount
-            elif not m.ret_tax_ids:
-                dct['biva0']=m.amount_untaxed
-                dct['base_grav'] =0
+            #elif not m.ret_tax_ids:
+            #    dct['biva0']=m.amount_untaxed
+            #    dct['base_grav'] =0
             lista_retenciones.append(dct)
             #obj_line=self.env['account.move'].search([('retention_id','=',line.id)], order ='id desc')
 
@@ -297,7 +322,7 @@ class ReporteVentas(models.TransientModel):
                 columna+=1
                 sheet.write(fila, columna, l['miva'], currency_format)
                 columna+=1
-                sheet.write(fila, columna, '-', format_title2)
+                sheet.write(fila, columna, l['no_obj'], format_title2)
                 columna+=1
                 sheet.write(fila, columna, '-', format_title2)
                 columna+=1
@@ -328,5 +353,5 @@ class ReporteVentas(models.TransientModel):
         sheet.write(fila,19, '=+SUM(T'+str(9)+':T'+str(fila)+')', currency_format)
         sheet.write(fila,20, '=+SUM(U'+str(9)+':U'+str(fila)+')', currency_format)
         sheet.write(fila,21, '=+SUM(V'+str(9)+':V'+str(fila)+')', currency_format)
-        sheet.write(fila,22, '=+SUM(W'+str(9)+':W'+str(fila)+')', currency_format)
+        #sheet.write(fila,22, '=+SUM(W'+str(9)+':W'+str(fila)+')', currency_format)
         sheet.merge_range('B'+str(fila+1)+':M'+str(fila+1), 'TOTALES', workbook.add_format({'bold':True,'border':0,'align': 'center','size': 14}))

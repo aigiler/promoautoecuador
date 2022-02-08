@@ -47,6 +47,7 @@ class AccountPayment(models.Model):
     fecha_aplicacion_anticipo = fields.Date('Fecha de Aplicación de Anticipo',default=_get_default_invoice_date)
 
 
+    es_nota_credito = fields.Boolean('Es N/C')
 
 
 

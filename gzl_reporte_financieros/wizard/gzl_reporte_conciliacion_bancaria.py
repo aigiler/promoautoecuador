@@ -167,7 +167,7 @@ class bankStatementReport(models.TransientModel):
         #Depositos No registrados en estado de cuenta
         if ref=='deposito':
 
-            filtro=[('journal_id','=',self.journal_id.id),('payment_date','<=',dateMonthEnd),('payment_method_id.code','!=','N/C'),('payment_type','=','inbound'),('state','=',state_deposito),('check_number','=',False)]
+            filtro=[('journal_id','=',self.journal_id.id),('payment_date','<=',dateMonthEnd),('es_nota_credito','=',True),('payment_type','=','inbound'),('state','=',state_deposito),('check_number','=',False)]
 
             depositos=self.env['account.payment'].search(filtro)
             if not valores:
@@ -264,7 +264,7 @@ class bankStatementReport(models.TransientModel):
         #Notas de Credito  No registrados en estado de cuenta
         if ref=='credito' :
 
-            filtro=[('journal_id','=',self.journal_id.id),('payment_method_id.code','=','N/C'),('payment_date','<=',dateMonthEnd),('payment_type','in',['inbound']),('state','=',state_credito),('check_number','=',False)]
+            filtro=[('journal_id','=',self.journal_id.id),('es_nota_credito','=',True),('payment_date','<=',dateMonthEnd),('payment_type','in',['inbound']),('state','=',state_credito),('check_number','=',False)]
 
             creditos=self.env['account.payment'].search(filtro)
             lista_obj=[]

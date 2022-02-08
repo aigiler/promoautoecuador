@@ -175,6 +175,8 @@ class ReporteAnticipo(models.TransientModel):
         dateMonthStart = dateMonthStart.strftime("%Y-%m-%d")
         dateMonthEnd = dateMonthEnd.strftime("%Y-%m-%d")
         valu=[]
+        factu =0
+        fcont =0
         for l in move:
             obj_line=self.env['account.move.line'].search([('move_id','=',l.id)],order='tax_group_id desc')
             #raise ValidationError((str(obj_line)))
@@ -198,29 +200,32 @@ class ReporteAnticipo(models.TransientModel):
                         #obj_tax=self.env['account.tax'].search([('name','=',i.name)], order ='description desc')
                         if tipo_imp =='ie':
                             if variable == i.type_tax_use and i.tax_group_id.code in ingeg :
+                                
                                 no_imp =True
                                 a={}
                                 a['num']=line.price_subtotal
                                 valu.append(a)
-                                if l.type in ['out_invoice','in_invoice']:
-                                    cont_fact+=1
-                                    if l.state =='posted':
-                                        fact_emi+=1
-                                    if l.state =='cancel':
-                                        fact_anu+=1
-                                if l.type =='liq_purchase':
-                                    cont_liq+=1
-                                
+                                if factu != l.id:
+                                    fcont+=1
+                                    if l.type in ['out_invoice','in_invoice']:
+                                        cont_fact+=1
+                                        if l.state =='posted':
+                                            fact_emi+=1
+                                        if l.state =='cancel':
+                                            fact_anu+=1
+                                    if l.type =='liq_purchase':
+                                        cont_liq+=1
+                                factu =l.id
                                 cont+=1
                                 if cont >1:
                                     if code== i.description:
                                         if valor_nc > 0:
                                             valor_neto_nc=0.00
-                                            valor_neto_nc= l.amount_total - valor_nc
+                                            valor_neto_nc= line.price_subtotal - valor_nc
                                         #impuesto_g_por_fact = l.amount_untaxed -valor_nc
                                         amount_v+= line.price_subtotal
                                         imp_generado=imp_generado+(l.view_amount_total - l.amount_untaxed)
-                                        valor_neto+=valor_neto_nc
+                                        valor_neto+=valor_nc
                                         description = i.description
                                         name = i.name
                                         code_group = i.tax_group_id.code
@@ -257,11 +262,16 @@ class ReporteAnticipo(models.TransientModel):
                                             dct['name_group']=i.tax_group_id.name
                                             dct['amount']=line.price_subtotal
                                             dct['imp_generado']=(l.view_amount_total - l.amount_untaxed)
-                                            dct['valor_neto']=l.amount_untaxed - valo_nc
+                                            dct['valor_neto']=valor_nc#l.amount_untaxed - valo_nc
                                             lista_retenciones.append(dct) 
                                 else:
-                                    dct={}
-                                    amount_v= line.price_subtotal
+                                    #dct={}
+                                    amount_v+= line.price_subtotal
+                                    valor_neto_nc= line.price_subtotal - valor_nc
+                                    if valor_nc > 0:
+                                            valor_neto_nc=0.00
+                                            valor_neto_nc= line.price_subtotal - valor_nc
+                                    valor_neto+=valor_nc
                                 code= i.description
                             #elif variable == i.type_tax_use and i.tax_group_id.code in TAXES and idfactu != line.move_id:
                             #    valor_neto_nc_ni= l.amount_untaxed - valor_nc
@@ -274,11 +284,13 @@ class ReporteAnticipo(models.TransientModel):
                 #    amount_vni+= line.price_subtotal
                 #    imp_generadoni=imp_generadoni+(l.view_amount_total - l.amount_untaxed)
                 #    valor_netoni+=valor_neto_nc_ni
-            if not no_imp or not no_taxes and variable =='purchase':
-                valor_neto_nc_ni= l.amount_total - valor_nc
-                amount_vni+= l.amount_untaxed
-                imp_generadoni=imp_generadoni+(l.view_amount_total - l.amount_untaxed)
-                valor_netoni+=valor_neto_nc_ni
+            #if not no_imp or not no_taxes : 
+            #    if variable =='purchase':
+            #        valor_neto_nc_ni=valor_nc# l.amount_untaxed - valor_nc
+            #        amount_vni+= l.amount_untaxed
+            #        imp_generadoni=imp_generadoni+(l.view_amount_total - l.amount_untaxed)
+            #        valor_netoni+=valor_neto_nc_ni
+            
         self.cont_fact = str(cont_fact)
         self.cont_liq =str(cont_liq)
         self.fact_emi=str(fact_emi)
@@ -296,25 +308,25 @@ class ReporteAnticipo(models.TransientModel):
             dct['imp_generado']=imp_generado
             dct['valor_neto']=valor_neto
             lista_retenciones.append(dct) 
-        if amount_vni > 0.00 and variable =='purchase':
-            dct={}
-            dct['id']='-' 
-            dct['move']='-'
-            dct['name']='ADQUISICIONES NO OBJETO DE IVA'
-            dct['tipo_doc']=tipo_doc
-            dct['code']='531'
-            dct['code_group']='-'
-            dct['name_group']='-'
-            dct['amount']=amount_vni
-            dct['imp_generado']=imp_generadoni
-            dct['valor_neto']=valor_netoni
-            lista_retenciones.append(dct) 
+        #if amount_vni > 0.00 and variable =='purchase':
+        #    dct={}
+        #    dct['id']='-' 
+        #    dct['move']='-'
+        #    dct['name']='ADQUISICIONES NO OBJETO DE IVA'
+        #    dct['tipo_doc']=tipo_doc
+        #    dct['code']='531'
+        #    dct['code_group']='-'
+        #    dct['name_group']='-'
+        #    dct['amount']=amount_vni
+        #    dct['imp_generado']=imp_generadoni
+        #    dct['valor_neto']=valor_netoni
+        #    lista_retenciones.append(dct) 
         valorr=0.00
-        #if valorr:
-        #    raise ValidationError((str(valorr)+'--'))
+        #if fcont:
+        #    raise ValidationError((str(fcont)+'--'))
         return lista_retenciones
 
-        return lista_retenciones
+        #return lista_retenciones
     def print_report_xls(self):
         file_data = BytesIO()
         workbook = xlsxwriter.Workbook(file_data)
@@ -735,7 +747,7 @@ class ReporteAnticipo(models.TransientModel):
                 #imp_gen = (l['amount'] - l['valor_neto'])
                 sheet.write(fila, columna+1, l['code'], format_title2)
                 sheet.write(fila, columna+2, l['amount'], format_title2)#tipo_doc
-                sheet.write(fila, columna+3, l['valor_neto'], format_title2)
+                sheet.write(fila, columna+3, l['amount'] - l['valor_neto'], format_title2)
                 sheet.write(fila, columna+4,'=((D'+str(fila+1)+'-E'+str(fila+1)+')*0.12)', format_title2)#valor_neto
             fila_tit_renta = fila +1    
             if ret_iva:
@@ -785,7 +797,7 @@ class ReporteAnticipo(models.TransientModel):
                 sheet.write(fila, columna, str(p['name']), format_title2)
                 sheet.write(fila, columna+1, p['code'], format_title2)
                 sheet.write(fila, columna+2, p['amount'], format_title2)
-                sheet.write(fila, columna+3, p['valor_neto'], format_title2)
+                sheet.write(fila, columna+3, p['amount'] - p['valor_neto'], format_title2)
                 sheet.write(fila, columna+4,'=((D'+str(fila+1)+'-E'+str(fila+1)+')*0.12)', format_title2)
                     #fila+=1
             fila_tit_renta=fila+1

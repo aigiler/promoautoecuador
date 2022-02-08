@@ -28,7 +28,9 @@
 
                 <field name="payment_method_id" position="after">
                     <field name="invoice_id" invisible="1" />
+                    <field name="es_nota_credito" invisible="0" />
                     <field name="has_payment_line" invisible="1"/>
+
                     <field name="to_third_party" attrs="{'invisible': [('payment_method_code','!=','check_printing')]}"/>
                     <field name="third_party_name"
                            attrs="{'invisible': [('to_third_party','=',False)], 'required' :[('to_third_party','=',True)]}"/>
@@ -59,10 +61,29 @@
 
 
 
+                    <separator string="Cuentas Contables" attrs="{'invisible': [ ('tipo_transaccion', '!=', 'movimiento')] }"/>
+                    <field name="account_payment_account_ids" nolabel="1" attrs="{'invisible': [('tipo_transaccion', '!=', 'movimiento')]}">
+                        <tree string="Pagos" editable="bottom"  >
+                            <field name="cuenta" required="1" />
+                            <field name="name" required="1" />
+                            <field name="cuenta_analitica" required="1" />
+                            <field name="analytic_tag_ids" widget="many2many_tags" />
+                            <field name="debit"   />
+                            <field name="credit" />
+
+                        </tree>
 
 
-                    <separator string="Pagos de Varias Facturas" attrs="{'invisible': ['|',('partner_id', '=', False),('payment_difference', '&lt;',0)],'readonly':[('state','=','done')]}"/>
-                    <field name="payment_line_ids" nolabel="1" attrs="{'invisible': ['|',('partner_id', '=', False),('payment_difference', '&lt;',0)],'readonly':[('state','=','done')]}">
+                    </field>
+
+
+
+
+
+
+
+                    <separator string="Pagos de Varias Facturas" attrs="{'invisible': ['|',('partner_id', '=', False),('payment_difference', '&lt;',0)],'readonly':[('state','in',['done','reconciled'])]}"/>
+                    <field name="payment_line_ids" nolabel="1" attrs="{'invisible': ['|',('partner_id', '=', False),('payment_difference', '&lt;',0)],'readonly':[('state','in',['done','reconciled'])]}">
                         <tree string="Pagos" editable="bottom" create="0" delete="0" >
                             <field name="document_number" readonly="1"/>
                             <field name="invoice_id" readonly="1" force_save="1"/>
@@ -75,18 +96,19 @@
                         </tree>
                     </field>
 
+                    <field name="estado_anticipo" invisible="1"/>
 
-                    <separator string="Aplicación de Anticipos" attrs="{'invisible':['|',('tipo_transaccion','!=','Anticipo'),('state','=','draft')]}"/>
+                    <separator string="Aplicación de Anticipos" attrs="{'invisible':['|',('tipo_transaccion','!=','Anticipo'),('estado_anticipo','=','draft')]}"/>
 
 
-                    <field name="anticipo_ids" nolabel="1" readonly="1"  attrs="{'invisible':['|',('tipo_transaccion','!=','Anticipo'),('state','=','draft')]}" >
+                    <field name="anticipo_ids" nolabel="1" readonly="1"  attrs="{'invisible':['|',('tipo_transaccion','!=','Anticipo'),('estado_anticipo','=','draft')]}" >
                         <tree string="Anticipos" editable="bottom" create="0" delete="0">
                             <field name="invoice_id" readonly="1" force_save="1"/>
                             <field name="amount" readonly="0" force_save="1"/>
                         </tree>
                     </field>
 
-                    <field name="aplicacion_anticipo_ids" nolabel="1" readonly="1"  attrs="{'invisible':['|',('tipo_transaccion','!=','Anticipo'),('state','=','draft')]}" >
+                    <field name="aplicacion_anticipo_ids" nolabel="1" readonly="1"  attrs="{'invisible':['|',('tipo_transaccion','!=','Anticipo'),('estado_anticipo','=','draft')]}" >
                         <tree string="Anticipos" editable="bottom" create="0" delete="0">
                             <field name="aplicacion_anticipo" readonly="0" force_save="1"/>
                         </tree>
@@ -95,10 +117,10 @@
 
 
 
-                    <separator string="Pagos Relacionados" attrs="{'invisible':['|',('tipo_transaccion','!=','Anticipo'),('state','=','draft')]}" />
+                    <separator string="Pagos Relacionados" attrs="{'invisible':['|',('tipo_transaccion','!=','Anticipo'),('estado_anticipo','=','draft')]}" />
 
 
-                    <field name="pagos_relacionadas" nolabel="1" attrs="{'invisible':['|',('tipo_transaccion','!=','Anticipo'),('state','=','draft')]}" >
+                    <field name="pagos_relacionadas" nolabel="1" attrs="{'invisible':['|',('tipo_transaccion','!=','Anticipo'),('estado_anticipo','=','draft')]}" >
                         <tree string="Anticipos" editable="bottom" create="0" delete="0">
                             <field name="name" />
                         </tree>
@@ -112,7 +134,7 @@
 
 
                 <button name="action_draft" position="after">
-                    <button name="aplicar_anticipo_pagos" class="oe_highlight" type="object" string="Aplicar Anticipo" attrs="{'invisible': ['|',('state','!=','anticipo'),('amount_residual','=','0')]}"/>
+                    <button name="aplicar_anticipo_pagos" class="oe_highlight" type="object" string="Aplicar Anticipo" attrs="{'invisible': ['|',('estado_anticipo','!=','anticipo'),('amount_residual','=','0')]}"/>
                 </button>
 
                 <field name="amount" position="after">
