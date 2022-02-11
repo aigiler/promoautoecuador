@@ -44,13 +44,14 @@ class ContratoResrva(models.TransientModel):
 
             #####Se sacan los campos de la plantilla del objeto plantillas.dinamicas.informes
             campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
-
-        
+            
             lista_campos=[]
             for campo in campos:
-
+                #if campo:
+                #    raise ValidationError(str(campo.vat))
                 dct={}
                 resultado=self.mapped(campo.name)
+                
                 if campo.name!=False:
                     if len(resultado)>0:
 
@@ -64,7 +65,8 @@ class ContratoResrva(models.TransientModel):
 
                 dct['identificar_docx']=campo.identificar_docx
                 lista_campos.append(dct)
-
+           # if resultado:
+           #     raise ValidationError(str(lista_campos))
             estado_cuenta=self.contrato_id.estado_de_cuenta_ids
             
             #crear_documento_contrato_reserva.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
