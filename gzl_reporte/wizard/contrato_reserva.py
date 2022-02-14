@@ -22,7 +22,7 @@ class ContratoResrva(models.TransientModel):
     
     contrato_id = fields.Many2one('contrato',string='Contrato')
     clave =  fields.Char( default="contrato_reserva")
-
+    vehiculo_id = fields.Many2one('entrega.vehiculo',string='entrega.vehiculo')
 
 
     def print_report_xls(self):
@@ -50,6 +50,9 @@ class ContratoResrva(models.TransientModel):
                 #if campo:
                 #    raise ValidationError(str(campo.vat))
                 dct={}
+                #vehiculoooo
+                #if campo.name == 'tipoVehiculo':
+                    
                 resultado=self.mapped(campo.name)
                 
                 if campo.name!=False:
