@@ -59,7 +59,7 @@ class ContratoResrva(models.TransientModel):
                     for l in obj_veh :
                         #vehiculo_serie  vehiculo_motor vehiculo_color  vehiculo_anio vehiculo_pais_origen vehiculo_combustible vehiculo_pasajeros vehiculo_tonelaje. 
                         #raise ValidationError(str(l.nombreGarante.id)+' -jg- '+campo.name)
-                        if l.nombreGarante.id == 238 :#self.contrato_id.cliente.id: vehiculo_clase 
+                        if l.nombreSocioAdjudicado.id == self.contrato_id.cliente.id: #vehiculo_clase 238
                             dct ={}
                             dct['valor']=l.tipoVehiculo
                             dct['identificar_docx']='vehiculo_tipo'
