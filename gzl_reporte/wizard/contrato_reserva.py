@@ -51,23 +51,72 @@ class ContratoResrva(models.TransientModel):
                 #    raise ValidationError(str(campo.vat))
                 dct={}
                 #vehiculoooo
-                #if campo.name == 'tipoVehiculo':
+                if campo.name == 'vehiculo_id.tipoVehiculo':
                     
-                resultado=self.mapped(campo.name)
+                    obj_veh=self.env['entrega.vehiculo'].search([])
+                    
+                    for l in obj_veh :
+                        #vehiculo_serie  vehiculo_motor vehiculo_color  vehiculo_anio vehiculo_pais_origen vehiculo_combustible vehiculo_pasajeros vehiculo_tonelaje. 
+                        #raise ValidationError(str(l.nombreGarante.id)+' -jg- '+campo.name)
+                        if l.nombreGarante.id == 238 :#self.contrato_id.cliente.id: vehiculo_clase 
+                            dct['valor']=l.tipoVehiculo
+                            dct['identificar_docx']='vehiculo_tipo'
+                            lista_campos.append(dct)
+                            dct['valor']=l.claseVehiculo
+                            dct['identificar_docx']='vehiculo_clase'
+                            lista_campos.append(dct)
+                            dct['valor']=l.marcaVehiculo
+                            dct['identificar_docx']='vehiculo_marca'
+                            lista_campos.append(dct)
+                            dct['valor']=l.modeloVehiculoSRI
+                            dct['identificar_docx']='modelo_regist_sri'
+                            lista_campos.append(dct)
+                            dct['valor']=l.modeloHomologado
+                            dct['identificar_docx']='modelo_homologado_ant'
+                            lista_campos.append(dct)
+                            dct['valor']=l.serieVehiculo
+                            dct['identificar_docx']='vehiculo_serie'
+                            lista_campos.append(dct)
+                            dct['valor']=l.motorVehiculo
+                            dct['identificar_docx']='vehiculo_motor'
+                            lista_campos.append(dct)
+                            dct['valor']=l.colorVehiculo
+                            dct['identificar_docx']='vehiculo_color'
+                            lista_campos.append(dct)
+                            dct['valor']=l.anioVehiculo
+                            dct['identificar_docx']='vehiculo_anio'
+                            lista_campos.append(dct)
+                            dct['valor']=l.paisOrigenVehiculo
+                            dct['identificar_docx']='vehiculo_pais_origen'
+                            lista_campos.append(dct)
+                            dct['valor']=l.conbustibleVehiculo
+                            dct['identificar_docx']='vehiculo_combustible'
+                            lista_campos.append(dct)
+                            dct['valor']=l.numPasajeros
+                            dct['identificar_docx']='vehiculo_pasajeros'
+                            lista_campos.append(dct)
+                            dct['valor']=l.tonelajeVehiculo
+                            dct['identificar_docx']='vehiculo_tonelaje'
+                            lista_campos.append(dct)
+                            dct['valor']=str(l.plazoMeses) or '0'
+                            dct['identificar_docx']='plazo_meses'
+                            lista_campos.append(dct)
+                else:
+                    resultado=self.mapped(campo.name)
                 
-                if campo.name!=False:
-                    if len(resultado)>0:
+                    if campo.name!=False:
+                        if len(resultado)>0:
 
-                        dct['valor']=resultado[0]
+                            dct['valor']=resultado[0]
 
-                    else:
-                        dct['valor']=''
+                        else:
+                            dct['valor']=''
 
                     
 
 
-                dct['identificar_docx']=campo.identificar_docx
-                lista_campos.append(dct)
+                    dct['identificar_docx']=campo.identificar_docx
+                    lista_campos.append(dct)
            # if resultado:
            #     raise ValidationError(str(lista_campos))
             estado_cuenta=self.contrato_id.estado_de_cuenta_ids
