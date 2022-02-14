@@ -99,7 +99,7 @@ class ContratoResrva(models.TransientModel):
                             dct['identificar_docx']='vehiculo_tonelaje'
                             lista_campos.append(dct)
                             dct['valor']=str(l.plazoMeses) or '0'
-                            dct['identificar_docx']='plazo_meses'
+                            dct['identificar_docx']='plazo_meses'    
                             lista_campos.append(dct)
                 else:
                     resultado=self.mapped(campo.name)
