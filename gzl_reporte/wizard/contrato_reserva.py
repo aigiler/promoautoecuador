@@ -46,6 +46,7 @@ class ContratoResrva(models.TransientModel):
             campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
             
             lista_campos=[]
+            estado_cuenta=[]
             for campo in campos:
                 #if campo:
                 #    raise ValidationError(str(campo.vat))
@@ -59,45 +60,59 @@ class ContratoResrva(models.TransientModel):
                         #vehiculo_serie  vehiculo_motor vehiculo_color  vehiculo_anio vehiculo_pais_origen vehiculo_combustible vehiculo_pasajeros vehiculo_tonelaje. 
                         #raise ValidationError(str(l.nombreGarante.id)+' -jg- '+campo.name)
                         if l.nombreGarante.id == 238 :#self.contrato_id.cliente.id: vehiculo_clase 
+                            dct ={}
                             dct['valor']=l.tipoVehiculo
                             dct['identificar_docx']='vehiculo_tipo'
                             lista_campos.append(dct)
+                            dct ={}
                             dct['valor']=l.claseVehiculo
                             dct['identificar_docx']='vehiculo_clase'
                             lista_campos.append(dct)
+                            dct ={}
                             dct['valor']=l.marcaVehiculo
                             dct['identificar_docx']='vehiculo_marca'
                             lista_campos.append(dct)
+                            dct ={}
                             dct['valor']=l.modeloVehiculoSRI
                             dct['identificar_docx']='modelo_regist_sri'
                             lista_campos.append(dct)
+                            dct ={}
                             dct['valor']=l.modeloHomologado
                             dct['identificar_docx']='modelo_homologado_ant'
                             lista_campos.append(dct)
+                            dct ={}
                             dct['valor']=l.serieVehiculo
                             dct['identificar_docx']='vehiculo_serie'
                             lista_campos.append(dct)
+                            dct ={}
                             dct['valor']=l.motorVehiculo
                             dct['identificar_docx']='vehiculo_motor'
                             lista_campos.append(dct)
+                            dct ={}
                             dct['valor']=l.colorVehiculo
                             dct['identificar_docx']='vehiculo_color'
                             lista_campos.append(dct)
+                            dct ={}
                             dct['valor']=l.anioVehiculo
                             dct['identificar_docx']='vehiculo_anio'
                             lista_campos.append(dct)
-                            dct['valor']=l.paisOrigenVehiculo
+                            dct ={}
+                            dct['valor']=l.paisOrigenVehiculo.name
                             dct['identificar_docx']='vehiculo_pais_origen'
                             lista_campos.append(dct)
-                            dct['valor']=l.conbustibleVehiculo
+                            dct ={}
+                            dct['valor']=l.conbustibleVehiculo or ''
                             dct['identificar_docx']='vehiculo_combustible'
                             lista_campos.append(dct)
-                            dct['valor']=l.numPasajeros
+                            dct ={}
+                            dct['valor']=str(l.numPasajeros)
                             dct['identificar_docx']='vehiculo_pasajeros'
                             lista_campos.append(dct)
+                            dct ={}
                             dct['valor']=l.tonelajeVehiculo
                             dct['identificar_docx']='vehiculo_tonelaje'
                             lista_campos.append(dct)
+                            dct ={}
                             dct['valor']=str(l.plazoMeses) or '0'
                             dct['identificar_docx']='plazo_meses'    
                             lista_campos.append(dct)
@@ -117,13 +132,13 @@ class ContratoResrva(models.TransientModel):
 
                     dct['identificar_docx']=campo.identificar_docx
                     lista_campos.append(dct)
-           # if resultado:
-           #     raise ValidationError(str(lista_campos))
-            estado_cuenta=self.contrato_id.estado_de_cuenta_ids
+            #if resultado:
+            #    raise ValidationError(str(lista_campos))
+            estado_cuenta.append(self.contrato_id.estado_de_cuenta_ids)
             
             #crear_documento_contrato_reserva.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
 
-            crear_documento_contrato_reserva.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos)
+            crear_documento_contrato_reserva.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
 
 
             with open(obj_plantilla.directorio_out, "rb") as f:

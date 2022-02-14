@@ -5,30 +5,40 @@ from docx import Document
 
 
 
-def crear_documento_reserva(ruta,detalle):
+def crear_documento_reserva(ruta,detalle,lista_estado_cuenta):
     #Se abre el documento en la ruta
     doc = Document(ruta)
 
     # # #Tabla de Alarmas Rojas
-    # tabla=doc.tables[1]
+    tabla=doc.tables[1]
 
-
-
-    # contador=1
-    # for estado_cuenta in lista_estado_cuenta:
-    #     if estado_cuenta.numero_cuota!=False:
-    #         tabla.cell(contador, 0).text = str(estado_cuenta.numero_cuota)
-    #     if estado_cuenta['fecha']!=False:
-    #         tabla.cell(contador, 1).text = str(estado_cuenta.fecha)
-    #     if estado_cuenta['cuota_capital']!=False:
-    #         tabla.cell(contador, 2).text = str(estado_cuenta.cuota_capital)
-    #     if estado_cuenta['cuota_adm']!=False:
-    #         tabla.cell(contador, 3).text = str(estado_cuenta.cuota_adm)
-    #     if estado_cuenta['iva_adm']!=False:
-    #         tabla.cell(contador, 4).text = str(estado_cuenta.iva_adm)
-    #     if estado_cuenta['saldo']!=False:
-    #         tabla.cell(contador, 5).text = str(estado_cuenta.saldo)
-    #     contador+=1
+    #contador=1
+    #for alarma in dct_final['detalle_carac_rojo']:
+    #    if alarma['item']!=False:
+    #        tabla.cell(contador, 0).text = alarma['item']
+    #    if alarma['name']!=False:
+    #        tabla.cell(contador, 1).text = alarma['name']
+    #    if alarma['estado']!=False:
+    #        tabla.cell(contador, 2).text = alarma['estado']
+    #    contador+=1
+        #if contador!=len(dct_final['detalle_carac_rojo'])+1:
+        #    tabla.add_row() 
+    contador=1
+    for estado_cuenta in lista_estado_cuenta:
+        for l in estado_cuenta:
+            if l.numero_cuota!=False:
+                tabla.cell(contador, 0).text = str(l.numero_cuota)
+            if l['fecha']!=False:
+                tabla.cell(contador, 1).text = str(l.fecha)
+            if l['cuota_capital']!=False:
+                tabla.cell(contador, 2).text = str(l.cuota_capital)
+            if l['cuota_adm']!=False:
+                tabla.cell(contador, 3).text = str(l.cuota_adm)
+            if l['iva_adm']!=False:
+                tabla.cell(contador, 4).text = str(l.iva_adm)
+            if l['saldo']!=False:
+                tabla.cell(contador, 5).text = str(l.saldo)
+            contador+=1
     #     if contador!=len(lista_estado_cuenta)+1:
     #         tabla.add_row() 
 
