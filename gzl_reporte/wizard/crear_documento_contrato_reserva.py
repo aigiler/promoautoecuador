@@ -5,7 +5,7 @@ from docx import Document
 
 
 
-def crear_documento_reserva(ruta,detalle,lista_campos):
+def crear_documento_reserva(ruta,detalle):
     #Se abre el documento en la ruta
     doc = Document(ruta)
 
