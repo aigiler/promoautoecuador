@@ -47,3 +47,29 @@ class WizardContratoAdendum(models.Model):
         diferenciaPlazoAdendum= abs(self.contrato_id.plazo_meses.numero - self.plazo_mesesplazo_meses.numero)
 
         numeroCuotasTotal=diferenciaPlazoAdendum
+
+        intervalo_nuevo=self.plazo_meses.numero - numeroCuotasPagadaTotal
+        ####Calcular tus nuevos datos
+
+
+
+
+        tasa_administrativa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa'))
+        for i in range(0, int(intervalo_nuevo)):
+
+            cuota_capital = nuevoMontoReeestructura/int(intervalo_nuevo)
+            cuota_adm = nuevoMontoReeestructura *tasa_administrativa / 100 / 12
+            iva = cuota_adm * 0.12
+
+            cuota_administrativa_neto= cuota_adm + iva
+            saldo = cuota_capital+cuota_adm+iva
+            self.env['contrato.estado.cuenta'].create({
+                                                'numero_cuota':i+1,
+                                                'fecha':rec.fecha_inicio_pago + relativedelta(months=i),
+                                                'cuota_capital':cuota_capital,
+                                                'cuota_adm':cuota_adm,
+                                                'iva_adm':iva,
+                                                'saldo':saldo,
+                                                'contrato_id':self.contrato_id.id,                                                    
+                                                    })
+                                                    

@@ -4,7 +4,7 @@ from odoo import api, fields, models, tools, SUPERUSER_ID
 from dateutil.relativedelta import relativedelta
 from datetime import datetime, timedelta, date
 from odoo.exceptions import ValidationError
-
+import calendar
 import numpy_financial as npf
 
 class CrmLead(models.Model):
@@ -22,11 +22,15 @@ class CrmLead(models.Model):
     supervisor = fields.Many2one('res.users',string="Supervisor",track_visibility='onchange' )
     fecha_ganada = fields.Date(string='Fecha Ganada',track_visibility='onchange')
 
-    @api.constrains("is_won")
+    @api.constrains("stage_id")
     def guardar_fecha_como_ganada(self, ):
         hoy=date.today()
-        self.fecha_ganada=hoy
-        self.crear_comision_ganada(self.user_id.id)
+
+        if self.stage_id.is_won==True:
+            hoy=date.today()
+            self.fecha_ganada=hoy
+           # raise ValidationError(self.user_id.id)
+            self.crear_comision_ganada(self.user_id.id)
 
 
 
@@ -42,23 +46,29 @@ class CrmLead(models.Model):
         fecha_actual="%s-%s-01" % (hoy.year, hoy.month)
         fecha_fin="%s-%s-%s" %(hoy.year, hoy.month,(calendar.monthrange(hoy.year, hoy.month)[1]))
 
-
+        #raise ValidationError(cargos_comisiones)
 
 
         for cargo in cargos_comisiones:
+            
             empleados=self.env['hr.employee'].search([('job_id','=',cargo),('user_id','=',user_id)])
+         #   if cargo==31:
+        #        raise ValidationError(empleados)
             tipo_comision=self.env['comision'].search([('cargo_id','=',cargo)],limit=1)
             listaComision=[]
 
             if len(tipo_comision)>0:
+                
                 if tipo_comision.logica=='asesor':
                     for empleado in empleados:
                         monto_comision=0
                         leads = self.env['crm.lead'].search([('user_id','=',empleados.user_id.id),('active','=',True),('fecha_ganada','>=',fecha_actual),('fecha_ganada','<=',fecha_fin)])
+                       # raise ValidationError(str(leads))
+                        
                         monto_ganado= sum(leads.mapped("planned_revenue"))
                         comision_tabla=self.env['comision'].search([('cargo_id','=',cargo),('valor_min','<=',monto_ganado),('valor_max','>=',monto_ganado)],limit=1)
-                        if comision_tabla>0:
-                            monto_comision=comision_tabla.comision*monto_ganado + comision_tabla.bono
+                        if len(comision_tabla)>0:
+                            monto_comision=(comision_tabla.comision*monto_ganado/100) + comision_tabla.bono
 
                         listaComision.append({'empleado_id':empleado.id,'comision':monto_comision})
 
@@ -69,23 +79,12 @@ class CrmLead(models.Model):
         for empleado in listaComision:
             dct={
             'date':  hoy  ,
-            'input_type_id': comision   ,
+            'input_type_id': comision.id   ,
             'employee_id':empleado['empleado_id']  ,
             'amount':empleado['comision']   ,
 
             }
             comision=self.env['hr.input'].create(dct)
-
-
-
-
-
-
-
-
-
-
-
 
 
 
