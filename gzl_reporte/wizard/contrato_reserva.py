@@ -8,7 +8,9 @@ import xlsxwriter
 from io import BytesIO
 import base64
 from odoo.exceptions import AccessError, UserError, ValidationError
-
+#from . import l10n_ec_check_printing.amount_to_text_es
+from . import amount_to_text_es
+from datetime import datetime
 import calendar
 import datetime as tiempo
 import itertools
@@ -132,8 +134,29 @@ class ContratoResrva(models.TransientModel):
 
                     dct['identificar_docx']=campo.identificar_docx
                     lista_campos.append(dct)
+            #amount_to_text_es.amount_to_text(self.amount)
             #if resultado:
             #    raise ValidationError(str(lista_campos))
+            mesesDic = {
+                "1":'Enero',
+                "2":'Febrero',
+                "3":'Marzo',
+                "4":'Abril',
+                "5":'Mayo',
+                "6":'Junio',
+                "7":'Julio',
+                "8":'Agosto',
+                "9":'Septiembre',
+                "10":'Octubre',
+                "11":'Noviembre',
+                "12":'Diciembre'
+            }
+            year = datetime.now().year
+            mes = datetime.now().month
+            #print(mesesDic[str(mes)][:3])
+            fechacontr = 'a los nueve días del mes de '+str(mesesDic[str(mes)])+' del Año '+str(year)
+            if mes:
+                raise ValidationError(str(mesesDic[str(mes)]))
             estado_cuenta.append(self.contrato_id.estado_de_cuenta_ids)
             
             #crear_documento_contrato_reserva.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
