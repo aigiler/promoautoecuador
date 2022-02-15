@@ -134,7 +134,7 @@ class ContratoResrva(models.TransientModel):
 
                     dct['identificar_docx']=campo.identificar_docx
                     lista_campos.append(dct)
-            #amount_to_text_es.amount_to_text(self.amount)
+            
             #if resultado:
             #    raise ValidationError(str(lista_campos))
             mesesDic = {
@@ -153,10 +153,17 @@ class ContratoResrva(models.TransientModel):
             }
             year = datetime.now().year
             mes = datetime.now().month
+            dia = datetime.now().day
             #print(mesesDic[str(mes)][:3])
-            fechacontr = 'a los nueve días del mes de '+str(mesesDic[str(mes)])+' del Año '+str(year)
-            if mes:
-                raise ValidationError(str(mesesDic[str(mes)]))
+            valordia = amount_to_text_es.amount_to_text(dia)
+            valordia = valordia.split()
+            valordia = valordia[0]
+            fechacontr = 'a los '+valordia.lower()+' dias del mes de '+str(mesesDic[str(mes)])+' del Año '+str(year)
+            dct['identificar_docx']='txt_factual'
+            dct['valor']=fechacontr
+            lista_campos.append(dct)
+            #if fechacontr:
+            #    raise ValidationError(str(fechacontr) )
             estado_cuenta.append(self.contrato_id.estado_de_cuenta_ids)
             
             #crear_documento_contrato_reserva.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
