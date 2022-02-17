@@ -68,9 +68,13 @@ class WizardContratoAdendum(models.Model):
             dct['iva_adm']= l.iva_adm
             dct['saldo']= l.saldo
             dct['contrato_id']= self.contrato_id.id
+            dct['estado_pago']= l.estado_pago
             lista_cuotapagadas.append(dct)
-            
-        obj_contrato.unlink()
+        #if nuevoMontoReeestructura:
+        #    raise ValidationError(str(nuevoMontoReeestructura)+'--'+str(intervalo_nuevo))
+        obj_contrato_detalle=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id)])
+        obj_contrato_detalle.unlink()
+        
         for a in lista_cuotapagadas:
             self.env['contrato.estado.cuenta'].create({
                                                 'numero_cuota':a['numero_cuota'],
@@ -79,10 +83,13 @@ class WizardContratoAdendum(models.Model):
                                                 'cuota_adm':a['cuota_adm'],
                                                 'iva_adm':a['iva_adm'],
                                                 'saldo':a['saldo'],
-                                                'contrato_id':a['contrato_id'],                                                    
+                                                'contrato_id':a['contrato_id'],
+                                                'estado_pago':a['estado_pago'],                                                
                                                     })
-        for i in range(cont, int(intervalo_nuevo)):
-
+        #cont+=1
+        
+        for i in range(cont, int(intervalo_nuevo+cont)):
+        
             cuota_capital = nuevoMontoReeestructura/int(intervalo_nuevo)
             cuota_adm = nuevoMontoReeestructura *tasa_administrativa / 100 / 12
             iva = cuota_adm * 0.12
