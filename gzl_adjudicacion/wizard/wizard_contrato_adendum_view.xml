@@ -18,7 +18,7 @@
                     </group>
                 </sheet>
                 <footer>
-                    <button string="Ejecutar Cambio" class="oe_highlight" type="object" name="validar_pago"/>
+                    <button string="Ejecutar Cambio" class="oe_highlight" type="object" name="ejecutar_cambio"/>
                     <button string="Cancelar" special="cancel"/>
                 </footer>
             </form>

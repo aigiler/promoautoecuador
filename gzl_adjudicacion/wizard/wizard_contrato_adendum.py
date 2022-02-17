@@ -55,6 +55,8 @@ class WizardContratoAdendum(models.Model):
 
 
         tasa_administrativa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa'))
+        obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id)])
+        obj_contrato.unlink()
         for i in range(0, int(intervalo_nuevo)):
 
             cuota_capital = nuevoMontoReeestructura/int(intervalo_nuevo)
