@@ -29,22 +29,22 @@ class WizardContratoAdendum(models.Model):
     def ejecutar_cambio(self,):
         obj=self.contrato_id
 
-        pagos=self.contrato_id.detalle_tabla_amortizacion.filtered(lambda l: l.state=='pagado')
+        pagos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado')
         pago_capital=sum(pagos.mapped("cuota_capital"))
 
-        nuevoMontoReeestructura=monto_financiamiento-pago_capital
+        nuevoMontoReeestructura=self.monto_financiamiento-pago_capital
 
 
-        cuotasPagadas=self.contrato_id.detalle_tabla_amortizacion.filtered(lambda l: l.state=='pagado' and l.adelanto==False)
+        cuotasPagadas=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado' and l.cuotaAdelantada==False)
 
 
-        cuotasAdelantadas=self.contrato_id.detalle_tabla_amortizacion.filtered(lambda l: l.state=='pagado' and l.cuotaAdelantada==True)
+        cuotasAdelantadas=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado' and l.cuotaAdelantada==True)
 
 
-        numeroCuotasPagadaTotal=len(cuotaAdelantada) + len(cuotasPagadas)
+        numeroCuotasPagadaTotal=len(cuotasAdelantadas) + len(cuotasPagadas)
 
 
-        diferenciaPlazoAdendum= abs(self.contrato_id.plazo_meses.numero - self.plazo_mesesplazo_meses.numero)
+        diferenciaPlazoAdendum= abs(self.contrato_id.plazo_meses.numero - self.plazo_meses.numero)
 
         numeroCuotasTotal=diferenciaPlazoAdendum
 
@@ -55,9 +55,33 @@ class WizardContratoAdendum(models.Model):
 
 
         tasa_administrativa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa'))
-        obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id)])
+        obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pagado')])
+        lista_cuotapagadas=[]
+        cont =0
+        for l in obj_contrato:
+            cont+=1
+            dct ={}
+            dct['numero_cuota'] = cont
+            dct['fecha']= l.fecha
+            dct['cuota_capital']= l.cuota_capital
+            dct['cuota_adm']= l.cuota_adm
+            dct['iva_adm']= l.iva_adm
+            dct['saldo']= l.saldo
+            dct['contrato_id']= self.contrato_id.id
+            lista_cuotapagadas.append(dct)
+            
         obj_contrato.unlink()
-        for i in range(0, int(intervalo_nuevo)):
+        for a in lista_cuotapagadas:
+            self.env['contrato.estado.cuenta'].create({
+                                                'numero_cuota':a['numero_cuota'],
+                                                'fecha':a['fecha'],
+                                                'cuota_capital':a['cuota_capital'],
+                                                'cuota_adm':a['cuota_adm'],
+                                                'iva_adm':a['iva_adm'],
+                                                'saldo':a['saldo'],
+                                                'contrato_id':a['contrato_id'],                                                    
+                                                    })
+        for i in range(cont, int(intervalo_nuevo)):
 
             cuota_capital = nuevoMontoReeestructura/int(intervalo_nuevo)
             cuota_adm = nuevoMontoReeestructura *tasa_administrativa / 100 / 12
@@ -67,7 +91,7 @@ class WizardContratoAdendum(models.Model):
             saldo = cuota_capital+cuota_adm+iva
             self.env['contrato.estado.cuenta'].create({
                                                 'numero_cuota':i+1,
-                                                'fecha':rec.fecha_inicio_pago + relativedelta(months=i),
+                                                'fecha':self.contrato_id.fecha_inicio_pago + relativedelta(months=i),
                                                 'cuota_capital':cuota_capital,
                                                 'cuota_adm':cuota_adm,
                                                 'iva_adm':iva,
