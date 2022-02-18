@@ -36,6 +36,7 @@ class WizardContratoAdendum(models.Model):
 
 
         cuotasPagadas=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado' and l.cuotaAdelantada==False)
+        numcuotas_congeladas=self.contrato_id.tabla_amortizacion.filtered(lambda l:  l.cuota_capital == 0)
 
 
         cuotasAdelantadas=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado' and l.cuotaAdelantada==True)
@@ -48,7 +49,7 @@ class WizardContratoAdendum(models.Model):
 
         numeroCuotasTotal=diferenciaPlazoAdendum
 
-        intervalo_nuevo=self.plazo_meses.numero - numeroCuotasPagadaTotal
+        intervalo_nuevo=self.plazo_meses.numero - numeroCuotasPagadaTotal + len(numcuotas_congeladas)
         ####Calcular tus nuevos datos
 
 
