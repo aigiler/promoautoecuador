@@ -17,6 +17,7 @@
                 "views/crm_lead_simplified_form.xml", 
                 "views/crm_stage_view.xml", 
                 "views/crm_team_view.xml", 
+                "views/surcursal_view.xml", 
 
                 "wizard/wizard_cuota_pago_amortizacion.xml",                    
             ],
