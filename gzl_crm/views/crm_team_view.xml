@@ -16,6 +16,8 @@
             <xpath expr="//field[@name='company_id']" position="after">
 
                 <field name="correos" />
+                <field name="provincia_id" />
+                <field name="ciudad_id" />
 
                 
             </xpath>

@@ -5,9 +5,11 @@
         <field name="name">view.surcursal.tree</field>
         <field name="model">surcursal</field>
         <field name="arch" type="xml">
-            <tree string="Surcursal" editable="bottom">
+            <tree string="Surcursal"  >
                 <field name="name" />
                 <field name="codigo"/>
+                <field name="provincia_id"/>
+                <field name="ciudad_id"/>
 
                 
             </tree>
