@@ -20,7 +20,19 @@ class CrmLead(models.Model):
     numero_cuotas = fields.Many2one('numero.meses',default=lambda self: self.env.ref('gzl_adjudicacion.{0}'.format('numero_meses60')).id ,track_visibility='onchange' )
 
     supervisor = fields.Many2one('res.users',string="Supervisor",track_visibility='onchange' )
+    surcursal_id = fields.Many2one('surcursal',string="Surcursal",track_visibility='onchange' )
     fecha_ganada = fields.Date(string='Fecha Ganada',track_visibility='onchange')
+    provincia_id= fields.Many2one(
+        'res.country.state', string='Provincia', track_visibility='onchange',domain="[('country_id','=',ref('base.ec').id)]" )
+
+    ciudad_id = fields.Many2one(
+        'res.country.city', string='Ciudad', domain="[('provincia_id','=',provincia_id)]", track_visibility='onchange')
+
+
+
+
+
+
 
     @api.constrains("stage_id")
     def guardar_fecha_como_ganada(self, ):
@@ -97,8 +109,11 @@ class CrmLead(models.Model):
 
     @api.constrains("team_id")
     def guardar_supervisor_actual(self, ):
-        self.supervisor=self.team_id.user_id
 
+        self.surcursal_id=self.team_id.surcursal_id.id
+        self.provincia_id=self.team_id.surcursal_id.provincia_id.id
+        self.ciudad_id=self.team_id.surcursal_id.ciudad_id.id
+        self.supervisor=self.team_id.user_id
 
 
 

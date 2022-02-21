@@ -24,6 +24,15 @@
             </xpath>
 
 
+            <xpath expr="//field[@name='date_deadline']" position="after">
+                <field name="surcursal_id"></field>
+                <field name="provincia_id"></field>
+                <field name="ciudad_id"></field>
+
+
+
+            </xpath>
+
 
             <xpath expr="//button[@name='action_set_won_rainbowman']" position="attributes">
                 <attribute name="attrs">{'invisible': [('colocar_venta_como_ganada', '=', False)]}</attribute>
@@ -38,7 +47,7 @@
                 <attribute name="string">Monto del Plan</attribute>
             </xpath>
 
-            <xpath expr="//notebook" position="before">
+<!--             <xpath expr="//notebook" position="before">
                 <group string="Tabla de Amortización"> 
                     <group>
                         <field name="tasa_interes" invisible="1" string="Tasa de Interés (%)" required="1" placeholder="8"/>
@@ -69,7 +78,7 @@
                         </tree>
                     </field>
                 </group>
-            </xpath>
+            </xpath> -->
 
             <xpath expr="//page[@name='lead']" position="after">
                 <page name="contact" string="Contacto">

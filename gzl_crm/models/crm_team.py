@@ -15,6 +15,12 @@ class Team(models.Model):
 
     correos = fields.Char( string='Correos' )
     miembros = fields.Many2many('res.users', string='Miembros del Equipo' )
+    surcursal_id = fields.Many2one('surcursal', string='Surcursal')
+
+
+
+
+
 
     @api.onchange("member_ids")
     def actualizar_correos_team(self,):
