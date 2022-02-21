@@ -112,7 +112,7 @@ class WizardContratoAdendum(models.Model):
                                                 'contrato_id':self.contrato_id.id,                                                    
                                                     })
             
-###############################################################################################################3333
+#################   ##############################################################################################3333
         #raise ValidationError(str(sum(self.contrato_id.tabla_amortizacion.mapped('cuota_capital')))+' contb '+ str(contb))
         monto_finan_contrato = sum(self.contrato_id.tabla_amortizacion.mapped('cuota_capital'))
         if  monto_finan_contrato  > self.contrato_id.monto_financiamiento:
