@@ -15,7 +15,7 @@ class WizardContratoAdendum(models.Model):
 
     contrato_id = fields.Many2one('contrato',string="Contrato")
     socio_id = fields.Many2one('res.partner',string="Socio")
-
+    ejecutado = fields.Boolean(string="Ejecutado", default = False)
     monto_financiamiento = fields.Monetary(
         string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
     plazo_meses = fields.Many2one('numero.meses',default=lambda self: self.env.ref('gzl_adjudicacion.{0}'.format('numero_meses60')).id ,track_visibility='onchange' )
@@ -23,7 +23,12 @@ class WizardContratoAdendum(models.Model):
     currency_id = fields.Many2one(
         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
 
-
+    ##valores anteriores
+    monto_financiamiento_anterior = fields.Monetary(
+        string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
+    plazo_meses_anterior = fields.Many2one('numero.meses',default=lambda self: self.env.ref('gzl_adjudicacion.{0}'.format('numero_meses60')).id ,track_visibility='onchange' )
+    cuota_anterior = fields.Monetary(currency_field='currency_id', track_visibility='onchange')
+    
     def ejecutar_cambio(self,):
         obj=self.contrato_id
 
@@ -148,4 +153,6 @@ class WizardContratoAdendum(models.Model):
                     c.update({
                         'cuota_capital': c.cuota_capital + valor_a_restar,
                         'contrato_id':self.contrato_id.id,
-                    })                     
+                    })   
+        ##si esta ejecutado se ocultara el boton de validar                  
+        self.ejecutado =True

@@ -16,7 +16,7 @@
                     </group>
                 </sheet>
                 <footer>
-                    <button string="Validar Pago" class="oe_highlight" type="object" name="validar_pago"/>
+                    <button string="Validar Pago" class="oe_highlight" type="object" name="validar_pago" attrs="{'invisible': [('ejecutado', '=', True)]}"/>
                     <button string="Cancelar" special="cancel"/>
                 </footer>
             </form>
