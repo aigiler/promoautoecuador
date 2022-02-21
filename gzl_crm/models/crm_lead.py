@@ -23,7 +23,7 @@ class CrmLead(models.Model):
     surcursal_id = fields.Many2one('surcursal',string="Surcursal",track_visibility='onchange' )
     fecha_ganada = fields.Date(string='Fecha Ganada',track_visibility='onchange')
     provincia_id= fields.Many2one(
-        'res.country.state', string='Provincia', track_visibility='onchange',domain="[('country_id','=',ref('base.ec').id)]" )
+        'res.country.state', string='Provincia', track_visibility='onchange'  )
 
     ciudad_id = fields.Many2one(
         'res.country.city', string='Ciudad', domain="[('provincia_id','=',provincia_id)]", track_visibility='onchange')

@@ -15,7 +15,7 @@ class Surcursal(models.Model):
     codigo = fields.Char('Codigo', required=True, index=True)
     active = fields.Boolean('Active', default=True, tracking=True)
     provincia_id= fields.Many2one(
-        'res.country.state', string='Provincia', track_visibility='onchange',domain="[('country_id','=',ref('base.ec').id)]" )
+        'res.country.state', string='Provincia', track_visibility='onchange',domain=[('country_id','=',self.env.ref('base.ec').id)] )
 
     ciudad_id = fields.Many2one(
         'res.country.city', string='Ciudad', domain="[('provincia_id','=',provincia_id)]", track_visibility='onchange')
