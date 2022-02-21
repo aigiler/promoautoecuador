@@ -111,7 +111,7 @@ class Contrato(models.Model):
     @api.depends('grupo')
     def setear_codigo_grupo(self):
         for rec in self:
-            rec.codigo_grupo = "["+rec.grupo.codigo+"] "+ rec.grupo.name or ''
+            rec.codigo_grupo = "["+rec.grupo.codigo+"] "+ rec.grupo.name or ' '
 
     @api.constrains('state')
     def crear_registro_fondo_grupo(self):
