@@ -40,7 +40,21 @@ class ContratoAdendum(models.TransientModel):
         obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','contrato_adendum')],limit=1)
         
         if obj_plantilla:
-            
+            mesesDic = {
+                "1":'Enero',
+                "2":'Febrero',
+                "3":'Marzo',
+                "4":'Abril',
+                "5":'Mayo',
+                "6":'Junio',
+                "7":'Julio',
+                "8":'Agosto',
+                "9":'Septiembre',
+                "10":'Octubre',
+                "11":'Noviembre',
+                "12":'Diciembre'
+            }
+                
 
             shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
             #fecha_suscripcion
@@ -57,7 +71,11 @@ class ContratoAdendum(models.TransientModel):
 
                 resultado=self.mapped(campo.name)
                 if campo.identificar_docx =='fecha_suscripcion':
-                    dct['valor'] = resultado[0].strftime("%Y-%m-%d")
+                    year = resultado[0].year
+                    mes = resultado[0].month
+                    dia = resultado[0].day
+                    fechacontr2 = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
+                    dct['valor'] = fechacontr2
                 else:
                     if campo.name!=False:
                         if len(resultado)>0:
@@ -68,28 +86,15 @@ class ContratoAdendum(models.TransientModel):
                         else:
                             dct['valor']=''
 
-                
 
-                
+
+
                 dct['identificar_docx']=campo.identificar_docx
                 lista_campos.append(dct)
             
             #if resultado:
             #    raise ValidationError(str(lista_campos))
-            mesesDic = {
-                "1":'Enero',
-                "2":'Febrero',
-                "3":'Marzo',
-                "4":'Abril',
-                "5":'Mayo',
-                "6":'Junio',
-                "7":'Julio',
-                "8":'Agosto',
-                "9":'Septiembre',
-                "10":'Octubre',
-                "11":'Noviembre',
-                "12":'Diciembre'
-            }
+            
             year = datetime.now().year
             mes = datetime.now().month
             dia = datetime.now().day
