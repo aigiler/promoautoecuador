@@ -5,7 +5,7 @@ from docx import Document
 
 
 
-def crear_documento_adendum(ruta,detalle,lista_estado_cuenta):
+def crear_documento_adendum(ruta,detalle):
     #Se abre el documento en la ruta
     doc = Document(ruta)
 
