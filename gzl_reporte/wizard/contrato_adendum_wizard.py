@@ -23,12 +23,12 @@ class ContratoAdendum(models.TransientModel):
     _name = "contrato.adendum"
     
     contrato_id = fields.Many2one('contrato',string='Contrato')
-    clave =  fields.Char( default="contrato_reserva")
+    clave =  fields.Char( default="contrato_adendum")
     vehiculo_id = fields.Many2one('entrega.vehiculo',string='entrega.vehiculo')
 
 
     def print_report_xls(self):
-
+        #raise ValidationError(str(self.clave))
         if self.clave=='contrato_adendum':
             dct=self.crear_plantilla_contrato_reserva()
             return dct
@@ -38,8 +38,9 @@ class ContratoAdendum(models.TransientModel):
     def crear_plantilla_contrato_reserva(self,):
         #Instancia la plantilla
         obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','contrato_adendum')],limit=1)
+        
         if obj_plantilla:
-
+            
 
             shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
 
@@ -102,7 +103,7 @@ class ContratoAdendum(models.TransientModel):
             #estado_cuenta.append(self.contrato_id.estado_de_cuenta_ids)
             
             #crear_documento_contrato_reserva.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
-
+            #raise ValidationError(str(lista_campos))
             crear_documento_adendum.crear_documento_adendum(obj_plantilla.directorio_out,lista_campos)#,estado_cuenta)
 
 
@@ -112,10 +113,10 @@ class ContratoAdendum(models.TransientModel):
 
 
         obj_attch=self.env['ir.attachment'].create({
-                                                    'name':'Contrato_Reserva.docx',
+                                                    'name':'Contrato_adendum.docx',
                                                     'datas':file,
                                                     'type':'binary', 
-                                                    'store_fname':'Contrato_Reserva.docx'
+                                                    'store_fname':'Contrato_adendum.docx'
                                                     })
 
         url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
