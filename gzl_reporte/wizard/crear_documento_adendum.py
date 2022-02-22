@@ -22,7 +22,7 @@ def crear_documento_adendum(ruta,detalle):
     #        tabla.cell(contador, 2).text = alarma['estado']
     #    contador+=1
         #if contador!=len(dct_final['detalle_carac_rojo'])+1:
-        #    tabla.add_row() 
+        #    tabla.add_row()  
 
     for campo in detalle:
         #Redenriza
