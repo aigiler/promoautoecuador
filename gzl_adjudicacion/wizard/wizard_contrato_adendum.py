@@ -54,9 +54,24 @@ class WizardContratoAdendum(models.Model):
 
         intervalo_nuevo=self.plazo_meses.numero - numeroCuotasPagadaTotal + len(numcuotas_congeladas)
         self.contrato_id.plazo_meses.numero =self.plazo_meses.numero
-        ####Calcular tus nuevos datos
-
-
+        #lleno lista con estado de cuenta anterior 
+        estado_cuenta_anterior=[]
+        for e in self.estado_de_cuenta_ids:
+            dct ={}
+            dct['numero_cuota'] = e.numero_cuota
+            dct['fecha']= e.fecha
+            dct['cuota_capital']= e.cuota_capital
+            dct['cuota_adm']= e.cuota_adm
+            dct['iva_adm']= e.iva_adm
+            dct['saldo']= e.saldo
+            dct['contrato_id']= self.contrato_id.id
+            dct['estado_pago']= e.estado_pago
+            dct['cuotaAdelantada']= e.cuotaAdelantada
+            dct['fecha_pagada']= e.fecha_pagada
+            dct['seguro']= e.seguro
+            dct['rastreo']= e.rastreo
+            dct['factura_id']= e.factura_id or ' '
+            estado_cuenta_anterior.append(dct)
 
 
         tasa_administrativa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa'))
@@ -76,13 +91,15 @@ class WizardContratoAdendum(models.Model):
             dct['saldo']= l.saldo
             dct['contrato_id']= self.contrato_id.id
             dct['estado_pago']= l.estado_pago
+            dct['currency_id']= l.currency_id
             lista_cuotapagadas.append(dct)
             
-        #if nuevoMontoReeestructura:
-        #    raise ValidationError(str(nuevoMontoReeestructura)+'--'+str(intervalo_nuevo))
+
         obj_contrato_detalle=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id)])
         obj_contrato_detalle.unlink()
-        
+
+            
+        ####crear cuotas pagadas para listar segun el nuevo plazo o monto
         for a in lista_cuotapagadas:
             #monto_finan_contrato+= a['cuota_capital']
             self.env['contrato.estado.cuenta'].create({
@@ -95,8 +112,8 @@ class WizardContratoAdendum(models.Model):
                                                 'contrato_id':a['contrato_id'],
                                                 'estado_pago':a['estado_pago'],                                                
                                                     })
-        #cont+=1
-        #raise ValidationError(str(monto_finan_contrato)+' monto_finan_contrato')
+        #crear el nuevo estado de cuenta 
+        cuota_capital_nueva = (nuevoMontoReeestructura/int(intervalo_nuevo))
         contb=0
         for i in range(cont, int(intervalo_nuevo+cont)):
             contb +=1
@@ -116,6 +133,69 @@ class WizardContratoAdendum(models.Model):
                                                 'saldo':saldo,
                                                 'contrato_id':self.contrato_id.id,                                                    
                                                     })
+        #si se creo el nuevo estado de cuenta agregar el estado de cuenta anterior a las tablas de bitacora
+        obj_estado_cuenta_nuevo=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id)])
+        if len(obj_estado_cuenta_nuevo) >0:
+            self.env['contrato.estado.cuenta.historico.cabecera'].create({
+                                                'numero_cuota':self.contrato_id.numero_cuota,
+                                                'contrato_id':self.contrato_id.id,
+                                                'motivo_adendum':' adendum',
+                                                'cuota_capital':cuota_capital_nueva,
+                                                'monto_financiamiento':self.monto_financiamiento,
+                                                'plazo_meses':self.plazo_meses.id,
+                                                'cuota_capital_anterior':self.contrato_id.cuota_capital,
+                                                'monto_financiamiento_anterior':self.contrato_id.monto_financiamiento,
+                                                'plazo_meses_anterior':self.contrato_id.plazo_meses.id,
+                                                'currency_id':self.contrato_id.currency_id,                                                
+                                                    })            
+            
+        
+            ####Crear bitacora detalle de estado de cuenta 
+            obj_estado_cuenta_cabecera=self.env['contrato.estado.cuenta.historico.cabecera'].search([('contrato_id','=',self.contrato_id.id)])
+            if len(obj_estado_cuenta_cabecera) >0:
+                for cta_ant in estado_cuenta_anterior:
+                    #monto_finan_contrato+= a['cuota_capital']
+                    self.env['contrato.estado.cuenta.historico.detalle'].create({
+                                                        'numero_cuota':cta_ant['numero_cuota'],
+                                                        'fecha':cta_ant['fecha'],
+                                                        'cuota_capital':cta_ant['cuota_capital'],
+                                                        'cuota_adm':cta_ant['cuota_adm'],
+                                                        'iva_adm':cta_ant['iva_adm'],
+                                                        'saldo':cta_ant['saldo'],
+                                                        'contrato_id':cta_ant['contrato_id'],
+                                                        'estado_pago':cta_ant['estado_pago'], 
+                                                        'cuotaAdelantada':cta_ant['cuotaAdelantada'],  
+                                                        'seguro':cta_ant['seguro'],  
+                                                        'fecha_pagada':cta_ant['fecha_pagada'],  
+                                                        'rastreo':cta_ant['rastreo'],  
+                                                        'factura_id':cta_ant['factura_id'],          
+                                                        'contarto_id':obj_estado_cuenta_cabecera.id,           
+                                                        'currency_id':cta_ant['currency_id'],   
+                                                            })
+            
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             
 #################   ##############################################################################################3333
         #raise ValidationError(str(sum(self.contrato_id.tabla_amortizacion.mapped('cuota_capital')))+' contb '+ str(contb))
