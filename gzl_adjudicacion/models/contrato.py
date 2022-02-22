@@ -786,7 +786,8 @@ class ContratoHistorio(models.Model):
     _name = 'contrato.estado.cuenta.historico.cabecera'
     _description = 'Contrato Historico Tabla de estado de cuenta de Aporte'
 
-
+    currency_id = fields.Many2one(
+        'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
     contrato_id = fields.Many2one('contrato')
     tabla_amortizacion = fields.One2many(
         'contrato.estado.cuenta.historico.detalle', 'contrato_id', track_visibility='onchange')
@@ -802,6 +803,7 @@ class ContratoHistorio(models.Model):
     monto_financiamiento_anterior = fields.Monetary(
         string='Monto Financiamiento', currency_field='currency_id')
     plazo_meses_anterior = fields.Many2one('numero.meses',default=lambda self: self.env.ref('gzl_adjudicacion.{0}'.format('numero_meses60')).id ,track_visibility='onchange' )    
+
 class ContratoEstadoCuentaHsitorico(models.Model):
     _name = 'contrato.estado.cuenta.historico.detalle'
     _description = 'Contrato Historico Tabla de estado de cuenta de Aporte'
