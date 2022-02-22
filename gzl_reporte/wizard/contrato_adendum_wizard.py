@@ -107,7 +107,7 @@ class ContratoAdendum(models.TransientModel):
             
             #crear_documento_contrato_reserva.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
             #raise ValidationError(str(lista_campos))
-            crear_documento_adendum.crear_documento_adendum(obj_plantilla.directorio_out,lista_campos)#,estado_cuenta)
+            crear_documento_adendum.crear_documento_adendum(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
 
 
             with open(obj_plantilla.directorio_out, "rb") as f:
