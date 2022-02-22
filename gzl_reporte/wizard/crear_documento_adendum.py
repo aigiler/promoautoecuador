@@ -5,13 +5,23 @@ from docx import Document
 
 
 
-def crear_documento_adendum(ruta,detalle):
+def crear_documento_adendum(ruta,detalle,lista_estado_cuenta):
     #Se abre el documento en la ruta
     doc = Document(ruta)
 
     # # #Tabla de Alarmas Rojas
-    tabla=doc.tables[1]
-
+    tabla=doc.tables[0]
+    contador=1
+    for estado_cuenta in lista_estado_cuenta:
+        for l in estado_cuenta:
+            if l['monto_financiamiento']!=False:
+                tabla.cell(contador, 1).text = '$ '+str(l.monto_financiamiento)
+            if l['plazo_meses']!=False:
+                tabla.cell(contador, 3).text = str(l.plazo_meses.numero)+' Meses'
+            if l['cuota_capital']!=False:
+                tabla.cell(contador, 2).text = '$ '+str(l.cuota_capital) or '$0.00'
+            
+            contador+=1
     #contador=1
     #for alarma in dct_final['detalle_carac_rojo']:
     #    if alarma['item']!=False:
