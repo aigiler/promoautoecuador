@@ -63,7 +63,7 @@ class ContratoAdendum(models.TransientModel):
                         if len(resultado)>0:
 
 
-                            dct['valor']=resultado[0]
+                            dct['valor']=str(resultado[0])
 
                         else:
                             dct['valor']=''
