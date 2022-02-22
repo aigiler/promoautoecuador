@@ -14,7 +14,7 @@ from datetime import datetime
 import calendar
 import datetime as tiempo
 import itertools
-from . import crear_documento_contrato_reserva
+from . import crear_documento_adendum
 import shutil
 
 
@@ -103,7 +103,7 @@ class ContratoAdendum(models.TransientModel):
             
             #crear_documento_contrato_reserva.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
 
-            crear_documento_contrato_reserva.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos)#,estado_cuenta)
+            crear_documento_adendum.crear_documento_adendum(obj_plantilla.directorio_out,lista_campos)#,estado_cuenta)
 
 
             with open(obj_plantilla.directorio_out, "rb") as f:
