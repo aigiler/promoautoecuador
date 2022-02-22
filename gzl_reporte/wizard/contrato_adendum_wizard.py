@@ -98,7 +98,7 @@ class ContratoAdendum(models.TransientModel):
             dct['identificar_docx']='txt_factual'
             dct['valor']=fechacontr
             lista_campos.append(dct)
-            #if fechacontr:
+            #if fechacontr: 
             #    raise ValidationError(str(fechacontr) )
             #estado_cuenta.append(self.contrato_id.estado_de_cuenta_ids)
             
