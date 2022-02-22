@@ -23,24 +23,6 @@ def crear_documento_adendum(ruta,detalle):
     #    contador+=1
         #if contador!=len(dct_final['detalle_carac_rojo'])+1:
         #    tabla.add_row() 
-    contador=1
-    for estado_cuenta in lista_estado_cuenta:
-        for l in estado_cuenta:
-            if l.numero_cuota!=False:
-                tabla.cell(contador, 0).text = str(l.numero_cuota)
-            if l['fecha']!=False:
-                tabla.cell(contador, 1).text = str(l.fecha)
-            if l['cuota_capital']!=False:
-                tabla.cell(contador, 2).text = str(l.cuota_capital)
-            if l['cuota_adm']!=False:
-                tabla.cell(contador, 3).text = str(l.cuota_adm)
-            if l['iva_adm']!=False:
-                tabla.cell(contador, 4).text = str(l.iva_adm)
-            if l['saldo']!=False:
-                tabla.cell(contador, 5).text = str(l.saldo)
-            contador+=1
-    #     if contador!=len(lista_estado_cuenta)+1:
-    #         tabla.add_row() 
 
     for campo in detalle:
         #Redenriza
