@@ -103,7 +103,7 @@ class ContratoAdendum(models.TransientModel):
             lista_campos.append(dct)
             #if fechacontr: 
             #    raise ValidationError(str(fechacontr) )
-            #estado_cuenta.append(self.contrato_id.estado_de_cuenta_ids)
+            estado_cuenta.append(self.contrato_id)
             
             #crear_documento_contrato_reserva.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
             #raise ValidationError(str(lista_campos))

@@ -2,7 +2,7 @@
 
 import re
 from docx import Document
-
+from odoo.exceptions import AccessError, UserError, ValidationError
 
 
 def crear_documento_adendum(ruta,detalle,lista_estado_cuenta):
@@ -18,8 +18,10 @@ def crear_documento_adendum(ruta,detalle,lista_estado_cuenta):
                 tabla.cell(contador, 1).text = '$ '+str(l.monto_financiamiento)
             if l['plazo_meses']!=False:
                 tabla.cell(contador, 3).text = str(l.plazo_meses.numero)+' Meses'
-            if l['cuota_capital']!=False:
-                tabla.cell(contador, 2).text = '$ '+str(l.cuota_capital) or '$0.00'
+            
+            #if l['cuota_capital']!=False:
+            #    raise ValidationError(str(l['cuota_capital']) )
+            tabla.cell(contador, 5).text = '$ '+str(l.cuota_capital) or '$0.00'
             
             contador+=1
     #contador=1
