@@ -56,7 +56,7 @@ class WizardContratoAdendum(models.Model):
         
         #lleno lista con estado de cuenta anterior 
         estado_cuenta_anterior=[]
-        for e in self.estado_de_cuenta_ids:
+        for e in self.contrato_id.estado_de_cuenta_ids:
             dct ={}
             dct['numero_cuota'] = e.numero_cuota
             dct['fecha']= e.fecha
