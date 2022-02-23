@@ -70,7 +70,7 @@ class WizardContratoAdendum(models.Model):
             dct['fecha_pagada']= e.fecha_pagada
             dct['seguro']= e.seguro
             dct['rastreo']= e.rastreo
-            dct['factura_id']= e.factura_id or ' '
+            dct['factura_id']= e.factura_id 
             estado_cuenta_anterior.append(dct)
 
 
@@ -153,24 +153,26 @@ class WizardContratoAdendum(models.Model):
             ####Crear bitacora detalle de estado de cuenta 
             obj_estado_cuenta_cabecera=self.env['contrato.estado.cuenta.historico.cabecera'].search([('contrato_id','=',self.contrato_id.id)])
             if len(obj_estado_cuenta_cabecera) >0:
+                #raise ValidationError(type(obj_estado_cuenta_cabecera.id)+'--obj_estado_cuenta_cabecera.id')
                 for cta_ant in estado_cuenta_anterior:
+                    #raise ValidationError(str(cta_ant)+'--.id')
                     #monto_finan_contrato+= a['cuota_capital']
                     self.env['contrato.estado.cuenta.historico.detalle'].create({
                                                         'numero_cuota':cta_ant['numero_cuota'],
-                                                        'fecha':cta_ant['fecha'],
+                                                        'fecha':cta_ant['fecha'] ,
                                                         'cuota_capital':cta_ant['cuota_capital'],
                                                         'cuota_adm':cta_ant['cuota_adm'],
                                                         'iva_adm':cta_ant['iva_adm'],
                                                         'saldo':cta_ant['saldo'],
-                                                        'contrato_id':cta_ant['contrato_id'],
+                                                        #'contrato_id':cta_ant['contrato_id'],
                                                         'estado_pago':cta_ant['estado_pago'], 
-                                                        'cuotaAdelantada':cta_ant['cuotaAdelantada'],  
+                                                        'cuotaAdelantada':cta_ant['cuotaAdelantada'] ,  
                                                         'seguro':cta_ant['seguro'],  
-                                                        'fecha_pagada':cta_ant['fecha_pagada'],  
+                                                        'fecha_pagada':cta_ant['fecha_pagada'] ,  
                                                         'rastreo':cta_ant['rastreo'],  
-                                                        'factura_id':cta_ant['factura_id'],          
-                                                        'contarto_id':obj_estado_cuenta_cabecera.id,           
-                                                        'currency_id':cta_ant['currency_id'],   
+                                                        'factura_id':cta_ant['factura_id'] ,#or None,          
+                                                        'contrato_id':int(obj_estado_cuenta_cabecera.id),           
+                                                        #'currency_id':cta_ant['currency_id'],   
                                                             })
             
 
