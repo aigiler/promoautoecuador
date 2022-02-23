@@ -137,7 +137,7 @@ class WizardContratoAdendum(models.Model):
         obj_estado_cuenta_nuevo=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id)])
         if len(obj_estado_cuenta_nuevo) >0:
             self.env['contrato.estado.cuenta.historico.cabecera'].create({
-                                                'numero_cuota':self.contrato_id.numero_cuota,
+                                                #'numero_cuota':self.contrato_id.numero_cuota,
                                                 'contrato_id':self.contrato_id.id,
                                                 'motivo_adendum':' adendum',
                                                 'cuota_capital':cuota_capital_nueva,
