@@ -5,14 +5,28 @@ from docx import Document
 from odoo.exceptions import AccessError, UserError, ValidationError
 
 
-def crear_documento_adendum(ruta,detalle,lista_estado_cuenta):
+def crear_documento_adendum(ruta,detalle,lista_estado_cuenta,estado_cuenta_anterior):
     #Se abre el documento en la ruta
     doc = Document(ruta)
-
-    # # #Tabla de Alarmas Rojas
-    tabla=doc.tables[0]
+    tabla2=doc.tables[0]
     contador=1
-    for estado_cuenta in lista_estado_cuenta:
+    for estado_cuenta2 in estado_cuenta_anterior:
+        for a in estado_cuenta2:
+            if a['monto_financiamiento_anterior']!=False:
+                tabla2.cell(contador, 1).text = '$ '+str(a.monto_financiamiento_anterior)
+            if a['plazo_meses_anterior']!=False:
+                tabla2.cell(contador, 3).text = str(a.plazo_meses_anterior.numero)+' Meses'
+            
+            #if l['cuota_capital']!=False:
+            #    raise ValidationError(str(l['cuota_capital']) )
+            tabla2.cell(contador, 5).text = '$ '+str(a.cuota_capital_anterior) or '$0.00'
+            
+            contador+=1
+    #contador=1
+    # # #Tabla de Alarmas Rojas
+    tabla=doc.tables[1]
+    contador=1
+    for estado_cuenta in estado_cuenta_anterior:
         for l in estado_cuenta:
             if l['monto_financiamiento']!=False:
                 tabla.cell(contador, 1).text = '$ '+str(l.monto_financiamiento)
@@ -24,7 +38,7 @@ def crear_documento_adendum(ruta,detalle,lista_estado_cuenta):
             tabla.cell(contador, 5).text = '$ '+str(l.cuota_capital) or '$0.00'
             
             contador+=1
-    #contador=1
+
     #for alarma in dct_final['detalle_carac_rojo']:
     #    if alarma['item']!=False:
     #        tabla.cell(contador, 0).text = alarma['item']
