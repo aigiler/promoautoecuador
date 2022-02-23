@@ -146,7 +146,7 @@ class WizardContratoAdendum(models.Model):
                                                 'cuota_capital_anterior':self.contrato_id.cuota_capital,
                                                 'monto_financiamiento_anterior':self.contrato_id.monto_financiamiento,
                                                 'plazo_meses_anterior':self.contrato_id.plazo_meses.id,
-                                                'currency_id':self.contrato_id.currency_id,                                                
+                                                #'currency_id':self.contrato_id.currency_id.id,                                                
                                                     })            
             
         
