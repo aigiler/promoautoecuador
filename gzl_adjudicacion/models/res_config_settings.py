@@ -15,5 +15,5 @@ class ResConfigSettings(models.TransientModel):
 
     numero_cuotas_para_inactivar = fields.Integer(string='Máximo de cuotas vencidas para Inactivar Contrato',default=0, config_parameter="gzl_adjudicacion.maximo_cuotas_vencidas")
 
-    porcentaje_perm_adendum = fields.Float(string='Porcentaje permitido' , config_parameter="gzl_adjudicacion.tasa_administrativa")
+    porcentaje_perm_adendum = fields.Float(string='Porcentaje permitido' , config_parameter="gzl_adjudicacion.porcentaje_perm_adendum")
 

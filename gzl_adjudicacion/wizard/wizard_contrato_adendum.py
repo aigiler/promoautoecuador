@@ -74,7 +74,8 @@ class WizardContratoAdendum(models.Model):
             estado_cuenta_anterior.append(dct)
 
 
-        tasa_administrativa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa'))
+        tasa_administrativa =  (self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
+        #raise ValidationError(str(tasa_administrativa)+'--porcentaje_perm_adendum.id')
         #aqui se muestran las cuotas que han sido pagadas ya sean por adelanto o no 
         obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pagado')])
         lista_cuotapagadas=[]
