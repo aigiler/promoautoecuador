@@ -803,7 +803,7 @@ class ContratoHistorio(models.Model):
     monto_financiamiento_anterior = fields.Monetary(
         string='Monto Financiamiento', currency_field='currency_id')
     plazo_meses_anterior = fields.Many2one('numero.meses',default=lambda self: self.env.ref('gzl_adjudicacion.{0}'.format('numero_meses60')).id ,track_visibility='onchange' )    
-
+    ejecutado = fields.Boolean(string="Ejecutado", default = False)
 class ContratoEstadoCuentaHsitorico(models.Model):
     _name = 'contrato.estado.cuenta.historico.detalle'
     _description = 'Contrato Historico Tabla de estado de cuenta de Aporte'
