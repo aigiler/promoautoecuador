@@ -474,7 +474,8 @@ class Contrato(models.Model):
             detalle.otro=0
             detalle.monto_pagado=0
             detalle.saldo=0
-        
+            detalle.estado_pago='congelado'
+
         tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.id)],order='fecha desc',limit=1)
         
         if len(tabla)==1:
@@ -488,6 +489,7 @@ class Contrato(models.Model):
 
             obj_fecha_congelamiento.pendiente=False
 
+        self.state='activo'
 
 
 
@@ -717,6 +719,7 @@ class ContratoEstadoCuenta(models.Model):
     cuotaAdelantada = fields.Boolean(string='Cuota Adelantada')
     estado_pago = fields.Selection([('pendiente', 'Pendiente'),
                                     ('pagado', 'Pagado')
+                                    ('congelado', 'Congelado')
                                     ], string='Estado de Pago', default='pendiente')
 
     pago_ids = fields.One2many(
@@ -847,6 +850,7 @@ class ContratoEstadoCuentaHsitorico(models.Model):
     cuotaAdelantada = fields.Boolean(string='Cuota Adelantada')
     estado_pago = fields.Selection([('pendiente', 'Pendiente'),
                                     ('pagado', 'Pagado')
+                                    ('congelado', 'Congelado')
                                     ], string='Estado de Pago', default='pendiente')
 
     pago_ids = fields.One2many(
