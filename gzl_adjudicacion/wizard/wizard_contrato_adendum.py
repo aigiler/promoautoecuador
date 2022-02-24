@@ -233,5 +233,6 @@ class WizardContratoAdendum(models.Model):
                 self.contrato_id.monto_financiamiento = self.monto_financiamiento
                 self.contrato_id.plazo_meses =self.plazo_meses.id
                 self.contrato_id.cuota_capital=cuota_capital_nueva
+                self.contrato_historico.ejecutado = True
             else:
                 raise ValidationError("El monto de financiamiento no esta en el rango permitido")
