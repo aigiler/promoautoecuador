@@ -183,12 +183,17 @@ class CrmLead(models.Model):
     def modificar_contrato(self):
 
         usuario_logeado=self.env.user.id
+        equipos=self.env['crm.team'].search([])
 
-        usuarios=self.stage_id.team_id.miembros.ids
+        team=0
+        for equipo in equipos:
+            if usuario_logeado in equipo.miembros.ids :
+                team=equipo
 
+        rol=team.rol
 
-        if not usuario_logeado in usuarios:
-            raise ValidationError("Usted no puede editar la oportunidad está asignado el equipo {0}".format(self.stage_id.team_id.name))
+        if rol != self.stage_id.rol:
+            raise ValidationError("Usted no puede editar la oportunidad está asignado al rol {0}".format(self.stage_id.rol))
 
 
 

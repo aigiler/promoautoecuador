@@ -17,7 +17,9 @@
 
                 <field name="correos" />
                 <field name="surcursal_id" />
+                <field name="rol" />
 
+    
                 
             </xpath>
 

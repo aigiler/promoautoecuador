@@ -17,7 +17,11 @@ class Team(models.Model):
     miembros = fields.Many2many('res.users', string='Miembros del Equipo' )
     surcursal_id = fields.Many2one('surcursal', string='Surcursal')
 
+    rol = fields.Selection([('comercial', 'Comercial'), 
+                                      ('delegado', 'Delegado'),('postventa','Post-Venta')
+                                    ],string='Rol', default='comercial') 
 
+    
 
 
 
