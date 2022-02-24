@@ -450,12 +450,21 @@ class Contrato(models.Model):
         hoy=date.today()
 
         fecha_reactivacion="%s-%s-%s" % (hoy.year, hoy.month,(calendar.monthrange(hoy.year, hoy.month)[1]))
-        fecha_reactivacion = datetime.strptime(fecha_reactivacion, '%y-%m-%d')
+        fecha_reactivacion = datetime.strptime(fecha_reactivacion, '%Y-%m-%d').date()
+        
+      #  raise ValidationError(type(fecha_reactivacion))
 
-        detalle_estado_cuenta_pendiente=self.contrato.tabla_amortizacion.filtered(lambda l:  l.fecha>=obj_fecha_congelamiento.fecha  and l.fecha<fecha_reactivacion)
-
-        nuevo_detalle_estado_cuenta_pendiente=detalle_estado_cuenta_pendiente.copy()
-
+        detalle_estado_cuenta_pendiente=self.tabla_amortizacion.filtered(lambda l:  l.fecha>=obj_fecha_congelamiento.fecha  and l.fecha<fecha_reactivacion)
+        
+        
+        nuevo_detalle_estado_cuenta_pendiente=[]
+        for detalle in detalle_estado_cuenta_pendiente:
+            obj_detalle=detalle.copy()
+            nuevo_detalle_estado_cuenta_pendiente.append(obj_detalle.id)
+        
+        nuevo_detalle_estado_cuenta_pendiente=self.env['contrato.estado.cuenta'].browse(nuevo_detalle_estado_cuenta_pendiente)
+        
+        
         for detalle in detalle_estado_cuenta_pendiente:
 
             detalle.cuota_capital=0
@@ -465,17 +474,19 @@ class Contrato(models.Model):
             detalle.otro=0
             detalle.monto_pagado=0
             detalle.saldo=0
+        
+        tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.id)],order='fecha desc',limit=1)
+        
+        if len(tabla)==1:
 
-        tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.id)],order='fecha desc')
+            contador=1
+            
+            for detalle in nuevo_detalle_estado_cuenta_pendiente:
+                detalle.fecha=tabla.fecha +relativedelta(months=contador)
+                detalle.numero_cuota= str( int(tabla.numero_cuota) +contador)
+                contador+=1
 
-
-        contador=1
-        for detalle in nuevo_detalle_estado_cuenta_pendiente:
-            detalle.fecha=tabla[0].fecha +relativedelta(months=contador)
-            detalle.numero_cuota=tabla[0].numero_cuota +contador
-            contador+=1
-
-
+            obj_fecha_congelamiento.pendiente=False
 
 
 
@@ -669,7 +680,7 @@ class ContratoCongelamiento(models.Model):
 
     contrato_id = fields.Many2one('contrato')
     fecha = fields.Date(String='Fecha Congelamiento')
-    pendiente = fields.Boolean(String='Pendiente de Activación')
+    pendiente = fields.Boolean(String='Pendiente de Activación',default=True)
 
 
 
