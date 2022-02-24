@@ -189,6 +189,8 @@ class WizardContratoAdendum(models.Model):
                 #raise ValidationError(str(sum(self.contrato_id.tabla_amortizacion.mapped('cuota_capital')))+' contb '+ str(contb))
                 monto_finan_contrato = sum(self.contrato_id.tabla_amortizacion.mapped('cuota_capital'))
                 monto_finan_contrato = round(monto_finan_contrato,2)
+                
+                vls=[]
                 if  monto_finan_contrato  > self.monto_financiamiento:
                     valor_sobrante = monto_finan_contrato - self.contrato_id.monto_financiamiento 
                     valor_sobrante = round(valor_sobrante,2)
@@ -209,7 +211,11 @@ class WizardContratoAdendum(models.Model):
                                 'cuota_capital': c.cuota_capital - valor_a_restar,
                                 'contrato_id':self.contrato_id.id,
                             })
-                            valor_sobrante = valor_sobrante -valor_a_restar  
+                            vls.append(valor_sobrante)
+                            valor_sobrante = valor_sobrante -valor_a_restar
+                            valor_sobrante = round(valor_sobrante,2)
+                            
+                            
                 if  monto_finan_contrato  < self.monto_financiamiento:
                     valor_sobrante = self.contrato_id.monto_financiamiento  - monto_finan_contrato 
 
@@ -226,7 +232,10 @@ class WizardContratoAdendum(models.Model):
                                 'cuota_capital': c.cuota_capital + valor_a_restar,
                                 'contrato_id':self.contrato_id.id,
                             })  
+                            vls.append(valor_sobrante)
                             valor_sobrante = valor_sobrante -valor_a_restar
+                            valor_sobrante = round(valor_sobrante,2)
+                #raise ValidationError(str(vls)+'-vls-')
                 ##si esta ejecutado se ocultara el boton de validar                  
                 self.ejecutado =True
                 #asignar nuevos valores 
