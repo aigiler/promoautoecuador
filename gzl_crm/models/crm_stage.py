@@ -20,7 +20,9 @@ class Stage(models.Model):
     _inherit = "crm.stage"
 
 
-
+    rol = fields.Selection([('comercial', 'Comercial'), 
+                                      ('delegado', 'Delegado'),('postventa','Post-Venta')
+                                    ],string='Rol', default='comercial') 
 
     
 

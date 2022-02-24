@@ -15,6 +15,7 @@
                 <field name="stage_siguiente_id" attrs="{'invisible':[('restringir_movimiento','=',False)]}"/>
                 <field name="solicitar_adjunto_documento"/>
                 <field name="crear_reunion_en_calendar"/>
+                <field name="rol"/>
 
 
                 
