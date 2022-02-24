@@ -32,6 +32,8 @@ class WizardContratoAdendum(models.Model):
 
         if   self.contrato_id.ejecutado:
             raise ValidationError("El contrato solo puede realizar un adendum")
+        elif self.contrato_id.state !='activo':
+            raise ValidationError("El contrato solo puede realizar un adendum en estado activo")
         else:
             obj=self.contrato_id
 
