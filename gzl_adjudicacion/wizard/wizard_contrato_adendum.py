@@ -22,7 +22,6 @@ class WizardContratoAdendum(models.Model):
 
     currency_id = fields.Many2one(
         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
-    #contrato_historico = fields.Many2one('contrato.estado.cuenta.historico.cabecera')
     ##valores anteriores
     monto_financiamiento_anterior = fields.Monetary(
         string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
@@ -110,7 +109,6 @@ class WizardContratoAdendum(models.Model):
 
                 ####crear cuotas pagadas para listar segun el nuevo plazo o monto
                 for a in lista_cuotapagadas:
-                    #monto_finan_contrato+= a['cuota_capital']
                     self.env['contrato.estado.cuenta'].create({
                                                         'numero_cuota':a['numero_cuota'],
                                                         'fecha':a['fecha'],
@@ -166,8 +164,6 @@ class WizardContratoAdendum(models.Model):
                     if len(obj_estado_cuenta_cabecera) >0:
                         #raise ValidationError(type(obj_estado_cuenta_cabecera.id)+'--obj_estado_cuenta_cabecera.id')
                         for cta_ant in estado_cuenta_anterior:
-                            #raise ValidationError(str(cta_ant)+'--.id')
-                            #monto_finan_contrato+= a['cuota_capital']
                             self.env['contrato.estado.cuenta.historico.detalle'].create({
                                                                 'numero_cuota':cta_ant['numero_cuota'],
                                                                 'fecha':cta_ant['fecha'] ,
@@ -185,8 +181,7 @@ class WizardContratoAdendum(models.Model):
                                                                     })
 
 
-                ##########################################validar que el monto este bien ####################################################
-                #raise ValidationError(str(sum(self.contrato_id.tabla_amortizacion.mapped('cuota_capital')))+' contb '+ str(contb))
+                ##########################################validar que la cuota capital este bien ####################################################
                 monto_finan_contrato = sum(self.contrato_id.tabla_amortizacion.mapped('cuota_capital'))
                 monto_finan_contrato = round(monto_finan_contrato,2)
                 
@@ -200,11 +195,8 @@ class WizardContratoAdendum(models.Model):
                     else:
                         valor_a_restar= (valor_sobrante/parte_decimal)*0.01
 
-                    obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')] , order ='numero_cuota desc')
-                    #raise ValidationError(str(valor_sobrante)+'-kk-'+str(parte_decimal)+'----'+str(valor_a_restar))
-
+                    obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')] , order ='fecha desc')
                     for c in obj_contrato:
-                        #raise ValidationError(str(valor_sobrante)+'-parte_decimal: -'+str(parte_decimal)+'---valor_a_restar -'+str(valor_a_restar)+'==='+str(monto_finan_contrato)+'==cuota_capital ='+str(c.cuota_capital))
                         if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
 
                             c.update({
@@ -222,7 +214,7 @@ class WizardContratoAdendum(models.Model):
                     parte_decimal, parte_entera = math.modf(valor_sobrante)
                     valor_a_restar= (valor_sobrante/parte_decimal)*0.1
 
-                    obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')] , order ='numero_cuota desc')
+                    obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')] , order ='fecha desc')
 
                     for c in obj_contrato:
 
@@ -235,7 +227,6 @@ class WizardContratoAdendum(models.Model):
                             vls.append(valor_sobrante)
                             valor_sobrante = valor_sobrante -valor_a_restar
                             valor_sobrante = round(valor_sobrante,2)
-                #raise ValidationError(str(vls)+'-vls-')
                 ##si esta ejecutado se ocultara el boton de validar                  
                 self.ejecutado =True
                 #asignar nuevos valores 
