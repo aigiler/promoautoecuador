@@ -433,9 +433,9 @@ class Contrato(models.Model):
                 self.envio_correos_plantilla('email_contrato_notificacion_de_pago',contrato.id)
 
     def cambio_estado_congelar_contrato(self):
-
+        #Cambio de estado
         self.state='congelar_contrato'
-
+        #Se obtiene el listado de cuotas pendientes ordenadas de forma ascedente en la fecha de pago.
         tabla=self.env['contrato.estado.cuenta'].search([('estado_pago','=','pendiente'),('contrato_id','=',self.id)],order='fecha asc')
 
         if len(tabla)>0:
@@ -450,7 +450,7 @@ class Contrato(models.Model):
         hoy=date.today()
 
         fecha_reactivacion="%s-%s-%s" % (hoy.year, hoy.month,(calendar.monthrange(hoy.year, hoy.month)[1]))
-        fecha_reactivacion = datetime.strptime(fecha_fin_tarea, '%y-%m-%d')
+        fecha_reactivacion = datetime.strptime(fecha_reactivacion, '%y-%m-%d')
 
         detalle_estado_cuenta_pendiente=self.contrato.tabla_amortizacion.filtered(lambda l:  l.fecha>=obj_fecha_congelamiento.fecha  and l.fecha<fecha_reactivacion)
 
