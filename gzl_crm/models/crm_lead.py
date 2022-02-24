@@ -238,6 +238,11 @@ class CrmLead(models.Model):
 
     def write(self, vals):
 
+
+        if self.stage_id.is_won==True:
+            raise ValidationError("No se puede editar en estado ganado")
+
+
         if vals.get('stage_id',False) and self.stage_id.restringir_movimiento:
             estados_habilitados=[]
             estados_habilitados.append(self.stage_id.stage_anterior_id.id)

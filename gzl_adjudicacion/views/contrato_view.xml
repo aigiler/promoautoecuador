@@ -51,11 +51,11 @@
                 <header>
                     <button name="cambio_estado_boton_borrador" string="Activo" type="object" states="borrador" class="oe_highlight"/>
 
-                    <button name="cambio_estado_congelar_contrato" string="Congelar " states="inactivar" type="object" class="oe_highlight"/>
+                    <button name="cambio_estado_congelar_contrato" string="Congelar " states="inactivo" type="object" class="oe_highlight"/>
                     <button name="reactivar_contrato_congelado" string="Reactivar Contrato " states="congelar_contrato" type="object" class="oe_highlight"/>
 
 
-                    <button name="cambio_estado_boton_desistir" string="Desistir" type="object" states="inactivar"  class="oe_highlight"/>
+                    <button name="cambio_estado_boton_desistir" string="Desistir" type="object" states="inactivo"  class="oe_highlight"/>
                     
                     <button name="detalle_tabla_amortizacion" string="Generar estado cuenta contrato" invisible="1" type="object" class="oe_highlight"/>
                     <button name="pagar_cuotas_por_adelantado" string="Pagar Cuotas por Adelantado" states="activo,adjudicar" type="object" class="oe_highlight"/>
