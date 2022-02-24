@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, date
 from dateutil.parser import parse
 import calendar
 from dateutil.relativedelta import relativedelta
-
+import math
 
 class Contrato(models.Model):
     _name = 'contrato'
@@ -231,7 +231,49 @@ class Contrato(models.Model):
                                                     'contrato_id':self.id,                                                    
                                                         })
                                                         
+        monto_finan_contrato = sum(self.contrato_id.tabla_amortizacion.mapped('cuota_capital'))
+        monto_finan_contrato = round(monto_finan_contrato,2)
+        if  monto_finan_contrato  > self.monto_financiamiento:
+            valor_sobrante = monto_finan_contrato - self.contrato_id.monto_financiamiento 
+            valor_sobrante = round(valor_sobrante,2)
+            parte_decimal, parte_entera = math.modf(valor_sobrante)
+            if parte_decimal >=1:
+                valor_a_restar= (valor_sobrante/parte_decimal)*0.1
+            else:
+                valor_a_restar= (valor_sobrante/parte_decimal)*0.01
 
+            obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')] , order ='fecha desc')
+            for c in obj_contrato:
+                if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
+
+                    c.update({
+                        'cuota_capital': c.cuota_capital - valor_a_restar,
+                        'contrato_id':self.contrato_id.id,
+                    })
+                    #vls.append(valor_sobrante)
+                    valor_sobrante = valor_sobrante -valor_a_restar
+                    valor_sobrante = round(valor_sobrante,2)
+                            
+                            
+        if  monto_finan_contrato  < self.monto_financiamiento:
+            valor_sobrante = self.contrato_id.monto_financiamiento  - monto_finan_contrato 
+
+            parte_decimal, parte_entera = math.modf(valor_sobrante)
+            valor_a_restar= (valor_sobrante/parte_decimal)*0.1
+
+            obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')] , order ='fecha desc')
+
+            for c in obj_contrato:
+
+                if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
+                    #raise ValidationError(str(valor_sobrante)+'--'+str(parte_decimal)+'----'+str(valor_a_restar))
+                    c.update({
+                        'cuota_capital': c.cuota_capital + valor_a_restar,
+                        'contrato_id':self.contrato_id.id,
+                    })  
+                    #vls.append(valor_sobrante)
+                    valor_sobrante = valor_sobrante -valor_a_restar
+                    valor_sobrante = round(valor_sobrante,2)
     @api.depends("estado_de_cuenta_ids.monto_pagado")
     def calcular_monto_pagado(self,):
         for l in self:
