@@ -760,7 +760,7 @@ class ContratoEstadoCuenta(models.Model):
     certificado = fields.Binary(string='Certificado')
     cuotaAdelantada = fields.Boolean(string='Cuota Adelantada')
     estado_pago = fields.Selection([('pendiente', 'Pendiente'),
-                                    ('pagado', 'Pagado')
+                                    ('pagado', 'Pagado'),
                                     ('congelado', 'Congelado')
                                     ], string='Estado de Pago', default='pendiente')
 
@@ -891,7 +891,7 @@ class ContratoEstadoCuentaHsitorico(models.Model):
     certificado = fields.Binary(string='Certificado')
     cuotaAdelantada = fields.Boolean(string='Cuota Adelantada')
     estado_pago = fields.Selection([('pendiente', 'Pendiente'),
-                                    ('pagado', 'Pagado')
+                                    ('pagado', 'Pagado'),
                                     ('congelado', 'Congelado')
                                     ], string='Estado de Pago', default='pendiente')
 
