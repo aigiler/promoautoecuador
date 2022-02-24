@@ -22,7 +22,7 @@ class WizardContratoAdendum(models.Model):
 
     currency_id = fields.Many2one(
         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
-    contrato_historico = fields.Many2one('contrato.estado.cuenta.historico.cabecera')
+    #contrato_historico = fields.Many2one('contrato.estado.cuenta.historico.cabecera')
     ##valores anteriores
     monto_financiamiento_anterior = fields.Monetary(
         string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
@@ -31,7 +31,7 @@ class WizardContratoAdendum(models.Model):
     
     def ejecutar_cambio(self,):
 
-        if   self.contrato_historico.ejecutado:
+        if   self.contrato_id.ejecutado:
             raise ValidationError("El contrato solo puede realizar un adendum")
         else:
             obj=self.contrato_id
@@ -233,6 +233,6 @@ class WizardContratoAdendum(models.Model):
                 self.contrato_id.monto_financiamiento = self.monto_financiamiento
                 self.contrato_id.plazo_meses =self.plazo_meses.id
                 self.contrato_id.cuota_capital=cuota_capital_nueva
-                self.contrato_historico.ejecutado = True
+                self.contrato_id.ejecutado = True
             else:
                 raise ValidationError("El monto de financiamiento no esta en el rango permitido")
