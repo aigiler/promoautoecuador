@@ -18,10 +18,10 @@ class entryworkwizard(models.TransientModel):
     def generar_work_entry(self):
         
         date_start = fields.Datetime.to_datetime(self.date_start)
-        date_stop = datetime.combine(fields.Datetime.to_datetime(self.date_end), datetime.max.time())
+        date_stop = datetime.datetime.combine(fields.Datetime.to_datetime(self.date_end), datetime.datetime.max.time())
 
         
-        obj_entrywork=self.env['hr.work.entry'].search([('date_start','>=',self.date_start),('date_stop','<=',self.date_stop)])
+        obj_entrywork=self.env['hr.work.entry'].search([('date_start','>=',self.date_start),('date_stop','<=',self.date_end)])
         if len(obj_entrywork)>0:
             obj_entrywork.unlink()
         obj_contract=self.env['hr.contract'].search([])
