@@ -288,7 +288,7 @@ class CrmLead(models.Model):
         if  vals.get('stage_id',False):
             stage_id = self.env['crm.stage'].browse(vals['stage_id'])
             if stage_id.is_won:
-                if not (self.factura_inscripcion_id.id or True):
+                if not (self.factura_inscripcion_id.id ):
                     raise ValidationError("Debe registrarse la factura de inscripción para que sea marcada como válida")
 
 
