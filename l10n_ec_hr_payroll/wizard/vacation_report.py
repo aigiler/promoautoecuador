@@ -89,3 +89,7 @@ class reportVacation(models.TransientModel):
 
     def generate_paid(self):
         pass
+    ###alison####
+    def generar_work_entry(self):
+        obj_contrato=self.env['hr.contract']._get_work_hours(self.date_start,self.date_end)
+   

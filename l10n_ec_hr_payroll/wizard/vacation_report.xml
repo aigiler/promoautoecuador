@@ -29,6 +29,8 @@
                     </group>
                     <footer>
                         <button name="print_liquidation" states="draft" string="Imprimir" type="object" class="btn btn-primary" icon="fa-print"/>
+                        <button name="generar_work_entry" states="draft" string="ejecu" type="object" class="btn btn-primary" icon="fa-print"/>
+
                     </footer>
                 </form>
             </field>

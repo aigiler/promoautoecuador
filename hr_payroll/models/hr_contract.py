@@ -134,7 +134,7 @@ class HrContract(models.Model):
 
         return vals_list
 
-    def _generate_work_entries(self, date_start, date_stop):
+    def _generate_work_entries(self, date_start, date_stop):#aliii
         vals_list = []
 
         date_start = fields.Datetime.to_datetime(date_start)
