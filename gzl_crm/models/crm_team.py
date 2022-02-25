@@ -8,7 +8,7 @@ from odoo.tools.safe_eval import safe_eval
 from odoo.exceptions import ValidationError
 
 
-class Team(models.Model):
+class CrmTeam(models.Model):
     _inherit = 'crm.team'
     _description = 'Sales Team'
 

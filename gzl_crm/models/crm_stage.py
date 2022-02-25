@@ -42,3 +42,8 @@ class Stage(models.Model):
 
 
     crear_reunion_en_calendar = fields.Boolean( string='Crear Reunión con Cliente para llamada de Calidad' )
+
+
+
+    notificar_delegado = fields.Boolean( string='Notificar Delegado' )
+    notificar_postventa = fields.Boolean( string='Notificar Delegado' )
