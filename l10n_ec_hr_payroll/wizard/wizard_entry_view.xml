@@ -23,7 +23,7 @@
         <record id="hr_entry_work_eject_action" model="ir.actions.act_window">
             <field name="name">Proceso Entrada de Trabajo</field>
             <field name="res_model">wizard.entry</field>
-            <field name="view_mode">form</field>
+            
             <field name="view_id" ref="hr_entry_work_eject"/>
             <field name="target">new</field>
         </record>
