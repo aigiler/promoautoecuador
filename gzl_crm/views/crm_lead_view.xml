@@ -78,7 +78,7 @@
                         </tree>
                     </field>
                 </group>
-            </xpath> -->
+            </xpath> 
 
             <xpath expr="//page[@name='lead']" position="after">
                 <page name="contact" string="Contacto">
