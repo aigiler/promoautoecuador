@@ -46,6 +46,7 @@
         "wizard/settlement_report_view.xml",
         "wizard/wizard_fortnight_view.xml",
         "wizard/vacation_report.xml",
+        "wizard/wizard_entry_view.xml",
     ],
     # only loaded in demonstration mode
     'demo': [],
