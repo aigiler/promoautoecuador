@@ -287,7 +287,7 @@ class CrmLead(models.Model):
 
                     c.update({
                         'cuota_capital': c.cuota_capital - valor_a_restar,
-                        'contrato_id':self.id,
+                        'oportunidad_id':self.id,
                     })
                     vls.append(valor_sobrante)
                     valor_sobrante = valor_sobrante -valor_a_restar
@@ -311,7 +311,7 @@ class CrmLead(models.Model):
                     #raise ValidationError(str(valor_sobrante)+'--'+str(parte_decimal)+'----'+str(valor_a_restar))
                     c.update({
                         'cuota_capital': c.cuota_capital + valor_a_restar,
-                        'contrato_id':self.id,
+                        'oportunidad_id':self.id,
                     })  
                     vls.append(valor_sobrante)
                     valor_sobrante = valor_sobrante -valor_a_restar
