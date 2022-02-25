@@ -36,6 +36,30 @@ class CrmLead(models.Model):
 
 
 
+
+
+    equipo_asigando = fields.Many2one('crm.team',string="Delegado",track_visibility='onchange' )
+
+
+    @api.constrains("stage_id")
+    def actualizar_equipo_asignado_por_estado(self, ):
+
+        if stage_id.rol=='comercial':
+            self.equipo_asigando=self.team_id
+
+        if stage_id.rol=='delegado':
+            self.equipo_asigando=self.delegado_id
+
+
+        if stage_id.rol=='postventa'
+            self.equipo_asigando=self.postventa_id
+
+
+
+
+
+
+
     @api.constrains("stage_id")
     def guardar_fecha_como_ganada(self, ):
         hoy=date.today()

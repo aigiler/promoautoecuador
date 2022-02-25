@@ -42,45 +42,44 @@
 
 
 
-
             <xpath expr="//label[@for='planned_revenue']" position="attributes">
                 <attribute name="string">Monto del Plan</attribute>
             </xpath>
 
-             <xpath expr="//notebook" position="before">
-                <group string="Tabla de Amortización"> 
-                    <group>
-                        <field name="tasa_interes" invisible="1" string="Tasa de Interés (%)" required="1" placeholder="8"/>
-
-
-
-                        <field name="factura_inscripcion_id" string="Factura de Inscripción" placeholder="Ingrese la factura de inscripción" domain="[('type','=','out_invoice'),('partner_id','=',partner_id),('amount_residual','=',0)]"/>
-                        <field name="numero_cuotas" string="Número de Cuotas (meses)" required="1" placeholder="48"/>
-                        <field name="dia_pago" required="1" placeholder="5"/>
-                        <field name="tipo_contrato" options="{'no_create_edit': True, 'no_open': True}" required="1"/>
-                    </group>
-                    <field name="tabla_amortizacion"  nolabel="1">
-                        <tree string="Tabla de Amortización" editable="bottom" edit="false" create="false" delete="false">
-                            <field name="oportunidad_id" invisible="1"/>
-                            <field name="numero_cuota" readonly="1"/>
-                            <field name="fecha" readonly="1"/>
-                            <field name="cuota_capital" widget="monetary" force_save="1" sum="cuota_capital" readonly="1"/>
-                            <field name="cuota_adm" widget="monetary" force_save="1" sum="cuota_adm" readonly="1"/>
-                            <field name="iva" widget="monetary" force_save="1" sum="iva" readonly="1"/>
-                            <field name="seguro" widget="monetary" force_save="1" sum="seguro" readonly="1"/>
-                            <field name="rastreo" widget="monetary" force_save="1" sum="rastreo" readonly="1"/>
-                            <field name="otro" widget="monetary" force_save="1" sum="otro" readonly="1"/>
-                            <field name="saldo" widget="monetary" force_save="1" sum="saldo" readonly="1"/>
-                            <field name="estado_pago" readonly="1"  invisible="1"/>
-                            <field name="factura_id" readonly="1" invisible="1"/>
-                            <field name="pago_id" readonly="1" invisible="1"/>
-                            <button name="pagar_cuota" invisible="1" class="oe_highlight" string="Pagar" type="object" attrs="{'invisible': [('estado_pago', '=','pagado')]}"/>
-                        </tree>
-                    </field>
-                </group>
-            </xpath> 
-
             <xpath expr="//page[@name='lead']" position="after">
+                <page name="amortizacion" string="Tabla de Amortización">
+                    <group string="Tabla de Amortización"> 
+                        <group>
+                            <field name="tasa_interes" invisible="1" string="Tasa de Interés (%)" required="1" placeholder="8"/>
+
+
+
+                            <field name="factura_inscripcion_id" string="Factura de Inscripción" placeholder="Ingrese la factura de inscripción" domain="[('type','=','out_invoice'),('partner_id','=',partner_id),('amount_residual','=',0)]"/>
+                            <field name="numero_cuotas" string="Número de Cuotas (meses)" required="1" placeholder="48"/>
+                            <field name="dia_pago" required="1" placeholder="5"/>
+                            <field name="tipo_contrato" options="{'no_create_edit': True, 'no_open': True}" required="1"/>
+                        </group>
+                        <field name="tabla_amortizacion"  nolabel="1">
+                            <tree string="Tabla de Amortización" editable="bottom" edit="false" create="false" delete="false">
+                                <field name="oportunidad_id" invisible="1"/>
+                                <field name="numero_cuota" readonly="1"/>
+                                <field name="fecha" readonly="1"/>
+                                <field name="cuota_capital" widget="monetary" force_save="1" sum="cuota_capital" readonly="1"/>
+                                <field name="cuota_adm" widget="monetary" force_save="1" sum="cuota_adm" readonly="1"/>
+                                <field name="iva" widget="monetary" force_save="1" sum="iva" readonly="1"/>
+                                <field name="seguro" widget="monetary" force_save="1" sum="seguro" readonly="1"/>
+                                <field name="rastreo" widget="monetary" force_save="1" sum="rastreo" readonly="1"/>
+                                <field name="otro" widget="monetary" force_save="1" sum="otro" readonly="1"/>
+                                <field name="saldo" widget="monetary" force_save="1" sum="saldo" readonly="1"/>
+                                <field name="estado_pago" readonly="1"  invisible="1"/>
+                                <field name="factura_id" readonly="1" invisible="1"/>
+                                <field name="pago_id" readonly="1" invisible="1"/>
+                                <button name="pagar_cuota" invisible="1" class="oe_highlight" string="Pagar" type="object" attrs="{'invisible': [('estado_pago', '=','pagado')]}"/>
+                            </tree>
+                        </field>
+                    </group>
+                </page>
+
                 <page name="contact" string="Contacto">
                     <group>
                         <group>
@@ -94,6 +93,26 @@
                         </group>
                     </group>
                 </page>
+
+
+                <page name="contact" string="Asignados">
+                    <group>
+                        <group>
+                            <field name="delegado_id"/>
+                            <field name="postventa_id"/>
+                            <field name="equipo_asigando"/>
+                        </group>
+
+                    </group>
+                </page>
+
+
+
+
+
+
+
+
             </xpath>
 
         </field>
