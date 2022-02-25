@@ -50,3 +50,33 @@ class Team(models.Model):
                 correoCadena=correoCadena+correo+','
         correoCadena=correoCadena.strip(',')
         self.correos=correoCadena
+
+
+
+    @api.model
+    def create(self, values):
+        team = super(CrmTeam, self.with_context(mail_create_nosubscribe=True)).create(values)
+        if values.get('miembros'):
+            team._add_members_to_favorites()
+        return team
+
+    def write(self, values):
+        res = super(CrmTeam, self).write(values)
+        if values.get('miembros'):
+            self._add_members_to_favorites()
+        return res
+
+    def unlink(self):
+        default_teams = [
+            self.env.ref('sales_team.salesteam_website_sales'),
+            self.env.ref('sales_team.pos_sales_team'),
+            self.env.ref('sales_team.ebay_sales_team')
+        ]
+        for team in self:
+            if team in default_teams:
+                raise UserError(_('Cannot delete default team "%s"' % (team.name)))
+        return super(CrmTeam,self).unlink()
+
+    def _add_members_to_favorites(self):
+        for team in self:
+            team.favorite_user_ids = [(4, member.id) for member in team.miembros]
