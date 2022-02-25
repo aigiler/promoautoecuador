@@ -51,7 +51,7 @@ class CrmLead(models.Model):
             self.equipo_asigando=self.delegado_id
 
 
-        if stage_id.rol=='postventa'
+        if stage_id.rol=='postventa':
             self.equipo_asigando=self.postventa_id
 
 
