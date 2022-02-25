@@ -28,6 +28,8 @@ class CrmLead(models.Model):
     ciudad_id = fields.Many2one(
         'res.country.city', string='Ciudad', domain="[('provincia_id','=',provincia_id)]", track_visibility='onchange')
 
+    delegado_id = fields.Many2one('crm.team',string="Delegado",track_visibility='onchange' )
+    postventa_id = fields.Many2one('crm.team',string="PostVenta",track_visibility='onchange' )
 
 
 
@@ -114,7 +116,8 @@ class CrmLead(models.Model):
         self.provincia_id=self.team_id.surcursal_id.provincia_id.id
         self.ciudad_id=self.team_id.surcursal_id.ciudad_id.id
         self.supervisor=self.team_id.user_id
-
+        self.delegado_id=self.surcursal_id.delegado_id
+        self.postventa_id=self.surcursal_id.postventa_id
 
 
 
@@ -237,9 +240,10 @@ class CrmLead(models.Model):
 
 
     def write(self, vals):
+        
 
-
-        if self.stage_id.is_won==True:
+        if self.fecha_ganada and not(vals.get('date_action_last',False)):
+            
             raise ValidationError("No se puede editar en estado ganado")
 
 

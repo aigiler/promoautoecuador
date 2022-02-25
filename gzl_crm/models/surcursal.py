@@ -21,6 +21,15 @@ class Surcursal(models.Model):
         'res.country.city', string='Ciudad', domain="[('provincia_id','=',provincia_id)]", track_visibility='onchange')
 
 
+
+
+    delegado_id = fields.Many2one('crm.team' , string="Delegado",track_visibility='onchange' )
+    postventa_id = fields.Many2one('crm.team' , string="PostVenta",track_visibility='onchange' )
+
+
+
+
+
     def name_get(self):
         res = []
         for surcursal in self:

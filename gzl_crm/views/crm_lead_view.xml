@@ -47,7 +47,7 @@
                 <attribute name="string">Monto del Plan</attribute>
             </xpath>
 
-<!--             <xpath expr="//notebook" position="before">
+             <xpath expr="//notebook" position="before">
                 <group string="Tabla de Amortización"> 
                     <group>
                         <field name="tasa_interes" invisible="1" string="Tasa de Interés (%)" required="1" placeholder="8"/>
