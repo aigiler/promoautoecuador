@@ -234,33 +234,149 @@ class CrmLead(models.Model):
             raise ValidationError("Ingrese el monto de la oportunidad")
 
 
-    
+
+
+
     def detalle_tabla_amortizacion(self):
+
+
         self._cr.execute(""" delete from tabla_amortizacion where oportunidad_id={0}""".format(self.id))
-        ahora = datetime.now()
+        dia_corte = datetime.now()
         try:
-            ahora = ahora.replace(day = self.dia_pago)
+            dia_corte = ahora.replace(day = self.dia_pago)
         except:
             raise ValidationError('La fecha no existe, por favor ingrese otro día de pago.')
         
         tasa_administrativa =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa')
 
 
-        for i in range(1, int(self.numero_cuotas.numero)+1):
-            cuota_capital = self.planned_revenue/int(self.numero_cuotas.numero)
-            cuota_adm = cuota_capital *float(tasa_administrativa)
-            iva = cuota_adm * 0.12
-            saldo = cuota_capital+cuota_adm+iva
-            self.env['tabla.amortizacion'].create({'oportunidad_id':self.id,
-                                                   'numero_cuota':i,
-                                                   'fecha':ahora + relativedelta(months=i),
-                                                   'cuota_capital':cuota_capital,
-                                                   'cuota_adm':cuota_adm,
-                                                   'iva':iva,
-                                                   'saldo':saldo
-                                                    })
+
+        for rec in self:
+            for i in range(0, int(rec.numero_cuotas.numero)):
+                cuota_capital = rec.planned_revenue/int(rec.numero_cuotas.numero)
+                cuota_adm = rec.planned_revenue *tasa_administrativa / 100 / 12
+                iva = cuota_adm * 0.12
+
+                cuota_administrativa_neto= cuota_adm + iva
+                saldo = cuota_capital+cuota_adm+iva
+                self.env['tabla.amortizacion'].create({
+                                                    'numero_cuota':i+1,
+                                                    'fecha':rec.fecha_inicio_pago + relativedelta(months=i),
+                                                    'cuota_capital':cuota_capital,
+                                                    'cuota_adm':cuota_adm,
+                                                    'iva_adm':iva,
+                                                    'saldo':saldo,
+                                                    'oportunidad_id':self.id,                                                    
+                                                        })
+        vls=[]                                                
+        monto_finan_contrato = sum(self.tabla_amortizacion.mapped('cuota_capital'))
+        monto_finan_contrato = round(monto_finan_contrato,2)
+        #raise ValidationError(str(monto_finan_contrato))
+        if  monto_finan_contrato  > self.monto_financiamiento:
+            valor_sobrante = monto_finan_contrato - self.monto_financiamiento 
+            valor_sobrante = round(valor_sobrante,2)
+            parte_decimal, parte_entera = math.modf(valor_sobrante)
+            if parte_decimal >=1:
+                valor_a_restar= (valor_sobrante/parte_decimal)*0.1
+            else:
+                valor_a_restar= (valor_sobrante/parte_decimal)*0.01
+
+            obj_contrato=self.env['tabla.amortizacion'].search([('oportunidad_id','=',self.id)] , order ='fecha desc')
+            for c in obj_contrato:
+                if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
+
+                    c.update({
+                        'cuota_capital': c.cuota_capital - valor_a_restar,
+                        'contrato_id':self.id,
+                    })
+                    vls.append(valor_sobrante)
+                    valor_sobrante = valor_sobrante -valor_a_restar
+                    valor_sobrante = round(valor_sobrante,2)
+                            
+                            
+        if  monto_finan_contrato  < self.monto_financiamiento:
+            valor_sobrante = self.monto_financiamiento  - monto_finan_contrato 
+            valor_sobrante = round(valor_sobrante,2)
+            parte_decimal, parte_entera = math.modf(valor_sobrante)
+            if parte_decimal >=1:
+                valor_a_restar= (valor_sobrante/parte_decimal)*0.1
+            else:
+                valor_a_restar= (valor_sobrante/parte_decimal)*0.01
+
+            obj_contrato=self.env['tabla.amortizacion'].search([('oportunidad_id','=',self.id)] , order ='fecha desc')
+
+            for c in obj_contrato:
+
+                if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
+                    #raise ValidationError(str(valor_sobrante)+'--'+str(parte_decimal)+'----'+str(valor_a_restar))
+                    c.update({
+                        'cuota_capital': c.cuota_capital + valor_a_restar,
+                        'contrato_id':self.id,
+                    })  
+                    vls.append(valor_sobrante)
+                    valor_sobrante = valor_sobrante -valor_a_restar
+                    valor_sobrante = round(valor_sobrante,2)
+        #raise ValidationError(str(vls)+'--')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         self.cuota_capital = cuota_capital
         self.iva =  iva  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     def write(self, vals):
