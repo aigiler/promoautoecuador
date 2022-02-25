@@ -11,7 +11,7 @@ class reportVacation(models.TransientModel):
     _description = 'Entradas de Trabajo'
 
 
-    name = fields.Many2one('hr.employee',string='Empleado', domain=compute_employee, required=True)
+    #name = fields.Many2one('hr.employee',string='Empleado', domain=compute_employee, required=True)
     date_start = fields.Date('Fecha Inicio', required=True)
     date_end = fields.Date('Fecha Corte', required=True, default = date.today())
     
