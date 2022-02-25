@@ -6,7 +6,7 @@ import datetime
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import Warning, ValidationError
 
-class reportVacation(models.TransientModel):
+class entryworkwizard(models.TransientModel):
     _name = 'wizard.entry'
     _description = 'Entradas de Trabajo'
 
