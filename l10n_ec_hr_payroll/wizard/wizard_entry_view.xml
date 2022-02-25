@@ -13,7 +13,7 @@
                         <field name="date_end"/>
                     </group>
                     <footer>
-                        <button name="generar_work_entry" states="draft" string="ejecu" type="object" class="btn btn-primary" icon="fa-print"/>
+                        <button name="generar_work_entry"  string="ejecu" type="object" class="btn btn-primary" icon="fa-print"/>
 
                     </footer>
                 </form>
@@ -23,7 +23,7 @@
         <record id="hr_entry_work_eject_action" model="ir.actions.act_window">
             <field name="name">Proceso Entrada de Trabajo</field>
             <field name="res_model">wizard.entry</field>
-            
+            <field name="view_mode">form</field>
             <field name="view_id" ref="hr_entry_work_eject"/>
             <field name="target">new</field>
         </record>
