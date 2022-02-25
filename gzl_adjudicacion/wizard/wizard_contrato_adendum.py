@@ -212,9 +212,12 @@ class WizardContratoAdendum(models.Model):
                             
                 if  monto_finan_contrato  < self.monto_financiamiento:
                     valor_sobrante = self.contrato_id.monto_financiamiento  - monto_finan_contrato 
-
+                    valor_sobrante = round(valor_sobrante,2)
                     parte_decimal, parte_entera = math.modf(valor_sobrante)
-                    valor_a_restar= (valor_sobrante/parte_decimal)*0.1
+                    if parte_decimal >=1:
+                        valor_a_restar= (valor_sobrante/parte_decimal)*0.1
+                    else:
+                        valor_a_restar= (valor_sobrante/parte_decimal)*0.01
 
                     obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')] , order ='fecha desc')
 

@@ -234,9 +234,10 @@ class Contrato(models.Model):
                                                     'saldo':saldo,
                                                     'contrato_id':self.id,                                                    
                                                         })
-                                                        
+        vls=[]                                                
         monto_finan_contrato = sum(self.tabla_amortizacion.mapped('cuota_capital'))
         monto_finan_contrato = round(monto_finan_contrato,2)
+        #raise ValidationError(str(monto_finan_contrato))
         if  monto_finan_contrato  > self.monto_financiamiento:
             valor_sobrante = monto_finan_contrato - self.monto_financiamiento 
             valor_sobrante = round(valor_sobrante,2)
@@ -254,16 +255,19 @@ class Contrato(models.Model):
                         'cuota_capital': c.cuota_capital - valor_a_restar,
                         'contrato_id':self.id,
                     })
-                    #vls.append(valor_sobrante)
+                    vls.append(valor_sobrante)
                     valor_sobrante = valor_sobrante -valor_a_restar
                     valor_sobrante = round(valor_sobrante,2)
                             
                             
         if  monto_finan_contrato  < self.monto_financiamiento:
             valor_sobrante = self.monto_financiamiento  - monto_finan_contrato 
-
+            valor_sobrante = round(valor_sobrante,2)
             parte_decimal, parte_entera = math.modf(valor_sobrante)
-            valor_a_restar= (valor_sobrante/parte_decimal)*0.1
+            if parte_decimal >=1:
+                valor_a_restar= (valor_sobrante/parte_decimal)*0.1
+            else:
+                valor_a_restar= (valor_sobrante/parte_decimal)*0.01
 
             obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.id),('estado_pago','=','pendiente')] , order ='fecha desc')
 
@@ -275,9 +279,10 @@ class Contrato(models.Model):
                         'cuota_capital': c.cuota_capital + valor_a_restar,
                         'contrato_id':self.id,
                     })  
-                    #vls.append(valor_sobrante)
+                    vls.append(valor_sobrante)
                     valor_sobrante = valor_sobrante -valor_a_restar
                     valor_sobrante = round(valor_sobrante,2)
+        #raise ValidationError(str(vls)+'--')
     @api.depends("estado_de_cuenta_ids.monto_pagado")
     def calcular_monto_pagado(self,):
         for l in self:
