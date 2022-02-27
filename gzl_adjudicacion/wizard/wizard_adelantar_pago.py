@@ -36,13 +36,20 @@ class WizardAdelantarCuotas(models.Model):
     @api.depends('monto_a_pagar')
     def calcular_numero_cuotas_a_cancelar(self):
         for rec in self:
-            saldo=rec.contrato_id.tabla_amortizacion.mapped('saldo')
-            if len(saldo)>0:
-                valor_saldo=max(saldo)
-                rec.numero_cuotas=rec.monto_a_pagar/valor_saldo
-                diferencia=(valor_saldo*rec.numero_cuotas) - rec.monto_a_pagar
+            acum=0
+            contador=0
+            tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')],order='fecha desc')
 
-                rec.diferencia=abs(diferencia)
+            while(acum<self.monto_a_pagar):
+
+                acum=acum+tabla[contador].saldo
+                contador+=1
+
+            diferencia=acum-self.monto_a_pagar
+
+
+            rec.numero_cuotas=contador
+            rec.diferencia=abs(diferencia)
 
 
 
@@ -56,45 +63,25 @@ class WizardAdelantarCuotas(models.Model):
 
 
 
-
-        saldo=self.contrato_id.tabla_amortizacion.mapped('saldo')
-        valor_saldo=max(saldo)
-
-
-        lista_pagos={}
-        for i  in range(0,self.numero_cuotas):
-            dct={
-            i:valor_saldo
-            }
-            lista_pagos.update(dct)
-
-        diferencia=(valor_saldo*self.numero_cuotas) - self.monto_a_pagar
-
-        #if not (diferencia==0):
-        #    cuota_adicional=self.numero_cuotas
-        #    lista_pagos.update({cuota_adicional:abs(diferencia)})
-
-
-
+        acum=0
         contador=0
-       # raise ValidationError(str(lista_pagos))
+        while(acum<self.monto_a_pagar):
 
-        if len(lista_pagos.keys())>len(tabla):
-            raise ValidationError('Ingrese un monto menor')
-
-        for detalle in tabla[:len(lista_pagos.keys())]:
             dct={
-
-            'tabla_amortizacion_id':detalle.id,
+            'tabla_amortizacion_id':tabla[contador].id,
             'payment_date':self.payment_date,
             'journal_id':self.journal_id.id,
             'payment_method_id':self.payment_method_id.id,
-            'amount':lista_pagos[contador]
-
+            'amount':tabla[contador].saldo
             }
             pago=self.env['wizard.pago.cuota.amortizacion.contrato'].create(dct)
             pago.validar_pago(True)
+
+            acum=acum+tabla[contador].saldo
+
             contador+=1
+
+        diferencia=acum-self.monto_a_pagar
 
         if abs(diferencia)>0:
             tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')],order='fecha asc',limit=1)
