@@ -54,6 +54,7 @@ class WizardActualizarRubro(models.Model):
 
             if contador==numero_cuota:
                 break
+        vls=[]                                                
 
         monto_finan_contrato = sum(self.contrato_id.tabla_amortizacion.mapped(variable))
         monto_finan_contrato = round(monto_finan_contrato,2)
