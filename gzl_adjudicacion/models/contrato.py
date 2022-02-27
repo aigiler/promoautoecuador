@@ -564,7 +564,7 @@ class Contrato(models.Model):
 
 
         return {'type': 'ir.actions.act_window',
-                'name': 'Validar Pago',
+                'name': 'Adelantar Pago',
                 'res_model': 'wizard.adelantar.cuotas',
                 'target': 'new',
                 'view_mode': 'form',
@@ -640,7 +640,7 @@ class Contrato(models.Model):
 
 
         return {'type': 'ir.actions.act_window',
-                'name': 'Validar Pago',
+                'name': 'Actualizar Rubro',
                 'res_model': 'wizard.actualizar.rubro',
                 'target': 'new',
                 'view_mode': 'form',
@@ -810,7 +810,7 @@ class ContratoEstadoCuenta(models.Model):
 
 
         return {'type': 'ir.actions.act_window',
-                'name': 'Validar Pago',
+                'name': 'Pagar Cuota',
                 'res_model': 'wizard.pago.cuota.amortizacion.contrato',
                 'target': 'new',
                 'view_mode': 'form',

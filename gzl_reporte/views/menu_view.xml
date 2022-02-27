@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 	<menuitem id="menu_documentos_coporativos_principal" 
-	name="Reportes" web_icon="gzl_reporte,static/description/resumen.jpg"/>
+	name="Reportes" parent="gzl_adjudicacion.menu_principal_adjudicaciones"  />
 
 	<menuitem id="menu_reporte" parent="menu_documentos_coporativos_principal" 
 	name="Reportes"/>
