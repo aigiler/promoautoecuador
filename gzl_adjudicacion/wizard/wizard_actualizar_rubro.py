@@ -33,27 +33,39 @@ class WizardActualizarRubro(models.Model):
         year=self.anio
         valor=self.monto/self.diferido
 
-        self.funcion_modificar_contrato_por_rubro_seguro(valor,self.rubro,numero_cuota,month,year)
+        self.funcion_modificar_contrato_por_rubro_seguro(valor,self.rubro,numero_cuota,month,year,self.diferido)
 
 
 
-    def funcion_modificar_contrato_por_rubro_seguro(self,valor,variable,numero_cuota,month,year):
+    def funcion_modificar_contrato_por_rubro_seguro(self,valor,variable,numero_cuota,month,year,diferido):
 
 
         month=month
         year=year
 
-        obj_detalle=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.fecha.year==year and l.fecha.month==month)
 
+        obj_detalle=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.fecha.year==year and l.fecha.month==month,limit=1)
 
+        cuota_inicial=int(obj_detalle.numero_cuota)
         contador=0
         detalle_a_pagar=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota)>=int(obj_detalle.numero_cuota))
-        for detalle in detalle_a_pagar:
-            detalle.write({variable:valor})
-            contador+=1
 
-            if contador==numero_cuota:
-                break
+        for range in (0,diferido):
+
+            obj_detalle=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota)==cuota_inicial)
+            obj_detalle.write({variable:valor})
+            cuota_inicial+=1
+            
+
+
+
+
+
+
+
+
+
+
         vls=[]                                                
 
         monto_finan_contrato = sum(self.contrato_id.tabla_amortizacion.mapped(variable))
