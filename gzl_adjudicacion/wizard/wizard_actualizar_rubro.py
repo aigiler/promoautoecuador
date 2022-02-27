@@ -44,17 +44,17 @@ class WizardActualizarRubro(models.Model):
         year=year
 
 
-        obj_detalle=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.fecha.year==year and l.fecha.month==month,limit=1)
+        obj_detalle=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.fecha.year==year and l.fecha.month==month)
 
         cuota_inicial=int(obj_detalle.numero_cuota)
-        contador=0
         detalle_a_pagar=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota)>=int(obj_detalle.numero_cuota))
-
-        for range in (0,diferido):
+        id_detalles=[]
+        for i in range(0,diferido):
 
             obj_detalle=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota)==cuota_inicial)
             obj_detalle.write({variable:valor})
             cuota_inicial+=1
+            id_detalles.append(obj_detalle.id)
             
 
 
@@ -80,12 +80,12 @@ class WizardActualizarRubro(models.Model):
             else:
                 valor_a_restar= (valor_sobrante/parte_decimal)*0.01
 
-            obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')] , order ='fecha desc')
+            obj_contrato=self.env['contrato.estado.cuenta'].browse(id_detalles)
             for c in obj_contrato:
                 if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
 
                     c.update({
-                        variable: c.cuota_capital - valor_a_restar,
+                        variable: c.mapped(variable)[0] - valor_a_restar,
                         'contrato_id':self.contrato_id.id,
                     })
                     vls.append(valor_sobrante)
@@ -102,14 +102,14 @@ class WizardActualizarRubro(models.Model):
             else:
                 valor_a_restar= (valor_sobrante/parte_decimal)*0.01
 
-            obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')] , order ='fecha desc')
+            obj_contrato=self.env['contrato.estado.cuenta'].browse(id_detalles)
 
             for c in obj_contrato:
 
                 if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
                     #raise ValidationError(str(valor_sobrante)+'--'+str(parte_decimal)+'----'+str(valor_a_restar))
                     c.update({
-                        'cuota_capital': c.cuota_capital + valor_a_restar,
+                        variable: c.mapped(variable)[0] + valor_a_restar,
                         'contrato_id':self.contrato_id.id,
                     })  
                     vls.append(valor_sobrante)
