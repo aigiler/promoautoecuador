@@ -14,11 +14,15 @@
                 <field name="stage_anterior_id" attrs="{'invisible':[('restringir_movimiento','=',False)]}"/>
                 <field name="stage_siguiente_id" attrs="{'invisible':[('restringir_movimiento','=',False)]}"/>
                 <field name="solicitar_adjunto_documento"/>
-                <field name="crear_reunion_en_calendar"/>
                 <field name="rol"/>
+                <field name="crear_reunion_en_calendar"/>
+                <field name="notificar_delegado"/>
+                <field name="notificar_postvneta"/>
+                <field name="notificar_facturacion"/>
+                <field name="crear_factura"/>
+                <field name="notificar_nomina"/>
 
-
-                
+       
             </xpath>
         </field>
     </record>
