@@ -67,7 +67,7 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
 
 
         #factura.action_post()
-        #pago.post()
+        pago.post()
         self.tabla_amortizacion_id.calcular_monto_pagado()
         self.tabla_amortizacion_id.estado_pago='pendiente'
 
@@ -77,7 +77,10 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
             factura = self.env['account.move'].create({
                         'type': 'out_invoice',
                         'partner_id': self.tabla_amortizacion_id.contrato_id.cliente.id,
+                
+                
                         'invoice_line_ids': [(0, 0, {
+
                             'quantity': 1,
                             'price_unit': self.tabla_amortizacion_id.cuota_adm + self.tabla_amortizacion_id.iva_adm,
                             'name': self.tabla_amortizacion_id.contrato_id.cliente.name+' - Cuota '+self.tabla_amortizacion_id.numero_cuota,
