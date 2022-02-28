@@ -36,9 +36,9 @@ class WizardAdelantarCuotas(models.Model):
     @api.depends('monto_a_pagar')
     def calcular_numero_cuotas_a_cancelar(self):
         for rec in self:
-            acum=0
             contador=0
             tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')],order='fecha desc')
+            acum=tabla[0].saldo
 
             while(acum<self.monto_a_pagar):
 
@@ -61,38 +61,40 @@ class WizardAdelantarCuotas(models.Model):
         tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')],order='fecha desc')
 
 
-
-
-        acum=0
         contador=0
+        acum=tabla[0].saldo
         while(acum<self.monto_a_pagar):
+            detalle=tabla[contador]
 
             dct={
-            'tabla_amortizacion_id':tabla[contador].id,
+            'tabla_amortizacion_id':detalle.id,
             'payment_date':self.payment_date,
             'journal_id':self.journal_id.id,
             'payment_method_id':self.payment_method_id.id,
-            'amount':tabla[contador].saldo
+            'amount':detalle.saldo
             }
+            
             pago=self.env['wizard.pago.cuota.amortizacion.contrato'].create(dct)
             pago.validar_pago(True)
 
-            acum=acum+tabla[contador].saldo
-
+            acum=acum+dct['amount']
             contador+=1
 
+            
+            
+            
+            
         diferencia=acum-self.monto_a_pagar
-
         if abs(diferencia)>0:
             tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')],order='fecha asc',limit=1)
-            if len(tabla)>1:
+            if len(tabla)==1:
                 dct={
 
                 'tabla_amortizacion_id':tabla.id,
                 'payment_date':self.payment_date,
                 'journal_id':self.journal_id.id,
                 'payment_method_id':self.payment_method_id.id,
-                'amount':abs(diferencia)
+                'amount':abs(round(diferencia,2))
 
                 }
                 pago=self.env['wizard.pago.cuota.amortizacion.contrato'].create(dct)
