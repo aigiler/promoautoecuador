@@ -47,3 +47,6 @@ class Stage(models.Model):
 
     notificar_delegado = fields.Boolean( string='Notificar Delegado' )
     notificar_postvneta = fields.Boolean( string='Notificar Postventa' )
+    notificar_facturacion = fields.Boolean( string='Notificar Facturacion' )
+    crear_factura = fields.Boolean( string='Notificar Facturacion' )
+    notificar_nomina = fields.Boolean( string='Notificar Nómina' )

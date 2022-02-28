@@ -50,26 +50,12 @@ class Comision(models.Model):
         for cargo in cargos_comisiones:
             
             empleados=self.env['hr.employee'].search([('job_id','=',cargo)])
-         #   if cargo==31:
-        #        raise ValidationError(empleados)
+
             tipo_comision=self.env['comision'].search([('cargo_id','=',cargo)],limit=1)
             listaComision=[]
 
             if len(tipo_comision)>0:
                 
-                if tipo_comision.logica=='asesor':
-                    for empleado in empleados:
-                        monto_comision=0
-                        leads = self.env['crm.lead'].search([('user_id','=',empleados.user_id.id),('active','=',True),('fecha_ganada','>=',fecha_actual),('fecha_ganada','<=',fecha_fin)])
-                       # raise ValidationError(str(leads))
-                        
-                        monto_ganado= sum(leads.mapped("planned_revenue"))
-                        comision_tabla=self.env['comision'].search([('cargo_id','=',cargo),('valor_min','<=',monto_ganado),('valor_max','>=',monto_ganado)],limit=1)
-                        if len(comision_tabla)>0:
-                            monto_comision=(comision_tabla.comision*monto_ganado/100) + comision_tabla.bono
-
-                        listaComision.append({'empleado_id':empleado.id,'comision':monto_comision})
-
                 if tipo_comision.logica=='supervisor':
 
                     for empleado in empleados:

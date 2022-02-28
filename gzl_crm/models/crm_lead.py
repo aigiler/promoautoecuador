@@ -32,6 +32,7 @@ class CrmLead(models.Model):
     postventa_id = fields.Many2one('crm.team',string="PostVenta",track_visibility='onchange' )
 
 
+    valor_inscripcion = fields.Float(string='Valor de inscripción',track_visibility='onchange')
 
 
 
@@ -44,18 +45,38 @@ class CrmLead(models.Model):
     @api.constrains("stage_id")
     def actualizar_equipo_asignado_por_estado(self, ):
 
-        if stage_id.rol=='comercial':
+        if self.stage_id.rol=='comercial':
             self.equipo_asigando=self.team_id
 
-        if stage_id.rol=='delegado':
+        if self.stage_id.rol=='delegado':
             self.equipo_asigando=self.delegado_id
 
 
-        if stage_id.rol=='postventa':
+        if self.stage_id.rol=='postventa':
             self.equipo_asigando=self.postventa_id
 
 
+        if self.stage_id.crear_factura:
+            self.equipo_asigando=self.postventa_id
+            impuesto_iva12=self.env['account.tax'].search([('description','=','401')],limit=1)
+            hoy=date.today()
 
+            factura = self.env['account.move'].create({
+                        'type': 'out_invoice',
+                        'partner_id': self.partner_id.id,
+                        'invoice_user_id': self.user_id.id,
+                        'team_id': self.team_id.id,
+                
+                
+                        'invoice_line_ids': [(0, 0, {
+                            'tax_ids':  impuesto_iva12,
+                            'quantity': 1,
+                            'price_unit': self.valor_inscripcion ,
+                            'name': 'Valor de Inscripción',
+                        })],
+                        'invoice_date':hoy,
+                    })
+            self.factura_inscripcion_id=factura.id
 
 
 
@@ -89,7 +110,6 @@ class CrmLead(models.Model):
 
         for cargo in cargos_comisiones:
             
-            empleados=self.env['hr.employee'].search([('job_id','=',cargo),('user_id','=',user_id)])
          #   if cargo==31:
         #        raise ValidationError(empleados)
             tipo_comision=self.env['comision'].search([('cargo_id','=',cargo)],limit=1)
@@ -98,23 +118,53 @@ class CrmLead(models.Model):
             if len(tipo_comision)>0:
                 
                 if tipo_comision.logica=='asesor':
+
+                    empleados=self.env['hr.employee'].search([('job_id','=',cargo),('user_id','=',user_id)])
                     for empleado in empleados:
                         monto_comision=0
-                        leads = self.env['crm.lead'].search([('user_id','=',empleados.user_id.id),('active','=',True),('fecha_ganada','>=',fecha_actual),('fecha_ganada','<=',fecha_fin)])
-                       # raise ValidationError(str(leads))
+                        leads = self.env['crm.lead'].browse(self.id)
                         
-                        monto_ganado= sum(leads.mapped("planned_revenue"))
+                        monto_ganado= self.factura_inscripcion_id.amount_residual
                         comision_tabla=self.env['comision'].search([('cargo_id','=',cargo),('valor_min','<=',monto_ganado),('valor_max','>=',monto_ganado)],limit=1)
                         if len(comision_tabla)>0:
                             monto_comision=(comision_tabla.comision*monto_ganado/100) + comision_tabla.bono
 
-                        listaComision.append({'empleado_id':empleado.id,'comision':monto_comision})
+                        listaComision.append({'empleado_id':empleado.id,'comision':monto_comision,'tipo_comision':tipo_comision.logica})
+
+                if tipo_comision.logica=='supervisor':
+                    empleados=self.env['hr.employee'].search([('job_id','=',cargo),('user_id','=',self.supervisor.id)])
+
+                    for empleado in empleados:
+                        monto_comision=0
+                        leads = self.env['crm.lead'].browse(self.id)
+                        monto_ganado= self.factura_inscripcion_id.amount_residual
+                        comision_tabla=self.env['comision'].search([('cargo_id','=',cargo),('valor_min','<=',monto_ganado),('valor_max','>=',monto_ganado)],limit=1)
+                        if comision_tabla>0:
+                            monto_comision=comision_tabla.comision*monto_ganado + comision_tabla.bono
+
+                        listaComision.append({'empleado_id':empleado.id,'comision':monto_comision,'tipo_comision':tipo_comision.logica})
+
+                if tipo_comision.logica=='jefe' or tipo_comision.logica=='gerente':
+                    empleados=self.env['hr.employee'].search([('job_id','=',cargo.cargo_id.id)])
+
+                    for empleado in empleados:
+                        monto_comision=0
+                        leads = self.env['crm.lead'].browse(self.id)
+                        monto_ganado= self.factura_inscripcion_id.amount_residual
+                        comision_tabla=self.env['comision'].search([('cargo_id','=',cargo),('valor_min','<=',monto_ganado),('valor_max','>=',monto_ganado)],limit=1)
+                        if comision_tabla>0:
+                            monto_comision=comision_tabla.comision*monto_ganado + comision_tabla.bono
+
+                        listaComision.append({'empleado_id':empleado.id,'comision':monto_comision,'tipo_comision':tipo_comision.logica})
+
 
 
 
         comision=self.env['hr.payslip.input.type'].search([('code','=','COMI')])
 
         for empleado in listaComision:
+
+
             dct={
             'date':  hoy  ,
             'input_type_id': comision.id   ,
@@ -382,9 +432,9 @@ class CrmLead(models.Model):
     def write(self, vals):
         
 
-        if self.fecha_ganada and not(vals.get('date_action_last',False)):
+     #   if self.fecha_ganada and not(vals.get('date_action_last',False)):
             
-            raise ValidationError("No se puede editar en estado ganado")
+       #     raise ValidationError("No se puede editar en estado ganado")
 
 
         if vals.get('stage_id',False) and self.stage_id.restringir_movimiento:
@@ -404,8 +454,8 @@ class CrmLead(models.Model):
         if  vals.get('stage_id',False):
             stage_id = self.env['crm.stage'].browse(vals['stage_id'])
             if stage_id.is_won:
-                if not (self.factura_inscripcion_id.id ):
-                    raise ValidationError("Debe registrarse la factura de inscripción para que sea marcada como válida")
+                if  (self.factura_inscripcion_id.amount_residual==0 ):
+                    raise ValidationError("La factura de registrarse como pagada.  Notificar a área Contable")
 
 
 

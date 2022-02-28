@@ -28,6 +28,7 @@
                 <field name="surcursal_id"></field>
                 <field name="provincia_id"></field>
                 <field name="ciudad_id"></field>
+                <field name="valor_inscripcion"></field>
 
 
 

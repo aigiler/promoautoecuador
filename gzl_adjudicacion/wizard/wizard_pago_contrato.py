@@ -73,6 +73,7 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
 
 
         if self.tabla_amortizacion_id.saldo==0:
+            impuesto_iva12=self.env['account.tax'].search([('description','=','401')],limit=1)
 
             factura = self.env['account.move'].create({
                         'type': 'out_invoice',
@@ -80,9 +81,9 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
                 
                 
                         'invoice_line_ids': [(0, 0, {
-
+                            'tax_ids':  impuesto_iva12,
                             'quantity': 1,
-                            'price_unit': self.tabla_amortizacion_id.cuota_adm + self.tabla_amortizacion_id.iva_adm,
+                            'price_unit': self.tabla_amortizacion_id.cuota_adm ,
                             'name': self.tabla_amortizacion_id.contrato_id.cliente.name+' - Cuota '+self.tabla_amortizacion_id.numero_cuota,
                         })],
                         'invoice_date':self.payment_date,
@@ -105,4 +106,4 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
             else:
                 motivo=self.env.ref('gzl_adjudicacion.calificacion_5')
 
-            obj_calificador.create({'partner_id': self.tabla_amortizacion_id.contrato_id.cliente.id,'motivo':motivo.motivo,'calificacion':motivo.calificacion})
+            obj_calificador.create({'partner_id': self.tabla_amortizacion_id.contrato_id.cliente.id,'motivo':motivo.motivo,'calificacion':motivo.calificacion})1
