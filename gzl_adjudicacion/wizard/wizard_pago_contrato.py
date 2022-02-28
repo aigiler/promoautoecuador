@@ -106,4 +106,4 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
             else:
                 motivo=self.env.ref('gzl_adjudicacion.calificacion_5')
 
-            obj_calificador.create({'partner_id': self.tabla_amortizacion_id.contrato_id.cliente.id,'motivo':motivo.motivo,'calificacion':motivo.calificacion})1
+            obj_calificador.create({'partner_id': self.tabla_amortizacion_id.contrato_id.cliente.id,'motivo':motivo.motivo,'calificacion':motivo.calificacion})
