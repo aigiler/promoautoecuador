@@ -38,7 +38,7 @@
         <menuitem 
         id = "menu_action_correo_nomina_mensual"
         name = "Correo Nomina Mensual"  
-        parent="menu_hr_payroll_payslips" 
+        parent="hr_payroll.menu_hr_payroll_payslips" 
         sequence="1" 
         action="action_correo_nomina_mensual"/>
 
