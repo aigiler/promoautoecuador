@@ -1,7 +1,7 @@
 {
     "name" : "gzl_crm",
     "version" : "0.1",
-    'depends' :['crm','sale','gzl_adjudicacion'
+    'depends' :['crm','sale','gzl_adjudicacion','gzl_account'
                 ],
     "author" : "Yadira Quimis Gizlo",
     "description" : """
@@ -12,6 +12,9 @@
    
     "data" : [   
                 "data/data_accion_planificada.xml",
+                "data/data_invoice.xml",
+
+                
                 "security/ir.model.access.csv",
                 "views/crm_lead_view.xml", 
                 "views/crm_lead_simplified_form.xml", 

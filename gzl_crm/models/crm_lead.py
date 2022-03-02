@@ -80,6 +80,34 @@ class CrmLead(models.Model):
 
 
 
+            self.envio_correos_plantilla('email_financiero_promoauto',factura.id)
+
+
+
+
+    @api.multi
+    def envio_correos_plantilla(self, plantilla,id_envio):
+
+        try:
+            ir_model_data = self.env['ir.model.data']
+            template_id = ir_model_data.get_object_reference('gzl_crm', plantilla)[1]
+        except ValueError:
+            template_id = False
+#Si existe capturo el template
+        if template_id:
+            obj_template=self.env['mail.template'].browse(template_id)
+
+            email_id=obj_template.send_mail(id_envio)
+
+
+
+
+
+
+
+
+
+
 
     @api.constrains("stage_id")
     def guardar_fecha_como_ganada(self, ):
