@@ -27,7 +27,7 @@ import shutil
 class Nomina_mensual(models.TransientModel):
     _name = "correo.nomina.mensual"
 
-    employee_ids = fields.Many2many('hr.employee', 'hr_employee_group_rel', 'payslip_id', 'employee_id', 'Employees',
+    employee_ids_correo = fields.Many2many('hr.employee', 'hr_employee_group_rel', 'payslip_id', 'employee_id', 'Employees',
                                     default=lambda self: self._get_employees(), required=True)
 
 
