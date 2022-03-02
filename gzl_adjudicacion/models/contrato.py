@@ -451,7 +451,7 @@ class Contrato(models.Model):
         hoy=date.today()
         dateMonthStart="%s-%s-%s" %(hoy.year, hoy.month,(calendar.monthrange(hoy.year, hoy.month)[1]))
 
-
+        dateMonthStart=datetime.strptime(dateMonthStart, '%Y-%m-%d').date()
 
         numeroCuotasMaximo =  int(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.maximo_cuotas_vencidas'))
 
