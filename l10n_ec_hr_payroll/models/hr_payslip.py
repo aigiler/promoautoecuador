@@ -220,8 +220,10 @@ class hrPayslipRun(models.Model):
     def xslx_body(self,workbook,query_totales,query,name,comision):
         bold = workbook.add_format({'bold':True,'border':1,'bg_color':'#067eb2'})
         bold.set_center_across()
+        bold2 = workbook.add_format({'bold':True,'border':0})
+        bold2.set_center_across()
         number = workbook.add_format({'num_format':'$#,##0.00','border':1})
-        number2 = workbook.add_format({'num_format':'$#,##0.00','border':1,'bg_color':'#067eb8','bold':True})
+        number2 = workbook.add_format({'num_format':'$#,##0.00','border':1,'bg_color':'#442484','bold':True})
         border = workbook.add_format({'border':1})
         condition = " and hpr.id=%s group by hpl.sequence, hpl.name" %(self.id)
         struct_id = False
@@ -234,11 +236,14 @@ class hrPayslipRun(models.Model):
         col = 2
         colspan = 0
         sheet = workbook.add_worksheet(name)
+        sheet.insert_image('A1', "any_name.png",
+                           {'image_data':  BytesIO(base64.b64decode( self.env.company.logo)), 'x_scale': 0.5, 'y_scale': 0.5,'x_scale': 0.5,
+                            'y_scale':     0.5, 'align': 'center'})
         sheet.write(1,4,name.upper())
-        sheet.write(col,colspan,'Mes')
-        sheet.write(col,colspan+1,self.date_start.month)
-        sheet.write(col,colspan+2,'Periodo')
-        sheet.write(col,colspan+3,self.date_start.year)
+        sheet.write(col,colspan,'Mes: ',bold2)
+        sheet.write(col,colspan+1,self.date_start.month,bold2)
+        sheet.write(col,colspan+2,'Periodo: ',bold2)
+        sheet.write(col,colspan+3,self.date_start.year,bold2)
         col += 1
         sheet.write(col,colspan,'No.',bold)
         sheet.write(col,colspan+1,'Localidad',bold)
