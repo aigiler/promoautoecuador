@@ -218,12 +218,12 @@ class hrPayslipRun(models.Model):
         }
     
     def xslx_body(self,workbook,query_totales,query,name,comision):
-        bold = workbook.add_format({'bold':True,'border':1,'bg_color':'#067eb2'})
+        bold = workbook.add_format({'bold':True,'border':1,'bg_color':'#442484'})
         bold.set_center_across()
         bold2 = workbook.add_format({'bold':True,'border':0})
         bold2.set_center_across()
         number = workbook.add_format({'num_format':'$#,##0.00','border':1})
-        number2 = workbook.add_format({'num_format':'$#,##0.00','border':1,'bg_color':'#067eb2','bold':True})
+        number2 = workbook.add_format({'num_format':'$#,##0.00','border':1,'bg_color':'#442484','bold':True})
         border = workbook.add_format({'border':1})
         condition = " and hpr.id=%s group by hpl.sequence, hpl.name" %(self.id)
         struct_id = False
