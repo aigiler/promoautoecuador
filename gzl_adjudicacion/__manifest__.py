@@ -19,6 +19,7 @@
                     'data/data_numero_meses.xml' ,   
                     'data/data_roles.xml',
                     'data/ir_cron.xml',
+                    'data/data_mail_template.xml',
 
 
                     'security/ir.model.access.csv',

@@ -432,11 +432,10 @@ class Contrato(models.Model):
 
 
 
-
+###Envio de correo segun bandera en mora
 
     def job_enviar_correos_contratos_en_mora(self, ):
 
-        hoy=date.today()
         contratos=self.env['contrato'].search([('en_mora','=',True)])
 
         for contrato in contratos:
