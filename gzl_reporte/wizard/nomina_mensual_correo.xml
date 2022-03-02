@@ -7,13 +7,13 @@
                 <form string="Correo Nomina Mensual">
                     <group>
                         <group colspan="4" >
-                            <separator string="Employees" colspan="4"/>
+                            <separator string="Enviar Rol de pago a Empleados" colspan="4"/>
                             <newline/>
-                            <field name="employee_ids" nolabel="1"/>
+                            <field name="employee_ids_correo" nolabel="1"/>
                         </group>
                     </group>
                     <footer>
-                        <button 
+                        <button name="send_mail_payrol"
                                 string="Enviar Correo"
                                 type="object"
                                 class="oe_highlight" />
@@ -38,7 +38,7 @@
         <menuitem 
         id = "menu_action_correo_nomina_mensual"
         name = "Correo Nomina Mensual"  
-        parent="menu_hr_payroll_payslips" 
+        parent="hr_payroll.menu_hr_payroll_payslips" 
         sequence="1" 
         action="action_correo_nomina_mensual"/>
 

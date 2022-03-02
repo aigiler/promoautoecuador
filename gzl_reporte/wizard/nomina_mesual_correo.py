@@ -37,5 +37,21 @@ class Nomina_mensual(models.TransientModel):
     employee_ids_correo = fields.Many2many('hr.employee', 'payslip_id', 'employee_id', 'Employees',
                                     default=lambda self: self._get_employees(), required=True)
 
+    def send_mail_payrol(self):
+        result = self.env['hr.payslip']
+        #for l in self.employee_ids_correo:
+        #    self.envio_correos_plantilla('correo_nomina_mensual',l.id)
+    
+    
+    def envio_correos_plantilla(self, plantilla,id_envio):
 
-  
+        try:
+            ir_model_data = self.env['ir.model.data']
+            template_id = ir_model_data.get_object_reference('gzl_reporte', plantilla)[1]
+        except ValueError:
+            template_id = False
+#Si existe capturo el template
+        if template_id:
+            obj_template=self.env['mail.template'].browse(template_id)
+
+            email_id=obj_template.send_mail(id_envio)  

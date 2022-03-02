@@ -2,13 +2,13 @@
 <odoo>
     <data noupdate="1">
         <!--Email template -->
-        <record id="email_financiero_promoauto" model="mail.template">
-            <field name="name">Plantilla Factura Socio</field>
+        <record id="email_rol_nomina" model="mail.template">
+            <field name="name">Plantilla Envio de Rol</field>
             <field name="email_from">admin@promoauto.com</field>
-            <field name="subject">Facturación de Inscripción Socio ${object.partner_id.name}  </field>
+            <field name="subject">Rol de Pago  ${object.name} </field>
             <field name="partner_to"></field>
             <field name="model_id" ref="base.model_account_move"/>
-            <field name="email_to">financiero@promoauto.dev</field>
+            <field name="email_to">${object.work_email}</field>
             <field name="body_html"><![CDATA[
 
 <div style="padding:0px;width:600px;margin:auto;background: #FFFFFF repeat top /100%;color:#777777">
@@ -22,14 +22,11 @@
 </div>
 <div style="padding:0px;width:600px;margin:auto;background: #FFFFFF repeat top /100%;color:#777777">
 <p>Estimados,
-    </p><p>Esta notificación es para indicarle que se ha generado la factura para el cliente ${object.cliente.name}.
-<p>
-Por el valor de: ${object.amount_total}.
+    </p><p>Esta notificación es para indicarle que se ha generado el rol de pago.
 
-</p>
 
 <p>
-Verificar que todos los datos de la factura sean correctos al validar.
+Verificar que todos los datos del rol  sean correctos al validar.
 </p>
     <p>
     Saludos,
