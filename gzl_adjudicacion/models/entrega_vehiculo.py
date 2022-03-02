@@ -150,6 +150,9 @@ class EntegaVehiculo(models.Model):
     codClienteContrado = fields.Char()
     contratoCliente = fields.Char()
     montoAdjudicado = fields.Monetary(compute='buscar_contrato_partner', currency_field='currency_id', string='Monto Adjudicado')
+    
+    montoEnviadoAsamblea = fields.Monetary( currency_field='currency_id', string='Monto Enviado Asamblea')
+
     garante  = fields.Boolean(string='Garante')
     plazoMeses = fields.Integer(string='Plazo')
     tipoAdj = fields.Char(string='Tipo Adj.')
@@ -671,6 +674,16 @@ class EntegaVehiculo(models.Model):
         contrato.fecha_adjudicado=False
         contrato.estado='activo'
 
+        dct={
+        'grupo_id':contrato.grupo.id,
+        'haber':self.montoEnviadoAsamblea ,
+        'adjudicado_id':contrato.cliente.id,
+        'contrato_id':contrato.id,
+        'state':contrato.state
+        }
+
+
+        transacciones.create(dct)
 
 
 

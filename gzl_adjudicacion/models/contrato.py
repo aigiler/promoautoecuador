@@ -118,7 +118,7 @@ class Contrato(models.Model):
                 rec.codigo_grupo =' '
 
 
-    @api.constrains('state')
+#    @api.constrains('state')
     def crear_registro_fondo_grupo(self):
         if self.grupo and self.state!='borrador':
             self.grupo.calcular_monto_pagado()
@@ -444,7 +444,7 @@ class Contrato(models.Model):
 
 
 
-###  Job para inactivar acorde a contrato
+###  Job para inactivar acorde a cuotas vencidas en el contrato
 
     def job_para_inactivar_contrato(self, ):
 
@@ -459,7 +459,7 @@ class Contrato(models.Model):
 
         for contrato in contratos:
                  
-            lineas_pendientes=contrato.tabla_amortizacion.filtered(lambda l: l.fecha<dateMonthStart.date() and l.estado_pago=='pendiente')
+            lineas_pendientes=contrato.tabla_amortizacion.filtered(lambda l: l.fecha<dateMonthStart and l.estado_pago=='pendiente')
             if len(lineas_pendientes)>=numeroCuotasMaximo:
                 contrato.state='inactivo'
 
@@ -482,6 +482,11 @@ class Contrato(models.Model):
             mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month)
             if len(mes_estado_cuenta)>0:
                 self.envio_correos_plantilla('email_contrato_notificacion_de_pago',contrato.id)
+
+
+
+
+
 
     def cambio_estado_congelar_contrato(self):
         #Cambio de estado
