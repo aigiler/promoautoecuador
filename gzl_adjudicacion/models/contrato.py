@@ -396,6 +396,7 @@ class Contrato(models.Model):
 
 
 
+####Job que coloca la bandera estado en mora de los contratos
     def job_colocar_contratos_en_mora(self, ):
 
         hoy=date.today()
@@ -403,12 +404,12 @@ class Contrato(models.Model):
 
         for contrato in contratos:
             mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month)
-            if len(mes_estado_cuenta)>0:
-                if not mes_estado_cuenta.estado_pago=='pagado':
-                    contrato.en_mora=True
-                else:
+            for mes in mes_estado_cuenta:
+                if  mes.estado_pago=='pagado':
                     contrato.en_mora=False
-
+                else:
+                    contrato.en_mora=True
+#Job para registrar calificacion de contratos en mora
 
     def job_registrar_calificacion_contratos_en_mora(self, ):
 
@@ -421,16 +422,13 @@ class Contrato(models.Model):
             obj_calificador.create({'partner_id': contrato.cliente.id,'motivo':motivo.motivo,'calificacion':motivo.calificacion})
 
 
-        contratos=self.env['contrato'].search([('state','in',['adjudicado','activo'])])
+        contratos=self.env['contrato'].search([('en_mora','=',False)])
 
         for contrato in contratos:
-            mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month)
-            if len(mes_estado_cuenta)>0:
-                if  mes_estado_cuenta=='pagado':
-                    obj_calificador=self.env['calificador.cliente']
-                    motivo=self.env.ref('gzl_adjudicacion.calificacion_1')
-                    obj_calificador.create({'partner_id': contrato.cliente.id,'motivo':motivo.motivo,'calificacion':motivo.calificacion})
 
+            obj_calificador=self.env['calificador.cliente']
+            motivo=self.env.ref('gzl_adjudicacion.calificacion_1')
+            obj_calificador.create({'partner_id': contrato.cliente.id,'motivo':motivo.motivo,'calificacion':motivo.calificacion})
 
 
 
