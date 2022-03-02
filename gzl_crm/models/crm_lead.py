@@ -99,65 +99,60 @@ class CrmLead(models.Model):
         hoy=date.today()
         comisiones=self.env['comision'].search([('active','=',True)])
 
-        cargos_comisiones=list(set(self.env['comision'].search([('active','=',True)]).mapped('cargo_id').ids))
 
  
         fecha_actual="%s-%s-01" % (hoy.year, hoy.month)
         fecha_fin="%s-%s-%s" %(hoy.year, hoy.month,(calendar.monthrange(hoy.year, hoy.month)[1]))
 
-        #raise ValidationError(cargos_comisiones)
+        
+        listaComision=[]
+        
+        #Comision de Asesor
+        
+        
+        empleado=self.env['hr.employee'].search([('user_id','=',user_id)])
+        monto_ganado= self.factura_inscripcion_id.amount_untaxed
+        comision_tabla=self.env['comision'].search([('cargo_id','=',empleado.job_id.id),('valor_min','<=',monto_ganado),('valor_max','>=',monto_ganado)],limit=1)
+        
+        if len(comision_tabla)>0:
+          #  raise ValidationError(str(comision_tabla.comision) + str(comision_tabla.valor_min)+ str(comision_tabla.valor_max))
 
+            monto_comision=(comision_tabla.comision*monto_ganado/100) + comision_tabla.bono
+
+            listaComision.append({'empleado_id':empleado.id,'nombre':empleado.name,'comision':monto_comision,'tipo_comision':'asesor'})
+
+        
+        #Comision de Supervisor
+        empleado=self.env['hr.employee'].search([('user_id','=',self.supervisor.id)])
+        monto_ganado= self.factura_inscripcion_id.amount_untaxed
+        comision_tabla=self.env['comision'].search([('cargo_id','=',empleado.job_id.id),('valor_min','<=',monto_ganado),('valor_max','>=',monto_ganado)],limit=1)
+
+        if len(comision_tabla)>0:
+            monto_comision=(comision_tabla.comision*monto_ganado/100) + comision_tabla.bono
+
+            listaComision.append({'empleado_id':empleado.id,'nombre':empleado.name,'comision':monto_comision,'tipo_comision':'supervisor'})
+
+            
+            
+####Logica Mensual
+            
+        cargos_comisiones_jefe=list(set(self.env['comision'].search([('logica','=','jefe'),('active','=',True)]).mapped('cargo_id').ids))
+        cargos_comisiones_gerente=list(set(self.env['comision'].search([('logica','=','gerente'),('active','=',True)]).mapped('cargo_id').ids))
+        cargos_comisiones=cargos_comisiones_jefe+cargos_comisiones_gerente
 
         for cargo in cargos_comisiones:
-            
-         #   if cargo==31:
-        #        raise ValidationError(empleados)
-            tipo_comision=self.env['comision'].search([('cargo_id','=',cargo)],limit=1)
-            listaComision=[]
+            empleados=self.env['hr.employee'].search([('job_id','=',cargo)])
 
-            if len(tipo_comision)>0:
-                
-                if tipo_comision.logica=='asesor':
+            for empleado in empleados:
+                monto_comision=0
+                monto_ganado= self.factura_inscripcion_id.amount_untaxed
+                comision_tabla=self.env['comision'].search([('cargo_id','=',cargo),('valor_min','<=',monto_ganado),('valor_max','>=',monto_ganado)],limit=1)
+                if len(comision_tabla)>0:
+                    monto_comision=comision_tabla.comision*monto_ganado + comision_tabla.bono
 
-                    empleados=self.env['hr.employee'].search([('job_id','=',cargo),('user_id','=',user_id)])
-                    for empleado in empleados:
-                        monto_comision=0
-                        leads = self.env['crm.lead'].browse(self.id)
-                        
-                        monto_ganado= self.factura_inscripcion_id.amount_residual
-                        comision_tabla=self.env['comision'].search([('cargo_id','=',cargo),('valor_min','<=',monto_ganado),('valor_max','>=',monto_ganado)],limit=1)
-                        if len(comision_tabla)>0:
-                            monto_comision=(comision_tabla.comision*monto_ganado/100) + comision_tabla.bono
-
-                        listaComision.append({'empleado_id':empleado.id,'comision':monto_comision,'tipo_comision':tipo_comision.logica})
-
-                if tipo_comision.logica=='supervisor':
-                    empleados=self.env['hr.employee'].search([('job_id','=',cargo),('user_id','=',self.supervisor.id)])
-
-                    for empleado in empleados:
-                        monto_comision=0
-                        leads = self.env['crm.lead'].browse(self.id)
-                        monto_ganado= self.factura_inscripcion_id.amount_residual
-                        comision_tabla=self.env['comision'].search([('cargo_id','=',cargo),('valor_min','<=',monto_ganado),('valor_max','>=',monto_ganado)],limit=1)
-                        if len(comision_tabla)>0:
-                            monto_comision=comision_tabla.comision*monto_ganado + comision_tabla.bono
-
-                        listaComision.append({'empleado_id':empleado.id,'comision':monto_comision,'tipo_comision':tipo_comision.logica})
-
-                if tipo_comision.logica=='jefe' or tipo_comision.logica=='gerente':
-                    empleados=self.env['hr.employee'].search([('job_id','=',cargo)])
-
-                    for empleado in empleados:
-                        monto_comision=0
-                        leads = self.env['crm.lead'].browse(self.id)
-                        monto_ganado= self.factura_inscripcion_id.amount_residual
-                        comision_tabla=self.env['comision'].search([('cargo_id','=',cargo),('valor_min','<=',monto_ganado),('valor_max','>=',monto_ganado)],limit=1)
-                        if len(comision_tabla)>0:
-                            monto_comision=comision_tabla.comision*monto_ganado + comision_tabla.bono
-
-                        listaComision.append({'empleado_id':empleado.id,'comision':monto_comision,'tipo_comision':tipo_comision.logica})
-
-
+                    listaComision.append({'empleado_id':empleado.id,'nombre':empleado.name,'comision':monto_comision,'tipo_comision':comision_tabla.logica})
+                    
+        raise ValidationError(str(listaComision))
 
 
         comision=self.env['hr.payslip.input.type'].search([('code','=','COMI')])
