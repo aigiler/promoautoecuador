@@ -239,7 +239,7 @@ class hrPayslipRun(models.Model):
         sheet.insert_image('A1', "any_name.png",
                            {'image_data':  BytesIO(base64.b64decode( self.env.company.logo)), 'x_scale': 0.5, 'y_scale': 0.5,'x_scale': 0.5,
                             'y_scale':     0.5, 'align': 'center'})
-        sheet.write(1,4,name.upper())
+        sheet.write(1,4,name.upper(),bold2)
         sheet.write(col,colspan,'Mes: ',bold2)
         sheet.write(col,colspan+1,self.date_start.month,bold2)
         sheet.write(col,colspan+2,'Periodo: ',bold2)
