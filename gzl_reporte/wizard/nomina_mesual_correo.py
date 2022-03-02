@@ -27,10 +27,15 @@ import shutil
 class Nomina_mensual(models.TransientModel):
     _name = "correo.nomina.mensual"
 
+    def _get_available_contracts_domain(self):
+        return [('contract_ids.state', 'in', ('open', 'close')), ('company_id', '=', self.env.company.id)]
+
+    def _get_employees(self):
+        # YTI check dates too
+        return self.env['hr.employee'].search(self._get_available_contracts_domain())
+
     employee_ids_correo = fields.Many2many('hr.employee', 'hr_employee_group_rel', 'payslip_id', 'employee_id', 'Employees',
                                     default=lambda self: self._get_employees(), required=True)
-
-
 
 
   
