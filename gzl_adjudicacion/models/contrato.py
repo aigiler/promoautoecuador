@@ -404,7 +404,7 @@ class Contrato(models.Model):
         for contrato in contratos:
             mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month)
             if len(mes_estado_cuenta)>0:
-                if not mes_estado_cuenta=='pagado':
+                if not mes_estado_cuenta.estado_pago=='pagado':
                     contrato.en_mora=True
                 else:
                     contrato.en_mora=False
