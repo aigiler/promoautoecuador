@@ -432,7 +432,7 @@ class Contrato(models.Model):
 
 
 
-###Envio de correo segun bandera en mora
+###Job que envia correos segun bandera en mora
 
     def job_enviar_correos_contratos_en_mora(self, ):
 
@@ -444,13 +444,12 @@ class Contrato(models.Model):
 
 
 
-
-
+###  Job para inactivar acorde a contrato
 
     def job_para_inactivar_contrato(self, ):
 
         hoy=date.today()
-        dateMonthStart="%s-%s-01" % (hoy.year, hoy.mes)
+        dateMonthStart="%s-%s-01" % (hoy.year, hoy.month)
         dateMonthStart=datetime.strptime(dateMonthStart, '%Y-%m-%d') 
 
         numeroCuotasMaximo =  int(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.maximo_cuotas_vencidas'))
@@ -459,7 +458,7 @@ class Contrato(models.Model):
 
         for contrato in contratos:
                  
-            lineas_pendientes=contrato.tabla_amortizacion.filtered(lambda l: l.fecha<dateMonthStart and estado_pago=='pendiente')
+            lineas_pendientes=contrato.tabla_amortizacion.filtered(lambda l: l.fecha<dateMonthStart.date() and l.estado_pago=='pendiente')
             if len(lineas_pendientes)>=numeroCuotasMaximo:
                 contrato.state='inactivo'
 
