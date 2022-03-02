@@ -139,7 +139,7 @@ class CrmLead(models.Model):
                         leads = self.env['crm.lead'].browse(self.id)
                         monto_ganado= self.factura_inscripcion_id.amount_residual
                         comision_tabla=self.env['comision'].search([('cargo_id','=',cargo),('valor_min','<=',monto_ganado),('valor_max','>=',monto_ganado)],limit=1)
-                        if comision_tabla>0:
+                        if len(comision_tabla)>0:
                             monto_comision=comision_tabla.comision*monto_ganado + comision_tabla.bono
 
                         listaComision.append({'empleado_id':empleado.id,'comision':monto_comision,'tipo_comision':tipo_comision.logica})
@@ -152,7 +152,7 @@ class CrmLead(models.Model):
                         leads = self.env['crm.lead'].browse(self.id)
                         monto_ganado= self.factura_inscripcion_id.amount_residual
                         comision_tabla=self.env['comision'].search([('cargo_id','=',cargo),('valor_min','<=',monto_ganado),('valor_max','>=',monto_ganado)],limit=1)
-                        if comision_tabla>0:
+                        if len(comision_tabla)>0:
                             monto_comision=comision_tabla.comision*monto_ganado + comision_tabla.bono
 
                         listaComision.append({'empleado_id':empleado.id,'comision':monto_comision,'tipo_comision':tipo_comision.logica})
