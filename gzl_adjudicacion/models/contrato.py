@@ -396,7 +396,7 @@ class Contrato(models.Model):
 
 
 
-####Job que coloca la bandera estado en mora de los contratos
+####Job que coloca la bandera estado en mora de los contratos se ejecuta cada minuto
     def job_colocar_contratos_en_mora(self, ):
 
         hoy=date.today()
@@ -409,7 +409,7 @@ class Contrato(models.Model):
                     contrato.en_mora=False
                 else:
                     contrato.en_mora=True
-#Job para registrar calificacion de contratos en mora
+#Job para registrar calificacion de contratos en mora de acuerdo al job job_colocar_contratos_en_mora se ejecuta el 6 de cada mes
 
     def job_registrar_calificacion_contratos_en_mora(self, ):
 
@@ -429,6 +429,8 @@ class Contrato(models.Model):
             obj_calificador=self.env['calificador.cliente']
             motivo=self.env.ref('gzl_adjudicacion.calificacion_1')
             obj_calificador.create({'partner_id': contrato.cliente.id,'motivo':motivo.motivo,'calificacion':motivo.calificacion})
+
+
 
 
 
