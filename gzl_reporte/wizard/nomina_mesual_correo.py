@@ -34,7 +34,7 @@ class Nomina_mensual(models.TransientModel):
         # YTI check dates too
         return self.env['hr.employee'].search(self._get_available_contracts_domain())
 
-    employee_ids_correo = fields.Many2many('hr.employee', 'hr_employee_group_rel', 'payslip_id', 'employee_id', 'Employees',
+    employee_ids_correo = fields.Many2many('hr.employee', 'payslip_id', 'employee_id', 'Employees',
                                     default=lambda self: self._get_employees(), required=True)
 
 
