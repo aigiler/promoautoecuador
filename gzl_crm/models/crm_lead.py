@@ -145,7 +145,7 @@ class CrmLead(models.Model):
                         listaComision.append({'empleado_id':empleado.id,'comision':monto_comision,'tipo_comision':tipo_comision.logica})
 
                 if tipo_comision.logica=='jefe' or tipo_comision.logica=='gerente':
-                    empleados=self.env['hr.employee'].search([('job_id','=',cargo.cargo_id.id)])
+                    empleados=self.env['hr.employee'].search([('job_id','=',cargo)])
 
                     for empleado in empleados:
                         monto_comision=0
