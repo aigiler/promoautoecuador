@@ -121,54 +121,31 @@ class CrmLead(models.Model):
 
             listaComision.append({'empleado_id':empleado.id,'nombre':empleado.name,'comision':monto_comision,'tipo_comision':'asesor'})
 
-        
-        #Comision de Supervisor
-        empleado=self.env['hr.employee'].search([('user_id','=',self.supervisor.id)])
-        monto_ganado= self.factura_inscripcion_id.amount_untaxed
-        comision_tabla=self.env['comision'].search([('cargo_id','=',empleado.job_id.id),('valor_min','<=',monto_ganado),('valor_max','>=',monto_ganado)],limit=1)
-
-        if len(comision_tabla)>0:
-            monto_comision=(comision_tabla.comision*monto_ganado/100) + comision_tabla.bono
-
-            listaComision.append({'empleado_id':empleado.id,'nombre':empleado.name,'comision':monto_comision,'tipo_comision':'supervisor'})
-
-            
-            
-####Logica Mensual
-            
-        cargos_comisiones_jefe=list(set(self.env['comision'].search([('logica','=','jefe'),('active','=',True)]).mapped('cargo_id').ids))
-        cargos_comisiones_gerente=list(set(self.env['comision'].search([('logica','=','gerente'),('active','=',True)]).mapped('cargo_id').ids))
-        cargos_comisiones=cargos_comisiones_jefe+cargos_comisiones_gerente
-
-        for cargo in cargos_comisiones:
-            empleados=self.env['hr.employee'].search([('job_id','=',cargo)])
-
-            for empleado in empleados:
-                monto_comision=0
-                monto_ganado= self.factura_inscripcion_id.amount_untaxed
-                comision_tabla=self.env['comision'].search([('cargo_id','=',cargo),('valor_min','<=',monto_ganado),('valor_max','>=',monto_ganado)],limit=1)
-                if len(comision_tabla)>0:
-                    monto_comision=comision_tabla.comision*monto_ganado + comision_tabla.bono
-
-                    listaComision.append({'empleado_id':empleado.id,'nombre':empleado.name,'comision':monto_comision,'tipo_comision':comision_tabla.logica})
-                    
-        raise ValidationError(str(listaComision))
 
 
         comision=self.env['hr.payslip.input.type'].search([('code','=','COMI')])
 
+
         for empleado in listaComision:
-
-
             dct={
             'date':  hoy  ,
-            'input_type_id': comision.id   ,
+            'input_type_id': comision   ,
             'employee_id':empleado['empleado_id']  ,
             'amount':empleado['comision']   ,
 
             }
             comision=self.env['hr.input'].create(dct)
+            dct2={
+                'user_id':  user_id  ,
+                'supervisor_id':  self.supervisor.id  ,
+                'lead_id':  self.id  ,
+                'valor_inscripcion':   self.factura_inscripcion_id.amount_untaxed  ,
+                'comision':  comision  ,
+                'cargo':  empleado.job_id.id  ,
+                'empleado_id':  empleado.id  }
 
+
+            comision_bitacora=self.env['comision.bitacora'].create(dct2)
 
 
 
