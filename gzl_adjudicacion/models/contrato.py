@@ -449,8 +449,9 @@ class Contrato(models.Model):
     def job_para_inactivar_contrato(self, ):
 
         hoy=date.today()
-        dateMonthStart="%s-%s-01" % (hoy.year, hoy.month)
-        dateMonthStart=datetime.strptime(dateMonthStart, '%Y-%m-%d') 
+        dateMonthStart="%s-%s-%s" %(hoy.year, hoy.month,(calendar.monthrange(hoy.year, hoy.month)[1]))
+
+
 
         numeroCuotasMaximo =  int(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.maximo_cuotas_vencidas'))
 
@@ -468,6 +469,7 @@ class Contrato(models.Model):
 
 
 
+####Jo para enviar correo contrato pago por vencer
 
 
 

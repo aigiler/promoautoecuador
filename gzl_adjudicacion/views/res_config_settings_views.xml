@@ -42,7 +42,7 @@
 
                                         <div class="row">
                                             <label string="Máximo número de Cuotas para Inactivar" for="numero_cuotas_para_inactivar" class="col-lg-3 o_light_label"/>
-                                            <field name="numero_cuotas_para_inactivar" readonly="1"/>
+                                            <field name="numero_cuotas_para_inactivar" readonly="0"/>
                                         </div>
 
 
