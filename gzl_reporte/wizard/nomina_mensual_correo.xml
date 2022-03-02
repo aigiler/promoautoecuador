@@ -13,7 +13,7 @@
                         </group>
                     </group>
                     <footer>
-                        <button name="print_report_xls"
+                        <button 
                                 string="Enviar Correo"
                                 type="object"
                                 class="oe_highlight" />
