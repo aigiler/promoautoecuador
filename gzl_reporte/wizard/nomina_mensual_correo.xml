@@ -17,6 +17,10 @@
                             <newline/>
                             <field name="employee_ids_correo" nolabel="1"/>
                         </group>
+                        <button name="actualizar_empleados_payroll"
+                                string="Consultar"
+                                type="object"
+                                class="oe_highlight" />
                     </group>
                     <footer>
                         <button name="send_mail_payrol"

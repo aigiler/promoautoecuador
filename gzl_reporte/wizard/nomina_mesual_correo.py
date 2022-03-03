@@ -45,6 +45,9 @@ class Nomina_mensual(models.TransientModel):
 
     work_email = fields.Char('Work Email')
     url_doc = fields.Char('Url doc')
+
+    def actualizar_empleados_payroll(self):   
+        self.employee_ids_correo=self.env['hr.employee'].search(self._get_available_contracts_domain())
     def send_mail_payrol(self):
         lis=[]
         #result = self.env['hr.payslip']
