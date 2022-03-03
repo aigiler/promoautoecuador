@@ -5,10 +5,10 @@
         <record id="email_rol_nomina" model="mail.template">
             <field name="name">Plantilla Envio de Rol</field>
             <field name="email_from">admin@promoauto.com</field>
-            <field name="subject">Rol de Pago  ${object.name} </field>
+            <field name="subject">Rol de Pago  </field>
             <field name="partner_to"></field>
-            <field name="model_id" ref="base.model_account_move"/>
-            <field name="email_to">${object.work_email}</field>
+            <field name="model_id" ref="base.model_hr_employee"/>
+            <field name="email_to">financiero@promoauto.dev</field>
             <field name="body_html"><![CDATA[
 
 <div style="padding:0px;width:600px;margin:auto;background: #FFFFFF repeat top /100%;color:#777777">

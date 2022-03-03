@@ -34,12 +34,22 @@ class Nomina_mensual(models.TransientModel):
         # YTI check dates too
         return self.env['hr.employee'].search(self._get_available_contracts_domain())
 
-    employee_ids_correo = fields.Many2many('hr.employee', 'payslip_id', 'employee_id', 'Employees',
+    employee_ids_correo = fields.Many2many('hr.employee',
                                     default=lambda self: self._get_employees(), required=True)
 
     def send_mail_payrol(self):
-        result = self.env['hr.payslip']
-        #for l in self.employee_ids_correo:
+        lis=[]
+        #result = self.env['hr.payslip']
+        #raise ValidationError(str(result)+' result')
+        for l in self.employee_ids_correo:
+            #result = self.env['hr.payslip'].search([('employee_id', '=', l.id)])
+            payslip = self.env['hr.payslip'].search([('employee_id','=',l.id)])
+            url='/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in payslip.ids)}
+            self.envio_correos_plantilla('email_rol_nomina',l.id)
+            if payslip:
+                lis.append(url)
+        #if lis:
+        #    raise ValidationError(str(lis)+'   -- ')
         #    self.envio_correos_plantilla('correo_nomina_mensual',l.id)
     
     
