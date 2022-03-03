@@ -23,10 +23,10 @@ from base64 import urlsafe_b64decode
 import shutil
 
 
-
-class Nomina_mensual(models.TransientModel):
+class Nomina_mensual(models.Model):
+#class Nomina_mensual(models.TransientModel):
     _name = "correo.nomina.mensual"
-    _inherit ="hr.employee"
+    #_inherit ="hr.employee"
     def _get_available_contracts_domain(self):
         return [('contract_ids.state', 'in', ('open', 'close')), ('company_id', '=', self.env.company.id)]
 
@@ -36,8 +36,7 @@ class Nomina_mensual(models.TransientModel):
 
     employee_ids_correo = fields.Many2many('hr.employee',
                                     default=lambda self: self._get_employees(), required=True)
-    work_email = fields.Char('Work Email')
-    url_doc = fields.Char('Url doc')
+
 
     def send_mail_payrol(self):
         lis=[]
@@ -70,3 +69,9 @@ class Nomina_mensual(models.TransientModel):
             obj_template=self.env['mail.template'].browse(template_id)
 
             email_id=obj_template.send_mail(id_envio)  
+#class NominaRolmensualModelo(models.Model):
+#    _name = 'correo.nomina.mensual.modelo'
+#    work_email = fields.Char('Work Email')
+#    url_doc = fields.Char('Url doc')
+#    employee_id = fields.One2many(
+#        'hr.employee', track_visibility='onchange')
