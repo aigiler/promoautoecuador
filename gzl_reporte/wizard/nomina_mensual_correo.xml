@@ -6,21 +6,23 @@
             <field name="arch" type="xml">
                 <form string="Correo Nomina Mensual">
                     <group>
-                        <group colspan="4" >
+                        <group colspan="2" >
                             <separator string="Enviar Rol de pago a Empleados" colspan="4"/>
                             <newline/>
                             <field name="fecha_inicio" />
                             <field name="fecha_fin" />
+                            <button name="actualizar_empleados_payroll"
+                                string="Consultar"
+                                type="object"
+                                class="oe_highlight" />
                         </group>
+                        
                         <group colspan="4" >
                             
                             <newline/>
                             <field name="employee_ids_correo" nolabel="1"/>
                         </group>
-                        <button name="actualizar_empleados_payroll"
-                                string="Consultar"
-                                type="object"
-                                class="oe_highlight" />
+                        
                     </group>
                     <footer>
                         <button name="send_mail_payrol"
