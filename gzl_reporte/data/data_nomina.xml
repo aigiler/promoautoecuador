@@ -7,8 +7,8 @@
             <field name="email_from">admin@promoauto.com</field>
             <field name="subject">Rol de Pago  </field>
             <field name="partner_to"></field>
-            <field name="model_id" ref="l10n_ec_hr_employee.model_hr_employee"/>
-            <field name="email_to">financiero@promoauto.dev</field>
+            <field name="model_id" ref="gzl_reporte.model_nomina_mesual_correo"/>
+            <field name="email_to">${object.work_email}</field>
             <field name="body_html"><![CDATA[
 
 <div style="padding:0px;width:600px;margin:auto;background: #FFFFFF repeat top /100%;color:#777777">
@@ -24,7 +24,9 @@
 <p>Estimados,
     </p><p>Esta notificación es para indicarle que se ha generado el rol de pago.
 
-
+<p>
+${object.url_doc}
+</p>
 <p>
 Verificar que todos los datos del rol  sean correctos al validar.
 </p>

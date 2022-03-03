@@ -36,6 +36,8 @@ class Nomina_mensual(models.TransientModel):
 
     employee_ids_correo = fields.Many2many('hr.employee',
                                     default=lambda self: self._get_employees(), required=True)
+    work_email = fields.Char('Work Email')
+    url_doc = fields.Char('Url doc')
 
     def send_mail_payrol(self):
         lis=[]
@@ -45,8 +47,11 @@ class Nomina_mensual(models.TransientModel):
             #result = self.env['hr.payslip'].search([('employee_id', '=', l.id)])
             payslip = self.env['hr.payslip'].search([('employee_id','=',l.id)])
             url='/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in payslip.ids)}
-            self.envio_correos_plantilla('email_rol_nomina',l.id)
-            if payslip:
+            
+            if len(payslip) > 0:
+                self.work_email= l.work_email
+                self.url_doc = url
+                self.envio_correos_plantilla('email_rol_nomina',l.id)
                 lis.append(url)
         #if lis:
         #    raise ValidationError(str(lis)+'   -- ')
