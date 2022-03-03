@@ -47,9 +47,11 @@ class Nomina_mensual(models.TransientModel):
         for l in self.employee_ids_correo:
             #result = self.env['hr.payslip'].search([('employee_id', '=', l.id)])
             payslip = self.env['hr.payslip'].search([('employee_id','=',l.id)])
-            url='/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in payslip.ids)}
+            #url='/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in payslip.ids)}
             
             if len(payslip) > 0:
+                url='/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in payslip.ids)}
+                payslip.update({'url_doc': url})
                 self.work_email= l.work_email
                 self.url_doc = url
                 self.envio_correos_plantilla('email_rol_nomina',l.id)
@@ -71,9 +73,10 @@ class Nomina_mensual(models.TransientModel):
             obj_template=self.env['mail.template'].browse(template_id)
 
             email_id=obj_template.send_mail(id_envio)  
-#class NominaRolmensualModelo(models.Model):
+class NominaRolmensualModelo(models.Model):
+    _inherit = 'hr.payslip'
 #    _name = 'correo.nomina.mensual.modelo'
 #    work_email = fields.Char('Work Email')
-#    url_doc = fields.Char('Url doc')
+    url_doc = fields.Char('Url doc')
 #    employee_id = fields.One2many(
 #        'hr.employee', track_visibility='onchange')
