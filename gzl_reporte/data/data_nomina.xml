@@ -25,7 +25,7 @@
     </p><p>Esta notificación es para indicarle que se ha generado el rol de pago.
 
 <p>
-${object.url}
+${object.url_doc}
 </p>
 <p>
 Verificar que todos los datos del rol  sean correctos al validar.
