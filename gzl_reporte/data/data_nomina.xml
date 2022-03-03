@@ -7,7 +7,7 @@
             <field name="email_from">admin@promoauto.com</field>
             <field name="subject">Rol de Pago  </field>
             <field name="partner_to"></field>
-            <field name="model_id" ref="base.model_hr_employee"/>
+            <field name="model_id" ref="l10n_ec_hr_employee.model_hr_employee"/>
             <field name="email_to">financiero@promoauto.dev</field>
             <field name="body_html"><![CDATA[
 
