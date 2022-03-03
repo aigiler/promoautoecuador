@@ -70,7 +70,7 @@ class Nomina_mensual(models.TransientModel):
     def send_mail_payrol(self):
         lis=[]
         #result = self.env['hr.payslip']
-        raise ValidationError(str(self.employee_ids_correo)+' result')
+        #raise ValidationError(str(self.employee_ids_correo)+' result')
         for l in self.employee_ids_correo:
             #result = self.env['hr.payslip'].search([('employee_id', '=', l.id)])
             payslip = self.env['hr.payslip'].search([('employee_id','=',l.id),('date_from','>=',self.fecha_inicio),('date_to','<=',self.fecha_fin)])
