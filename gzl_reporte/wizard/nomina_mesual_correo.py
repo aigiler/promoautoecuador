@@ -26,7 +26,7 @@ import shutil
 
 class Nomina_mensual(models.TransientModel):
     _name = "correo.nomina.mensual"
-
+    _inherit ="hr.employee"
     def _get_available_contracts_domain(self):
         return [('contract_ids.state', 'in', ('open', 'close')), ('company_id', '=', self.env.company.id)]
 
