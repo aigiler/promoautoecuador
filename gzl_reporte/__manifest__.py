@@ -15,7 +15,7 @@
     'update_xml': [],
     'data': [
             'data/data_grupo.xml',
-            #'data/data_nomina.xml',
+            'data/data_nomina.xml',
             'security/ir.model.access.csv',
 
             'views/menu_view.xml',
