@@ -15,7 +15,7 @@
     'update_xml': [],
     'data': [
             'data/data_grupo.xml',
-            'data/data_nomina.xml',
+            
             'security/ir.model.access.csv',
 
             'views/menu_view.xml',
@@ -27,6 +27,7 @@
             'report/reporte_estado_de_cuenta.xml',
             'wizard/contrato_adendum_wizard_view.xml',
             'wizard/nomina_mensual_correo.xml',
+            'data/data_nomina.xml',
 
 
             ],
