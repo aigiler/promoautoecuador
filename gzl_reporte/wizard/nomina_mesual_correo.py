@@ -29,7 +29,9 @@ class Nomina_mensual(models.TransientModel):
     _name = "correo.nomina.mensual"
     #_inherit ="hr.employee"
     def _get_available_contracts_domain(self):
-        return [('contract_ids.state', 'in', ('open', 'close')), ('company_id', '=', self.env.company.id)]
+        payslip = self.env['hr.payslip'].search([('date_from','>=',self.fecha_inicio),('date_to','<=',self.fecha_fin)])
+
+        return [('contract_ids.state', 'in', ('open', 'close')), ('company_id', '=', self.env.company.id)],('id', 'in', payslip.ids)
 
     def _get_employees(self):
         # YTI check dates too
