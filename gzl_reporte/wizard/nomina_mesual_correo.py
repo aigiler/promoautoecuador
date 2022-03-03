@@ -37,7 +37,8 @@ class Nomina_mensual(models.Model):
     employee_ids_correo = fields.Many2many('hr.employee',
                                     default=lambda self: self._get_employees(), required=True)
 
-
+    work_email = fields.Char('Work Email')
+    url_doc = fields.Char('Url doc')
     def send_mail_payrol(self):
         lis=[]
         #result = self.env['hr.payslip']
