@@ -23,8 +23,9 @@ from base64 import urlsafe_b64decode
 import shutil
 
 
-class Nomina_mensual(models.Model):
-#class Nomina_mensual(models.TransientModel):
+
+#class Nomina_mensual(models.Model):
+class Nomina_mensual(models.TransientModel):
     _name = "correo.nomina.mensual"
     #_inherit ="hr.employee"
     def _get_available_contracts_domain(self):
