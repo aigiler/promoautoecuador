@@ -38,6 +38,9 @@ class Nomina_mensual(models.TransientModel):
     employee_ids_correo = fields.Many2many('hr.employee',
                                     default=lambda self: self._get_employees(), required=True)
 
+    fecha_inicio = fields.Date(string="Desde")
+    fecha_fin = fields.Date(string="Hasta")
+
     work_email = fields.Char('Work Email')
     url_doc = fields.Char('Url doc')
     def send_mail_payrol(self):
@@ -46,14 +49,16 @@ class Nomina_mensual(models.TransientModel):
         #raise ValidationError(str(result)+' result')
         for l in self.employee_ids_correo:
             #result = self.env['hr.payslip'].search([('employee_id', '=', l.id)])
-            payslip = self.env['hr.payslip'].search([('employee_id','=',l.id)])
+            payslip = self.env['hr.payslip'].search([('employee_id','=',l.id),('date_from','>=',self.fecha_inicio),('date_to','<=',self.fecha_fin)])
             #url='/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in payslip.ids)}
             
             if len(payslip) > 0:
-                url='/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in payslip.ids)}
+                url={
+                    'name': 'Payslip',
+                    'type': 'ir.actions.act_url',
+                    'url': '/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in payslip.ids)},
+                }
                 payslip.update({'url_doc': url})
-                self.work_email= l.work_email
-                self.url_doc = url
                 self.envio_correos_plantilla('email_rol_nomina',l.id)
                 lis.append(url)
         #if lis:
