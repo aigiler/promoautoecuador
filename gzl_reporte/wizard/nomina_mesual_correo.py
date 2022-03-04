@@ -80,14 +80,15 @@ class Nomina_mensual(models.TransientModel):
             
             if len(payslip) > 0:
             #    url='/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in payslip.ids)}
-                #url={
-                #    'name': 'Payslip',
-                #    'type': 'ir.actions.act_url',
-                #    'url': '/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in payslip.ids)},
-                #}
+                
                 #payslip.update({'url_doc': url})
                 for a in payslip:
-                    url='/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in a.ids)}
+                    url={
+                    'name': 'Payslip',
+                    'type': 'ir.actions.act_url',
+                    'url': '/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in payslip.ids)},
+                    }
+                    #url='/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in a.ids)}
                     a.update({'url_doc': url})
                     self.envio_correos_plantilla('email_rol_nomina',a.id)
                 #lis.append(url)
