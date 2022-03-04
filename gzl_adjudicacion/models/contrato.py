@@ -22,7 +22,7 @@ class Contrato(models.Model):
     idTipoContrato = fields.Char("ID Tipo Contrato")
     idContrato = fields.Char("ID de Contrato en base")
     idClienteContrato= fields.Char("ID de Cliente en Cotnrato")
-
+    idGrupo = fields.Char("ID de Grupo en Cotnrato")
 
     secuencia = fields.Char(index=True)
     currency_id = fields.Many2one(
