@@ -160,14 +160,19 @@ class HrPayslip(models.Model):
         return super(HrPayslip, self).unlink()
 
     def compute_sheet(self):
+        amount=0.00
         for payslip in self.filtered(lambda slip: slip.state not in ['cancel', 'done']):
             number = payslip.number or self.env['ir.sequence'].next_by_code('salary.slip')
             # delete old payslip lines
             payslip.line_ids.unlink()
             lines = [(0, 0, line) for line in payslip._get_payslip_lines()]
+            for a in list(payslip._get_payslip_lines()):
+                if a['code']=='NET':
+                    amount = a['amount']
             payslip.write({'line_ids': lines, 'number': number, 'state': 'verify', 'compute_date': fields.Date.today()})
+            
         if self.pago_quincena:
-            payment = self.payment_generate(self.employee_id,6)
+            payment = self.payment_generate(self.employee_id,amount)
             self.env['hr.fortnight'].sudo().create(payment)
         return True
     def payment_generate(self, employee, amount):
