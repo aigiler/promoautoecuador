@@ -49,13 +49,14 @@ class Nomina_mensual(models.TransientModel):
 
     def actualizar_empleados_payroll(self):   
         self.employee_ids_correo=self._get_employees()
-        #self.ensure_one()
-        #self.name = "New name"
+        self.ensure_one()
+        self.name = "New name"
         #return {
         #    "type": "ir.actions.do_nothing",
         #}
-        self.ensure_one()
-        self.name = "New name"
+        #self.send_mail_payrol()
+        #self.ensure_one()
+        #self.name = "New name"
         return {
             'context': self.env.context,
             'view_type': 'form',
@@ -72,19 +73,24 @@ class Nomina_mensual(models.TransientModel):
         #result = self.env['hr.payslip']
         #raise ValidationError(str(self.employee_ids_correo)+' result')
         for l in self.employee_ids_correo:
+            
             #result = self.env['hr.payslip'].search([('employee_id', '=', l.id)])
             payslip = self.env['hr.payslip'].search([('employee_id','=',l.id),('date_from','>=',self.fecha_inicio),('date_to','<=',self.fecha_fin)])
             #url='/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in payslip.ids)}
             
             if len(payslip) > 0:
-                url={
-                    'name': 'Payslip',
-                    'type': 'ir.actions.act_url',
-                    'url': '/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in payslip.ids)},
-                }
-                payslip.update({'url_doc': url})
-                self.envio_correos_plantilla('email_rol_nomina',l.id)
-                lis.append(url)
+            #    url='/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in payslip.ids)}
+                #url={
+                #    'name': 'Payslip',
+                #    'type': 'ir.actions.act_url',
+                #    'url': '/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in payslip.ids)},
+                #}
+                #payslip.update({'url_doc': url})
+                for a in payslip:
+                    url='/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in a.ids)}
+                    a.update({'url_doc': url})
+                    self.envio_correos_plantilla('email_rol_nomina',a.id)
+                #lis.append(url)
         #if lis:
         #    raise ValidationError(str(lis)+'   -- ')
         #    self.envio_correos_plantilla('correo_nomina_mensual',l.id)
