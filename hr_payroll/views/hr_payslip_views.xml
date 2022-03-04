@@ -221,6 +221,7 @@
                     <field name="struct_id" required="1"/>
                     <field name="name"/>
                     <field name="credit_note" invisible="1"/>
+                    <field name="pago_quincena" invisible="1"/>
                 </group>
                 <notebook>
                     <page string="Worked Days &amp; Inputs">

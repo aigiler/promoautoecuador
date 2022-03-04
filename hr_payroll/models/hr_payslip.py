@@ -74,7 +74,9 @@ class HrPayslip(models.Model):
     net_wage = fields.Monetary(compute='_compute_basic_net')
     currency_id = fields.Many2one(related='contract_id.currency_id')
     warning_message = fields.Char(readonly=True)
-
+    #acunalema genera pagos quincenal 
+    pago_quincena = fields.Boolean(default=False, help="Pago Quincenal.")
+    
     @api.onchange('worked_days_line_ids', 'input_line_ids')
     def _onchange_worked_days_inputs(self):
         if self.line_ids and self.state in ['draft', 'verify']:
