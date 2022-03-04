@@ -51,15 +51,28 @@ class HrPayslipEmployees(models.TransientModel):
 
         default_values = Payslip.default_get(Payslip.fields_get())
         for contract in contracts:
-            values = dict(default_values, **{
-                'employee_id': contract.employee_id.id,
-                'credit_note': payslip_run.credit_note,
-                'payslip_run_id': payslip_run.id,
-                'date_from': payslip_run.date_start,
-                'date_to': payslip_run.date_end,
-                'contract_id': contract.id,
-                'struct_id': contract.struct_id.id,
-            })
+            if self.structure_id.schedule_pay == 'bi_monthly':
+                values = dict(default_values, **{
+                    'employee_id': contract.employee_id.id,
+                    'credit_note': payslip_run.credit_note,
+                    'payslip_run_id': payslip_run.id,
+                    'date_from': payslip_run.date_start,
+                    'date_to': payslip_run.date_end,
+                    'contract_id': contract.id,
+                    'struct_id': self.structure_id.id,
+                    'pago_quincena': True,
+                })
+            else:
+                values = dict(default_values, **{
+                    'employee_id': contract.employee_id.id,
+                    'credit_note': payslip_run.credit_note,
+                    'payslip_run_id': payslip_run.id,
+                    'date_from': payslip_run.date_start,
+                    'date_to': payslip_run.date_end,
+                    'contract_id': contract.id,
+                    'struct_id': self.structure_id.id,
+                    'pago_quincena': False,
+                })
             payslip = self.env['hr.payslip'].new(values)
             payslip._onchange_employee()
             values = payslip._convert_to_write(payslip._cache)
