@@ -166,8 +166,19 @@ class HrPayslip(models.Model):
             payslip.line_ids.unlink()
             lines = [(0, 0, line) for line in payslip._get_payslip_lines()]
             payslip.write({'line_ids': lines, 'number': number, 'state': 'verify', 'compute_date': fields.Date.today()})
+        if self.pago_quincena:
+            payment = self.payment_generate(self.employee_id,6)
+            self.env['hr.fortnight'].sudo().create(payment)
         return True
-
+    def payment_generate(self, employee, amount):
+        return {
+            'employee_id': employee.id,
+            'amount': amount,
+            'date_from':self.date_from,
+            'date_to': self.date_to,
+            'company_id': self.company_id.id,
+            'name': 'Pago %s correspondiente al periodo desde %s hasta %s' % ('Quincenal',str(self.date_from), str(self.date_to)),
+            }
     def _round_days(self, work_entry_type, days):
         if work_entry_type.round_days != 'NO':
             precision_rounding = 0.5 if work_entry_type.round_days == "HALF" else 1
