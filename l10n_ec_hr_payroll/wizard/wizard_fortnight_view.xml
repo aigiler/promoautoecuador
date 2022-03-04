@@ -32,5 +32,15 @@
         </form>
         </field>
         </record>
+        <record id="hr_fornight_q_action" model="ir.actions.act_window">
+            <field name="name">Anticipos a Empleados</field>
+            <field name="res_model">wizard.hr.fortnight</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_generate_pay_fortnight"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem action="hr_fornight_q_action" id="menu_hr_fornight_q" sequence="2" parent="l10n_ec_hr_payroll.menu_hr_payroll_report"/>
+
     </data>
 </odoo>
