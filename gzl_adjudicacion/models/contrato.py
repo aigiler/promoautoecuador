@@ -17,6 +17,13 @@ class Contrato(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     en_mora = fields.Boolean(stirng="Contrato en Mora")
 
+
+    idEstadoContrato = fields.Char("ID Estado Contrato")
+    idTipoContrato = fields.Char("ID Tipo Contrato")
+    idContrato = fields.Char("ID de Contrato en base")
+    idClienteContrato= fields.Char("ID de Cliente en Cotnrato")
+
+
     secuencia = fields.Char(index=True)
     currency_id = fields.Many2one(
         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
@@ -748,6 +755,15 @@ class ContratoCongelamiento(models.Model):
 class ContratoEstadoCuenta(models.Model):
     _name = 'contrato.estado.cuenta'
     _description = 'Contrato - Tabla de estado de cuenta de Aporte'
+
+
+
+    idContrato = fields.Char("ID de Contrato en base")
+
+
+
+
+
 
     contrato_id = fields.Many2one('contrato')
     numero_cuota = fields.Char(String='Número de Cuota')
