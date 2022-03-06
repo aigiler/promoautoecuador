@@ -11,20 +11,43 @@
                     <div class="col-6" t-if="o.bank">
                         <strong>Banco: </strong><span t-field="o.bank.name"/>
                     </div>
+
+                    <div class="col-6" t-if="o.bank">
+                        <strong>Cuenta: </strong><span t-field="o.journal_id.bank_account_id.acc_number"/>
+                    </div>
+
                 </div>
                 <div class="row">
                     <div class="col-6" t-if="o.partner_type">
                         <t t-if="o.partner_type == 'customer'">
-                            <strong>Cliente: </strong>
+                            <strong>Recibido De Cliente: </strong>
                         </t>
                         <t t-if="o.partner_type == 'supplier'">
-                            <strong>Proveedor: </strong>
+                            <strong>Recibido De Proveedor: </strong>
                         </t><span t-field="o.partner_id"/>
                     </div>
+
+
                     <div class="col-6" t-if="o.payment_method_id">
                         <strong>Método de Pago: </strong><span t-field="o.payment_method_id.name"/>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-6" >
+
+                        <strong>CED/RUC: </strong>
+                        <span t-field="o.partner_id.vat"/>
+                    </div>
+
+                </div>
+
+
+
+
+
+
+
+
                 <div class="row">
                     <div class="col-6" t-if="o.amount">
                         <strong>Monto: </strong><span t-field="o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
@@ -35,55 +58,93 @@
                 </div>
                 <div class="row mb64">
                     <div class="col-6" t-if="o.check_amount_in_words">
-                        <strong>Monto en Letras: </strong><span t-field="o.check_amount_in_words"/>
+                        <strong>La suma de: </strong><span t-field="o.check_amount_in_words"/>
                     </div>
                     <div class="col-6" t-if="o.check_number">
                         <strong>Número de cheque: </strong><span t-field="o.check_number"/>
                      </div>
+
                 </div>
                 
-                <table class="table table-sm">
-                    <thead>
-                        <tr>
-                            <th><span>Fecha Factura</span></th>
-                            <th><span>Factura</span></th>
-                            <th><span>Número de Documento</span></th>
-                            <th><span>Referencia</span></th>
-                            <th class="text-right"><span>Monto Original</span></th>
-                            <th class="text-right"><span>Monto Pagado</span></th>
-                            <th class="text-right"><span>Balance</span></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr t-foreach="o.reconciled_invoice_ids" t-as="inv">
-                            <td><span t-field="inv.invoice_date"/></td>
-                            <td><span t-field="inv.name"/></td>
-                            <td><span t-field="inv.l10n_latam_document_number"/></td>
-                            <td><span t-field="inv.ref"/></td>
-                            <td class="text-right"><span t-field="inv.amount_total"/></td>
-                            <td class="text-right"><span t-esc="o._get_invoice_payment_amount(inv)" t-options="{'widget': 'monetary', 'display_currency': inv.currency_id}"/></td>
-                            <td class="text-right"><span t-field="inv.amount_residual"/></td>
-                        </tr>
-                    </tbody>
+
+                <div class="row mb64">
+                    <div class="col-6"  >
+                        <strong>REFERENCIA: </strong><span t-field="o.circular"/>
+                    </div>
+
+
+                </div>
+
+
+                <table class="table table-condensed">
+                <thead style="text-align: center; margin-bottom: 10px ">
+                    <th>Cuenta</th>
+                    <th>Cuenta Analitica</th>
+                    <th>Referencia</th>
+                    <th>Debe</th>
+                    <th>Haber</th>
+
+                </thead>
+                <tbody>
+                <tr t-foreach="o.asientos_contables()" t-as="asiento">
+                    <td><span t-esc="asiento.account_id" /></td>
+                    <td><span t-esc="asiento.analytic_account_id" /></td>
+                    <td><span t-esc="asiento.name" /></td>
+                    <td style="text-align: right"><span t-esc="'%.2f' %(asiento.debit)" /></td>
+                    <td style="text-align: right"><span t-esc="'%.2f' %(asiento.credit)" /></td>
+                </tr>
+                </tbody>
+
+
                 </table>
-                
+
+
+
+
+
                 <br/><br/><br/><br/>
                 <div class="row">
+
+
+
+
+
                     <div class="col-2"/>
                     
                     <div class="col-3" style="border-top: 1px solid black;">
-                        <span><center>Autorizado</center></span>
+                        <span><center>Elaborado  Por</center></span>
+                        <span t-field="o.create_uid.name"></span>
+                    </div>
+
+
+                    <div class="col-2"/>
+                    
+                    <div class="col-3" style="border-top: 1px solid black;">
+                        <span><center>Revisado  Por</center></span>
+                    </div>
+
+
+                    <div class="col-2"/>
+                    
+                    <div class="col-3" style="border-top: 1px solid black;">
+                        <span><center>Autorizado  Por</center></span>
                     </div>
                     
                     <div class="col-2"/>
                     
                     <div class="col-3" style="border-top: 1px solid black;">
-                        <span><center>Recibi Conforme</center></span><br/>
+                        <span><center>Recibido Por</center></span><br/>
                         <span>C.I</span>
                     </div>
                     
                     <div class="col-2"/>
+
+
+
                 </div>
+
+
+
             </div>
         </xpath>
     </template>

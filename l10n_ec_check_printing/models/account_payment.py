@@ -251,6 +251,19 @@ class AccountPayment(models.Model):
 #                     })                
 #                 self.has_payment_line =True
 
+
+
+    def asientos_contables(self):
+
+
+        movimientos=self.env['account.move.line'].search([('payment_id', '=',self.id)])
+        lista_obj=[]
+        for asiento in movimientos:
+
+            lista_obj.append(asiento)
+        return lista_obj
+
+
     def button_journal_entries(self):
         lista=self.ids
         pagos_asociados=self.pagos_relacionadas.mapped("id")
