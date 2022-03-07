@@ -108,6 +108,7 @@ class Contrato(models.Model):
 
 
 
+
     numero_cuotas_pagadas = fields.Integer(
         string='Cuotas Pagadas', compute="calcular_cuotas_pagadas", store=True, track_visibility='onchange')
 
