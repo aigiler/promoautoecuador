@@ -60,7 +60,7 @@ class HrPayslipEmployees(models.TransientModel):
                     'date_to': payslip_run.date_end,
                     'contract_id': contract.id,
                     'struct_id': self.structure_id.id,
-                    'pago_quincena': True,
+                    'pago_quincena': True, 
                 })
             else:
                 values = dict(default_values, **{
