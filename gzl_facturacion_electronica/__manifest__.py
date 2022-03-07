@@ -20,6 +20,7 @@
         'data/inventario_servicios_data_liquidacion_compra.xml',
         'data/tipo_proveedor_reembolso_data.xml',
 
+
         
         'data/ir_cron_data.xml',
         'data/ir_config_parameter_data.xml',
