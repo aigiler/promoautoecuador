@@ -111,8 +111,8 @@ class ReportComisiones(models.TransientModel):
         sheet.write(2, 31, 'PORCENTAJE TOTAL', bold2)      
         row=3
         comisiones = self.env['comision.bitacora'].search([
-            ('create_date', '<=', self.date_end),
-            ('create_date', '>=', self.date_start),
+            #('create_date', '<=', self.date_end),
+            #('create_date', '>=', self.date_start),
         ])
         for l in comisiones: #contrato_id comision.bitacora
             sheet.write(row, 0, row, body_right)
