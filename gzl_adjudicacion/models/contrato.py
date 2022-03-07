@@ -18,7 +18,6 @@ class Contrato(models.Model):
     en_mora = fields.Boolean(stirng="Contrato en Mora")
 
 
-
     idEstadoContrato = fields.Char("ID Estado Contrato")
     idTipoContrato = fields.Char("ID Tipo Contrato")
     idContrato = fields.Char("ID de Contrato en base")
