@@ -17,17 +17,3 @@ msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#. module: hr_employee_firstname
-#: model:ir.model,name:hr_employee_firstname.model_hr_employee
-msgid "Employee"
-msgstr "Employee"
-
-#. module: hr_employee_firstname
-#: field:hr.employee,firstname:0
-msgid "Firstname"
-msgstr "Firstname"
-
-#. module: hr_employee_firstname
-#: field:hr.employee,lastname:0
-msgid "Lastname"
-msgstr "Lastname"
