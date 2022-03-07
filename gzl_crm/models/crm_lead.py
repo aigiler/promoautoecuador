@@ -462,6 +462,7 @@ class CrmLead(models.Model):
                 obj_partner.tipo='preAdjudicado'
 
 
+
                 contrato = self.env['contrato'].create({
                                             'cliente':obj_partner.id,
                                             'dia_corte':self.dia_pago,
