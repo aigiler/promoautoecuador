@@ -42,7 +42,6 @@
         'views/bitacora_consumo_servicios_view.xml',
         'views/tipo_proveedor_reembolso_view.xml',
 
-        
         'wizard/wizard_ats_view.xml',
         'wizard/wizard_import_documents_view.xml',
         'wizard/layout_documents.xml',
