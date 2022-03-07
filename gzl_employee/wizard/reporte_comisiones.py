@@ -46,10 +46,8 @@ class ReportComisiones(models.TransientModel):
         body_center = workbook.add_format({'align': 'center','border':1})
         format_title2 = workbook.add_format({'align': 'center', 'bold':True,'border':0 })
         sheet = workbook.add_worksheet(name)
-        sheet.insert_image('A1', "any_name.png",
-                           {'image_data':  BytesIO(base64.b64decode( self.env.company.logo)), 'x_scale': 0.5, 'y_scale': 0.5,'x_scale': 0.5,
-                            'y_scale':     0.5, 'align': 'center'})
-        sheet.merge_range('B2:E2', name.upper(), format_title2)
+        sheet.insert_image('B1', '../img/logo.png', {'x_offset': 15, 'y_offset': 10})
+        sheet.merge_range('B2:E2', name.upper(), bold)
         sheet.set_column('A:A', 42)
         sheet.set_column('B:B', 45)
         sheet.set_column('C:C', 16)
