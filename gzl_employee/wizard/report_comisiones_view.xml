@@ -7,7 +7,8 @@
                 <form string="Reporte de Comisiones">
                     <group>
                         <group col="2">
-                            <field name="date"/>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
                         </group>                    
                     </group>                        
                     <footer>
