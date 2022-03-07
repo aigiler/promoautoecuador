@@ -22,7 +22,6 @@
         'data/data_mantenedor_importacion_masiva.xml',
 
         
-        
         'data/ir_cron_data.xml',
         'data/ir_config_parameter_data.xml',
         'data/data_email.xml',
