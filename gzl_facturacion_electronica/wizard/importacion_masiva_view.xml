@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
 				<form>
 					<group>
-						<field name="file_xml" filename="name" string='Archivo'/>
+						<field name="file_txt" filename="name" string='Archivo'/>
 					</group>
 					<footer>
     					<button name="import_txt" type="object" string="Importar Archivo" class="oe_highlight" />
