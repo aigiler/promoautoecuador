@@ -6,52 +6,13 @@ import xlsxwriter
 from io import BytesIO
 import base64
 
-class ReportVacations(models.TransientModel):
+class ReportComisiones(models.TransientModel):
     _name = "report.comisiones"
 
     date_start = fields.Date('Fecha Inicio', required=True)
     date_end = fields.Date('Fecha Corte', required=True, default = date.today())
 
-    def fix_date(self, date):
-        repaired_date = date.strftime("%d/%m/%Y")
-        return repaired_date
-    
-    def report_vacations_data(self):
-        dct={}
-        lis=[]
-        employee_ids = self.env['hr.employee']
-        hr_employee = employee_ids.search([('active','=',True),('identification_id','!=',False)],order='lastname')
-        cont=0
-        for emp in hr_employee:
-            contract = self.env['hr.contract'].search([('employee_id','=',emp.id),('state','=','open')], limit=1)
-            if contract:
-                cont+=1
-                today = date.today()
-                payslip = self.env['hr.payslip'].search([('employee_id','=',emp.id),('state','!=','cancel')])
-                date_cont=''
-                total_year= days_enjoyed = days_pending = 0
-                for p in payslip:
-                    date_cont = self.fix_date(p.contract_id.date_start)
-                    total_year = (rdelta.relativedelta(today, p.contract_id.date_start)).years
-                    sum_days=0
-                    days_15=15                
-                    for i in range(total_year):
-                        if i >= 5:
-                            sum_days+=1
-                    days_pending = (total_year*15)+sum_days
-
-                    hr_payslip_worked_day = self.env['hr.payslip.worked_days'].search([('payslip_id','=',p.id)])
-                    for wd in hr_payslip_worked_day:
-                        if wd.work_entry_type_id.code == 'VACATION100':
-                            days_enjoyed +=  wd.number_of_days
-                dct = { 'nro': cont,
-                        'colaborador': str(emp.lastname) +' '+ str(emp.firstname),
-                        'fecha_ingreso': date_cont,
-                        'dias_gozados': days_enjoyed,
-                        'dias_pendientes': days_pending-days_enjoyed
-                        } 
-                lis.append(dct)
-        return lis
+  
 
     def print_report_xls(self):
         today = date.today()
