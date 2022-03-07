@@ -39,7 +39,7 @@ class ReportComisiones(models.TransientModel):
     def xslx_body(self,workbook,name):
         bold = workbook.add_format({'bold':True,'border':0, 'bg_color':'#442484','color':'#FFFFFF'})
         bold.set_center_across()
-        bold2 = workbook.add_format({'bold':True,'border':0, 'bg_color':'#5c6464 ','color':'#FFFFFF'})
+        bold2 = workbook.add_format({'bold':True,'border':0, 'bg_color':'#989899','color':'#FFFFFF'})
         bold2.set_center_across()
         format_title = workbook.add_format({'bold':True,'border':0})
         format_title.set_center_across()
