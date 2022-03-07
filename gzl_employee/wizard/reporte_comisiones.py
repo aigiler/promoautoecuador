@@ -110,14 +110,15 @@ class ReportComisiones(models.TransientModel):
         sheet.write(2, 30, 'SUBT. GERENTE COMERCIAL', bold2)
         sheet.write(2, 31, 'PORCENTAJE TOTAL', bold2)      
         row=3
-        comisiones = self.env['comision.bitacora'].search([
+        comisiones = self.env['comision.bitacora'].search([])
             #('create_date', '<=', self.date_end),
             #('create_date', '>=', self.date_start),
-        ])
-        for l in comisiones: #contrato_id comision.bitacora
-            sheet.write(row, 0, row, body_right)
-            sheet.write(row, 1, l.lead_id.contrato_id.secuencia, body_center)
-            sheet.write(row, 2, l.lead_id.contrato_id.cliente.vat or '', body_center)
-            sheet.write(row, 3, l.lead_id.contrato_id.cliente.name or '', body_center)
-            sheet.write(row, 4, self.date_start.month or '', body_center)
-            row+=1
+        #])
+        if len(comisiones) > 0:
+            for l in comisiones: #contrato_id comision.bitacora
+                sheet.write(row, 0, row, body_right)
+                sheet.write(row, 1, l.lead_id.contrato_id.secuencia, body_center)
+                sheet.write(row, 2, l.lead_id.contrato_id.cliente.vat or '', body_center)
+                sheet.write(row, 3, l.lead_id.contrato_id.cliente.name or '', body_center)
+                sheet.write(row, 4, self.date_start.month or '', body_center)
+                row+=1
