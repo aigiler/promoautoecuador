@@ -19,7 +19,6 @@
         'data/inventario_servicios_data_retencion.xml',
         'data/inventario_servicios_data_liquidacion_compra.xml',
         'data/tipo_proveedor_reembolso_data.xml',
-        'data/data_mantenedor_importacion_masiva.xml',
 
         
         'data/ir_cron_data.xml',
@@ -48,8 +47,6 @@
         'wizard/layout_documents.xml',
         'wizard/report_retention.xml',
         'wizard/agregar_retencion.xml',
-        'wizard/importacion_masiva_view.xml',
-        'wizard/mantenedor_importacion_masiva_view.xml',
 
         
     ],
