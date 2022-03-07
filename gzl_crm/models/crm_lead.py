@@ -34,7 +34,7 @@ class CrmLead(models.Model):
 
     valor_inscripcion = fields.Float(string='Valor de inscripción',track_visibility='onchange')
 
-
+    contrato_id= fields.Many2one('contrato',string="Contrato Asociado",track_visibility='onchange' )
 
 
 
@@ -472,6 +472,7 @@ class CrmLead(models.Model):
                                             'cuota_capital':self.cuota_capital,
                                             'iva_administrativo':self.iva,
                                         })
+                crm.contrato_id=contrato.id
 
             if stage_id.crear_reunion_en_calendar:
                 now=datetime.now()
