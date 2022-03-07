@@ -7,6 +7,14 @@
             <field name="key">tipoAmbiente</field>
             <field name="value">1</field>
         </record>
+        <record  id="cantidad_filas_error" model="ir.config_parameter">
+            <field name="key">cantidad_filas_error</field>
+            <field name="value">1</field>
+        </record>
+        <record  id="modulo_cantidad_filas_error" model="ir.config_parameter">
+            <field name="key">modulo_cantidad_filas_error</field>
+            <field name="value">2</field>
+        </record>
 
 
 
