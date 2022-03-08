@@ -148,11 +148,7 @@ class CrmLead(models.Model):
             porcentaje_comision=comision_tabla.comision
             bono =comision_tabla.bono
 
-<<<<<<< HEAD
             listaComision.append({'empleado_id':empleado.id,'nombre':empleado.name,'comision':monto_comision,'cargo':empleado.job_id.id,'tipo_comision':'asesor','porcentaje_comision':porcentaje_comision,'bono':bono})
-=======
-            listaComision.append({'empleado_id':empleado.id,'nombre':empleado.name,'comision':monto_comision,'cargo':empleado.job_id.id,'tipo_comision':'asesor'})
->>>>>>> 4ad22a3da9a03d012050a87967e43c2fe429cd23
 
 
 
@@ -175,13 +171,9 @@ class CrmLead(models.Model):
                 'valor_inscripcion':   self.factura_inscripcion_id.amount_untaxed  ,
                 'comision': empleado['comision']   ,
                 'cargo':   empleado['cargo']  ,
-<<<<<<< HEAD
                 'empleado_id':   empleado['empleado_id'],
                 'porcentaje_comision':   empleado['porcentaje_comision'],
                 'bono':   empleado['bono'] }
-=======
-                'empleado_id':   empleado['empleado_id'] }
->>>>>>> 4ad22a3da9a03d012050a87967e43c2fe429cd23
 
 
             comision_bitacora=self.env['comision.bitacora'].create(dct2)
