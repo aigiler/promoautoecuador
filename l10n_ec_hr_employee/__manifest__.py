@@ -36,9 +36,9 @@
     ],
     'data': [
         'views/hr_view.xml'
-    ]
+    ],
     'installable': True,
     'auto_install': False,
 
-    
+
 }
