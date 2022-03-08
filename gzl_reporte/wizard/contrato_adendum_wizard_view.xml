@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-        <record id="contrato_adendum_form" model="ir.ui.view">
+        <record id="contrato_adendum_reporte_form" model="ir.ui.view">
             <field name="name">contrato.adendum.form</field>
-            <field name="model">contrato.adendum</field>
+            <field name="model">contrato.adendum.report</field>
             <field name="arch" type="xml">
                 <form string="Contrato Adendum">
                     <group>
@@ -27,9 +27,9 @@
             </field>
         </record>
 
-        <record id="action_contrato_adendum_form" model="ir.actions.act_window">
+        <record id="action_contrato_adendum_reporte_form" model="ir.actions.act_window">
             <field name="name">Contrato de Adendum</field>
-            <field name="res_model">contrato.adendum</field>
+            <field name="res_model">contrato.adendum.report</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>

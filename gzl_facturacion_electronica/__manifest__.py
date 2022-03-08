@@ -25,7 +25,10 @@
         'data/ir_cron_data.xml',
         'data/ir_config_parameter_data.xml',
         'data/data_email.xml',
-        
+        'data/data_mantenedor_importacion_masiva.xml',
+
+
+
         'security/ir.model.access.csv',
 
         'views/ats_view.xml',
@@ -47,6 +50,8 @@
         'wizard/layout_documents.xml',
         'wizard/report_retention.xml',
         'wizard/agregar_retencion.xml',
+        'wizard/mantenedor_importacion_masiva_view.xml',
+        'wizard/importacion_masiva_view.xml',
 
         
     ],
