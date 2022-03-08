@@ -49,9 +49,35 @@ class ReportComisiones(models.TransientModel):
         body_center.set_center_across()
         format_title2 = workbook.add_format({'align': 'center', 'bold':True,'border':0 })
         sheet = workbook.add_worksheet(name)
-        sheet.insert_image('A1:D1', '../gzl_employee/img/logo.PNG', {'x_offset': 15, 'y_offset': 10,'bg_color':'#442484'})
+        mesesDic = {
+                "1":'Enero',
+                "2":'Febrero',
+                "3":'Marzo',
+                "4":'Abril',
+                "5":'Mayo',
+                "6":'Junio',
+                "7":'Julio',
+                "8":'Agosto',
+                "9":'Septiembre',
+                "10":'Octubre',
+                "11":'Noviembre',
+                "12":'Diciembre'
+            }
+        year = self.date_start.year
+        mes_start = self.date_start.month
+        mes_end = self.date_end.month
+        dia_start = self.date_start.day
+        dia_end = self.date_end.day
+        #sheet.insert_image('A1:D1', '../gzl_employee/img/logo.PNG', {'x_offset': 15, 'y_offset': 10,'bg_color':'#442484'})
+        sheet.insert_image('A1', "any_name.png",
+                           {'image_data':  BytesIO(base64.b64decode( self.env.company.logo)), 'x_scale': 0.5, 'y_scale': 0.5,'x_scale': 0.5,
+                            'y_scale':     0.5, 'align': 'left'})
+        #sheet.insert_image('A1:D1', "any_name.png",
+        #                   {'image_data':  BytesIO(base64.b64decode( '../gzl_employee/img/logo.jpg')), 'x_scale': 0.5, 'y_scale': 0.5,'x_scale': 0.5,
+        #                    'y_scale':     0.5, 'align': 'left'})
+        
         sheet.merge_range('E1:AG1', ' ', bold)
-        sheet.merge_range('A2:D2', name.upper(), bold)
+        sheet.merge_range('A2:D2', 'COMISIONES DEL PERIODO DEL '+str(dia_start)+' de '+str(mesesDic[str(mes_start)])+' del '+str(year)+' al '+str(dia_end)+' de '+str(mesesDic[str(mes_end)])+' del '+str(year), bold)
         sheet.merge_range('E2:AG2', ' ', bold)
         sheet.set_column('A:A', 10)
         sheet.set_column('B:B', 45)
@@ -79,6 +105,14 @@ class ReportComisiones(models.TransientModel):
         sheet.set_column('X:X', 17)
         sheet.set_column('Y:Y', 17)
         sheet.set_column('Z:Z', 17)
+        
+        sheet.set_column('AA:AA', 17)
+        sheet.set_column('AB:AB', 17)
+        sheet.set_column('AC:AC', 17)
+        sheet.set_column('AD:AD', 17)
+        sheet.set_column('AE:AE', 17)
+        sheet.set_column('AF:AF', 17)
+        sheet.set_column('AG:AG', 17)
         #data = self.report_vacations_data()
       
         #sheet.write(2, 0, 'PERIODO DE PAGO', bold)
@@ -160,11 +194,16 @@ class ReportComisiones(models.TransientModel):
                 sheet.write(row, 18, str(100-l.lead_id.porcent_asesor)+' %' or '###', body_center)
                 sheet.write(row, 19, (l.comision*((100-l.lead_id.porcent_asesor)/100)) or '###', body_center)
                 sheet.write(row, 20,'asesor premium' or '###', body_center)
-                sheet.write(row, 21,'porcentaje asesor premium' or '###', body_center)
+                sheet.write(row, 21, 0.00 , body_center)
                 sheet.write(row, 22,'subtotal asesor premium' or '###', body_center)
                 sheet.write(row, 23,l.lead_id.supervisor.name or '###', body_center)
                 sheet.write(row, 24,4 or '###', body_center)
                 sheet.write(row, 25,'=((K'+str(row+1)+'/1.12)'+'*((Y'+str(row+1)+')/100))' or '###', body_center)
                 sheet.write(row, 26,jefe_ventas_nacional.name or '###', body_center)
+                sheet.write(row, 27,3 or '###', body_center)
+                sheet.write(row, 28,'=((K'+str(row+1)+'/1.12)'+'*((AB'+str(row+1)+')/100))' or '###', body_center)
                 sheet.write(row, 29,gerente_comercial.name or '###', body_center)
+                sheet.write(row, 30,3 or '###', body_center)
+                sheet.write(row, 31,'=((K'+str(row+1)+'/1.12)'+'*((AE'+str(row+1)+')/100))' or '###', body_center)
+                sheet.write(row, 32,'=(N'+str(row+1)+'+V'+str(row+1)+'+Y'+str(row+1)+'+AB'+str(row+1)+'+AE'+str(row+1)+')' or '###', body_center)
                 row+=1
