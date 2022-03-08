@@ -28,7 +28,7 @@
                 <field name="surcursal_id"></field>
                 <field name="provincia_id"></field>
                 <field name="ciudad_id"></field>
-                <field name="valor_inscripcion"></field>
+                <field name="valor_inscripcion" required="1"></field>
                 <field name="fecha_ganada"></field>
                 <field name="contrato_id" readonly="1"></field>
 
