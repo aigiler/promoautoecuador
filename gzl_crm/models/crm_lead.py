@@ -135,8 +135,8 @@ class CrmLead(models.Model):
         listaComision=[]
         
         #Comision de Asesor
-        
-        
+        bono = 0.00
+        porcentaje_comision = 0.00
         empleado=self.env['hr.employee'].search([('user_id','=',user_id)])
         monto_ganado= self.factura_inscripcion_id.amount_untaxed
         comision_tabla=self.env['comision'].search([('cargo_id','=',empleado.job_id.id),('valor_min','<=',monto_ganado),('valor_max','>=',monto_ganado)],limit=1)
@@ -145,35 +145,38 @@ class CrmLead(models.Model):
           #  raise ValidationError(str(comision_tabla.comision) + str(comision_tabla.valor_min)+ str(comision_tabla.valor_max))
 
             monto_comision=(comision_tabla.comision*monto_ganado/100) + comision_tabla.bono
+            porcentaje_comision=comision_tabla.comision
+            bono =comision_tabla.bono
 
-            listaComision.append({'empleado_id':empleado.id,'nombre':empleado.name,'comision':monto_comision,'tipo_comision':'asesor'})
+            listaComision.append({'empleado_id':empleado.id,'nombre':empleado.name,'comision':monto_comision,'cargo':empleado.job_id.id,'tipo_comision':'asesor','porcentaje_comision':porcentaje_comision,'bono':bono})
 
 
 
-        comision=self.env['hr.payslip.input.type'].search([('code','=','COMI')])
+        tipo_comision=self.env['hr.payslip.input.type'].search([('code','=','COMI')])
 
 
         for empleado in listaComision:
             dct={
             'date':  hoy  ,
-            'input_type_id': comision   ,
+            'input_type_id': tipo_comision.id   ,
             'employee_id':empleado['empleado_id']  ,
             'amount':empleado['comision']   ,
 
             }
-            comision=self.env['hr.input'].create(dct)
+            comision_input=self.env['hr.input'].create(dct)
             dct2={
                 'user_id':  user_id  ,
                 'supervisor_id':  self.supervisor.id  ,
                 'lead_id':  self.id  ,
                 'valor_inscripcion':   self.factura_inscripcion_id.amount_untaxed  ,
-                'comision':  comision  ,
-                'cargo':  empleado.job_id.id  ,
-                'empleado_id':  empleado.id  }
+                'comision': empleado['comision']   ,
+                'cargo':   empleado['cargo']  ,
+                'empleado_id':   empleado['empleado_id'],
+                'porcentaje_comision':   empleado['porcentaje_comision'],
+                'bono':   empleado['bono'] }
 
 
             comision_bitacora=self.env['comision.bitacora'].create(dct2)
-
 
 
 
@@ -455,7 +458,6 @@ class CrmLead(models.Model):
             if stage_id.is_won:
                 if not (self.factura_inscripcion_id.amount_residual==0 ):
                     raise ValidationError("La factura de registrarse como pagada.  Notificar a área Contable")
-
 
 
                 obj_partner=self.partner_id

@@ -13,7 +13,8 @@ class ComisionesBitacora(models.Model):
     lead_id = fields.Many2one('crm.lead',string="Oportunidad")
     valor_inscripcion = fields.Float('Valor de inscripción')
 
-
+    bono = fields.Float('Bono')
+    porcentaje_comision = fields.Float('porcentaje comision')
     comision = fields.Float('Comisión')
     cargo = fields.Many2one('hr.job',string="Cargo")
     empleado_id = fields.Many2one('hr.employee',string="Empleado")
