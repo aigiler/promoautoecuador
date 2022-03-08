@@ -22,4 +22,8 @@
         'bi_account_cheque',
         'account',
     ]
+
+    'installable': True,
+    'auto_install': False,
+    
 }
