@@ -58,11 +58,13 @@ class WizardImportDocuments(models.TransientModel):
 
             factura=self.env['mantenedor.importacion.masiva'].search([('code','=','FAC')])
             if fila[0] ==factura.name:
+                print('cambios')
 
 
 
             retencion=self.env['mantenedor.importacion.masiva'].search([('code','=','RET')])
             if fila[0] ==retencion.name:
+                print('cambios')
 
 
 

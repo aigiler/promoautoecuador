@@ -39,7 +39,7 @@ class CrmLead(models.Model):
 
 
 
-    equipo_asigando = fields.Many2one('crm.team',string="Delegado",track_visibility='onchange' )
+    equipo_asigando = fields.Many2one('crm.team',string="Equipo Asignado",track_visibility='onchange' )
 
 
     @api.constrains("stage_id")
