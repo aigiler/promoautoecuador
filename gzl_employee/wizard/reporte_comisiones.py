@@ -135,7 +135,9 @@ class ReportComisiones(models.TransientModel):
             
             for l in comisiones: #contrato_id comision.bitacora
                 cont+=1
-                porcentaje = self.env['comision'].search([('valor_min','>=',float(l.valor_inscripcion)),('valor_max','<=',float(l.valor_inscripcion)),('logica','=','asesor')])
+                gerente_comercial =self.env['hr.employee'].search([('job_id.name','=','Gerencia Comercial')],limit=1)
+                jefe_ventas_nacional =self.env['hr.employee'].search([('job_id.name','=','Jefe de Ventas')],limit=1)
+                #porcentaje = self.env['comision'].search([('valor_min','>=',float(l.valor_inscripcion)),('valor_max','<=',float(l.valor_inscripcion)),('logica','=','asesor')])
                 #raise ValidationError(str(porcentaje))
                 sheet.write(row, 0, row, body_right)
                 sheet.write(row, 1, l.lead_id.contrato_id.secuencia, body_center)
@@ -150,8 +152,19 @@ class ReportComisiones(models.TransientModel):
                 sheet.write(row, 10, l.valor_inscripcion or '###', body_center)
                 sheet.write(row, 11, l.lead_id.factura_inscripcion_id.name or '', body_center)
                 sheet.write(row, 12, l.comision or '', body_center)
-                sheet.write(row, 13, str(porcentaje.comision)+' %' or '###', body_center)
+                sheet.write(row, 13, l.porcentaje_comision or '###', body_center)
                 sheet.write(row, 14, l.lead_id.user_id.name or '###', body_center)
-                sheet.write(row, 15, '100%' or '###', body_center)
-                sheet.write(row, 16, l.comision or '###', body_center)
+                sheet.write(row, 15, l.lead_id.porcent_asesor or '###', body_center)
+                sheet.write(row, 16, '=((M'+str(row+1)+'*P'+str(row+1)+')/100)' or '###', body_center)
+                sheet.write(row, 17, l.lead_id.cerrador.name or '###', body_center)
+                sheet.write(row, 18, str(100-l.lead_id.porcent_asesor)+' %' or '###', body_center)
+                sheet.write(row, 19, (l.comision*((100-l.lead_id.porcent_asesor)/100)) or '###', body_center)
+                sheet.write(row, 20,'asesor premium' or '###', body_center)
+                sheet.write(row, 21,'porcentaje asesor premium' or '###', body_center)
+                sheet.write(row, 22,'subtotal asesor premium' or '###', body_center)
+                sheet.write(row, 23,l.lead_id.supervisor.name or '###', body_center)
+                sheet.write(row, 24,4 or '###', body_center)
+                sheet.write(row, 25,'=((K'+str(row+1)+'/1.12)'+'*((Y'+str(row+1)+')/100))' or '###', body_center)
+                sheet.write(row, 26,jefe_ventas_nacional.name or '###', body_center)
+                sheet.write(row, 29,gerente_comercial.name or '###', body_center)
                 row+=1

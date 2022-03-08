@@ -41,7 +41,10 @@ class CrmLead(models.Model):
 
     equipo_asigando = fields.Many2one('crm.team',string="Equipo Asignado",track_visibility='onchange' )
 
-
+    #campo nuevo
+    cerrador = fields.Many2one('res.partner',string="Cerrador")
+    porcent_asesor = fields.Float('Porcentaje Asesor')
+    #asesor_premium = fields.Many2one('res.partner',string="Cerrador")
     @api.constrains("stage_id")
     def actualizar_equipo_asignado_por_estado(self, ):
 
