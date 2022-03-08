@@ -37,11 +37,11 @@
 
 
         <menuitem 
-        id = "menu_action_contrato_adendum_form"
+        id = "menu_action_reporte_contrato_adendum_form"
         name = "Contrato Adendum"  
         parent="menu_reporte" 
         sequence="1" 
-        action="action_contrato_adendum_form"/>
+        action="action_contrato_adendum_reporte_form"/>
 
 
 </odoo>
