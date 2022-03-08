@@ -457,7 +457,6 @@ class CrmLead(models.Model):
                     raise ValidationError("La factura de registrarse como pagada.  Notificar a área Contable")
 
 
-
                 obj_partner=self.partner_id
                 obj_partner.tipo='preAdjudicado'
 
