@@ -78,7 +78,7 @@ class ReportComisiones(models.TransientModel):
         #                    'y_scale':     0.5, 'align': 'left'})
         
         sheet.merge_range('B1:AG1', ' ', bold)
-        sheet.merge_range('A2:D2', 'COMISIONES DEL PERIODO DEL '+str(dia_start)+' de '+str(mesesDic[str(mes_start)])+' del '+str(year)+' al '+str(dia_end)+' de '+str(mesesDic[str(mes_end)])+' del '+str(year), bold)
+        sheet.merge_range('A2:D2', 'COMISIONES DEL PERIODO DEL '+str(dia_start)+' DE '+str(mesesDic[str(mes_start)])+' DEL '+str(year)+' AL '+str(dia_end)+' DE '+str(mesesDic[str(mes_end)])+' DEL '+str(year), bold)
         sheet.merge_range('E2:AG2', ' ', bold)
         
         #sheet.set_column('A:A', 10)

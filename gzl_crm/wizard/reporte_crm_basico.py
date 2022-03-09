@@ -19,7 +19,7 @@ class ReportCrm(models.TransientModel):
         today = date.today()
         file_data = BytesIO()
         workbook = xlsxwriter.Workbook(file_data)
-        name = 'REPORTE COMISIONISTAS '+ str(today.year)
+        name = 'REPORTE CRM '+ str(today.year)
         self.xslx_body(workbook,name)
         workbook.close()
         file_data.seek(0)
@@ -74,8 +74,8 @@ class ReportCrm(models.TransientModel):
                            {'image_data':  BytesIO(base64.b64decode( self.env.company.imagen_excel_company)), 'x_scale': 0.9, 'y_scale': 0.8,'x_scale': 0.8,
                             'y_scale':     0.8, 'align': 'left','bg_color':'#442484'})
         
-        sheet.merge_range('B1:J1', ' ', bold)
-        sheet.merge_range('A2:J2', 'REPORTE DE CRM'+str(dia_start)+''+str(mesesDic[str(mes_start)])+''+str(year), bold)
+        sheet.merge_range('B1:Q1', ' ', bold)
+        sheet.merge_range('A2:Q2', 'COMISIONES DEL PERIODO DEL '+str(dia_start)+' DE '+str(mesesDic[str(mes_start)])+' DEL '+str(year)+' AL '+str(dia_end)+' DE '+str(mesesDic[str(mes_end)])+' DEL '+str(year), bold)
         sheet.set_column('A:A', 20)
         sheet.set_column('B:B', 45)
         sheet.set_column('C:C', 16)
@@ -89,15 +89,48 @@ class ReportCrm(models.TransientModel):
         sheet.set_column('K:K', 17)
         
       
-        sheet.write(2, 0, 'PERIODO DE PAGO', bold2)
-        sheet.write(2, 1, 'CARGO', bold2)
-        sheet.write(2, 2, 'AGENCIA', bold2)
-        sheet.write(2, 3, 'CONTRATO N', bold2)
-        sheet.write(2, 4, 'NOMBRE', bold2)
-        sheet.write(2, 5, 'SUBTOTAL', bold2)
-        sheet.write(2, 6, 'IVA', bold2)
-        sheet.write(2, 7, 'TOTAL A RECIBIR', bold2)
-        sheet.write(2, 8, 'ESTADO', bold2)
-        sheet.write(2, 9, 'OBSERVACION', bold2)
+        sheet.write(2, 0, 'OPORTUNIDAD', bold2)
+        sheet.write(2, 1, 'CLIENTE', bold2)
+        sheet.write(2, 2, 'MONTO DE PLAN', bold2)
+        sheet.write(2, 3, 'PROBABILIDAD', bold2)
+        sheet.write(2, 4, 'COMERCIAL', bold2)
+        sheet.write(2, 5, 'EQUIPO DE VENTAS', bold2)
+        sheet.write(2, 6, 'VENTA GANADA', bold2)
+        sheet.write(2, 7, 'CIERRE PREVISTO', bold2)
+        sheet.write(2, 8, 'SUCURSAL', bold2)
+        sheet.write(2, 9, 'PROVINCIA', bold2)
+        
+        sheet.write(2, 10, 'CIUDAD', bold2)
+        sheet.write(2, 11, 'VALOR DE INSCRIPCION', bold2)
+        sheet.write(2, 12, 'FECHA GANADA', bold2)
+        sheet.write(2, 13, 'CONTRATO ASOCIADO', bold2)
+        sheet.write(2, 14, 'TIPO CONTRATO ASOCIADO', bold2)
+        sheet.write(2, 15, 'PRIORIDAD', bold2)
+        sheet.write(2, 16, 'FACTURA', bold2)
         
         row=3
+        crm = self.env['crm.lead'].search([('create_date','>=',self.date_start),('create_date','<=',self.date_end)])
+        for l in crm:
+            venta_ganada=''
+            if l.colocar_venta_como_ganada:
+                venta_ganada='SI'
+            else:
+                venta_ganada='NO'
+            sheet.write(row,0, l.name or '###', body_center)
+            sheet.write(row, 1, l.partner_id.name or '###', body_center)
+            sheet.write(row, 2,l.planned_revenue or '###', body_center)
+            sheet.write(row, 3, l.probability or '####', body_center)
+            sheet.write(row, 4, l.user_id.name or '###', body_center)
+            sheet.write(row, 5, l.team_id.name or '####', body_center)
+            sheet.write(row, 6, venta_ganada or '###', body_center)
+            sheet.write(row, 7, l.date_deadline or '###', body_center)
+            sheet.write(row, 8, l.surcursal_id.name or '###', body_center)
+            sheet.write(row, 9, l.provincia_id.name or '###', body_center)
+            sheet.write(row, 10, l.ciudad_id.nombre_ciudad or '###', body_center)
+            sheet.write(row, 11, l.valor_inscripcion or '###', body_center)
+            sheet.write(row, 12, l.fecha_ganada or '###', body_center)
+            sheet.write(row, 13, l.contrato_id.secuencia or '###', body_center)
+            sheet.write(row, 14, l.tipo_contrato.name or '###', body_center)
+            sheet.write(row, 15, l.priority or '###', body_center)
+            sheet.write(row, 16, l.factura_inscripcion_id.name or '###', body_center)
+            row+=1
