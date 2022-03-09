@@ -22,7 +22,9 @@
                 "views/crm_team_view.xml", 
                 "views/surcursal_view.xml", 
 
-                "wizard/wizard_cuota_pago_amortizacion.xml",                    
+
+                "wizard/wizard_cuota_pago_amortizacion.xml",
+                "wizard/report_crm_view.xml",                 
             ],
     
     'installable': True,

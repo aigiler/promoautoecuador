@@ -7,8 +7,8 @@ import xlsxwriter
 from io import BytesIO
 import base64
 from odoo.exceptions import ValidationError
-class ReportComisionistas(models.TransientModel):
-    _name = "report.comisionistas"
+class ReportCrm(models.TransientModel):
+    _name = "report.crm"
 
     date_start = fields.Date('Fecha Inicio', required=True)
     date_end = fields.Date('Fecha Corte', required=True, default = date.today())
@@ -75,7 +75,7 @@ class ReportComisionistas(models.TransientModel):
                             'y_scale':     0.8, 'align': 'left','bg_color':'#442484'})
         
         sheet.merge_range('B1:J1', ' ', bold)
-        sheet.merge_range('A2:J2', 'REPORTE DE COMISIONISTAS S'+str(dia_start)+''+str(mesesDic[str(mes_start)])+''+str(year), bold)
+        sheet.merge_range('A2:J2', 'REPORTE DE CRM'+str(dia_start)+''+str(mesesDic[str(mes_start)])+''+str(year), bold)
         sheet.set_column('A:A', 20)
         sheet.set_column('B:B', 45)
         sheet.set_column('C:C', 16)
@@ -101,24 +101,3 @@ class ReportComisionistas(models.TransientModel):
         sheet.write(2, 9, 'OBSERVACION', bold2)
         
         row=3
-        comisiones = self.env['comision.bitacora'].search([('create_date','>=',self.date_start),('create_date','<=',self.date_end)])
-        
-        if len(comisiones) > 0:
-            
-            for l in comisiones: #contrato_id comision.bitacora
-                
-                cargo =self.env['hr.employee'].search([('user_id','=',l.user_id.id)],limit=1)
-                #jefe_ventas_nacional =self.env['hr.employee'].search([('job_id.name','=','Jefe de Ventas')],limit=1)
-                #porcentaje = self.env['comision'].search([('valor_min','>=',float(l.valor_inscripcion)),('valor_max','<=',float(l.valor_inscripcion)),('logica','=','asesor')])
-                #raise ValidationError(str(porcentaje))
-                sheet.write(row, 0, 'periodo', body_right)
-                sheet.write(row, 1, cargo.job_id.name, body_center)
-                sheet.write(row, 2,'AGENCIA', body_center)
-                sheet.write(row, 3, l.lead_id.contrato_id.secuencia or '####', body_center)
-                sheet.write(row, 4, l.user_id.name or '###', body_center)
-                sheet.write(row, 5, 'subtotal' or '####', body_center)
-                sheet.write(row, 6, 'iva' or '###', body_center)
-                sheet.write(row, 7, 'total a recibir' or '###', body_center)
-                sheet.write(row, 8, 'estado' or '###', body_center)
-                sheet.write(row, 9, 'observacion' or '###', body_center)
-        
