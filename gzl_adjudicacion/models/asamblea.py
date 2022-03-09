@@ -5,7 +5,6 @@ from datetime import date, timedelta
 import datetime
 
 
-
 class Asamblea(models.Model):
     _name = 'asamblea'
     _description = 'Proceso de Asamblea'
