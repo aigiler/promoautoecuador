@@ -21,7 +21,8 @@
             'wizard/report_payment_file_view.xml',
             'wizard/report_vacations_view.xml',
             'wizard/report_comisiones_view.xml',
-            'wizard/res_company_views.xml'
+            'wizard/res_company_views.xml',
+            'wizard/report_comisionistas_view.xml'
     ],
     'qweb': [],
     'demo': [],

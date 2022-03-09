@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import string
 from odoo import api, fields, models, tools
 from datetime import date, timedelta, datetime
 from dateutil import relativedelta as rdelta 
@@ -18,7 +19,7 @@ class ReportComisiones(models.TransientModel):
         today = date.today()
         file_data = BytesIO()
         workbook = xlsxwriter.Workbook(file_data)
-        name = 'REPORTE COMISIONISTAS '+ str(today.year)
+        name = 'REPORTE COMISIONES '+ str(today.year)
         self.xslx_body(workbook,name)
         workbook.close()
         file_data.seek(0)
@@ -37,8 +38,8 @@ class ReportComisiones(models.TransientModel):
         }
 
     def xslx_body(self,workbook,name):
-        bold = workbook.add_format({'bold':True,'border':0, 'bg_color':'#442484','color':'#FFFFFF'})
-        bold.set_center_across()
+        bold = workbook.add_format({'bold':True,'border':0, 'bg_color':'#442484','color':'#FFFFFF','align': 'left'})
+        #bold.set_center_across()
         bold2 = workbook.add_format({'bold':True,'border':0, 'bg_color':'#989899','color':'#FFFFFF'})
         bold2.set_center_across()
         format_title = workbook.add_format({'bold':True,'border':0})
@@ -70,16 +71,17 @@ class ReportComisiones(models.TransientModel):
         dia_end = self.date_end.day
         #sheet.insert_image('A1:D1', '../gzl_employee/img/logo.PNG', {'x_offset': 15, 'y_offset': 10,'bg_color':'#442484'})
         sheet.insert_image('A1', "any_name.png",
-                           {'image_data':  BytesIO(base64.b64decode( self.env.company.logo)), 'x_scale': 0.5, 'y_scale': 0.5,'x_scale': 0.5,
-                            'y_scale':     0.5, 'align': 'left'})
+                           {'image_data':  BytesIO(base64.b64decode( self.env.company.imagen_excel_company)), 'x_scale': 0.8, 'y_scale': 0.8,'x_scale': 0.8,
+                            'y_scale':     0.8, 'align': 'left','bg_color':'#442484'})
         #sheet.insert_image('A1:D1', "any_name.png",
         #                   {'image_data':  BytesIO(base64.b64decode( '../gzl_employee/img/logo.jpg')), 'x_scale': 0.5, 'y_scale': 0.5,'x_scale': 0.5,
         #                    'y_scale':     0.5, 'align': 'left'})
         
-        sheet.merge_range('E1:AG1', ' ', bold)
+        sheet.merge_range('B1:AG1', ' ', bold)
         sheet.merge_range('A2:D2', 'COMISIONES DEL PERIODO DEL '+str(dia_start)+' de '+str(mesesDic[str(mes_start)])+' del '+str(year)+' al '+str(dia_end)+' de '+str(mesesDic[str(mes_end)])+' del '+str(year), bold)
         sheet.merge_range('E2:AG2', ' ', bold)
-        sheet.set_column('A:A', 10)
+        
+        #sheet.set_column('A:A', 10)
         sheet.set_column('B:B', 45)
         sheet.set_column('C:C', 16)
         sheet.set_column('D:D', 18)
@@ -113,6 +115,7 @@ class ReportComisiones(models.TransientModel):
         sheet.set_column('AE:AE', 17)
         sheet.set_column('AF:AF', 17)
         sheet.set_column('AG:AG', 17)
+        sheet.set_column(1,45, 45)
         #data = self.report_vacations_data()
       
         #sheet.write(2, 0, 'PERIODO DE PAGO', bold)
@@ -160,7 +163,7 @@ class ReportComisiones(models.TransientModel):
         sheet.write(2, 31, 'SUBT. GERENTE COMERCIAL', bold2)
         sheet.write(2, 32, 'PORCENTAJE TOTAL', bold2)      
         row=3
-        comisiones = self.env['comision.bitacora'].search([])
+        comisiones = self.env['comision.bitacora'].search([('create_date','>=',self.date_start),('create_date','<=',self.date_end)])
             #('create_date', '<=', self.date_end),
             #('create_date', '>=', self.date_start),
         #])
@@ -209,4 +212,4 @@ class ReportComisiones(models.TransientModel):
                 row+=1
 class companyherencia(models.Model):
     _inherit = "res.company"
-    imagen_excel_company = fields.Binary()
+    imagen_excel_company = fields.Binary('Logo Excel')
