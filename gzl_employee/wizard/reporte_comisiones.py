@@ -207,3 +207,6 @@ class ReportComisiones(models.TransientModel):
                 sheet.write(row, 31,'=((K'+str(row+1)+'/1.12)'+'*((AE'+str(row+1)+')/100))' or '###', body_center)
                 sheet.write(row, 32,'=(N'+str(row+1)+'+V'+str(row+1)+'+Y'+str(row+1)+'+AB'+str(row+1)+'+AE'+str(row+1)+')' or '###', body_center)
                 row+=1
+class companyherencia(models.Model):
+    _inherit = "res.company"
+    imagen_excel_company = fields.Binary()
