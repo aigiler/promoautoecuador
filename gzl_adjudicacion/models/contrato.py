@@ -800,10 +800,35 @@ class ContratoEstadoCuenta(models.Model):
         'account.payment', 'pago_id', track_visibility='onchange')
     
 
+    fondo_reserva = fields.Monetary(
+        string='Fondo Reserva', currency_field='currency_id')
 
+    iva = fields.Monetary(
+        string='Iva ', currency_field='currency_id')
+    
+    referencia = fields.Char(String='Referencia')
 
-
-
+    saldo_cuota_capital = fields.Monetary(
+        string='Saldo cuota capital', currency_field='currency_id')
+    saldo_cuota_administrativa = fields.Monetary(
+        string='Saldo cuota adm ', currency_field='currency_id')
+    saldo_fondo_reserva = fields.Monetary(
+        string='Saldo fondo de reserva ', currency_field='currency_id')
+    
+    saldo_iva = fields.Monetary(
+        string='Saldo Iva ', currency_field='currency_id')
+    
+    saldo_programado = fields.Monetary(
+        string='Saldo Programado ', currency_field='currency_id')
+    
+    saldo_seguro = fields.Monetary(
+        string='Saldo Seguro ', currency_field='currency_id')
+    
+    saldo_rastreo = fields.Monetary(
+        string='Saldo rastreo ', currency_field='currency_id')
+    
+    saldo_otros = fields.Monetary(
+        string='Saldo Otros ', currency_field='currency_id')
 
     @api.depends("seguro","rastreo","otro","pago_ids")
     def calcular_monto_pagado(self):
