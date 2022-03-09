@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="base.view_company_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='favicon']" position="after">
-                <field name="imagen_excel_company"/>
+                <field name="imagen_excel_company" widget="image" class="float-left oe_avatar" groups="base.group_no_one"/>
             </xpath>
         </field>
     </record>
