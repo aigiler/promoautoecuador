@@ -829,6 +829,9 @@ class ContratoEstadoCuenta(models.Model):
     
     saldo_otros = fields.Monetary(
         string='Saldo Otros ', currency_field='currency_id')
+    
+    saldo_tabla = fields.Monetary(
+        string='Saldo Tabla ', currency_field='currency_id')
 
     @api.depends("seguro","rastreo","otro","pago_ids")
     def calcular_monto_pagado(self):
