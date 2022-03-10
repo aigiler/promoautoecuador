@@ -7,7 +7,7 @@ import re
 
 class DevolucionMonto(models.Model):   
     _name = 'devolucion.monto'   
-    _inherit = 'entrega.vehiculo' 
+    #_inherit = 'entrega.vehiculo' 
   
 
 
