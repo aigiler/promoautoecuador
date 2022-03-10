@@ -15,9 +15,7 @@
             <field name="name">view.devolucion.form</field>
             <field name="model">devolucion.monto</field>
             <field name="arch" type="xml">
-                <header>
-                    <field name="state" widget="statusbar"/>
-                </header>
+                
                 <form string="Devolucion de Monto">
                 
                     <sheet>
