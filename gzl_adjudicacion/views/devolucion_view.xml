@@ -31,14 +31,32 @@
         
 
 
-    <record id="action_devolucion_form" model="ir.actions.act_window">
-        <field name="name">Devolucion Monto</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">devolucion.monto</field>
-        <field name="view_mode">tree,form</field>
-    </record>
+        <record id="action_devolucion" model="ir.actions.act_window">
+            <field name="name">Devolucion de Monto</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">devolucion.monto</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Crear una nueva devolucion
+              </p>
+            </field>
+        </record>
+    
+        <record id="action_devolucion_form" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_devolucion_form"/>
+            <field name="act_window_id" ref="action_devolucion"/>
+        </record>
+    
+        <record id="action_devolucion_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_devolucion_tree"/>
+            <field name="act_window_id" ref="action_devolucion"/>
+        </record>
 
-
-    <menuitem id="devolucion_menu" action="action_devolucion_form" parent="menu_socio_proceso_adjudicacion" sequence="7" />
+    <menuitem id="devolucion_menu" action="action_devolucion" parent="menu_socio_proceso_adjudicacion" sequence="7" />
 
 </odoo>
