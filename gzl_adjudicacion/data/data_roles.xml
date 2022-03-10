@@ -16,10 +16,36 @@
             <field name="code">creditosYCobranzas</field>
             <field name="descripcion">Rol de Crédito y Cobranza</field>
         </record>
+
+
         <record id="tipo_rol4" model="adjudicaciones.team">
             <field name="name">Gerencia Financiera</field>
             <field name="code">gerenciaFinanciera</field>
             <field name="descripcion">Rol de Gerencia Financiera</field>
+        </record>
+
+        <record id="tipo_rol5" model="adjudicaciones.team">
+            <field name="name">Postventa</field>
+            <field name="code">postventa</field>
+            <field name="descripcion">Rol de postventa</field>
+        </record>
+
+        <record id="tipo_rol6" model="adjudicaciones.team">
+            <field name="name">Legal</field>
+            <field name="code">legal</field>
+            <field name="descripcion">Rol de legal</field>
+        </record>
+
+        <record id="tipo_rol7" model="adjudicaciones.team">
+            <field name="name">Contabilidad </field>
+            <field name="code">contabilidad</field>
+            <field name="descripcion">Contabilidad</field>
+        </record>
+
+        <record id="tipo_rol8" model="adjudicaciones.team">
+            <field name="name">Nomina</field>
+            <field name="code">nomina</field>
+            <field name="descripcion">Rol de Nomina</field>
         </record>
     </data>
 </odoo>

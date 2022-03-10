@@ -27,6 +27,16 @@ class DevolucionMonto(models.Model):
         ('liquidacion', 'Liquidacion de vendedor'),
     ], string='Estado', default='borrador', track_visibility='onchange')
 
+    rolAsignado = fields.Many2one('adjudicaciones.team', string="Rol Asignado", track_visibility='onchange')
+    
+    rolGerenciaFin = fields.Many2one('adjudicaciones.team', string="Rol Gerencia Financiera", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol4'))
+    rolAdjudicacion = fields.Many2one('adjudicaciones.team', string="Rol Adjudicacion", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol2'))
+
+    rolpostventa = fields.Many2one('adjudicaciones.team', string="Rol Post venta", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol5'))
+    rollegal = fields.Many2one('adjudicaciones.team', string="Rol Legal", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol6'))
+
+    rolcontab = fields.Many2one('adjudicaciones.team', string="Rol contabilidad Financiera", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol7'))
+    rolnomina = fields.Many2one('adjudicaciones.team', string="Rol Nomina", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol8'))
 
     @api.model
     def create(self, vals):
