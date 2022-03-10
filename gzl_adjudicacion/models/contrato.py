@@ -303,7 +303,7 @@ class Contrato(models.Model):
 
     @api.model
     def create(self, vals):
-        vals['secuencia'] = self.env['ir.sequence'].next_by_code('contrato')
+        vals['secuencia'] = f.env['ir.sequence'].next_by_code('contrato')sel
         dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
         tasa_administrativa =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa')
 

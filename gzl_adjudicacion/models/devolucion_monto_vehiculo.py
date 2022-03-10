@@ -8,8 +8,9 @@ import re
 class DevolucionMonto(models.Model):   
     _name = 'devolucion.monto'   
     #_inherit = 'entrega.vehiculo' 
-  
+    _rec_name= 'secuencia'
 
+    secuencia = fields.Char(index=True)
 
     monto = fields.Float(string='Monto')
     contrato_id = fields.Many2one('contrato')
@@ -25,3 +26,11 @@ class DevolucionMonto(models.Model):
         ('notificacion', 'Notificacion Cliente'),
         ('liquidacion', 'Liquidacion de vendedor'),
     ], string='Estado', default='borrador', track_visibility='onchange')
+
+
+    @api.model
+    def create(self, vals):
+        vals['secuencia'] = f.env['ir.sequence'].next_by_code('devolucion.adjudicado')
+
+
+        return super(Contrato, self).create(vals)

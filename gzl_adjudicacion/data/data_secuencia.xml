@@ -54,5 +54,19 @@
             <field eval="False" name="company_id"/>
         </record>
 
+
+        <!--  Secuencia para Devoluciones -->
+        <record id="sequence_integrante_grupo_adjudicado" model="ir.sequence">
+            <field name="name">Secuencia para Devolucion de Monto</field>
+            <field name="code">devolucion.adjudicado</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="False" name="company_id"/>
+        </record>
+
+
+
+
+
     </data>
 </odoo>
