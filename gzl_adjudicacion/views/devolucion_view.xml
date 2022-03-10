@@ -29,13 +29,16 @@
 
 
         
-        <record id="action_devolucion_form" model="ir.actions.act_window">
-            <field name="name">Devolucion Monto</field>
-            <field name="res_model">devolucion.monto</field>
-            <field name="view_mode">tree,form</field>
-            <field name="target">new</field>
-        </record>
 
-    <menuitem id="devolucion_menu" name="Monto Devolucion" sequence="12"
-              action="action_devolucion_form" parent="menu_socio_proceso_adjudicacion"/>
+
+    <record id="action_devolucion_form" model="ir.actions.act_window">
+        <field name="name">Devolucion Monto</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">devolucion.monto</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem id="devolucion_menu" action="action_devolucion_form" parent="menu_socio_proceso_adjudicacion" sequence="7" />
+
 </odoo>
