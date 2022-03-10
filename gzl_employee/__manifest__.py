@@ -9,6 +9,7 @@
 
             'data/data_groups.xml',
             'data/data_age.xml',
+            'data/ir_cron.xml',
 
             'views/hr_employee_view.xml',
             'views/hr_payslip_view.xml',
