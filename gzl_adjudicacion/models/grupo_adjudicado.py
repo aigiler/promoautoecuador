@@ -28,7 +28,7 @@ class GrupoSocios(models.Model):
     integrantes = fields.One2many('integrante.grupo.adjudicado','grupo_id',track_visibility='onchange')
     transacciones_ids = fields.One2many('transaccion.grupo.adjudicado','grupo_id',track_visibility='onchange')
 
-
+    idGrupo = fields.Char("ID de Grupo en Cotnrato")#acunalema
 
 
 
