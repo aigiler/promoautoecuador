@@ -30,7 +30,7 @@ class DevolucionMonto(models.Model):
 
     @api.model
     def create(self, vals):
-        vals['secuencia'] = f.env['ir.sequence'].next_by_code('devolucion.adjudicado')
+        vals['secuencia'] = self.env['ir.sequence'].next_by_code('devolucion.adjudicado')
 
 
-        return super(Contrato, self).create(vals)
+        return super(DevolucionMonto, self).create(vals)
