@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="view_devolucion_tree" model= "ir.ui.view">
+        <field name="name">view.devolucion.monto.tree</field>
+        <field name="model">devolucion.monto</field>
+        <field name="arch" type="xml">
+            <tree string="Devolucion de Monto">
+                <field name="contrato_id" />
+                <field name="monto" />
+            </tree>
+        </field>
+    </record>
+        <record id="view_devolucion_form" model="ir.ui.view">
+            <field name="name">view.devolucion.form</field>
+            <field name="model">devolucion.monto</field>
+            <field name="arch" type="xml">
+                <form string="Devolucion de Monto">
+                    
+                    <group>
+                        <field name="contrato_id"/>
+                        <field name="fsolicitud" string="Fecha Solicitud"/>
+                        <field name="monto" string="Monto"/>
+
+                    </group>
+                </form>
+            </field>
+        </record>
+
+
+        
+        <record id="action_devolucion_form" model="ir.actions.act_window">
+            <field name="name">Devolucion Monto</field>
+            <field name="res_model">devolucion.monto</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">new</field>
+        </record>
+
+    <menuitem id="devolucion_menu" name="Monto Devolucion" sequence="12"
+              action="action_devolucion_form" parent="menu_socio_proceso_adjudicacion"/>
+</odoo>

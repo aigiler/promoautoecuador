@@ -14,3 +14,4 @@ from . import adjudicaciones_team
 from . import items_patrimonio
 from . import puntos_bienes
 from . import paginas_de_control
+from . import devolucion_monto_vehiculo
