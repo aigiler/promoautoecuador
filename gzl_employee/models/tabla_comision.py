@@ -61,24 +61,27 @@ class Comision(models.Model):
                     for empleado in empleados:
                         monto_comision=0
                         leads = self.env['crm.lead'].search([('supervisor','=',empleados.user_id.id),('active','=',True),('fecha_ganada','>=',fecha_actual),('fecha_ganada','<=',fecha_fin)])
-                        monto_ganado= sum(leads.mapped("planned_revenue"))
+                        monto_ganado= sum(leads.mapped("factura_inscripcion_id.amount_untaxed"))
                         comision_tabla=self.env['comision'].search([('cargo_id','=',cargo),('valor_min','<=',monto_ganado),('valor_max','>=',monto_ganado)],limit=1)
                         if len(comision_tabla)>0:
                             monto_comision=comision_tabla.comision*monto_ganado + comision_tabla.bono
 
-                        listaComision.append({'empleado_id':empleado.id,'comision':monto_comision})
+                            listaComision.append({'empleado_id':empleado.id,'nombre':empleado.name,'comision':monto_comision,'cargo':empleado.job_id.id,'tipo_comision':'supervisor','porcentaje_comision':comision_tabla.comision,'bono': comision_tabla.bono})
+
+
+
 
                 if tipo_comision.logica=='jefe' or tipo_comision.logica=='gerente':
 
                     for empleado in empleados:
                         monto_comision=0
                         leads = self.env['crm.lead'].search([('fecha_ganada','>=',fecha_actual),('fecha_ganada','<=',fecha_fin)])
-                        monto_ganado= sum(leads.mapped("planned_revenue"))
+                        monto_ganado= sum(leads.mapped("factura_inscripcion_id.amount_untaxed"))
                         comision_tabla=self.env['comision'].search([('cargo_id','=',cargo),('valor_min','<=',monto_ganado),('valor_max','>=',monto_ganado)],limit=1)
                         if len(comision_tabla)>0:
                             monto_comision=comision_tabla.comision*monto_ganado + comision_tabla.bono
 
-                        listaComision.append({'empleado_id':empleado.id,'comision':monto_comision})
+                            listaComision.append({'empleado_id':empleado.id,'nombre':empleado.name,'comision':monto_comision,'cargo':empleado.job_id.id,'tipo_comision':'supervisor','porcentaje_comision':comision_tabla.comision,'bono': comision_tabla.bono})
 
 
         comision=self.env['hr.payslip.input.type'].search([('code','=','COMI')])
@@ -91,8 +94,19 @@ class Comision(models.Model):
             'amount':empleado['comision']   ,
 
             }
+
+
             comision=self.env['hr.input'].create(dct)
 
+            dct2={
+                'comision': empleado['comision']   ,
+                'cargo':   empleado['cargo']  ,
+                'empleado_id':   empleado['empleado_id'],
+                'porcentaje_comision':   empleado['porcentaje_comision'],
+                'bono':   empleado['bono'] }
+
+
+            comision_bitacora=self.env['comision.bitacora'].create(dct2)
 
 
 
