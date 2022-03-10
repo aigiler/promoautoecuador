@@ -17,10 +17,11 @@
             <field name="arch" type="xml">
             
                 <form string="Devolucion de Monto">
-                <header>
+                
+                    <sheet>
+                    <header>
                     <field name="state" widget="statusbar"/>
                 </header>
-                    <sheet>
                     <group>
                         <field name="contrato_id"/>
                         <field name="fsolicitud" string="Fecha Solicitud"/>
