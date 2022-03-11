@@ -100,8 +100,46 @@ class EntegaVehiculo(models.Model):
     direccion1 = fields.Char(string='Direccion de Terreno', default=' ')
     placa = fields.Char(string='Placa de Vehículo', default=' ')
     totalActivosAdj = fields.Float(compute="calculo_total_activos_adj",store=True,string='TOTAL ACTIVOS', digits=(6, 2))
+    purchase_order = fields.Many2one('purchase.order', string="Purchase order", track_visibility='onchange')
+    facturas = fields.Many2one('account.move', string="Liquidacion de Compra", track_visibility='onchange')
 
+#####Funcion para crear purchase order
+    def create_purchase_order(self):
+        #obj_purchase=self.env['purchase.order']
+        for l in self:
+            product=self.env['product.product'].search([('default_code','=','GE')] , limit=1)
 
+            purchase_creado= self.env['purchase.order'].self.env['purchase.order'].create({
+            'partner_id': self.nombreSocioAdjudicado.id,
+            'date_order': datetime.today(),
+            #'currency_id': eur_currency.id,
+            'order_line': [
+                (0, 0, {
+                    'name': product.name,
+                    'product_id': product.id,
+                    'product_qty': 1.0,
+                    #'product_uom': product.id,
+                    'price_unit': self.montoVehiculo,
+                    'date_planned': datetime.today(),
+                }),
+            ],
+            })
+            l.purchase_order = purchase_creado
+    
+#####Funcion para crear liquidacion de compra
+    def create_liq_compra(self):  
+        product=self.env['product.product'].search([('default_code','=','GE')] , limit=1)
+        factura = self.env['account.move'].create({
+                    'type': 'liq_purchase',
+                    'partner_id': self.nombreSocioAdjudicado.id,
+                    'invoice_line_ids': [(0, 0, {
+                        'quantity': 1,
+                        'price_unit': self.montoVehiculo,
+                        'name': product.name,
+                    })],
+                    'journal_id':self.nombreSocioAdjudicado.id,
+                    'invoice_date': datetime.today(),
+                })  
     
     @api.depends("montoAhorroInversiones")
     def calculo_total_activos_adj(self):
