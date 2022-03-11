@@ -109,7 +109,7 @@ class EntegaVehiculo(models.Model):
         #for l in self:
         product=self.env['product.product'].search([('default_code','=','GE')] , limit=1)
 
-        purchase_creado= self.env['purchase.order'].self.env['purchase.order'].create({
+        purchase_creado= self.env['purchase.order'].create({
         'partner_id': self.nombreSocioAdjudicado.id,
         'date_order': datetime.today(),
         #'currency_id': eur_currency.id,
