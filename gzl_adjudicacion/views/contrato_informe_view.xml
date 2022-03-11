@@ -17,7 +17,7 @@
                 <field name="cuota_capital" />
                 <field name="cuota_adm" />
                 <field name="iva_administrativo" />
-                <field name="pazo_meses" />
+                <field name="plazo_meses" />
                 <field name="numero_cuotas_pagadas" />
                 <field name="state" />
                 <field name="fecha_contrato" />
