@@ -109,7 +109,7 @@ class EntegaVehiculo(models.Model):
     def create_purchase_order(self):
         #obj_purchase=self.env['purchase.order']
         #for l in self:
-        product=self.env['product.product'].search([('default_code','=','GE')] , limit=1)
+        #product=self.env['product.product'].search([('default_code','=','GE')] , limit=1)
 
         purchase_creado= self.env['purchase.order'].create({
         'partner_id': self.nombreConsesionario.id,
@@ -117,10 +117,10 @@ class EntegaVehiculo(models.Model):
         #'currency_id': eur_currency.id,
         'order_line': [
             (0, 0, {
-                'name': product.name,
-                'product_id': product.id,
+                'name': self.products_id.name,
+                'product_id': self.products_id.id,
                 'product_qty': 1.0,
-                'product_uom': product.id,
+                'product_uom': self.products_id.id,
                 'price_unit': self.montoVehiculo,
                 'date_planned': datetime.datetime.now(),
             }),
@@ -130,14 +130,14 @@ class EntegaVehiculo(models.Model):
     
 #####Funcion para crear liquidacion de compra
     def create_liq_compra(self):  
-        product=self.env['product.product'].search([('default_code','=','GE')] , limit=1)
+        #product=self.env['product.product'].search([('default_code','=','GE')] , limit=1)
         factura = self.env['account.move'].create({
                     'type': 'liq_purchase',
                     'partner_id': self.nombreSocioAdjudicado.id,
                     'invoice_line_ids': [(0, 0, {
                         'quantity': 1,
                         'price_unit': self.montoVehiculo,
-                        'name': product.name,
+                        'name': self.products_id.name,
                     })],
                     'journal_id':self.nombreSocioAdjudicado.id,
                     'invoice_date': datetime.datetime.now(),
