@@ -45,7 +45,7 @@
                     'views/transacciones_grupos_view.xml',
                     'views/devolucion_view.xml',
                     'views/contrato_informe_view.xml',
-                    'views/contrato_view_adendum.xml',
+                    'views/contrato_view_adendum.xml', 
 
                     
                     'wizard/wizard_pago_contrato_view.xml',
