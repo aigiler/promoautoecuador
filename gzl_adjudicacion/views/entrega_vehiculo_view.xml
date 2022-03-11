@@ -37,7 +37,6 @@
                                     <button type="object" name="create_purchase_order" class="btn btn-primary o_invoice_new"/>
                                     <button type="object" name="create_liq_compra" class="btn btn-primary o_invoice_new"/>
                                     
-                                    </button>
                                 </group>
                             </group>
                         </page>
