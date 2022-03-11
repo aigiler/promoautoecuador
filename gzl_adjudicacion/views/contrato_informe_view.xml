@@ -16,7 +16,7 @@
                 <field name="tasa_administrativa" />
                 <field name="cuota_capital" />
                 <field name="cuota_adm" />
-                <field name="iva_administrativa" />
+                <field name="iva_administrativo" />
                 <field name="pazo_meses" />
                 <field name="numero_cuotas_pagadas" />
                 <field name="state" />
