@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime, timedelta
 from datetime import date, timedelta
 import datetime
 from email.policy import default
@@ -102,6 +103,7 @@ class EntegaVehiculo(models.Model):
     totalActivosAdj = fields.Float(compute="calculo_total_activos_adj",store=True,string='TOTAL ACTIVOS', digits=(6, 2))
     purchase_order = fields.Many2one('purchase.order', string="Purchase order", track_visibility='onchange')
     facturas = fields.Many2one('account.move', string="Liquidacion de Compra", track_visibility='onchange')
+    products_id = fields.Many2one('product.product', track_visibility='onchange')
 
 #####Funcion para crear purchase order
     def create_purchase_order(self):
@@ -110,17 +112,17 @@ class EntegaVehiculo(models.Model):
         product=self.env['product.product'].search([('default_code','=','GE')] , limit=1)
 
         purchase_creado= self.env['purchase.order'].create({
-        'partner_id': self.nombreSocioAdjudicado.id,
-        'date_order': datetime.today(),
+        'partner_id': self.nombreConsesionario.id,
+        'date_order': datetime.datetime.now(),
         #'currency_id': eur_currency.id,
         'order_line': [
             (0, 0, {
                 'name': product.name,
                 'product_id': product.id,
                 'product_qty': 1.0,
-                #'product_uom': product.id,
+                'product_uom': product.id,
                 'price_unit': self.montoVehiculo,
-                'date_planned': datetime.today(),
+                'date_planned': datetime.datetime.now(),
             }),
         ],
         })
@@ -138,7 +140,7 @@ class EntegaVehiculo(models.Model):
                         'name': product.name,
                     })],
                     'journal_id':self.nombreSocioAdjudicado.id,
-                    'invoice_date': datetime.today(),
+                    'invoice_date': datetime.datetime.now(),
                 })  
         self.facturas= factura
     

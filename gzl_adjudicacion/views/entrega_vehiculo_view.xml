@@ -669,6 +669,16 @@
                                                 <field name="montoChequeConsesionario" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                             </td>
                                         </tr>
+
+                                        <tr>
+                                            <td>
+                                                <text>PRODUCTO</text>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <field name="products_id"  />
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
