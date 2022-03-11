@@ -20,7 +20,7 @@
         <field name="model">contrato.adendum</field>
         <field name="arch" type="xml">
             <form string="Contrato Adendum">
-                    <div >
+                   
                         
                         <div class="row">
                             <group string="Información del Contrato"/>
