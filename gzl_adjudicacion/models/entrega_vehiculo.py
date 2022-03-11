@@ -106,25 +106,25 @@ class EntegaVehiculo(models.Model):
 #####Funcion para crear purchase order
     def create_purchase_order(self):
         #obj_purchase=self.env['purchase.order']
-        for l in self:
-            product=self.env['product.product'].search([('default_code','=','GE')] , limit=1)
+        #for l in self:
+        product=self.env['product.product'].search([('default_code','=','GE')] , limit=1)
 
-            purchase_creado= self.env['purchase.order'].self.env['purchase.order'].create({
-            'partner_id': self.nombreSocioAdjudicado.id,
-            'date_order': datetime.today(),
-            #'currency_id': eur_currency.id,
-            'order_line': [
-                (0, 0, {
-                    'name': product.name,
-                    'product_id': product.id,
-                    'product_qty': 1.0,
-                    #'product_uom': product.id,
-                    'price_unit': self.montoVehiculo,
-                    'date_planned': datetime.today(),
-                }),
-            ],
-            })
-            l.purchase_order = purchase_creado
+        purchase_creado= self.env['purchase.order'].self.env['purchase.order'].create({
+        'partner_id': self.nombreSocioAdjudicado.id,
+        'date_order': datetime.today(),
+        #'currency_id': eur_currency.id,
+        'order_line': [
+            (0, 0, {
+                'name': product.name,
+                'product_id': product.id,
+                'product_qty': 1.0,
+                #'product_uom': product.id,
+                'price_unit': self.montoVehiculo,
+                'date_planned': datetime.today(),
+            }),
+        ],
+        })
+        self.purchase_order = purchase_creado
     
 #####Funcion para crear liquidacion de compra
     def create_liq_compra(self):  
@@ -140,6 +140,7 @@ class EntegaVehiculo(models.Model):
                     'journal_id':self.nombreSocioAdjudicado.id,
                     'invoice_date': datetime.today(),
                 })  
+        self.facturas= factura
     
     @api.depends("montoAhorroInversiones")
     def calculo_total_activos_adj(self):

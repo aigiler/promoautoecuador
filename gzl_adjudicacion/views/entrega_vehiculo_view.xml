@@ -34,8 +34,8 @@
                                     <field name="matriculacion" />
                                     <field name="rastreo" />
                                     <field name="seguro" />
-                                    <button type="object" name="create_purchase_order" class="btn btn-primary o_invoice_new"/>
-                                    <button type="object" name="create_liq_compra" class="btn btn-primary o_invoice_new"/>
+                                    <button type="object" string="purchase" name="create_purchase_order" class="btn btn-primary o_invoice_new"/>
+                                    <button type="object" string="liq" name="create_liq_compra" class="btn btn-primary o_invoice_new"/>
                                     
                                 </group>
                             </group>
