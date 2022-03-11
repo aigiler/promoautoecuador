@@ -7,7 +7,7 @@ import re
 
 class DevolucionMonto(models.Model):   
     _name = 'devolucion.monto'   
-    #_inherit = 'entrega.vehiculo' 
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name= 'secuencia'
 
     secuencia = fields.Char(index=True)
