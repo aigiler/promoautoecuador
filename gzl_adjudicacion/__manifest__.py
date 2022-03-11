@@ -44,6 +44,7 @@
                     'views/puntos_bienes.xml',
                     'views/transacciones_grupos_view.xml',
                     'views/devolucion_view.xml',
+                    'views/contrato_informe_view.xml',
 
 
                     

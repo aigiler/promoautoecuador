@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_contrato_tree_informe" model= "ir.ui.view">
+        <field name="name">view.contrato.tree</field>
+        <field name="model">contrato</field>
+        <field name="arch" type="xml">
+            <tree string="Contrato Informe">
+                <field name="secuencia" />
+                <field name="cliente" />
+                <field name="grupo" />
+                <field name="tipo_de_contrato"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_contrato_informe" model="ir.actions.act_window">
+        <field name="name">Contrato Informe</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">contrato</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem id="menu_contrato_informe" action="action_contrato_informe" parent="menu_socio_proceso_adjudicacion" sequence="7" />
+
+</odoo>
