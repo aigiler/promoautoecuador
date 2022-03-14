@@ -139,7 +139,7 @@ class EntegaVehiculo(models.Model):
                         'price_unit': self.montoVehiculo,
                         'name': self.products_id.name,
                     })],
-                    'journal_id':self.nombreSocioAdjudicado.id,
+                    #'journal_id':self.nombreSocioAdjudicado.id,
                     'invoice_date': datetime.datetime.now(),
                 })  
         self.facturas= factura
