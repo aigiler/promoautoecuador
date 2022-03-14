@@ -35,6 +35,6 @@
         <field name="view_mode">tree</field>
     </record>
 
-    <menuitem id="menu_contrato_informe" action="action_contrato_informe" parent="menu_socio_proceso_adjudicacion" sequence="7" />
+    <menuitem id="menu_contrato_informe" action="action_contrato_informe" parent="gzl_reporte.menu_reporte" sequence="7" />
 
 </odoo>
