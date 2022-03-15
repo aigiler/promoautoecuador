@@ -33,6 +33,7 @@
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">contrato</field>
         <field name="view_mode">tree</field>
+        <field name="view_id" ref="gzl_adjudicacion.view_contrato_tree_informe"/>
     </record>
 
     <menuitem id="menu_contrato_informe" action="action_contrato_informe" parent="gzl_reporte.menu_reporte" sequence="7" />
