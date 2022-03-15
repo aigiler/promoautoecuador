@@ -185,14 +185,58 @@
         </field>
     </record>
 
-    <record id="action_contrato" model="ir.actions.act_window">
+
+
+
+        <record model="ir.actions.act_window" id="action_contrato">
+
+            <field name="name">Contrato</field>
+
+            <field name="res_model">contrato</field>
+
+            <field name="view_type">form</field>
+
+            <field name="view_mode">tree,form</field>
+
+            <!--field name="search_view_id" ref="view_solicitud_central_search"/-->
+
+        </record>
+
+
+
+    <record model="ir.actions.act_window.view" id="act_contrato_tree_view">
+
+        <field eval="1" name="sequence"/>
+
+        <field name="view_mode">tree</field>
+
+        <field name="view_id" ref="view_contrato_tree"/>
+
+        <field name="act_window_id" ref="action_contrato"/>
+
+    </record>
+
+
+
+    <record model="ir.actions.act_window.view" id="act_contrato_form_view">
+
+        <field eval="2" name="sequence"/>
+
+        <field name="view_mode">form</field>
+
+        <field name="view_id" ref="view_contrato_form"/>
+
+        <field name="act_window_id" ref="action_contrato"/>
+
+    </record>
+
+    <!--record id="action_contrato" model="ir.actions.act_window">
         <field name="name">Contrato</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">contrato</field>
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="gzl_adjudicacion.view_contrato_tree"/>
-        <field name="act_window_id" ref="gzl_adjudicacion.view_contrato_form"/>
-    </record>
+    </record-->
 
     <menuitem id="menu_contrato" action="action_contrato" parent="menu_socio_proceso_adjudicacion" sequence="7" />
 
