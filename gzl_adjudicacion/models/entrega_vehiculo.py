@@ -130,18 +130,24 @@ class EntegaVehiculo(models.Model):
     
 #####Funcion para crear liquidacion de compra
     def create_liq_compra(self):  
-        #product=self.env['product.product'].search([('default_code','=','GE')] , limit=1)
+        account=self.env['account.account'].search([('code','=','1010202')] , limit=1) 
+        #product=self.env['product.product'].search([('default_code','=','GE')] , limit=1) 1010201
         factura = self.env['account.move'].create({
                     'type': 'liq_purchase',
                     'partner_id': self.nombreSocioAdjudicado.id,
-                    'invoice_line_ids': [(0, 0, {
-                        'quantity': 1,
-                        'price_unit': self.montoVehiculo,
-                        'name': self.products_id.name,
-                    })],
-                    #'journal_id':self.nombreSocioAdjudicado.id,
+                    
+                    'journal_id':1,
+                    'l10n_latam_document_type_id':5,
                     'invoice_date': datetime.datetime.now(),
                 })  
+        factura.write({'invoice_line_ids': [(0, 0, {
+                        
+                        'product_id':self.products_id.id,
+                        'name': self.products_id.name,
+                        'account_id': factura.journal_id.default_debit_account_id.id,
+                        'quantity': 1,
+                        'price_unit': self.montoVehiculo,
+                    })]})
         self.facturas= factura
     
     @api.depends("montoAhorroInversiones")
