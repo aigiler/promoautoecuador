@@ -7,22 +7,9 @@
         <field name="arch" type="xml">
             <tree string="Contrato">
                 <field name="secuencia" />
-                <field name="tipo_de_contrato"/>
                 <field name="cliente" />
                 <field name="grupo" />
-                <field name="factura_inscripcion" />
-                <field name="valor_inscripcion" />
-                <field name="monto_financiamiento" />
-                <field name="tasa_administrativa" />
-                <field name="cuota_capital" />
-                <field name="cuota_adm" />
-                <field name="iva_administrativo" />
-                <field name="plazo_meses" />
-                <field name="numero_cuotas_pagadas" />
-                <field name="state" />
-                <field name="fecha_contrato" />
-                <field name="fecha_inicio_pago" />
-                <field name="ciudad" />
+                <field name="tipo_de_contrato"/>
                 <field name="active"/>
             </tree>
         </field>
