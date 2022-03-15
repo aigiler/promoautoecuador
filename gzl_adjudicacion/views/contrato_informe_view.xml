@@ -30,11 +30,11 @@
 
         <record model="ir.actions.act_window" id="action_contrato_informe">
 
-            <field name="name">Contrato</field>
+            <field name="name">Contrato Informe</field>
 
             <field name="res_model">contrato</field>
 
-            <field name="view_type">tree</field>
+           
 
             <field name="view_mode">tree</field>
 
@@ -48,7 +48,7 @@
 
         <field name="view_mode">tree</field>
 
-        <field name="view_id" ref="view_contrato_tree"/>
+        <field name="view_id" ref="view_contrato_tree_informe"/>
 
         <field name="act_window_id" ref="action_contrato_informe"/>
 
