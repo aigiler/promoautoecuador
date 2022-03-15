@@ -715,6 +715,7 @@ class EntegaVehiculo(models.Model):
             [('cliente', '=', self.nombreSocioAdjudicado.id)], limit=1)
         contrato.fecha_adjudicado=False
         contrato.estado='activo'
+        contrato.entrega_vehiculo=False
 
         dct={
         'grupo_id':contrato.grupo.id,

@@ -17,7 +17,7 @@ class Contrato(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     en_mora = fields.Boolean(stirng="Contrato en Mora")
 
-    entrega_vehiculo_id = fields.Many2one('entrega.vehiculo',string="Solicitud de entrega vehículo")
+    entrega_vehiculo_id = fields.Many2one('entrega.vehiculo',string="Solicitud de entrega vehículo" ,track_visibility='onchange')
 
 
     idEstadoContrato = fields.Char("ID Estado Contrato")
