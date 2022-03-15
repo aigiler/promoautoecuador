@@ -137,11 +137,13 @@ class Asamblea(models.Model):
 
         for l in  listaGanadores[:numero_ganadores]:
             rol_asignado=self.env.ref('gzl_adjudicacion.tipo_rol3')
-            entrega_vehiculo.create({'asamblea_id':self.id,'nombreSocioAdjudicado':l['adjudicado_id'],'rolAsignado':rol_asignado.id ,'montoEnviadoAsamblea':l['monto']  })
-
+            entrega=entrega_vehiculo.create({'asamblea_id':self.id,'nombreSocioAdjudicado':l['adjudicado_id'],'rolAsignado':rol_asignado.id ,'montoEnviadoAsamblea':l['monto']  })
 
             transacciones=self.env['transaccion.grupo.adjudicado']
             contrato_id=self.env['contrato'].browse(l['contrato_id'])
+
+            contrato_id.entrega_vehiculo=entrega.id
+
             dct={
             'grupo_id':contrato_id.grupo.id,
             'debe':l['monto'],
