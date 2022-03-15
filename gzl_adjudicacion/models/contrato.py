@@ -25,6 +25,9 @@ class Contrato(models.Model):
     idContrato = fields.Char("ID de Contrato en base")
     idClienteContrato= fields.Char("ID de Cliente en Cotnrato")
     idGrupo = fields.Char("ID de Grupo en Cotnrato")
+    numeroContratoOriginal = fields.Char("Numero de Contrato Original")
+    fechaInicioPago = fields.Date("Fecha de inicio de Pago")
+    numeroCuotasPagadas = fields.Char("Numero de Contrato Original")
 
     secuencia = fields.Char(index=True)
     currency_id = fields.Many2one(
@@ -65,16 +68,33 @@ class Contrato(models.Model):
         'account.move', string='Factura Incripción', track_visibility='onchange')
     active = fields.Boolean(string='Activo', default=True)
     state = fields.Selection(selection=[
-        ('borrador', 'Borrador'),
+        ('pendiente', 'Pendiente'),
         ('activo', 'Activo'),
         ('inactivo', 'Inactivo'),
-        ('congelar_contrato', 'Congelar Contrato'),
+        ('congelar_contrato', 'Congelado'),
         ('adjudicar', 'Adjudicado'),
         ('adendum', 'Realizar Adendum'),
-        ('cerrado', 'Cerrado'),
+        ('finalizado', 'Finalizado'),
         ('cedido', 'Cesión de Derecho'),
-        ('desistir', 'Desistir'),
+        ('desistir', 'Desistido'),
     ], string='Estado', default='borrador', track_visibility='onchange')
+
+
+
+
+# A  Activo        activo    
+# C  Congelado     congelar_contrtato
+# F  Finalizado    finalizado
+# I  Desistido     desistido
+# J  Adjudicado    adjudicar
+# P  Pendiente     pendiente
+
+
+
+
+
+
+
     observacion = fields.Char(string='Observación',
                               track_visibility='onchange')
     ciudad = fields.Many2one(
