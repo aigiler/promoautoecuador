@@ -7,6 +7,7 @@ import json
 import xmltodict 
 import dateutil.parser
 from odoo.exceptions import ValidationError
+from base64 import b64decode,b64encode
 
 class WizardImportDocuments(models.TransientModel):
     _name = "wizard.import.documents.masiva"
@@ -28,9 +29,12 @@ class WizardImportDocuments(models.TransientModel):
 
     def import_txt(self):
 ####Crea el archivo en directorio y se sobrescribe el binario para abrirlo en el siguiente bloque.
-        f = open('archivo.txt',"w") # opening a file
-        f.write(self.file_txt)
-        f.close() # closing file object
+        b64 = str(self.file_txt)
+        binario = b64decode(b64)
+        f = open('archivo.txt', 'wb')
+        f.write(binario)
+        f.close()
+
 
 #### Se abre el archivo
         with open('archivo.txt') as f:
