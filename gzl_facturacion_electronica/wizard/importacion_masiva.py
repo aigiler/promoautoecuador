@@ -26,8 +26,7 @@ class WizardImportDocuments(models.TransientModel):
         date_conv = dateutil.parser.parse(date)
         return date_conv.strftime('%Y-%m-%d')
 
-
-    def import_txt(self): 
+def import_txt(self): 
     ####Crea el archivo en directorio y se sobrescribe el binario para abrirlo en el siguiente bloque.
             binario = b64decode(self.file_txt)
             f = open('archivo.txt', 'wb')
@@ -47,18 +46,66 @@ class WizardImportDocuments(models.TransientModel):
             error= int(self.env['ir.config_parameter'].get_param('cantidad_filas_error'))
             modulo= int(self.env['ir.config_parameter'].get_param('modulo_cantidad_filas_error'))
             nuevaLista=[]
-            for i in range(0,len(listaTotal)):
+            for i in range(1,len(listaTotal)):
                 listaLinea=listaLinea+listaTotal[i] 
                 if (i+error) % modulo==0:
                     nuevaLista.append(listaLinea)
                     listaLinea=[]
-
+                    
+            
             for fila in nuevaLista[:1]:
+                journal_id = self.env['account.journal'].search([('type','=','purchase')],limit=1)
+                serie=fila[1].split('-')
+            
 
                 factura=self.env['mantenedor.importacion.masiva'].search([('code','=','FAC')])
+                
                 if fila[0] ==factura.name:
-                    print('cambios')
+                    
+                    partner_id = self.env['res.partner'].search([('vat','=',fila[2])],limit=1)
+                    if partner_id.id == False:
+                        raise ValidationError("El proveedor {1} con el RUC {0} no esta ingresado en la aplicación, proceda a ingresarlo.".format(fila[2],fila[3]))
+                    
+                    invoice_id = {
+                        'type':'in_invoice',
+                        'is_electronic':True,
+                        'partner_id':partner_id.id,
+                        #'type_environment':fila[6],
+                        'numero_autorizacion_sri':fila[10],
+                        'fecha_autorizacion_sri':self.format_authorization_date(fila[5]),
+                        #'estado_autorizacion_sri':'AUT' if aut['estado']=='AUTORIZADO' else 'NAT',
+                        'clave_acceso_sri':fila[9],
+                        'manual_establishment':serie[0],
+                        'manual_referral_guide':serie[1],
+                        'manual_sequence':serie[2],
+                        'l10n_latam_document_number':serie[0]+serie[1]+serie[2],
+                        'invoice_date':self.format_date(fila[4]),
+                        'date':self.format_date(fila[4]),
+                        'journal_id':journal_id.id,
+                        'state':'draft'
+                    }
 
+                    lines=[]
+                    product_template=self.env.ref('gzl_facturacion_electronica.generic_product_template')
+                    product = self.env['product.product'].search([('product_tmpl_id','=',product_template.id)])
+                    dct_line={
+                        'partner_id':partner_id.id,
+                        'product_id':product.id,
+                        'name': '['+product.default_code+']'+product.product_tmpl_id.name,
+                        'account_id':product.categ_id.property_stock_account_input_categ_id.id,
+                        'quantity':1,
+                        'price_unit':float(fila[11]. replace(",",".")),
+                        'discount':0.00,
+                        'account_internal_type':'other',
+                        'debit':float(fila[11]. replace(",",".")),
+                        'credit':0.00,
+                    }
+                    lines.append((0, 0, dct_line))
+                    invoice_id.update({'line_ids': lines})
+                    move = self.env['account.move'].create(invoice_id)
+                    break
+                
+                
                 retencion=self.env['mantenedor.importacion.masiva'].search([('code','=','RET')])
                 if fila[0] ==retencion.name:
                     print('cambios')
