@@ -911,7 +911,7 @@ class ContratoAdendum(models.Model):
 
     contrato_id = fields.Many2one('contrato',string="Contrato")
     socio_id = fields.Many2one('res.partner',string="Socio")
-
+    observacion = fields.Char(string='Observacion')
     monto_financiamiento = fields.Monetary(
         string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
     plazo_meses = fields.Many2one('numero.meses',default=lambda self: self.env.ref('gzl_adjudicacion.{0}'.format('numero_meses60')).id ,track_visibility='onchange' )

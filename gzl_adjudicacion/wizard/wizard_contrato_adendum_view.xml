@@ -13,7 +13,7 @@
                         <field name="socio_id" invisible="1"/>
                         <field name="monto_financiamiento" required="1"/>
                         <field name="plazo_meses" invisible="0"/>
-
+                        <field name="observacion" invisible="0"/>
 
                     </group>
                 </sheet>

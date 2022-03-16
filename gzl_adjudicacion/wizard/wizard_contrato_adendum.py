@@ -27,7 +27,7 @@ class WizardContratoAdendum(models.Model):
         string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
     plazo_meses_anterior = fields.Many2one('numero.meses',default=lambda self: self.env.ref('gzl_adjudicacion.{0}'.format('numero_meses60')).id ,track_visibility='onchange' )
     cuota_anterior = fields.Monetary(currency_field='currency_id', track_visibility='onchange')
-    
+    observacion = fields.Char(string='Observacion')
     def ejecutar_cambio(self,):
 
         if   self.contrato_id.ejecutado:
@@ -244,6 +244,7 @@ class WizardContratoAdendum(models.Model):
                                 'socio_id':self.socio_id.id,
                                 'monto_financiamiento':self.monto_financiamiento,
                                 'plazo_meses':self.plazo_meses.id,
+                                'observacion':self.observacion,
                                 #'currency_id':self.contrato_id.id,
                             })  
 
