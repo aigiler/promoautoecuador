@@ -30,6 +30,7 @@
                                     <field name="monto_financiamiento" />
                                     <field name="plazo_meses" />
                                     <field name="socio_id" />
+                                    <field name="observacion" />
                                 </group>
                             </div>
 
