@@ -27,48 +27,41 @@ class WizardImportDocuments(models.TransientModel):
         return date_conv.strftime('%Y-%m-%d')
 
 
-    def import_txt(self):
-####Crea el archivo en directorio y se sobrescribe el binario para abrirlo en el siguiente bloque.
-        b64 = str(self.file_txt)
-        binario = b64decode(b64)
-        f = open('archivo.txt', 'wb')
-        f.write(binario)
-        f.close()
+    def import_txt(self): 
+    ####Crea el archivo en directorio y se sobrescribe el binario para abrirlo en el siguiente bloque.
+            binario = b64decode(self.file_txt)
+            f = open('archivo.txt', 'wb')
+            f.write(binario)
+            f.close()
 
+    #### Se abre el archivo
+            with open("archivo.txt",  encoding="ISO-8859-1") as f:
+                lines = f.readlines()
+                listaTotal=[]
+                for l in lines:
+                    l=l.replace('\n','')
+                    lista=l.split('\t') 
+                    listaTotal.append(lista)
+            listaLinea=[]
 
-#### Se abre el archivo
-        with open('archivo.txt') as f:
-            lines = f.readlines()
-            listaTotal=[]
-            for l in lines:
-                l=l.replace('\n','')
-                lista=l.split('\t') 
-                listaTotal.append(lista)
+            error= int(self.env['ir.config_parameter'].get_param('cantidad_filas_error'))
+            modulo= int(self.env['ir.config_parameter'].get_param('modulo_cantidad_filas_error'))
+            nuevaLista=[]
+            for i in range(0,len(listaTotal)):
+                listaLinea=listaLinea+listaTotal[i] 
+                if (i+error) % modulo==0:
+                    nuevaLista.append(listaLinea)
+                    listaLinea=[]
 
+            for fila in nuevaLista[:1]:
 
+                factura=self.env['mantenedor.importacion.masiva'].search([('code','=','FAC')])
+                if fila[0] ==factura.name:
+                    print('cambios')
 
-        listaLinea=[]
-
-        error= int(self.env['ir.config_parameter'].get_param('cantidad_filas_error'))
-        modulo= int(self.env['ir.config_parameter'].get_param('modulo_cantidad_filas_error'))
-        nuevaLista=[]
-        for i in range(0,len(listaTotal)):
-            listaLinea=listaLinea+listaTotal[i] 
-            if (i+error) % modulo==0:
-                nuevaLista.append(listaLinea)
-                listaLinea=[]
-
-        for fila in nuevaLista[:1]:
-
-            factura=self.env['mantenedor.importacion.masiva'].search([('code','=','FAC')])
-            if fila[0] ==factura.name:
-                print('cambios')
-
-
-
-            retencion=self.env['mantenedor.importacion.masiva'].search([('code','=','RET')])
-            if fila[0] ==retencion.name:
-                print('cambios')
+                retencion=self.env['mantenedor.importacion.masiva'].search([('code','=','RET')])
+                if fila[0] ==retencion.name:
+                    print('cambios')
 
 
 
