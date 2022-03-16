@@ -28,7 +28,7 @@ class WizardImportDocuments(models.TransientModel):
 
     def import_txt(self):
 ####Crea el archivo en directorio y se sobrescribe el binario para abrirlo en el siguiente bloque.
-        f = open('archivo.txt') # opening a file
+        f = open('archivo.txt',"w") # opening a file
         f.write(self.file_txt)
         f.close() # closing file object
 
