@@ -26,7 +26,8 @@ class WizardImportDocuments(models.TransientModel):
         date_conv = dateutil.parser.parse(date)
         return date_conv.strftime('%Y-%m-%d')
 
-def import_txt(self): 
+
+    def import_txt(self): 
     ####Crea el archivo en directorio y se sobrescribe el binario para abrirlo en el siguiente bloque.
             binario = b64decode(self.file_txt)
             f = open('archivo.txt', 'wb')
@@ -46,22 +47,21 @@ def import_txt(self):
             error= int(self.env['ir.config_parameter'].get_param('cantidad_filas_error'))
             modulo= int(self.env['ir.config_parameter'].get_param('modulo_cantidad_filas_error'))
             nuevaLista=[]
-            for i in range(1,len(listaTotal)):
+            for i in range(0,len(listaTotal)):
                 listaLinea=listaLinea+listaTotal[i] 
                 if (i+error) % modulo==0:
                     nuevaLista.append(listaLinea)
                     listaLinea=[]
-                    
             
-            for fila in nuevaLista[:1]:
+            for fila in nuevaLista:#[:1]:
                 journal_id = self.env['account.journal'].search([('type','=','purchase')],limit=1)
+                
                 serie=fila[1].split('-')
             
 
                 factura=self.env['mantenedor.importacion.masiva'].search([('code','=','FAC')])
                 
                 if fila[0] ==factura.name:
-                    
                     partner_id = self.env['res.partner'].search([('vat','=',fila[2])],limit=1)
                     if partner_id.id == False:
                         raise ValidationError("El proveedor {1} con el RUC {0} no esta ingresado en la aplicación, proceda a ingresarlo.".format(fila[2],fila[3]))
@@ -84,7 +84,7 @@ def import_txt(self):
                         'journal_id':journal_id.id,
                         'state':'draft'
                     }
-
+                    
                     lines=[]
                     product_template=self.env.ref('gzl_facturacion_electronica.generic_product_template')
                     product = self.env['product.product'].search([('product_tmpl_id','=',product_template.id)])
@@ -100,11 +100,22 @@ def import_txt(self):
                         'debit':float(fila[11]. replace(",",".")),
                         'credit':0.00,
                     }
+                    
                     lines.append((0, 0, dct_line))
+                            
+                    lines.append((0, 0, {
+                    'partner_id':partner_id.id,
+                    'account_id':partner_id.property_account_payable_id.id,
+                    'account_internal_type':'payable',
+                    'debit':0.00,
+                    'credit':float(fila[11]. replace(",",".")),
+                    'exclude_from_invoice_tab':True
+                    }))
+    
                     invoice_id.update({'line_ids': lines})
                     move = self.env['account.move'].create(invoice_id)
-                    break
-                
+                   
+                          
                 
                 retencion=self.env['mantenedor.importacion.masiva'].search([('code','=','RET')])
                 if fila[0] ==retencion.name:

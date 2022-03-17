@@ -15,3 +15,4 @@ reason_guia_remision,reason.guia.remision,model_reason_guia_remision,,1,1,1,1
 
 wizard_ats,wizard.ats,model_wizard_ats,,1,1,1,1
 wizard_import_documents,wizard.import.documents,model_wizard_import_documents,,1,1,1,1
+wizard_mantenedor_importacion_masiva,wizard.mantenedor.importacion.masiva,model_mantenedor_importacion_masiva,,1,1,1,1
