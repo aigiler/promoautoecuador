@@ -17,16 +17,15 @@
                             </div>
                         </div>
 
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th><span>Monto</span></th>
-                                    <th><span>Invoice Number</span></th>
-                                    <th><span>Reference</span></th>
-                                    <th class="text-right"><span>Original Amount</span></th>
-                                    <th class="text-right"><span>Amount Paid</span></th>
-                                    <th class="text-right"><span>Balance</span></th>
-                                </tr>
+                        <table class="table table-condensed">
+                            <thead style="text-align: center; margin-bottom: 10px ">
+                                <th>Monto</th>
+                                <th>Cuenta</th>
+                                <th>Cuenta Analitica</th>
+                                <th>Referencia</th>
+                                <th>Debe</th>
+                                <th>Haber</th>
+
                             </thead>
                             <tbody>
                                 <tr >
@@ -44,13 +43,13 @@
                         <div class="row">
                             <div class="col-2"/>
                             <div class="col-3" style="border-top: 1px solid black;">
-                                <span><center>Autorizado</center></span>
+                                <span><center>Elaborado  Por</center></span>
+                                <span t-field="o.create_uid.name"></span>
                             </div>
 
                             <div class="col-2"/>
                             <div class="col-3" style="border-top: 1px solid black;">
-                                <span><center>Recibi Conforme</center></span><br/>
-                                <span>C.I</span>
+                                <span><center>Revisado  Por</center></span>
                             </div>
 
                             <div class="col-2"/>
