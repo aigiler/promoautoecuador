@@ -89,7 +89,7 @@
 
 
             <field name="invoice_date" position="after">
-                <field name="sustento_del_comprobante" options="{'no_open': True, 'no_create': True}" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible':[('type','=','entry')]}"/>
+                <field name="sustento_del_comprobante" options="{'no_open': True, 'no_create': True}" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible':[('type','=','entry')], 'required': [('type','!=','entry')]}" />
                 <field name="method_payment" options="{'no_open': True, 'no_create': True}" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible':[('type','=','entry')],'required':[('is_electronic','=',True),('type','in',['out_debit','out_refund','out_invoice','liq_purchase'])]}"/>
                 <field name="initial_balance" invisible="1"/>
             </field>

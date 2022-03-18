@@ -440,6 +440,10 @@
             <xpath  expr="//group[@class='oe_subtotal_footer']/field[@name='amount_total']"  position="attributes">
                     <attribute name="string">Neto a Pagar</attribute>
             </xpath>
+            <xpath  expr="//page[@id='invoice_tab']/field[@name='invoice_line_ids']/tree/field[@name='tax_ids']"  position="attributes">
+                    <attribute name="required">1</attribute>
+                    <attribute name="class">oe_readonly</attribute>
+            </xpath>
             <xpath expr="//group[@class='oe_subtotal_footer']/field[@name='amount_total']" position="before">
                 <field name="view_amount_total" class="oe_subtotal_footer_separator" attrs="{'invisible': [('type', 'not in', ('in_invoice','out_invoice'))]}"/>
                 <!--span><field name="view_amount_tax" string="tax" widget='monetary' /></span-->

@@ -179,7 +179,7 @@ class FacturacionElectronica(models.Model):
         listaCantidad=self.invoice_line_ids.mapped('quantity')
         listaPrecios=self.invoice_line_ids.mapped('price_unit')
 
-        descuento = round(sum([a * b*c/100 for a, b ,c in zip(listaPrecios,listaDescuentos,listaCantidad)]),2)
+        descuento = round(sum([a * b*c/100 for a, b ,c in zip(listaPrecios,listaDescuento,listaCantidad)]),2)
 
 
 

@@ -77,7 +77,7 @@ class AccountRetentionLine(models.Model):
                 tax_detail = res.tax_id.compute_all(line.price_unit, line.currency_id, line.quantity, line.product_id, res.invoice_id.partner_id)['taxes']
 
                 
-                if res.tax_id.tax_group_id.code in ['ret_vat_b', 'ret_vat_srv', 'ret_ir']:
+                if res.tax_id.tax_group_id.code in ['ret_vat_b', 'ret_vat_srv', 'ret_ir','no_ret_ir']:
                     ret_taxes.append({
                         'fiscal_year': str(res.invoice_id.invoice_date.month).zfill(2)+'/'+str(res.invoice_id.invoice_date.year),
                         'group_id': res.tax_id.tax_group_id.id,

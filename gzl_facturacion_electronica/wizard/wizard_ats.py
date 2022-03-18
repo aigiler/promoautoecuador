@@ -132,7 +132,7 @@ class WizardAts(models.TransientModel):
                       AND inv.state IN ('posted') \
                       AND inv.invoice_date >= '%s' \
                       AND inv.invoice_date <= '%s' \
-                      AND auth.is_electronic != true \
+                      AND inv.is_electronic != true \
                       AND inv.company_id = %d \
                       " % (start, end, self.company_id.id) 
 
@@ -472,9 +472,9 @@ class WizardAts(models.TransientModel):
             #    raise ValidationError((str((inv.partner_id.l10n_latam_identification_type_id.code_compra)+'====')))
             detalle = {
                 'tpIdCliente': inv.partner_id.l10n_latam_identification_type_id.code_venta,
-                'idCliente': inv.partner_id.vat,
+                'idCliente': ruc,
                 'parteRelVtas': 'NO',
-                'tipoComprobante': inv.sustento_del_comprobante.code or '00',
+                'tipoComprobante': inv.l10n_latam_document_type_id.code, # inv.sustento_del_comprobante.code or 
                 'tipoEmision': inv.journal_id.auth_out_invoice_id.is_electronic and 'E' or 'F',
                 'numeroComprobantes': numComp,
                 'baseNoGraIva': '%.2f' % nograviva,

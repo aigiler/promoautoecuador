@@ -40,3 +40,5 @@ class AccountPaymentAnticipoValor(models.Model):
 
     aplicacion_anticipo = fields.Float( string='Saldo')
 
+    fechaAplicacion = fields.Date( string='Fecha de Aplicacion')
+

@@ -396,9 +396,12 @@ class AccountMove(models.Model):
         self.post()
         if self.type in ['out_refund','in_refund'] :
             if self.reversed_entry_id.id:
-                lines = self.reversed_entry_id.mapped('line_ids')[0]
+                lines = self.reversed_entry_id.mapped('line_ids')
                 for l in lines:
-                    self.js_assign_outstanding_line(l.id)     
+                    try:
+                        self.js_assign_outstanding_line(l.id) 
+                    except:
+                        print('Error de asiento contable')    
 
     def action_withholding_create(self):
         TYPES_TO_VALIDATE = ['in_invoice', 'liq_purchase', 'in_debit']
@@ -416,7 +419,7 @@ class AccountMove(models.Model):
             for line in self.invoice_line_ids:
                 for tax in line.tax_ids:
                     tax_detail = tax.compute_all(line.price_unit, line.currency_id, line.quantity, line.product_id, self.partner_id)['taxes']
-                    if tax.tax_group_id.code in ['ret_vat_b', 'ret_vat_srv', 'ret_ir']:
+                    if tax.tax_group_id.code in ['ret_vat_b', 'ret_vat_srv', 'ret_ir','no_ret_ir']:
                         ret_taxes.append({
                             'fiscal_year': str(inv.invoice_date.month).zfill(2)+'/'+str(inv.invoice_date.year),
                             'group_id': tax.tax_group_id.id,

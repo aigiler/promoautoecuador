@@ -137,6 +137,9 @@ class WizardRdep(models.TransientModel):
             if employee.apply_agreement:
                 ci = employee.partner_id.vat
                 identification = employee.partner_id.l10n_latam_identification_type_id.sigla_rdep
+            aplicacnv=''
+            if confirmation[employee.apply_agreement] == 'NO' or confirmation[employee.apply_agreement] is None:
+                aplicacnv='NA'
             data.append({
                 'benGalpg': confirmation[employee.galapagos_beneficiary],
                 'enfcatastro': confirmation[employee.catastrophic_disease],
@@ -147,7 +150,7 @@ class WizardRdep(models.TransientModel):
                 'estab': self.num_estab_ruc,
                 'residenciaTrab': '01',
                 'paisResidencia': employee.country_id.phone_code,
-                'aplicaConvenio': confirmation[employee.apply_agreement],
+                'aplicaConvenio': aplicacnv,#confirmation[employee.apply_agreement],
                 'tipoTrabajDiscap': afirmations[employee.disable],
                 'porcentajeDiscap': int(employee.percent_disable),
                 'tipIdDiscap': identification,

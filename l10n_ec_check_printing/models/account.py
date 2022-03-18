@@ -40,14 +40,30 @@ class AccountMove (models.Model):
         cash_basis = debit_moves and debit_moves[0].account_id.internal_type in ('receivable', 'payable') or False
         cash_basis_percentage_before_rec = {}
         dc_vals ={}
+       # raise ValidationError(str(credit_moves))
+        
+        contador_invoice=len(credit_moves.mapped('move_id'))
+        facturas_credit= credit_moves.mapped('move_id.id')
+        lista_ids_creditos=[]
+        for factura in facturas_credit:
+            creditos= credit_moves.filtered(lambda l: l.move_id.id==factura)
+            if len(creditos)>0:
+                lista_ids_creditos.append(creditos[0].id)
+        
+        
+        credit_moves=self.env['account.move.line'].browse(lista_ids_creditos)
+        
         while (debit_moves and credit_moves):
             debit_move = debit_moves[0]
             credit_move = credit_moves[0]
             company_currency = debit_move.company_id.currency_id
             balance = (credit_move + debit_move)
             payment_line_id = balance.mapped('payment_id.payment_line_ids').filtered(lambda x: x.invoice_id.id in balance.move_id.ids and x.amount>0)
+           # raise ValidationError(payment_line_id)
             if len(payment_line_id)>1:
-                raise UserError("Por factura solo debe ingresar un valor")
+                payment_line_id=payment_line_id[0]
+                
+                
             temp_amount_residual = payment_line_id.amount
             temp_amount_residual_currency = payment_line_id.amount
             dc_vals[(debit_move.id, credit_move.id)] = (debit_move, credit_move, temp_amount_residual_currency)

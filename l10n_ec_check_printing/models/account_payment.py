@@ -50,7 +50,18 @@ class AccountPayment(models.Model):
     es_nota_credito = fields.Boolean('Es N/C')
 
 
+    def actualizar_nc(self):
+        pagos=self.env['account.payment'].search([])
+        for l in pagos:
+            if l.communication:
+                if 'N/C' in l.communication:
+                    l.es_nota_credito=True
 
+    @api.onchange('communication')
+    def actualizar_check_nc(self):
+        if self.communication:
+            if 'N/C' in self.communication:
+                self.es_nota_credito=True
 
 
 
@@ -79,7 +90,7 @@ class AccountPayment(models.Model):
 
 
 
-    @api.constrains('account_payment_account_ids' )
+    #@api.constrains('account_payment_account_ids' )
     def calcular_monto(self):
         total=0
 
@@ -251,19 +262,6 @@ class AccountPayment(models.Model):
 #                     })                
 #                 self.has_payment_line =True
 
-
-
-    def asientos_contables(self):
-
-
-        movimientos=self.env['account.move.line'].search([('payment_id', '=',self.id)])
-        lista_obj=[]
-        for asiento in movimientos:
-
-            lista_obj.append(asiento)
-        return lista_obj
-
-
     def button_journal_entries(self):
         lista=self.ids
         pagos_asociados=self.pagos_relacionadas.mapped("id")
@@ -366,7 +364,8 @@ class AccountPayment(models.Model):
 
 
         for rec in self:
-            PaymentLineValor.create({'payment_id':rec.id,'aplicacion_anticipo':sum(rec.payment_line_ids.mapped('amount'))})
+            if sum(rec.payment_line_ids.mapped('amount'))>0:
+                PaymentLineValor.create({'fechaAplicacion':self.fecha_aplicacion_anticipo,'payment_id':rec.id,'aplicacion_anticipo':sum(rec.payment_line_ids.mapped('amount'))})
 
             invoices=[{'invoice':l.invoice_id,'invoice_id':l.invoice_id.id,'amount':l.amount} for l in rec.payment_line_ids if l.amount>0]
 
@@ -447,13 +446,66 @@ class AccountPayment(models.Model):
 
 
 
+
     def post(self):
         for rec in self:
+
+            for l in rec.payment_line_ids:
+                if l.amount>l.actual_amount:
+                    raise ValidationError("El monto a pagar no puede ser al monto adeudado en la factura {0}".format(l.invoice_id.l10n_latam_document_number))
+
+
 
             if rec.amount==0:
                 raise ValidationError("Ingrese el valor del monto")
 
+            
+            invoice_id=list(set([l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]))
+
+            lista_respaldo=[]
+            
+            for factura in invoice_id:
+                payment_lines= rec.payment_line_ids.filtered(lambda l: l.invoice_id.id==factura)
+                monto_total=sum(payment_lines.mapped("amount"))
+
+                for pago in payment_lines:
+                    dct={
+                        'invoice_id':pago.invoice_id.id, 
+                        'amount':pago.amount  ,
+                        'amount_total': pago.amount_total,
+                        'residual': pago.residual,
+                        'amount': pago.amount,
+                        'date_due': pago.date_due,
+                        'document_number':pago.document_number,
+                        'payment_id':pago.payment_id.id
+
+
+                        }
+                    lista_respaldo.append(dct)
+
+
+
+                payment_lines.unlink()
+                PaymentLine = self.env['account.payment.line']
+                obj_factura=self.env['account.move'].browse(factura)
+                line_id = PaymentLine.create([{
+                    'invoice_id': obj_factura.id,
+                    'amount_total': obj_factura.amount_total,
+                    'actual_amount':obj_factura.amount_residual,
+                    'residual':obj_factura.amount_residual,
+                    'amount': monto_total,
+                    'date_due':obj_factura.invoice_date_due,
+                    'document_number':obj_factura.l10n_latam_document_number,
+                    'payment_id':rec.id
+
+                }])
+            
+            
+
+            
             invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]
+         #   raise ValidationError(invoice_id)
+            
             if invoice_id:
                 self.invoice_ids = invoice_id
             account_check = rec.env['account.cheque']
@@ -526,13 +578,20 @@ class AccountPayment(models.Model):
 
 
             super(AccountPayment, self.with_context({'multi_payment': invoice_id and True or False})).post()
+            
+
+            rec.payment_line_ids.unlink()
+
+            for factura in lista_respaldo:
+
+                PaymentLine = self.env['account.payment.line']
+                line_id = PaymentLine.create(factura)
+
+            
+            
             if self.tipo_transaccion=='Anticipo':
                 self.estado_anticipo='posted'
                 self.aplicar_anticipo_pagos()
-
-
-
-
 
 
 
@@ -718,7 +777,7 @@ class AccountPayment(models.Model):
                         'credit': balance + write_off_balance < 0.0 and -balance - write_off_balance or 0.0,
                         'date_maturity': payment.payment_date,
                         'partner_id': payment.partner_id.commercial_partner_id.id,
-                        'account_id': payment.destination_account_id.id or payment.third_account_id.id,
+                        'account_id': payment.destination_account_id.id ,
                         'payment_id': payment.id,
                         'analytic_account_id':payment.analytic_account_id.id or False,
                     }),
@@ -811,7 +870,7 @@ class AccountPayment(models.Model):
 
 
 
-            if self.tipo_transaccion=='movimiento':
+            if self.is_third_name:
 
         # ==== 'inbound' / 'outbound' ==== para múltiples cuentas
 
@@ -828,7 +887,6 @@ class AccountPayment(models.Model):
                             'partner_id': payment.partner_id.commercial_partner_id.id,
                             'account_id': liquidity_line_account.id,
                             'payment_id': payment.id,
-                            'analytic_account_id':payment.cuenta_analitica.id or False,
                         })
                     ]
 
@@ -915,10 +973,4 @@ class AccountPaymentLine(models.Model):
     amount_total = fields.Monetary('Monto Total')
     residual = fields.Monetary('Cuotas')
     document_number = fields.Char(string="Número de Documento")
-
-    @api.onchange('amount')
-    def _onchange_amount(self):
-        if self.payment_id.tipo_transaccion=='Pago':
-            if self.amount>self.actual_amount:
-                raise ValidationError("El monto a pagar no puede ser mayor al valor de la cuota")
 

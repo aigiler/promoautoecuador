@@ -61,15 +61,35 @@
 
 
 
-                    <separator string="Cuentas Contables" attrs="{'invisible': [ ('tipo_transaccion', '!=', 'movimiento')] }"/>
-                    <field name="account_payment_account_ids" nolabel="1" attrs="{'invisible': [('tipo_transaccion', '!=', 'movimiento')]}">
+                    <separator string="Cuentas Contables" attrs="{'invisible': [ ('is_third_name','!=',True)] }"/>
+                    <field name="account_payment_account_ids" nolabel="1" attrs="{'invisible': [('is_third_name','!=',True)]}">
                         <tree string="Pagos" editable="bottom"  >
-                            <field name="cuenta" required="1" />
+                            <field name="cuenta"  domain="[('deprecated', '=', False), ('user_type_id.type', 'not in', ('receivable', 'payable')), ('company_id', '=', parent.company_id)]"  required="1"/>
+
+
                             <field name="name" required="1" />
-                            <field name="cuenta_analitica" required="1" />
-                            <field name="analytic_tag_ids" widget="many2many_tags" />
+                            <field name="cuenta_analitica" domain="['|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]"   optional="show"/>
+
+                            <field name="analytic_tag_ids" domain="['|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]"  optional="show" widget="many2many_tags"/>
+
+
                             <field name="debit"   />
                             <field name="credit" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                         </tree>
 
