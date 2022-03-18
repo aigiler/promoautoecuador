@@ -37,8 +37,7 @@
 
                     <group >
                         <group >
-                            <p>Si selecciona un extracto se tomará como saldo contable el balance final del extracto</p>
-                            <field name="extracto_saldo"  options="{'no_create':True, 'no_open':True}" required="0"  domain="[('journal_id.id', '=', journal_id),('date','&gt;=',fecha_inicio),('date','&lt;=',fecha_fin)]"/>
+                            <field name="extracto_saldo" string="Estado de Cuenta (Extracto)" options="{'no_create':True, 'no_open':True}" required="0"  domain="[('journal_id.id', '=', journal_id),('date','&gt;=',fecha_inicio),('date','&lt;=',fecha_fin)]"/>
                         </group>
                     </group>
 

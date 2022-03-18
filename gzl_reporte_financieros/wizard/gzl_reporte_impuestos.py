@@ -59,8 +59,14 @@ class ReporteAnticipo(models.TransientModel):
         move=self.env['account.retention'].search(filtro)
         
         dct={}
+        dateMonthStart = "%s-%s-01" % (self.year_date, self.month)
+        dateMonthStart = datetime.strptime(dateMonthStart,'%Y-%m-%d')
+        dateMonthEnd=dateMonthStart+relativedelta(months=1, day=1, days=-1)
+        #date_reporte = str(dateMonthStart)+'-'+str(dateMonthEnd)
+        dateMonthEnd = dateMonthEnd.strftime("%Y-%m-%d")
+        dateMonthEnd = datetime.strptime(dateMonthEnd,"%Y-%m-%d")
         my =  (str(self.month)+'/'+str(self.year_date))
-        obj_line=self.env['account.retention.line'].search( [('fiscal_year','=',my)],order ='tax_id ')
+        obj_line=self.env['account.retention.line'].search( [('retention_id','!=',None)],order ='tax_id ')
 
         code=''
         valor_amount=0
@@ -70,56 +76,39 @@ class ReporteAnticipo(models.TransientModel):
         name_group=''
         name_ret=''
         list=[]
-        if obj_line:
-            cont =0
-            #raise ValidationError((str(obj_line)))
-            for i in obj_line:
-                cont_dif=0
-                if tipo_imp =='ret':
-                    if variable == i.tax_id.type_tax_use and i.group_id.code in taxes :
-                        cont =cont+1
-                        if cont >1:
-                            if code == i.code:
-                                valor_amount+=i.base_ret
-                                valor_ret += i.amount
-                                name_ret=i.tax_id.name
-                                code_ret=i.code
-                                code_group=i.group_id.code
-                                name_group=i.group_id.name
-                            elif code != i.code:
-                                cont_dif=cont_dif+1
-                                if cont_dif==1:
-                                    dct2={}
-                                    dct2['name_ret']=name_ret
-                                    dct2['cod_ret']=code_ret
-                                    dct2['code_group']=code_group
-                                    dct2['name_group']=name_group
-                                    dct2['amount']=valor_amount
-                                    dct2['valor_retenido']=-1*valor_ret
-                                    if valor_amount > 0:
-                                        lista_retenciones.append(dct2)
-                                    dct2={}
-                                    valor_amount=0
-                                    valor_ret=0
-                                    cont_dif=0
-                                valor_amount+=i.base_ret
-                                valor_ret += i.amount
-                                name_ret=i.tax_id.name
-                                code_ret=i.code
-                                code_group=i.group_id.code
-                                name_group=i.group_id.name
+        lista_codigos=(set(obj_line.mapped('code')))
+        valores = obj_line.filtered(lambda line:  line.code in lista_codigos and line.tax_id.type_tax_use == variable  and line.retention_id.date.strftime("%Y-%m-%d") >= dateMonthStart.strftime("%Y-%m-%d") and line.retention_id.date.strftime("%Y-%m-%d") <= dateMonthEnd.strftime("%Y-%m-%d")) 
+        lista_codigos2=(set(valores.mapped('code')))
+        for a in lista_codigos2:
+            valores_mes = obj_line.filtered(lambda line:  line.code == a and line.tax_id.type_tax_use == variable and line.retention_id.date.strftime("%Y-%m-%d") >= dateMonthStart.strftime("%Y-%m-%d") and line.retention_id.date.strftime("%Y-%m-%d") <= dateMonthEnd.strftime("%Y-%m-%d")) 
 
-                        else:
-                            valor_amount=i.base_ret
-                            valor_ret = i.amount
-
-                        code = i.code
+            for m in valores_mes:
+                dr = m.retention_id.date.strftime("%Y-%m-%d")
+                dr = datetime.strptime(dr,"%Y-%m-%d")
+                if dr >= dateMonthStart and dr <= dateMonthEnd and m.group_id.code in taxes :
+                    valor_amount+=m.base_ret
+                    valor_ret += m.amount
+                    name_ret=m.tax_id.name
+                    code_ret=m.code
+                    code_group=m.group_id.code
+                    name_group=m.group_id.name
+            dct2={}
+            dct2['name_ret']=name_ret
+            dct2['cod_ret']=code_ret
+            dct2['code_group']=code_group
+            dct2['name_group']=name_group
+            dct2['amount']=valor_amount
+            dct2['valor_retenido']=-1*valor_ret
+            if valor_amount > 0:
+                lista_retenciones.append(dct2)
+                valor_amount = 0.00
+                valor_ret = 0.00
 
         return lista_retenciones
     def obtener_listado_partner_payment(self,filtro,variable,tipo_imp):
-        
+        type_doc=''
         if variable =='purchase':
-        
+            type_doc = 'in_invoice'
             documents = [ 
                         'in_invoice', 
                         #'out_refund', 
@@ -129,6 +118,7 @@ class ReporteAnticipo(models.TransientModel):
                         'liq_purchase']
             #filtro.append(('type','=','in_invoice'))  
         else:
+            type_doc = 'out_invoice'
             documents = [ 
                         'out_invoice', 
                         #'out_refund', 
@@ -177,6 +167,11 @@ class ReporteAnticipo(models.TransientModel):
         valu=[]
         factu =0
         fcont =0
+        #lista_move=(set(move.mapped('id')))
+        #obj_line=self.env['account.move.line'].search([],order='tax_group_id desc')
+        #valores = obj_line.filtered(lambda line:  line.move_id in  lista_move ) 
+        #if lista_move:
+        #    raise ValidationError((str(lista_move)))
         for l in move:
             obj_line=self.env['account.move.line'].search([('move_id','=',l.id)],order='tax_group_id desc')
             #raise ValidationError((str(obj_line)))
@@ -205,17 +200,18 @@ class ReporteAnticipo(models.TransientModel):
                                 a={}
                                 a['num']=line.price_subtotal
                                 valu.append(a)
-                                if factu != l.id:
+                                if factu != line.move_id:
                                     fcont+=1
-                                    if l.type in ['out_invoice','in_invoice']:
-                                        cont_fact+=1
+                                    if l.type == type_doc:
+                                        
                                         if l.state =='posted':
+                                            cont_fact+=1
                                             fact_emi+=1
                                         if l.state =='cancel':
                                             fact_anu+=1
                                     if l.type =='liq_purchase':
                                         cont_liq+=1
-                                factu =l.id
+                                factu =line.move_id
                                 cont+=1
                                 if cont >1:
                                     if code== i.description:
@@ -268,6 +264,10 @@ class ReporteAnticipo(models.TransientModel):
                                     #dct={}
                                     amount_v+= line.price_subtotal
                                     valor_neto_nc= line.price_subtotal - valor_nc
+                                    description = i.description
+                                    name = i.name
+                                    code_group = i.tax_group_id.code
+                                    name_group = i.tax_group_id.name
                                     if valor_nc > 0:
                                             valor_neto_nc=0.00
                                             valor_neto_nc= line.price_subtotal - valor_nc
@@ -489,15 +489,17 @@ class ReporteAnticipo(models.TransientModel):
             format_titleleftb2 = workbook.add_format({'align': 'center', 'bold':False,'left':2,'bottom':2 ,'top':2 })
             format_titlerigb2 = workbook.add_format({'align': 'center', 'bold':False,'right':2 ,'bottom':2,'top':2 })
             format_titlebottom2 = workbook.add_format({'align': 'center', 'bold':False,'bottom':2,'top':2 })
-            sheet.write(fila, 2, 'Total', format_titleleftb2)
-            sheet.write(fila,3, '=+SUM(D'+str(fila_base)+':D'+str(fila)+')', format_titlebottom2)
-            sheet.write(fila,4, '=+SUM(E'+str(fila_base)+':E'+str(fila)+')', format_titlerigb2)
+            if len(ret_purchase) > 0:
+                sheet.write(fila, 2, 'Total', format_titleleftb2)
+                sheet.write(fila,3, '=+SUM(D'+str(fila_base)+':D'+str(fila)+')', format_titlebottom2)
+                sheet.write(fila,4, '=+SUM(E'+str(fila_base)+':E'+str(fila)+')', format_titlerigb2)
         cont =0
         fila_base=0
         fila=fila+3
         taxes= ['ret_ir','no_ret_ir']
         ret_purchase2=self.obtener_listado_retenciones(filtro,'purchase','ret',taxes) 
-        
+        #if ret_purchase2:
+        #    raise ValidationError((str(ret_purchase2)+'--'+str(taxes)))
         lenret= len(ret_purchase2)
         cont_bord=0
         for r in ret_purchase2:
@@ -565,7 +567,7 @@ class ReporteAnticipo(models.TransientModel):
             for p in ret_venta:
                 cont_bord+=1
                 #raise ValidationError((str(l)))
-                if l['code_group'] in ['ret_vat_srv','ret_vat_b']:
+                if p['code_group'] in ['ret_vat_srv','ret_vat_b']:
                     cont+=1
                     if cont == 1:
                         sheet.merge_range('B'+str(fila)+':F'+str(fila), 'REPORTE DE RETENCIONES AL IVA  EN  VENTAS ', workbook.add_format({'bold':True,'border':0,'align': 'center','size': 14}))
@@ -606,57 +608,57 @@ class ReporteAnticipo(models.TransientModel):
             sheet.write(fila, 2, 'Total', format_titleleftb2)
             sheet.write(fila,3, '=+SUM(D'+str(fila_base)+':D'+str(fila)+')', format_titlebottom2)
             sheet.write(fila,4, '=+SUM(E'+str(fila_base)+':E'+str(fila)+')', format_titlerigb2)    
-            fila+=1
-            cont =0
-            fila_base =0
-            taxes=['ret_ir','no_ret_ir']
-            ret_venta2=self.obtener_listado_retenciones(filtro,'sale','ret',taxes)
-            lenret= len(ret_venta)
-            cont_bord=0
-            for vent in ret_venta2:
-                if vent['code_group'] not in ['ret_vat_srv','ret_vat_b']:
-                    cont_bord+=1
-                    cont +=1
-                    if cont == 1:
-                        cont_col=0
-                        sheet.merge_range('B'+str(fila)+':F'+str(fila), 'REPORTE DE RETENCIONES A LA RENTA  EN  VENTAS ', workbook.add_format({'bold':True,'border':0,'align': 'center','size': 14}))
-                        fila+=1
-                        for col, head in enumerate(title_main):
-                            cont_col+=1
-                            if cont_col ==1:
-                                sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))), len(head) + 7)
-                                sheet.write(fila, col+1, head, boldl) 
-                            elif cont_col ==4:
-                                sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))), len(head) + 7)
-                                sheet.write(fila, col+1, head, boldr) 
-                            else:
-                                sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))), len(head) + 7)
-                                sheet.write(fila, col+1, head, bold) 
-                        fila_base=fila+1
+        fila+=1
+        cont =0
+        fila_base =0
+        taxes=['ret_ir','no_ret_ir']
+        ret_venta2=self.obtener_listado_retenciones(filtro,'sale','ret',taxes)
+        lenret= len(ret_venta)
+        cont_bord=0
+        for vent in ret_venta2:
+            if vent['code_group'] not in ['ret_vat_srv','ret_vat_b']:
+                cont_bord+=1
+                cont +=1
+                if cont == 1:
+                    cont_col=0
+                    sheet.merge_range('B'+str(fila)+':F'+str(fila), 'REPORTE DE RETENCIONES A LA RENTA  EN  VENTAS ', workbook.add_format({'bold':True,'border':0,'align': 'center','size': 14}))
                     fila+=1
-                    if cont_bord == lenret:
-                        sheet.write(fila, columna, str(vent['cod_ret']), format_titleleftb)
-                   
-                        sheet.write(fila, columna+1, vent['name_ret'], format_titlebottom)
-                        sheet.write(fila, columna+2, vent['amount'], format_titlebottom)
-                        sheet.write(fila, columna+3, vent['valor_retenido'], format_titlerigb)
-                    else:
-                        sheet.write(fila, columna, str(vent['cod_ret']), format_titleleft)
+                    for col, head in enumerate(title_main):
+                        cont_col+=1
+                        if cont_col ==1:
+                            sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))), len(head) + 7)
+                            sheet.write(fila, col+1, head, boldl) 
+                        elif cont_col ==4:
+                            sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))), len(head) + 7)
+                            sheet.write(fila, col+1, head, boldr) 
+                        else:
+                            sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))), len(head) + 7)
+                            sheet.write(fila, col+1, head, bold) 
+                    fila_base=fila+1
+                fila+=1
+                if cont_bord == lenret:
+                    sheet.write(fila, columna, str(vent['cod_ret']), format_titleleftb)
+                
+                    sheet.write(fila, columna+1, vent['name_ret'], format_titlebottom)
+                    sheet.write(fila, columna+2, vent['amount'], format_titlebottom)
+                    sheet.write(fila, columna+3, vent['valor_retenido'], format_titlerigb)
+                else:
+                    sheet.write(fila, columna, str(vent['cod_ret']), format_titleleft)
 
-                        sheet.write(fila, columna+1, vent['name_ret'], format_title2)
-                        sheet.write(fila, columna+2, vent['amount'], format_title2)
-                        sheet.write(fila, columna+3, vent['valor_retenido'], format_titlerig)
-                    #sheet.write(fila, columna+4, l['id'], format_title2)
-                    #fila+=1
-                         
-            fila+=2
-            if ret_venta2:
-                format_titleleftb2 = workbook.add_format({'align': 'center', 'bold':False,'left':2,'bottom':2 ,'top':2 })
-                format_titlerigb2 = workbook.add_format({'align': 'center', 'bold':False,'right':2 ,'bottom':2,'top':2 })
-                format_titlebottom2 = workbook.add_format({'align': 'center', 'bold':False,'bottom':2,'top':2 })
-                sheet.write(fila, 2, 'Total', format_titleleftb2)
-                sheet.write(fila,3, '=+SUM(D'+str(fila_base)+':D'+str(fila)+')', format_titlebottom2)
-                sheet.write(fila,4, '=+SUM(E'+str(fila_base)+':E'+str(fila)+')', format_titlerigb2)  
+                    sheet.write(fila, columna+1, vent['name_ret'], format_title2)
+                    sheet.write(fila, columna+2, vent['amount'], format_title2)
+                    sheet.write(fila, columna+3, vent['valor_retenido'], format_titlerig)
+                #sheet.write(fila, columna+4, l['id'], format_title2)
+                #fila+=1
+                        
+        fila+=2
+        if ret_venta2:
+            format_titleleftb2 = workbook.add_format({'align': 'center', 'bold':False,'left':2,'bottom':2 ,'top':2 })
+            format_titlerigb2 = workbook.add_format({'align': 'center', 'bold':False,'right':2 ,'bottom':2,'top':2 })
+            format_titlebottom2 = workbook.add_format({'align': 'center', 'bold':False,'bottom':2,'top':2 })
+            sheet.write(fila, 2, 'Total', format_titleleftb2)
+            sheet.write(fila,3, '=+SUM(D'+str(fila_base)+':D'+str(fila)+')', format_titlebottom2)
+            sheet.write(fila,4, '=+SUM(E'+str(fila_base)+':E'+str(fila)+')', format_titlerigb2)  
         sheet.set_column('A:A', 23)
         sheet.set_column('B:B', 23)
         sheet.set_column('H:H', 60)
@@ -748,7 +750,7 @@ class ReporteAnticipo(models.TransientModel):
                 sheet.write(fila, columna+1, l['code'], format_title2)
                 sheet.write(fila, columna+2, l['amount'], format_title2)#tipo_doc
                 sheet.write(fila, columna+3, l['amount'] - l['valor_neto'], format_title2)
-                sheet.write(fila, columna+4,'=((D'+str(fila+1)+'-E'+str(fila+1)+')*0.12)', format_title2)#valor_neto
+                sheet.write(fila, columna+4,'=((E'+str(fila+1)+')*0.12)', format_title2)#valor_neto
             fila_tit_renta = fila +1    
             if ret_iva:
                
@@ -776,6 +778,8 @@ class ReporteAnticipo(models.TransientModel):
         filtro=[('invoice_date','>=',dateMonthStart),
             ('invoice_date','<=',dateMonthEnd),('company_id', '=', self.env.company.id),('state', 'in', ('cancel','posted'))]
         ret_venta=self.obtener_listado_partner_payment(filtro,'sale','ie')
+        #if ret_venta:
+        #    raise ValidationError((str(ret_venta)))
         fila_tit_renta=0
         fila_tit_iva=0
         cont_invoice=0
@@ -798,7 +802,7 @@ class ReporteAnticipo(models.TransientModel):
                 sheet.write(fila, columna+1, p['code'], format_title2)
                 sheet.write(fila, columna+2, p['amount'], format_title2)
                 sheet.write(fila, columna+3, p['amount'] - p['valor_neto'], format_title2)
-                sheet.write(fila, columna+4,'=((D'+str(fila+1)+'-E'+str(fila+1)+')*0.12)', format_title2)
+                sheet.write(fila, columna+4,'=((E'+str(fila+1)+')*0.12)', format_title2)
                     #fila+=1
             fila_tit_renta=fila+1
             title_main=['RESUMEN DE VENTAS - INGRESOS','CODIGO', 'VALOR BRUTO', 'VALOR NETO','IMPUESTO GENERADO']
@@ -810,7 +814,7 @@ class ReporteAnticipo(models.TransientModel):
                     sheet.write(fila_tit_iva+2, col+1, head, bold)
                     
             fila+=2
-            sheet.write(fila, columna, 'TOTAL COMPRAS ', format_title2)
+            sheet.write(fila, columna, 'TOTAL VENTAS ', format_title2)
             sheet.write(fila, columna+2, '=+SUM(D'+str(fila_tit_iva+2)+':D'+str(fila-1)+')', format_title2)
             sheet.write(fila, columna+3, '=+SUM(E'+str(fila_tit_iva+2)+':E'+str(fila-1)+')', format_title2)
             sheet.write(fila, columna+4, '=+SUM(F'+str(fila_tit_iva+2)+':F'+str(fila-1)+')', format_title2)
@@ -827,3 +831,4 @@ class ReporteAnticipo(models.TransientModel):
                 sheet.write(fila,columna+2, 'FACTURAS ANULADAS', workbook.add_format({'bold':True,'top':2,'align': 'center','bottom':2}))
                 sheet.write(fila,columna+3, str(self.fact_anu),  workbook.add_format({'bold':True,'top':2,'align': 'center','bottom':2,'right':2}))
                           
+ 

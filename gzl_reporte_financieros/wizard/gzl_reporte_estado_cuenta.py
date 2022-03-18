@@ -27,7 +27,7 @@ class ReporteEstadoCuenta(models.TransientModel):
         
 
         partners=self.obtener_listado_partner_facturas(filtro)
-        filtro_sql=""" where fecha_emision<='{0}' """.format(self.date_from)
+        filtro_sql=""" where fecha_emision<'{0}' """.format(self.date_from)
 
         for partner in partners:
 
@@ -188,8 +188,8 @@ class ReporteEstadoCuenta(models.TransientModel):
                                     apav.create_date ,
                                     '' as secuencia,
                                     ap.name as numero_documento, 
-                                    apav.create_date::date as fecha_emision, 
-                                     apav.create_date::date as fecha_vencimiento, 
+                                    apav."fechaAplicacion"::date as fecha_emision, 
+                                     apav."fechaAplicacion"::date as fecha_vencimiento, 
                                     aj.name as documento_contable, 
 
                                     0 as monto_adeudado ,

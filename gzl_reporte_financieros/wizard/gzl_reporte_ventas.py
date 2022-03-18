@@ -60,15 +60,13 @@ class ReporteVentas(models.TransientModel):
             dct['razon_social']= m.partner_id.name
             dct['part_rel']= 'NO'
             dct['tipo_anexo']= 'V'
-            dct['tipo_comp']= m.sustento_del_comprobante.code
-            dct['serie']=m.manual_establishment+'-'+m.manual_referral_guide
-            dct['secuencia']=m.nombre_mostrar[6:15]
-            dct['num_ret']='-'
-            if m.retention_id:
-                dct['num_ret']=m.retention_id.name
+            dct['tipo_comp']= m.sustento_del_comprobante.code or ""
+            dct['serie']=m.l10n_latam_document_number[3:6]
+            dct['secuencia']=m.l10n_latam_document_number[6:15]
+            dct['num_ret']= m.retention_id.name or ""
             dct['auth_number']=m.auth_number
             dct['date']=str(m.invoice_date)
-            dct['create_date']=str(m.create_date)
+            dct['create_date']=str(m.create_date.strftime("%Y-%m-%d"))#str(m.create_date)
             dct['total_venta']=m.amount_total
             if m.state == 'posted':
                 dct['state']='P'
@@ -205,7 +203,7 @@ class ReporteVentas(models.TransientModel):
         sheet.write(4,1, 'PERIODO: '+str(date_reporte), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
  
 
-        title_main2=['Tipo Vta.','Tipo Id',	'Identificacion','Razon Social','Parte Rel','Tip. Anexo','Tip. Comp.','Serie','Secuencial','Autorizacion','Fch. Emi.','Fch. Reg','No. Comprobantes','Base IVA 0%','Base Grav.','Monto IVA','Base no Obj','Monto ICE','Total Venta','Ret. IVA.','Ret. Fuente.','Ventas - Retenciones','Num. Ret','Origen','Estado','Nombre Docum.']
+        title_main2=['Tipo Vta.','Tipo Id',	'Identificacion','Razon Social','Parte Rel','Tip. Anexo','Tip. Comp.','Serie','Secuencial','Autorizacion','Fch. Emi.','Fch. Reg','No. Comprobantes','Base IVA 0%','Base Grav.','Base no Obj','Monto IVA','Monto ICE','Total Venta','Ret. IVA.','Ret. Fuente.','Ventas - Retenciones','Num. Ret','Origen','Estado','Nombre Docum.']
 
         #title_main=['isretencion']
         #bold.set_bg_color('b8cce4')
@@ -253,25 +251,25 @@ class ReporteVentas(models.TransientModel):
                 columna+=1
                 sheet.write(fila, columna, l['create_date'], format_title2)
                 columna+=1
-                sheet.write(fila, columna, l['sustento'], format_title2)
+                sheet.write(fila, columna, 1, format_title2)
                 columna+=1
                 sheet.write(fila, columna, l['biva0'], currency_format)
                 columna+=1
                 sheet.write(fila, columna, l['base_grav'], currency_format)
                 columna+=1
+                sheet.write(fila, columna, l['noobj'], format_title2)
+                columna+=1
                 sheet.write(fila, columna, l['miva'], currency_format)
                 columna+=1
-                sheet.write(fila, columna, '--', format_title2)
+                sheet.write(fila, columna, '--', format_title2)#mice
                 columna+=1
-                sheet.write(fila, columna, '--', format_title2)
-                columna+=1
-                sheet.write(fila, columna, l['total_venta'], currency_format)
+                sheet.write(fila, columna, '=+SUM(N'+str(fila+1)+':Q'+str(fila+1)+')', currency_format)#total venta 
                 columna+=1
                 sheet.write(fila, columna, (-1*l['reiva']), currency_format)
                 columna+=1
-                sheet.write(fila, columna, '--', format_title2)
+                sheet.write(fila, columna, 0, currency_format)
                 columna+=1
-                sheet.write(fila, columna, (l['vr']), currency_format)
+                sheet.write(fila, columna, '=(S'+str(fila+1)+'-T'+str(fila+1)+'-U'+str(fila+1)+')', currency_format)
                 columna+=1
                 sheet.write(fila, columna,  l['num_ret'], format_title2)
                 columna+=1
@@ -314,25 +312,25 @@ class ReporteVentas(models.TransientModel):
                 columna+=1
                 sheet.write(fila, columna, l['create_date'], format_title2)
                 columna+=1
-                sheet.write(fila, columna, l['sustento'], format_title2)
+                sheet.write(fila, columna, 1, format_title2)
                 columna+=1
                 sheet.write(fila, columna, l['biva0'], currency_format)
                 columna+=1
                 sheet.write(fila, columna, l['base_grav'], currency_format)
                 columna+=1
-                sheet.write(fila, columna, l['miva'], currency_format)
-                columna+=1
                 sheet.write(fila, columna, l['no_obj'], format_title2)
+                columna+=1
+                sheet.write(fila, columna, l['miva'], currency_format)
                 columna+=1
                 sheet.write(fila, columna, '-', format_title2)
                 columna+=1
-                sheet.write(fila, columna, l['total_venta'], currency_format)
+                sheet.write(fila, columna, '=+SUM(N'+str(fila+1)+':Q'+str(fila+1)+')', currency_format)#total venta 
                 columna+=1
                 sheet.write(fila, columna, (-1*l['reiva']), currency_format)
                 columna+=1
-                sheet.write(fila, columna, '--', format_title2)
+                sheet.write(fila, columna, 0, currency_format)
                 columna+=1
-                sheet.write(fila, columna, (l['vr']), currency_format)
+                sheet.write(fila, columna, '=(S'+str(fila+1)+'-T'+str(fila+1)+'-U'+str(fila+1)+')', currency_format)
                 columna+=1
                 sheet.write(fila, columna,  l['num_ret'], format_title2)
                 columna+=1
@@ -344,6 +342,7 @@ class ReporteVentas(models.TransientModel):
                 columna+=1
                 sheet.write(fila, columna, l['num_doc'], format_title2)
                 fila+=1
+        sheet.write(fila,12, '=+SUM(M'+str(9)+':M'+str(fila)+')', currency_format)
         sheet.write(fila,13, '=+SUM(N'+str(9)+':N'+str(fila)+')', currency_format)
         sheet.write(fila,14, '=+SUM(O'+str(9)+':O'+str(fila)+')', currency_format)
         sheet.write(fila,15, '=+SUM(P'+str(9)+':P'+str(fila)+')', currency_format)
@@ -354,4 +353,4 @@ class ReporteVentas(models.TransientModel):
         sheet.write(fila,20, '=+SUM(U'+str(9)+':U'+str(fila)+')', currency_format)
         sheet.write(fila,21, '=+SUM(V'+str(9)+':V'+str(fila)+')', currency_format)
         #sheet.write(fila,22, '=+SUM(W'+str(9)+':W'+str(fila)+')', currency_format)
-        sheet.merge_range('B'+str(fila+1)+':M'+str(fila+1), 'TOTALES', workbook.add_format({'bold':True,'border':0,'align': 'center','size': 14}))
+        sheet.merge_range('B'+str(fila+1)+':L'+str(fila+1), 'TOTALES', workbook.add_format({'bold':True,'border':0,'align': 'center','size': 14}))

@@ -130,6 +130,21 @@ class ReporteEstadoCuentaBancario(models.TransientModel):
 
 
 
+    def obtener_saldo_inicial(self,filtro,account_id):
+
+        cuentas=[]
+        cuentas.append(account_id)
+        sql=self.obtener_sql_de_listas(cuentas)
+        query_final=sql + ' select coalesce (sum(debe) - sum(haber),0) as saldo_inicial from lista_movimientos {0}  '.format(filtro)
+
+        
+        self.env.cr.execute(query_final)
+
+        saldo=self.env.cr.dictfetchall()
+    
+
+        return saldo[0]['saldo_inicial']
+
 
 
 

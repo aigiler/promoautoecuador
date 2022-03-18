@@ -71,15 +71,15 @@ class ReporteCompras(models.TransientModel):
             dct['retb']='0'
             dct['retiva100']='0'
             dct['tipo']='R'
-            dct['sustento']= m.sustento_del_comprobante.code
+            dct['sustento']= m.sustento_del_comprobante.code or ""
             #raise ValidationError((str((m.create_date))))
             #dct['tipo_id']= m.partner_id.l10n_latam_identification_type_id.name
             dct['ident']= m.partner_id.vat
             dct['razon_social']= m.partner_id.name
             dct['part_rel']= '##'
             dct['tipo_anexo']= 'C'
-            dct['serie']=m.manual_establishment+'-'+m.manual_referral_guide
-            dct['secuencia']=m.nombre_mostrar[6:15]
+            dct['serie']=m.l10n_latam_document_number[3:6]
+            dct['secuencia']=m.l10n_latam_document_number[6:15]
             if m.auth_number:
                 dct['auth_number']=m.auth_number
             else:
@@ -131,10 +131,12 @@ class ReporteCompras(models.TransientModel):
             no_ret =False
             biva0= 0.00
             bagrav= 0.00
-
-
+            bn_trf_diff = 0.00
+            srv_trf_diff = 0.00
+            srv_trff =0.00
+            bn_trff = 0.00
             for i in m.invoice_line_ids:
-                taxes=i.tax_ids.filtered(lambda l: l.tax_group_id.code in ['vat0','novat','vat'])
+                taxes=i.tax_ids.filtered(lambda l: l.tax_group_id.code in ['novat','vat'])
 
                 if len(taxes)>0:
                     for f in taxes:
@@ -145,17 +147,31 @@ class ReporteCompras(models.TransientModel):
                             
                         else:
                             bagrav += i.price_subtotal 
+                            
 
 
                 else:
                     biva0+=i.price_subtotal
+                for k in i.tax_ids:
+                    if k.tax_group_id.code =='ret_vat_srv' and bagrav!=0:
+                        bn_trf_diff +=  i.price_subtotal
+                    if k.tax_group_id.code =='ret_vat_b' and bagrav!=0:
+                        srv_trf_diff += i.price_subtotal
+                    if k.tax_group_id.code =='ret_vat_b'and biva0!=0:
+                        srv_trff+=i.price_subtotal
+                    if k.tax_group_id.code =='ret_vat_srv' and biva0!=0:
+                        bn_trff+=i.price_subtotal
+                    if k.tax_group_id.code =='no_ret_ir' and biva0!=0:   
+                        srv_trff += i.price_subtotal
+                    if k.tax_group_id.code =='no_ret_ir' and bagrav!=0:   
+                        srv_trf_diff += i.price_subtotal
                             
             dct['noobj'] = no_obj
             dct['no_ext'] = no_ext
-            dct['bn_trf'] =0
-            dct['srv_trf'] =0
-            dct['srv_trf_dif']=0
-            dct['bn_trf_dif']= 0
+            dct['bn_trf'] =bn_trff
+            dct['srv_trf'] =srv_trff
+            dct['srv_trf_dif']=srv_trf_diff
+            dct['bn_trf_dif']= bn_trf_diff
             dct['biva0']=biva0
             dct['bgrav']=bagrav
             if m.ret_tax_ids:
@@ -173,18 +189,6 @@ class ReporteCompras(models.TransientModel):
                         dct['retb']=l.tax_id.tarifa
                         dct['porctrets']='0'
                         dct['retserv']=l.amount  
-                    if l.group_id.code =='ret_vat_srv' and dct['bgrav']!=0:
-                        dct['bn_trf_dif']=  m.amount_untaxed
-                        dct['bn_trf']=  0
-                    if l.group_id.code =='ret_vat_b'and dct['bgrav']!=0:
-                        dct['srv_trf_dif']=  m.amount_untaxed   
-                        dct['srv_trf']=  0
-                    if l.group_id.code =='ret_vat_srv' and dct['biva0']!=0:
-                        dct['bn_trf_dif']= 0
-                        dct['bn_trf']=  m.amount_untaxed  
-                    if l.group_id.code =='ret_vat_b'and dct['biva0']!=0:
-                        dct['srv_trf_dif']= 0
-                        dct['srv_trf']=  m.amount_untaxed  
                     valor= (-1)*l.amount
                     if valor == l.base:
                         dct['retiva100']=l.base
@@ -290,9 +294,9 @@ class ReporteCompras(models.TransientModel):
         'Identificacion','Razon Social','Cont. Especiales',
         'Tipo ID','Parte Rel.','Tip. Anexo','Tip. Comp.',
         'Serie','Secuencial','Autorización','Fch. Emi.'
-        ,'Fch. Reg.','Base IVA 0%','Base Grav.','Monto IVA',
-        'Base no Obj','Base Exenta De Iva','Monto ICE','Porc. Ret. Bien',
-        'Ret. Bien.','Porc. Ret. Serv.','Ret. Serv.','Ret. IVA 100%','Contribuyente Suj. Ret.']
+        ,'Fch. Reg.','Base IVA 0%','Base Grav.',
+        'Base no Obj','Base Exenta De Iva','Subtotal','Monto IVA','Monto ICE','Total','Porc. Ret. Bien',
+        'Ret. Bien.','Porc. Ret. Serv.','Ret. Serv.']
 
         #title_main=['isretencion']
         #bold.set_bg_color('b8cce4')#
@@ -311,30 +315,32 @@ class ReporteCompras(models.TransientModel):
         #sheet.write(7, 28, 'Dbl Tributación', bold)
         #sheet.write(7, 29, 'Suj. Ret.', bold)   
         #sheet.write(7, 30, 'DrawBack', bold)  
-        sheet.write(7, 26, 'Origen', bold)  
-        sheet.write(7, 27, 'Estado', bold)  
-        sheet.write(7, 28, 'Nombre Docum.', bold)
+        sheet.write(7, 26, 'Ret. IVA 100%', bold)  
+        sheet.write(7, 27, 'Contribuyente Suj. Ret.', bold)  
+        sheet.write(7, 28, 'Origen', bold)  
+        sheet.write(7, 29, 'Estado', bold)  
+        sheet.write(7, 30, 'Nombre Docum.', bold)
         #sheet.write(7, 29, 'Docum.', bold)
-        sheet.write(7, 29, 'Chq.', bold)
-        sheet.write(7, 30, 'Tip S,B,A', bold)
-        sheet.write(7, 31, 'Fch. Rete.', bold)
-        sheet.write(7, 32, 'Serie Ret..', bold)
-        sheet.write(7, 33, 'Pto.Emi.Ret.', bold)
-        sheet.write(7, 34, '# Reten.', bold) 
-        sheet.write(7, 35, 'Autori. Ret.', bold)
-        sheet.write(7, 36, 'Bien. Tarf. Dif 0%', bold)
-        sheet.write(7, 37, 'Serv. Tarf. Dif 0%', bold)
-        sheet.write(7, 38, 'Acti. Tarf. Dif 0%', bold)
-        sheet.write(7, 39, 'Bien. Tarf. 0%', bold)
-        sheet.write(7, 40, 'Serv. Tarf. 0%.', bold)
-        sheet.write(7, 41, 'Acti. Tarf. 0%', bold)
-        sheet.write(7, 42, 'Cajas Banano', bold)
-        sheet.write(7, 43, 'Precio Banano', bold)
-        sheet.write(7, 44,  'Usuario', bold)
-        sheet.write(7, 45, 'Motivo', bold)
+        sheet.write(7, 31, 'Chq.', bold)
+        sheet.write(7, 32, 'Tip S,B,A', bold)
+        sheet.write(7, 33, 'Fch. Rete.', bold)
+        sheet.write(7, 34, 'Serie Ret..', bold)
+        sheet.write(7, 35, 'Pto.Emi.Ret.', bold)
+        sheet.write(7, 36, '# Reten.', bold) 
+        sheet.write(7, 37, 'Autori. Ret.', bold)
+        sheet.write(7, 38, 'Bien. Tarf. Dif 0%', bold)
+        sheet.write(7, 39, 'Serv. Tarf. Dif 0%', bold)
+        sheet.write(7, 40, 'Acti. Tarf. Dif 0%', bold)
+        sheet.write(7, 41, 'Bien. Tarf. 0%', bold)
+        sheet.write(7, 42, 'Serv. Tarf. 0%.', bold)
+        sheet.write(7, 43, 'Acti. Tarf. 0%', bold)
+        sheet.write(7, 44, 'Cajas Banano', bold)
+        sheet.write(7, 45, 'Precio Banano', bold)
+        sheet.write(7, 46,  'Usuario', bold)
+        sheet.write(7, 47, 'Motivo', bold)
         #sheet.write(7, 52, 'F caducidad', bold)
-        sheet.write(7, 46, 'Tipo de Contribuyente', bold)
-        sheet.write(7, 47, 'Forma de pago', bold)
+        sheet.write(7, 48, 'Tipo de Contribuyente', bold)
+        sheet.write(7, 49, 'Forma de pago', bold)
         #move=self.obtener_listado(filtro) 
         columna=0
         #raise ValidationError((str((move))))
@@ -381,13 +387,17 @@ class ReporteCompras(models.TransientModel):
                 columna+=1
                 sheet.write(fila, columna,  l['bgrav'], currency_format)
                 columna+=1
-                sheet.write(fila, columna, ( l['miva']) or 0, currency_format)
-                columna+=1
                 sheet.write(fila, columna, l['noobj'] or 0, currency_format)#no se de donde se debe tomar
                 columna+=1
                 sheet.write(fila, columna,l['no_ext']  or  0, currency_format)#no se de donde se debe tomar
                 columna+=1
-                sheet.write(fila, columna, 0, currency_format)#no se de donde se debe tomar
+                sheet.write(fila, columna,'=+SUM(O'+str(fila+1)+':R'+str(fila+1)+')', currency_format)#no se de donde se debe tomar mice subtotal
+                columna+=1
+                sheet.write(fila, columna, ( l['miva']) or 0, currency_format)
+                columna+=1
+                sheet.write(fila, columna, 0, currency_format)#no se de donde se debe tomar mice
+                columna+=1
+                sheet.write(fila, columna,'=+SUM(S'+str(fila+1)+':T'+str(fila+1)+')', currency_format)#no se de donde se debe tomar total
                 columna+=1
                 sheet.write(fila, columna, l['porctretb'], format_title2)
                 columna+=1
@@ -489,12 +499,14 @@ class ReporteCompras(models.TransientModel):
             sheet.write(fila,17, '=+SUM(R'+str(9)+':R'+str(fila)+')', currency_format)
             sheet.write(fila,18, '=+SUM(S'+str(9)+':S'+str(fila)+')', currency_format)
             sheet.write(fila,19, '=+SUM(T'+str(9)+':T'+str(fila)+')', currency_format)
-            sheet.write(fila,36, '=+SUM(AK'+str(9)+':AK'+str(fila)+')', currency_format)
-            sheet.write(fila,37, '=+SUM(AL'+str(9)+':AL'+str(fila)+')', currency_format)
+            #sheet.write(fila,36, '=+SUM(AK'+str(9)+':AK'+str(fila)+')', currency_format)
+            #sheet.write(fila,37, '=+SUM(AL'+str(9)+':AL'+str(fila)+')', currency_format)
             sheet.write(fila,38, '=+SUM(AM'+str(9)+':AM'+str(fila)+')', currency_format)
             sheet.write(fila,39, '=+SUM(AN'+str(9)+':AN'+str(fila)+')', currency_format)
             sheet.write(fila,40, '=+SUM(AO'+str(9)+':AO'+str(fila)+')', currency_format)
             sheet.write(fila,41, '=+SUM(AP'+str(9)+':AP'+str(fila)+')', currency_format)
+            sheet.write(fila,42, '=+SUM(AQ'+str(9)+':AQ'+str(fila)+')', currency_format)
+            sheet.write(fila,43, '=+SUM(AR'+str(9)+':AR'+str(fila)+')', currency_format)
             sheet.write(fila,49, '=+SUM(AX'+str(9)+':AX'+str(fila)+')', currency_format)
             sheet.write(fila,51, '=+SUM(AZ'+str(9)+':AZ'+str(fila)+')', currency_format)
             sheet.merge_range('B'+str(fila+1)+':N'+str(fila+1), 'TOTALES', workbook.add_format({'bold':True,'border':0,'align': 'center','size': 14}))

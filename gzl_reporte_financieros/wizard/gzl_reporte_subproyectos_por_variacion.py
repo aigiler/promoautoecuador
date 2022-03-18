@@ -410,7 +410,7 @@ class ReporteSubproyectoMes(models.TransientModel):
         format_title9 = workbook.add_format({'align': 'right', 'bold':True,'border':0,'underline':True })
         format_title10 = workbook.add_format({'align': 'right', 'bold':False,'border':0 })
         
-        
+        valor=anterior
         format_title.set_center_across()
 
 
@@ -434,61 +434,38 @@ class ReporteSubproyectoMes(models.TransientModel):
             ) or '0.0%', format_title6
             )
             columna+=2"""
-            col_formula = {
-                        'from_col':chr(65 +(columna-7)),
-                        'to_col': chr(65 +columna),
-                        'to_row': valor,
-                        'row': fila+1,
-            }
-            sheet.write_formula(
-            fila ,columna+1 ,
-            '=+({from_col}{row})'.format(
-                **col_formula
-            ) or '0.0', format_title6
-            )
-            col_formula = {
-                        'from_col':chr(65 +(columna-7)),
-                        'to_col': chr(65 +columna),
-                        'to_row': valor,
-                        'row': fila+1,
-            }
-            sheet.write_formula(
-            fila ,columna+1 ,
-            '=+({from_col}{row})'.format(
-                **col_formula
-            ) or '0.0%', format_title6
-            )
-            columna+=2
-            sheet.write(fila, columna, json['posicion_planned_amount'] or '0.00', format_title6)
-            col_formula = {
-                        'from_col': 'R',
-                        'to_col': 'R',
-                        'to_row': valor,
-                        'row': fila+1,
-            }
-            sheet.write_formula(
-            fila ,columna+1 ,
-            '=(({from_col}{row}/{to_col}{to_row}*100))'.format(
-                **col_formula
-            ) or '0.0%', format_title6
-            )
-            if l==3:
+            
+            for l in range(1,4):
                 col_formula = {
-                        'from_col':chr(65 +(columna-4)),
-                        'to_col': chr(65 +(columna-2)),
-                        'to_row': valor,
-                        'row': fila+1,
+                            'from_col':chr(65 +(columna-7)),
+                            'to_col': chr(65 +columna),
+                            'to_row': valor,
+                            'row': fila+1,
                 }
                 sheet.write_formula(
                 fila ,columna+1 ,
-                '=({from_col}{row}-{to_col}{to_row})'.format(
+                '=+({from_col}{row})'.format(
+                    **col_formula
+                ) or '0.0', format_title6
+                )
+                col_formula = {
+                            'from_col':chr(65 +(columna-7)),
+                            'to_col': chr(65 +columna),
+                            'to_row': valor,
+                            'row': fila+1,
+                }
+                sheet.write_formula(
+                fila ,columna+1 ,
+                '=+({from_col}{row})'.format(
                     **col_formula
                 ) or '0.0%', format_title6
                 )
+                columna+=2
+                sheet.write(fila, columna, json['posicion_planned_amount'] or '0.00', format_title6)
                 col_formula = {
-                            'from_col': chr(65 +(columna)),
-                            'to_col': chr(65 +(columna-3)),
-                            'to_row': fila+1,
+                            'from_col': 'R',
+                            'to_col': 'R',
+                            'to_row': valor,
                             'row': fila+1,
                 }
                 sheet.write_formula(
@@ -497,6 +474,31 @@ class ReporteSubproyectoMes(models.TransientModel):
                     **col_formula
                 ) or '0.0%', format_title6
                 )
+                if l==3:
+                    col_formula = {
+                            'from_col':chr(65 +(columna-4)),
+                            'to_col': chr(65 +(columna-2)),
+                            'to_row': valor,
+                            'row': fila+1,
+                    }
+                    sheet.write_formula(
+                    fila ,columna+1 ,
+                    '=({from_col}{row}-{to_col}{to_row})'.format(
+                        **col_formula
+                    ) or '0.0%', format_title6
+                    )
+                    col_formula = {
+                                'from_col': chr(65 +(columna)),
+                                'to_col': chr(65 +(columna-3)),
+                                'to_row': fila+1,
+                                'row': fila+1,
+                    }
+                    sheet.write_formula(
+                    fila ,columna+1 ,
+                    '=(({from_col}{row}/{to_col}{to_row}*100))'.format(
+                        **col_formula
+                    ) or '0.0%', format_title6
+                    )
         else:
             sheet.write(fila, columna,  '0.00', format_title6)
             sheet.write(fila, columna+1,  '0%', format_title6)

@@ -24,10 +24,14 @@ class bankStatementReport(models.TransientModel):
     fecha_fin = fields.Date(string="Hasta")
     date_reporte = fields.Char(string="Corte")
     saldo_cuenta = fields.Float(string="Saldo Segun Estado de cuenta")
+    saldo_libros = fields.Float(string="Saldo Contable")
     total_conciliado = fields.Float(string="Total Conciliado")
     total_no_conciliado = fields.Float(string="Total no conciliado")
 
     diferencia = fields.Float(string="Diferencia")
+    diferencia_libros = fields.Float(string="Diferencia Libros")
+    diferencia_total = fields.Float(string="Diferencia total")
+    diferencia_no_conciliada = fields.Float(string="Diferencia No conciliada")
     subtotal_cheques_no_cobrados = fields.Float(string="Subtotal Cheques")
     subtotal_depositos_no_cobrados = fields.Float(string="Subtotal depositos")
     subtotal_debitos_no_cobrados = fields.Float(string="Subtotal debitos")
@@ -85,18 +89,40 @@ class bankStatementReport(models.TransientModel):
         #string="Year",
          # as a default value it would be 2019)
     year_date = fields.Selection([
-						('2020','2020'),
-						('2021','2021'),
-						('2022','2022'),
-						('2023','2023'),
-						('2024','2024'),
-						('2025','2025'),
-						('2026','2026'),
-						('2027','2027'),
-						('2028','2028'),
-						('2029','2029'),
-						('2030','2030')
-						],string="Año")
+                        ('2020','2020'),
+                        ('2021','2021'),
+                        ('2022','2022'),
+                        ('2023','2023'),
+                        ('2024','2024'),
+                        ('2025','2025'),
+                        ('2026','2026'),
+                        ('2027','2027'),
+                        ('2028','2028'),
+                        ('2029','2029'),
+                        ('2030','2030'),
+                        ('2031','2031'),
+                        ('2032','2032'),
+                        ('2033','2033'),
+                        ('2034','2034'),
+                        ('2035','2035'),
+                        ('2036','2036'),
+                        ('2037','2037'),
+                        ('2038','2038'),
+                        ('2039','2039'),
+                        ('2040','2040'),
+                        ('2041','2041'),
+                        ('2042','2042'),
+                        ('2043','2043'),
+                        ('2044','2044'),
+                        ('2045','2045'),
+                        ('2046','2046'),
+                        ('2047','2047'),
+                        ('2048','2048'),
+                        ('2049','2049'),
+                        ('2050','2050'),
+
+
+                        ],string="Año")
     def print_report(self):
         self.saldo_cuenta_calculo()
 
@@ -123,7 +149,7 @@ class bankStatementReport(models.TransientModel):
             self.fecha_fin = dateMonthEnd.strftime("%Y-%m-%d")
 
 
-            obj_statement=self.env['account.bank.statement'].search([('date','>=',self.fecha_inicio),('date','<=',self.fecha_fin),('state','=','confirm')],order="date desc",limit=1)
+            obj_statement=self.env['account.bank.statement'].search([('date','>=',self.fecha_inicio),('date','<=',self.fecha_fin),('journal_id','=',self.journal_id.id)],order="date desc",limit=1)
             
 
             if len(obj_statement)>0:
@@ -133,19 +159,29 @@ class bankStatementReport(models.TransientModel):
 
     def saldo_cuenta_calculo(self):
 
-        self.subtotal_depositos_no_cobrados=self.body_report('deposito',True)
-        self.subtotal_debitos_no_cobrados=self.body_report('debito',True)
-        self.subtotal_cheques_no_cobrados=self.body_report('cheque',True)
-        self.subtotal_creditos_no_cobrados=self.body_report('credito',True)
+        self.subtotal_depositos_no_cobrados=round(self.body_report('deposito',True),2)
+        self.subtotal_debitos_no_cobrados=round(self.body_report('debito',True),2)
+        self.subtotal_cheques_no_cobrados=round(self.body_report('cheque',True),2)
+        self.subtotal_creditos_no_cobrados=round(self.body_report('credito',True),2)
 
-        self.subtotal_cheques_no_cobrados_no_cont = self.body_report('cheque',True,False)
-        self.subtotal_depositos_no_cobrados_no_cont = self.body_report('deposito',True,False)
-        self.subtotal_debitos_no_cobrados_no_cont = self.body_report('debito',True,False)
-        self.subtotal_creditos_no_cobrados_no_cont = self.body_report('credito',True,False)
+        self.subtotal_cheques_no_cobrados_no_cont = round(self.body_report('cheque',True,False),2)
+        self.subtotal_depositos_no_cobrados_no_cont = round(self.body_report('deposito',True,False),2)
+        self.subtotal_debitos_no_cobrados_no_cont = round(self.body_report('debito',True,False),2)
+        self.subtotal_creditos_no_cobrados_no_cont = round(self.body_report('credito',True,False),2)
 
 
-        self.diferencia= self.saldo_cuenta + self.subtotal_depositos_no_cobrados + self.subtotal_creditos_no_cobrados - self.subtotal_cheques_no_cobrados - self.subtotal_debitos_no_cobrados
-    
+        
+        self.diferencia= round(self.saldo_cuenta + self.subtotal_depositos_no_cobrados + self.subtotal_creditos_no_cobrados - self.subtotal_cheques_no_cobrados - self.subtotal_debitos_no_cobrados,2)
+ 
+        self.saldo_libros=self.obtener_saldo_inicial_cuenta_bancaria(self.fecha_fin)
+
+        self.diferencia_libros= round(self.saldo_libros + self.subtotal_depositos_no_cobrados_no_cont + self.subtotal_creditos_no_cobrados_no_cont - self.subtotal_cheques_no_cobrados_no_cont - self.subtotal_debitos_no_cobrados_no_cont,2)
+        self.diferencia_total=round(self.saldo_cuenta - self.saldo_libros,2)
+
+        self.diferencia_no_conciliada= self.diferencia_total + (self.subtotal_depositos_no_cobrados + self.subtotal_creditos_no_cobrados - self.subtotal_cheques_no_cobrados - self.subtotal_debitos_no_cobrados) #+ (self.subtotal_depositos_no_cobrados_no_cont + self.subtotal_creditos_no_cobrados_no_cont - self.subtotal_cheques_no_cobrados_no_cont - self.subtotal_debitos_no_cobrados_no_cont)
+
+
+
 
     def body_report(self, ref=False,valores=False,contabilizado=True):
 
@@ -167,7 +203,7 @@ class bankStatementReport(models.TransientModel):
         #Depositos No registrados en estado de cuenta
         if ref=='deposito':
 
-            filtro=[('journal_id','=',self.journal_id.id),('payment_date','<=',dateMonthEnd),('es_nota_credito','=',True),('payment_type','=','inbound'),('state','=',state_deposito),('check_number','=',False)]
+            filtro=[('journal_id','=',self.journal_id.id),('payment_date','<=',dateMonthEnd),('es_nota_credito','=',False),('payment_type','=','inbound'),('state','=',state_deposito),('check_number','=',False)]
 
             depositos=self.env['account.payment'].search(filtro)
             if not valores:
@@ -311,9 +347,11 @@ class bankStatementReport(models.TransientModel):
         #finicio mes ffinmes  self.env.context['date']
         
         dates = "%s-%s-01" % (self.env.context['year_date'], self.env.context['month'])
-        dateMonthStart = datetime.strptime(dates,'%Y-%m-%d')
-        dateMonthEnd=dateMonthStart+relativedelta(months=1, day=1, days=-1)
-        
+        dateMonthStart = self.fecha_inicio
+        dateMonthEnd=self.fecha_fin
+
+
+
         # Get total already accounted.
         self._cr.execute('''
             SELECT SUM(aml.''' + amount_field + ''')
@@ -477,7 +515,7 @@ class bankStatementReport(models.TransientModel):
         sheet.merge_range('A5:E5', self.env.company.street, workbook.add_format({'bold':True,'border':0,'align': 'left'}))
         sheet.merge_range('A6:E6', self.env.company.city, workbook.add_format({'bold':True,'border':0,'align': 'left'}))
         sheet.merge_range('A7:G7', self.env.company.country_id.name, workbook.add_format({'bold':True,'border':0,'align': 'left'}))
-        valor = self.saldo_cuenta - self.diferencia
+        valor = self.saldo_cuenta - self.saldo_libros
         sheet.merge_range('A8:E8', 'CONCILIACIÓN BANCARIA', workbook.add_format({'bold':True,'border':0,'align': 'center','size': 14}))
         bold.set_bg_color('b8cce4')
         #finicio mes ffinmes
@@ -485,33 +523,40 @@ class bankStatementReport(models.TransientModel):
         dateMonthStart = datetime.strptime('2021-10-01','%Y-%m-%d')
         dateMonthEnd=dateMonthStart+relativedelta(months=1, day=1, days=-1)
         self.date_reporte = str(dateMonthStart)+'-'+str(dateMonthEnd)
-        sheet.merge_range('A9:G9','Fecha Corte: '+ str(self.date_reporte), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
-        sheet.merge_range('A10:G10', 'Cuenta:'+self.journal_id.name, workbook.add_format({'bold':True,'border':0,'align': 'left'}))
+
+
+
+        sheet.merge_range('A9:G9','Periodo: {0} {1}'.format(self.year_date,self.capturar_anio()), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
+        sheet.merge_range('A10:G10', 'Cuenta: {0} {1}'.format(self.journal_id.name,self.journal_id.bank_account_id.acc_number), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
         sheet.merge_range('A11:G11', 'Saldo Estado de Cuenta Inicial: '+str(self.saldo_cuenta), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
-        sheet.merge_range('A12:G12','Diferencia: '+str(valor), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
-        sheet.merge_range('A13:G13', 'Cheques No Cobrados: '+str(self.subtotal_cheques_no_cobrados) , workbook.add_format({'bold':True,'border':0,'align': 'left'}))
-        sheet.merge_range('A14:G14', 'Notas Debito no incluidad: '+str(self.subtotal_debitos_no_cobrados), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
-        sheet.merge_range('A15:G15', 'Depositos No incluidos: '+str(self.subtotal_depositos_no_cobrados), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
-        sheet.merge_range('A16:G16', 'Creditos no incluidos: '+str(self.subtotal_creditos_no_cobrados), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
-        sheet.merge_range('A17:G17', 'Notas Debito (No Contabilizadas): '+str(self.subtotal_cheques_no_cobrados_no_cont), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
-        sheet.merge_range('A18:G18', 'Cheques no Contabilizados: '+str(self.subtotal_debitos_no_cobrados_no_cont), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
-        sheet.merge_range('A19:G19', 'Notas Credito (No Contabilizados): '+str(self.subtotal_depositos_no_cobrados_no_cont), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
-        sheet.merge_range('A20:G20', 'Depositos No Contabilizado: '+str(self.subtotal_creditos_no_cobrados_no_cont), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
+        sheet.merge_range('A12:G12', 'Saldo Según Libros: '+str(self.saldo_libros), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
+        sheet.merge_range('A13:G13','Diferencia: '+str(round(valor,2)), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
+        sheet.merge_range('A14:G14', 'Cheques No Cobrados: '+str(self.subtotal_cheques_no_cobrados) , workbook.add_format({'bold':True,'border':0,'align': 'left'}))
+        sheet.merge_range('A15:G15', 'Notas Debito no incluidad: '+str(self.subtotal_debitos_no_cobrados), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
+        sheet.merge_range('A16:G16', 'Depositos No incluidos: '+str(self.subtotal_depositos_no_cobrados), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
+        sheet.merge_range('A17:G17', 'Creditos no incluidos: '+str(self.subtotal_creditos_no_cobrados), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
+        sheet.merge_range('A18:G18', 'Notas Debito (No Contabilizadas): '+str(self.subtotal_debitos_no_cobrados_no_cont), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
+        sheet.merge_range('A19:G19', 'Cheques no Contabilizados: '+str(self.subtotal_cheques_no_cobrados_no_cont), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
+        sheet.merge_range('A20:G20', 'Notas Credito (No Contabilizados): '+str(self.subtotal_creditos_no_cobrados_no_cont), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
+        sheet.merge_range('A21:G21', 'Depositos No Contabilizado: '+str(self.subtotal_depositos_no_cobrados_no_cont), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
+        sheet.merge_range('A22:G22','Diferencia No Conciliada: '+str(round(self.diferencia_no_conciliada,2)), workbook.add_format({'bold':True,'border':0,'align': 'left'}))
+
+
         format_saldo = workbook.add_format({'bold':True,'top':1,'align': 'left','font_color':'#bdaf53'})
         
-        sheet.merge_range('C21:D21', 'SALDO SEGUN ESTADO DE CUENTA: ', format_saldo)
+        sheet.merge_range('C23:D23', 'SALDO SEGUN ESTADO DE CUENTA: ', format_saldo)
         
-        sheet.write('E21', self.saldo_cuenta, workbook.add_format({'bold':True,'top':1,'align': 'center','num_format': '[$$-409]#,##0.00'}))
+        sheet.write('E23', self.saldo_cuenta, workbook.add_format({'bold':True,'top':1,'align': 'center','num_format': '[$$-409]#,##0.00'}))
         #secciones
         listado_depositos= self.body_report('deposito')
-        fila=23
-        sheet.write('A22:E22', '(+) Depositos No Incluidos', workbook.add_format({'bold':True,'border':0,'align': 'center','font_color':' #427db7'}))
+        fila=25
+        sheet.write('A24:E24', '(+) Depositos No Incluidos', workbook.add_format({'bold':True,'border':0,'align': 'center','font_color':' #427db7'}))
         
-        sheet.write('A23', 'Nro. Deposito', workbook.add_format({'bold':True,'border':0,'align': 'center','font_color':' #74a8cf'}))
-        sheet.write('B23', 'Fec. Deposito', workbook.add_format({'bold':True,'border':0,'align': 'center','font_color':' #74a8cf'}))
-        sheet.write('C23', 'Empresa', workbook.add_format({'bold':True,'border':0,'align': 'center','font_color':' #74a8cf'}))
-        sheet.write('D23', 'Descripcion', workbook.add_format({'bold':True,'border':0,'align': 'center','font_color':' #74a8cf'}))
-        sheet.write('E23', 'Monto', workbook.add_format({'bold':True,'border':0,'align': 'center','font_color':' #74a8cf'}))
+        sheet.write('A25', 'Nro. Deposito', workbook.add_format({'bold':True,'border':0,'align': 'center','font_color':' #74a8cf'}))
+        sheet.write('B25', 'Fec. Deposito', workbook.add_format({'bold':True,'border':0,'align': 'center','font_color':' #74a8cf'}))
+        sheet.write('C25', 'Empresa', workbook.add_format({'bold':True,'border':0,'align': 'center','font_color':' #74a8cf'}))
+        sheet.write('D25', 'Descripcion', workbook.add_format({'bold':True,'border':0,'align': 'center','font_color':' #74a8cf'}))
+        sheet.write('E25', 'Monto', workbook.add_format({'bold':True,'border':0,'align': 'center','font_color':' #74a8cf'}))
         currency_format = workbook.add_format({'num_format': '[$$-409]#,##0.00'})
         for ld in listado_depositos:
             if ld:
@@ -604,7 +649,7 @@ class bankStatementReport(models.TransientModel):
         sheet.write(fila,4, self.diferencia, workbook.add_format({'bold':True,'top':1,'align': 'center','num_format': '[$$-409]#,##0.00'}))
         fila +=1
         sheet.write(fila,3, 'SALDO CONTABLE ', workbook.add_format({'bold':True,'top':1,'align': 'left','font_color':'#bdaf53'}))
-        sheet.write(fila,4, self.diferencia, workbook.add_format({'bold':True,'top':1,'align': 'center','num_format': '[$$-409]#,##0.00'}))
+        sheet.write(fila,4, self.saldo_libros, workbook.add_format({'bold':True,'top':1,'align': 'center','num_format': '[$$-409]#,##0.00'}))
         #seccion6
         listado_depo= self.body_report('deposito',False,False)
         fila +=2
@@ -704,10 +749,17 @@ class bankStatementReport(models.TransientModel):
         sheet.write(fila,3, 'SubTotal (-) Debitos No Contabilizados ', workbook.add_format({'bold':True,'top':1,'align': 'left','font_color':'#bdaf53'}))
         sheet.write(fila,4, self.subtotal_debitos_no_cobrados_no_cont, workbook.add_format({'bold':True,'top':1,'align': 'center','num_format': '[$$-409]#,##0.00'}))
 
+        fila +=1
+        sheet.write(fila,3, 'TOTAL', workbook.add_format({'bold':True,'top':1,'align': 'left','font_color':'#bdaf53'}))
+        sheet.write(fila,4, self.diferencia_libros, workbook.add_format({'bold':True,'top':1,'align': 'center','num_format': '[$$-409]#,##0.00'}))
 
 
+    def obtener_saldo_inicial_cuenta_bancaria(self,fecha_fin):
+            
+        filtro=""" where fecha<'{0}' """.format(fecha_fin)
 
-
+        saldo=self.env['reporte.estado.cuenta.bancario'].obtener_saldo_inicial(filtro,self.journal_id.id)
+        return saldo
 
 
 
