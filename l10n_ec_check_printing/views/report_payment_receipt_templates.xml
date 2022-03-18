@@ -2,6 +2,7 @@
 <odoo>
     <template id="report_payment_receipt_document" inherit_id="account.report_payment_receipt_document">
         <xpath expr="//div[@class='page']" position="replace">
+            <br/><br/>
             <div class="page">
                 <h3><strong>Recibo de Pago: <span t-field="o.name"/></strong></h3>
                 <div class="row mt64">
