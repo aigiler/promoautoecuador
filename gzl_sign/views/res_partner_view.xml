@@ -15,7 +15,7 @@
             <field name="vat" position="after">
                 <field name="contrato"/>
                 <field name="grupo"/>
-            <field/>
+            </field>
         </field>
     </record>
 

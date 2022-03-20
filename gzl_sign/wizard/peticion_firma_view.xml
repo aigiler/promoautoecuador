@@ -6,9 +6,11 @@
         <field name="inherit_id" ref="sign.sign_send_request_view_form"/>
         <field name="arch" type="xml">
             <field name="signer_ids" position="before">
-                <field name="contrato" required="1" options="{'no_open': True, 'no_create': True}"  />
-                <field name="grupo" required="1" options="{'no_open': True, 'no_create': True}" />
-            <field/>
+                <group>
+                    <field name="contrato" required="1" options="{'no_open': True, 'no_create': True}"  />
+                    <field name="grupo" required="1" options="{'no_open': True, 'no_create': True}" />
+                </group>
+            </field>
         </field>
     </record>
 
