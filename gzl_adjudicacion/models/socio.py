@@ -26,7 +26,3 @@ class Partner(models.Model):
                     ('viudo', 'Viudo/a')                    
                     ], string='Estado Civil', default='soltero')
     num_cargas_familiares = fields.Integer(string='Cargas Familiares')
-    
-    
-    ### relacion con el modulo firmas
-    contrato = fields.Many2one('contrato', string='Contrato')
