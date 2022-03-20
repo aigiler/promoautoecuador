@@ -8,9 +8,10 @@ class SignSendRequest(models.TransientModel):
     grupo = fields.Many2one('grupo.adjudicado', string='Grupo')
 
     def sign_directly_without_mail(self):
-        self.env.cr.execute("""update res_partner set contrato={0},grupo={1} where id={2} """.format(self.contrato.id,self.grupo.id,self.signer_ids.partner_id.id))
+        grupo_contrato = self.grupo.codigo +" - "+ self.contrato.secuencia
+        self.env.cr.execute("""update res_partner set contrato={0},grupo={1},grupo_contrato={2} where id={3}""".format(self.contrato.id,self.grupo.id,grupo_contrato,self.signer_ids.partner_id.id))
         self.env.cr.commit()
-        
+
         #    def sign_directly_without_mail(self):
         res = self.create_request(False, True)
         request = self.env['sign.request'].browse(res['id'])
