@@ -61,7 +61,7 @@ class entryworkwizard(models.TransientModel):
 
                 }
 
-                input_anteriores=self.env['hr.input'].search([('date','=','',linea['date_start'].date())])
+                input_anteriores=self.env['hr.input'].search([('employee_id','=',contrato.employee_id.id),('date','=',linea['date_start'].date())])
                 if len(input_anteriores)==0:
                     comision_input=self.env['hr.input'].create(dct)
                 else:
