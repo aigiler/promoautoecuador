@@ -106,19 +106,22 @@ class ReportComisionistas(models.TransientModel):
         if len(comisiones) > 0:
             
             for l in comisiones: #contrato_id comision.bitacora
+                #if l.lead_id :
                 
                 cargo =self.env['hr.employee'].search([('user_id','=',l.user_id.id)],limit=1)
                 #jefe_ventas_nacional =self.env['hr.employee'].search([('job_id.name','=','Jefe de Ventas')],limit=1)
                 #porcentaje = self.env['comision'].search([('valor_min','>=',float(l.valor_inscripcion)),('valor_max','<=',float(l.valor_inscripcion)),('logica','=','asesor')])
                 #raise ValidationError(str(porcentaje))
-                sheet.write(row, 0, 'periodo', body_right)
+                sheet.write(row, 0, year, body_center)
                 sheet.write(row, 1, cargo.job_id.name, body_center)
-                sheet.write(row, 2,'AGENCIA', body_center)
+                sheet.write(row, 2, 'GUAYAQUIL', body_center)
                 sheet.write(row, 3, l.lead_id.contrato_id.secuencia or '####', body_center)
                 sheet.write(row, 4, l.user_id.name or '###', body_center)
-                sheet.write(row, 5, 'subtotal' or '####', body_center)
-                sheet.write(row, 6, 'iva' or '###', body_center)
-                sheet.write(row, 7, 'total a recibir' or '###', body_center)
-                sheet.write(row, 8, 'estado' or '###', body_center)
-                sheet.write(row, 9, 'observacion' or '###', body_center)
+                sheet.write(row, 5, l.comision or '####', body_center)
+                sheet.write(row, 6, l.comision*0.12 or '###', body_center)
+                sheet.write(row, 7, (l.comision*0.12)+l.comision or '###', body_center)
+                sheet.write(row, 8, l.lead_id.stage_id.name or '###', body_center)
+                sheet.write(row, 9, '.' or '###', body_center)
+
+                row+=1
         
