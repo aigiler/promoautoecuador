@@ -21,6 +21,10 @@ class HrWorkEntry(models.Model):
     leave_state = fields.Selection(related='leave_id.state')
     employee_id = fields.Many2one(domain=[('contract_ids.state', 'in', ('open', 'pending'))])
 
+
+
+
+
     @api.onchange('employee_id', 'date_start', 'date_stop')
     def _onchange_contract_id(self):
         vals = {
