@@ -77,7 +77,7 @@ class Contrato(models.Model):
         ('finalizado', 'Finalizado'),
         ('cedido', 'Cesión de Derecho'),
         ('desistir', 'Desistido'),
-    ], string='Estado', default='borrador', track_visibility='onchange')
+    ], string='Estado', default='pendiente', track_visibility='onchange')
 
 
 
@@ -150,7 +150,7 @@ class Contrato(models.Model):
 
 #    @api.constrains('state')
     def crear_registro_fondo_grupo(self):
-        if self.grupo and self.state!='borrador':
+        if self.grupo and self.state!='pendiente':
             self.grupo.calcular_monto_pagado()
 
             if self.state in ['desistir','inactivo','congelar_contrato']:
