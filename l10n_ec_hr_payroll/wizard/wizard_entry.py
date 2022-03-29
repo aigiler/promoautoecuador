@@ -1,8 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from odoo import api, models, fields,_
-from datetime import date, timedelta
-import datetime
+from datetime import date,datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import Warning, ValidationError
 
@@ -22,8 +21,7 @@ class entryworkwizard(models.TransientModel):
 
     def actualizar_work_entry(self):
 
-        dia=datetime.now(pytz.timezone('America/Guayaquil'))
-
+        dia=datetime.today().date()
         date_start = fields.Datetime.to_datetime(dia)
         dateMonthEnd=self.date_start+relativedelta(months=1, day=1, days=-1)
             
