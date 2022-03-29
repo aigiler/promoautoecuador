@@ -23,7 +23,7 @@ class entryworkwizard(models.TransientModel):
 
         dia=datetime.today().date()
         date_start = fields.Datetime.to_datetime(dia)
-        dateMonthEnd=self.date_start+relativedelta(months=1, day=1, days=-1)
+        dateMonthEnd=dia+relativedelta(months=1, day=1, days=-1)
             
 
         entrada=self.env['wizard.entry'].create({'date_start':date_start,'date_end':dateMonthEnd})
