@@ -2,6 +2,7 @@
 from odoo import api,fields,models, _
 from datetime import date
 from odoo.exceptions import ValidationError, UserError
+from dateutil.relativedelta import relativedelta
 
 class settlementType(models.Model):
     _name = 'hr.settlement.type'
@@ -26,7 +27,17 @@ class hrContract(models.Model):
         contract_ids = self.env['hr.contract'].search([('employee_id','=',self.employee_id.id),('state','=','open'),('id','!=',self.id),('company_id','=',self.company_id.id)])
         if self.state == 'open' and contract_ids:
             raise ValidationError(_('An employee cannot have more than one active contract.'))
-
+        
+        if self.state== 'open':
+            
+            dateMonthEnd=self.date_start+relativedelta(months=1, day=1, days=-1)
+            
+            entrada=self.env['wizard.entry'].create({'date_start':self.date_start,'date_end':dateMonthEnd,'employee_id':self.employee_id.id})
+            entrada.generar_work_entry()
+            
+ 
+    
+            
     @api.constrains('wage')
     def constrains_wage(self):
         data = []

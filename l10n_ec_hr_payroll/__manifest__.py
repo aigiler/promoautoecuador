@@ -26,6 +26,9 @@
         "data/iess_sectorial_job.xml",
         "data/hr.work.entry.type.csv",
         "data/hr.leave.type.csv",
+        "data/ir_cron_data.xml",
+
+
         "views/hr_employee_view.xml",
         "views/hr_contract_view.xml",
         "views/hr_income_tax.xml",
