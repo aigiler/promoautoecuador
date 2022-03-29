@@ -21,8 +21,11 @@ class entryworkwizard(models.TransientModel):
 
     def actualizar_work_entry(self):
 
-        dia=datetime.today().date()
+        dia=datetime.today().replace(day=1).date()
         date_start = fields.Datetime.to_datetime(dia)
+        fecha_actual="%s-%s-01" % (fecha_act.year, fecha_act.month)
+
+        
         dateMonthEnd=dia+relativedelta(months=1, day=1, days=-1)
             
 
