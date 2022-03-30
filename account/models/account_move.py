@@ -3239,7 +3239,7 @@ class AccountMoveLine(models.Model):
             if account_currency and account_currency != line.company_currency_id and account_currency != line.currency_id:
                 raise UserError(_('The account selected on your journal entry forces to provide a secondary currency. You should remove the secondary currency on the account.'))
 
-    @api.constrains('account_id')
+   # @api.constrains('account_id')
     def _check_constrains_account_id(self):
         for line in self.filtered(lambda x: x.display_type not in ('line_section', 'line_note')):
             account = line.account_id
