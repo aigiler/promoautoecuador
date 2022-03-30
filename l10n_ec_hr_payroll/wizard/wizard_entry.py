@@ -1,9 +1,13 @@
 # -*- coding:utf-8 -*-
 
 from odoo import api, models, fields,_
-from datetime import date,datetime, timedelta
+from datetime import date, timedelta
+import datetime
+
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import Warning, ValidationError
+import calendar
+import pytz
 
 class entryworkwizard(models.TransientModel):
     _name = 'wizard.entry'
@@ -21,15 +25,14 @@ class entryworkwizard(models.TransientModel):
 
 
     def actualizar_work_entry(self):
+        hoy=date.today()        
+        
+        fecha_actual="%s-%s-01" % (hoy.year, hoy.month)
+        fecha_fin_tarea="%s-%s-%s" % (hoy.year, hoy.month,(calendar.monthrange(hoy.year, hoy.month)[1]))
 
-        dia=datetime.today().replace(day=1)
-        date_start = fields.Datetime.to_datetime(dia)
 
 
-        dateMonthEnd=dia+relativedelta(months=1, day=1, days=-1)
-        date_start = fields.Datetime.to_datetime(dateMonthEnd)
-
-        entrada=self.env['wizard.entry'].create({'date_start':date_start,'date_end':dateMonthEnd})
+        entrada=self.env['wizard.entry'].create({'date_start':fecha_actual,'date_end':fecha_fin_tarea})
         entrada.generar_work_entry()
 
 
