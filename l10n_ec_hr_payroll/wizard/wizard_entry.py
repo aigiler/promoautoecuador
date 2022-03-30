@@ -19,14 +19,15 @@ class entryworkwizard(models.TransientModel):
 
 
 
+
     def actualizar_work_entry(self):
 
-        dia=datetime.today().replace(day=1).date()
+        dia=datetime.today().replace(day=1)
         date_start = fields.Datetime.to_datetime(dia)
 
-        
+
         dateMonthEnd=dia+relativedelta(months=1, day=1, days=-1)
-            
+        date_start = fields.Datetime.to_datetime(dateMonthEnd)
 
         entrada=self.env['wizard.entry'].create({'date_start':date_start,'date_end':dateMonthEnd})
         entrada.generar_work_entry()
