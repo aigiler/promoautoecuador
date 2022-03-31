@@ -15,7 +15,6 @@ import time
 from odoo import _
 from odoo.exceptions import ValidationError, except_orm
 from dateutil.relativedelta import *
-from . import informe_excel
 
 import base64
 from base64 import urlsafe_b64decode
