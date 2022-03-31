@@ -15,7 +15,7 @@
                     </group>
                     <footer>
                         <button name="generar_work_entry"  string="Ejecutar Horarios" type="object" class="btn btn-primary" icon="fa-print"/>
-                        <button name="generar_alimentacion"  string="Ejecutar Pago Alimentación" type="object" class="btn btn-primary" icon="fa-print"/>
+                        <button name="generar_alimentacion"  string="Ejecutar Pago Alimentacion" type="object" class="btn btn-primary" icon="fa-print"/>
 
 
 
