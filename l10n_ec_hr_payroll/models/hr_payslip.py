@@ -62,6 +62,25 @@ class hrInput(models.Model):
 class hrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
+
+    @api.onchange('struct_id')
+    def onchange_quincena(self):
+        if self.struct_id.id:
+            if 'quincena' in self.struct_id.name:
+                self.pago_quincena=True
+            else:
+                self.pago_quincena=False
+
+
+
+
+
+
+
+
+
+
+
     def _get_inputs_line(self,contracts,date_from,date_to):
         self.input_line_ids = []
         res = []

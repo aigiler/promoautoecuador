@@ -68,6 +68,13 @@ class BitacoraConsumoServicios(models.Model):
 
 
     def seleccionComprobante(self):
+        comprobante=False
+        model=''
+        nombreComprobante=''
+        responseKey=''
+        template_id = 0
+
+
         if self.invoice_id.id:
             comprobante=self.invoice_id
             model='account.move'

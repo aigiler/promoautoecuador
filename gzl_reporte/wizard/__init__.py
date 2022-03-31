@@ -5,4 +5,3 @@ from . import contrato_reserva
 from . import amount_to_text_es
 from . import contrato_adendum_wizard
 from . import crear_documento_adendum
-from . import nomina_mesual_correo

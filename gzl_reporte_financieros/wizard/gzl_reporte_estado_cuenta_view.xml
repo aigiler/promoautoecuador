@@ -8,7 +8,7 @@
                     <group>
                         <group col="2">
 
-                            <field name="tipo_empresa" required="1"/>
+                            <field name="tipo_empresa" required="1" readonly="context.get('solo_lectura',False)"/>
                             <field name="date_from" required="1"/>
                             <field name="date_to" required="1"/>
                             <field name="partner_ids" attrs="{'invisible':[('tipo_empresa','!=','cliente')]}"  domain="dominio" widget='many2many_tags'/>
@@ -47,7 +47,39 @@
 
 
 
-        <menuitem id="menu_action_reporte_estado_cuenta"  parent="bi_account_cheque.menu_informes_tesoreria" sequence="5" action="action_reporte_estado_cuenta"/>
+        <menuitem id="menu_action_reporte_estado_cuenta_cliente"  parent="bi_account_cheque.menu_informes_tesoreria" sequence="5" action="action_reporte_estado_cuenta" />
+
+        <record id="action_reporte_estado_cuenta" model="ir.actions.act_window">
+            <field name="name">Estado de Cuenta</field>
+            <field name="res_model">reporte.estado.cuenta</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'default_tipo_empresa':'cliente','solo_lectura':True}</field>
+
+
+        </record>
+
+
+        <menuitem action="menu_action_reporte_estado_cuenta_cliente" id="menu_action_reporte_estado_cuenta_receivable" parent="account.menu_finance_receivables" sequence="100"/>
+
+
+        <record id="action_reporte_estado_cuenta_proveedores" model="ir.actions.act_window">
+            <field name="name">Estado de Cuenta</field>
+            <field name="res_model">reporte.estado.cuenta</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'default_tipo_empresa':'proveedor', 'solo_lectura':True}</field>
+
+
+        </record>
+
+
+
+        <menuitem action="action_reporte_estado_cuenta_proveedores" id="menu_action_reporte_estado_cuenta_payable" parent="account.menu_finance_payables" sequence="100"/>
+
+
+
+
 
 
 </odoo>

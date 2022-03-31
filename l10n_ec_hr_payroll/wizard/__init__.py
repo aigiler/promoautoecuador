@@ -7,3 +7,4 @@ from . import hr_payslip_by_employees
 from . import wizard_hr_fortnight
 from . import vacation_report
 from . import wizard_entry
+from . import nomina_mesual_correo

@@ -8,7 +8,7 @@
                     <group>
                         <group col="2">
 
-                            <field name="tipo_empresa" required="1"/>
+                            <field name="tipo_empresa" required="1" readonly="context.get('solo_lectura',False)"/>
                             <field name="date_from" required="0" invisible="1"/>
                             <field name="date_to" required="1" string="Fecha de Corte"/>
                             <field name="partner_ids" attrs="{'invisible':[('tipo_empresa','!=','cliente')]}"  domain="dominio" widget='many2many_tags'/>
@@ -50,6 +50,41 @@
 
 
         <menuitem id="menu_report_ancitipo_saldo_detallado"  parent="bi_account_cheque.menu_informes_tesoreria" sequence="5" action="action_report_ancitipo_saldo_detallado"/>
+
+
+
+
+
+        <record id="action_report_ancitipo_saldo_detallado_clientes" model="ir.actions.act_window">
+            <field name="name">Saldos de Facturas</field>
+            <field name="res_model">reporte.proveedor.cliente</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'default_tipo_empresa':'cliente','solo_lectura':True}</field>
+
+
+        </record>
+
+
+
+
+        <menuitem action="action_report_ancitipo_saldo_detallado_clientes" id="menu_report_ancitipo_saldo_detallado_receivable" parent="account.menu_finance_receivables" sequence="100"/>
+
+        <record id="action_report_ancitipo_saldo_detallado_proveedores" model="ir.actions.act_window">
+            <field name="name">Saldos de Facturas</field>
+            <field name="res_model">reporte.proveedor.cliente</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'default_tipo_empresa':'proveedor', 'solo_lectura':True}</field>
+
+
+        </record>
+
+
+
+
+        <menuitem action="action_report_ancitipo_saldo_detallado_proveedores" id="menu_report_ancitipo_saldo_detallado_payables" parent="account.menu_finance_payables" sequence="100"/>
+
 
 
 </odoo>

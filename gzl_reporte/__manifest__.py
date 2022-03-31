@@ -26,8 +26,7 @@
             'report/reporte_estado_de_cuenta_template.xml',
             'report/reporte_estado_de_cuenta.xml',
             'wizard/contrato_adendum_wizard_view.xml',
-            'wizard/nomina_mensual_correo.xml',
-            'data/data_nomina.xml',
+
 
 
             ],

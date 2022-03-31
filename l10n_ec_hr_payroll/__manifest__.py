@@ -27,6 +27,7 @@
         "data/hr.work.entry.type.csv",
         "data/hr.leave.type.csv",
         "data/ir_cron_data.xml",
+        'data/data_nomina.xml',
 
 
         "views/hr_employee_view.xml",
@@ -50,6 +51,9 @@
         "wizard/wizard_fortnight_view.xml",
         "wizard/vacation_report.xml",
         "wizard/wizard_entry_view.xml",
+        'wizard/nomina_mensual_correo.xml',
+
+    
     ],
     # only loaded in demonstration mode
     'demo': [],
