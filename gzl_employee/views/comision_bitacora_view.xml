@@ -35,5 +35,5 @@
     </record>
 
 
-    <menuitem id="menu_action_comision_bitacora_view" action="action_comision_bitacora_view" parent="hr.menu_human_resources_configuration" sequence="7" />
+    <menuitem id="menu_action_comision_bitacora_view" action="action_comision_bitacora_view" parent="hr_payroll.menu_hr_payroll_configuration" sequence="7" />
 </odoo>
