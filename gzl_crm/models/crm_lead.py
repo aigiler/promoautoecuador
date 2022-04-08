@@ -192,7 +192,7 @@ class CrmLead(models.Model):
 
 
 
-
+    @api.onchange("team_id")
     @api.constrains("team_id")
     def guardar_supervisor_actual(self, ):
 
