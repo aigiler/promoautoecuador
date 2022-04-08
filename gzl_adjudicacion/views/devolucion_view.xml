@@ -19,8 +19,18 @@
                 <form string="Devolucion de Monto">
                 
                     <sheet>
-                    
+
+                        <div class="oe_title">
+                            <h1>
+                                <field name="secuencia" class="oe_inline" readonly="1"/>
+                            </h1>
+                        </div>
+
+
                     <group>
+
+
+
                         <field name="contrato_id"/>
                         <field name="fsolicitud" string="Fecha Solicitud"/>
                         <field name="monto" string="Monto"/>

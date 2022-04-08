@@ -14,30 +14,13 @@
                         <div class="row mt64">
                             <div class="col-6" t-if="o.fsolicitud">
                                 <strong>Fecha de solicitud: </strong> <span t-field="o.fsolicitud"/>
+                                <strong>Monto: </strong> <span t-field="o.monto"/>
+                                <strong>Contrato: </strong> <span t-field="o.contrato_id"/>
                             </div>
                         </div>
 
-                        <table class="table table-condensed">
-                            <thead style="text-align: center; margin-bottom: 10px ">
-                                <th>Monto</th>
-                                <th>Cuenta</th>
-                                <th>Cuenta Analitica</th>
-                                <th>Referencia</th>
-                                <th>Debe</th>
-                                <th>Haber</th>
 
-                            </thead>
-                            <tbody>
-                                <tr >
-                                    <td><span t-field="o.monto"/></td>
-                                    <!--<td><span t-field="inv.name"/></td>
-                                    <td><span t-field="inv.ref"/></td>
-                                    <td class="text-right"><span t-field="inv.amount_total"/></td>
-                                    <td class="text-right"><span t-esc="o._get_invoice_payment_amount(inv)" t-options="{'widget': 'monetary', 'display_currency': inv.currency_id}"/></td>
-                                    <td class="text-right"><span t-field="inv.amount_residual"/></td>-->
-                                </tr>
-                            </tbody>
-                        </table>
+
                         
                         <br/><br/>
                         <div class="row">
