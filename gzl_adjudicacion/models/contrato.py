@@ -640,7 +640,7 @@ class Contrato(models.Model):
 
         view_id = self.env.ref('gzl_adjudicacion.wizard_cesion_derecho_form').id
 
-        pagos=self.detalle_tabla_amortizacion.filtered(lambda l: l.state=='pagado')
+        pagos=self.tabla_amortizacion.filtered(lambda l: l.state=='pagado')
         pago=sum(pagos.mapped("cuota_capital"))
 
 
