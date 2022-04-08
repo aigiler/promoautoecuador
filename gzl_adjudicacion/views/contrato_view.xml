@@ -64,7 +64,7 @@
 
 
 
-                    <button name="cesion_derecho" string="Cesión de Derecho" states="inactivo,desistir,congelar" type="object" class="oe_highlight"/>
+                    <button name="cesion_derecho" string="Cesión de Derecho" attrs="{'invisible':['|',('state','not in',['inactivo','desistir','congelar']),('desistido','=',True)]}" states="inactivo,desistir,congelar" type="object" class="oe_highlight"/>
 
 
 
@@ -112,6 +112,8 @@
                                     <field name="monto_financiamiento"/>
                                     <field name="tasa_administrativa" readonly="1"/>
                                     <field name="valor_inscripcion" />
+                                    <field name="desistido" />
+
                                 </group>
                             </div>
 

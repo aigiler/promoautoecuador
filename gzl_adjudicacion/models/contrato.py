@@ -80,6 +80,7 @@ class Contrato(models.Model):
     ], string='Estado', default='pendiente', track_visibility='onchange')
 
 
+    desistido = fields.Boolean(string='Desistido')
 
 
 # A  Activo        activo    
@@ -640,7 +641,7 @@ class Contrato(models.Model):
 
         view_id = self.env.ref('gzl_adjudicacion.wizard_cesion_derecho_form').id
 
-        pagos=self.tabla_amortizacion.filtered(lambda l: l.state=='pagado')
+        pagos=self.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado')
         pago=sum(pagos.mapped("cuota_capital"))
 
 
@@ -654,7 +655,7 @@ class Contrato(models.Model):
                 'views': [[view_id, 'form']],
                 'context': {
                     'default_contrato_id': self.id,
-                    'default_monto_financiamiento': pago,
+                    'default_monto_a_ceder': pago,
                 }
         }
 

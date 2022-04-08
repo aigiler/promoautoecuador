@@ -19,6 +19,7 @@ class WizardAdelantarCuotas(models.Model):
 
 
 
+
     def pagar_cuotas_por_adelantado(self):
         view_id = self.env.ref('gzl_adjudicacion.wizard_adelantar_cuotas_readonly_form').id
 
@@ -34,4 +35,5 @@ class WizardAdelantarCuotas(models.Model):
                     'default_monto_a_pagar':self.monto_a_ceder
                 }
         }
+
 

@@ -17,7 +17,7 @@
                     </group>
                 </sheet>
                 <footer>
-                    <button string="Ejecutar Cesión" class="oe_highlight" type="object" name="validar_pago"/>
+                    <button string="Ejecutar Cesión" class="oe_highlight" type="object" name="pagar_cuotas_por_adelantado"/>
                     <button string="Cancelar" special="cancel"/>
                 </footer>
             </form>
