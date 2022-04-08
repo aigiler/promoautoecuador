@@ -482,6 +482,7 @@ class CrmLead(models.Model):
                                             'plazo_meses':self.numero_cuotas.id,
                                             'cuota_capital':self.cuota_capital,
                                             'iva_administrativo':self.iva,
+                                            'factura_inscripcion':self.factura_inscripcion_id.id,
                                         })
                 self.contrato_id=contrato.id
 

@@ -49,7 +49,7 @@
         <field name="arch" type="xml">
             <form string="Contrato">
                 <header>
-                    <button name="cambio_estado_boton_borrador" string="Activo" type="object" states="borrador" class="oe_highlight"/>
+                    <button name="cambio_estado_boton_borrador" string="Activo" type="object" states="pendiente" class="oe_highlight"/>
 
                     <button name="cambio_estado_congelar_contrato" string="Congelar " states="inactivo" type="object" class="oe_highlight"/>
                     <button name="reactivar_contrato_congelado" string="Reactivar Contrato " states="congelar_contrato" type="object" class="oe_highlight"/>
@@ -75,7 +75,7 @@
                     <button name="crear_adendum" string="Crear Adendum" states="activo" type="object" class="oe_highlight"/>
 
 
-                    <field name="state" widget="statusbar" statusbar_visible="borrador,activo,congelar_contrato,adjudicar,adendum,desistir"/>
+                    <field name="state" widget="statusbar" statusbar_visible="pendiente,activo,congelar_contrato,adjudicar,adendum,desistir"/>
                 </header>
 
                     <div >

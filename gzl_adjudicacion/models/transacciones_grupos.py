@@ -14,15 +14,16 @@ class TransaccionesGrupoSocio(models.Model):
     adjudicado_id = fields.Many2one('res.partner', string="Nombre")
     contrato_id = fields.Many2one('contrato', string='Contrato')
     state = fields.Selection(selection=[
-        ('borrador', 'Borrador'),
+        ('pendiente', 'Pendiente'),
         ('activo', 'Activo'),
         ('inactivo', 'Inactivo'),
-        ('congelar_contrato', 'Congelar Contrato'),
+        ('congelar_contrato', 'Congelado'),
         ('adjudicar', 'Adjudicado'),
         ('adendum', 'Realizar Adendum'),
-        ('cerrado', 'Cerrado'),
-        ('desistir', 'Desistir'),
-    ], string='Estado', default='borrador', track_visibility='onchange')
+        ('finalizado', 'Finalizado'),
+        ('cedido', 'Cesión de Derecho'),
+        ('desistir', 'Desistido'),
+    ], string='Estado', default='pendiente', track_visibility='onchange')
 
     debe=fields.Float('Débito')
     haber=fields.Float('Crédito')
