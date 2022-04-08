@@ -74,13 +74,18 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
 
         if self.tabla_amortizacion_id.saldo==0:
             impuesto_iva12=self.env['account.tax'].search([('description','=','401')],limit=1)
-
+            journal_id = self.env['account.journal'].search([('type','=','sale')],limit=1)
+            product = self.env['product.product'].search([('default_code','=','CA1')])
+            
+            
             factura = self.env['account.move'].create({
                         'type': 'out_invoice',
                         'partner_id': self.tabla_amortizacion_id.contrato_id.cliente.id,
-                
+                        'journal_id':journal_id.id,
+
                 
                         'invoice_line_ids': [(0, 0, {
+                            'product_id':product.id,
                             'tax_ids':  impuesto_iva12,
                             'quantity': 1,
                             'price_unit': self.tabla_amortizacion_id.cuota_adm ,
