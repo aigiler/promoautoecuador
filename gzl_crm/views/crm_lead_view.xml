@@ -31,6 +31,8 @@
                 <field name="valor_inscripcion" required="1"></field>
                 <field name="fecha_ganada"></field>
                 <field name="contrato_id" readonly="1"></field>
+                <field name="cerrador" ></field>
+                <field name="porcent_asesor" ></field>
 
 
 

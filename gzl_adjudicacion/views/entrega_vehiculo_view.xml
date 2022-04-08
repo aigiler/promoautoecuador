@@ -679,6 +679,21 @@
                                                 <field name="products_id"  />
                                             </td>
                                         </tr>
+
+                                        <tr>
+                                            <td>
+                                                <text>LIQUIDACIÓN DE COMPRA</text>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <field name="facturas"  />
+                                            </td>
+                                        </tr>
+
+
+
+
+
                                     </tbody>
                                 </table>
                             </div>
@@ -708,6 +723,18 @@
                         <page string ="Orden de Compra">
                             <separator class="text-center" string="ORDEN DE COMPRA"/>
                             <div class="row">
+                                        <tr>
+                                            <td>
+                                                <text>Documento</text>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <field name="purchase_order"  />
+                                            </td>
+                                        </tr>
+
+
+
                                 <div class="col-xs-12 col-sm-12">
                                     <text class="text-center">
                                         <strong>Observaciones:</strong>

@@ -136,7 +136,7 @@ class EntegaVehiculo(models.Model):
                     'type': 'liq_purchase',
                     'partner_id': self.nombreSocioAdjudicado.id,
                     
-                    'journal_id':1,
+                    'journal_id':2,
                     'l10n_latam_document_type_id':5,
                     'invoice_date': datetime.datetime.now(),
                 })  
