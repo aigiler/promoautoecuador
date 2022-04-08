@@ -59,20 +59,25 @@ class CrmLead(models.Model):
             self.equipo_asigando=self.postventa_id
 
 
+
         if self.stage_id.crear_factura:
             self.equipo_asigando=self.postventa_id
             impuesto_iva12=self.env['account.tax'].search([('description','=','401')],limit=1)
             hoy=date.today()
+            
+            journal_id = self.env['account.journal'].search([('type','=','sale')],limit=1)
+            product = self.env['product.product'].search([('default_code','=','I01')])
 
             factura = self.env['account.move'].create({
                         'type': 'out_invoice',
                         'partner_id': self.partner_id.id,
                         'invoice_user_id': self.user_id.id,
                         'team_id': self.team_id.id,
-                
+                        'journal_id':journal_id.id,
                 
                         'invoice_line_ids': [(0, 0, {
                             'tax_ids':  impuesto_iva12,
+                            'product_id':product.id,
                             'quantity': 1,
                             'price_unit': self.valor_inscripcion ,
                             'name': 'Valor de Inscripción',
