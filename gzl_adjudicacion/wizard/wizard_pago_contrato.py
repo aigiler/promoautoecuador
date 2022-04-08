@@ -27,7 +27,11 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
                 list_method=[]
                 for l in res:
                     list_method.append(l['inbound_payment_method'])
-                return {'domain': {'payment_method_id': [('id', 'in', list_method)]}}
+                list_method=list(set(list_method))
+                
+
+                    
+                return {'domain': {'payment_method_id': [('payment_type', '=', 'inbound'),('id', 'in', list_method)]}}
 
     
     def validar_pago(self,cuotaAdelantada=False):
