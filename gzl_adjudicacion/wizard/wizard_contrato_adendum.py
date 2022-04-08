@@ -75,7 +75,7 @@ class WizardContratoAdendum(models.Model):
                 dct['fecha_pagada']= e.fecha_pagada
                 dct['seguro']= e.seguro
                 dct['rastreo']= e.rastreo
-                dct['factura_id']= e.factura_id 
+                dct['factura_id']= e.factura_id.id 
                 estado_cuenta_anterior.append(dct)
 
 
@@ -147,7 +147,7 @@ class WizardContratoAdendum(models.Model):
                 #si se creo el nuevo estado de cuenta agregar el estado de cuenta anterior a las tablas de bitacora
                 obj_estado_cuenta_nuevo=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id)])
                 if len(obj_estado_cuenta_nuevo) >0:
-                    self.env['contrato.estado.cuenta.historico.cabecera'].create({
+                    obj_contrato_historico=self.env['contrato.estado.cuenta.historico.cabecera'].create({
                                                         #'numero_cuota':self.contrato_id.numero_cuota,
                                                         'contrato_id':self.contrato_id.id,
                                                         'motivo_adendum':' adendum',
@@ -179,7 +179,7 @@ class WizardContratoAdendum(models.Model):
                                                                 'fecha_pagada':cta_ant['fecha_pagada'] ,  
                                                                 'rastreo':cta_ant['rastreo'],  
                                                                 'factura_id':cta_ant['factura_id'] ,#or None,          
-                                                                'contrato_id':int(obj_estado_cuenta_cabecera.id), 
+                                                                'contrato_id':obj_contrato_historico.id, 
                                                                     })
 
 
