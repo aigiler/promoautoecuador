@@ -104,6 +104,10 @@ class EntegaVehiculo(models.Model):
     purchase_order = fields.Many2one('purchase.order', string="Purchase order", track_visibility='onchange')
     facturas = fields.Many2one('account.move', string="Liquidacion de Compra", track_visibility='onchange')
     products_id = fields.Many2one('product.product', track_visibility='onchange')
+    asamblea_id = fields.Many2one('asamblea', string="Asamblea", track_visibility='onchange')
+
+
+
 
 #####Funcion para crear purchase order
     def create_purchase_order(self):
