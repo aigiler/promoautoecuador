@@ -3,15 +3,11 @@
         <template id="template_estado_de_cuenta_reporte">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <t t-call="web.basic_layout">
+                <t t-call="web.external_layout">
                     <div class="page" style="font-size: 14px">
-                    <span><center><h3><span style="font-weight: bold;" t-esc="o.env.company.name"/></h3></center></span><br/>
                     <table>
                         <tbody>
-                            <tr style="">
-                                <td colspan="2" style="text-align: left; text-transform: uppercase; width:33.33% !important;"><span t-esc="o.env.company.street"/></td>
-                                <td></td>
-                            </tr>
+
                             <tr>
                                 <td colspan="2" style = "width:75% !important; text-align: left"><span t-esc="o.env.company.city" style="text-transform: uppercase;"/><span> - </span><span t-esc="o.env.company.country_id.name"/></td>
                                 <td style = "text-align: left; width:25% !important; "><span t-esc="o.contrato_id.ciudad.nombre_ciudad"/><span> - </span><span t-esc="o.contrato_id.fecha_contrato.strftime('%d-%m-%Y')"/></td>
