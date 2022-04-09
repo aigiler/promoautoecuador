@@ -11,7 +11,7 @@ class GrupoSocios(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
 
-
+    secuencia_id= fields.Many2one('ir.sequence',"Codigo de Contrato")
     name=fields.Char('Nombre',  required=True , track_visibility='onchange')
     codigo = fields.Char(string='Código',track_visibility='onchange')
     descripcion=fields.Text('Descripcion', required=True)
