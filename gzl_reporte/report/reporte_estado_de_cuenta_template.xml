@@ -37,7 +37,11 @@
                             </tr>
                             <tr>
                                 <td colspan="2" t-if="o.contrato_id.state != 'adjudicar' " style="text-align: left"><span>Estado: </span><span style="text-transform: uppercase;" t-esc="o.contrato_id.state"/></td>
-                                <td colspan="2" t-if="o.contrato_id.state == 'adjudicar' " style="text-align: left"><span>Estado: </span><span style="text-transform: uppercase;" t-esc="o.contrato_id.state"/><span>(</span><span t-esc="o.contrato_id.fecha_adjudicado.strftime('%d-%m-%Y')"/><span>)</span></td>
+                                <td colspan="2" t-if="o.contrato_id.state == 'adjudicar' and o.contrato_id.fecha_adjudicado" style="text-align: left">
+                                    <span>Fecha Adjudicado: </span>
+                                        <span style="text-transform: uppercase;" t-esc="o.contrato_id.state"/>
+                                        <span>(</span><span t-esc="o.contrato_id.fecha_adjudicado"/>
+                                        <span>)</span></td>
                                 <td></td>
                             </tr>
                             <tr>
