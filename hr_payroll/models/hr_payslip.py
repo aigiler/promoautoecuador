@@ -330,10 +330,9 @@ class HrPayslip(models.Model):
             self.struct_id = contracts[0].structure_type_id.default_struct_id
 
         payslip_name = self.struct_id.payslip_name or _('Salary Slip')
-        if self.pago_quincena:
+        if 'quincena' in self.struct_id.name:
             self.name = '%s - %s - Quincena %s' % (payslip_name, self.employee_id.name or '', format_date(self.env, self.date_from, date_format="MMMM y"))
         else:
-
             self.name = '%s - %s - %s' % (payslip_name, self.employee_id.name or '', format_date(self.env, self.date_from, date_format="MMMM y"))
 
 
