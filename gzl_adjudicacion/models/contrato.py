@@ -325,10 +325,11 @@ class Contrato(models.Model):
 
     @api.model
     def create(self, vals):
+        
+        secuencia_codigo= self.env['grupo.adjudicado'].browse(vals.get('grupo',False)).id
 
-        obj_secuencia= self.grupo.secuencia_id
+        vals['secuencia'] = self.env['ir.sequence'].next_by_code(secuencia_codigo)
 
-        vals['secuencia'] = obj_secuencia.next_by_code(obj_secuencia.code)
         dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
         tasa_administrativa =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa')
 

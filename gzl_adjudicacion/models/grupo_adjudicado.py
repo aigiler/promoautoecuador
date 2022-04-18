@@ -176,16 +176,5 @@ class IntegrantesGrupo(models.Model):
     @api.model
     def create(self, vals):
         grupo = self.env['grupo.adjudicado'].search([('id','=',vals['grupo_id'] )])
-        existe_secuencia = self.env['ir.sequence'].search([('code','=',grupo.codigo)])
-        if existe_secuencia:
-            vals['codigo_integrante'] = existe_secuencia.sudo().next_by_id()
-        else:
-            seq = self.env['ir.sequence'].create({
-                'name': 'Secuencia Grupo Adjudicado '+ grupo.codigo ,
-                'implementation': 'no_gap',
-                'prefix': grupo.codigo +' - ',
-                'number_increment': 1,
-                'code': grupo.codigo
-            })
-            vals['codigo_integrante'] = seq.next_by_id()
+
         return super(IntegrantesGrupo, self).create(vals)

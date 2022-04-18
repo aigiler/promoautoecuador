@@ -66,3 +66,24 @@ class Partner(models.Model):
         action = self.env.ref('crm.crm_lead_opportunities').read()[0]
         action['domain'] = [('id', 'in', self.opportunity_count_ids.ids)]
         return action
+
+
+    
+    def actualizar_cuentas_por_pagar(self):
+        partners= self.env['res.partner'].search([])
+        for partner in partners:
+            self.env.cr.execute("""select x_cuenta from x_importacion_cuentas_contables where x_codigo='{0}' and x_tipo='pagar' """.format(partner.codigo_cliente))
+            res = self.env.cr.dictfetchall()
+            if len(res)>0:
+                partner.property_account_payable_id=res[0]['x_cuenta']
+    
+    
+    def actualizar_cuentas_por_cobrar(self):
+        partners= self.env['res.partner'].search([])
+        for partner in partners:
+            self.env.cr.execute("""select x_cuenta from x_importacion_cuentas_contables where x_codigo='{0}' and x_tipo='cobrar'""".format(partner.codigo_cliente))
+            res = self.env.cr.dictfetchall()
+            if len(res)>0:
+                partner.property_account_receivable_id=res[0]['x_cuenta']
+        
+    
