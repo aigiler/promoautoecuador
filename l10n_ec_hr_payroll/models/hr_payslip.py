@@ -101,24 +101,22 @@ class hrPayslip(models.Model):
                 }
                 res.append(input_data)
 
-        # date_to_15=date_to+relativedelta(months=-1)
+            date_to_15=date_to+relativedelta(months=-1)
 
 
-        # inputs_ids = self.env['hr.input'].search([('company_id','=',self.env.company.id),
-        #                         ('date','<=',date_to),('date','>=',date_to_15),
-        #                         ('employee_id','=',contract.employee_id.id),('state','=',True),('input_type_id.code','=','COMI')])
+            inputs_ids = self.env['hr.input'].search([('company_id','=',self.env.company.id), ('date','<=',date_to),('date','>=',date_to_15),  ('employee_id','=',contract.employee_id.id),('state','=',True),('input_type_id.code','=','COMI')])
 
-        # for inputs in inputs_ids:
-        #     input_data = {
-        #         'name': inputs.input_type_id.name,
-        #         'input_type_id': inputs.input_type_id.id,
-        #         'code': inputs.input_type_id.code,
-        #         'contract_id': contract.id,
-        #         'amount': inputs.amount,
-        #         'input_id': inputs.id,
-        #         'payslip_id':self.id,
-        #     }
-        #     res.append(input_data)
+            for inputs in inputs_ids:
+                 input_data = {
+                     'name': inputs.input_type_id.name,
+                     'input_type_id': inputs.input_type_id.id,
+                     'code': inputs.input_type_id.code,
+                     'contract_id': contract.id,
+                     'amount': inputs.amount,
+                     'input_id': inputs.id,
+                     'payslip_id':self.id,
+                 }
+                 res.append(input_data)
 
         return res
 

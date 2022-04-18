@@ -249,6 +249,14 @@ class HrPayslip(models.Model):
         worked_days_dict = {line.code: line for line in self.worked_days_line_ids if line.code}
         inputs_dict = {line.code: line for line in self.input_line_ids if line.code}
 
+        claves=inputs_dict.keys()
+        
+        for clave in claves:
+            monto= sum(self.input_line_ids.filtered(lambda l: l.input_type_id.code==clave ).mapped("amount"))
+            id_linea_nueva= inputs_dict[clave].copy()
+
+            id_linea_nueva.amount= monto
+            inputs_dict[clave]=id_linea_nueva
         employee = self.employee_id
         contract = self.contract_id
 
@@ -293,6 +301,12 @@ class HrPayslip(models.Model):
                     'rate': rate,
                     'slip_id': self.id,
                 }
+                
+        for clave in claves:
+            inputs_dict[clave].unlink()
+            
+            
+            
         return result.values()
 
     @api.onchange('employee_id', 'struct_id', 'contract_id', 'date_from', 'date_to')
