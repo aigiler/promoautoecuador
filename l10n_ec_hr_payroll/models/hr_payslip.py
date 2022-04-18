@@ -196,13 +196,19 @@ class hrPayslip(models.Model):
 
 
         super(hrPayslip,self).action_payslip_done()
+        
+        for a in list(self.payslip._get_payslip_lines()):
+            if a['code']=='NET':
+                amount = a['amount']
+
+
         if self.pago_quincena:
            payment = self.payment_generate(self.employee_id,amount)
            self.env['hr.fortnight'].sudo().create(payment)
 
 
 
-        
+
 
 class hrPayslipRun(models.Model):
     _inherit = 'hr.payslip.run'
