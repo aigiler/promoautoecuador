@@ -65,9 +65,11 @@ class hrPayslip(models.Model):
 
     dias_trabajados = fields.Float(compute="contador_dias_trabajados", store=True ,help="Dias Trabajados")
 
+    
+    @api.depends("worked_days_line_ids")
     def contador_dias_trabajados(self):
         for l in self:
-            dias_trabajados= sum(l.worked_days_line_ids.mapped("number_of_days"))
+            l.dias_trabajados= sum(l.worked_days_line_ids.mapped("number_of_days"))
 
 
 
