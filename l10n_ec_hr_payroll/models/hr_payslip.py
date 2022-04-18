@@ -63,6 +63,16 @@ class hrPayslip(models.Model):
     _inherit = 'hr.payslip'
     pago_quincena = fields.Boolean(default=False, help="Pago Quincenal.")
 
+    dias_trabajados = fields.Float(compute="contador_dias_trabajados", help="Dias Trabajados")
+
+    def contador_dias_trabajados(self):
+        for l in self:
+            dias_trabajados= sum(l.worked_days_line_ids.mapped("number_of_days"))
+
+
+
+
+
 
     @api.onchange('struct_id')
     def onchange_quincena(self):
