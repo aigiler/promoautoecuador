@@ -330,7 +330,12 @@ class HrPayslip(models.Model):
             self.struct_id = contracts[0].structure_type_id.default_struct_id
 
         payslip_name = self.struct_id.payslip_name or _('Salary Slip')
-        self.name = '%s - %s - %s' % (payslip_name, self.employee_id.name or '', format_date(self.env, self.date_from, date_format="MMMM y"))
+        if self.pago_quincena:
+            self.name = '%s - %s - Quincena %s' % (payslip_name, self.employee_id.name or '', format_date(self.env, self.date_from, date_format="MMMM y"))
+        else:
+
+            self.name = '%s - %s - %s' % (payslip_name, self.employee_id.name or '', format_date(self.env, self.date_from, date_format="MMMM y"))
+
 
         if date_to > date_utils.end_of(fields.Date.today(), 'month'):
             self.warning_message = _("This payslip can be erroneous! Work entries may not be generated for the period from %s to %s." %
