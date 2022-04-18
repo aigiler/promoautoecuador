@@ -235,6 +235,7 @@ class HrPayslip(models.Model):
             'float_round': float_round
         }
 
+
     def _get_payslip_lines(self):
         def _sum_salary_rule_category(localdict, category, amount):
             if category.parent_id:
