@@ -14,9 +14,9 @@
                             <td><span t-field="o.employee_id.job_id"/></td>
                         </tr>
                         <tr>
-                            <td><strong>Dirección</strong></td>
+                            <td><strong>Dias Trabajados</strong></td>
                             <td colspan="3">
-                                <div t-field="o.employee_id.direccion"/>
+                                <div  t-field="o.dias_trabajados"/>
                             </td>
                         </tr>
                         <tr>
@@ -41,6 +41,8 @@
                             <td><strong>Sueldo</strong></td>
                             <td><span t-field="o.contract_id.wage"/></td>
                         </tr>
+                
+                 
                  
                     </table>
             </xpath>
