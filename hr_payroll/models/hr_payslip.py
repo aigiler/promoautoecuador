@@ -120,6 +120,8 @@ class HrPayslip(models.Model):
                 })
 
 
+
+
     def action_payslip_cancel(self):
         if self.filtered(lambda slip: slip.state == 'done'):
             raise UserError(_("Cannot cancel a payslip that is done."))
@@ -170,9 +172,7 @@ class HrPayslip(models.Model):
                     amount = a['amount']
             payslip.write({'line_ids': lines, 'number': number, 'state': 'verify', 'compute_date': fields.Date.today()})
             
-       # if self.pago_quincena:
-     #       payment = self.payment_generate(self.employee_id,amount)
-     #       self.env['hr.fortnight'].sudo().create(payment)
+
         return True
     def payment_generate(self, employee, amount):
         return {

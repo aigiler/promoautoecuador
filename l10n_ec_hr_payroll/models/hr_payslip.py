@@ -193,7 +193,16 @@ class hrPayslip(models.Model):
         for payslip in self:
             for inputs in payslip.input_line_ids:
                 inputs.input_id.total_discount = inputs.amount
+
+
         super(hrPayslip,self).action_payslip_done()
+        if self.pago_quincena:
+           payment = self.payment_generate(self.employee_id,amount)
+           self.env['hr.fortnight'].sudo().create(payment)
+
+
+
+        
 
 class hrPayslipRun(models.Model):
     _inherit = 'hr.payslip.run'
