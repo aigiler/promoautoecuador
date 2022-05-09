@@ -2,7 +2,7 @@
     <data>
 
         <record id="hr_entry_work_eject" model="ir.ui.view">
-            <field name="name">Proceso Entrada de Trabajo</field>
+            <field name="name">hr.entry.work.eject</field>
             <field name="model">wizard.entry</field>
             <field name="arch" type="xml">
                 <form>
