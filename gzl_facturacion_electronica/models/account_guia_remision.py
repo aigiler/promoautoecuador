@@ -81,10 +81,13 @@ class AccountGuiaRemision(models.Model):
         self.name="%s%s%09s"%(self.auth_id.serie_establecimiento,self.auth_id.serie_emision,self.auth_id.sequence_id.next_by_id())
         if self.is_electronic:
             self.procesoComprobanteElectronico()
-        for line in self.guia_remision_line_ids:
-            if line.invoice_id:
-                line.invoice_id.guia_ids = [(4,self.id)]
-        return self.write({ 'state': 'valid'})
+        if self.guia_remision_line_ids:
+            for line in self.guia_remision_line_ids:
+                if line.invoice_id:
+                    line.invoice_id.guia_ids = [(4,self.id)]
+            return self.write({ 'state': 'valid'})
+        else:
+            raise ValidationError('No existe Detalle para la Guia de Remision')
 
 
     def cancel(self):
@@ -133,7 +136,7 @@ class AccountGuiaRemisionLine(models.Model):
         for s in self:
             if s.picking_id and s.picking_id.sale_id:
                 ref = s.picking_id.sale_id.name   
-                invoice_ids = invoice_obj.search([('invoice_origin','=', ref)])  
+                invoice_ids = invoice_obj.search([('invoice_origin','=', ref),('is_electronic','=',True)])  
                 for line in invoice_ids:
                     if line.journal_id and line.journal_id.auth_out_invoice_id and line.journal_id.auth_out_invoice_id.is_electronic and line.numero_autorizacion:
                         s.invoice_id = line[0]
