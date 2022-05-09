@@ -35,7 +35,11 @@ class hrContract(models.Model):
             entrada=self.env['wizard.entry'].create({'date_start':self.date_start,'date_end':dateMonthEnd,'employee_id':self.employee_id.id})
             entrada.generar_work_entry()
             
- 
+    @api.onchange('date_start')
+    def cambiar_fecha_pruebas(self):
+        if self.date_end:
+            self.trial_date_end = self.date_start +  relativedelta(days=+90)
+
     
             
     @api.constrains('wage')
