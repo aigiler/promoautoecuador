@@ -75,7 +75,6 @@ class HrPayslip(models.Model):
     currency_id = fields.Many2one(related='contract_id.currency_id')
     warning_message = fields.Char(readonly=True)
     #acunalema genera pagos quincenal 
-    pago_quincena = fields.Boolean(default=False, help="Pago Quincenal.")
     
     @api.onchange('worked_days_line_ids', 'input_line_ids')
     def _onchange_worked_days_inputs(self):
@@ -119,6 +118,8 @@ class HrPayslip(models.Model):
                     'res_model': payslip._name,
                     'res_id': payslip.id
                 })
+
+
 
 
     def action_payslip_cancel(self):
@@ -171,9 +172,7 @@ class HrPayslip(models.Model):
                     amount = a['amount']
             payslip.write({'line_ids': lines, 'number': number, 'state': 'verify', 'compute_date': fields.Date.today()})
             
-        if self.pago_quincena:
-            payment = self.payment_generate(self.employee_id,amount)
-            self.env['hr.fortnight'].sudo().create(payment)
+
         return True
     def payment_generate(self, employee, amount):
         return {
@@ -236,6 +235,7 @@ class HrPayslip(models.Model):
             'float_round': float_round
         }
 
+
     def _get_payslip_lines(self):
         def _sum_salary_rule_category(localdict, category, amount):
             if category.parent_id:
@@ -249,6 +249,14 @@ class HrPayslip(models.Model):
         worked_days_dict = {line.code: line for line in self.worked_days_line_ids if line.code}
         inputs_dict = {line.code: line for line in self.input_line_ids if line.code}
 
+        claves=inputs_dict.keys()
+        
+        for clave in claves:
+            monto= sum(self.input_line_ids.filtered(lambda l: l.input_type_id.code==clave ).mapped("amount"))
+            id_linea_nueva= inputs_dict[clave].copy()
+
+            id_linea_nueva.amount= monto
+            inputs_dict[clave]=id_linea_nueva
         employee = self.employee_id
         contract = self.contract_id
 
@@ -293,6 +301,12 @@ class HrPayslip(models.Model):
                     'rate': rate,
                     'slip_id': self.id,
                 }
+                
+        for clave in claves:
+            inputs_dict[clave].unlink()
+            
+            
+            
         return result.values()
 
     @api.onchange('employee_id', 'struct_id', 'contract_id', 'date_from', 'date_to')
@@ -316,7 +330,11 @@ class HrPayslip(models.Model):
             self.struct_id = contracts[0].structure_type_id.default_struct_id
 
         payslip_name = self.struct_id.payslip_name or _('Salary Slip')
-        self.name = '%s - %s - %s' % (payslip_name, self.employee_id.name or '', format_date(self.env, self.date_from, date_format="MMMM y"))
+        if 'quincena' in self.struct_id.name:
+            self.name = '%s - %s - Quincena %s' % (payslip_name, self.employee_id.name or '', format_date(self.env, self.date_from, date_format="MMMM y"))
+        else:
+            self.name = '%s - %s - %s' % (payslip_name, self.employee_id.name or '', format_date(self.env, self.date_from, date_format="MMMM y"))
+
 
         if date_to > date_utils.end_of(fields.Date.today(), 'month'):
             self.warning_message = _("This payslip can be erroneous! Work entries may not be generated for the period from %s to %s." %

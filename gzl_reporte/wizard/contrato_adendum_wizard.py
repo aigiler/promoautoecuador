@@ -82,7 +82,7 @@ class ContratoAdendum(models.TransientModel):
                     lista_campos.append(dct)
                 elif campo.identificar_docx =='num_contrato':
                     dct={}
-                    dct['valor'] = resultado[0].split()[2]
+                    dct['valor'] = resultado[0]
                     dct['identificar_docx']=campo.identificar_docx
                     lista_campos.append(dct)
                 else:

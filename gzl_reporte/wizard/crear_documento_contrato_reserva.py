@@ -47,8 +47,8 @@ def crear_documento_reserva(ruta,detalle,lista_estado_cuenta):
         regex1 = re.compile(campo['identificar_docx'])
 
       #  Reemplaza los valores de identificadores de la plantilla con los del json
-        docx_replace_regex_ram(doc,regex1,campo['valor'])
-        docx_replace_regex_header_ram(doc.sections[0].header,regex1,campo['valor'])
+        docx_replace_regex_ram(doc,regex1,campo['valor'] or "" )
+        docx_replace_regex_header_ram(doc.sections[0].header,regex1,campo['valor'] or "")
 
 
     doc.save(ruta)

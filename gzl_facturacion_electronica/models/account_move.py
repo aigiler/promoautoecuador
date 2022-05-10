@@ -8,6 +8,7 @@ import logging
 from itertools import groupby
 import json
 
+
 _logger = logging.getLogger(__name__)
 
 _DOCUMENTOS_EMISION = (

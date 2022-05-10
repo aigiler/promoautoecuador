@@ -149,7 +149,7 @@ class Retenciones(models.Model):
             dctDetalle['fechaEmisionDocSustento']='%s-%s-%s 00:00' % (self.invoice_id.invoice_date.year, str(self.invoice_id.invoice_date.month).zfill(2),str(self.invoice_id.invoice_date.day).zfill(2))
 
 
-            dctDetalle['numDocSustento']=self.invoice_id.l10n_latam_document_number or ""
+            dctDetalle['numDocSustento']=self.invoice_id.manual_establishment.zfill(3) + self.invoice_id.manual_referral_guide.zfill(3) + self.invoice_id.manual_sequence.zfill(9)
             dctDetalle['porcentajeRetener']=float(detalle.tax_id.tarifa)
             dctDetalle['tarifa']=detalle.tax_id.tarifa
             dctDetalle['valorRetenido']=abs(round(detalle.amount,2))

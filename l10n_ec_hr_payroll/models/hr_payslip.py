@@ -61,6 +61,19 @@ class hrInput(models.Model):
 
 class hrPayslip(models.Model):
     _inherit = 'hr.payslip'
+    pago_quincena = fields.Boolean(default=False, help="Pago Quincenal.")
+
+    dias_trabajados = fields.Float(compute="contador_dias_trabajados", store=True ,help="Dias Trabajados")
+
+    
+    @api.depends("worked_days_line_ids")
+    def contador_dias_trabajados(self):
+        for l in self:
+            l.dias_trabajados= sum(l.worked_days_line_ids.mapped("number_of_days"))
+
+
+
+
 
 
     @api.onchange('struct_id')
@@ -87,7 +100,7 @@ class hrPayslip(models.Model):
         for contract in contracts:
             inputs_ids = self.env['hr.input'].search([('company_id','=',self.env.company.id),
                                     ('date','<=',date_to),('date','>=',date_from),
-                                    ('employee_id','=',contract.employee_id.id),('state','=',True)])
+                                    ('employee_id','=',contract.employee_id.id),('state','=',True),('input_type_id.code','!=','COMI')])
             for inputs in inputs_ids:
                 input_data = {
                     'name': inputs.input_type_id.name,
@@ -99,6 +112,25 @@ class hrPayslip(models.Model):
                     'payslip_id':self.id,
                 }
                 res.append(input_data)
+
+            date_later_from=date_from+relativedelta(months=-1)
+            date_later_to=date_from+relativedelta(days=-1)
+
+
+            inputs_ids = self.env['hr.input'].search([('company_id','=',self.env.company.id), ('date','<=',date_later_to),('date','>=',date_later_from),  ('employee_id','=',contract.employee_id.id),('state','=',True),('input_type_id.code','=','COMI')])
+
+            for inputs in inputs_ids:
+                 input_data = {
+                     'name': inputs.input_type_id.name,
+                     'input_type_id': inputs.input_type_id.id,
+                     'code': inputs.input_type_id.code,
+                     'contract_id': contract.id,
+                     'amount': inputs.amount,
+                     'input_id': inputs.id,
+                     'payslip_id':self.id,
+                 }
+                 res.append(input_data)
+
         return res
 
     def _get_worked_day_lines(self):
@@ -174,7 +206,22 @@ class hrPayslip(models.Model):
         for payslip in self:
             for inputs in payslip.input_line_ids:
                 inputs.input_id.total_discount = inputs.amount
+
+
         super(hrPayslip,self).action_payslip_done()
+
+        for a in list(self._get_payslip_lines()):
+            if a['code']=='NET':
+                amount = a['amount']
+
+
+        if self.pago_quincena:
+           payment = self.payment_generate(self.employee_id,amount)
+           self.env['hr.fortnight'].sudo().create(payment)
+
+
+
+
 
 class hrPayslipRun(models.Model):
     _inherit = 'hr.payslip.run'
