@@ -117,14 +117,6 @@ class AccountMove(models.Model):
     #    self._compute_invoice_taxes_by_group_view()
     #    self._recompute_dynamic_lines_view()
 
-    @api.onchange('contrato_id')
-    def onchange_contrato(self):
-        domain = {'product_ids': []}
-        for rec in self:
-            if rec.supplier_id:
-                domain = {'product_ids': [('supplier_id', '=', rec.supplier_id.id)]}
-        return {'domain': domain}
-
     def actualizar_retenciones(self):
         obj=self.env['account.move'].search([('type','in',['in_invoice','out_invoice'])])
         for l in obj:
