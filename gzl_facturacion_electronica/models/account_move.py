@@ -37,7 +37,7 @@ class AccountMove(models.Model):
 
     email_fe2 = fields.Char(string='Email Factura Electronica')
 
-    contrato_id = fields.Many2one('contrato', string='Contrato', domain=lambda self: [('cliente','=',self.partner_id)])
+    contrato_id = fields.Many2one('contrato', string='Contrato')
 
     establecimiento = fields.Many2one('establecimiento')
     reversed_entry_nc_id = fields.Many2one(related='reversed_entry_id', store=True)
