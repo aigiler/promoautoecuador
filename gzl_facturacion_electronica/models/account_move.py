@@ -39,6 +39,8 @@ class AccountMove(models.Model):
 
     contrato_id = fields.Many2one('contrato', string='Contrato')
 
+    contrato_estado_cuenta_ids = fields.Many2many('contrato.estado.cuenta', string='Estado de Cuenta de Aportes')
+
     establecimiento = fields.Many2one('establecimiento')
     reversed_entry_nc_id = fields.Many2one(related='reversed_entry_id', store=True)
     ######## PAGE TRIBUTACION
@@ -114,6 +116,14 @@ class AccountMove(models.Model):
     #def _onchange_recompute_dynamic_lines_view(self):
     #    self._compute_invoice_taxes_by_group_view()
     #    self._recompute_dynamic_lines_view()
+
+    @api.onchange('contrato_id')
+    def onchange_contrato(self):
+        domain = {'product_ids': []}
+        for rec in self:
+            if rec.supplier_id:
+                domain = {'product_ids': [('supplier_id', '=', rec.supplier_id.id)]}
+        return {'domain': domain}
 
     def actualizar_retenciones(self):
         obj=self.env['account.move'].search([('type','in',['in_invoice','out_invoice'])])
