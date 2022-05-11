@@ -13,7 +13,48 @@ class AccountMove(models.Model):
     @api.onchange('contrato_estado_cuenta_ids')
     def _onchange_contrato_estado_cuenta_ids(self):
         contrato_estado_cuenta_ids = self.contrato_estado_cuenta_ids.ids
-        self.env['']
+        obj_product = self.env['product.template'].search([('default_code','=','CA1')])
+        obj_account = self.env['account.account'].search([('code','=','4010101002')])
+        obj_tax = self.env['account.tax'].search([('name','=','	VENTAS DE ACTIVOS FIJOS GRAVADAS TARIFA 12%')])
+        list_pagos_diferentes = {}
+        list_pagos_iguales = []
+        contador_pagos = 0
+        valor = 0
+        num_cuotas = []
+        values = {
+                    'move_id': self.id,
+                    'product_id':obj_product.id,
+                    'name': '',
+                    'account_id':obj_account.id,
+                    'tax_ids': obj_tax.id,
+                    'quantity': 0,
+                    'price_unit':0,
+                    # 'cuotas':'',
+                }
+        if self.contrato_estado_cuenta_ids:
+            obj_contrato_estado_cuenta = self.env['contrato.estado.cuenta'].search([('id','in',self.contrato_estado_cuenta_ids.ids)])
+            for rec in obj_contrato_estado_cuenta:
+                num_cuotas.append(rec.numero_cuota)
+                values['quantity'] = values['quantity'] + 1
+#                 values['price_unit'] = (values.get('price_unit')+rec.cuota_adm)/values.get('quantity')
+                valor += rec.cuota_adm
+                values['price_unit'] = valor/values.get('quantity')
+                cuota = ''
+                for num in num_cuotas:
+                    cuota+str(num)+','
+                values['name'] = 'Pago de cuotas '+cuota
+                list_pagos_diferentes.update({
+                    str(rec.cuota_adm):values
+                })
+                    
+            for rec in list_pagos_diferentes.values():
+                if not self.invoice_line_ids:
+                    self.update({'invoice_line_ids':[(0,0,rec)]})
+                else:
+                    for ric in self.invoice_line_ids:
+                        ric.quantity = rec['quantity']
+                        ric.price_unit = rec['price_unit']
+
   
     @api.onchange("manual_establishment","manual_referral_guide")
     def obtener_diario_por_establecimiento(self,):
