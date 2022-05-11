@@ -41,9 +41,9 @@ class CrmTeam(models.Model):
 
 
 
-    @api.onchange("member_ids")
+    @api.onchange("miembros")
     def actualizar_correos_team(self,):
-        correos=self.member_ids.mapped('email')
+        correos=self.miembros.mapped('email')
         correoCadena=""
         for correo in correos:
             if correo:
