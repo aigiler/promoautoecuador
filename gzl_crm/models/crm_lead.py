@@ -506,7 +506,7 @@ class CrmLead(models.Model):
             stage_id = self.env['crm.stage'].browse(vals['stage_id'])
             if stage_id.is_won:
                 if not (self.factura_inscripcion_id.amount_residual==0 ):
-                    raise ValidationError("La factura de registrarse como pagada.  Notificar a área Contable")
+                    raise ValidationError("Se debe ingresar la factura como Factura de inscripción y La factura debe registrarse como pagada.")
 
 
                 obj_partner=self.partner_id
