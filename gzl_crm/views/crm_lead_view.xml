@@ -33,7 +33,7 @@
                 <field name="contrato_id" readonly="1"></field>
                 <field name="cerrador" ></field>
                 <field name="porcent_asesor" ></field>
-                    <field name="factura_inscripcion_id" string="Factura de Inscripción" placeholder="Ingrese la factura de inscripción" domain="[('type','=','out_invoice'),('partner_id','=',partner_id),('amount_residual','=',0)]" />
+                    <field name="factura_inscripcion_id" string="Factura de Inscripción" placeholder="Ingrese la factura de inscripción" domain="[('state','=','posted'),('type','=','out_invoice'),('partner_id','=',partner_id),('amount_residual','=',0)]" />
 
 
 
