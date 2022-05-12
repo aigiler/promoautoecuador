@@ -401,6 +401,11 @@ class AccountMove(models.Model):
                         self.js_assign_outstanding_line(l.id) 
                     except:
                         print('Error de asiento contable')    
+        
+        if self.type == 'out_invoice':
+            if self.contrato_estado_cuenta_ids:
+                for rec in self.contrato_id.estado_de_cuenta_ids.search([('id','in',self.contrato_estado_cuenta_ids.ids)]):
+                    rec.factura_id = self.id
 
     def action_withholding_create(self):
         TYPES_TO_VALIDATE = ['in_invoice', 'liq_purchase', 'in_debit']
