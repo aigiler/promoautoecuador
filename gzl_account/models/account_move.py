@@ -9,51 +9,54 @@ class AccountMove(models.Model):
     contrato_id = fields.Many2one('contrato', string='Contrato')
 
     contrato_estado_cuenta_ids = fields.Many2many('contrato.estado.cuenta', string='Estado de Cuenta de Aportes')
-
+    
     @api.onchange('contrato_estado_cuenta_ids')
     def _onchange_contrato_estado_cuenta_ids(self):
-        contrato_estado_cuenta_ids = self.contrato_estado_cuenta_ids.ids
         obj_product = self.env['product.template'].search([('default_code','=','CA1')])
         obj_account = self.env['account.account'].search([('code','=','4010101002')])
-        obj_tax = self.env['account.tax'].search([('name','=','	VENTAS DE ACTIVOS FIJOS GRAVADAS TARIFA 12%')])
+        obj_tax = self.env['account.tax'].search([('name','=','VENTAS DE ACTIVOS FIJOS GRAVADAS TARIFA 12%')])
         list_pagos_diferentes = {}
-        list_pagos_iguales = []
-        contador_pagos = 0
         valor = 0
-        num_cuotas = []
         values = {
-                    'move_id': self.id,
                     'product_id':obj_product.id,
-                    'name': '',
+                    'name': 'Pago de cuotas ',
                     'account_id':obj_account.id,
-                    'tax_ids': obj_tax.id,
+                    'tax_ids': [(6,0,[obj_tax.id])],
                     'quantity': 0,
                     'price_unit':0,
-                    # 'cuotas':'',
                 }
         if self.contrato_estado_cuenta_ids:
             obj_contrato_estado_cuenta = self.env['contrato.estado.cuenta'].search([('id','in',self.contrato_estado_cuenta_ids.ids)])
             for rec in obj_contrato_estado_cuenta:
-                num_cuotas.append(rec.numero_cuota)
-                values['quantity'] = values['quantity'] + 1
-#                 values['price_unit'] = (values.get('price_unit')+rec.cuota_adm)/values.get('quantity')
+                values['quantity'] = values.get('quantity') + 1
                 valor += rec.cuota_adm
                 values['price_unit'] = valor/values.get('quantity')
-                cuota = ''
-                for num in num_cuotas:
-                    cuota+str(num)+','
-                values['name'] = 'Pago de cuotas '+cuota
+                values['name'] = values.get('name')+rec.numero_cuota+','
                 list_pagos_diferentes.update({
                     str(rec.cuota_adm):values
                 })
                     
             for rec in list_pagos_diferentes.values():
                 if not self.invoice_line_ids:
-                    self.update({'invoice_line_ids':[(0,0,rec)]})
+                    self.invoice_line_ids = [(0,0,rec)]
+                    if not self.campos_adicionales_facturacion:
+                        dic_caf = {
+                            'nombre': 'Descripcion',
+                            'valor':rec.get('name')
+                        }
+                        self.update({'campos_adicionales_facturacion':[(0,0,dic_caf)]})
+                    self._move_autocomplete_invoice_lines_values()
                 else:
                     for ric in self.invoice_line_ids:
-                        ric.quantity = rec['quantity']
-                        ric.price_unit = rec['price_unit']
+                        ric.name = rec.get('name')
+                        ric.quantity = rec.get('quantity')
+                        ric.price_unit = rec.get('price_unit')
+                    
+                    
+                    for roc in self.campos_adicionales_facturacion:
+                        roc.valor = rec.get('name')
+                    self._move_autocomplete_invoice_lines_values()
+
 
   
     @api.onchange("manual_establishment","manual_referral_guide")
