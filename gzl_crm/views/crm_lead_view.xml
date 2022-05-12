@@ -33,6 +33,7 @@
                 <field name="contrato_id" readonly="1"></field>
                 <field name="cerrador" ></field>
                 <field name="porcent_asesor" ></field>
+                    <field name="factura_inscripcion_id" string="Factura de Inscripción" placeholder="Ingrese la factura de inscripción" domain="[('state','=','posted'),('type','=','out_invoice'),('partner_id','=',partner_id),('amount_residual','=',0)]" />
 
 
 
@@ -59,7 +60,6 @@
 
 
 
-                            <field name="factura_inscripcion_id" string="Factura de Inscripción" placeholder="Ingrese la factura de inscripción" domain="[('type','=','out_invoice'),('partner_id','=',partner_id),('amount_residual','=',0)]"/>
                             <field name="numero_cuotas" string="Número de Cuotas (meses)" required="1" placeholder="48"/>
                             <field name="dia_pago" required="1" placeholder="5"/>
                             <field name="tipo_contrato" options="{'no_create_edit': True, 'no_open': True}" required="1"/>
@@ -106,6 +106,10 @@
                             <field name="delegado_id"/>
                             <field name="postventa_id"/>
                             <field name="equipo_asigando"/>
+                            <field name="factura_requerida"/>
+
+
+
                         </group>
 
                     </group>

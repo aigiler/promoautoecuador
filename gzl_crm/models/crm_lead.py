@@ -44,9 +44,50 @@ class CrmLead(models.Model):
     #campo nuevo
     cerrador = fields.Many2one('res.partner',string="Cerrador")
     porcent_asesor = fields.Float('Porcentaje Asesor')
+    factura_requerida = fields.Boolean('Factura Requerida')
     #asesor_premium = fields.Many2one('res.partner',string="Cerrador")
+
+
+
+
+    def action_new_quotation(self):
+        action = self.env.ref("sale_crm.sale_action_quotations_new").read()[0]
+        action['context'] = {
+            'search_default_opportunity_id': self.id,
+            'default_opportunity_id': self.id,
+            'search_default_partner_id': self.partner_id.id,
+            'default_partner_id': self.partner_id.id,
+            'default_team_id': self.team_id.id,
+            'default_campaign_id': self.campaign_id.id,
+            'default_medium_id': self.medium_id.id,
+            'default_origin': self.name,
+            'default_source_id': self.source_id.id,
+            'default_company_id': self.company_id.id or self.env.company.id,
+            'default_tag_ids': self.tag_ids.ids,
+            'default_user_id': self.user_id.id,
+
+
+
+        }
+        return action
+
+
+
+
+
+
+
+
+
+
+    
     @api.constrains("stage_id")
     def actualizar_equipo_asignado_por_estado(self, ):
+        if self.stage_id.notificar_facturacion:
+            self.factura_requerida=True
+
+
+
 
         if self.stage_id.rol=='comercial':
             self.equipo_asigando=self.team_id
@@ -464,8 +505,12 @@ class CrmLead(models.Model):
         if  vals.get('stage_id',False):
             stage_id = self.env['crm.stage'].browse(vals['stage_id'])
             if stage_id.is_won:
+                if not (self.factura_inscripcion_id ):
+                    raise ValidationError("Ingrese la factura de inscripción")
+                
                 if not (self.factura_inscripcion_id.amount_residual==0 ):
-                    raise ValidationError("La factura de registrarse como pagada.  Notificar a área Contable")
+                    raise ValidationError("Se debe ingresar la factura como Factura de inscripción y La factura debe registrarse como pagada.")
+
 
 
                 obj_partner=self.partner_id
@@ -687,26 +732,6 @@ class TablaAmortizacion(models.Model):
 
 
 
-    def action_new_quotation(self):
-        action = self.env.ref("sale_crm.sale_action_quotations_new").read()[0]
-        action['context'] = {
-            'search_default_opportunity_id': self.id,
-            'default_opportunity_id': self.id,
-            'search_default_partner_id': self.partner_id.id,
-            'default_partner_id': self.partner_id.id,
-            'default_team_id': self.team_id.id,
-            'default_campaign_id': self.campaign_id.id,
-            'default_medium_id': self.medium_id.id,
-            'default_origin': self.name,
-            'default_source_id': self.source_id.id,
-            'default_company_id': self.company_id.id or self.env.company.id,
-            'default_tag_ids': self.tag_ids.ids,
-            'default_user_id': self.user_id.id,
-
-
-
-        }
-        return action
 
 
 

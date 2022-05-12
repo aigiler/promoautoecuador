@@ -9,7 +9,7 @@ class SignSendRequest(models.TransientModel):
 
     def sign_directly_without_mail(self):
         grupo_contrato = self.grupo.codigo +" - "+ self.contrato.secuencia
-        self.env.cr.execute("""update res_partner set contrato={0},grupo={1},grupo_contrato={2} where id={3}""".format(self.contrato.id,self.grupo.id,grupo_contrato,self.signer_ids.partner_id.id))
+        self.env.cr.execute("""update res_partner set contrato={0},grupo={1},grupo_contrato='{2}' where id={3}""".format(self.contrato.id,self.grupo.id,grupo_contrato,self.signer_ids.partner_id.id))
         self.env.cr.commit()
 
         #    def sign_directly_without_mail(self):
