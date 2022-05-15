@@ -26,7 +26,6 @@
                                 attrs="{'required': [('refund_type', 'in', ('refund_client', 'refund_supplier'))]}"/>
                     </group>
                     <group>
-                        <field name="import_ids" string="Import folder"/>
                         <field name="document_date" string="Document date"
                                 attrs="{'required': [('refund_type', 'in', ('refund_client', 'refund_supplier'))]}"/>
                     </group>
