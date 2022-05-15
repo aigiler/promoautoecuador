@@ -19,7 +19,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','hr_expense'],
+    'depends': ['base','hr_expense','gzl_facturacion_electronica'],
 
     # always loaded
     'data': [
