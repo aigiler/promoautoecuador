@@ -20,7 +20,7 @@ class AccountAuthorisation(models.Model):
 
     document_number = fields.Many2one('account.move', string='Document number', readonly=True)
     auth_inv_id = fields.Many2one(
-        'account.authorisation',
+        'establecimiento',
         string='Establecimiento',
         readonly=True,
         states={'approve': [('readonly', False)]},
