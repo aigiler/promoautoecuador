@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <template id="certificado_aporte_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <style>
+                        table, tr, td {
+                        border: 1px solid black;
+                        border-collapse: collapse;
+                        }
+                    </style>
+                    <table>
+                        <tr>
+                            <td style="text-align: center;" colspan="4">Certificado de Aporte</td>
+                        </tr>
+                        <tr>
+                            <td>Nombre:<t t-esc="o.partner_id.name"/></td>
+                            <td colspan="3">Grupo/Orden:<t t-esc="o.contrato_id.grupo.name"/></td>
+                        </tr>
+                        <tr>
+                            <td>Ciudad:<t t-esc="o.contrato_id.ciudad.nombre_ciudad"/></td>
+                            <td>Plazo/Meses:<t t-esc="o.contrato_id.plazo_meses.numero"/></td>
+                            <td colspan="2">Valor Vigente:<t t-options='{"widget": "float", "precision": 2}' t-esc="o.contrato_id.monto_financiamiento"/></td>
+                        </tr>
+                    <!-- </table>
+
+                    <table> -->
+                        <tr>
+                            <td style="text-align: center;">Cuota</td>
+                            <td style="text-align: center;">Vencimiento</td>
+                            <td style="text-align: center;">Descripcion</td>
+                            <td style="text-align: center;">Total</td>
+                        </tr>
+                        <tr t-foreach="o.get_cuotas_lines()" t-as="cuota">
+                            <td style="text-align: center;"><t t-esc="cuota.numero_cuota"/></td>
+                            <td style="text-align: center;"><t t-esc="cuota.fecha_pagada"/></td>
+                            <td>
+                                <ul>
+                                    <li>Cuota Capital:<span><t t-options='{"widget": "float", "precision": 2}' t-esc="cuota.cuota_capital"/></span></li>
+                                    <li>Cuota Adm.:<span><t t-options='{"widget": "float", "precision": 2}' t-esc="cuota.cuota_adm"/></span></li>
+                                    <li>IVA:<span><t t-options='{"widget": "float", "precision": 2}' t-esc="cuota.iva_adm"/></span></li>
+                                </ul>
+                            </td>
+                            <td style="text-align: center;"><t t-options='{"widget": "float", "precision": 2}' t-esc="cuota.saldo"/></td>
+                        </tr>
+                    <!-- </table>
+
+                    <table> -->
+                        <tr>
+                            <td rowspan="3">
+                                Forma de Pago:
+                                <ul>
+                                    <li><t t-esc="o.method_payment.name"/></li>
+                                </ul>
+                            </td>
+                            <td style="width:36%" colspan="2">Subtotal:</td>
+                            <td style="text-align: center;"><t t-options='{"widget": "float", "precision": 2}' t-esc="o.get_total_and_subtotal_cuotas().get('subtotal')"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Total:</td>
+                            <td style="text-align: center;"><t t-options='{"widget": "float", "precision": 2}' t-esc="o.get_total_and_subtotal_cuotas().get('total')"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Observaciones:</td>
+                            <td><t t-esc="o.l10n_latam_document_number"/></td>
+                        </tr>
+                    </table>
+                </t>
+            </t>
+
+        </template>
+
+        <record id="action_report_certificado_aporte" model="ir.actions.report">
+            <field name="name">Certificado de Aporte</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">gzl_facturacion_electronica.certificado_aporte_template</field>
+            <!-- <field name="print_report_name">'%s' % object.name</field> -->
+            <field name="binding_model_id" ref="model_account_move"/>
+            <!-- <field name="binding_type">report</field> -->
+        </record>        
+    
+    </data>
+
+</odoo>

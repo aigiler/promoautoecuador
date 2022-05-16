@@ -57,6 +57,24 @@ class AccountMove(models.Model):
                         roc.valor = rec.get('name')
                     self._move_autocomplete_invoice_lines_values()
 
+    def get_cuotas_lines(self):
+        if self.contrato_estado_cuenta_ids:
+            cuotas = self.contrato_id.estado_de_cuenta_ids.search([('id','in',self.contrato_estado_cuenta_ids.ids)])
+            if cuotas:
+                return cuotas
+
+    def get_total_and_subtotal_cuotas(self):
+        cuotas = self.get_cuotas_lines()
+        total = 0
+        subtotal = 0
+        iva = 0
+        for rec in cuotas:
+            iva += rec.iva_adm
+            total += rec.saldo
+            subtotal = total - iva
+        
+        return {'subtotal':subtotal, 'total':total}
+
 
   
     @api.onchange("manual_establishment","manual_referral_guide")

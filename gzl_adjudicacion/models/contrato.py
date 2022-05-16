@@ -784,7 +784,7 @@ class ContratoCongelamiento(models.Model):
 class ContratoEstadoCuenta(models.Model):
     _name = 'contrato.estado.cuenta'
     _description = 'Contrato - Tabla de estado de cuenta de Aporte'
-    _rec_name = 'fecha'
+    _rec_name = 'numero_cuota'
 
 
     idContrato = fields.Char("ID de Contrato en base")
