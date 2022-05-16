@@ -62,7 +62,7 @@ class hrContract(models.Model):
 
 
 
-    def job_enviar_correos_finalizacion_periodo_pruebas:(self):
+    def job_enviar_correos_finalizacion_periodo_pruebas(self):
 
         hoy=date.today()
 
