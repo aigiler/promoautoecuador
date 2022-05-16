@@ -36,6 +36,7 @@
     ],
     'data': [
         'views/hr_view.xml'
+        'wizard/hr_departure_inherit.xml'
     ],
     'installable': True,
     'auto_install': False,

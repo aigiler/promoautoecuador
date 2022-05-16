@@ -87,7 +87,15 @@ class AccountPayment(models.Model):
 
 
 
+    def asientos_contables(self):
 
+
+        movimientos=self.env['account.move.line'].search([('payment_id', '=',self.id)])
+        lista_obj=[]
+        for asiento in movimientos:
+
+            lista_obj.append(asiento)
+        return lista_obj
 
 
     #@api.constrains('account_payment_account_ids' )

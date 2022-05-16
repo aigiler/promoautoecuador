@@ -209,15 +209,16 @@ class hrPayslip(models.Model):
 
 
         super(hrPayslip,self).action_payslip_done()
+        for payslip in self:
 
-        for a in list(self._get_payslip_lines()):
-            if a['code']=='NET':
-                amount = a['amount']
+            for a in list(payslip._get_payslip_lines()):
+                if a['code']=='NET':
+                    amount = a['amount']
 
 
-        if self.pago_quincena:
-           payment = self.payment_generate(self.employee_id,amount)
-           self.env['hr.fortnight'].sudo().create(payment)
+            if payslip.pago_quincena:
+               payment = payslip.payment_generate(payslip.employee_id,amount)
+               self.env['hr.fortnight'].sudo().create(payment)
 
 
 
