@@ -35,7 +35,7 @@
         'hr','l10n_ec'
     ],
     'data': [
-        'views/hr_view.xml'
+        'views/hr_view.xml',
         'wizard/hr_departure_inherit.xml'
     ],
     'installable': True,
