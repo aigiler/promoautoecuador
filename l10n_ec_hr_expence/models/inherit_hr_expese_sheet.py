@@ -20,7 +20,7 @@ class AccountAuthorisation(models.Model):
 
     document_number = fields.Many2one('account.move', string='Document number', readonly=True)
     auth_inv_id = fields.Many2one(
-        'account.authorisation',
+        'establecimiento',
         string='Establecimiento',
         readonly=True,
         states={'approve': [('readonly', False)]},
@@ -125,7 +125,7 @@ class AccountAuthorisation(models.Model):
             'partner_shipping_id': partner_shipping,
             'date': self.accounting_date,
             'journal_id': self.journal_id.id,
-            'auth_inv_id': self.auth_inv_id.id,
+            'establecimiento': self.auth_inv_id.id,
             'invoice_line_ids': self._get_invoice_lines(),
         }
         move_data = self._hook_move_data(move_data)
