@@ -59,6 +59,49 @@ class hrContract(models.Model):
         self.contract_history_ids = data
 
 
+
+
+
+    def job_enviar_correos_finalizacion_periodo_pruebas:(self):
+
+        hoy=date.today()
+
+        fin_busqueda= hoy + timedelta(days=5)
+        contratos=self.env['hr.contract'].search([('trial_date_end','>=',hoy),('trial_date_end','<',fin_busqueda)])
+
+        for contrato in contratos:
+            self.envio_correos_plantilla('email_fin_periodo_prueba',contrato.id)
+
+
+
+
+
+
+
+
+    def envio_correos_plantilla(self, plantilla,id_envio):
+
+        try:
+            ir_model_data = self.env['ir.model.data']
+            template_id = ir_model_data.get_object_reference('gzl_adjudicacion', plantilla)[1]
+        except ValueError:
+            template_id = False
+#Si existe capturo el template
+        if template_id:
+            obj_template=self.env['mail.template'].browse(template_id)
+
+            email_id=obj_template.send_mail(id_envio)
+
+
+
+
+
+
+
+
+
+
+
 class hrContractHistory(models.Model):
     _name = 'hr.contract.history'
     _description = 'Contract History'
