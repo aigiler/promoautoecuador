@@ -1,1 +1,1 @@
-from . import hr_depature_inherit
+from . import hr_departure_inherit
