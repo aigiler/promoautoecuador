@@ -37,6 +37,125 @@ class AccountMove(models.Model):
 
     email_fe2 = fields.Char(string='Email Factura Electronica')
 
+    contrato_id = fields.Many2one('contrato', string='Contrato')
+
+    contrato_estado_cuenta_ids = fields.Many2many('contrato.estado.cuenta', string='Estado de Cuenta de Aportes',)
+
+    # def _move_autocomplete_invoice_lines_values(self):
+    #     res = super(AccountMove, self)._move_autocomplete_invoice_lines_values()
+    #     obj_account_debe = self.env['account.account'].search([('code','=','1010205001')])
+    #     obj_account_haber = self.env['account.account'].search([('code','=','4010102002')])
+    #     obj_tax = self.env['account.tax'].search([('name','=','VENTAS DE ACTIVOS FIJOS GRAVADAS TARIFA 12%')])
+    #     debe = {'valor_debe':0}
+    #     if self.contrato_estado_cuenta_ids:
+    #         saldo = 0
+    #         for rec in self.contrato_estado_cuenta_ids:
+    #             saldo += (rec.saldo - rec.cuota_adm)
+    #         debe.update({'valor_debe':saldo}) 
+            
+    #         for rec in res['line_ids']:
+    #             if rec[2]:
+    #                 if obj_account_debe:
+    #                     if rec[2].get('account_id') == obj_account_debe.id:
+    #                         rec[2]['debit'] = (debe.get('valor_debe')+rec[2].get('debit'))
+    #                         if obj_account_haber:
+    #                             res['line_ids'].append((0,0,{
+    #                                     'account_id':obj_account_haber.id,
+    #                                     'name':'',
+    #                                     'debit':0,
+    #                                     'credit':rec[2].get('debit'),
+    #                                     'tax_ids':[(6,0,[obj_tax.id])]
+    #                                 }))
+    #                             # pass
+    #     return res
+    
+    @api.onchange('contrato_estado_cuenta_ids')
+    def _onchange_contrato_estado_cuenta_ids(self):
+        obj_product = self.env['product.template'].search([('default_code','=','CA1')])
+        obj_account = self.env['account.account'].search([('code','=','4010101002')])
+        obj_tax = self.env['account.tax'].search([('name','=','VENTAS DE ACTIVOS FIJOS GRAVADAS TARIFA 12%')])
+        obj_account_debe = self.env['account.account'].search([('code','=','1010205001')])
+        obj_account_haber = self.env['account.account'].search([('code','=','4010102002')])
+        list_pagos_diferentes = {}
+        valor = 0
+        valor_debe = 0
+        values = {
+                    'product_id':obj_product.id,
+                    'name': 'Pago de cuotas ',
+                    'account_id':obj_account.id,
+                    'tax_ids': [(6,0,[obj_tax.id])],
+                    'quantity': 0,
+                    'price_unit':0,
+                }
+        if self.contrato_estado_cuenta_ids:
+            obj_contrato_estado_cuenta = self.env['contrato.estado.cuenta'].search([('id','in',self.contrato_estado_cuenta_ids.ids)])
+            for rec in obj_contrato_estado_cuenta:
+                values['quantity'] = values.get('quantity') + 1
+                valor += rec.cuota_adm
+                values['price_unit'] = valor/values.get('quantity')
+                values['name'] = values.get('name')+rec.numero_cuota+','
+                list_pagos_diferentes.update({
+                    str(rec.cuota_adm):values
+                })
+                    
+            for rec in list_pagos_diferentes.values():
+                if not self.invoice_line_ids:
+                    self.invoice_line_ids = [(0,0,rec)]
+                    
+                    # self._move_autocomplete_invoice_lines_values()
+                else:
+                    for ric in self.invoice_line_ids:
+                        ric.name = rec.get('name')
+                        ric.quantity = rec.get('quantity')
+                        ric.price_unit = rec.get('price_unit')
+
+                if not self.campos_adicionales_facturacion:
+                        dic_caf = {
+                            'nombre': 'Descripcion',
+                            'valor':rec.get('name')
+                        }
+                        self.update({'campos_adicionales_facturacion':[(0,0,dic_caf)]})
+                else:
+                    for roc in self.campos_adicionales_facturacion:
+                        roc.valor = rec.get('name')
+                self._move_autocomplete_invoice_lines_values()
+
+            # if self.line_ids:
+            #     for rec in self.line_ids:
+            #         if obj_account_debe:
+            #             if rec.account_id.code == obj_account_debe.code:
+            #                 for roc in obj_contrato_estado_cuenta:
+            #                     valor_debe += (roc.saldo - roc.cuota_adm)
+            #                 valor_debe += rec.debit
+            #                 rec.debit = valor_debe
+                            
+            #             # else:
+            #             #     raise ValidationError('No existe la cuenta 1010205001')
+            #         else:
+            #             raise ValidationError('No existe la cuenta 1010205001')
+                
+            #         if obj_account_haber:
+            #             if rec.account_id.code == obj_account_haber.code:
+            #                 rec.credit = valor_debe
+            #             else:
+            #                 self.update({'line_ids':[(0,0,{
+            #                     'account_id':obj_account_haber.id,
+            #                     'name':'',
+            #                     'debit':0,
+            #                     'credit':valor_debe,
+            #                     'tax_ids':[(6,0,[obj_tax.id])]
+            #                 })]})
+            #         self.line_ids = [(0,0,{
+            #             'account_id':obj_account_haber.id,
+            #             'name':'',
+            #             'debit':0,
+            #             'credit':valor_debe,
+            #             'tax_ids':[(6,0,[obj_tax.id])]
+            #         })]
+                # self._move_autocomplete_invoice_lines_values()
+
+
+
     establecimiento = fields.Many2one('establecimiento')
     reversed_entry_nc_id = fields.Many2one(related='reversed_entry_id', store=True)
     ######## PAGE TRIBUTACION
@@ -112,6 +231,25 @@ class AccountMove(models.Model):
     #def _onchange_recompute_dynamic_lines_view(self):
     #    self._compute_invoice_taxes_by_group_view()
     #    self._recompute_dynamic_lines_view()
+
+    def get_cuotas_lines(self):
+        if self.contrato_estado_cuenta_ids:
+            cuotas = self.contrato_id.estado_de_cuenta_ids.search([('id','in',self.contrato_estado_cuenta_ids.ids)])
+            if cuotas:
+                return cuotas
+
+    def get_total_and_subtotal_cuotas(self):
+        cuotas = self.get_cuotas_lines()
+        total = 0
+        subtotal = 0
+        iva = 0
+        for rec in cuotas:
+            iva += rec.iva_adm
+            total += rec.saldo
+            subtotal = total - iva
+        
+        return {'subtotal':subtotal, 'total':total}
+
 
     def actualizar_retenciones(self):
         obj=self.env['account.move'].search([('type','in',['in_invoice','out_invoice'])])

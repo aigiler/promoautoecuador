@@ -52,6 +52,9 @@
         'wizard/agregar_retencion.xml',
         'wizard/mantenedor_importacion_masiva_view.xml',
         'wizard/importacion_masiva_view.xml',
+        
+        'report/certificado_aporte.xml',
+        'views/account_payment_view.xml'
 
         
     ],
