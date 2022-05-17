@@ -3,7 +3,7 @@
     'name': 'gzl_account',
     'version': '1.0',
     'description': 'Modificaciones en Contabilidad',
-    'depends': ['account', 'account_reports'], #project
+    'depends': ['account','account_reports'], #project
     'data': [
         #'security/ir.model.access.csv',
         
@@ -14,10 +14,7 @@
         'views/account_account_view.xml',
         #'views/account_analytic_account_view.xml',
         'views/account_asset_view.xml',
-        'views/account_move_view.xml',
         'wizard/account_budget_wizard_view.xml',
-
-        'report/certificado_aporte.xml',
     ],
     'qweb': [],
     'demo': [],
