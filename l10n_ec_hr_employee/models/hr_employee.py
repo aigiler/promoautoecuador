@@ -55,6 +55,8 @@ class HrEmployee(models.Model):
     identification_id = fields.Char('Cédula')
     type_identifier = fields.Selection([('cedula', 'CEDULA'),('ruc', 'RUC'),
             ('pasaporte', 'PASAPORTE'),('nit', 'NIT')],'Tipo Identificación',required=True, default='cedula')
+    fecha_salida =  fields.Date('Fecha de Salida')
+    monto_liquidacion =  fields.Float('Monto de Liquidación')
 
     @api.model
     def create(self, vals):

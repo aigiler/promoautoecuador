@@ -83,7 +83,7 @@ class hrContract(models.Model):
 
         try:
             ir_model_data = self.env['ir.model.data']
-            template_id = ir_model_data.get_object_reference('gzl_adjudicacion', plantilla)[1]
+            template_id = ir_model_data.get_object_reference('l10n_ec_hr_payroll', plantilla)[1]
         except ValueError:
             template_id = False
 #Si existe capturo el template
