@@ -29,6 +29,10 @@
 
 
                 </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="contrato_id" domain="[('cliente', '=', partner_id)]" attrs="{'invisible': [('type', '!=', 'out_invoice')]}"/>
+                    <field name="contrato_estado_cuenta_ids" widget="many2many_tags" domain="[('contrato_id','=',contrato_id),('estado_pago','=','pendiente')]" attrs="{'invisible': [('type', '!=', 'out_invoice')]}"/>
+                </xpath>
  
             <xpath expr="//button[@name='action_invoice_register_payment']" position="attributes">
                     <attribute name="attrs">
