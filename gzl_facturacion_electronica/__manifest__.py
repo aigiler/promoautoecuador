@@ -7,6 +7,7 @@
     'depends': ['l10n_ec_tree','product','mail','account','portal'],
     'data': [
         #'data/secuencias.xml',
+        'data/data_account_journal.xml',
         'data/data_ats.xml',
         'data/data_producto.xml',
         'data/data_payment_method.xml',

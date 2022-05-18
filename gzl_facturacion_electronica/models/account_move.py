@@ -40,34 +40,6 @@ class AccountMove(models.Model):
     contrato_id = fields.Many2one('contrato', string='Contrato')
 
     contrato_estado_cuenta_ids = fields.Many2many('contrato.estado.cuenta', string='Estado de Cuenta de Aportes',)
-
-    # def _move_autocomplete_invoice_lines_values(self):
-    #     res = super(AccountMove, self)._move_autocomplete_invoice_lines_values()
-    #     obj_account_debe = self.env['account.account'].search([('code','=','1010205001')])
-    #     obj_account_haber = self.env['account.account'].search([('code','=','4010102002')])
-    #     obj_tax = self.env['account.tax'].search([('name','=','VENTAS DE ACTIVOS FIJOS GRAVADAS TARIFA 12%')])
-    #     debe = {'valor_debe':0}
-    #     if self.contrato_estado_cuenta_ids:
-    #         saldo = 0
-    #         for rec in self.contrato_estado_cuenta_ids:
-    #             saldo += (rec.saldo - rec.cuota_adm)
-    #         debe.update({'valor_debe':saldo}) 
-            
-    #         for rec in res['line_ids']:
-    #             if rec[2]:
-    #                 if obj_account_debe:
-    #                     if rec[2].get('account_id') == obj_account_debe.id:
-    #                         rec[2]['debit'] = (debe.get('valor_debe')+rec[2].get('debit'))
-    #                         if obj_account_haber:
-    #                             res['line_ids'].append((0,0,{
-    #                                     'account_id':obj_account_haber.id,
-    #                                     'name':'',
-    #                                     'debit':0,
-    #                                     'credit':rec[2].get('debit'),
-    #                                     'tax_ids':[(6,0,[obj_tax.id])]
-    #                                 }))
-    #                             # pass
-    #     return res
     
     @api.onchange('contrato_estado_cuenta_ids')
     def _onchange_contrato_estado_cuenta_ids(self):
@@ -79,6 +51,7 @@ class AccountMove(models.Model):
         list_pagos_diferentes = {}
         valor = 0
         valor_debe = 0
+        valor_haber = 0
         values = {
                     'product_id':obj_product.id,
                     'name': 'Pago de cuotas ',
@@ -102,12 +75,13 @@ class AccountMove(models.Model):
                 if not self.invoice_line_ids:
                     self.invoice_line_ids = [(0,0,rec)]
                     
-                    # self._move_autocomplete_invoice_lines_values()
                 else:
                     for ric in self.invoice_line_ids:
-                        ric.name = rec.get('name')
-                        ric.quantity = rec.get('quantity')
-                        ric.price_unit = rec.get('price_unit')
+                        self.invoice_line_ids = [(1,ric.id,{
+                            'name': rec.get('name'),
+                            'quantity': rec.get('quantity'),
+                            'price_unit': rec.get('price_unit'),
+                        })]
 
                 if not self.campos_adicionales_facturacion:
                         dic_caf = {
@@ -117,42 +91,8 @@ class AccountMove(models.Model):
                         self.update({'campos_adicionales_facturacion':[(0,0,dic_caf)]})
                 else:
                     for roc in self.campos_adicionales_facturacion:
-                        roc.valor = rec.get('name')
+                        self.campos_adicionales_facturacion = [(1,roc.id,{'valor':rec.get('name')})]
                 self._move_autocomplete_invoice_lines_values()
-
-            # if self.line_ids:
-            #     for rec in self.line_ids:
-            #         if obj_account_debe:
-            #             if rec.account_id.code == obj_account_debe.code:
-            #                 for roc in obj_contrato_estado_cuenta:
-            #                     valor_debe += (roc.saldo - roc.cuota_adm)
-            #                 valor_debe += rec.debit
-            #                 rec.debit = valor_debe
-                            
-            #             # else:
-            #             #     raise ValidationError('No existe la cuenta 1010205001')
-            #         else:
-            #             raise ValidationError('No existe la cuenta 1010205001')
-                
-            #         if obj_account_haber:
-            #             if rec.account_id.code == obj_account_haber.code:
-            #                 rec.credit = valor_debe
-            #             else:
-            #                 self.update({'line_ids':[(0,0,{
-            #                     'account_id':obj_account_haber.id,
-            #                     'name':'',
-            #                     'debit':0,
-            #                     'credit':valor_debe,
-            #                     'tax_ids':[(6,0,[obj_tax.id])]
-            #                 })]})
-            #         self.line_ids = [(0,0,{
-            #             'account_id':obj_account_haber.id,
-            #             'name':'',
-            #             'debit':0,
-            #             'credit':valor_debe,
-            #             'tax_ids':[(6,0,[obj_tax.id])]
-            #         })]
-                # self._move_autocomplete_invoice_lines_values()
 
 
 
@@ -542,8 +482,35 @@ class AccountMove(models.Model):
         
         if self.type == 'out_invoice':
             if self.contrato_estado_cuenta_ids:
+                obj_account_debe = self.env['account.account'].search([('code','=','1010205001')])
+                obj_account_haber = self.env['account.account'].search([('code','=','2020601001')])
+                valor_debe = 0
+                valor_haber = 0
+                obj_am = self.env['account.move']
                 for rec in self.contrato_id.estado_de_cuenta_ids.search([('id','in',self.contrato_estado_cuenta_ids.ids)]):
                     rec.factura_id = self.id
+                    valor_debe += (rec.saldo - rec.cuota_adm)
+                obj_am.create({
+                    'date':self.invoice_date,
+                    'journal_id':self.env.ref('gzl_facturacion_electronica.account_journal_operaciones_cuotas_capitales').id,
+                    'company_id':self.company_id.id,
+                    'type':'entry',
+                    'ref':self.name,
+                    'line_ids':[
+                        (0,0,{
+                        'account_id':obj_account_debe.id,
+                        'partner_id':self.partner_id.id,
+                        'credit':0,
+                        'debit':valor_debe
+                        }),
+                        (0,0,{
+                        'account_id':obj_account_haber.id,
+                        'partner_id':self.partner_id.id,
+                        'credit':valor_debe,
+                        'debit':0
+                        })
+                    ]
+                }).action_post()
 
     def action_withholding_create(self):
         TYPES_TO_VALIDATE = ['in_invoice', 'liq_purchase', 'in_debit']
