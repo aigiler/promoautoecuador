@@ -26,6 +26,51 @@ class ReportThirteenthSalary(models.TransientModel):
             ('12', 'Diciembre'),
         ], string='Fecha', required=True)
 
+
+
+
+    year_date = fields.Selection([
+                        ('2020','2020'),
+                        ('2021','2021'),
+                        ('2022','2022'),
+                        ('2023','2023'),
+                        ('2024','2024'),
+                        ('2025','2025'),
+                        ('2026','2026'),
+                        ('2027','2027'),
+                        ('2028','2028'),
+                        ('2029','2029'),
+                        ('2030','2030'),
+                        ('2031','2031'),
+                        ('2032','2032'),
+                        ('2033','2033'),
+                        ('2034','2034'),
+                        ('2035','2035'),
+                        ('2036','2036'),
+                        ('2037','2037'),
+                        ('2038','2038'),
+                        ('2039','2039'),
+                        ('2040','2040'),
+                        ('2041','2041'),
+                        ('2042','2042'),
+                        ('2043','2043'),
+                        ('2044','2044'),
+                        ('2045','2045'),
+                        ('2046','2046'),
+                        ('2047','2047'),
+                        ('2048','2048'),
+                        ('2049','2049'),
+                        ('2050','2050'),
+
+
+                        ],string="Año", default="2022")
+
+
+
+
+
+
+
     def report_thirteenth_salary_data(self):
         dct={}
         lis=[]
@@ -38,11 +83,11 @@ class ReportThirteenthSalary(models.TransientModel):
             if contract:
                 today = date.today()
                 if today.month==12:
-                    date_start = str(today.year)+'-12-01'
+                    date_start = str(int(self.year_date))+'-12-01'
                 else:
-                    date_start = str(today.year-1)+'-12-01'
-                last_day = monthrange(today.year, int(self.date))[1]
-                date_end = str(today.year)+'-'+str(self.date)+'-'+str(last_day)
+                    date_start = str(int(self.year_date)-1)+'-12-01'
+                last_day = monthrange(int(self.year_date), int(self.date))[1]
+                date_end = str(int(self.year_date))+'-'+str(self.date)+'-'+str(last_day)
 
                 payslip = self.env['hr.payslip'].search([('employee_id','=',emp.id),('state','!=','cancel'),('date_from','>=',date_start),('date_to','<=',date_end)])
                 salary = 0
