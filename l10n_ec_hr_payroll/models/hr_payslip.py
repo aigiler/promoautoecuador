@@ -305,6 +305,11 @@ class hrPayslipRun(models.Model):
         col = 2
         colspan = 0
         sheet = workbook.add_worksheet(name)
+        sheet.set_column('A:A',18)
+        sheet.set_column('B:H',10)
+        sheet.set_column('I:I',35)
+        sheet.set_column('J:J',11)
+        sheet.set_column('K:K',18)
         sheet.insert_image('A1', "any_name.png",
                            {'image_data':  BytesIO(base64.b64decode( self.env.company.logo)), 'x_scale': 0.5, 'y_scale': 0.5,'x_scale': 0.5,
                             'y_scale':     0.5, 'align': 'center'})
