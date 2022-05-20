@@ -257,12 +257,12 @@ class hrPayslipRun(models.Model):
     def print_xlsx_payroll(self):
         file_data =  BytesIO()
         workbook = xlsxwriter.Workbook(file_data)
-        query_totales = """select sum(hpl.total), hpl.name, hpl."sequence" from hr_payslip_run hpr 
+        query_totales = """select sum(hpl.total) as total, hpl.name, hpl."sequence" from hr_payslip_run hpr 
                                 join hr_payslip hp on hp.payslip_run_id =hpr.id
-                                join hr_payslip_line hpl on hpl.slip_id = hp.id
-                                join hr_employee he on hp.employee_id = he.id
+                                join hr_payslip_line hpl on hpl.slip_id = hp.id 
+                                --join hr_employee he on hp.employee_id = he.id
                                 join hr_salary_rule hsr on hpl.salary_rule_id = hsr.id
-                                where hsr.appears_on_payslip """
+                                where hsr.appears_on_payslip and hpl.code='NET' """
         query = """select distinct(hpl.name), hpl."sequence" from hr_payslip_run hpr 
                             join hr_payslip hp on hp.payslip_run_id =hpr.id
                             join hr_payslip_line hpl on hpl.slip_id = hp.id
@@ -296,109 +296,132 @@ class hrPayslipRun(models.Model):
         border = workbook.add_format({'border':1})
         condition = " and hpr.id=%s group by hpl.sequence, hpl.name" %(self.id)
         struct_id = False
-        if comision:
-            struct_id = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc").struct_id
-            if not struct_id:
-                raise ValidationError(_('No ha registrado una estructura para comisiones en sus configuraciones.'))
-            condition_2 =" and hp.struct_id=%s" %struct_id.id 
-            condition = condition_2 + condition
+        # if comision:
+        #     struct_id = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc").struct_id
+        #     if not struct_id:
+        #         raise ValidationError(_('No ha registrado una estructura para comisiones en sus configuraciones.'))
+        #     condition_2 =" and hp.struct_id=%s" %struct_id.id 
+        #     condition = condition_2 + condition
         col = 2
         colspan = 0
         sheet = workbook.add_worksheet(name)
         sheet.insert_image('A1', "any_name.png",
                            {'image_data':  BytesIO(base64.b64decode( self.env.company.logo)), 'x_scale': 0.5, 'y_scale': 0.5,'x_scale': 0.5,
                             'y_scale':     0.5, 'align': 'center'})
-        sheet.write(1,4,name.upper(),bold2)
-        sheet.write(col,colspan,'Mes: ',bold2)
-        sheet.write(col,colspan+1,self.date_start.month,bold2)
-        sheet.write(col,colspan+2,'Periodo: ',bold2)
-        sheet.write(col,colspan+3,self.date_start.year,bold2)
-        col += 1
-        sheet.write(col,colspan,'No.',bold)
-        sheet.write(col,colspan+1,'Localidad',bold)
-        sheet.write(col,colspan+2,'Area',bold)
-        sheet.write(col,colspan+3,'Departamento',bold)
-        sheet.write(col,colspan+4,'Empleado',bold)
-        sheet.freeze_panes(col+1,colspan+5)
-        sheet.write(col,colspan+5,'Cedula',bold)
-        sheet.write(col,colspan+6,'Dias Trabajados',bold)
-        sheet.write(col,colspan+7,'Sueldo',bold)
-        self.env.cr.execute(query)
-        inputs = self.env.cr.fetchall()
-        cont = 7
-        dtc = {}
-        for line in inputs:
-            cont+=1
-            sheet.write(col,colspan+cont,line[0],bold)
-            dtc['%s' %(line[0])] =colspan+cont
+        # sheet.write(1,4,name.upper(),bold2)
+        # sheet.write(col,colspan,'Mes: ',bold2)
+        # sheet.write(col,colspan+1,self.date_start.month,bold2)
+        # sheet.write(col,colspan+2,'Periodo: ',bold2)
+        # sheet.write(col,colspan+3,self.date_start.year,bold2)
+        # col += 1
+        #sheet.write(col,colspan,'No.',bold)
+        #sheet.write(col,colspan+1,'Localidad',bold)
+        #sheet.write(col,colspan+2,'Area',bold)
+        #sheet.write(col,colspan+3,'Departamento',bold)
+        sheet.write(col,colspan,'Forma de Pago/Cobro',bold)
+        sheet.write(col,colspan+1,'Banco',bold)
+        sheet.write(col,colspan+2,'Tipo de Cta.',bold)
+        sheet.write(col,colspan+3,'Num.Cta',bold)
+        sheet.write(col,colspan+4,'Valor',bold)
+        #sheet.freeze_panes(col+1,colspan+5)
+        sheet.write(col,colspan+5,'Identificación',bold)
+        sheet.write(col,colspan+6,'Tipo.Doc',bold)
+        sheet.write(col,colspan+7,'NUC',bold)
+        sheet.write(col,colspan+8,'Beneficiario',bold)
+        sheet.write(col,colspan+9,'Teléfono',bold)
+        sheet.write(col,colspan+10,'Referencia',bold)
+        #self.env.cr.execute(query)
+        #inputs = self.env.cr.fetchall()
+        #cont = 10 
+        #dtc = {}
+        # for line in inputs:
+        #     cont+=1
+        #     sheet.write(col,colspan+cont,line[0],bold)
+        #     dtc['%s' %(line[0])] =colspan+cont
         address = ''
         no = 0
-        col -=1
+        #col -=1
         lineas = sorted(self.slip_ids,key=lambda x: x.employee_id.work_location)
+        total = 0
         for payslip in lineas:
             if struct_id == False or payslip.struct_id == struct_id:
-                if address != payslip.employee_id.work_location:
-                    col += 1
-                    if address != '':
-                        no = 0
-                        sheet.write(col,colspan+4, 'TOTAL %s' % address,bold)
-                        self.env.cr.execute(query_totales+ (" and he.work_location = '%s'" %(address)) + condition)
-                        totals = self.env.cr.fetchall()
-                        cont = 8
-                        for total in totals:
-                            while (cont < dtc[total[1]]):
-                                sheet.write(col,cont,0.00,number2)
-                                cont += 1
-                            sheet.write(col,dtc[total[1]],abs(total[0]),number2)
-                            cont += 1
-                    address = payslip.employee_id.work_location
-                    col += 1    
-                    sheet.merge_range(col,0,col,3,address,bold)
-                no += 1
+                #if address != payslip.employee_id.work_location:
+                #    col += 1
+                #    if address != '':
+                #        no = 0
+                #        sheet.write(col,colspan+4, 'TOTAL %s' % address,bold)
+                #        self.env.cr.execute(query_totales+ (" and he.work_location = '%s'" %(address)) + condition)
+                #        totals = self.env.cr.fetchall()
+                #        cont = 8
+                #        for total in totals:
+                #            while (cont < dtc[total[1]]):
+                #                sheet.write(col,cont,0.00,number2)
+                #                cont += 1
+                #            sheet.write(col,dtc[total[1]],abs(total[0]),number2)
+                #            cont += 1
+                #    address = payslip.employee_id.work_location
+                #    col += 1    
+                #    sheet.merge_range(col,0,col,3,address,bold)
+                #no += 1
                 col += 1
-                if payslip.contract_id.department_id.parent_id:
-                    department = payslip.contract_id.department_id.parent_id.name
-                else:
-                    department = payslip.contract_id.department_id.name
-                sheet.write(col,colspan,no,border)
-                sheet.write(col,colspan+1,payslip.employee_id.work_location,border)
-                sheet.write(col,colspan+2, department,border)
-                sheet.write(col,colspan+3, payslip.contract_id.department_id.name,border)
-                sheet.write(col,colspan+4, payslip.contract_id.employee_id.name,border)
-                sheet.write(col,colspan+5, payslip.contract_id.employee_id.identification_id,border)
-                for days in payslip.worked_days_line_ids:
-                    if days.code == 'WORK100':
-                        day = days.number_of_days
-                sheet.write(col,colspan+6, day,border)
-                sheet.write(col,colspan+7, payslip.contract_id.wage,number)
-                cont = 8
-                for lines in payslip.line_ids:
-                    if lines.appears_on_payslip:
-                        while (cont < dtc[lines.name]):
-                            sheet.write(col,cont,0.00,number)
-                            cont += 1
-                        sheet.write(col,dtc[lines.name],abs(float(lines.total)),number)
-                        cont += 1
+                #if payslip.contract_id.department_id.parent_id:
+                #    department = payslip.contract_id.department_id.parent_id.name
+                #else:
+                #    department = payslip.contract_id.department_id.name
+                referencia = payslip.name.split('-')
+                referencia = referencia[-1]
                 
-        col+=1
-        sheet.write(col,colspan+4, 'TOTAL %s' % address,bold)
-        self.env.cr.execute(query_totales+ (" and he.work_location = '%s'" %(address)) + condition)
-        totals = self.env.cr.fetchall()
-        cont = 8
-        for total in totals:
-            while (cont < dtc[total[1]]):
-                sheet.write(col,cont,0.00,number2)
-                cont += 1
-            sheet.write(col,dtc[total[1]],abs(total[0]),number2)
-            cont += 1
+                for pay in payslip.line_ids:
+                    neto = pay.total if pay.code == 'NET' else 0
+                total += neto
+
+                phone = payslip.contract_id.employee_id.phone if payslip.contract_id.employee_id.phone else ''
+
+                cta = payslip.contract_id.employee_id.number_bank if payslip.contract_id.employee_id.number_bank else ''
+
+                sheet.write(col,colspan,'CU',border)
+                sheet.write(col,colspan+1,'30',border)
+                sheet.write(col,colspan+2,'10',border)
+                sheet.write(col,colspan+3, cta,border)
+                sheet.write(col,colspan+4, neto,number)
+                sheet.write(col,colspan+5, payslip.contract_id.employee_id.identification_id,border)
+                sheet.write(col,colspan+6, payslip.contract_id.employee_id.type_identifier,border)
+                sheet.write(col,colspan+7, '',border)
+                sheet.write(col,colspan+8, payslip.contract_id.employee_id.name,border)
+                sheet.write(col,colspan+9, phone,border)
+                sheet.write(col,colspan+10, referencia,border)
+                #for days in payslip.worked_days_line_ids:
+                #    if days.code == 'WORK100':
+                #        day = days.number_of_days
+                # cont = 8
+                # for lines in payslip.line_ids:
+                #     if lines.appears_on_payslip:
+                #         while (cont < dtc[lines.name]):
+                #             sheet.write(col,cont,0.00,number)
+                #             cont += 1
+                #         sheet.write(col,dtc[lines.name],abs(float(lines.total)),number)
+                #         cont += 1
+                
+        # col+=1
+        # sheet.write(col,colspan+4, 'TOTAL %s' % address,bold)
+        # self.env.cr.execute(query_totales+ (" and he.work_location = '%s'" %(address)) + condition)
+        # totals = self.env.cr.fetchall()
+        # cont = 8
+        # for total in totals:
+        #     while (cont < dtc[total[1]]):
+        #         sheet.write(col,cont,0.00,number2)
+        #         cont += 1
+        #     sheet.write(col,dtc[total[1]],abs(total[0]),number2)
+        #     cont += 1
         col += 1
-        self.env.cr.execute(query_totales + condition)
-        totals = self.env.cr.fetchall()
-        sheet.write(col,colspan+4, 'TOTAL GENERAL',bold)
-        cont = 8
-        for total in totals:
-            while (cont < dtc[total[1]]):
-                sheet.write(col,cont,0.00,number2)
-                cont += 1
-            sheet.write(col,dtc[total[1]],abs(total[0]),number2)
-            cont += 1
+        #self.env.cr.execute(query_totales + condition)
+        #totals = self.env.cr.fetchall()
+        sheet.write(col,colspan, 'TOTAL',bold)
+        # cont = 8
+        # for total in totals:
+        #     while (cont < dtc[total[1]]):
+        #         sheet.write(col,cont,0.00,number2)
+        #         cont += 1
+        #sheet.write(col,dtc[total[1]],abs(total[0]),number2)
+        sheet.write(col,colspan+4, total,number)
+            #cont += 1
