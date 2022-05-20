@@ -386,7 +386,7 @@ class hrPayslipRun(models.Model):
                 sheet.write(col,colspan+4, neto,number)
                 sheet.write(col,colspan+5, payslip.contract_id.employee_id.identification_id,border)
                 sheet.write(col,colspan+6, payslip.contract_id.employee_id.type_identifier,border)
-                sheet.write(col,colspan+7, '',border)
+                sheet.write(col,colspan+7, payslip.contract_id.employee_id.identification_id,border)
                 sheet.write(col,colspan+8, payslip.contract_id.employee_id.name,border)
                 sheet.write(col,colspan+9, phone,border)
                 sheet.write(col,colspan+10, referencia,border)
@@ -416,7 +416,7 @@ class hrPayslipRun(models.Model):
         col += 1
         #self.env.cr.execute(query_totales + condition)
         #totals = self.env.cr.fetchall()
-        sheet.write(col,colspan, 'TOTAL',bold)
+        sheet.write(col,colspan, 'TOTAL',bold2)
         # cont = 8
         # for total in totals:
         #     while (cont < dtc[total[1]]):
