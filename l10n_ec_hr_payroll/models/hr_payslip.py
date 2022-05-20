@@ -158,7 +158,7 @@ class hrPayslip(models.Model):
                 if work_entry_type_id == biggest_work:
                     days += add_days_rounding
                     if days ==31:
-                        days=30
+                        days=30 
                 day_rounded = self._round_days(work_entry_type, days)
                 add_days_rounding += (days - day_rounded)
                 attendance_line = {

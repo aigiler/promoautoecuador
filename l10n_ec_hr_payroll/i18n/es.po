@@ -583,3 +583,9 @@ msgstr "ENFERMEDAD CATASTRIFICA"
 #: model:ir.model.fields,field_description:l10n_ec_hr_payroll.field_hr_personal_expenses_limit__name
 msgid "FISCAL YEAR"
 msgstr "AÑO FISCAL"
+
+#. module: hr_payroll
+#: code:addons/hr_payroll/models/hr_payslip.py:0
+#, python-format
+msgid "Salary Slip"
+msgstr "Rol de Pago" 
