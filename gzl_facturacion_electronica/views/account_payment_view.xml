@@ -15,13 +15,13 @@
                         <page string="Pago de Cuotas" attrs="{'invisible': [('tipo_valor','!=','enviar_credito')]}">
                             <field name="contrato_estado_cuenta_payment_ids" >
                                 <tree editable="bottom" create="0">
-                                    <field name="numero_cuota" />
-                                    <field name="fecha" />
-                                    <field name="cuota_capital" />
-                                    <field name="seguro" />
-                                    <field name="rastreo" />
-                                    <field name="otro" />
-                                    <field name="saldo" />
+                                    <field name="numero_cuota" force_save="1"/>
+                                    <field name="fecha" force_save="1"/>
+                                    <field name="cuota_capital" force_save="1"/>
+                                    <field name="seguro" force_save="1"/>
+                                    <field name="rastreo" force_save="1"/>
+                                    <field name="otro" force_save="1"/>
+                                    <field name="saldo" force_save="1"/>
                                     <field name="cuota_capital_pagar" />
                                     <field name="seguro_pagar" />
                                     <field name="rastreo_pagar" />
