@@ -26,6 +26,7 @@ class Surcursal(models.Model):
     delegado_id = fields.Many2one('crm.team' , string="Delegado",track_visibility='onchange' )
     postventa_id = fields.Many2one('crm.team' , string="PostVenta",track_visibility='onchange' )
 
+    grupo_id = fields.Many2one('res.groups', string='Grupo')
 
 
 
