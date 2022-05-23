@@ -29,6 +29,7 @@
                 <field name="provincia_id" domain="[('country_id','=',63)]"></field>
                 <field name="ciudad_id"></field>
                 <field name="valor_inscripcion" required="1"></field>
+                <field name="grupo_adjudicado_id"></field>
                 <field name="fecha_ganada"></field>
                 <field name="contrato_id" readonly="1"></field>
                 <field name="cerrador" ></field>
