@@ -418,77 +418,20 @@ class CrmLead(models.Model):
                     vls.append(valor_sobrante)
                     valor_sobrante = valor_sobrante -valor_a_restar
                     valor_sobrante = round(valor_sobrante,2)
-        #raise ValidationError(str(vls)+'--')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         self.cuota_capital = cuota_capital
         self.iva =  iva  
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @api.model
+    def create(self, values):
+        crm_lead = super(CrmLead, self).create(vals)
+        if not self.stage_id.etapa_inicial:
+            raise ValidationError("Solo puede crear en la etapa inicial")
+        return crm_lead
 
 
     def write(self, vals):
-        
-
      #   if self.fecha_ganada and not(vals.get('date_action_last',False)):
-            
        #     raise ValidationError("No se puede editar en estado ganado")
-
-
         if vals.get('stage_id',False) and self.stage_id.restringir_movimiento:
             estados_habilitados=[]
             estados_habilitados.append(self.stage_id.stage_anterior_id.id)
@@ -499,7 +442,6 @@ class CrmLead(models.Model):
 
             if self.stage_id.modificacion_solo_equipo:
                 self.modificar_contrato()
-
 
         crm = super(CrmLead, self).write(vals)
 
@@ -535,6 +477,11 @@ class CrmLead(models.Model):
             if stage_id.crear_reunion_en_calendar:
                 now=datetime.now()
                 calendar=self.crear_calendar_event('Reunión Socio {0}'.format(self.partner_id.name),now,1,'Reunión para evidenciar Calidad de la Venta')
+        
+            stage_cotizacion = self.env['crm.stage'].search([('generar_cotizacion','=',True)], limit=1).id
+            if self.stage_id != stage_cotizacion and self.quotation_count==0:
+                raise ValidationError("Para pasar a la siguiente etapa, debe crear mínimo una cotización")
+        
         return crm
 
 
