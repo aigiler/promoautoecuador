@@ -15,8 +15,8 @@
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="numero_cuotas"  options="{'no_create_edit': True, 'no_open': True}"  invisible="0" required="1"/>
                 <field name="tipo_contrato"  options="{'no_create_edit': True, 'no_open': True}" invisible="0" required="1"/>
-                <field name="valor_inscripcion"    invisible="0" required="1"/>
-
+                <field name="valor_inscripcion" invisible="0" required="1"/>
+                <field name="grupo_id" options="{'no_create_edit': True, 'no_open': True}" invisible="0" required="1"/>
             </xpath>
 
             
