@@ -442,7 +442,7 @@ class CrmLead(models.Model):
             stage_id = self.env['crm.stage'].browse(vals['stage_id'])
             if stage_id.crear_contrato:
                 contrato = self.env['contrato'].create({
-                                            'cliente':obj_partner.id,
+                                            'cliente':self.partner_id.id,
                                             'dia_corte':self.dia_pago,
                                             'monto_financiamiento':self.planned_revenue,
                                             'tipo_de_contrato':self.tipo_contrato.id,
@@ -451,7 +451,7 @@ class CrmLead(models.Model):
                                             'cuota_capital':self.cuota_capital,
                                             'iva_administrativo':self.iva,
                                             'factura_inscripcion':self.factura_inscripcion_id.id,
-                                            'grupo':self.grupo_adjudicado_id,
+                                            'grupo':self.grupo_adjudicado_id.id,
                                         })
                 self.contrato_id=contrato.id
 
