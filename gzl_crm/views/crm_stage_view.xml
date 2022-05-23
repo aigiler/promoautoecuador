@@ -21,8 +21,7 @@
                 <field name="notificar_facturacion"/>
                 <field name="crear_factura"/>
                 <field name="notificar_nomina"/>
-
-       
+                <field name="generar_cotizacion"/>
             </xpath>
         </field>
     </record>
