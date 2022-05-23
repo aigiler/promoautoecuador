@@ -18,7 +18,7 @@ class CrmLead(models.Model):
     contacto_domicilio = fields.Char(string='Domicilio',track_visibility='onchange')
     tasa_interes = fields.Integer(string='Tasa de Interés',track_visibility='onchange')
     numero_cuotas = fields.Many2one('numero.meses',default=lambda self: self.env.ref('gzl_adjudicacion.{0}'.format('numero_meses60')).id ,track_visibility='onchange' )
-    grupo_id = fields.Many2one('res.groups', string='Grupo', track_visibility='onchange')
+    grupo_adjudicado_id = fields.Many2one('grupo.adjudicado', string='Grupo', track_visibility='onchange')
 
     supervisor = fields.Many2one('res.users',string="Supervisor",track_visibility='onchange' )
     surcursal_id = fields.Many2one('surcursal',string="Surcursal",track_visibility='onchange' )
