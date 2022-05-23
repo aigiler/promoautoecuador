@@ -421,13 +421,6 @@ class CrmLead(models.Model):
         self.cuota_capital = cuota_capital
         self.iva =  iva  
 
-    @api.model
-    def create(self, values):
-        crm_lead = super(CrmLead, self).create(vals)
-        if not self.stage_id.etapa_inicial:
-            raise ValidationError("Solo puede crear en la etapa inicial")
-        return crm_lead
-
 
     def write(self, vals):
      #   if self.fecha_ganada and not(vals.get('date_action_last',False)):
@@ -447,20 +440,7 @@ class CrmLead(models.Model):
 
         if  vals.get('stage_id',False):
             stage_id = self.env['crm.stage'].browse(vals['stage_id'])
-            if stage_id.is_won:
-                if not (self.factura_inscripcion_id ):
-                    raise ValidationError("Ingrese la factura de inscripción")
-                
-                if not (self.factura_inscripcion_id.amount_residual==0 ):
-                    raise ValidationError("Se debe ingresar la factura como Factura de inscripción y La factura debe registrarse como pagada.")
-
-
-
-                obj_partner=self.partner_id
-                obj_partner.tipo='preAdjudicado'
-
-
-
+            if stage_id.crear_contrato:
                 contrato = self.env['contrato'].create({
                                             'cliente':obj_partner.id,
                                             'dia_corte':self.dia_pago,
@@ -471,8 +451,20 @@ class CrmLead(models.Model):
                                             'cuota_capital':self.cuota_capital,
                                             'iva_administrativo':self.iva,
                                             'factura_inscripcion':self.factura_inscripcion_id.id,
+                                            'grupo':self.grupo_adjudicado_id,
                                         })
                 self.contrato_id=contrato.id
+
+            if stage_id.is_won:
+                if not (self.factura_inscripcion_id ):
+                    raise ValidationError("Ingrese la factura de inscripción")
+                
+                if not (self.factura_inscripcion_id.amount_residual==0 ):
+                    raise ValidationError("Se debe ingresar la factura como Factura de inscripción y La factura debe registrarse como pagada.")
+
+                obj_partner=self.partner_id
+                obj_partner.tipo='preAdjudicado'
+
 
             if stage_id.crear_reunion_en_calendar:
                 now=datetime.now()
