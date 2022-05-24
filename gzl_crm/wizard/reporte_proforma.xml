@@ -2,31 +2,32 @@
 <odoo>
     <template id="reporte_proforma_pdf">
         <t t-call="web.external_layout">
+            <t t-set="o"/>
             <div class="page">
                 <h3><strong>PROFORMA PLAN CUOTA EXACTA PROMOAUTO ECUADOR</strong></h3>
                 <div class="row ">
-                    <div class="col-6" t-if="o.payment_date">
+                    <div class="col-6">
                         <strong>Monto Fijo: </strong><span>$ </span><span t-field="o.monto_fijo"/>
                     </div>
                 </div>
                 
                 <div class="row ">
-                    <div class="col-6" t-if="o.bank">
+                    <div class="col-6">
                         <strong>Inscripción: </strong><span>$ </span><span t-esc="o.monto_fijo*0.05"/>
                     </div>
                 </div>
                 
                 <div class="row">
-                    <div class="col-6" t-if="o.amount">
+                    <div class="col-6">
                         <strong>Cuota Exacta: </strong><span>$ </span><span t-esc="o.monto_fijo*o.porcentaje_ce"/>
                      </div>
-                    <div class="col-6" t-if="o.check_amount_in_words">
+                    <div class="col-6">
                         <strong>Porcentaje de C.E(%): </strong><span t-field="o.porcentaje_ce"/>
                     </div>
                 </div>
                 
                 <div class="row ">
-                    <div class="col-6" t-if="o.bank">
+                    <div class="col-6">
                         <strong>T.A: </strong><span>4% </span>
                     </div>
                 </div>
