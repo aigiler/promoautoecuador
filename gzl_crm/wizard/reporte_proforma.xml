@@ -4,10 +4,10 @@
         <t t-call="web.external_layout">
             <t t-foreach="docs" t-as="o">
                 <div class="page">
-                    <h3 style="text-align: center"><strong>PROFORMA PLAN CUOTA EXACTA PROMOAUTO ECUADOR</strong></h3>
+                    <h3 style="text-align:center"><strong>PROFORMA PLAN CUOTA EXACTA PROMOAUTO ECUADOR</strong></h3>
                     <div class="row ">
                         <div class="col-6">
-                            <strong>Monto Fijo: </strong><span>$ </span><span t-field="o.monto_fijo"/>
+                            <strong>Monto Fijo: </strong><span t-field="o.monto_fijo"/>
                         </div>
                     </div>
                     
@@ -19,7 +19,7 @@
                     
                     <div class="row">
                         <div class="col-6">
-                            <strong>Cuota Exacta: </strong><span>$ </span><span t-esc="o.monto_fijo*o.porcentaje_ce"/>
+                            <strong>Cuota Exacta: </strong><span>$ </span><span t-esc="o.monto_fijo*(o.porcentaje_ce/100)"/>
                         </div>
                         <div class="col-6">
                             <strong>Porcentaje de C.E(%): </strong><span t-field="o.porcentaje_ce"/>
@@ -34,7 +34,7 @@
 
                     <table class="table table-condensed">
                         <thead style="text-align: center; margin-bottom: 5px ">
-                            <th></th>
+                            <th width="5%"></th>
                             <th></th>
                             <th>Letra Mensual</th>
                             <th>Reserva y 1er Cuota</th>
@@ -42,43 +42,43 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><span>24 </span></td>
+                                <td width="5%"><span>24 </span></td>
                                 <td><span>Cuotas Fijas de </span></td>
-                                <td><span t-esc="'%.2f' % o.monto_fijo/24+((0.04*o.monto_fijo*1.12)/12)"/></td>
-                                <td><span t-esc="'%.2f' % (o.monto_fijo/24)+o.monto_fijo*0.05"/></td>
-                                <td><span t-esc="'%.2f' % ((o.monto_fijo/24)+o.monto_fijo*0.05)+o.monto_fijo/24+((0.04*o.monto_fijo*1.12)/12)"/></td>
+                                <td><span t-esc="'%.2f' %(o.monto_fijo/24+((0.04*o.monto_fijo*1.12)/12))"/></td>
+                                <td><span t-esc="'%.2f' %((o.monto_fijo/24)+o.monto_fijo*0.05)"/></td>
+                                <td><span t-esc="'%.2f' %(((o.monto_fijo/24)+o.monto_fijo*0.05)+o.monto_fijo/24+((0.04*o.monto_fijo*1.12)/12))"/></td>
                             </tr>
 
                             <tr>
-                                <td><span>36 </span></td>
+                                <td width="5%"><span>36 </span></td>
                                 <td><span>Cuotas Fijas de </span></td>
-                                <td><span t-esc="'%.2f' % o.monto_fijo/36+((0.04*o.monto_fijo*1.12)/12)"/></td>
-                                <td><span t-esc="'%.2f' % (o.monto_fijo/36)+o.monto_fijo*0.05"/></td>
-                                <td><span t-esc="'%.2f' % ((o.monto_fijo/36)+o.monto_fijo*0.05)+o.monto_fijo/36+((0.04*o.monto_fijo*1.12)/12)"/></td>
+                                <td><span t-esc="'%.2f' %(o.monto_fijo/36+((0.04*o.monto_fijo*1.12)/12))"/></td>
+                                <td><span t-esc="'%.2f' %((o.monto_fijo/36)+o.monto_fijo*0.05)"/></td>
+                                <td><span t-esc="'%.2f' %(((o.monto_fijo/36)+o.monto_fijo*0.05)+o.monto_fijo/36+((0.04*o.monto_fijo*1.12)/12))"/></td>
                             </tr>
 
                             <tr>
-                                <td><span>48 </span></td>
+                                <td width="5%"><span>48 </span></td>
                                 <td><span>Cuotas Fijas de </span></td>
-                                <td><span t-esc="'%.2f' % o.monto_fijo/48+((0.04*o.monto_fijo*1.12)/12)"/></td>
-                                <td><span t-esc="'%.2f' % (o.monto_fijo/48)+o.monto_fijo*0.05"/></td>
-                                <td><span t-esc="'%.2f' % ((o.monto_fijo/48)+o.monto_fijo*0.05)+o.monto_fijo/48+((0.04*o.monto_fijo*1.12)/12)"/></td>
+                                <td><span t-esc="'%.2f' %(o.monto_fijo/48+((0.04*o.monto_fijo*1.12)/12))"/></td>
+                                <td><span t-esc="'%.2f' %((o.monto_fijo/48)+o.monto_fijo*0.05)"/></td>
+                                <td><span t-esc="'%.2f' %(((o.monto_fijo/48)+o.monto_fijo*0.05)+o.monto_fijo/48+((0.04*o.monto_fijo*1.12)/12))"/></td>
                             </tr>
 
                             <tr>
-                                <td><span>60 </span></td>
+                                <td width="5%"><span>60 </span></td>
                                 <td><span>Cuotas Fijas de </span></td>
-                                <td><span t-esc="'%.2f' % o.monto_fijo/60+((0.04*o.monto_fijo*1.12)/12)"/></td>
-                                <td><span t-esc="'%.2f' % (o.monto_fijo/60)+o.monto_fijo*0.05"/></td>
-                                <td><span t-esc="'%.2f' % ((o.monto_fijo/60)+o.monto_fijo*0.05)+o.monto_fijo/60+((0.04*o.monto_fijo*1.12)/12)"/></td>
+                                <td><span t-esc="'%.2f' %(o.monto_fijo/60+((0.04*o.monto_fijo*1.12)/12))"/></td>
+                                <td><span t-esc="'%.2f' %((o.monto_fijo/60)+o.monto_fijo*0.05)"/></td>
+                                <td><span t-esc="'%.2f' %(((o.monto_fijo/60)+o.monto_fijo*0.05)+o.monto_fijo/60+((0.04*o.monto_fijo*1.12)/12))"/></td>
                             </tr>
 
                             <tr>
-                                <td><span>72 </span></td>
+                                <td width="5%"><span>72 </span></td>
                                 <td><span>Cuotas Fijas de </span></td>
-                                <td><span t-esc="'%.2f' % o.monto_fijo/72+((0.04*o.monto_fijo*1.12)/12)"/></td>
-                                <td><span t-esc="'%.2f' % (o.monto_fijo/72)+o.monto_fijo*0.05"/></td>
-                                <td><span t-esc="'%.2f' % ((o.monto_fijo/72)+o.monto_fijo*0.05)+o.monto_fijo/72+((0.04*o.monto_fijo*1.12)/12)"/></td>
+                                <td><span t-esc="'%.2f' %(o.monto_fijo/72+((0.04*o.monto_fijo*1.12)/12))"/></td>
+                                <td><span t-esc="'%.2f' %((o.monto_fijo/72)+o.monto_fijo*0.05)"/></td>
+                                <td><span t-esc="'%.2f' %(((o.monto_fijo/72)+o.monto_fijo*0.05)+o.monto_fijo/72+((0.04*o.monto_fijo*1.12)/12))"/></td>
                             </tr>
                         </tbody>
                     </table>
