@@ -24,7 +24,9 @@
 
 
                 "wizard/wizard_cuota_pago_amortizacion.xml",
-                "wizard/report_crm_view.xml",                 
+                "wizard/report_crm_view.xml",   
+                "wizard/proforma_view.xml",    
+                            
             ],
     
     'installable': True,
