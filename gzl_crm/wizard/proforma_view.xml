@@ -2,7 +2,7 @@
 <odoo>
     <record id="wizard_proforma" model="ir.ui.view">
         <field name="name">wizard.proforma</field>
-        <field name="model">proforma</field>
+        <field name="model">proforma.cuotas</field>
         <field name="arch" type="xml">
             <form string="Proforma Plan Cuota Exacta">
                 <group>
@@ -27,7 +27,7 @@
 
     <record id="action_wizard_proforma" model="ir.actions.act_window">
         <field name="name">Proforma</field>
-        <field name="res_model">proforma</field>
+        <field name="res_model">proforma.cuotas</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
@@ -40,13 +40,13 @@
 
 
     <report 
-        string="Proforma" 
-        id="reporte_proforma" 
-        model="proforma" 
+        string="Proforma Cuotas" 
+        id="reporte_proforma_cuota" 
+        model="proforma.cuotas" 
         report_type="qweb-pdf"
         name="gzl_crm.reporte_proforma" 
         file="gzl_crm.reporte_proforma"
-        print_report_name="Proforma"
+        print_report_name="Proforma Cuotas"
     />
 
 
