@@ -450,6 +450,11 @@ class hrPayslipRun(models.Model):
         bold.set_center_across()
         bold2 = workbook.add_format({'bold':True,'border':0})
         bold2.set_center_across()
+        bold4 = workbook.add_format({'bold':True,'border':1,'bg_color':'#442484','font_color': 'white'})
+        bold4.set_center_across()
+
+
+
         number = workbook.add_format({'num_format':'$#,##0.00','border':1})
         number2 = workbook.add_format({'num_format':'$#,##0.00','border':1,'bg_color':'#442484','bold':True})
         border = workbook.add_format({'border':1})
@@ -482,24 +487,25 @@ class hrPayslipRun(models.Model):
         sheet.set_column('A:A', 20)
         sheet.set_column('B:K', 10)
         sheet.set_column('I:I', 40)
+        sheet.set_column('K:K', 40)
 
 
 
 
 
 
-        sheet.write(col,colspan,'Forma de Pago/Cobro',bold)
-        sheet.write(col,colspan+1,'Banco',bold)
-        sheet.write(col,colspan+2,'Tipo de Cta.',bold)
-        sheet.write(col,colspan+3,'Num.Cta',bold)
-        sheet.write(col,colspan+4,'Valor',bold)
+        sheet.write(col,colspan,'Forma de Pago/Cobro',bold4)
+        sheet.write(col,colspan+1,'Banco',bold4)
+        sheet.write(col,colspan+2,'Tipo de Cta.',bold4)
+        sheet.write(col,colspan+3,'Num.Cta',bold4)
+        sheet.write(col,colspan+4,'Valor',bold4)
         #sheet.freeze_panes(col+1,colspan+5)
-        sheet.write(col,colspan+5,'Identificación',bold)
-        sheet.write(col,colspan+6,'Tipo.Doc',bold)
-        sheet.write(col,colspan+7,'NUC',bold)
-        sheet.write(col,colspan+8,'Beneficiario',bold)
-        sheet.write(col,colspan+9,'Teléfono',bold)
-        sheet.write(col,colspan+10,'Referencia',bold)
+        sheet.write(col,colspan+5,'Identificación',bold4)
+        sheet.write(col,colspan+6,'Tipo.Doc',bold4)
+        sheet.write(col,colspan+7,'NUC',bold4)
+        sheet.write(col,colspan+8,'Beneficiario',bold4)
+        sheet.write(col,colspan+9,'Teléfono',bold4)
+        sheet.write(col,colspan+10,'Referencia',bold4)
         #self.env.cr.execute(query)
         #inputs = self.env.cr.fetchall()
         #cont = 10 
