@@ -66,7 +66,7 @@ class hrContract(models.Model):
 
         hoy=date.today()
 
-        fin_busqueda= hoy +  relativedelta(days=+5)
+        fin_busqueda= hoy +  relativedelta(days=+15)
         contratos=self.env['hr.contract'].search([('trial_date_end','>=',hoy),('trial_date_end','<',fin_busqueda)])
 
         for contrato in contratos:

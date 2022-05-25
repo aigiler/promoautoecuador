@@ -69,7 +69,14 @@ class hrPayslip(models.Model):
     @api.depends("worked_days_line_ids")
     def contador_dias_trabajados(self):
         for l in self:
-            l.dias_trabajados= sum(l.worked_days_line_ids.mapped("number_of_days"))
+
+            valor=sum(l.worked_days_line_ids.mapped("number_of_days"))
+
+            if valor >30:
+                valor=30
+
+
+            l.dias_trabajados= valor
 
 
 
@@ -257,12 +264,12 @@ class hrPayslipRun(models.Model):
     def print_xlsx_payroll(self):
         file_data =  BytesIO()
         workbook = xlsxwriter.Workbook(file_data)
-        query_totales = """select sum(hpl.total) as total, hpl.name, hpl."sequence" from hr_payslip_run hpr 
+        query_totales = """select sum(hpl.total), hpl.name, hpl."sequence" from hr_payslip_run hpr 
                                 join hr_payslip hp on hp.payslip_run_id =hpr.id
-                                join hr_payslip_line hpl on hpl.slip_id = hp.id 
-                                --join hr_employee he on hp.employee_id = he.id
+                                join hr_payslip_line hpl on hpl.slip_id = hp.id
+                                join hr_employee he on hp.employee_id = he.id
                                 join hr_salary_rule hsr on hpl.salary_rule_id = hsr.id
-                                where hsr.appears_on_payslip and hpl.code='NET' """
+                                where hsr.appears_on_payslip """
         query = """select distinct(hpl.name), hpl."sequence" from hr_payslip_run hpr 
                             join hr_payslip hp on hp.payslip_run_id =hpr.id
                             join hr_payslip_line hpl on hpl.slip_id = hp.id
@@ -296,6 +303,158 @@ class hrPayslipRun(models.Model):
         border = workbook.add_format({'border':1})
         condition = " and hpr.id=%s group by hpl.sequence, hpl.name" %(self.id)
         struct_id = False
+        if comision:
+            struct_id = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc").struct_id
+            if not struct_id:
+                raise ValidationError(_('No ha registrado una estructura para comisiones en sus configuraciones.'))
+            condition_2 =" and hp.struct_id=%s" %struct_id.id 
+            condition = condition_2 + condition
+        col = 2
+        colspan = 0
+        sheet = workbook.add_worksheet(name)
+        sheet.insert_image('A1', "any_name.png",
+                           {'image_data':  BytesIO(base64.b64decode( self.env.company.logo)), 'x_scale': 0.5, 'y_scale': 0.5,'x_scale': 0.5,
+                            'y_scale':     0.5, 'align': 'center'})
+        sheet.write(1,4,name.upper(),bold2)
+        sheet.write(col,colspan,'Mes: ',bold2)
+        sheet.write(col,colspan+1,self.date_start.month,bold2)
+        sheet.write(col,colspan+2,'Periodo: ',bold2)
+        sheet.write(col,colspan+3,self.date_start.year,bold2)
+        col += 1
+        sheet.write(col,colspan,'No.',bold)
+        sheet.write(col,colspan+1,'Localidad',bold)
+        sheet.write(col,colspan+2,'Area',bold)
+        sheet.write(col,colspan+3,'Departamento',bold)
+        sheet.write(col,colspan+4,'Empleado',bold)
+        sheet.freeze_panes(col+1,colspan+5)
+        sheet.write(col,colspan+5,'Cedula',bold)
+        sheet.write(col,colspan+6,'Dias Trabajados',bold)
+        sheet.write(col,colspan+7,'Sueldo',bold)
+        self.env.cr.execute(query)
+        inputs = self.env.cr.fetchall()
+        cont = 7
+        dtc = {}
+        for line in inputs:
+            cont+=1
+            sheet.write(col,colspan+cont,line[0],bold)
+            dtc['%s' %(line[0])] =colspan+cont
+        address = ''
+        no = 0
+        col -=1
+        lineas = sorted(self.slip_ids,key=lambda x: x.employee_id.work_location)
+        for payslip in lineas:
+            if struct_id == False or payslip.struct_id == struct_id:
+                if address != payslip.employee_id.work_location:
+                    col += 1
+                    if address != '':
+                        no = 0
+                        sheet.write(col,colspan+4, 'TOTAL %s' % address,bold)
+                        self.env.cr.execute(query_totales+ (" and he.work_location = '%s'" %(address)) + condition)
+                        totals = self.env.cr.fetchall()
+                        cont = 8
+                        for total in totals:
+                            while (cont < dtc[total[1]]):
+                                sheet.write(col,cont,0.00,number2)
+                                cont += 1
+                            sheet.write(col,dtc[total[1]],abs(total[0]),number2)
+                            cont += 1
+                    address = payslip.employee_id.work_location
+                    col += 1    
+                    sheet.merge_range(col,0,col,3,address,bold)
+                no += 1
+                col += 1
+                if payslip.contract_id.department_id.parent_id:
+                    department = payslip.contract_id.department_id.parent_id.name
+                else:
+                    department = payslip.contract_id.department_id.name
+                sheet.write(col,colspan,no,border)
+                sheet.write(col,colspan+1,payslip.employee_id.work_location,border)
+                sheet.write(col,colspan+2, department,border)
+                sheet.write(col,colspan+3, payslip.contract_id.department_id.name,border)
+                sheet.write(col,colspan+4, payslip.contract_id.employee_id.name,border)
+                sheet.write(col,colspan+5, payslip.contract_id.employee_id.identification_id,border)
+                for days in payslip.worked_days_line_ids:
+                    if days.code == 'WORK100':
+                        day = days.number_of_days
+                sheet.write(col,colspan+6, day,border)
+                sheet.write(col,colspan+7, payslip.contract_id.wage,number)
+                cont = 8
+                for lines in payslip.line_ids:
+                    if lines.appears_on_payslip:
+                        while (cont < dtc[lines.name]):
+                            sheet.write(col,cont,0.00,number)
+                            cont += 1
+                        sheet.write(col,dtc[lines.name],abs(float(lines.total)),number)
+                        cont += 1
+
+        col+=1
+        sheet.write(col,colspan+4, 'TOTAL %s' % address,bold)
+        self.env.cr.execute(query_totales+ (" and he.work_location = '%s'" %(address)) + condition)
+        totals = self.env.cr.fetchall()
+        cont = 8
+        for total in totals:
+            while (cont < dtc[total[1]]):
+                sheet.write(col,cont,0.00,number2)
+                cont += 1
+            sheet.write(col,dtc[total[1]],abs(total[0]),number2)
+            cont += 1
+        col += 1
+        self.env.cr.execute(query_totales + condition)
+        totals = self.env.cr.fetchall()
+        sheet.write(col,colspan+4, 'TOTAL GENERAL',bold)
+        cont = 8
+        for total in totals:
+            while (cont < dtc[total[1]]):
+                sheet.write(col,cont,0.00,number2)
+                cont += 1
+            sheet.write(col,dtc[total[1]],abs(total[0]),number2)
+            cont += 1
+
+
+
+
+    def print_xlsx_payroll_rubro(self):
+        file_data =  BytesIO()
+        workbook = xlsxwriter.Workbook(file_data)
+        query_totales = """select sum(hpl.total) as total, hpl.name, hpl."sequence" from hr_payslip_run hpr 
+                                join hr_payslip hp on hp.payslip_run_id =hpr.id
+                                join hr_payslip_line hpl on hpl.slip_id = hp.id 
+                                --join hr_employee he on hp.employee_id = he.id
+                                join hr_salary_rule hsr on hpl.salary_rule_id = hsr.id
+                                where hsr.appears_on_payslip and hpl.code='NET' """
+        query = """select distinct(hpl.name), hpl."sequence" from hr_payslip_run hpr 
+                            join hr_payslip hp on hp.payslip_run_id =hpr.id
+                            join hr_payslip_line hpl on hpl.slip_id = hp.id
+                            join hr_salary_rule hsr on hpl.salary_rule_id = hsr.id
+                            where hpr.id=%s and hsr.appears_on_payslip
+                            order by hpl.sequence """ %(self.id)
+        name = self.name
+        self.xslx_body_rubro(workbook,query_totales,query,name,False)
+        workbook.close()
+        file_data.seek(0)
+        attachment = self.env['ir.attachment'].create({
+            'datas': base64.b64encode(file_data.getvalue()),
+            'name': self.name,
+            'store_fname': self.name + '.xlsx',
+        })
+        url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        url += "/web/content/%s?download=true" %(attachment.id)
+        return{
+        "type": "ir.actions.act_url",
+        "url": url,
+        "target": "new",
+        }
+    
+    def xslx_body_rubro(self,workbook,query_totales,query,name,comision):
+        bold = workbook.add_format({'bold':True,'border':1,'bg_color':'#442484'})
+        bold.set_center_across()
+        bold2 = workbook.add_format({'bold':True,'border':0})
+        bold2.set_center_across()
+        number = workbook.add_format({'num_format':'$#,##0.00','border':1})
+        number2 = workbook.add_format({'num_format':'$#,##0.00','border':1,'bg_color':'#442484','bold':True})
+        border = workbook.add_format({'border':1})
+        condition = " and hpr.id=%s group by hpl.sequence, hpl.name" %(self.id)
+        struct_id = False
         # if comision:
         #     struct_id = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc").struct_id
         #     if not struct_id:
@@ -305,11 +464,6 @@ class hrPayslipRun(models.Model):
         col = 2
         colspan = 0
         sheet = workbook.add_worksheet(name)
-        sheet.set_column('A:A',18)
-        sheet.set_column('B:H',10)
-        sheet.set_column('I:I',35)
-        sheet.set_column('J:J',11)
-        sheet.set_column('K:K',18)
         sheet.insert_image('A1', "any_name.png",
                            {'image_data':  BytesIO(base64.b64decode( self.env.company.logo)), 'x_scale': 0.5, 'y_scale': 0.5,'x_scale': 0.5,
                             'y_scale':     0.5, 'align': 'center'})
@@ -375,7 +529,7 @@ class hrPayslipRun(models.Model):
                 #    department = payslip.contract_id.department_id.name
                 referencia = payslip.name.split('-')
                 referencia = referencia[-1]
-                
+
                 for pay in payslip.line_ids:
                     neto = pay.total if pay.code == 'NET' else 0
                 total += neto
@@ -391,7 +545,7 @@ class hrPayslipRun(models.Model):
                 sheet.write(col,colspan+4, neto,number)
                 sheet.write(col,colspan+5, payslip.contract_id.employee_id.identification_id,border)
                 sheet.write(col,colspan+6, payslip.contract_id.employee_id.type_identifier,border)
-                sheet.write(col,colspan+7, payslip.contract_id.employee_id.identification_id,border)
+                sheet.write(col,colspan+7, '',border)
                 sheet.write(col,colspan+8, payslip.contract_id.employee_id.name,border)
                 sheet.write(col,colspan+9, phone,border)
                 sheet.write(col,colspan+10, referencia,border)
@@ -406,7 +560,7 @@ class hrPayslipRun(models.Model):
                 #             cont += 1
                 #         sheet.write(col,dtc[lines.name],abs(float(lines.total)),number)
                 #         cont += 1
-                
+
         # col+=1
         # sheet.write(col,colspan+4, 'TOTAL %s' % address,bold)
         # self.env.cr.execute(query_totales+ (" and he.work_location = '%s'" %(address)) + condition)
@@ -421,7 +575,7 @@ class hrPayslipRun(models.Model):
         col += 1
         #self.env.cr.execute(query_totales + condition)
         #totals = self.env.cr.fetchall()
-        sheet.write(col,colspan, 'TOTAL',bold2)
+        sheet.write(col,colspan, 'TOTAL',bold)
         # cont = 8
         # for total in totals:
         #     while (cont < dtc[total[1]]):
