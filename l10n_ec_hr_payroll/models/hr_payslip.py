@@ -560,7 +560,7 @@ class hrPayslipRun(models.Model):
                 sheet.write(col,colspan+2,'10',border)
                 sheet.write(col,colspan+3, cta,border)
                 sheet.write(col,colspan+4, neto,number)
-                sheet.write(col,colspan+5, '')
+                sheet.write(col,colspan+5, '',border)
 
 
 
