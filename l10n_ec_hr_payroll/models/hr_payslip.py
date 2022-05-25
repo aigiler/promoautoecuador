@@ -477,6 +477,17 @@ class hrPayslipRun(models.Model):
         #sheet.write(col,colspan+1,'Localidad',bold)
         #sheet.write(col,colspan+2,'Area',bold)
         #sheet.write(col,colspan+3,'Departamento',bold)
+
+
+        sheet.set_column('A:A', 20)
+        sheet.set_column('B:K', 10)
+        sheet.set_column('I:I', 40)
+
+
+
+
+
+
         sheet.write(col,colspan,'Forma de Pago/Cobro',bold)
         sheet.write(col,colspan+1,'Banco',bold)
         sheet.write(col,colspan+2,'Tipo de Cta.',bold)
@@ -555,10 +566,8 @@ class hrPayslipRun(models.Model):
 
 
 
-
-
                 sheet.write(col,colspan+6, tipoIdentificador,border)
-                sheet.write(col,colspan+7, '',border)
+                sheet.write(col,colspan+7, payslip.contract_id.employee_id.identification_id,border)
                 sheet.write(col,colspan+8, payslip.contract_id.employee_id.name,border)
                 sheet.write(col,colspan+9, '',border)
                 sheet.write(col,colspan+10, referencia,border)
