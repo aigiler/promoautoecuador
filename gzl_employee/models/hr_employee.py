@@ -31,6 +31,33 @@ class HrEmployee(models.Model):
         return 0
 
 
+class HrEmployeePublic(models.Model):
+    _inherit = 'hr.employee.public'
+
+
+    direccion = fields.Char('Dirección')
+    correo = fields.Char('Correo electrónico')
+    res_bank_id = fields.Many2one('res.bank', string='Banco')
+    account_type = fields.Selection(selection=[
+            ('A', 'Ahorros'),
+            ('C', 'Corriente'),
+            ('M', 'Cuenta Amiga')], string='Tipo de Cuenta')
+    number_bank = fields.Char('Número de Cta')
+    children_id = fields.One2many('hr.employee.children','employee_id', string='Id hijos')
+    observation = fields.Text(string='Observaciones')
+
+
+
+
+
+
+
+
+
+
+
+
+
 class HrEmployeeChildren(models.Model):
     _name = 'hr.employee.children'
     
