@@ -76,3 +76,35 @@ class hrEmployee(models.Model):
         if pay:
             return sum([line.amount for line in pay])
         return 0
+
+
+class HrEmployeePublic(models.Model):
+    _inherit = 'hr.employee.public'
+
+
+    # dummy = fields.Float("Valor calculado", compute="_get_dummy")
+    mensualize_13 = fields.Boolean('Mensualize 13TH', default = False)
+    mensualize_14 = fields.Boolean('Mensualize 14TH', default = False)
+    mensualize_fr = fields.Boolean('Mensualize Reserve Funds', default = False)
+    disable = fields.Boolean('Have a Disability', default = False)
+    percent_disable = fields.Float('Percent Disability')
+    union_director = fields.Boolean('Union Director', default = False)
+    extra_hour = fields.Boolean('Extra Hours', default = False)
+    supl_hour = fields.Boolean('Suplementary Hours', default = False) 
+    forthnight = fields.Boolean('Forthnight', default = False)
+    percent_wage = fields.Float('Percent Wage')
+    time_services = fields.Float("Years of Services", compute="_get_anios")
+    rent_tax = fields.Float('Rent Tax')
+    galapagos_beneficiary =  fields.Boolean('Beneficiary Galapagos', default=False)
+    catastrophic_disease = fields.Boolean('Catastrophic Disease', default=False)
+    apply_agreement = fields.Boolean('Apply Agreement', default=False)
+    partner_id = fields.Many2one('res.partner','Substitute Employee')
+    schedule_pay = fields.Selection([
+        ('monthly', 'Monthly'),
+        ('quarterly', 'Quarterly'),
+        ('semi-annually', 'Semi-annually'),
+        ('annually', 'Annually'),
+        ('weekly', 'Weekly'),
+        ('bi-weekly', 'Bi-weekly'),
+        ('bi-monthly', 'Bi-monthly'),
+    ], string='Scheduled Pay', default='monthly')
