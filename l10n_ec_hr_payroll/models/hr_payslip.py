@@ -298,6 +298,11 @@ class hrPayslipRun(models.Model):
         bold.set_center_across()
         bold2 = workbook.add_format({'bold':True,'border':0})
         bold2.set_center_across()
+        bold4 = workbook.add_format({'bold':True,'border':1,'bg_color':'#442484','font_color': 'white'})
+        bold4.set_center_across()
+
+
+        
         number = workbook.add_format({'num_format':'$#,##0.00','border':1})
         number2 = workbook.add_format({'num_format':'$#,##0.00','border':1,'bg_color':'#442484','bold':True})
         border = workbook.add_format({'border':1})
@@ -321,15 +326,15 @@ class hrPayslipRun(models.Model):
         sheet.write(col,colspan+2,'Periodo: ',bold2)
         sheet.write(col,colspan+3,self.date_start.year,bold2)
         col += 1
-        sheet.write(col,colspan,'No.',bold)
-        sheet.write(col,colspan+1,'Localidad',bold)
-        sheet.write(col,colspan+2,'Area',bold)
-        sheet.write(col,colspan+3,'Departamento',bold)
-        sheet.write(col,colspan+4,'Empleado',bold)
+        sheet.write(col,colspan,'No.',bold4)
+        sheet.write(col,colspan+1,'Localidad',bold4)
+        sheet.write(col,colspan+2,'Area',bold4)
+        sheet.write(col,colspan+3,'Departamento',bold4)
+        sheet.write(col,colspan+4,'Empleado',bold4)
         sheet.freeze_panes(col+1,colspan+5)
-        sheet.write(col,colspan+5,'Cedula',bold)
-        sheet.write(col,colspan+6,'Dias Trabajados',bold)
-        sheet.write(col,colspan+7,'Sueldo',bold)
+        sheet.write(col,colspan+5,'Cedula',bold4)
+        sheet.write(col,colspan+6,'Dias Trabajados',bold4)
+        sheet.write(col,colspan+7,'Sueldo',bold4)
         self.env.cr.execute(query)
         inputs = self.env.cr.fetchall()
         cont = 7
