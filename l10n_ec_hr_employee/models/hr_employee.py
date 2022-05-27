@@ -109,7 +109,13 @@ class HrEmployee(models.Model):
 class HrEmployeePublic(models.Model):
     _inherit = 'hr.employee.public'
 
+    @api.onchange('firstname', 'lastname')
+    def get_name(self):
+        if self.firstname and self.lastname:
+            self.name = self._get_name(self.lastname, self.firstname)
 
+    def _firstname_default(self):
+        return ' ' if self.env.context.get('module') else False
 
 
     firstname = fields.Char(
