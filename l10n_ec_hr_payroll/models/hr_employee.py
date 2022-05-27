@@ -93,7 +93,7 @@ class HrEmployeePublic(models.Model):
     supl_hour = fields.Boolean('Suplementary Hours', default = False) 
     forthnight = fields.Boolean('Forthnight', default = False)
     percent_wage = fields.Float('Percent Wage')
-    time_services = fields.Float("Years of Services", compute="_get_anios")
+    time_services = fields.Float("Years of Services")
     rent_tax = fields.Float('Rent Tax')
     galapagos_beneficiary =  fields.Boolean('Beneficiary Galapagos', default=False)
     catastrophic_disease = fields.Boolean('Catastrophic Disease', default=False)
