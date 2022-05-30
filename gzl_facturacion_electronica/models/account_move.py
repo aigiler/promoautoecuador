@@ -123,8 +123,8 @@ class AccountMove(models.Model):
             
             for prueba in lista_dic:
                 for c in self.campos_adicionales_facturacion:
-                    if c.nombre==prueba.nombre:
-                        c.valor=prueba.valor
+                    if c.nombre==prueba['nombre']
+                        c.valor=prueba['valor']
                 else:
                     self.update({'campos_adicionales_facturacion':[(0,0,prueba)]})
             self._move_autocomplete_invoice_lines_values()
