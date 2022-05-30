@@ -116,8 +116,7 @@ class AccountMove(models.Model):
                                 {'nombre':'Nota','valor':self.partner_id.name+'Cancela Cuotas:'+numero_cuotas}]
                 
                 for prueba in lista_dic:
-                    for roc in self.campos_adicionales_facturacion:
-                        self.campos_adicionales_facturacion= [(1,roc.id,prueba)]
+                    self.update({'campos_adicionales_facturacion':[(0,0,prueba)]})
                 self._move_autocomplete_invoice_lines_values()
 
 
