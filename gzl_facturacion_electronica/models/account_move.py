@@ -139,7 +139,7 @@ class AccountMove(models.Model):
         if self.method_payment:
             pago=self.method_payment.name
         
-        if terminos and cliente and  pago and self.contrato_estado_cuenta_ids==longitud_total:
+        if terminos and cliente and pago:
             lista_dic=[{
                         'nombre': 'CRÉDITO',
                         'valor':str(saldo_credito)+' a '+terminos},
