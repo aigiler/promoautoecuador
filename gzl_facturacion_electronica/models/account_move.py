@@ -45,7 +45,7 @@ class AccountMove(models.Model):
     
     @api.one
     def _compute_is_group_cobranza(self):
-        self.is_group_cobranza = self.env['res.users'].has_group('dzl_facturacion_electronica.grupo_cobranza')
+        self.is_group_cobranza = self.env['res.users'].has_group('gzl_facturacion_electronica.grupo_cobranza')
 
     @api.onchange('contrato_estado_cuenta_ids')
     def _onchange_contrato_estado_cuenta_ids(self):
