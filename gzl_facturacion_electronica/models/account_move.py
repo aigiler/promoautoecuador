@@ -118,7 +118,7 @@ class AccountMove(models.Model):
                         'nombre': 'CRÉDITO',
                         'valor':str(saldo_credito)+' a '+terminos
                     },{'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':pago},
-                            {'nombre':'Nota','valor':self.partner_id.name+'Cancela Cuotas:'+numero_cuotas}]
+                            {'nombre':'Nota','valor':self.partner_id.name+'Cancela Cuotas:'+str(numero_cuotas)}]
             
             for prueba in lista_dic:
                 self.update({'campos_adicionales_facturacion':[(0,0,prueba)]})
