@@ -96,9 +96,10 @@ class AccountMove(models.Model):
                         })]
 
                 saldo_credito=0
+                numero_cuotas=''
                 for info in self.contrato_estado_cuenta_ids:
                     saldo_credito+=info.saldo
-                    numero_cuotas=''+numero_cuota+','
+                    numero_cuotas=''+info.numero_cuota+','
                 if not self.campos_adicionales_facturacion:                       
                         dic_caf = {
                             'nombre': 'CRÉDITO',
