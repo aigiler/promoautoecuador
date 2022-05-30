@@ -114,7 +114,7 @@ class AccountMove(models.Model):
             pago=","
             if self.method_payment:
                 pago=self.method_payment.name
-            self.campos_adicionales_facturacion=[]
+            self.update({'campos_adicionales_facturacion':[(5)]})
             lista_dic=[ {
                         'nombre': 'CRÉDITO',
                         'valor':str(saldo_credito)+' a '+terminos},
@@ -122,11 +122,11 @@ class AccountMove(models.Model):
                         {'nombre':'Nota','valor':'Cancela Cuotas'}]
             
             for prueba in lista_dic:
-                obj_info = self.env['campos.adicionales.facturacion'].search([('nombre','=',prueba['nombre']),('move_id','=',self.id)])
-                if obj_info:
-                    c.valor=prueba['valor']
-                else:
-                    self.update({'campos_adicionales_facturacion':[(0,0,prueba)]})
+                #obj_info = self.env['campos.adicionales.facturacion'].search([('nombre','=',prueba['nombre']),('move_id','=',self.id)])
+                #if obj_info:
+                #    c.valor=prueba['valor']
+                #else:
+                self.update({'campos_adicionales_facturacion':[(0,0,prueba)]})
             self._move_autocomplete_invoice_lines_values()
 
 
