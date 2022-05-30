@@ -66,6 +66,7 @@ class AccountMove(models.Model):
                     'quantity': 0,
                     'price_unit':0,
                 }
+        cliente=self.partner_id.name
         if self.contrato_estado_cuenta_ids:
             obj_contrato_estado_cuenta = self.env['contrato.estado.cuenta'].search([('id','in',self.contrato_estado_cuenta_ids.ids)])
             i=0
@@ -118,7 +119,7 @@ class AccountMove(models.Model):
                         'nombre': 'CRÉDITO',
                         'valor':str(saldo_credito)+' a '+terminos
                     },{'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':pago},
-                            {'nombre':'Nota','valor':self.partner_id.name+'Cancela Cuotas'}]
+                            {'nombre':'Nota','valor':cliente+'Cancela Cuotas'}]
             
             for prueba in lista_dic:
                 self.update({'campos_adicionales_facturacion':[(0,0,prueba)]})
