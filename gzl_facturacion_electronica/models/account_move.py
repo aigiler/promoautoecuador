@@ -131,7 +131,7 @@ class AccountMove(models.Model):
         terminos=""
         if self.invoice_payment_term_id:
             terminos=self.invoice_payment_term_id.name
-        pago=","
+        pago=""
         cliente=""
         if self.partner_id:
             cliente=self.partner_id.name
@@ -145,7 +145,7 @@ class AccountMove(models.Model):
                         {'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':pago},
                         {'nombre':'Nota','valor':cliente+'Cancela Cuotas'+numero_cuotas}]
             for prueba in lista_dic:
-            self.update({'campos_adicionales_facturacion':[(0,0,prueba)]}) 
+                self.update({'campos_adicionales_facturacion':[(0,0,prueba)]}) 
 
     establecimiento = fields.Many2one('establecimiento')
     reversed_entry_nc_id = fields.Many2one(related='reversed_entry_id', store=True)
