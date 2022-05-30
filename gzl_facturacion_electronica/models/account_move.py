@@ -69,6 +69,7 @@ class AccountMove(models.Model):
         if self.contrato_estado_cuenta_ids:
             obj_contrato_estado_cuenta = self.env['contrato.estado.cuenta'].search([('id','in',self.contrato_estado_cuenta_ids.ids)])
             i=0
+            
             for rec in obj_contrato_estado_cuenta:
                 if i==0:
                     nombre=values.get('name')+str(rec.cuota_adm)+'.\n'+'IVA: '+str(rec.iva_adm)+' Cuota(s): '+rec.numero_cuota+','
@@ -95,15 +96,21 @@ class AccountMove(models.Model):
                             'price_unit': rec.get('price_unit'),
                         })]
 
-                if not self.campos_adicionales_facturacion:
+                saldo_credito=0
+                for info in self.contrato_estado_cuenta_ids:
+                    saldo_credito+=info.saldo
+                    numero_cuotas=''+numero_cuota+','
+                if not self.campos_adicionales_facturacion:                       
                         dic_caf = {
-                            'nombre': 'Descripcion',
-                            'valor':rec.get('name')
+                            'nombre': 'CRÉDITO',
+                            'valor':saldo+' a '+self.invoice_payment_term_id.name
                         }
                         self.update({'campos_adicionales_facturacion':[(0,0,dic_caf)]})
-                else:
-                    for roc in self.campos_adicionales_facturacion:
-                        self.campos_adicionales_facturacion = [(1,roc.id,{'valor':rec.get('name')})]
+
+                    lista_dic=[{'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':self.method_payment.name},
+                                {'nombre':'Nota','valor':self.partner_id.name+'Cancela Cuotas:'+numero_cuotas}]
+                    for roc in self.lista_dic:
+                        self.campos_adicionales_facturacion = [(1,roc.id,roc)]
                 self._move_autocomplete_invoice_lines_values()
 
 
