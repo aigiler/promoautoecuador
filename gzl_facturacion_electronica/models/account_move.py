@@ -635,7 +635,7 @@ class AccountMove(models.Model):
                     dct_campo={'nombre':campo.nombre,'valor':campo.valor}
                     lines.append((0, 0, dct_campo))
 
-                withdrawing.update({'campos_adicionales_facturacion': lines})
+                #withdrawing.update({'campos_adicionales_facturacion': lines})
 
 
 
