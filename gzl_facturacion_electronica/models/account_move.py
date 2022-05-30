@@ -118,7 +118,7 @@ class AccountMove(models.Model):
         #     self.update({'campos_adicionales_facturacion':[(0,0,prueba)]})
             self._move_autocomplete_invoice_lines_values()
 
-    @api.onchange('invoice_payment_term_id','method_payment','contrato_estado_cuenta_ids','partner_id')
+    @api.onchange('invoice_payment_term_id','method_payment')
     def obtener_infoadicional(self):
         
         numero_cuotas=","      
