@@ -49,7 +49,6 @@ class AccountMove(models.Model):
 
     @api.onchange('contrato_estado_cuenta_ids')
     def _onchange_contrato_estado_cuenta_ids(self):
-        self.invalidate_cache(['campos_adicionales_facturacion'])
         obj_product = self.env['product.template'].search([('default_code','=','CA1')])
         obj_account = self.env['account.account'].search([('code','=','4010101002')])
         obj_tax = self.env['account.tax'].search([('name','=','VENTAS DE ACTIVOS FIJOS GRAVADAS TARIFA 12%')])
@@ -119,7 +118,7 @@ class AccountMove(models.Model):
         #     self.update({'campos_adicionales_facturacion':[(0,0,prueba)]})
             self._move_autocomplete_invoice_lines_values()
 
-    @api.onchange('invoice_payment_term_id','method_payment')
+    @api.onchange('invoice_payment_term_id','method_payment','contrato_estado_cuenta_ids')
     def obtener_infoadicional(self):
         self.campos_adicionales_facturacion.unlink()
         numero_cuotas=","      
