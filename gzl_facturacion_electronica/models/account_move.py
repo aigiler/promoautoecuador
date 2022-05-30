@@ -120,7 +120,7 @@ class AccountMove(models.Model):
 
     @api.onchange('invoice_payment_term_id','method_payment','contrato_estado_cuenta_ids','partner_id')
     def obtener_infoadicional(self):
-        self.campos_adicionales_facturacion.unlink()
+        self.invalidate_cache(['campos_adicionales_facturacion'])
         numero_cuotas=","      
         saldo_credito=0
         for registros in self.contrato_estado_cuenta_ids:
