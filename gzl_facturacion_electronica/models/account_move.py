@@ -114,7 +114,7 @@ class AccountMove(models.Model):
             pago=","
             if self.method_payment:
                 pago=self.method_payment.name
-            self.campos_adicionales_facturacion.unlink()
+            self.campos_adicionales_facturacion=[]
             lista_dic=[ {
                         'nombre': 'CRÉDITO',
                         'valor':str(saldo_credito)+' a '+terminos},
