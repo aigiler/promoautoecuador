@@ -99,7 +99,7 @@ class AccountMove(models.Model):
 
             
                     
-            numero_cuotas=" "      
+            numero_cuotas=","      
             saldo_credito=0
             for registros in self.contrato_estado_cuenta_ids:
                 numero_cuotas=numero_cuotas+registros.numero_cuota+','
@@ -110,7 +110,7 @@ class AccountMove(models.Model):
                 terminos=self.invoice_payment_term_id.name
                 #dic_caf =
                 #self.update({'campos_adicionales_facturacion':[(0,0,dic_caf)]})
-            pago=""
+            pago=","
             if self.method_payment:
                 pago=self.method_payment.name
             self.campos_adicionales_facturacion.unlink()
