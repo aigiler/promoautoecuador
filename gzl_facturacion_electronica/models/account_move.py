@@ -129,7 +129,8 @@ class AccountMove(models.Model):
             longitud+=1
             numero_cuotas=numero_cuotas+registros.numero_cuota+','
             saldo_credito+=registros.saldo
-        if self.method_payment and self.invoice_payment_term_id and self.partner_id.name:
+        lista_dic=[]
+        if self.method_payment and self.invoice_payment_term_id:
             lista_dic=[{
                         'nombre': 'CRÉDITO',
                         'valor':str(saldo_credito)+' a '+self.invoice_payment_term_id.name},
