@@ -116,7 +116,7 @@ class AccountMove(models.Model):
             self.campos_adicionales_facturacion.unlink()
             lista_dic=[ {
                         'nombre': 'CRÉDITO',
-                        'valor':str(saldo_credito)+' a '+self.invoice_payment_term_id.name
+                        'valor':str(saldo_credito)+' a '+terminos
                     },{'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':pago},
                             {'nombre':'Nota','valor':self.partner_id.name+'Cancela Cuotas:'+numero_cuotas}]
             
