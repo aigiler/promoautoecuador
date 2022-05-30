@@ -121,11 +121,12 @@ class AccountMove(models.Model):
     @api.onchange('invoice_payment_term_id','method_payment','contrato_estado_cuenta_ids','partner_id')
     def obtener_infoadicional(self):
         lista_dic=[]
-        for item in self.campos_adicionales_facturacion:
-            self.write({"campos_adicionales_facturacion": [(2, item.id)]})
         numero_cuotas=","      
         saldo_credito=0
+        longitud=0
+        longitud_total=len(self.contrato_estado_cuenta_ids)
         for registros in self.contrato_estado_cuenta_ids:
+            longitud+=1
             numero_cuotas=numero_cuotas+registros.numero_cuota+','
             saldo_credito+=registros.saldo
         terminos=""
@@ -138,7 +139,7 @@ class AccountMove(models.Model):
         if self.method_payment:
             pago=self.method_payment.name
         
-        if terminos and cliente and  pago and self.contrato_estado_cuenta_ids:
+        if terminos and cliente and  pago and self.contrato_estado_cuenta_ids==longitud_total:
             lista_dic=[{
                         'nombre': 'CRÉDITO',
                         'valor':str(saldo_credito)+' a '+terminos},
