@@ -125,7 +125,7 @@ class AccountMove(models.Model):
                 lista_ids=[]
                 for prueba in lista_dic:
                     id_registro=self.env['campos.adicionales.facturacion'].create(prueba) 
-                    lista_ids.append(id_registro)
+                    lista_ids.append(id_registro.id)
                     self.update({'campos_adicionales_facturacion':[(6,0,lista_ids)]}) 
 
     establecimiento = fields.Many2one('establecimiento')
