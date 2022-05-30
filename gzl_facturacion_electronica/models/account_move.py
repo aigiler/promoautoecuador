@@ -49,6 +49,7 @@ class AccountMove(models.Model):
 
     @api.onchange('contrato_estado_cuenta_ids')
     def _onchange_contrato_estado_cuenta_ids(self):
+        self.campos_adicionales_facturacion.unlink()
         obj_product = self.env['product.template'].search([('default_code','=','CA1')])
         obj_account = self.env['account.account'].search([('code','=','4010101002')])
         obj_tax = self.env['account.tax'].search([('name','=','VENTAS DE ACTIVOS FIJOS GRAVADAS TARIFA 12%')])
@@ -114,28 +115,19 @@ class AccountMove(models.Model):
             pago=","
             if self.method_payment:
                 pago=self.method_payment.name
-            for x in self.campos_adicionales_facturacion:
-                x.unlink()
-            lista_dic=[ {
+
+            lista_dic=[{
                         'nombre': 'CRÉDITO',
                         'valor':str(saldo_credito)+' a '+terminos},
                         {'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':pago},
                         {'nombre':'Nota','valor':'Cancela Cuotas'}]
             
             for prueba in lista_dic:
-                #obj_info = self.env['campos.adicionales.facturacion'].search([('nombre','=',prueba['nombre']),('move_id','=',self.id)])
-                #if obj_info:
-                #    c.valor=prueba['valor']
-                #else:
+
                 self.update({'campos_adicionales_facturacion':[(0,0,prueba)]})
             self._move_autocomplete_invoice_lines_values()
 
-    # @api.onchange('invoice_payment_term_id','method_payment')
-    # def crear_infoadicional(self):
-    #     for l in self:
-    #         if self.invoice_payment_term_id:
-    #             for roc in self.campos_adicionales_facturacion:
-    #                 self.campos_adicionales_facturacion = [(1,roc.id,{'nombre':'','valor':rec.get('name')})]
+
 
     establecimiento = fields.Many2one('establecimiento')
     reversed_entry_nc_id = fields.Many2one(related='reversed_entry_id', store=True)
