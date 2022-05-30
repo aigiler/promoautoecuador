@@ -101,13 +101,18 @@ class AccountMove(models.Model):
                     saldo_credito+=info.saldo
                     numero_cuotas=''+info.numero_cuota+','
                 if not self.campos_adicionales_facturacion:                       
-                        dic_caf = {
+                    terminos=""
+                    if self.invoice_payment_term_id:
+                        terminos=self.invoice_payment_term_id.name
+                    dic_caf = {
                             'nombre': 'CRÉDITO',
-                            'valor':str(saldo_credito)+' a '+self.invoice_payment_term_id.name
+                            'valor':str(saldo_credito)+' a '+terminos
                         }
-                        self.update({'campos_adicionales_facturacion':[(0,0,dic_caf)]})
-
-                lista_dic=[{'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':self.method_payment.name},
+                    self.update({'campos_adicionales_facturacion':[(0,0,dic_caf)]})
+                pago=""
+                if self.method_payment:
+                    pago=self.method_payment.name
+                lista_dic=[{'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':pago},
                                 {'nombre':'Nota','valor':self.partner_id.name+'Cancela Cuotas:'+numero_cuotas}]
                 for roc in lista_dic:
                     self.campos_adicionales_facturacion.append(roc)
