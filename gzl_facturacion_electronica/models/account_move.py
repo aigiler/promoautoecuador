@@ -120,6 +120,7 @@ class AccountMove(models.Model):
 
     @api.onchange('invoice_payment_term_id','method_payment','contrato_estado_cuenta_ids','partner_id')
     def obtener_infoadicional(self):
+        lista_dic=[]
         for item in self.campos_adicionales_facturacion:
             self.write({"campos_adicionales_facturacion": [(2, item.id)]})
         numero_cuotas=","      
@@ -136,6 +137,7 @@ class AccountMove(models.Model):
             cliente=self.partner_id.name
         if self.method_payment:
             pago=self.method_payment.name
+        
         lista_dic=[{
                     'nombre': 'CRÉDITO',
                     'valor':str(saldo_credito)+' a '+terminos},
