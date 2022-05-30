@@ -70,6 +70,8 @@ class AccountMove(models.Model):
             obj_contrato_estado_cuenta = self.env['contrato.estado.cuenta'].search([('id','in',self.contrato_estado_cuenta_ids.ids)])
             i=0
             
+            saldo_credito=0
+            numero_cuotas=''
             for rec in obj_contrato_estado_cuenta:
                 if i==0:
                     nombre=values.get('name')+str(rec.cuota_adm)+'.\n'+'IVA: '+str(rec.iva_adm)+' Cuota(s): '+rec.numero_cuota+','
@@ -95,11 +97,13 @@ class AccountMove(models.Model):
                             'price_unit': rec.get('price_unit'),
                         })]
 
-                saldo_credito=0
-                numero_cuotas=''
-                for info in self.contrato_estado_cuenta_ids:
-                    saldo_credito+=info.saldo
-                    numero_cuotas=''+info.numero_cuota+','
+            
+                    
+            numero_cuotas=" "      
+            saldo_credito=0
+            for registros in self.contrato_estado_cuenta_ids:
+                numero_cuotas=numero_cuotas+registros.numero_cuota+','
+                saldo_credito+=registros.saldo
             #if not self.campos_adicionales_facturacion:                       
             terminos=""
             if self.invoice_payment_term_id:
