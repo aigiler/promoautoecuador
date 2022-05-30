@@ -130,7 +130,12 @@ class AccountMove(models.Model):
                 self.update({'campos_adicionales_facturacion':[(0,0,prueba)]})
             self._move_autocomplete_invoice_lines_values()
 
-
+    # @api.onchange('invoice_payment_term_id','method_payment')
+    # def crear_infoadicional(self):
+    #     for l in self:
+    #         if self.invoice_payment_term_id:
+    #             for roc in self.campos_adicionales_facturacion:
+    #                 self.campos_adicionales_facturacion = [(1,roc.id,{'nombre':'','valor':rec.get('name')})]
 
     establecimiento = fields.Many2one('establecimiento')
     reversed_entry_nc_id = fields.Many2one(related='reversed_entry_id', store=True)
