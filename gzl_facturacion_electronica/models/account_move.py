@@ -49,7 +49,7 @@ class AccountMove(models.Model):
 
     @api.onchange('contrato_estado_cuenta_ids')
     def _onchange_contrato_estado_cuenta_ids(self):
-        self.campos_adicionales_facturacion.unlink()
+        self.invalidate_cache(['campos_adicionales_facturacion'])
         obj_product = self.env['product.template'].search([('default_code','=','CA1')])
         obj_account = self.env['account.account'].search([('code','=','4010101002')])
         obj_tax = self.env['account.tax'].search([('name','=','VENTAS DE ACTIVOS FIJOS GRAVADAS TARIFA 12%')])
@@ -97,31 +97,23 @@ class AccountMove(models.Model):
                             'name': rec.get('name'),
                             'quantity': rec.get('quantity'),
                             'price_unit': rec.get('price_unit'),
-                        })]
-
-            
-                    
+                        })]          
             numero_cuotas=","      
             saldo_credito=0
             for registros in self.contrato_estado_cuenta_ids:
                 numero_cuotas=numero_cuotas+registros.numero_cuota+','
                 saldo_credito+=registros.saldo
-            #if not self.campos_adicionales_facturacion:                       
             terminos=""
             if self.invoice_payment_term_id:
                 terminos=self.invoice_payment_term_id.name
-                #dic_caf =
-                #self.update({'campos_adicionales_facturacion':[(0,0,dic_caf)]})
             pago=","
             if self.method_payment:
                 pago=self.method_payment.name
-
             lista_dic=[{
                         'nombre': 'CRÉDITO',
                         'valor':str(saldo_credito)+' a '+terminos},
                         {'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':pago},
                         {'nombre':'Nota','valor':'Cancela Cuotas'}]
-            
             for prueba in lista_dic:
 
                 self.update({'campos_adicionales_facturacion':[(0,0,prueba)]})
