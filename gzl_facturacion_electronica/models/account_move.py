@@ -69,11 +69,10 @@ class AccountMove(models.Model):
         if self.contrato_estado_cuenta_ids:
             obj_contrato_estado_cuenta = self.env['contrato.estado.cuenta'].search([('id','in',self.contrato_estado_cuenta_ids.ids)])
             for rec in obj_contrato_estado_cuenta:
-
                 values['quantity'] = values.get('quantity') + 1
                 valor += rec.cuota_adm
                 values['price_unit'] = valor/values.get('quantity')
-                values['name'] = values.get('name')+rec.cuota_adm+'.\n'+'IVA: '+rec.iva_adm+' Cuota(s): 'rec.numero_cuota+','
+                values['name'] = values.get('name')+rec.cuota_adm+'.\n'+'IVA: '+rec.ia_adm+' Cuota(s): 'rec.numero_cuota+','
                 list_pagos_diferentes.update({
                     str(rec.cuota_adm):values
                 })
