@@ -41,10 +41,7 @@ class AccountMove(models.Model):
 
     contrato_estado_cuenta_ids = fields.Many2many('contrato.estado.cuenta', copy=False,string='Estado de Cuenta de Aportes',)
     
-    is_group_cobranza = fields.Boolean(
-        string='Es Cobranza',
-        compute="_compute_is_group_cobranza",
-    )
+    is_group_cobranza = fields.Boolean(string='Es Cobranza',compute="_compute_is_group_cobranza")
     
     @api.one
     def _compute_is_group_cobranza(self):
