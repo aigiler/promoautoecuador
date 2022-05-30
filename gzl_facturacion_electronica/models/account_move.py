@@ -138,12 +138,13 @@ class AccountMove(models.Model):
         if self.method_payment:
             pago=self.method_payment.name
         
-        lista_dic=[{
-                    'nombre': 'CRÉDITO',
-                    'valor':str(saldo_credito)+' a '+terminos},
-                    {'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':pago},
-                    {'nombre':'Nota','valor':cliente+'Cancela Cuotas'+numero_cuotas}]
-        for prueba in lista_dic:
+        if terminos and cliente and  pago and self.contrato_estado_cuenta_ids:
+            lista_dic=[{
+                        'nombre': 'CRÉDITO',
+                        'valor':str(saldo_credito)+' a '+terminos},
+                        {'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':pago},
+                        {'nombre':'Nota','valor':cliente+'Cancela Cuotas'+numero_cuotas}]
+            for prueba in lista_dic:
             self.update({'campos_adicionales_facturacion':[(0,0,prueba)]}) 
 
     establecimiento = fields.Many2one('establecimiento')
