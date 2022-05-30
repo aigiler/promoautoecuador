@@ -60,7 +60,7 @@ class AccountMove(models.Model):
         valor_haber = 0
         values = {
                     'product_id':obj_product.id,
-                    'name': 'Pago de cuotas ',
+                    'name': 'Cuota Administrativa\n Pago de Cuota(s) de Contrato. Cuota Administrativa:',
                     'account_id':obj_account.id,
                     'tax_ids': [(6,0,[obj_tax.id])],
                     'quantity': 0,
@@ -69,10 +69,11 @@ class AccountMove(models.Model):
         if self.contrato_estado_cuenta_ids:
             obj_contrato_estado_cuenta = self.env['contrato.estado.cuenta'].search([('id','in',self.contrato_estado_cuenta_ids.ids)])
             for rec in obj_contrato_estado_cuenta:
+
                 values['quantity'] = values.get('quantity') + 1
                 valor += rec.cuota_adm
                 values['price_unit'] = valor/values.get('quantity')
-                values['name'] = values.get('name')+rec.numero_cuota+','
+                values['name'] = values.get('name')+rec.cuota_adm+'.\n'+'IVA: '+rec.iva_adm+' Cuota(s): 'rec.numero_cuota+','
                 list_pagos_diferentes.update({
                     str(rec.cuota_adm):values
                 })
