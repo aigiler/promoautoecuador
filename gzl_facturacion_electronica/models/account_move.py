@@ -114,7 +114,8 @@ class AccountMove(models.Model):
             pago=","
             if self.method_payment:
                 pago=self.method_payment.name
-            self.update({'campos_adicionales_facturacion':[(5)]})
+            for x in self.campos_adicionales_facturacion:
+                x.unlink()
             lista_dic=[ {
                         'nombre': 'CRÉDITO',
                         'valor':str(saldo_credito)+' a '+terminos},
