@@ -122,7 +122,7 @@ class AccountMove(models.Model):
                         {'nombre':'Nota','valor':'Cancela Cuotas'}]
             
             for prueba in lista_dic:
-                obj_info = self.env['contrato.estado.cuenta'].search([('nombre','=',prueba['nombre']),('move_id','=',self.id)])
+                obj_info = self.env['campos.adicionales.facturacion'].search([('nombre','=',prueba['nombre']),('move_id','=',self.id)])
                 if obj_info:
                     c.valor=prueba['valor']
                 else:
