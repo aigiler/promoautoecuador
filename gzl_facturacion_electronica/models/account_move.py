@@ -106,7 +106,7 @@ class AccountMove(models.Model):
                         terminos=self.invoice_payment_term_id.name
                     dic_caf = {
                             'nombre': 'CRÉDITO',
-                            'valor':str(saldo_credito)+' a '+terminos
+                            'valor':str(saldo_credito)+' a '+self.invoice_payment_term_id.name
                         }
                     self.update({'campos_adicionales_facturacion':[(0,0,dic_caf)]})
                 pago=""
@@ -114,8 +114,10 @@ class AccountMove(models.Model):
                     pago=self.method_payment.name
                 lista_dic=[{'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':pago},
                                 {'nombre':'Nota','valor':self.partner_id.name+'Cancela Cuotas:'+numero_cuotas}]
-                for roc in lista_dic:
-                    self.campos_adicionales_facturacion.append(roc)
+                
+                for prueba in lista_dic:
+                    for roc in self.campos_adicionales_facturacion:
+                        self.campos_adicionales_facturacion= [(1,roc.id,prueba)]
                 self._move_autocomplete_invoice_lines_values()
 
 
