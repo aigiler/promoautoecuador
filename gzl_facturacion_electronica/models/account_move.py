@@ -103,7 +103,7 @@ class AccountMove(models.Model):
                 if not self.campos_adicionales_facturacion:                       
                         dic_caf = {
                             'nombre': 'CRÉDITO',
-                            'valor':saldo+' a '+self.invoice_payment_term_id.name
+                            'valor':str(saldo_credito)+' a '+self.invoice_payment_term_id.name
                         }
                         self.update({'campos_adicionales_facturacion':[(0,0,dic_caf)]})
 
