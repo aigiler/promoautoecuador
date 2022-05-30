@@ -109,7 +109,7 @@ class AccountMove(models.Model):
 
                 lista_dic=[{'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':self.method_payment.name},
                                 {'nombre':'Nota','valor':self.partner_id.name+'Cancela Cuotas:'+numero_cuotas}]
-                for roc in self.lista_dic:
+                for roc in lista_dic:
                     self.campos_adicionales_facturacion = [(1,roc.id,roc)]
                 self._move_autocomplete_invoice_lines_values()
 
