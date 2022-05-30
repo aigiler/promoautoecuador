@@ -11,6 +11,7 @@
             <field name="code">adjudicaciones</field>
             <field name="descripcion">Rol de Adjudicaciones</field>
         </record>
+
         <record id="tipo_rol3" model="adjudicaciones.team">
             <field name="name">Crédito y Cobranza</field>
             <field name="code">creditosYCobranzas</field>

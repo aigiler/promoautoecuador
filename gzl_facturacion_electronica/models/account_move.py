@@ -39,7 +39,7 @@ class AccountMove(models.Model):
 
     contrato_id = fields.Many2one('contrato', string='Contrato')
 
-    contrato_estado_cuenta_ids = fields.Many2many('contrato.estado.cuenta', string='Estado de Cuenta de Aportes',)
+    contrato_estado_cuenta_ids = fields.Many2many('contrato.estado.cuenta', copy=False,string='Estado de Cuenta de Aportes',)
     
     @api.onchange('contrato_estado_cuenta_ids')
     def _onchange_contrato_estado_cuenta_ids(self):
