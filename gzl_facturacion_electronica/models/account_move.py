@@ -97,25 +97,7 @@ class AccountMove(models.Model):
                             'quantity': rec.get('quantity'),
                             'price_unit': rec.get('price_unit'),
                         })]          
-        # numero_cuotas=","      
-        # saldo_credito=0
-        # for registros in self.contrato_estado_cuenta_ids:
-        #     numero_cuotas=numero_cuotas+registros.numero_cuota+','
-        #     saldo_credito+=registros.saldo
-        # terminos=""
-        # if self.invoice_payment_term_id:
-        #     terminos=self.invoice_payment_term_id.name
-        # pago=","
-        # if self.method_payment:
-        #     pago=self.method_payment.name
-        # lista_dic=[{
-        #             'nombre': 'CRÉDITO',
-        #             'valor':str(saldo_credito)+' a '+terminos},
-        #             {'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':pago},
-        #             {'nombre':'Nota','valor':self.partner_id.name+'Cancela Cuotas'+numero_cuotas}]
-        # for prueba in lista_dic:
 
-        #     self.update({'campos_adicionales_facturacion':[(0,0,prueba)]})
             self._move_autocomplete_invoice_lines_values()
 
     @api.onchange('invoice_payment_term_id','method_payment')
@@ -130,15 +112,21 @@ class AccountMove(models.Model):
             numero_cuotas=numero_cuotas+registros.numero_cuota+','
             saldo_credito+=registros.saldo
         lista_dic=[]
-        if not self.campos_adicionales_facturacion:
-            if self.method_payment and self.invoice_payment_term_id:
+        
+
+        f self.method_payment and self.invoice_payment_term_id:
+            if not self.campos_adicionales_facturacion:
                 lista_dic=[{
                             'nombre': 'CRÉDITO',
                             'valor':str(saldo_credito)+' a '+self.invoice_payment_term_id.name},
                             {'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':self.method_payment.name},
                             {'nombre':'Nota','valor':self.partner_id.name+'Cancela Cuotas'+numero_cuotas}]
+                
+                lista_ids=[]
                 for prueba in lista_dic:
-                    self.update({'campos_adicionales_facturacion':[(0,0,prueba)]}) 
+                    id_registro=self.env['campos.adicionales.facturacion'].create(prueba) 
+                    lista_ids.append(id_registro)
+                    self.update({'campos_adicionales_facturacion':[(6,0,lista_ids)]}) 
 
     establecimiento = fields.Many2one('establecimiento')
     reversed_entry_nc_id = fields.Many2one(related='reversed_entry_id', store=True)
@@ -635,7 +623,7 @@ class AccountMove(models.Model):
                     dct_campo={'nombre':campo.nombre,'valor':campo.valor}
                     lines.append((0, 0, dct_campo))
 
-                #withdrawing.update({'campos_adicionales_facturacion': lines})
+                withdrawing.update({'campos_adicionales_facturacion': lines})
 
 
 
