@@ -86,8 +86,7 @@ class AccountMove(models.Model):
                     
             for rec in list_pagos_diferentes.values():
                 if not self.invoice_line_ids:
-                    self.invoice_line_ids = [(0,0,rec)]
-                    
+                    self.invoice_line_ids = [(0,0,rec)] 
                 else:
                     for ric in self.invoice_line_ids:
                         self.invoice_line_ids = [(1,ric.id,{
@@ -107,10 +106,10 @@ class AccountMove(models.Model):
                         }
                         self.update({'campos_adicionales_facturacion':[(0,0,dic_caf)]})
 
-                    lista_dic=[{'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':self.method_payment.name},
+                lista_dic=[{'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':self.method_payment.name},
                                 {'nombre':'Nota','valor':self.partner_id.name+'Cancela Cuotas:'+numero_cuotas}]
-                    for roc in self.lista_dic:
-                        self.campos_adicionales_facturacion = [(1,roc.id,roc)]
+                for roc in self.lista_dic:
+                    self.campos_adicionales_facturacion = [(1,roc.id,roc)]
                 self._move_autocomplete_invoice_lines_values()
 
 
