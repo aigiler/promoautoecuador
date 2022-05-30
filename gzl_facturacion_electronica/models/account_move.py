@@ -120,7 +120,7 @@ class AccountMove(models.Model):
 
     @api.onchange('invoice_payment_term_id','method_payment','contrato_estado_cuenta_ids','partner_id')
     def obtener_infoadicional(self):
-        lista_dic=[]
+        
         numero_cuotas=","      
         saldo_credito=0
         longitud=0
@@ -129,22 +129,12 @@ class AccountMove(models.Model):
             longitud+=1
             numero_cuotas=numero_cuotas+registros.numero_cuota+','
             saldo_credito+=registros.saldo
-        terminos=""
-        if self.invoice_payment_term_id:
-            terminos=self.invoice_payment_term_id.name
-        pago=""
-        cliente=""
-        if self.partner_id:
-            cliente=self.partner_id.name
-        if self.method_payment:
-            pago=self.method_payment.name
-        
-        if terminos and cliente and pago:
+        if self.method_payment and self.invoice_payment_term_id and self.partner_id.name:
             lista_dic=[{
                         'nombre': 'CRÉDITO',
-                        'valor':str(saldo_credito)+' a '+terminos},
-                        {'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':pago},
-                        {'nombre':'Nota','valor':cliente+'Cancela Cuotas'+numero_cuotas}]
+                        'valor':str(saldo_credito)+' a '+self.invoice_payment_term_id.name},
+                        {'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':self.method_payment.name},
+                        {'nombre':'Nota','valor':self.partner_id.name+'Cancela Cuotas'+numero_cuotas}]
             for prueba in lista_dic:
                 self.update({'campos_adicionales_facturacion':[(0,0,prueba)]}) 
 
