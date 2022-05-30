@@ -13,6 +13,7 @@
 
                      <t t-set="o" t-value="o.with_context(lang=lang)"/>
                     <div class="page">
+                        <h3><strong>CERTIFICADO DE APORTE</strong></h3>
 
                     <style>
                         table, tr, td {
@@ -21,9 +22,7 @@
                         }
                     </style>
                     <table>
-                        <tr>
-                            <td style="text-align: center;" colspan="4">Certificado de Aporte</td>
-                        </tr>
+
                         <tr>
                             <td>Nombre:<t t-esc="o.partner_id.name"/></td>
                             <td colspan="3">Grupo/Orden:<t t-esc="o.contrato_id.grupo.name"/></td>
