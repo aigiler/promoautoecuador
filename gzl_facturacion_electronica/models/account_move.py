@@ -130,14 +130,15 @@ class AccountMove(models.Model):
             numero_cuotas=numero_cuotas+registros.numero_cuota+','
             saldo_credito+=registros.saldo
         lista_dic=[]
-        if self.method_payment and self.invoice_payment_term_id:
-            lista_dic=[{
-                        'nombre': 'CRÉDITO',
-                        'valor':str(saldo_credito)+' a '+self.invoice_payment_term_id.name},
-                        {'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':self.method_payment.name},
-                        {'nombre':'Nota','valor':self.partner_id.name+'Cancela Cuotas'+numero_cuotas}]
-            for prueba in lista_dic:
-                self.update({'campos_adicionales_facturacion':[(0,0,prueba)]}) 
+        if not self.campos_adicionales_facturacion:
+            if self.method_payment and self.invoice_payment_term_id:
+                lista_dic=[{
+                            'nombre': 'CRÉDITO',
+                            'valor':str(saldo_credito)+' a '+self.invoice_payment_term_id.name},
+                            {'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':self.method_payment.name},
+                            {'nombre':'Nota','valor':self.partner_id.name+'Cancela Cuotas'+numero_cuotas}]
+                for prueba in lista_dic:
+                    self.update({'campos_adicionales_facturacion':[(0,0,prueba)]}) 
 
     establecimiento = fields.Many2one('establecimiento')
     reversed_entry_nc_id = fields.Many2one(related='reversed_entry_id', store=True)
