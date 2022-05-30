@@ -114,7 +114,7 @@ class AccountMove(models.Model):
         lista_dic=[]
         
 
-        f self.method_payment and self.invoice_payment_term_id:
+        if self.method_payment and self.invoice_payment_term_id:
             if not self.campos_adicionales_facturacion:
                 lista_dic=[{
                             'nombre': 'CRÉDITO',
