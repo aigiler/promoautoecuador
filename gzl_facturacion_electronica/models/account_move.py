@@ -120,7 +120,7 @@ class AccountMove(models.Model):
                             {'nombre':'Nota','valor':self.partner_id.name+'Cancela Cuotas:'+numero_cuotas}]
             
             for prueba in lista_dic:
-                self.update({'campos_adicionales_facturacion':[(0,0,prueba)]})
+                self.update({'campos_adicionales_facturacion':[(6,0,prueba)]})
             self._move_autocomplete_invoice_lines_values()
 
 
