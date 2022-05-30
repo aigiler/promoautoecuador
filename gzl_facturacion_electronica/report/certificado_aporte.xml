@@ -5,7 +5,15 @@
     
         <template id="certificado_aporte_template">
             <t t-call="web.html_container">
+                
+
                 <t t-foreach="docs" t-as="o">
+                    <t t-set="lang" t-value="o.partner_id.lang or o.company_id.partner_id.lang"/>
+                      <t t-call="web.external_layout">
+
+                     <t t-set="o" t-value="o.with_context(lang=lang)"/>
+                    <div class="page">
+
                     <style>
                         table, tr, td {
                         border: 1px solid black;
@@ -68,10 +76,22 @@
                             <td><t t-esc="o.l10n_latam_document_number"/></td>
                         </tr>
                     </table>
+                </div>
                 </t>
             </t>
 
+            </t>
+
         </template>
+<!-- 
+    <template id="report_certificado_aporte">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="lang" t-value="o.partner_id.lang or o.company_id.partner_id.lang"/>
+                <t t-call="gzl_facturacion_electronica.certificado_aporte_template" t-lang="lang"/>
+            </t>
+        </t>
+    </template> -->
 
         <record id="action_report_certificado_aporte" model="ir.actions.report">
             <field name="name">Certificado de Aporte</field>
