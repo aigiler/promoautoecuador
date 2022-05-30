@@ -118,7 +118,7 @@ class AccountMove(models.Model):
         #     self.update({'campos_adicionales_facturacion':[(0,0,prueba)]})
             self._move_autocomplete_invoice_lines_values()
 
-    @api.onchange('invoice_payment_term_id','method_payment','contrato_estado_cuenta_ids')
+    @api.onchange('invoice_payment_term_id','method_payment','contrato_estado_cuenta_ids','partner_id')
     def obtener_infoadicional(self):
         self.campos_adicionales_facturacion.unlink()
         numero_cuotas=","      
@@ -130,13 +130,16 @@ class AccountMove(models.Model):
         if self.invoice_payment_term_id:
             terminos=self.invoice_payment_term_id.name
         pago=","
+        cliente=""
+        if self.partner_id:
+            cliente=self.partner_id.name
         if self.method_payment:
             pago=self.method_payment.name
         lista_dic=[{
                     'nombre': 'CRÉDITO',
                     'valor':str(saldo_credito)+' a '+terminos},
                     {'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':pago},
-                    {'nombre':'Nota','valor':self.partner_id.name+'Cancela Cuotas'+numero_cuotas}]
+                    {'nombre':'Nota','valor':cliente+'Cancela Cuotas'+numero_cuotas}]
         for prueba in lista_dic:
             self.update({'campos_adicionales_facturacion':[(0,0,prueba)]}) 
 
