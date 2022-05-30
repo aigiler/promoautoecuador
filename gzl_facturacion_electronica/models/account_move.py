@@ -43,7 +43,7 @@ class AccountMove(models.Model):
     
     is_group_cobranza = fields.Boolean(string='Es Cobranza',compute="_compute_is_group_cobranza")
 
-    @api.one
+    @api.depends("partner_id")
     def _compute_is_group_cobranza(self):
         self.is_group_cobranza = self.env['res.users'].has_group('gzl_facturacion_electronica.grupo_cobranza')
 
