@@ -15,7 +15,8 @@ MAP_INVOICE_TYPE_PARTNER_TYPE = {
     }
 
 
-
+class account_payment(models.Model):
+    _inherit = 'account.payment'
 
 class AccountPayment(models.Model):
 
@@ -450,8 +451,6 @@ class AccountPayment(models.Model):
 
         if self.estado_anticipo=='anticipo' and  self.amount_residual==0 :
             self.estado_anticipo='posted'
-
-
 
 
 
@@ -988,5 +987,5 @@ class AccountPaymentLine(models.Model):
     def obtener_monto(self):
         for l in self:
             if l.invoice_id:
-            for x in l.invoice_id.contrato_estado_cuenta_ids:
-                l.monto_pendiente_pago=x.saldo-x.cuota_adm+x.iva_adm
+                for x in l.invoice_id.contrato_estado_cuenta_ids:
+                    l.monto_pendiente_pago=x.saldo-x.cuota_adm+x.iva_adm
