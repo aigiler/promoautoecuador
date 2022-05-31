@@ -100,7 +100,7 @@ class AccountMove(models.Model):
 
             self._move_autocomplete_invoice_lines_values()
 
-    @api.onchange('invoice_payment_term_id','method_payment','contrato_estado_cuenta_ids')
+    @api.onchange('invoice_payment_term_id','method_payment','contrato_estado_cuenta_ids','name')
     def obtener_infoadicional(self):
         
         numero_cuotas=","      
@@ -112,13 +112,13 @@ class AccountMove(models.Model):
             numero_cuotas=numero_cuotas+registros.numero_cuota+','
             saldo_credito+=registros.saldo
         lista_dic=[] 
-        if self.method_payment and self.invoice_payment_term_id:
+        if self.method_payment and self.invoice_payment_term_id and self.name:
             if not self.campos_adicionales_facturacion:
                 lista_dic=[{
                             'nombre': 'CRÉDITO',
                             'valor':str(saldo_credito)+' a '+self.invoice_payment_term_id.name},
                             {'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':self.method_payment.name},
-                            {'nombre':'Nota','valor':self.partner_id.name+'Cancela Cuotas'+numero_cuotas}]
+                            {'nombre':'Nota','valor':self.partner_id.name+self.name+'Cancela Cuotas'+numero_cuotas}]
 
                 lista_ids=[]
                 for prueba in lista_dic:
@@ -134,7 +134,7 @@ class AccountMove(models.Model):
                     elif x.nombre=='F/pago':
                         x.valor=self.method_payment.name
                     elif x.nombre=='Nota':
-                        x.valor=self.partner_id.name+'Cancela Cuotas'+numero_cuotas
+                        x.valor=self.partner_id.name+self.name+'Cancela Cuotas'+numero_cuotas
 
     establecimiento = fields.Many2one('establecimiento')
     reversed_entry_nc_id = fields.Many2one(related='reversed_entry_id', store=True)
