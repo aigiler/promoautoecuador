@@ -124,7 +124,7 @@ class AccountMove(models.Model):
                     self.update({'campos_adicionales_facturacion':[(6,0,lista_ids)]}) 
             else:
                 for x in self.campos_adicionales_facturacion:
-                    if x.nombre=='CRÉDITO':pend(id_registro.id)
+                    if x.nombre=='CRÉDITO':
                         x.valor=str(saldo_credito)+' a '+self.invoice_payment_term_id.name
                     elif x.nombre=='Desde':
                         x.valor=str(self.invoice_date)

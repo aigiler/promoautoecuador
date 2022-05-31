@@ -984,9 +984,9 @@ class AccountPaymentLine(models.Model):
     monto_pendiente_pago = fields.Float(string='Monto de la cuota de Pago')
 
 
-    #@api.constrains('invoice_id')
-    #def obtener_monto(self):
-    #    for l in self:
-    #        if l.invoice_id:
-    #        for x in l.invoice_id.contrato_estado_cuenta_ids:
-    #            l.monto_pendiente_pago=x.saldo-x.cuota_adm+x.iva_adm
+    @api.constrains('invoice_id')
+    def obtener_monto(self):
+        for l in self:
+            if l.invoice_id:
+            for x in l.invoice_id.contrato_estado_cuenta_ids:
+                l.monto_pendiente_pago=x.saldo-x.cuota_adm+x.iva_adm
