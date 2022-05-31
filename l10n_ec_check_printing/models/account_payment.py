@@ -955,13 +955,3 @@ class AccountPaymentLine(models.Model):
     residual = fields.Monetary('Cuotas')
     document_number = fields.Char(string="Número de Documento")
     monto_pendiente_pago = fields.Float(string='Monto de la cuota de Pago')
-    pagar=fields.Boolean(string="-", default=False)
-
-    @api.constrains('invoice_id')
-    def obtener_monto(self):
-        for l in self:
-            if l.invoice_id:
-                monto_pendiente_pago=0
-                for x in l.invoice_id.contrato_estado_cuenta_ids:
-                    monto_pendiente_pago+=(x.saldo-x.cuota_adm)
-                l.monto_pendiente_pago=monto_pendiente_pago
