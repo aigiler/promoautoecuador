@@ -568,17 +568,6 @@ class account_payment(models.Model):
                         'account_id': payment.destination_account_id.id,
                         'payment_id': payment.id,
                     }),
-                     (0, 0, {
-                        'name': 'Esto es un efecto de prueba',
-                        'amount_currency': counterpart_amount + write_off_amount if currency_id else 0.0,
-                        'currency_id': currency_id,
-                        'debit':balance-( balance + write_off_balance > 0.0 and balance + write_off_balance or 0.0),
-                        'credit': balance-balance + write_off_balance < 0.0 and -balance - write_off_balance or 0.0,
-                        'date_maturity': payment.payment_date,
-                        'partner_id': payment.partner_id.commercial_partner_id.id,
-                        'account_id': payment.destination_account_id.id,
-                        'payment_id': payment.id,
-                    })
                     # Liquidity line.
                     (0, 0, {
                         'name': liquidity_line_name,
@@ -591,7 +580,6 @@ class account_payment(models.Model):
                         'account_id': liquidity_line_account.id,
                         'payment_id': payment.id,
                     }),
-
                 ],
             }
             if write_off_balance:

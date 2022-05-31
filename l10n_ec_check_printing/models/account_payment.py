@@ -371,6 +371,7 @@ class AccountPayment(models.Model):
         PaymentLine = self.env['account.payment.line']
         PaymentLineValor = self.env['account.payment.anticipo.valor']
 
+
         for rec in self:
             if sum(rec.payment_line_ids.mapped('amount'))>0:
                 PaymentLineValor.create({'fechaAplicacion':self.fecha_aplicacion_anticipo,'payment_id':rec.id,'aplicacion_anticipo':sum(rec.payment_line_ids.mapped('amount'))})
@@ -455,6 +456,13 @@ class AccountPayment(models.Model):
 
     def post(self):
         for rec in self:
+
+            #for l in rec.payment_line_ids:
+                #if l.amount>l.actual_amount:
+                    #raise ValidationError("El monto a pagar no puede ser al monto adeudado en la factura {0}".format(l.invoice_id.l10n_latam_document_number))
+
+
+
             if rec.amount==0:
                 raise ValidationError("Ingrese el valor del monto")
             invoice_id=list(set([l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]))
@@ -489,7 +497,13 @@ class AccountPayment(models.Model):
                     'payment_id':rec.id
 
                 }])
+            
+            
+
+            
             invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]
+         #   raise ValidationError(invoice_id)
+            
             if invoice_id:
                 self.invoice_ids = invoice_id
             account_check = rec.env['account.cheque']
@@ -660,7 +674,9 @@ class AccountPayment(models.Model):
             move_names = payment.move_name.split(payment._get_move_name_transfer_separator()) if payment.move_name else None
 
             # Compute amounts.
+            
             write_off_amount = payment.payment_difference_handling == 'reconcile' and -payment.payment_difference or 0.0
+            print("este es essdfghgfds de write oggffzxcfvf dfgllf ")
             if payment.payment_type in ('outbound', 'transfer'):
                 counterpart_amount = payment.amount
                 if payment.parent_id.id:
@@ -742,6 +758,7 @@ class AccountPayment(models.Model):
 
 
 
+            
             move_vals = {
                 'date': payment.payment_date,
                 'ref': payment.communication,
@@ -777,6 +794,8 @@ class AccountPayment(models.Model):
                     }),
                 ],
             }
+            if self.tipo_valor=='crear_anticipo':
+
             if write_off_balance:
                 # Write-off line.
                 move_vals['line_ids'].append((0, 0, {
@@ -955,3 +974,12 @@ class AccountPaymentLine(models.Model):
     residual = fields.Monetary('Cuotas')
     document_number = fields.Char(string="Número de Documento")
     monto_pendiente_pago = fields.Float(string='Monto de la cuota de Pago')
+
+    @api.constrains('invoice_id')
+    def obtener_monto(self):
+        for l in self:
+            if l.invoice_id:
+                monto_pendiente_pago=0
+                for x in l.invoice_id.contrato_estado_cuenta_ids:
+                    monto_pendiente_pago+=(x.saldo-x.cuota_adm)
+                l.monto_pendiente_pago=monto_pendiente_pago
