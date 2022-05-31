@@ -100,7 +100,7 @@ class AccountMove(models.Model):
 
             self._move_autocomplete_invoice_lines_values()
 
-    @api.onchange('invoice_payment_term_id','method_payment','campos_adicionales_facturacion')
+    @api.onchange('invoice_payment_term_id','method_payment','contrato_estado_cuenta_ids')
     def obtener_infoadicional(self):
         
         numero_cuotas=","      
@@ -111,9 +111,7 @@ class AccountMove(models.Model):
             longitud+=1
             numero_cuotas=numero_cuotas+registros.numero_cuota+','
             saldo_credito+=registros.saldo
-        lista_dic=[]
-        
-
+        lista_dic=[] 
         if self.method_payment and self.invoice_payment_term_id:
             if not self.campos_adicionales_facturacion:
                 lista_dic=[{
