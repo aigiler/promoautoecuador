@@ -794,7 +794,6 @@ class AccountPayment(models.Model):
                     }),
                 ],
             }
-            if self.tipo_valor=='crear_anticipo':
 
             if write_off_balance:
                 # Write-off line.
