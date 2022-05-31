@@ -15,9 +15,6 @@ MAP_INVOICE_TYPE_PARTNER_TYPE = {
     }
 
 
-class account_payment(models.Model):
-    _inherit = 'account.payment'
-
 class AccountPayment(models.Model):
 
     _inherit = 'account.payment'
@@ -168,7 +165,7 @@ class AccountPayment(models.Model):
         for invoice in invoices:
             payment_term_line = self.env['account.payment.term.line'].search([('payment_id','=',invoice.invoice_payment_term_id.id)])
             amount_balance = 0
-            if len(payment_term_line) >0:       
+            if len(payment_term_line) >0:
                 for l in payment_term_line:
                     if l.value_amount>0:
                         amount = round(invoice.amount_total*(l.value_amount/100),2)
@@ -498,9 +495,6 @@ class AccountPayment(models.Model):
 
                 }])
             
-            
-
-            
             invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]
          #   raise ValidationError(invoice_id)
             
@@ -577,10 +571,6 @@ class AccountPayment(models.Model):
 
             super(AccountPayment, self.with_context({'multi_payment': invoice_id and True or False})).post()
             
-            for y in rec.payment_line_ids:
-                if y.invoice_id:
-                    registros=self.env['account.move'].search([('ref','=',y.invoice_id.name)])
-
             rec.payment_line_ids.unlink()
 
             
@@ -669,6 +659,7 @@ class AccountPayment(models.Model):
         :return: A list of Python dictionary to be passed to env['account.move'].create.
         '''
         all_move_vals = []
+
         for payment in self:
             company_currency = payment.company_id.currency_id
             move_names = payment.move_name.split(payment._get_move_name_transfer_separator()) if payment.move_name else None
@@ -749,6 +740,7 @@ class AccountPayment(models.Model):
                     rec_pay_line_name += ': %s' % ', '.join(payment.invoice_ids.mapped('name'))
 
             # Compute 'name' to be used in liquidity line.
+        
             if payment.payment_type == 'transfer':
                 liquidity_line_name = _('Transfer to %s') % payment.destination_journal_id.name
             else:
@@ -792,8 +784,53 @@ class AccountPayment(models.Model):
                         'payment_id': payment.id,
                         'analytic_account_id': False,
                     }),
-                ],
-            }
+                ]}
+            valor_pagar=0
+            if payment.payment_line_ids:
+                
+                for x in payment.payment_line_ids:
+                    valor_pagar+=(x.actual_amount+x.monto_pendiente_pago)
+            if payment.tipo_valor=='crear_anticipo':
+                move_vals['line_ids']=[
+                    # Receivable / Payable / Transfer line.
+                    (0, 0, {
+                        'name': rec_pay_line_name,
+                        'amount_currency': counterpart_amount + write_off_amount if currency_id else 0.0,
+                        'currency_id': currency_id,
+                        'debit':0.0,
+                        'credit':valor_pagar,
+                        'date_maturity': payment.payment_date,
+                        'partner_id': payment.partner_id.commercial_partner_id.id,
+                        'account_id': payment.destination_account_id.id ,
+                        'payment_id': payment.id,
+                        'analytic_account_id':payment.analytic_account_id.id or False,
+                    }),
+                    (0, 0, {
+                        'name': 'Valor de Facturas',
+                        'amount_currency': counterpart_amount + write_off_amount if currency_id else 0.0,
+                        'currency_id': currency_id,
+                        'debit':0.0,
+                        'credit':balance-valor_pagar,
+                        'date_maturity': payment.payment_date,
+                        'partner_id': payment.partner_id.commercial_partner_id.id,
+                        'account_id': payment.destination_account_id.id ,
+                        'payment_id': payment.id,
+                        'analytic_account_id':payment.analytic_account_id.id or False,
+                    }),
+                    # Liquidity line.
+                    (0, 0, {
+                        'name': liquidity_line_name,
+                        'amount_currency': -liquidity_amount if liquidity_line_currency_id else 0.0,
+                        'currency_id': liquidity_line_currency_id,
+                        'debit': balance < 0.0 and -balance or 0.0,
+                        'credit': balance > 0.0 and balance or 0.0,
+                        'date_maturity': payment.payment_date,
+                        'partner_id': payment.partner_id.commercial_partner_id.id,
+                        'account_id': liquidity_line_account.id,
+                        'payment_id': payment.id,
+                        'analytic_account_id': False,
+                    }),
+                ]
 
             if write_off_balance:
                 # Write-off line.

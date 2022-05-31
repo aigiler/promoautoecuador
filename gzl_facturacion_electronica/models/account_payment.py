@@ -3,15 +3,57 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
+
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
     contrato_estado_cuenta_payment_ids = fields.One2many('contrato.estado.cuenta.payment', 'payment_pagos_id')
+    valor_deuda=fields.Float("Valores Pendiente")
+    saldo_pago=fields.Float("Saldo")
 
     tipo_valor = fields.Selection([
         ('enviar_credito', 'Enviar a Credito'),
         ('crear_acticipo', 'Crear Anticipo')
     ], string='Tipo')
+
+    @api.onchange('partner_id')
+    def obtener_deudas(self):
+        valor_deuda=0
+        for l in self:
+            if l.partner_id:
+                
+                for x in l.payment_line_ids:
+                    valor_deuda+=(x.actual_amount+x.monto_pendiente_pago)
+        self.valor_deuda=valor_deuda
+
+    @api.onchange('amount')
+    def obtener_deudas(self):
+        monto=0
+        for l in self:
+            valor=0
+            if l.amount:
+                valor=l.amount    
+        monto=valor-self.valor_deuda
+
+    @api.multi
+    def crear_detalles(self):
+        viewid = self.env.ref('gzl_facturacion_electronica.cuota_pago_form2').id
+        return {   
+            'name':'Detalle de Cuotas',
+            'view_type':'form',
+            'views' : [(viewid,'form')],
+            'res_model':'account.payment',
+            'res_id':self.id,
+            'type':'ir.actions.act_window',
+            'target':'new',
+            }
+
+
+
+    def cerrar_ventana(self):
+        return {
+        'type':'ir.actions.act_window_close'
+        }
 
     @api.onchange('tipo_valor')
     def _onchange_tipo_valor(self):
@@ -61,3 +103,4 @@ class AccountPayment(models.Model):
                         self.contrato_estado_cuenta_payment_ids = [(0,0,cuotas)]
 
             # pass
+

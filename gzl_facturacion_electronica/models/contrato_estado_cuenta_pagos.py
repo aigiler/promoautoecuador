@@ -6,6 +6,7 @@ class ContratoEstadoCuentaPagos(models.Model):
     # _rec_name = 'numero_cuota'
 
 
+
     payment_pagos_id = fields.Many2one('account.payment')
     idContrato = fields.Char("ID de Contrato en base")
     contrato_id = fields.Many2one('contrato')
@@ -77,3 +78,17 @@ class ContratoEstadoCuentaPagos(models.Model):
     #         l.monto_pagado=monto
 
     #         l.saldo=l.cuota_capital+ l.seguro+ l.rastreo + l.otro
+
+
+        @api.multi
+    def crear_detalles(self):
+        viewid = self.env.ref('gzl_facturacion_electronica.estado_contrato_form').id
+        return {   
+            'name':'Valores a Pagar',
+            'view_type':'form',
+            'views' : [(viewid,'form')],
+            'res_model':'contrato.estado.cuenta.payment',
+            'res_id':self.id,
+            'type':'ir.actions.act_window',
+            'target':'new',
+            }
