@@ -129,7 +129,7 @@ class AccountMove(models.Model):
                     lista_ids.append(id_registro.id)
                     self.update({'campos_adicionales_facturacion':[(6,0,lista_ids)]}) 
             else:
-                print(self.campos_adicionales_facturacion)
+                print(self.campos_adicionales_facturacion,"ESTOS SON LOS CAMPOS ADICIONALES")
 
     establecimiento = fields.Many2one('establecimiento')
     reversed_entry_nc_id = fields.Many2one(related='reversed_entry_id', store=True)
