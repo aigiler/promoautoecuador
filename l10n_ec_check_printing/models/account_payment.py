@@ -987,5 +987,7 @@ class AccountPaymentLine(models.Model):
     def obtener_monto(self):
         for l in self:
             if l.invoice_id:
+                monto_pendiente_pago=0
                 for x in l.invoice_id.contrato_estado_cuenta_ids:
-                    l.monto_pendiente_pago=x.cuota_capital
+                    monto_pendiente_pago+=(x.saldo-x.cuota_adm)
+                l.monto_pendiente_pago=monto_pendiente_pago
