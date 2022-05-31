@@ -450,6 +450,7 @@ class AccountMove(models.Model):
             'tag_ids': [(6, 0, tax_line.tag_ids.ids)],
         }
 
+
     @api.model
     def _get_tax_grouping_key_from_base_line(self, base_line, tax_vals):
         ''' Create the dictionary based on a base line that will be used as key to group taxes together.
@@ -3587,6 +3588,7 @@ class AccountMoveLine(models.Model):
     # -------------------------------------------------------------------------
 
     def check_full_reconcile(self):
+
         """
         This method check if a move is totally reconciled and if we need to create exchange rate entries for the move.
         In case exchange rate entries needs to be created, one will be created per currency present.

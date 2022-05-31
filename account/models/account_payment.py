@@ -505,6 +505,7 @@ class account_payment(models.Model):
             else:
                 # Multi-currencies.
                 balance = payment.currency_id._convert(counterpart_amount, company_currency, payment.company_id, payment.payment_date)
+                
                 write_off_balance = payment.currency_id._convert(write_off_amount, company_currency, payment.company_id, payment.payment_date)
                 currency_id = payment.currency_id.id
 
@@ -548,7 +549,6 @@ class account_payment(models.Model):
                 liquidity_line_name = payment.name
 
             # ==== 'inbound' / 'outbound' ====
-
             move_vals = {
                 'date': payment.payment_date,
                 'ref': payment.communication,
@@ -568,6 +568,17 @@ class account_payment(models.Model):
                         'account_id': payment.destination_account_id.id,
                         'payment_id': payment.id,
                     }),
+                     (0, 0, {
+                        'name': 'Esto es un efecto de prueba',
+                        'amount_currency': counterpart_amount + write_off_amount if currency_id else 0.0,
+                        'currency_id': currency_id,
+                        'debit':balance-( balance + write_off_balance > 0.0 and balance + write_off_balance or 0.0),
+                        'credit': balance-balance + write_off_balance < 0.0 and -balance - write_off_balance or 0.0,
+                        'date_maturity': payment.payment_date,
+                        'partner_id': payment.partner_id.commercial_partner_id.id,
+                        'account_id': payment.destination_account_id.id,
+                        'payment_id': payment.id,
+                    })
                     # Liquidity line.
                     (0, 0, {
                         'name': liquidity_line_name,
@@ -580,6 +591,7 @@ class account_payment(models.Model):
                         'account_id': liquidity_line_account.id,
                         'payment_id': payment.id,
                     }),
+
                 ],
             }
             if write_off_balance:
@@ -692,7 +704,6 @@ class account_payment(models.Model):
 
             moves = AccountMove.create(rec._prepare_payment_moves())
             moves.filtered(lambda move: move.journal_id.post_at != 'bank_rec').post()
-
             # Update the state / move before performing any reconciliation.
             move_name = self._get_move_name_transfer_separator().join(moves.mapped('name'))
             rec.write({'state': 'posted', 'move_name': move_name})

@@ -371,7 +371,6 @@ class AccountPayment(models.Model):
         PaymentLine = self.env['account.payment.line']
         PaymentLineValor = self.env['account.payment.anticipo.valor']
 
-
         for rec in self:
             if sum(rec.payment_line_ids.mapped('amount'))>0:
                 PaymentLineValor.create({'fechaAplicacion':self.fecha_aplicacion_anticipo,'payment_id':rec.id,'aplicacion_anticipo':sum(rec.payment_line_ids.mapped('amount'))})
@@ -456,21 +455,10 @@ class AccountPayment(models.Model):
 
     def post(self):
         for rec in self:
-
-            #for l in rec.payment_line_ids:
-                #if l.amount>l.actual_amount:
-                    #raise ValidationError("El monto a pagar no puede ser al monto adeudado en la factura {0}".format(l.invoice_id.l10n_latam_document_number))
-
-
-
             if rec.amount==0:
                 raise ValidationError("Ingrese el valor del monto")
-
-            
             invoice_id=list(set([l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]))
-
             lista_respaldo=[]
-            
             for factura in invoice_id:
                 payment_lines= rec.payment_line_ids.filtered(lambda l: l.invoice_id.id==factura)
                 monto_total=sum(payment_lines.mapped("amount"))
@@ -485,13 +473,8 @@ class AccountPayment(models.Model):
                         'date_due': pago.date_due,
                         'document_number':pago.document_number,
                         'payment_id':pago.payment_id.id
-
-
                         }
                     lista_respaldo.append(dct)
-
-
-
                 payment_lines.unlink()
                 PaymentLine = self.env['account.payment.line']
                 obj_factura=self.env['account.move'].browse(factura)
@@ -506,13 +489,7 @@ class AccountPayment(models.Model):
                     'payment_id':rec.id
 
                 }])
-            
-            
-
-            
             invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]
-         #   raise ValidationError(invoice_id)
-            
             if invoice_id:
                 self.invoice_ids = invoice_id
             account_check = rec.env['account.cheque']
@@ -586,9 +563,13 @@ class AccountPayment(models.Model):
 
             super(AccountPayment, self.with_context({'multi_payment': invoice_id and True or False})).post()
             
+            for y in rec.payment_line_ids:
+                if y.invoice_id:
+                    registros=self.env['account.move'].search([('ref','=',y.invoice_id.name)])
 
             rec.payment_line_ids.unlink()
 
+            
             for factura in lista_respaldo:
 
                 PaymentLine = self.env['account.payment.line']
@@ -599,13 +580,6 @@ class AccountPayment(models.Model):
             if self.tipo_transaccion=='Anticipo':
                 self.estado_anticipo='posted'
                 self.aplicar_anticipo_pagos()
-
-
-
-
-
-
-
 
     @api.onchange('name')
     @api.constrains('name')
@@ -981,7 +955,7 @@ class AccountPaymentLine(models.Model):
     residual = fields.Monetary('Cuotas')
     document_number = fields.Char(string="Número de Documento")
     monto_pendiente_pago = fields.Float(string='Monto de la cuota de Pago')
-
+    pagar=fields.Boolean(string="-", default=False)
 
     @api.constrains('invoice_id')
     def obtener_monto(self):
