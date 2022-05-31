@@ -80,7 +80,7 @@ class ContratoEstadoCuentaPagos(models.Model):
     #         l.saldo=l.cuota_capital+ l.seguro+ l.rastreo + l.otro
 
 
-        @api.multi
+    #@api.multi
     def crear_detalles(self):
         viewid = self.env.ref('gzl_facturacion_electronica.estado_contrato_form').id
         return {   

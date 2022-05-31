@@ -35,7 +35,7 @@ class AccountPayment(models.Model):
                 valor=l.amount    
         monto=valor-self.valor_deuda
 
-    @api.multi
+    #@api.multi
     def crear_detalles(self):
         viewid = self.env.ref('gzl_facturacion_electronica.cuota_pago_form2').id
         return {   
