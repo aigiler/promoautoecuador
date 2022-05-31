@@ -100,7 +100,7 @@ class AccountMove(models.Model):
 
             self._move_autocomplete_invoice_lines_values()
 
-    @api.onchange('invoice_payment_term_id','method_payment')
+    @api.onchange('invoice_payment_term_id','method_payment','campos_adicionales_facturacion')
     def obtener_infoadicional(self):
         
         numero_cuotas=","      
@@ -122,11 +122,14 @@ class AccountMove(models.Model):
                             {'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':self.method_payment.name},
                             {'nombre':'Nota','valor':self.partner_id.name+'Cancela Cuotas'+numero_cuotas}]
                 
+            
                 lista_ids=[]
                 for prueba in lista_dic:
                     id_registro=self.env['campos.adicionales.facturacion'].create(prueba) 
                     lista_ids.append(id_registro.id)
                     self.update({'campos_adicionales_facturacion':[(6,0,lista_ids)]}) 
+            else:
+                print(self.campos_adicionales_facturacion)
 
     establecimiento = fields.Many2one('establecimiento')
     reversed_entry_nc_id = fields.Many2one(related='reversed_entry_id', store=True)
