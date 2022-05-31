@@ -120,7 +120,7 @@ class AccountMove(models.Model):
                 lista_ids=[]
                 for prueba in lista_dic:
                     id_registro=self.env['campos.adicionales.facturacion'].create(prueba) 
-                    lista_ids.ap
+                    lista_ids.append(id_registro.id)
                     self.update({'campos_adicionales_facturacion':[(6,0,lista_ids)]}) 
             else:
                 for x in self.campos_adicionales_facturacion:
