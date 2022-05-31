@@ -8,13 +8,14 @@
         <field name="arch" type="xml">
             <field name="communication" position="before">
                 <field name="tipo_valor" />
+                <button  name="crear_detalles" attrs="{'invisible': [('tipo_valor','!=','enviar_credito')]}" title="Obtener Cuotas" type="object"></button>
                 <field name="valor_deuda" />
                 <field name="saldo_pago" /> 
 
             </field>
-            <xpath expr="//group[@name='payment_difference']" position="after">
-                    <button  name="crear_detalles" attrs="{'invisible': [('tipo_valor','!=','enviar_credito')]}" title="Obtener Cuotas" type="object"></button>
-                    <!-- <notebook>
+           <!-- <xpath expr="//group[@name='payment_difference']" position="after">
+                    
+                     <notebook>
                         <page string="Pago de Cuotas" attrs="{'invisible': [('tipo_valor','!=','enviar_credito')]}">
                             <field name="contrato_estado_cuenta_payment_ids" >
                                 <tree editable="bottom" create="0">
@@ -33,8 +34,8 @@
                                 </tree>
                             </field>
                         </page>
-                    </notebook> -->
-            </xpath>
+                    </notebook>
+            </xpath> -->
         </field>
     </record>
 
