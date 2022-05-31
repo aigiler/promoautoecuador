@@ -113,6 +113,7 @@
                             <field name="actual_amount" readonly="1" widget="monetary" force_save="1"/>
                             <field name="residual" readonly="1" widget="monetary" force_save="1"/>
                             <field name="amount" readonly="0" sum="amount" widget="monetary" force_save="1" />
+                            <field name="monto_pendiente_pago" readonly="0" sum="amount" widget="monetary" force_save="1" />
                         </tree>
                     </field>
 

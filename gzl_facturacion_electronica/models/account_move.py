@@ -70,7 +70,6 @@ class AccountMove(models.Model):
         if self.contrato_estado_cuenta_ids:
             obj_contrato_estado_cuenta = self.env['contrato.estado.cuenta'].search([('id','in',self.contrato_estado_cuenta_ids.ids)])
             i=0
-            
             saldo_credito=0
             numero_cuotas=''
             for rec in obj_contrato_estado_cuenta:
@@ -97,12 +96,10 @@ class AccountMove(models.Model):
                             'quantity': rec.get('quantity'),
                             'price_unit': rec.get('price_unit'),
                         })]          
-
             self._move_autocomplete_invoice_lines_values()
 
     @api.onchange('invoice_payment_term_id','method_payment','contrato_estado_cuenta_ids','name')
     def obtener_infoadicional(self):
-        
         numero_cuotas=","      
         saldo_credito=0
         longitud=0
@@ -123,11 +120,11 @@ class AccountMove(models.Model):
                 lista_ids=[]
                 for prueba in lista_dic:
                     id_registro=self.env['campos.adicionales.facturacion'].create(prueba) 
-                    lista_ids.append(id_registro.id)
+                    lista_ids.ap
                     self.update({'campos_adicionales_facturacion':[(6,0,lista_ids)]}) 
             else:
                 for x in self.campos_adicionales_facturacion:
-                    if x.nombre=='CRÉDITO':
+                    if x.nombre=='CRÉDITO':pend(id_registro.id)
                         x.valor=str(saldo_credito)+' a '+self.invoice_payment_term_id.name
                     elif x.nombre=='Desde':
                         x.valor=str(self.invoice_date)
