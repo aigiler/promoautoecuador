@@ -13,7 +13,6 @@
 
             </field>
             <xpath expr="//group[@name='payment_difference']" position="after">
-                <sheet>
                     <button  name="crear_detalles" attrs="{'invisible': [('tipo_valor','!=','enviar_credito')]}" title="Obtener Cuotas" type="object"></button>
                     <!-- <notebook>
                         <page string="Pago de Cuotas" attrs="{'invisible': [('tipo_valor','!=','enviar_credito')]}">
@@ -35,7 +34,6 @@
                             </field>
                         </page>
                     </notebook> -->
-                </sheet>
             </xpath>
         </field>
     </record>
