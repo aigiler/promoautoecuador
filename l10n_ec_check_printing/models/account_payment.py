@@ -457,9 +457,9 @@ class AccountPayment(models.Model):
     def post(self):
         for rec in self:
 
-            for l in rec.payment_line_ids:
-                if l.monto_pendiente_pago>l.actual_amount:
-                    raise ValidationError("El monto a pagar no puede ser al monto adeudado en la factura {0}".format(l.invoice_id.l10n_latam_document_number))
+            #for l in rec.payment_line_ids:
+                #if l.amount>l.actual_amount:
+                    #raise ValidationError("El monto a pagar no puede ser al monto adeudado en la factura {0}".format(l.invoice_id.l10n_latam_document_number))
 
 
 
@@ -467,13 +467,13 @@ class AccountPayment(models.Model):
                 raise ValidationError("Ingrese el valor del monto")
 
             
-            invoice_id=list(set([l.invoice_id.id for l in rec.payment_line_ids if l.monto_pendiente_pago>0]))
+            invoice_id=list(set([l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]))
 
             lista_respaldo=[]
             
             for factura in invoice_id:
                 payment_lines= rec.payment_line_ids.filtered(lambda l: l.invoice_id.id==factura)
-                monto_total=sum(payment_lines.mapped("monto_pendiente_pago"))
+                monto_total=sum(payment_lines.mapped("amount"))
 
                 for pago in payment_lines:
                     dct={
@@ -484,8 +484,8 @@ class AccountPayment(models.Model):
                         'amount': pago.amount,
                         'date_due': pago.date_due,
                         'document_number':pago.document_number,
-                        'payment_id':pago.payment_id.id,
-                        'monto_pendiente_pago':pago.monto_pendiente_pago
+                        'payment_id':pago.payment_id.id
+
 
                         }
                     lista_respaldo.append(dct)
@@ -503,13 +503,14 @@ class AccountPayment(models.Model):
                     'amount': monto_total,
                     'date_due':obj_factura.invoice_date_due,
                     'document_number':obj_factura.l10n_latam_document_number,
-                    'payment_id':rec.id,
+                    'payment_id':rec.id
+
                 }])
             
             
 
             
-            invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.monto_pendiente_pago>0]
+            invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]
          #   raise ValidationError(invoice_id)
             
             if invoice_id:
