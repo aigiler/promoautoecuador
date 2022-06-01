@@ -107,4 +107,13 @@ class AccountPayment(models.Model):
 
             # pass
 
-
+    @api.depends('contrato_estado_cuenta_payment_ids.monto_pagar')
+    @api.onchange('contrato_estado_cuenta_payment_ids.monto_pagar')
+    def validar_monto_permitido(self):
+        saldo_acumulado=0
+        for l in self:
+            for m in l.contrato_estado_cuenta_payment_ids:
+                if m.monto_pagar:
+                    saldo_acumulado+=m.monto_pagar
+                    if saldo_acumulado>l.amount:
+                        raise ValidationError("La diferencia de los valores asignados a pagar excede el monto global de pago.")
