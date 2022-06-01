@@ -92,3 +92,9 @@ class ContratoEstadoCuentaPagos(models.Model):
             'type':'ir.actions.act_window',
             'target':'new',
             }
+
+
+    def cerrar_ventana(self):
+        return {
+        'type':'ir.actions.act_window_close'
+        }
