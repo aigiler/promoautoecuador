@@ -59,7 +59,7 @@ class ContratoEstadoCuentaPagos(models.Model):
 
     @api.onchange('cuota_capital_pagar','seguro_pagar','rastreo_pagar','otro_pagar')
     def validar_saldos(self):
-        saldo_disponible=l.payment_pagos_id.saldo_pago
+        saldo_disponible=self.payment_pagos_id.saldo_pago
         for l in self:
             if l.cuota_capital_pagar:
                 if (saldo_disponible-l.cuota_capital_pagar)<0:
@@ -81,7 +81,7 @@ class ContratoEstadoCuentaPagos(models.Model):
                     raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(l.payment_pagos_id.saldo_pago))
                 else:
                     l.payment_pagos_id.saldo_pago=saldo_disponible-l.rastreo_pagar
-                        
+
 
 
 
