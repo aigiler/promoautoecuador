@@ -78,7 +78,7 @@ class AccountPayment(models.Model):
                             lista_cuotas.append(cuota.id)
 
             if self.contrato_id:
-                self.update({'contrato_estado_cuenta_payment_ids':[(6,0,lista_cuotas)]}) 
+                self.update({'contrato_estado_cuenta_payment_ids':[(6,0,[])]}) 
                 for cuota in self.contrato_id.estado_de_cuenta_ids:
                     if cuota.estado_pago=='pendiente' and cuota.factura_id==False:
                         lista_cuotas.append(cuota.id)
