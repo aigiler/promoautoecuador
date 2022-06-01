@@ -895,7 +895,7 @@ class AccountPayment(models.Model):
                 saldo_debito=0
                 saldo_credito=0
                 for linea in self.account_payment_account_ids:
-                        if line.debit:
+                        if linea.debit:
                             saldo_debito=linea.debit
                         else:
                             saldo_credito=linea.credit
