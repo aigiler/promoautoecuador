@@ -854,7 +854,7 @@ class AccountPayment(models.Model):
 
                 all_move_vals.append(transfer_move_vals)
 
-            if payment.tipo_valor=='enviar_credito'
+            if payment.tipo_valor=='enviar_credito':
                 if payment.saldo_pago:
                     if not self.account_payment_account_ids:
                         raise ValidationError("El saldo Pendiente debe ser asignado a un apunte contable. Favor crear un registro en la sección Cuentas Contables.")
