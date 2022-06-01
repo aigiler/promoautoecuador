@@ -10,6 +10,7 @@ class AccountPayment(models.Model):
     contrato_estado_cuenta_payment_ids = fields.One2many('contrato.estado.cuenta.payment', 'payment_pagos_id')
     valor_deuda=fields.Float("Valores Pendiente")
     saldo_pago=fields.Float("Saldo")
+    total_asignado=fields.Float("Total asignado", compute="total_asignar")
 
     tipo_valor = fields.Selection([
         ('enviar_credito', 'Enviar a Credito'),
@@ -114,30 +115,15 @@ class AccountPayment(models.Model):
                         
                         self.contrato_estado_cuenta_payment_ids = [(0,0,cuotas)]
 
-            # pass
+    @api.depends('contrato_estado_cuenta_payment_ids')
+    def total_asignado(self):
+        for l in self:
+            for x in l.contrato_estado_cuenta_ids:
+                l.total_asignado+=x.monto_pagar
 
-        
-    @api.onchange('contrato_estado_cuenta_payment_ids.cuota_capital_pagar','contrato_estado_cuenta_payment_ids.seguro_pagar','contrato_estado_cuenta_payment_ids.rastreo_pagar','contrato_estado_cuenta_payment_ids.otro_pagar')
-    @api.constrains('contrato_estado_cuenta_payment_ids.cuota_capital_pagar','contrato_estado_cuenta_payment_ids.seguro_pagar','contrato_estado_cuenta_payment_ids.rastreo_pagar','contrato_estado_cuenta_payment_ids.otro_pagar')
-    def validar_saldos(self):
-        for l in self.contrato_estado_cuenta_payment_ids:
-            if l.cuota_capital_pagar:
-                if (self.saldo_pago-l.cuota_capital_pagar)<0:
-                    raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(self.saldo_pago))
-                else:
-                    self.saldo_pago=self.saldo_pago-l.cuota_capital_pagar
-            if l.otro_pagar:
-                if (self.saldo_pago-l.otro_pagar)<0:
-                    raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(self.saldo_pago))
-                else:
-                    self.saldo_pago=self.saldo_pago-l.otro_pagar
-            if l.seguro_pagar:
-                if (self.saldo_pago-l.seguro_pagar)<0:
-                    raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(self.saldo_pago))
-                else:
-                    self.saldo_pago=self.saldo_pago-l.seguro_pagar
-            if l.rastreo_pagar:
-                if (self.saldo_pago-l.rastreo_pagar)<0:
-                    raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(self.saldo_pago))
-                else:
-                    self.saldo_pago=self.saldo_pago-l.rastreo_pagar
+    @api.onchange('total_asignado')
+    def validar_pendiente(self):
+        for l in self:
+            if l.tipo_valor=='enviar_credito':
+                    if l.total_asignado>saldo_pago:
+                        raise ValidationError("No puede asignar más de lo que se indico en el pago")
