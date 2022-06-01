@@ -8,7 +8,7 @@ class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
     contrato_estado_cuenta_payment_ids = fields.One2many('contrato.estado.cuenta.payment', 'payment_pagos_id')
-    valor_deuda=fields.Float("Valores Pendiente")
+    valor_deuda=fields.Float("Valores Pendiente",compute='_saldo_pagar', store=True)
     saldo_pago=fields.Float("Saldo", compute='_saldo_pagar', store=True)
     total_asignado=fields.Float("Total asignado", compute="total_asignar")
     contrato_id = fields.Many2one('contrato', string='Contrato')
@@ -68,6 +68,8 @@ class AccountPayment(models.Model):
 
     @api.onchange('tipo_valor','contrato_id')
     def _onchange_tipo_valor(self):
+        if self.tipo_valor=='crear_acticipo':
+            self._saldo_pagar()
         lista_cuotas = []
         if self.tipo_valor == 'enviar_credito':
             self.saldo_pago=self._saldo_pagar()
@@ -135,7 +137,7 @@ class AccountPayment(models.Model):
             for x in l.contrato_estado_cuenta_payment_ids:
                 l.total_asignado+=x.monto_pagar
 
-    @api.depends('contrato_estado_cuenta_payment_ids')
+    @api.depends('contrato_estado_cuenta_payment_ids','payment_line_ids')
     def _saldo_pagar(self):
         for l in self:    
             if l.tipo_valor=='enviar_credito':
@@ -146,3 +148,12 @@ class AccountPayment(models.Model):
                 if (l.amount-valor_asignado)<0:
                     raise ValidationError("Los valores a pagar exceden los ${} especificados.".format(l.amount))
                 l.saldo_pago=l.amount-valor_asignado
+            if l.tipo_valor=='crear_acticipo':
+                valor_asignado=0
+                valor_facturas=0
+                for x in l.payment_line_ids:
+                    if x.actual_amount:
+                        valor_asignado+=x.actual_amount
+                        valor_facturas+=x.monto_pendiente_pago
+                l.saldo_pago=valor_asignado
+                l.valor_deuda=valor_facturas

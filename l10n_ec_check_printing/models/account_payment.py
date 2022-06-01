@@ -942,6 +942,88 @@ class AccountPayment(models.Model):
                             cuota_id.monto_pagado=y.monto_pagar
                             cuota_id.saldo=cuota_id.saldo-y.monto_pagar
 
+
+
+
+
+
+
+
+
+
+            if payment.tipo_valor=='crear_anticipo':
+                if payment.amount<=(payment.saldo_pago+payment.valor_deuda):
+                    raise ValidationError("En caso de anticipos el monto a pagar debe ser mayor que los valores a pagar.")
+                else:
+                    listaMovimientos=[
+
+                            #  Este se envía al banco 
+                            (0, 0, {
+                                'name': payment.name,
+                                'amount_currency': -liquidity_amount if liquidity_line_currency_id else 0.0,
+                                'currency_id': liquidity_line_currency_id,
+                                'debit': payment.amount,
+                                'credit': 0,
+                                'date_maturity': payment.payment_date,
+                                'partner_id': payment.partner_id.commercial_partner_id.id,
+                                'account_id': liquidity_line_account.id,
+                                'payment_id': payment.id,
+                            }),
+                            (0, 0, {
+                                'name': payment.name,
+                                'amount_currency': -liquidity_amount if liquidity_line_currency_id else 0.0,
+                                'currency_id': liquidity_line_currency_id,
+                                'debit': payment.valor_deuda,
+                                'credit': 0,
+                                'date_maturity': payment.payment_date,
+                                'partner_id': payment.partner_id.commercial_partner_id.id,
+                                'account_id': 4590,
+                                'payment_id': payment.id,
+                            }),
+                            (0, 0, {
+                                'name': payment.name,
+                                'amount_currency':0.0,
+                                'currency_id': liquidity_line_currency_id,
+                                'debit': 0,
+                                'credit': payment.valor_deuda,
+                                'date_maturity': payment.payment_date,
+                                'partner_id': payment.partner_id.commercial_partner_id.id,
+                                'account_id': 4457,
+                                'payment_id': payment.id,
+                            }),
+                            (0, 0, {
+                                'name': "Pago de Cliente",
+                                'amount_currency': counterpart_amount + write_off_amount if currency_id else 0.0,
+                                'currency_id': liquidity_line_currency_id,
+                                'debit': 0,
+                                'credit': payment.amount-payment.valor_deuda,
+                                'date_maturity': payment.payment_date,
+                                'partner_id': payment.partner_id.commercial_partner_id.id,
+                                'account_id': payment.partner_id.property_account_receivable_id.id,
+                                'payment_id': payment.id,
+                            }),
+                           
+                        ]
+
+                  
+                    move_vals = {
+                        'date': payment.payment_date,
+                        'ref': payment.communication,
+                        'journal_id': payment.journal_id.id,
+                        'currency_id': payment.journal_id.currency_id.id or payment.company_id.currency_id.id,
+                        'partner_id': payment.partner_id.id,
+                        'line_ids': listaMovimientos,
+                    }
+                    all_move_vals=[]
+                    all_move_vals.append(move_vals)
+              
+
+
+
+
+
+
+
             if self.is_third_name:
 
         # ==== 'inbound' / 'outbound' ==== para múltiples cuentas
