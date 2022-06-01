@@ -9,7 +9,7 @@ class AccountPayment(models.Model):
 
     contrato_estado_cuenta_payment_ids = fields.One2many('contrato.estado.cuenta.payment', 'payment_pagos_id')
     valor_deuda=fields.Float("Valores Pendiente")
-    saldo_pago=fields.Float("Saldo")
+    saldo_pago=fields.Float("Saldo", compute='_saldo_pagar')
     total_asignado=fields.Float("Total asignado", compute="total_asignar")
 
     tipo_valor = fields.Selection([
@@ -121,9 +121,12 @@ class AccountPayment(models.Model):
             for x in l.contrato_estado_cuenta_ids:
                 l.total_asignado+=x.monto_pagar
 
-    @api.onchange('total_asignado')
-    def validar_pendiente(self):
+    @api.depends('contrato_estado_cuenta_payment_ids')
+    def _saldo_pagar(self):
         for l in self:
             if l.tipo_valor=='enviar_credito':
-                    if l.total_asignado>saldo_pago:
-                        raise ValidationError("No puede asignar más de lo que se indico en el pago")
+                suma_valor=0
+                for x in l.contrato_estado_cuenta_ids:
+                    if x.monto_pagar:
+                        suma_valor+=x.monto_pagar
+                l.saldo_pago=suma_valor
