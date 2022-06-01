@@ -21,7 +21,6 @@ class AccountPayment(models.Model):
         valor_deuda=0
         for l in self:
             if l.partner_id:
-                
                 for x in l.payment_line_ids:
                     valor_deuda+=(x.actual_amount+x.monto_pendiente_pago)
         self.valor_deuda=valor_deuda

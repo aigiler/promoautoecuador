@@ -25,9 +25,6 @@ class AccountPayment(models.Model):
     def _get_default_invoice_date(self):
         return fields.Date.today()
 
-
-
-
     third_party_name = fields.Char('A nombre de Tercero',readonly=True,states={'draft': [('readonly', False)]})
     to_third_party = fields.Boolean('A nombre de terceros ?',readonly=True,states={'draft': [('readonly', False)]})
     date_to = fields.Date('Fecha Pago')
@@ -786,8 +783,7 @@ class AccountPayment(models.Model):
                     }),
                 ]}
             valor_pagar=0
-            if payment.payment_line_ids:
-                
+            if payment.payment_line_ids:  
                 for x in payment.payment_line_ids:
                     valor_pagar+=(x.actual_amount+x.monto_pendiente_pago)
             if payment.tipo_valor=='crear_anticipo':
