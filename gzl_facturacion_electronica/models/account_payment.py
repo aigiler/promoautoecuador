@@ -80,7 +80,7 @@ class AccountPayment(models.Model):
             if self.contrato_id:
                 self.update({'contrato_estado_cuenta_payment_ids':[(6,0,[])]}) 
                 for cuota in self.contrato_id.estado_de_cuenta_ids:
-                    if cuota.estado_pago=='pendiente' and cuota.factura_id==False:
+                    if cuota.estado_pago=='pendiente' and cuota.factura_id:
                         lista_cuotas.append(cuota.id)
                 
             #obj_am = self.env['account.move'].search([('id','in',self.invoice_ids.ids)])
