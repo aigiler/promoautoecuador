@@ -65,13 +65,13 @@ class AccountPayment(models.Model):
     def _onchange_amount(self):
         for l in self:
             if l.tipo_valor=='enviar_credito' and l.amount:
-                l.saldo_pago=l.amount
+                l.saldo_pago=self._saldo_pagar()
 
     @api.onchange('tipo_valor')
     def _onchange_tipo_valor(self):
         lista_cuotas = []
         if self.tipo_valor == 'enviar_credito':
-            self.saldo_pago=self.amount
+            self.saldo_pago=self._saldo_pagar()
             for rec in self.payment_line_ids:
                 for cuota in rec.invoice_id.contrato_estado_cuenta_ids:
                     if cuota.id not in lista_cuotas:
