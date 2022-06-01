@@ -933,6 +933,14 @@ class AccountPayment(models.Model):
                 }
                 all_move_vals=[]
                 all_move_vals.append(move_vals)
+                for y in self.contrato_estado_cuenta_payment_ids:
+                    cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',payment.contrato_id.id),
+                                                                ('numero_cuota','=',y.numero_cuota)])[0]     
+                    if cuota_id:
+                        for act in cuota_id:
+                            cuota_id.monto_pagado=y.monto_pagar
+                            cuota_id.saldo=cuota_id.saldo-y.monto_pagar
+
             if self.is_third_name:
 
         # ==== 'inbound' / 'outbound' ==== para múltiples cuentas
