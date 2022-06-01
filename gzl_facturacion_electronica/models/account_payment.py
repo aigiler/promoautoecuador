@@ -54,7 +54,7 @@ class AccountPayment(models.Model):
         'type':'ir.actions.act_window_close'
         }
 
-    @api.onchange('tipo_valor')
+    @api.onchange('tipo_valor','payment_line_ids')
     def _onchange_tipo_valor(self):
         lista_cuotas = []
         if self.tipo_valor == 'enviar_credito':
