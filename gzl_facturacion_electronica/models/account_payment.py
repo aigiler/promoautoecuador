@@ -59,6 +59,13 @@ class AccountPayment(models.Model):
         'type':'ir.actions.act_window_close'
         }
 
+
+    @api.onchange('amount')
+    def _onchange_amount(self):
+        for l in self:
+            if l.tipo_valor=='enviar_credito' and l.amount:
+                l.saldo_pago=l.amount
+
     @api.onchange('tipo_valor')
     def _onchange_tipo_valor(self):
         lista_cuotas = []
@@ -109,4 +116,28 @@ class AccountPayment(models.Model):
 
             # pass
 
-  
+        
+    @api.onchange('contrato_estado_cuenta_payment_ids.cuota_capital_pagar','contrato_estado_cuenta_payment_ids.seguro_pagar','contrato_estado_cuenta_payment_ids.rastreo_pagar','contrato_estado_cuenta_payment_ids.otro_pagar')
+    @api.constrains('contrato_estado_cuenta_payment_ids.cuota_capital_pagar','contrato_estado_cuenta_payment_ids.seguro_pagar','contrato_estado_cuenta_payment_ids.rastreo_pagar','contrato_estado_cuenta_payment_ids.otro_pagar')
+    def validar_saldos(self):
+        for l in self.contrato_estado_cuenta_payment_ids:
+            if l.cuota_capital_pagar:
+                if (self.saldo_pago-l.cuota_capital_pagar)<0:
+                    raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(self.saldo_pago))
+                else:
+                    self.saldo_pago=self.saldo_pago-l.cuota_capital_pagar
+            if l.otro_pagar:
+                if (self.saldo_pago-l.otro_pagar)<0:
+                    raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(self.saldo_pago))
+                else:
+                    self.saldo_pago=self.saldo_pago-l.otro_pagar
+            if l.seguro_pagar:
+                if (self.saldo_pago-l.seguro_pagar)<0:
+                    raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(self.saldo_pago))
+                else:
+                    self.saldo_pago=self.saldo_pago-l.seguro_pagar
+            if l.rastreo_pagar:
+                if (self.saldo_pago-l.rastreo_pagar)<0:
+                    raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(self.saldo_pago))
+                else:
+                    self.saldo_pago=self.saldo_pago-l.rastreo_pagar
