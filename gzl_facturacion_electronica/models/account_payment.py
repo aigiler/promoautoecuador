@@ -125,9 +125,10 @@ class AccountPayment(models.Model):
     def _saldo_pagar(self):
         for l in self:    
             if l.tipo_valor=='enviar_credito':
-            
                 valor_asignado=0
                 for x in l.contrato_estado_cuenta_payment_ids:
                     if x.monto_pagar:
                         valor_asignado+=x.monto_pagar
+                if (l.amount-valor_asignado)<0:
+                    raise ValidationError("Los valores a pagar exceden los ${} especificados.".format(l.amount))
                 l.saldo_pago=l.amount-valor_asignado
