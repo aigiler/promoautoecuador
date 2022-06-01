@@ -37,7 +37,7 @@ class AccountPayment(models.Model):
     #@api.multi
     def crear_detalles(self):
         for l in self:
-            if l.amount==0 or nor l.amount:
+            if l.amount==0 or not l.amount:
                 raise ValidationError("Debe Asignar un monto a Pagar")
         self._onchange_tipo_valor()
         viewid = self.env.ref('gzl_facturacion_electronica.pago_cuota_form2').id
@@ -106,4 +106,5 @@ class AccountPayment(models.Model):
                         self.contrato_estado_cuenta_payment_ids = [(0,0,cuotas)]
 
             # pass
+
 
