@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <field name="communication" position="before">
                 <field name="tipo_valor" />
-                <button  name="crear_detalles" string="Obtener Cuotas" type="object" class='btn-primary'></button>
+                <button  name="crear_detalles" string="Obtener Cuotas" type="object" class='btn-primary' attrs="{'invisible': [('tipo_valor','!=','enviar_credito')]}"></button>
                 <field name="valor_deuda" />
                 <field name="saldo_pago" /> 
 
