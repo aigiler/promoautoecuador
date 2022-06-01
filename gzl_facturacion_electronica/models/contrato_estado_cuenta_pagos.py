@@ -57,29 +57,29 @@ class ContratoEstadoCuentaPagos(models.Model):
         for l in self:
             l.monto_pagar=l.cuota_capital_pagar+l.seguro_pagar+l.rastreo_pagar+l.otro_pagar
 
-    @api.onchange('cuota_capital_pagar','seguro_pagar','rastreo_pagar','otro_pagar')
-    def validar_saldos(self):
-        for l in self:
-            if l.cuota_capital_pagar:
-                if (l.payment_pagos_id.saldo_pago-l.cuota_capital_pagar)<0:
-                    raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(l.payment_pagos_id.saldo_pago))
-                else:
-                    l.payment_pagos_id.saldo_pago=l.payment_pagos_id.saldo_pago-l.cuota_capital_pagar
-            if l.otro_pagar:
-                if (l.payment_pagos_id.saldo_pago-l.otro_pagar)<0:
-                    raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(l.payment_pagos_id.saldo_pago))
-                else:
-                    l.payment_pagos_id.saldo_pago=l.payment_pagos_id.saldo_pago-l.otro_pagar
-            if l.seguro_pagar:
-                if (l.payment_pagos_id.saldo_pago-l.seguro_pagar)<0:
-                    raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(l.payment_pagos_id.saldo_pago))
-                else:
-                    l.payment_pagos_id.saldo_pago=l.payment_pagos_id.saldo_pago-l.seguro_pagar
-            if l.rastreo_pagar:
-                if (l.payment_pagos_id.saldo_pago-l.rastreo_pagar)<0:
-                    raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(l.payment_pagos_id.saldo_pago))
-                else:
-                    l.payment_pagos_id.saldo_pago=l.payment_pagos_id.saldo_pago-l.rastreo_pagar
+    # @api.onchange('cuota_capital_pagar','seguro_pagar','rastreo_pagar','otro_pagar')
+    # def validar_saldos(self):
+    #     for l in self:
+    #         if l.cuota_capital_pagar:
+    #             if (l.payment_pagos_id.saldo_pago-l.cuota_capital_pagar)<0:
+    #                 raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(l.payment_pagos_id.saldo_pago))
+    #             else:
+    #                 l.payment_pagos_id.saldo_pago=l.payment_pagos_id.saldo_pago-l.cuota_capital_pagar
+    #         if l.otro_pagar:
+    #             if (l.payment_pagos_id.saldo_pago-l.otro_pagar)<0:
+    #                 raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(l.payment_pagos_id.saldo_pago))
+    #             else:
+    #                 l.payment_pagos_id.saldo_pago=l.payment_pagos_id.saldo_pago-l.otro_pagar
+    #         if l.seguro_pagar:
+    #             if (l.payment_pagos_id.saldo_pago-l.seguro_pagar)<0:
+    #                 raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(l.payment_pagos_id.saldo_pago))
+    #             else:
+    #                 l.payment_pagos_id.saldo_pago=l.payment_pagos_id.saldo_pago-l.seguro_pagar
+    #         if l.rastreo_pagar:
+    #             if (l.payment_pagos_id.saldo_pago-l.rastreo_pagar)<0:
+    #                 raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(l.payment_pagos_id.saldo_pago))
+    #             else:
+    #                 l.payment_pagos_id.saldo_pago=l.payment_pagos_id.saldo_pago-l.rastreo_pagar
 
 
 
