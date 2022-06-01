@@ -55,7 +55,12 @@ class ContratoEstadoCuentaPagos(models.Model):
     @api.depends('cuota_capital_pagar','seguro_pagar','rastreo_pagar','otro_pagar')
     def _obtener_monto(self):
         for l in self:
+            saldo_pendiente=l.payment_pagos_id.saldo_pago
             l.monto_pagar=l.cuota_capital_pagar+l.seguro_pagar+l.rastreo_pagar+l.otro_pagar
+            if l.monto_pagar>l.payment_pagos_id.saldo_pago:
+                raise ValidationError("Se ha pasado el monto de pago.")
+            else:
+                l.payment_pagos_id.write({'saldo_pago':l.monto_pagar+saldo_pendiente})
 
     # @api.onchange('cuota_capital_pagar','seguro_pagar','rastreo_pagar','otro_pagar')
     # def validar_saldos(self):
