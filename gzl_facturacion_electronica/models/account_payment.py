@@ -39,6 +39,7 @@ class AccountPayment(models.Model):
         for l in self:
             if l.amount==0 or not l.amount:
                 raise ValidationError("Debe Asignar un monto a Pagar")
+        self.saldo_pago=l.amount
         self._onchange_tipo_valor()
         viewid = self.env.ref('gzl_facturacion_electronica.pago_cuota_form2').id
         return {   
@@ -107,13 +108,4 @@ class AccountPayment(models.Model):
 
             # pass
 
-    @api.depends('contrato_estado_cuenta_payment_ids.monto_pagar')
-    @api.onchange('contrato_estado_cuenta_payment_ids.monto_pagar')
-    def validar_monto_permitido(self):
-        saldo_acumulado=0
-        for l in self:
-            for m in l.contrato_estado_cuenta_payment_ids:
-                if m.monto_pagar:
-                    saldo_acumulado+=m.monto_pagar
-                    if saldo_acumulado>l.amount:
-                        raise ValidationError("La diferencia de los valores asignados a pagar excede el monto global de pago.")
+  
