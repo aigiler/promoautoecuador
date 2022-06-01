@@ -76,6 +76,7 @@
     <field name="model">contrato.estado.cuenta.payment</field>
     <field name="arch" type="xml">
       <form string="Valores a Pagar">
+         <group>  
            <group>
            
                 <field name="saldo" force_save="1"/>
@@ -91,6 +92,7 @@
             <field name="otro_pagar" />
             <field name="monto_pagar" />
            </group>
+        </group>
         <footer>
         <button name="cerrar_ventana" string="Cerrar" type="object" class="btn btn-sm btn-default"/>
         </footer>
