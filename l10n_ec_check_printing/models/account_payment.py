@@ -854,85 +854,86 @@ class AccountPayment(models.Model):
 
                 all_move_vals.append(transfer_move_vals)
 
-            if payment.tipo_valor=='enviar_credito' and payment.saldo_pago:
-                if not self.account_payment_account_ids:
-                    raise ValidationError("El saldo Pendiente debe ser asignado a un apunte contable. Favor crear un registro en la sección Cuentas Contables.")
-                listaMovimientos=[
+            if payment.tipo_valor=='enviar_credito'
+                if payment.saldo_pago:
+                    if not self.account_payment_account_ids:
+                        raise ValidationError("El saldo Pendiente debe ser asignado a un apunte contable. Favor crear un registro en la sección Cuentas Contables.")
+                    listaMovimientos=[
 
-                        #  Este se envía al banco 
-                        (0, 0, {
-                            'name': payment.name,
-                            'amount_currency': -liquidity_amount if liquidity_line_currency_id else 0.0,
-                            'currency_id': liquidity_line_currency_id,
-                            'debit': payment.amount,
-                            'credit': 0,
-                            'date_maturity': payment.payment_date,
-                            'partner_id': payment.partner_id.commercial_partner_id.id,
-                            'account_id': liquidity_line_account.id,
-                            'payment_id': payment.id,
-                        })
-                    ]
-
-
-                saldo_debito=0
-                saldo_credito=0
-                total_credito=0
-                for linea in self.account_payment_account_ids:
-                        if linea.debit:
-                            saldo_debito=linea.debit
-                        else:
-                            saldo_credito=linea.credit
-                            total_credito+=saldo_credito
-
-                            # Receivable / Payable / Transfer line. Este se envia al proveedor
-                        tupla=(0, 0, {
-                            'name': linea.name,
-                            'amount_currency':  0.0,
-                            'currency_id': currency_id,
-                            'debit': linea.debit,
-                            'credit':  linea.credit,
-                            'date_maturity': payment.payment_date,
-                            'partner_id': False,
-                            'account_id': linea.cuenta.id,
-                            'payment_id': payment.id,
-                            'account_id': linea.cuenta.id,
-                            'analytic_account_id':linea.cuenta_analitica.id or False,
+                            #  Este se envía al banco 
+                            (0, 0, {
+                                'name': payment.name,
+                                'amount_currency': -liquidity_amount if liquidity_line_currency_id else 0.0,
+                                'currency_id': liquidity_line_currency_id,
+                                'debit': payment.amount,
+                                'credit': 0,
+                                'date_maturity': payment.payment_date,
+                                'partner_id': payment.partner_id.commercial_partner_id.id,
+                                'account_id': liquidity_line_account.id,
+                                'payment_id': payment.id,
+                            })
+                        ]
 
 
+                    saldo_debito=0
+                    saldo_credito=0
+                    total_credito=0
+                    for linea in self.account_payment_account_ids:
+                            if linea.debit:
+                                saldo_debito=linea.debit
+                            else:
+                                saldo_credito=linea.credit
+                                total_credito+=saldo_credito
 
-                        })
-                        listaMovimientos.append(tupla)
-                if total_credito!=payment.saldo_pago:
-                    raise ValidationError("Las lineas ubicadas en la sección Cuentas Contables debe ser igual al saldo.")
-                credito_asignado=0
-                debito_asignado=0
-                if total_credito:
-                    credito_asignado=balance+total_credito
-                elif saldo_debito:
-                    debito_asignado=balance-saldo_debito
+                                # Receivable / Payable / Transfer line. Este se envia al proveedor
+                            tupla=(0, 0, {
+                                'name': linea.name,
+                                'amount_currency':  0.0,
+                                'currency_id': currency_id,
+                                'debit': linea.debit,
+                                'credit':  linea.credit,
+                                'date_maturity': payment.payment_date,
+                                'partner_id': False,
+                                'account_id': linea.cuenta.id,
+                                'payment_id': payment.id,
+                                'account_id': linea.cuenta.id,
+                                'analytic_account_id':linea.cuenta_analitica.id or False,
 
-                listaMovimientos.append(#  Este se envía al banco 
-                        (0, 0, {
-                            'name': "Pago de Cliente",
-                            'amount_currency': counterpart_amount + write_off_amount if currency_id else 0.0,
-                            'currency_id': liquidity_line_currency_id,
-                            'debit': debito_asignado,
-                            'credit': -credito_asignado,
-                            'date_maturity': payment.payment_date,
-                            'partner_id': payment.partner_id.commercial_partner_id.id,
-                            'account_id': payment.partner_id.property_account_receivable_id.id,
-                            'payment_id': payment.id,
-                        }))                        
-                move_vals = {
-                    'date': payment.payment_date,
-                    'ref': payment.communication,
-                    'journal_id': payment.journal_id.id,
-                    'currency_id': payment.journal_id.currency_id.id or payment.company_id.currency_id.id,
-                    'partner_id': payment.partner_id.id,
-                    'line_ids': listaMovimientos,
-                }
-                all_move_vals=[]
-                all_move_vals.append(move_vals)
+
+
+                            })
+                            listaMovimientos.append(tupla)
+                    if total_credito!=payment.saldo_pago:
+                        raise ValidationError("Las lineas ubicadas en la sección Cuentas Contables debe ser igual al saldo.")
+                    credito_asignado=0
+                    debito_asignado=0
+                    if total_credito:
+                        credito_asignado=balance+total_credito
+                    elif saldo_debito:
+                        debito_asignado=balance-saldo_debito
+
+                    listaMovimientos.append(#  Este se envía al banco 
+                            (0, 0, {
+                                'name': "Pago de Cliente",
+                                'amount_currency': counterpart_amount + write_off_amount if currency_id else 0.0,
+                                'currency_id': liquidity_line_currency_id,
+                                'debit': debito_asignado,
+                                'credit': -credito_asignado,
+                                'date_maturity': payment.payment_date,
+                                'partner_id': payment.partner_id.commercial_partner_id.id,
+                                'account_id': payment.partner_id.property_account_receivable_id.id,
+                                'payment_id': payment.id,
+                            }))                        
+                    move_vals = {
+                        'date': payment.payment_date,
+                        'ref': payment.communication,
+                        'journal_id': payment.journal_id.id,
+                        'currency_id': payment.journal_id.currency_id.id or payment.company_id.currency_id.id,
+                        'partner_id': payment.partner_id.id,
+                        'line_ids': listaMovimientos,
+                    }
+                    all_move_vals=[]
+                    all_move_vals.append(move_vals)
                 for y in self.contrato_estado_cuenta_payment_ids:
                     cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',payment.contrato_id.id),
                                                                 ('numero_cuota','=',y.numero_cuota)])[0]     
