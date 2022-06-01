@@ -936,7 +936,7 @@ class AccountPayment(models.Model):
                             'account_id': payment.partner_id.property_account_receivable_id.id,
                             'payment_id': payment.id,
                         }))
-
+                print(listaMovimientos,"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
                         
                     
                 #raise ValidationError(str(listaMovimientos))
