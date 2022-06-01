@@ -71,17 +71,18 @@ class AccountPayment(models.Model):
         lista_cuotas = []
         if self.tipo_valor == 'enviar_credito':
             self.saldo_pago=self._saldo_pagar()
-            
+            if not self.contrato_id:
+                for rec in self.payment_line_ids:
+                    for cuota in rec.invoice_id.contrato_estado_cuenta_ids:
+                        if cuota.id not in lista_cuotas:
+                            lista_cuotas.append(cuota.id)
+
             if self.contrato_id:
                 self.update({'contrato_estado_cuenta_payment_ids':[(6,0,lista_cuotas)]}) 
                 for cuota in self.contrato_id.estado_de_cuenta_ids:
                     if cuota.estado_pago=='pendiente' and cuota.factura_id==False:
                         lista_cuotas.append(cuota.id)
-           else:
-                for rec in self.payment_line_ids:
-                    for cuota in rec.invoice_id.contrato_estado_cuenta_ids:
-                        if cuota.id not in lista_cuotas:
-                            lista_cuotas.append(cuota.id)
+                
             #obj_am = self.env['account.move'].search([('id','in',self.invoice_ids.ids)])
             obj_estado_cuenta_ids = self.env['contrato.estado.cuenta'].search([('id','in',lista_cuotas)])
             list_ids_cuotas = []
