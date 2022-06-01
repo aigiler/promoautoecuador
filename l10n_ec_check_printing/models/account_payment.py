@@ -874,12 +874,13 @@ class AccountPayment(models.Model):
 
 
             if payment.tipo_valor=='enviar_credito' and payment.saldo_pago:
-
+                if not self.account_payment_account_ids:
+                    raise ValidationError("El saldo Pendiente debe ser asignado a un apunte contable. Favor crear un registro en la sección Cuentas Contables.")
                 listaMovimientos=[
 
                         #  Este se envía al banco 
                         (0, 0, {
-                            'name': "ESTE ES EL VALOR DEL PAGO TOTAL",
+                            'name': payment.name,
                             'amount_currency': -liquidity_amount if liquidity_line_currency_id else 0.0,
                             'currency_id': liquidity_line_currency_id,
                             'debit': payment.amount,
@@ -916,7 +917,6 @@ class AccountPayment(models.Model):
 
 
                         })
-
                         listaMovimientos.append(tupla)
                 credito_asignado=0
                 debito_asignado=0
@@ -926,7 +926,7 @@ class AccountPayment(models.Model):
                     debito_asignado=balance-saldo_debito
                 listaMovimientos.append(#  Este se envía al banco 
                         (0, 0, {
-                            'name': "ESTA ES DEL CLIENTE",
+                            'name': "Pago de Cliente",
                             'amount_currency': counterpart_amount + write_off_amount if currency_id else 0.0,
                             'currency_id': liquidity_line_currency_id,
                             'debit': debito_asignado,
@@ -935,12 +935,7 @@ class AccountPayment(models.Model):
                             'partner_id': payment.partner_id.commercial_partner_id.id,
                             'account_id': payment.partner_id.property_account_receivable_id.id,
                             'payment_id': payment.id,
-                        }))
-                print(listaMovimientos,"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-                        
-                    
-                #raise ValidationError(str(listaMovimientos))
-                
+                        }))                        
                 move_vals = {
                     'date': payment.payment_date,
                     'ref': payment.communication,
@@ -951,11 +946,6 @@ class AccountPayment(models.Model):
                 }
                 all_move_vals=[]
                 all_move_vals.append(move_vals)
-
-
-
-
-
             if self.is_third_name:
 
         # ==== 'inbound' / 'outbound' ==== para múltiples cuentas
