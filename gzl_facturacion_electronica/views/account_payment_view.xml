@@ -49,6 +49,7 @@
                                 <tree editable="bottom" create="0">
                                     <field name="numero_cuota" force_save="1"/>
                                     <field name="fecha" force_save="1"/>
+                                    <field name="monto_pagar" />
                                     <button  name="crear_detalles" string="Ver Detalles" type="object" class='btn-primary'></button>
                                     <!-- <field name="cuota_capital" force_save="1"/>
                                     <field name="seguro" force_save="1"/>
