@@ -879,7 +879,7 @@ class AccountPayment(models.Model):
 
                         #  Este se envía al banco 
                         (0, 0, {
-                            'name': liquidity_line_name,
+                            'name': "ESTE ES EL VALOR DEL PAGO TOTAL",
                             'amount_currency': -liquidity_amount if liquidity_line_currency_id else 0.0,
                             'currency_id': liquidity_line_currency_id,
                             'debit': payment.amount,
@@ -901,7 +901,7 @@ class AccountPayment(models.Model):
                             saldo_credito=linea.credit
                         # Receivable / Payable / Transfer line. Este se envia al proveedor
                         tupla=(0, 0, {
-                            'name': rec_pay_line_name,
+                            'name': linea.name,
                             'amount_currency':  0.0,
                             'currency_id': currency_id,
                             'debit': linea.debit,
@@ -926,7 +926,7 @@ class AccountPayment(models.Model):
                     debito_asignado=balance-saldo_debito
                 listaMovimientos.append(#  Este se envía al banco 
                         (0, 0, {
-                            'name': liquidity_line_name,
+                            'name': "ESTA ES DEL CLIENTE",
                             'amount_currency': -liquidity_amount if liquidity_line_currency_id else 0.0,
                             'currency_id': liquidity_line_currency_id,
                             'debit': debito_asignado,
