@@ -120,7 +120,7 @@ class AccountPayment(models.Model):
                             # 'monto_pagar':'',
                         })
                         
-                        self.contrato_estado_cuenta_payment_ids = [(6,0,cuotas)]
+                        self.contrato_estado_cuenta_payment_ids = [(0,0,cuotas)]
 
     @api.depends('contrato_estado_cuenta_payment_ids')
     def total_asignado(self):
