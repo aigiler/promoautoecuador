@@ -782,51 +782,6 @@ class AccountPayment(models.Model):
                         'analytic_account_id': False,
                     }),
                 ]}
-            valor_pagar=0
-            if payment.payment_line_ids:  
-                for x in payment.payment_line_ids:
-                    valor_pagar+=(x.actual_amount+x.monto_pendiente_pago)
-            if payment.tipo_valor=='crear_anticipo':
-                move_vals['line_ids']=[
-                    # Receivable / Payable / Transfer line.
-                    (0, 0, {
-                        'name': rec_pay_line_name,
-                        'amount_currency': counterpart_amount + write_off_amount if currency_id else 0.0,
-                        'currency_id': currency_id,
-                        'debit':0.0,
-                        'credit':valor_pagar,
-                        'date_maturity': payment.payment_date,
-                        'partner_id': payment.partner_id.commercial_partner_id.id,
-                        'account_id': payment.destination_account_id.id ,
-                        'payment_id': payment.id,
-                        'analytic_account_id':payment.analytic_account_id.id or False,
-                    }),
-                    (0, 0, {
-                        'name': 'Valor de Facturas',
-                        'amount_currency': counterpart_amount + write_off_amount if currency_id else 0.0,
-                        'currency_id': currency_id,
-                        'debit':0.0,
-                        'credit':balance-valor_pagar,
-                        'date_maturity': payment.payment_date,
-                        'partner_id': payment.partner_id.commercial_partner_id.id,
-                        'account_id': payment.destination_account_id.id ,
-                        'payment_id': payment.id,
-                        'analytic_account_id':payment.analytic_account_id.id or False,
-                    }),
-                    # Liquidity line.
-                    (0, 0, {
-                        'name': liquidity_line_name,
-                        'amount_currency': -liquidity_amount if liquidity_line_currency_id else 0.0,
-                        'currency_id': liquidity_line_currency_id,
-                        'debit': balance < 0.0 and -balance or 0.0,
-                        'credit': balance > 0.0 and balance or 0.0,
-                        'date_maturity': payment.payment_date,
-                        'partner_id': payment.partner_id.commercial_partner_id.id,
-                        'account_id': liquidity_line_account.id,
-                        'payment_id': payment.id,
-                        'analytic_account_id': False,
-                    }),
-                ]
 
             if write_off_balance:
                 # Write-off line.
@@ -898,6 +853,105 @@ class AccountPayment(models.Model):
                     transfer_move_vals['name'] = move_names[1]
 
                 all_move_vals.append(transfer_move_vals)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            if payment.tipo_valor=='enviar_credito' and payment.saldo_pago:
+
+                listaMovimientos=[
+
+                        #  Este se envía al banco 
+                        (0, 0, {
+                            'name': liquidity_line_name,
+                            'amount_currency': -liquidity_amount if liquidity_line_currency_id else 0.0,
+                            'currency_id': liquidity_line_currency_id,
+                            'debit': balance < 0.0 and -balance or 0.0,
+                            'credit': balance > 0.0 and balance or 0.0,
+                            'date_maturity': payment.payment_date,
+                            'partner_id': payment.partner_id.commercial_partner_id.id,
+                            'account_id': liquidity_line_account.id,
+                            'payment_id': payment.id,
+                        })
+                    ]
+
+
+                saldo_debito=0
+                saldo_credito=0
+                for linea in self.account_payment_account_ids:
+                        if line.debit:
+                            saldo_debito=linea.debit
+                        else:
+                            saldo_credito=linea.credit
+                        # Receivable / Payable / Transfer line. Este se envia al proveedor
+                        tupla=(0, 0, {
+                            'name': rec_pay_line_name,
+                            'amount_currency':  0.0,
+                            'currency_id': currency_id,
+                            'debit': linea.debit,
+                            'credit':  linea.credit,
+                            'date_maturity': payment.payment_date,
+                            'partner_id': False,
+                            'account_id': linea.cuenta.id,
+                            'payment_id': payment.id,
+                            'account_id': linea.cuenta.id,
+                            'analytic_account_id':linea.cuenta_analitica.id or False,
+
+
+
+                        })
+
+                        listaMovimientos.append(tupla)
+                credito_asignado=0
+                debito_asignado=0
+                if saldo_credito:
+                    credito_asignado=balance-saldo_credito
+                elif saldo_debito:
+                    debito_asignado=balance-saldo_debito
+                listaMovimientos.append(#  Este se envía al banco 
+                        (0, 0, {
+                            'name': liquidity_line_name,
+                            'amount_currency': -liquidity_amount if liquidity_line_currency_id else 0.0,
+                            'currency_id': liquidity_line_currency_id,
+                            'debit': debito_asignado,
+                            'credit': credito_asignado,
+                            'date_maturity': payment.payment_date,
+                            'partner_id': payment.partner_id.commercial_partner_id.id,
+                            'account_id': payment.partner_id.property_account_receivable_id.id,
+                            'payment_id': payment.id,
+                        }))
+
+                        
+                    
+                #raise ValidationError(str(listaMovimientos))
+                
+                move_vals = {
+                    'date': payment.payment_date,
+                    'ref': payment.communication,
+                    'journal_id': payment.journal_id.id,
+                    'currency_id': payment.journal_id.currency_id.id or payment.company_id.currency_id.id,
+                    'partner_id': payment.partner_id.id,
+                    'line_ids': listaMovimientos,
+                }
+                all_move_vals=[]
+                all_move_vals.append(move_vals)
+
 
 
 
