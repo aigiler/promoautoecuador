@@ -8,6 +8,7 @@ class ContratoEstadoCuentaPagos(models.Model):
 
 
 
+    
     payment_pagos_id = fields.Many2one('account.payment')
     idContrato = fields.Char("ID de Contrato en base")
     contrato_id = fields.Many2one('contrato')

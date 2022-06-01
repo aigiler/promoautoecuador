@@ -78,7 +78,12 @@ class AccountPayment(models.Model):
                             lista_cuotas.append(cuota.id)
 
             if self.contrato_id:
-                self.update({'contrato_estado_cuenta_payment_ids':[(6,0,[])]}) 
+                if self.contrato_estado_cuenta_payment_ids:
+                    for l in self.contrato_estado_cuenta_payment_ids:
+                        if l.contrato_id==self.contrato_id:
+                            pass
+                        else:
+                            self.update({'contrato_estado_cuenta_payment_ids':[(6,0,[])]}) 
                 for cuota in self.contrato_id.estado_de_cuenta_ids:
                     if cuota.factura_id.amount_residual!=0:
                         lista_cuotas.append(cuota.id)
@@ -99,6 +104,7 @@ class AccountPayment(models.Model):
                 'rastreo_pagar':'',
                 'otro_pagar':'',
                 'monto_pagar':'',
+                'contrato_id':'',
             }
             if not self.contrato_estado_cuenta_payment_ids:
                 if obj_estado_cuenta_ids:
@@ -106,6 +112,7 @@ class AccountPayment(models.Model):
                     for ric in obj_estado_cuenta_ids:
                         # list_ids_cuotas.append(ric)
                         cuotas.update({
+                            'contrato_id':ric.contrato_id.id,
                             'numero_cuota':ric.numero_cuota,
                             'fecha':ric.fecha,
                             'cuota_capital':ric.cuota_capital,
@@ -113,6 +120,7 @@ class AccountPayment(models.Model):
                             'rastreo':ric.rastreo,
                             'otro':ric.otro,
                             'saldo':ric.saldo,
+                            'contrato_id':ric.contrato_id,
                             # 'cuota_capital_pagar':ric.cuota_capital_pagar,
                             # 'seguro_pagar':'',
                             # 'rastreo_pagar':'',
