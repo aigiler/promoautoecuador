@@ -854,25 +854,6 @@ class AccountPayment(models.Model):
 
                 all_move_vals.append(transfer_move_vals)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             if payment.tipo_valor=='enviar_credito' and payment.saldo_pago:
                 if not self.account_payment_account_ids:
                     raise ValidationError("El saldo Pendiente debe ser asignado a un apunte contable. Favor crear un registro en la sección Cuentas Contables.")
@@ -895,12 +876,15 @@ class AccountPayment(models.Model):
 
                 saldo_debito=0
                 saldo_credito=0
+                total_credito=0
                 for linea in self.account_payment_account_ids:
                         if linea.debit:
                             saldo_debito=linea.debit
                         else:
                             saldo_credito=linea.credit
-                        # Receivable / Payable / Transfer line. Este se envia al proveedor
+                            total_credito+=saldo_credito
+
+                            # Receivable / Payable / Transfer line. Este se envia al proveedor
                         tupla=(0, 0, {
                             'name': linea.name,
                             'amount_currency':  0.0,
@@ -918,12 +902,15 @@ class AccountPayment(models.Model):
 
                         })
                         listaMovimientos.append(tupla)
+                if total_credito!=payment.saldo_pago:
+                    raise ValidationError("Las lineas ubicadas en la sección Cuentas Contables debe ser igual al saldo.")
                 credito_asignado=0
                 debito_asignado=0
-                if saldo_credito:
-                    credito_asignado=balance+saldo_credito
+                if total_credito:
+                    credito_asignado=balance+total_credito
                 elif saldo_debito:
                     debito_asignado=balance-saldo_debito
+
                 listaMovimientos.append(#  Este se envía al banco 
                         (0, 0, {
                             'name': "Pago de Cliente",
@@ -946,6 +933,7 @@ class AccountPayment(models.Model):
                 }
                 all_move_vals=[]
                 all_move_vals.append(move_vals)
+                for x in payment.
             if self.is_third_name:
 
         # ==== 'inbound' / 'outbound' ==== para múltiples cuentas
