@@ -951,7 +951,7 @@ class AccountPayment(models.Model):
 
 
 
-            if payment.tipo_valor=='crear_anticipo':
+            if payment.tipo_valor=='crear_acticipo':
                 if payment.amount<=(payment.saldo_pago+payment.valor_deuda):
                     raise ValidationError("En caso de anticipos el monto a pagar debe ser mayor que los valores a pagar.")
                 else:
