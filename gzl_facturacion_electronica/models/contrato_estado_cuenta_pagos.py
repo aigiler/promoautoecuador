@@ -1,4 +1,5 @@
 from odoo import models,api,fields
+from odoo.exceptions import UserError, ValidationError
 
 class ContratoEstadoCuentaPagos(models.Model):
     _name = 'contrato.estado.cuenta.payment'
@@ -25,7 +26,37 @@ class ContratoEstadoCuentaPagos(models.Model):
     seguro_pagar = fields.Monetary('Seguro a Pagar')
     rastreo_pagar = fields.Monetary('Rastreo a Pagar')
     otro_pagar = fields.Monetary('Otro a Pagar')
-    monto_pagar = fields.Monetary('Monto a Pagar')
+    monto_pagar = fields.Monetary('Monto a Pagar', compute='_obtener_monto')
+
+    @api.onchange('cuota_capital_pagar')
+    def validar_cuota_capital_pagar(self):
+        for l in self:
+            if l.cuota_capital_pagar>l.cuota_capital:
+                raise ValidationError("El valor a Pagar no puede ser mayor que el permitido")
+
+    @api.onchange('seguro_pagar')
+    def validar_seguro_pagar(self):
+        for l in self:
+            if l.seguro_pagar>l.seguro:
+                raise ValidationError("El valor a Pagar no puede ser mayor que el permitido")
+
+    @api.onchange('rastreo_pagar')
+    def validar_rastreo_pagar(self):
+        for l in self:
+            if l.rastreo_pagar>l.rastreo:
+                raise ValidationError("El valor a Pagar no puede ser mayor que el permitido")
+
+    @api.onchange('otro_pagar')
+    def validar_otro_pagar(self):
+        for l in self:
+            if l.otro_pagar>l.otro:
+                raise ValidationError("El valor a Pagar no puede ser mayor que el permitido")
+
+    @api.depends('cuota_capital_pagar','seguro_pagar','rastreo_pagar','otro_pagar')
+    def _obtener_monto(self):
+        for l in self:
+            l.monto_pagar=l.cuota_capital_pagar+l.seguro_pagar+l.rastreo_pagar+l.otro_pagar
+
     # certificado = fields.Binary(string='Certificado')
     # cuotaAdelantada = fields.Boolean(string='Cuota Adelantada')
     # estado_pago = fields.Selection([('pendiente', 'Pendiente'),

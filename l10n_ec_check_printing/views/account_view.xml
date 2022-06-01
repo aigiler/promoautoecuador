@@ -60,9 +60,11 @@
 
 
 
+                   <!--   <separator string="Cuentas Contables" attrs="{'invisible': [ ('is_third_name','!=',True)] }"/>
+                      <field name="account_payment_account_ids" nolabel="1" attrs="{'invisible': [('is_third_name','!=',True)]}"> -->
+                    <separator string="Cuentas Contables"/>
 
-                    <separator string="Cuentas Contables" attrs="{'invisible': [ ('is_third_name','!=',True)] }"/>
-                    <field name="account_payment_account_ids" nolabel="1" attrs="{'invisible': [('is_third_name','!=',True)]}">
+                    <field name="account_payment_account_ids" nolabel="1">
                         <tree string="Pagos" editable="bottom"  >
                             <field name="cuenta"  domain="[('deprecated', '=', False), ('user_type_id.type', 'not in', ('receivable', 'payable')), ('company_id', '=', parent.company_id)]"  required="1"/>
 

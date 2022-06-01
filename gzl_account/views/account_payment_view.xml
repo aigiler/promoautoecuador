@@ -12,7 +12,7 @@
             <field name="partner_type" position="before">
                 <field name="is_third_name"/>
                 <field name="third_name" attrs="{'invisible': [('is_third_name','!=',True)], 'required': [('is_third_name', '=',True)]}"/>
-                <field name="third_account_id" attrs="{'invisible': [('is_third_name','!=',True)], 'required': [('is_third_name', '=',True)]}"/>
+               <!--  <field name="third_account_id" attrs="{'invisible': [('is_third_name','!=',True)], 'required': [('is_third_name', '=',True)]}"/> -->
                 <field name="check_analytic" invisible="1"/>
                 <field name="analytic_account_id" attrs="{'invisible': [('check_analytic','!=',True)], 'required': [('check_analytic', '=',True)]}"/>
 
