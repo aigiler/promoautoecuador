@@ -927,10 +927,10 @@ class AccountPayment(models.Model):
                 listaMovimientos.append(#  Este se envía al banco 
                         (0, 0, {
                             'name': "ESTA ES DEL CLIENTE",
-                            'amount_currency': -liquidity_amount if liquidity_line_currency_id else 0.0,
+                            'amount_currency': counterpart_amount + write_off_amount if currency_id else 0.0,
                             'currency_id': liquidity_line_currency_id,
                             'debit': debito_asignado,
-                            'credit': credito_asignado,
+                            'credit': -credito_asignado,
                             'date_maturity': payment.payment_date,
                             'partner_id': payment.partner_id.commercial_partner_id.id,
                             'account_id': payment.partner_id.property_account_receivable_id.id,
