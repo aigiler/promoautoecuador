@@ -79,11 +79,12 @@
          <group>  
            <group>
            
-                <field name="saldo" force_save="1"/>
+               
                 <field name="cuota_capital" force_save="1"/>
                 <field name="seguro" force_save="1"/>
                 <field name="rastreo" force_save="1"/>
                 <field name="otro" force_save="1"/>
+                 <field name="saldo" force_save="1"/>
            </group>
            <group>
              <field name="cuota_capital_pagar" />
