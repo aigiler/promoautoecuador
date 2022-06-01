@@ -36,7 +36,7 @@ class AccountPayment(models.Model):
 
     #@api.multi
     def crear_detalles(self):
-        viewid = self.env.ref('gzl_facturacion_electronica.cuota_pago_form2').id
+        viewid = self.env.ref('gzl_facturacion_electronica.pago_cuota_form2').id
         return {   
             'name':'Detalle de Cuotas',
             'view_type':'form',
