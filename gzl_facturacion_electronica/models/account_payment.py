@@ -11,6 +11,7 @@ class AccountPayment(models.Model):
     valor_deuda=fields.Float("Valores Pendiente")
     saldo_pago=fields.Float("Saldo", compute='_saldo_pagar', store=True)
     total_asignado=fields.Float("Total asignado", compute="total_asignar")
+    contrato_id = fields.Many2one('contrato', string='Contrato')
 
     tipo_valor = fields.Selection([
         ('enviar_credito', 'Enviar a Credito'),
@@ -65,16 +66,23 @@ class AccountPayment(models.Model):
     def _onchange_amount(self):
         self.saldo_pago=self._saldo_pagar()
 
-    @api.onchange('tipo_valor')
+    @api.onchange('tipo_valor','contrato_id')
     def _onchange_tipo_valor(self):
         lista_cuotas = []
         if self.tipo_valor == 'enviar_credito':
             self.saldo_pago=self._saldo_pagar()
-            for rec in self.payment_line_ids:
-                for cuota in rec.invoice_id.contrato_estado_cuenta_ids:
-                    if cuota.id not in lista_cuotas:
+            
+            if self.contrato_id:
+                self.update({'contrato_estado_cuenta_payment_ids':[(6,0,lista_cuotas)]}) 
+                for cuota in self.contrato_id.estado_de_cuenta_ids:
+                    if cuota.estado_pago=='pendiente' and cuota.factura_id==False:
                         lista_cuotas.append(cuota.id)
-            # obj_am = self.env['account.move'].search([('id','in',self.invoice_ids.ids)])
+           else:
+                for rec in self.payment_line_ids:
+                    for cuota in rec.invoice_id.contrato_estado_cuenta_ids:
+                        if cuota.id not in lista_cuotas:
+                            lista_cuotas.append(cuota.id)
+            #obj_am = self.env['account.move'].search([('id','in',self.invoice_ids.ids)])
             obj_estado_cuenta_ids = self.env['contrato.estado.cuenta'].search([('id','in',lista_cuotas)])
             list_ids_cuotas = []
             cuotas = {
@@ -111,7 +119,7 @@ class AccountPayment(models.Model):
                             # 'monto_pagar':'',
                         })
                         
-                        self.contrato_estado_cuenta_payment_ids = [(0,0,cuotas)]
+                        self.contrato_estado_cuenta_payment_ids = [(6,0,cuotas)]
 
     @api.depends('contrato_estado_cuenta_payment_ids')
     def total_asignado(self):
