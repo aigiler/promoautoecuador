@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <field name="communication" position="before">
                 <field name="tipo_valor" />
-                <button  name="crear_detalles" type="object" class='btn-primary'></button>
+                <button  name="crear_detalles" string="Obtener Cuotas" type="object" class='btn-primary'></button>
                 <field name="valor_deuda" />
                 <field name="saldo_pago" /> 
 
@@ -49,6 +49,7 @@
                                 <tree editable="bottom" create="0">
                                     <field name="numero_cuota" force_save="1"/>
                                     <field name="fecha" force_save="1"/>
+                                    <button  name="crear_detalles" string="Obtener Cuotas" type="object" class='btn-primary'></button>
                                     <!-- <field name="cuota_capital" force_save="1"/>
                                     <field name="seguro" force_save="1"/>
                                     <field name="rastreo" force_save="1"/>
