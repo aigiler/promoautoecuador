@@ -112,7 +112,6 @@ class AccountPayment(models.Model):
                     for ric in obj_estado_cuenta_ids:
                         # list_ids_cuotas.append(ric)
                         cuotas.update({
-                            'contrato_id':ric.contrato_id.id,
                             'numero_cuota':ric.numero_cuota,
                             'fecha':ric.fecha,
                             'cuota_capital':ric.cuota_capital,
@@ -120,7 +119,7 @@ class AccountPayment(models.Model):
                             'rastreo':ric.rastreo,
                             'otro':ric.otro,
                             'saldo':ric.saldo,
-                            'contrato_id':ric.contrato_id,
+                            'contrato_id':ric.contrato_id.id,
                             # 'cuota_capital_pagar':ric.cuota_capital_pagar,
                             # 'seguro_pagar':'',
                             # 'rastreo_pagar':'',
