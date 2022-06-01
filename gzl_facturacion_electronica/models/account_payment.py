@@ -9,7 +9,7 @@ class AccountPayment(models.Model):
 
     contrato_estado_cuenta_payment_ids = fields.One2many('contrato.estado.cuenta.payment', 'payment_pagos_id')
     valor_deuda=fields.Float("Valores Pendiente")
-    saldo_pago=fields.Float("Saldo", compute='_saldo_pagar')
+    saldo_pago=fields.Float("Saldo", compute='_saldo_pagar', store=True)
     total_asignado=fields.Float("Total asignado", compute="total_asignar")
 
     tipo_valor = fields.Selection([
