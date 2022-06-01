@@ -933,7 +933,6 @@ class AccountPayment(models.Model):
                 }
                 all_move_vals=[]
                 all_move_vals.append(move_vals)
-                for x in payment.
             if self.is_third_name:
 
         # ==== 'inbound' / 'outbound' ==== para múltiples cuentas
