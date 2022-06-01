@@ -59,28 +59,27 @@ class ContratoEstadoCuentaPagos(models.Model):
 
     @api.onchange('cuota_capital_pagar','seguro_pagar','rastreo_pagar','otro_pagar')
     def validar_saldos(self):
-        saldo_disponible=self.payment_pagos_id.saldo_pago
         for l in self:
             if l.cuota_capital_pagar:
-                if (saldo_disponible-l.cuota_capital_pagar)<0:
+                if (l.payment_pagos_id.saldo_pago-l.cuota_capital_pagar)<0:
                     raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(l.payment_pagos_id.saldo_pago))
                 else:
-                    l.payment_pagos_id.saldo_pago=saldo_disponible-l.cuota_capital_pagar
+                    l.payment_pagos_id.saldo_pago=l.payment_pagos_id.saldo_pago-l.cuota_capital_pagar
             if l.otro_pagar:
-                if (saldo_disponible-l.otro_pagar)<0:
+                if (l.payment_pagos_id.saldo_pago-l.otro_pagar)<0:
                     raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(l.payment_pagos_id.saldo_pago))
                 else:
-                    l.payment_pagos_id.saldo_pago=saldo_disponible-l.otro_pagar
+                    l.payment_pagos_id.saldo_pago=l.payment_pagos_id.saldo_pago-l.otro_pagar
             if l.seguro_pagar:
-                if (saldo_disponible-l.seguro_pagar)<0:
+                if (l.payment_pagos_id.saldo_pago-l.seguro_pagar)<0:
                     raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(l.payment_pagos_id.saldo_pago))
                 else:
-                    l.payment_pagos_id.saldo_pago=saldo_disponible-l.seguro_pagar
+                    l.payment_pagos_id.saldo_pago=l.payment_pagos_id.saldo_pago-l.seguro_pagar
             if l.rastreo_pagar:
-                if (saldo_disponible-l.rastreo_pagar)<0:
+                if (l.payment_pagos_id.saldo_pago-l.rastreo_pagar)<0:
                     raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(l.payment_pagos_id.saldo_pago))
                 else:
-                    l.payment_pagos_id.saldo_pago=saldo_disponible-l.rastreo_pagar
+                    l.payment_pagos_id.saldo_pago=l.payment_pagos_id.saldo_pago-l.rastreo_pagar
 
 
 

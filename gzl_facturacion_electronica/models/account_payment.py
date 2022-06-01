@@ -39,7 +39,7 @@ class AccountPayment(models.Model):
         for l in self:
             if l.amount==0 or not l.amount:
                 raise ValidationError("Debe Asignar un monto a Pagar")
-        self.saldo_pago=l.amount
+        
         self._onchange_tipo_valor()
         viewid = self.env.ref('gzl_facturacion_electronica.pago_cuota_form2').id
         return {   
@@ -59,10 +59,11 @@ class AccountPayment(models.Model):
         'type':'ir.actions.act_window_close'
         }
 
-    @api.onchange('tipo_valor','payment_line_ids')
+    @api.onchange('tipo_valor')
     def _onchange_tipo_valor(self):
         lista_cuotas = []
         if self.tipo_valor == 'enviar_credito':
+            self.saldo_pago=self.amount
             for rec in self.payment_line_ids:
                 for cuota in rec.invoice_id.contrato_estado_cuenta_ids:
                     if cuota.id not in lista_cuotas:
