@@ -921,7 +921,7 @@ class AccountPayment(models.Model):
                 credito_asignado=0
                 debito_asignado=0
                 if saldo_credito:
-                    credito_asignado=balance-saldo_credito
+                    credito_asignado=balance+saldo_credito
                 elif saldo_debito:
                     debito_asignado=balance-saldo_debito
                 listaMovimientos.append(#  Este se envía al banco 
