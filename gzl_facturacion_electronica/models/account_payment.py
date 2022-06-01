@@ -63,8 +63,6 @@ class AccountPayment(models.Model):
 
     @api.onchange('amount')
     def _onchange_amount(self):
-        for l in self:
-            if l.tipo_valor=='enviar_credito' and l.amount:
         self.saldo_pago=self._saldo_pagar()
 
     @api.onchange('tipo_valor')
