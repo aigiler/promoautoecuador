@@ -58,7 +58,7 @@
                 
                 <div class="row">
                     <div class="col-12" t-if="o.invoice_ids">
-                        <strong>Facturas: </strong><span t-field="o.invoice_ids"/>
+                        <strong>Facturas: </strong><span t-field="o.reconciled_invoice_ids"/>
                      </div>
                 </div>
                 
