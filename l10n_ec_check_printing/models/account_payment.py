@@ -473,7 +473,7 @@ class AccountPayment(models.Model):
             if rec.amount==0:
                 raise ValidationError("Ingrese el valor del monto")
             invoice_id=list(set([l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]))
-             
+            if 
             lista_respaldo=[]
             for factura in invoice_id:
                 payment_lines= rec.payment_line_ids.filtered(lambda l: l.invoice_id.id==factura)
@@ -507,8 +507,9 @@ class AccountPayment(models.Model):
                 }])
             
             
-            invoice_id=lista_invoice
+            invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]
          #   raise ValidationError(invoice_id)
+
             if invoice_id:
                 self.invoice_ids = invoice_id
             account_check = rec.env['account.cheque']
@@ -585,6 +586,17 @@ class AccountPayment(models.Model):
 
             super(AccountPayment, self.with_context({'multi_payment': invoice_id and True or False})).post()
             
+            for lineas_pago in rec.payment_line_ids:
+                if lineas_pago.pagar:
+                    movimientos_occ=self.env['account.move'].search([('journal_id','=',21),('ref','=',lineas_pago.invoice_id.name)])
+                    for mov in movimientos_occ:
+                        if rec.payment_type in ('inbound', 'outbound'):
+                            if movimientos_occ:
+                                (moves[0] + movimientos_occ).line_ids \
+                                    .filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))\
+                                    .reconcile()
+
+
             rec.payment_line_ids.unlink()
 
             
@@ -598,6 +610,16 @@ class AccountPayment(models.Model):
             if self.tipo_transaccion=='Anticipo':
                 self.estado_anticipo='posted'
                 self.aplicar_anticipo_pagos()
+
+
+
+            for x in lista_invoice
+            if rec.payment_type in ('inbound', 'outbound'):
+                # ==== 'inbound' / 'outbound' ====
+                if rec.invoice_ids:
+                    (moves[0] + rec.invoice_ids).line_ids \
+                        .filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))\
+                        .reconcile()
 
     @api.onchange('name')
     @api.constrains('name')
