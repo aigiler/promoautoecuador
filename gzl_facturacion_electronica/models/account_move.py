@@ -519,7 +519,8 @@ class AccountMove(models.Model):
         
         if self.type == 'out_invoice':
             if self.contrato_estado_cuenta_ids:
-                obj_account_debe = self.env['account.account'].search([('code','=','1010205001')])
+                #obj_account_debe = self.env['account.account'].search([('code','=','1010205001')])
+                obj_account_debe=self.partner_id.property_account_receivable_id
                 obj_account_haber = self.env['account.account'].search([('code','=','2020601001')])
                 valor_debe = 0
                 valor_haber = 0
