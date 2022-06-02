@@ -153,7 +153,8 @@ class AccountPayment(models.Model):
                     valor_asignado=0
                     valor_facturas=0
                     for x in l.payment_line_ids:
-                        if lineas_pago.pagar:
+                        if x.pagar:
+                            x.amount=x.actual_amount
                             valor_asignado+=x.actual_amount
                             valor_facturas+=x.monto_pendiente_pago
                     l.valor_deuda_admin=valor_asignado

@@ -494,6 +494,7 @@ class AccountPayment(models.Model):
 
                 }])
             
+            
             invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]
             if rec.tipo_valor:
                 invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.pagar==True]
@@ -1162,6 +1163,8 @@ class AccountPaymentLine(models.Model):
     def actualizar_totales(self):
         for l in self:
             if l.pagar:
+                l.amount=l.actual_amount
                 l.payment_id.saldo_pagar()
             else:
+                l.amount=0
                 l.payment_id.saldo_pagar()
