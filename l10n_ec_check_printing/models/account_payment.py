@@ -612,20 +612,6 @@ class AccountPayment(models.Model):
 
             super(AccountPayment, self.with_context({'multi_payment': invoice_id and True or False})).post()
     
-            full_reconcile_id=''
-            for inv in rec.invoice_ids:
-                for lin in inv.line_ids:
-                    if lin.account_id==rec.partner_id.property_account_receivable_id.id:
-                        full_reconcile_id=lin.full_reconcile_id.id
-            for pagos in rec.payment_line_ids:
-                if pagos.pagar:
-                    movimientos_occ=self.env['account.move'].search([('journal_id','=',21),('ref','=',pagos.invoice_id.name)])
-                    for mov in movimientos_occ:
-                        for line_ext in mov.line_ids:
-                            if line_ext.account_id==rec.partner_id.property_account_receivable_id.id:
-                                if full_reconcile_id:
-                                    line_ext.full_reconcile_id=full_reconcile_id
-
             rec.payment_line_ids.unlink()
 
             
@@ -641,6 +627,25 @@ class AccountPayment(models.Model):
                 self.estado_anticipo='posted'
                 self.aplicar_anticipo_pagos()
 
+    @api.onchange('state')
+    def obtener_estado(self):
+        for l in self:
+            if l.state=='posted':
+                full_reconcile_id=''
+                if l.tipo_valor=='crear_acticipo':
+                    for inv in rec.invoice_ids:
+                        for lin in inv.line_ids:
+                            if lin.account_id==rec.partner_id.property_account_receivable_id.id:
+                                full_reconcile_id=lin.full_reconcile_id.id
+                    for pagos in rec.payment_line_ids:
+                        if pagos.pagar:
+                            movimientos_occ=self.env['account.move'].search([('journal_id','=',21),('ref','=',pagos.invoice_id.name)])
+                            for mov in movimientos_occ:
+                                lista_invoice.append(mov.id)
+                                for line_ext in mov.line_ids:
+                                    if line_ext.account_id==rec.partner_id.property_account_receivable_id.id:
+                                        if full_reconcile_id:
+                                            line_ext.full_reconcile_id=full_reconcile_id
 
     @api.onchange('name')
     @api.constrains('name')
@@ -1187,7 +1192,7 @@ class AccountPaymentLine(models.Model):
             if l.invoice_id:
                 monto_pendiente_pago=0
                 for x in l.invoice_id.contrato_estado_cuenta_ids:
-                    monto_pendiente_pago+=(x.saldo-x.cuota_adm)
+                    monto_pendiente_pago+=(x.cuota_capital)
                 l.monto_pendiente_pago=monto_pendiente_pago
 
     @api.onchange('pagar')
