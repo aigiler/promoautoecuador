@@ -4,6 +4,10 @@
         <xpath expr="//div[@class='page']" position="replace">
             
             <div class="page">
+
+                <t t-set="facturas" t-value="o.obtener_facturas_conciliadas()"/>
+
+
                 <h3><strong>Recibo de Pago: <span t-field="o.name"/></strong></h3>
                 <div class="row ">
                     <div class="col-6" t-if="o.payment_date">
@@ -58,7 +62,7 @@
                 
                 <div class="row">
                     <div class="col-12" t-if="o.invoice_ids">
-                        <strong>Facturas: </strong><span t-field="o.obtener_facturas_conciliadas()"/>
+                        <strong>Facturas: </strong><span t-esc="facturas"/>
                      </div>
                 </div>
                 
