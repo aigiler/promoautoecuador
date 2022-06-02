@@ -8,7 +8,8 @@ class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
     contrato_estado_cuenta_payment_ids = fields.One2many('contrato.estado.cuenta.payment', 'payment_pagos_id')
-    valor_deuda=fields.Float("Valores Pendiente",compute='_saldo_pagar', store=True)
+    valor_deuda=fields.Float("Cuota Capital a Pagar",compute='_saldo_pagar', store=True)
+    valor_deuda_admin=fields.Float("Cuota Administrativa a Pagar",compute='_saldo_pagar', store=True)
     saldo_pago=fields.Float("Saldo", compute='_saldo_pagar', store=True)
     total_asignado=fields.Float("Total asignado", compute="total_asignar")
     contrato_id = fields.Many2one('contrato', string='Contrato')
@@ -66,7 +67,7 @@ class AccountPayment(models.Model):
     def _onchange_amount(self):
         self.saldo_pago=self._saldo_pagar()
 
-    @api.onchange('tipo_valor','contrato_id')
+    @api.onchange('tipo_valor','contrato_id','contrato_estado_cuenta_payment_ids')
     def _onchange_tipo_valor(self):
         if self.tipo_valor=='crear_acticipo':
             self._saldo_pagar()
@@ -149,11 +150,12 @@ class AccountPayment(models.Model):
                     raise ValidationError("Los valores a pagar exceden los ${} especificados.".format(l.amount))
                 l.saldo_pago=l.amount-valor_asignado
             if l.tipo_valor=='crear_acticipo':
-                valor_asignado=0
-                valor_facturas=0
-                for x in l.payment_line_ids:
-                    if x.actual_amount:
-                        valor_asignado+=x.actual_amount
-                        valor_facturas+=x.monto_pendiente_pago
-                l.saldo_pago=valor_asignado
-                l.valor_deuda=valor_facturas
+                    valor_asignado=0
+                    valor_facturas=0
+                    for x in l.payment_line_ids:
+                        if lineas_pago.pagar:
+                            valor_asignado+=x.actual_amount
+                            valor_facturas+=x.monto_pendiente_pago
+                    l.valor_deuda_admin=valor_asignado
+                    l.valor_deuda=valor_facturas
+                    l.saldo_pago=l.amount-l.valor_deuda-l.valor_deuda_admin

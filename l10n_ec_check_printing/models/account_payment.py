@@ -460,6 +460,8 @@ class AccountPayment(models.Model):
             if rec.amount==0:
                 raise ValidationError("Ingrese el valor del monto")
             invoice_id=list(set([l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]))
+            if rec.tipo_valor:
+                invoice_id=list(set([l.invoice_id.id for l in rec.payment_line_ids if l.pagar==True]))   
             lista_respaldo=[]
             for factura in invoice_id:
                 payment_lines= rec.payment_line_ids.filtered(lambda l: l.invoice_id.id==factura)
@@ -493,6 +495,8 @@ class AccountPayment(models.Model):
                 }])
             
             invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]
+            if rec.tipo_valor:
+                invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.pagar==True]
          #   raise ValidationError(invoice_id)
             
             if invoice_id:
@@ -568,7 +572,7 @@ class AccountPayment(models.Model):
 
             super(AccountPayment, self.with_context({'multi_payment': invoice_id and True or False})).post()
             
-            rec.payment_line_ids.unlink()
+            #rec.payment_line_ids.unlink()
 
             
             for factura in lista_respaldo:
@@ -858,6 +862,8 @@ class AccountPayment(models.Model):
                 if payment.saldo_pago:
                     if not self.account_payment_account_ids:
                         raise ValidationError("El saldo Pendiente debe ser asignado a un apunte contable. Favor crear un registro en la sección Cuentas Contables.")
+                
+
                     listaMovimientos=[
 
                             #  Este se envía al banco 
@@ -952,6 +958,8 @@ class AccountPayment(models.Model):
 
 
             if payment.tipo_valor=='crear_acticipo':
+                if not payment.payment_line_ids:
+                    raise ValidationError("Debe seleccionar facturas Pagar")
                 if payment.amount<=(payment.saldo_pago+payment.valor_deuda):
                     raise ValidationError("En caso de anticipos el monto a pagar debe ser mayor que los valores a pagar.")
                 else:
@@ -1130,6 +1138,7 @@ class AccountPaymentLine(models.Model):
     
     payment_id = fields.Many2one('account.payment', 'Pago')
     #partner_id = fields.Many2one(related='payment_id.partner_id', string='Proveedor')
+    pagar=fields.Boolean(string="Seleccione para Pagar")
     date_due = fields.Date(string='Fecha de Vencimiento')
     amount = fields.Monetary('Monto a Pagar')
     currency_id = fields.Many2one(related='invoice_id.currency_id', string="Moneda")
@@ -1148,3 +1157,11 @@ class AccountPaymentLine(models.Model):
                 for x in l.invoice_id.contrato_estado_cuenta_ids:
                     monto_pendiente_pago+=(x.saldo-x.cuota_adm)
                 l.monto_pendiente_pago=monto_pendiente_pago
+
+    @api.onchage('pagar')
+    def actualizar_totales(self):
+        for l in self:
+            if l.pagar:
+                l.payment_id.saldo_pagar()
+            else:
+                l.payment_id.saldo_pagar()
