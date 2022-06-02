@@ -603,6 +603,7 @@ class AccountPayment(models.Model):
                 if pagos.pagar:
                     movimientos_occ=self.env['account.move'].search([('journal_id','=',21),('ref','=',pagos.invoice_id.name)])
                     for mov in movimientos_occ:
+                        lista_invoice.append(mov.id)
                         for line_ext in mov.line_ids:
                             if line_ext.account_id==rec.partner_id.property_account_receivable_id.id:
                                 if full_reconcile_id:
@@ -1169,7 +1170,7 @@ class AccountPaymentLine(models.Model):
             if l.invoice_id:
                 monto_pendiente_pago=0
                 for x in l.invoice_id.contrato_estado_cuenta_ids:
-                    monto_pendiente_pago+=(x.saldo-x.cuota_adm)
+                    monto_pendiente_pago+=(x.cuota_capital)
                 l.monto_pendiente_pago=monto_pendiente_pago
 
     @api.onchange('pagar')
