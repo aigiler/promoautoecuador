@@ -511,8 +511,7 @@ class AccountPayment(models.Model):
          #   raise ValidationError(invoice_id)
 
             if invoice_id:
-                raise ValidationError("qqq{0}, el tipo es,{1}".format(invoice_id,type(invoice_id)))
-                self.invoice_ids = lista_invoice
+                self.invoice_ids = invoice_id
             account_check = rec.env['account.cheque']
             
 
