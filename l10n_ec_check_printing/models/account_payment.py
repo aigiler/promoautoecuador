@@ -1163,7 +1163,7 @@ class AccountPaymentLine(models.Model):
     def actualizar_totales(self):
         for l in self:
             monto_inicial=l.payment_id.amount
-            l.payment_id.amount=monto_inicial
+            l.payment_id.amount=monto_inicial 
             if l.pagar:
                 l.amount=l.actual_amount
                 l.payment_id._saldo_pagar()
