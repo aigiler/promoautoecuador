@@ -458,19 +458,8 @@ class AccountPayment(models.Model):
                     #raise ValidationError("El monto a pagar no puede ser al monto adeudado en la factura {0}".format(l.invoice_id.l10n_latam_document_number))
 
 
-            lista_invoice=[]
+            
 
-            for pago in rec.payment_line_ids:
-                if pago.pagar:
-                    lista_invoice.append(pago.invoice_id.id)
-                    movimientos_occ=self.env['account.move'].search([('journal_id','=',21),('ref','=',pago.invoice_id.name)])
-                    if movimientos_occ:
-                        for mov in movimientos_occ:
-                            lista_invoice.append(mov.id)
-                    else:
-                        raise ValidationError("NO se encuentra este movimiento{}".format(pago.invoice_id.name))
-                    
-            rec.update({'invoice_ids': [(6, 0, lista_invoice)]})
     
             if rec.amount==0:
                 raise ValidationError("Ingrese el valor del monto")
@@ -514,6 +503,21 @@ class AccountPayment(models.Model):
             if invoice_id:
                 self.invoice_ids = invoice_id
             account_check = rec.env['account.cheque']
+            
+            lista_invoice=[]
+            for pago in rec.payment_line_ids:
+                if pago.pagar:
+                    
+
+                    lista_invoice.append(pago.invoice_id.id)
+                    movimientos_occ=self.env['account.move'].search([('journal_id','=',21),('ref','=',pago.invoice_id.name)])
+                    if movimientos_occ:
+                        for mov in movimientos_occ:
+                            lista_invoice.append(mov.id)
+                    else:
+                        raise ValidationError("NO se encuentra este movimiento{}".format(pago.invoice_id.name))        
+            rec.update({'invoice_ids': [(6, 0, lista_invoice)]})
+ 
             if rec.payment_method_id.code in ['check_printing','batch_payment'] and not rec.payment_type == 'transfer':
                 #types = 'outgoing'
                 date = 'cheque_given_date'
@@ -1045,7 +1049,7 @@ class AccountPayment(models.Model):
                         'currency_id': payment.journal_id.currency_id.id or payment.company_id.currency_id.id,
                         'partner_id': payment.partner_id.id,
                         'line_ids': listaMovimientos,
-                        
+
                     }
                     all_move_vals=[]
                     all_move_vals.append(move_vals)
