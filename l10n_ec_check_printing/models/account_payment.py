@@ -520,7 +520,7 @@ class AccountPayment(models.Model):
                         if movimientos_occ:
                             for mov in movimientos_occ:
                                 invoice_id.append(mov.id)
-                                raise ValidationError("se encuentra este movimiento{0}".format(mov.id))      
+                                raise ValidationError("se encuentra este movimiento{0}".format(invoice_id))      
                 #rec.update({'invoice_ids': [(6, 0, lista_invoice)]})
 
             if invoice_id:
