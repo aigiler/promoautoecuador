@@ -21,6 +21,24 @@ class AccountPayment(models.Model):
     _order = "id desc"
 
 
+
+    def obtener_facturas_conciliadas(self):
+
+        facturas=self.reconciled_invoice_ids.mapped("l10n_latam_document_number")
+        numeroDocumentos=""
+        for factura in facturas:
+            if factura:
+                numeroDocumentos=numeroDocumentos+factura+','
+        numeroDocumentos=numeroDocumentos.strip(',')
+
+        return numeroDocumentos
+
+
+
+
+
+
+
     @api.model
     def _get_default_invoice_date(self):
         return fields.Date.today()
