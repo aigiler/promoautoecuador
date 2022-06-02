@@ -208,7 +208,7 @@ class AccountPayment(models.Model):
         
         if self.tipo_valor:
             self.amount=self.amount
-        if self.tipo_transaccion=='Pago':
+        elif self.tipo_transaccion=='Pago':
             self.amount = total
         elif self.tipo_transaccion=='Anticipo':
             if total>self.amount_residual:
