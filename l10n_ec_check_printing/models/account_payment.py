@@ -509,13 +509,14 @@ class AccountPayment(models.Model):
                 }])
             
             
-            invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]
+            #invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]
          #   raise ValidationError(invoice_id)
             
+            invoice_id=[]
             if rec.tipo_valor:
                 for pago in rec.payment_line_ids:
                     if pago.pagar:
-                        #lista_invoice.append(pago.invoice_id.id)
+                        invoice_id.append(pago.invoice_id.id)
                         movimientos_occ=self.env['account.move'].search([('journal_id','=',21),('ref','=',pago.invoice_id.name)])
                         if movimientos_occ:
                             for mov in movimientos_occ:
