@@ -1164,7 +1164,7 @@ class AccountPaymentLine(models.Model):
         for l in self:
             if l.pagar:
                 l.amount=l.actual_amount
-                l.payment_id.saldo_pagar()
+                l.payment_id._saldo_pagar()
             else:
                 l.amount=0
-                l.payment_id.saldo_pagar()
+                l.payment_id._saldo_pagar()
