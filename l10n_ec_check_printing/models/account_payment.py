@@ -458,6 +458,16 @@ class AccountPayment(models.Model):
                     #raise ValidationError("El monto a pagar no puede ser al monto adeudado en la factura {0}".format(l.invoice_id.l10n_latam_document_number))
             lista_invoice=[]
             if rec.tipo_valor:
+
+                for y in self.contrato_estado_cuenta_payment_ids:
+                    cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',rec.contrato_id.id),
+                                                                ('numero_cuota','=',y.numero_cuota)])[0]     
+                    if cuota_id:
+                        for act in cuota_id:
+                            cuota_id.monto_pagado=y.monto_pagar
+                            cuota_id.saldo=cuota_id.saldo-y.monto_pagar
+
+
                 for pago in rec.payment_line_ids:
                     if pago.pagar:
                         lista_invoice.append(pago.invoice_id.id)
@@ -466,8 +476,8 @@ class AccountPayment(models.Model):
                             for mov in movimientos_occ:
                                 lista_invoice.append(mov.id)
                     for contrato in pago.invoice_id.contrato_estado_cuenta_ids:
-                        contrato.monto_pagado=contrato.monto_pagar
-                        contrato.saldo=contrato.saldo-contrato.monto_pagar  
+                        contrato.monto_pagado=pago.amount
+                        contrato.saldo=contrato.saldo-pago.amount  
                 rec.update({'invoice_ids': [(6, 0, lista_invoice)]})
             if rec.amount==0:
                 raise ValidationError("Ingrese el valor del monto")
