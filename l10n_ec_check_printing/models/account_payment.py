@@ -461,7 +461,7 @@ class AccountPayment(models.Model):
             lista_invoice=[]
 
             for pago in rec.payment_line_ids:
-                movimientos_occ=self.env('account.move').search([('journal_id','=',21),('ref','=',pago.invoice_id.name)])[0]
+                movimientos_occ=self.env['account.move'].search([('journal_id','=',21),('ref','=',pago.invoice_id.name)])[0]
                 if movimientos_occ:
                     lista_invoice.append(movimientos_occ.id)
                 if pago.pagar:
