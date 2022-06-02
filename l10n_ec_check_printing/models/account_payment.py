@@ -458,26 +458,28 @@ class AccountPayment(models.Model):
                     #raise ValidationError("El monto a pagar no puede ser al monto adeudado en la factura {0}".format(l.invoice_id.l10n_latam_document_number))
             lista_invoice=[]
             if rec.tipo_valor:
-
-                for y in self.contrato_estado_cuenta_payment_ids:
-                    cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',rec.contrato_id.id),
-                                                                ('numero_cuota','=',y.numero_cuota)])[0]     
-                    if cuota_id:
-                        for act in cuota_id:
-                            cuota_id.monto_pagado=y.monto_pagar
-                            cuota_id.saldo=cuota_id.saldo-y.monto_pagar
-
-
-                for pago in rec.payment_line_ids:
-                    if pago.pagar:
-                        lista_invoice.append(pago.invoice_id.id)
-                        movimientos_occ=self.env['account.move'].search([('journal_id','=',21),('ref','=',pago.invoice_id.name)])
-                        if movimientos_occ:
+                if rec.tipo_valor=='enviar_credito':
+                    for y in self.contrato_estado_cuenta_payment_ids:
+                        cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',rec.contrato_id.id),
+                                                                  ('numero_cuota','=',y.numero_cuota)])[0]     
+                        if cuota_id:
+                            for act in cuota_id:
+                                cuota_id.monto_pagado=y.monto_pagar
+                                cuota_id.saldo=cuota_id.saldo-y.monto_pagar
+                else:
+                    for pago in rec.payment_line_ids:
+                        if pago.pagar:
+                            lista_invoice.append(pago.invoice_id.id)
+                            movimientos_occ=self.env['account.move'].search([('journal_id','=',21),('ref','=',pago.invoice_id.name)])
                             for mov in movimientos_occ:
                                 lista_invoice.append(mov.id)
-                    for contrato in pago.invoice_id.contrato_estado_cuenta_ids:
-                        contrato.monto_pagado=pago.amount
-                        contrato.saldo=contrato.saldo-pago.amount  
+                                for line_ext in mov.line_ids:
+                                    if line_ext.account_id==rec.partner_id.property_account_receivable_id.id:
+                                        full_reconcile_id=
+
+                        for contrato in pago.invoice_id.contrato_estado_cuenta_ids:
+                            contrato.monto_pagado=pago.amount
+                            contrato.saldo=contrato.saldo-pago.amount  
                 rec.update({'invoice_ids': [(6, 0, lista_invoice)]})
             if rec.amount==0:
                 raise ValidationError("Ingrese el valor del monto")
@@ -593,7 +595,22 @@ class AccountPayment(models.Model):
 
 
             super(AccountPayment, self.with_context({'multi_payment': invoice_id and True or False})).post()
-            
+    
+            full_reconcile_id=''
+            for inv in rec.invoice_ids:
+                for lin in inv.line_ids:
+                    if lin.account_id==rec.partner_id.property_account_receivable_id.id:
+                        full_reconcile_id=lin.full_reconcile_id.id
+            for pagos in rec.payment_line_ids:
+                if pagos.pagar:
+                    movimientos_occ=self.env['account.move'].search([('journal_id','=',21),('ref','=',pagos.invoice_id.name)])
+                    for mov in movimientos_occ:
+                        lista_invoice.append(mov.id)
+                        for line_ext in mov.line_ids:
+                            if line_ext.account_id==rec.partner_id.property_account_receivable_id.id:
+                                if full_reconcile_id:
+                                    line_ext.full_reconcile_id=full_reconcile_id
+
             rec.payment_line_ids.unlink()
 
             
