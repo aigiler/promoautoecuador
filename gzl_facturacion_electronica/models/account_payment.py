@@ -12,7 +12,7 @@ class AccountPayment(models.Model):
     saldo_pago=fields.Float("Saldo", compute='_saldo_pagar', store=True)
     total_asignado=fields.Float("Total asignado", compute="total_asignar")
     contrato_id = fields.Many2one('contrato', string='Contrato')
-    valor_deuda_admin=fields.Float("Cuota Administrativa a Pagar", store=True)
+    valor_deuda_admin=fields.Float("Cuota Administrativa a Pagar",compute='_saldo_pagar', store=True)
 
     tipo_valor = fields.Selection([
         ('enviar_credito', 'Enviar a Credito'),
