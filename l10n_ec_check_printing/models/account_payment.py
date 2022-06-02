@@ -464,18 +464,16 @@ class AccountPayment(models.Model):
                         movimientos_occ=self.env['account.move'].search([('journal_id','=',21),('ref','=',pago.invoice_id.name)])
                         if movimientos_occ:
                             for mov in movimientos_occ:
-                                lista_invoice.append(mov.id)
-                                #raise ValidationError("se encuentra este movimiento{0}".format(mov.id))     
-                        else:
-                            raise ValidationError("NO se encuentra este movimiento{0}".format(pago.invoice_id.name))        
+                                lista_invoice.append(mov.id)      
                 rec.update({'invoice_ids': [(6, 0, lista_invoice)]})
 
-            
+        
 
     
             if rec.amount==0:
                 raise ValidationError("Ingrese el valor del monto")
             invoice_id=list(set([l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]))
+            if 
             lista_respaldo=[]
             for factura in invoice_id:
                 payment_lines= rec.payment_line_ids.filtered(lambda l: l.invoice_id.id==factura)
@@ -513,7 +511,7 @@ class AccountPayment(models.Model):
          #   raise ValidationError(invoice_id)
 
             if invoice_id:
-                raise ValidationError("qqq{0}".format(invoice_id))
+                raise ValidationError("qqq{0}, el tipo es,{1}".format(invoice_id,type(invoice_id)))
                 self.invoice_ids = invoice_id
             account_check = rec.env['account.cheque']
             
