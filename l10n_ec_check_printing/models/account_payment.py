@@ -1041,13 +1041,13 @@ class AccountPayment(models.Model):
                     }
                     all_move_vals=[]
                     all_move_vals.append(move_vals)
-                    if rec.payment_type in ('inbound', 'outbound'):
+                    if payment.payment_type in ('inbound', 'outbound'):
                         # ==== 'inbound' / 'outbound' ====
                         if lista_invoice:
                             invoice_ids=self.env['account.move'].search([('id','in',lista_invoice)])
-                            if rec.invoice_ids:
-                                (moves[0] + rec.invoice_ids).line_ids \
-                                    .filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))\
+                            if invoice_ids:
+                                (moves[0] + invoice_ids).line_ids \
+                                    .filtered(lambda line: not line.reconciled and line.account_id == payment.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))\
                                     .reconcile()
 
 
