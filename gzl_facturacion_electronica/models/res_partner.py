@@ -14,7 +14,7 @@ class ResPartner(models.Model):
     is_transporter = fields.Boolean('Transportista', default=False)
     license_number = fields.Char(string='Número de Licencia')
     is_cont_especial = fields.Boolean('Codigo Contribuyente Especial')
-    is_rise = fields.Boolean('RISE')
+    is_rise = fields.Boolean('Contribuyente Negocio Popular Regimen RIMPE')
 
 
     ats_country = fields.Many2one('ats.country', string='Pais')
