@@ -1045,6 +1045,7 @@ class AccountPayment(models.Model):
                         'currency_id': payment.journal_id.currency_id.id or payment.company_id.currency_id.id,
                         'partner_id': payment.partner_id.id,
                         'line_ids': listaMovimientos,
+                        
                     }
                     all_move_vals=[]
                     all_move_vals.append(move_vals)
