@@ -575,7 +575,7 @@ class AccountPayment(models.Model):
 
             super(AccountPayment, self.with_context({'multi_payment': invoice_id and True or False})).post()
             
-            #rec.payment_line_ids.unlink()
+            rec.payment_line_ids.unlink()
 
             
             for factura in lista_respaldo:
@@ -963,6 +963,9 @@ class AccountPayment(models.Model):
             if payment.tipo_valor=='crear_acticipo':
                 if not payment.payment_line_ids:
                     raise ValidationError("Debe seleccionar facturas Pagar")
+                lista_invoice=[]
+                for pago in payment.payment_line_ids:
+                    lista_invoice.append(pago.invoice_id.id)
                 if payment.amount<=(payment.saldo_pago+payment.valor_deuda):
                     raise ValidationError("En caso de anticipos el monto a pagar debe ser mayor que los valores a pagar.")
                 else:
@@ -1038,7 +1041,14 @@ class AccountPayment(models.Model):
                     }
                     all_move_vals=[]
                     all_move_vals.append(move_vals)
-              
+                    if rec.payment_type in ('inbound', 'outbound'):
+                        # ==== 'inbound' / 'outbound' ====
+                        if lista_invoice:
+                            invoice_ids=self.env['account.move'].search([('id','in',lista_invoice)])
+                                if rec.invoice_ids:
+                                    (moves[0] + rec.invoice_ids).line_ids \
+                                        .filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))\
+                                        .reconcile()
 
 
 
