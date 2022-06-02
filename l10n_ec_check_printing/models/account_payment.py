@@ -460,7 +460,7 @@ class AccountPayment(models.Model):
 
             lista_invoice=[]
 
-            for pago in payment.payment_line_ids:
+            for pago in rec.payment_line_ids:
                 if pago.pagar:
                     lista_invoice.append(pago.invoice_id.id)
             rec.update({'invoice_ids': [(6, 0, lista_invoice)]})
