@@ -1174,3 +1174,7 @@ class AccountPaymentLine(models.Model):
                 l.payment_id._saldo_pagar()
             l.payment_id.amount=monto_inicial 
 
+    @api.onchange('amount')
+    def actualizar_saldo(self):
+        for l in self:
+            l.payment_id._saldo_pagar()
