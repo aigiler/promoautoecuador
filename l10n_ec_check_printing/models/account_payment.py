@@ -458,12 +458,16 @@ class AccountPayment(models.Model):
                     #raise ValidationError("El monto a pagar no puede ser al monto adeudado en la factura {0}".format(l.invoice_id.l10n_latam_document_number))
 
 
+                lista_invoice=[]
 
+                for pago in payment.payment_line_ids:
+                    if pago.pagar:
+                        lista_invoice.append(pago.invoice_id.id)
+                rec.update('invoice_ids': [(6, 0, lista_invoice)])
+        
             if rec.amount==0:
                 raise ValidationError("Ingrese el valor del monto")
             invoice_id=list(set([l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]))
-            if rec.tipo_valor:
-                invoice_id=list(set([l.invoice_id.id for l in rec.payment_line_ids if l.pagar==True]))   
             lista_respaldo=[]
             for factura in invoice_id:
                 payment_lines= rec.payment_line_ids.filtered(lambda l: l.invoice_id.id==factura)
@@ -498,8 +502,6 @@ class AccountPayment(models.Model):
             
             
             invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]
-            if rec.tipo_valor:
-                invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.pagar==True]
          #   raise ValidationError(invoice_id)
             
             if invoice_id:
@@ -963,9 +965,7 @@ class AccountPayment(models.Model):
             if payment.tipo_valor=='crear_acticipo':
                 if not payment.payment_line_ids:
                     raise ValidationError("Debe seleccionar facturas Pagar")
-                lista_invoice=[]
-                for pago in payment.payment_line_ids:
-                    lista_invoice.append(pago.invoice_id.id)
+
                 if payment.amount<=(payment.saldo_pago+payment.valor_deuda):
                     raise ValidationError("En caso de anticipos el monto a pagar debe ser mayor que los valores a pagar.")
                 else:
@@ -1041,16 +1041,6 @@ class AccountPayment(models.Model):
                     }
                     all_move_vals=[]
                     all_move_vals.append(move_vals)
-                    if payment.payment_type in ('inbound', 'outbound'):
-                        # ==== 'inbound' / 'outbound' ====
-                        if lista_invoice:
-                            invoice_ids=self.env['account.move'].search([('id','in',lista_invoice)])
-                            if invoice_ids:
-                                (moves[0] + invoice_ids).line_ids \
-                                    .filtered(lambda line: not line.reconciled and line.account_id == payment.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))\
-                                    .reconcile()
-
-
 
 
 
