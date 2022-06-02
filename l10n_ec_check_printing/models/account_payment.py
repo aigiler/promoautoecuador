@@ -590,10 +590,8 @@ class AccountPayment(models.Model):
                     movimientos_occ=self.env['account.move'].search([('journal_id','=',21),('ref','=',lineas_pago.invoice_id.name)])
                     for mov in movimientos_occ:
                         if rec.payment_type in ('inbound', 'outbound'):
-                            if movimientos_occ:
-                                (moves[0] + movimientos_occ).line_ids \
-                                    .filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))\
-                                    .reconcile()
+                            #for lines in mov.rec.lines:
+                            movimientos_occ.reconcile()
 
             rec.payment_line_ids.unlink()
 
