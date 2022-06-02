@@ -463,7 +463,7 @@ class AccountPayment(models.Model):
                 for pago in payment.payment_line_ids:
                     if pago.pagar:
                         lista_invoice.append(pago.invoice_id.id)
-                rec.update('invoice_ids': [(6, 0, lista_invoice)])
+                rec.update({'invoice_ids': [(6, 0, lista_invoice)]})
         
             if rec.amount==0:
                 raise ValidationError("Ingrese el valor del monto")
