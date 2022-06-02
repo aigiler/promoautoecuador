@@ -1158,7 +1158,7 @@ class AccountPaymentLine(models.Model):
                     monto_pendiente_pago+=(x.saldo-x.cuota_adm)
                 l.monto_pendiente_pago=monto_pendiente_pago
 
-    @api.onchage('pagar')
+    @api.onchange('pagar')
     def actualizar_totales(self):
         for l in self:
             if l.pagar:
