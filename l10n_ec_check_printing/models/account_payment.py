@@ -585,14 +585,6 @@ class AccountPayment(models.Model):
 
             super(AccountPayment, self.with_context({'multi_payment': invoice_id and True or False})).post()
             
-            for lineas_pago in rec.payment_line_ids:
-                if lineas_pago.pagar:
-                    movimientos_occ=self.env['account.move'].search([('journal_id','=',21),('ref','=',lineas_pago.invoice_id.name)])
-                    for mov in movimientos_occ:
-                        if rec.payment_type in ('inbound', 'outbound'):
-                            #for lines in mov.rec.lines:
-                            movimientos_occ.reconcile()
-
             rec.payment_line_ids.unlink()
 
             
@@ -600,6 +592,7 @@ class AccountPayment(models.Model):
 
                 PaymentLine = self.env['account.payment.line']
                 line_id = PaymentLine.create(factura)
+                #for y in factura.invoice_id.contrato_estado_cuenta_ids:
 
             
             
@@ -884,8 +877,6 @@ class AccountPayment(models.Model):
                 if payment.saldo_pago:
                     if not self.account_payment_account_ids:
                         raise ValidationError("El saldo Pendiente debe ser asignado a un apunte contable. Favor crear un registro en la sección Cuentas Contables.")
-                
-
                     listaMovimientos=[
 
                             #  Este se envía al banco 
@@ -983,7 +974,7 @@ class AccountPayment(models.Model):
                 if not payment.payment_line_ids:
                     raise ValidationError("Debe seleccionar facturas Pagar")
 
-                if payment.amount<=(payment.saldo_pago+payment.valor_deuda):
+                if payment.amount<=payment.saldo_pago:
                     raise ValidationError("En caso de anticipos el monto a pagar debe ser mayor que los valores a pagar.")
                 else:
                     listaMovimientos=[
@@ -1000,28 +991,7 @@ class AccountPayment(models.Model):
                                 'account_id': liquidity_line_account.id,
                                 'payment_id': payment.id,
                             }),
-                            # (0, 0, {
-                            #     'name': payment.name,
-                            #     'amount_currency': -liquidity_amount if liquidity_line_currency_id else 0.0,
-                            #     'currency_id': liquidity_line_currency_id,
-                            #     'debit': payment.valor_deuda,
-                            #     'credit': 0,
-                            #     'date_maturity': payment.payment_date,
-                            #     'partner_id': payment.partner_id.commercial_partner_id.id,
-                            #     'account_id': 4590,
-                            #     'payment_id': payment.id,
-                            # }),
-                            # (0, 0, {
-                            #     'name': payment.name,
-                            #     'amount_currency':0.0,
-                            #     'currency_id': liquidity_line_currency_id,
-                            #     'debit': 0,
-                            #     'credit': payment.valor_deuda,
-                            #     'date_maturity': payment.payment_date,
-                            #     'partner_id': payment.partner_id.commercial_partner_id.id,
-                            #     'account_id': 4457,
-                            #     'payment_id': payment.id,
-                            # }),
+
                             (0, 0, {
                                 'name': "Pago de Cuentas Adminitrativa y Capital",
                                 'amount_currency': counterpart_amount + write_off_amount if currency_id else 0.0,

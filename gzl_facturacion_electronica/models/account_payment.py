@@ -88,10 +88,8 @@ class AccountPayment(models.Model):
                         else:
                             self.update({'contrato_estado_cuenta_payment_ids':[(6,0,[])]}) 
                 for cuota in self.contrato_id.estado_de_cuenta_ids:
-                    if cuota.factura_id.amount_residual!=0:
+                    if cuota.factura_id.saldo!=0:
                         lista_cuotas.append(cuota.id)
-                
-            #obj_am = self.env['account.move'].search([('id','in',self.invoice_ids.ids)])
             obj_estado_cuenta_ids = self.env['contrato.estado.cuenta'].search([('id','in',lista_cuotas)])
             list_ids_cuotas = []
             cuotas = {
@@ -114,23 +112,25 @@ class AccountPayment(models.Model):
                     # for rec in obj_am:
                     for ric in obj_estado_cuenta_ids:
                         # list_ids_cuotas.append(ric)
-                        cuotas.update({
-                            'numero_cuota':ric.numero_cuota,
-                            'fecha':ric.fecha,
-                            'cuota_capital':ric.cuota_capital,
-                            'seguro':ric.seguro,
-                            'rastreo':ric.rastreo,
-                            'otro':ric.otro,
-                            'saldo':ric.saldo,
-                            'contrato_id':ric.contrato_id.id,
-                            # 'cuota_capital_pagar':ric.cuota_capital_pagar,
-                            # 'seguro_pagar':'',
-                            # 'rastreo_pagar':'',
-                            # 'otro_pagar':'',
-                            # 'monto_pagar':'',
-                        })
-                        
-                        self.contrato_estado_cuenta_payment_ids = [(0,0,cuotas)]
+                        if ric.saldo!=0:
+                            saldo=ric.seguro+ric.rastreo+ric.cuota_capital+ric.otro
+                            cuotas.update({
+                                'numero_cuota':ric.numero_cuota,
+                                'fecha':ric.fecha,
+                                'cuota_capital':ric.cuota_capital,
+                                'seguro':ric.seguro,
+                                'rastreo':ric.rastreo,
+                                'otro':ric.otro,
+                                'saldo':saldo,
+                                'contrato_id':ric.contrato_id.id,
+                                # 'cuota_capital_pagar':ric.cuota_capital_pagar,
+                                # 'seguro_pagar':'',
+                                # 'rastreo_pagar':'',
+                                # 'otro_pagar':'',
+                                # 'monto_pagar':'',
+                            })
+                            
+                            self.contrato_estado_cuenta_payment_ids = [(0,0,cuotas)]
 
     @api.depends('contrato_estado_cuenta_payment_ids')
     def total_asignado(self):
