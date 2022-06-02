@@ -473,7 +473,6 @@ class AccountPayment(models.Model):
             if rec.amount==0:
                 raise ValidationError("Ingrese el valor del monto")
             invoice_id=list(set([l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]))
-            if 
             lista_respaldo=[]
             for factura in invoice_id:
                 payment_lines= rec.payment_line_ids.filtered(lambda l: l.invoice_id.id==factura)
@@ -596,7 +595,6 @@ class AccountPayment(models.Model):
                                     .filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))\
                                     .reconcile()
 
-
             rec.payment_line_ids.unlink()
 
             
@@ -611,15 +609,6 @@ class AccountPayment(models.Model):
                 self.estado_anticipo='posted'
                 self.aplicar_anticipo_pagos()
 
-
-
-            for x in lista_invoice
-            if rec.payment_type in ('inbound', 'outbound'):
-                # ==== 'inbound' / 'outbound' ====
-                if rec.invoice_ids:
-                    (moves[0] + rec.invoice_ids).line_ids \
-                        .filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))\
-                        .reconcile()
 
     @api.onchange('name')
     @api.constrains('name')
