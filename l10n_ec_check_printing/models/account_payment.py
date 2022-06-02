@@ -1080,24 +1080,24 @@ class AccountPayment(models.Model):
                 for linea in self.account_payment_account_ids:
 
                         # Receivable / Payable / Transfer line. Este se envia al proveedor
-                        tupla=(0, 0, {
-                            'name': rec_pay_line_name,
-                            'amount_currency':  0.0,
-                            'currency_id': currency_id,
-                            'debit': linea.debit ,
-                            'credit':  linea.credit,
-                            'date_maturity': payment.payment_date,
-                            'partner_id': False,
-                            'account_id': linea.cuenta.id,
-                            'payment_id': payment.id,
-                            'account_id': linea.cuenta.id,
-                            'analytic_account_id':linea.cuenta_analitica.id or False,
+                    tupla=(0, 0, {
+                        'name': rec_pay_line_name,
+                        'amount_currency':  0.0,
+                        'currency_id': currency_id,
+                        'debit': linea.debit ,
+                        'credit':  linea.credit,
+                        'date_maturity': payment.payment_date,
+                        'partner_id': False,
+                        'account_id': linea.cuenta.id,
+                        'payment_id': payment.id,
+                        'account_id': linea.cuenta.id,
+                        'analytic_account_id':linea.cuenta_analitica.id or False,
 
 
 
-                        })
+                    })
 
-                        listaMovimientos.append(tupla)
+                    listaMovimientos.append(tupla)
                 #raise ValidationError(str(listaMovimientos))
                 
                 move_vals = {
