@@ -464,7 +464,10 @@ class AccountPayment(models.Model):
                         movimientos_occ=self.env['account.move'].search([('journal_id','=',21),('ref','=',pago.invoice_id.name)])
                         if movimientos_occ:
                             for mov in movimientos_occ:
-                                lista_invoice.append(mov.id)      
+                                lista_invoice.append(mov.id)
+                    for contrato in pago.invoice_id.contrato_estado_cuenta_ids:
+                        contrato.monto_pagado=y.monto_pagar
+                        contrato.saldo=contrato.saldo-y.monto_pagar  
                 rec.update({'invoice_ids': [(6, 0, lista_invoice)]})
 
         
