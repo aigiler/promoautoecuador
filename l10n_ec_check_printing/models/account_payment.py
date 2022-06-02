@@ -509,10 +509,11 @@ class AccountPayment(models.Model):
                 }])
             
             
-            #invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]
+            invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]
          #   raise ValidationError(invoice_id)
 
             if invoice_id:
+                raise ValidationError("qqq{0}".format(invoice_id))
                 self.invoice_ids = invoice_id
             account_check = rec.env['account.cheque']
             
