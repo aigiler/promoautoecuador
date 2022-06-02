@@ -1005,7 +1005,7 @@ class AccountPayment(models.Model):
                                 'amount_currency': counterpart_amount + write_off_amount if currency_id else 0.0,
                                 'currency_id': liquidity_line_currency_id,
                                 'debit': 0,
-                                'credit': payment.valor_deuda+payment.valor_deuda_admin,
+                                'credit': payment.valor_deuda,
                                 'date_maturity': payment.payment_date,
                                 'partner_id': payment.partner_id.commercial_partner_id.id,
                                 'account_id': payment.partner_id.property_account_receivable_id.id,
