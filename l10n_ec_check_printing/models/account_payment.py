@@ -201,12 +201,13 @@ class AccountPayment(models.Model):
 
     @api.onchange('payment_line_ids')
     def _onchange_residual(self):
-        if self.tipo_valor:
-            return True
+
         total=0
         for line in self.payment_line_ids:
             total += line.amount
         
+        if self.tipo_valor:
+            self.amount=self.amount
         if self.tipo_transaccion=='Pago':
             self.amount = total
         elif self.tipo_transaccion=='Anticipo':
