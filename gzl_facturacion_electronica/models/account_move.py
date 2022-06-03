@@ -447,8 +447,34 @@ class AccountMove(models.Model):
         if self.is_electronic:
             self.procesoComprobanteElectronico()
         
-        return super().post()
-                        
+        return super().post()                
+
+    @api.onchange('manual_sequence','manual_establishment','manual_referral_guide')
+    @api.constrains('manual_sequence','manual_establishment','manual_referral_guide')
+    def validar_secuencia(self):
+        for inv in self:
+            if inv.manual_sequence and inv.manual_establishment and inv.manual_referral_guide:
+                if inv.is_electronic==False:
+                    secuencia=inv.manual_establishment.zfill(3)+inv.manual_referral_guide.zfill(3)+str(inv.manual_sequence).zfill(9)
+                    facturas_obj=self.env['account.move'].search([('journal_id','=',inv.journal_id.id),
+                                                                ('l10n_latam_document_number','=',secuencia),
+                                                                ('l10n_latam_document_type_id','=',inv.l10n_latam_document_type_id.id),
+                                                                ('partner_id','=',inv.partner_id.id)])
+                    if facturas_obj:
+                        raise ValidationError("El numero de documento {0} ya ha sido asignado para este tipo de documentos y Proveedor/Cliente".format(secuencia))
+
+    @api.constrains('l10n_latam_document_number')
+    @api.onchange('l10n_latam_document_number')
+    def validar_numero_documento(self):
+        for inv in self:
+            if inv.l10n_latam_document_number:
+                facturas_obj=self.env['account.move'].search([('journal_id','=',inv.journal_id.id),
+                                                            ('l10n_latam_document_number','=',inv.l10n_latam_document_number),
+                                                            ('l10n_latam_document_type_id','=',inv.l10n_latam_document_type_id.id),
+                                                            ('partner_id','=',inv.partner_id.id)])
+                if facturas_obj:
+                    raise ValidationError("El numero de documento {0} ya ha sido asignado para este tipo de documentos y Proveedor/Cliente".format(inv.l10n_latam_document_number))
+
 
     def GenerarClaveAcceso(self,clave_acceso_48):
         factores = itertools.cycle((2,3,4,5,6,7))
@@ -533,10 +559,10 @@ class AccountMove(models.Model):
                 obj_am = self.env['account.move']
                 for rec in self.contrato_id.estado_de_cuenta_ids.search([('id','in',self.contrato_estado_cuenta_ids.ids)]):
                     rec.factura_id = self.id
-                    cuota_capital += (rec.saldo - rec.cuota_adm-rec.seguro-rec.rastreo-rec.otro)
-                    seguro += (rec.saldo - rec.cuota_adm-rec.cuota_capital-rec.rastreo-rec.otro)
-                    otros += (rec.saldo - rec.cuota_adm-rec.seguro-rec.rastreo-rec.cuota_capital)
-                    rastreo += (rec.saldo - rec.cuota_adm-rec.seguro-rec.cuota_capital-rec.otro)
+                    cuota_capital += (rec.saldo - rec.cuota_adm-rec.seguro-rec.rastreo-rec.otro-rec.iva_adm)
+                    seguro += (rec.saldo - rec.cuota_adm-rec.cuota_capital-rec.rastreo-rec.otro-rec.iva_adm)
+                    otros += (rec.saldo - rec.cuota_adm-rec.seguro-rec.rastreo-rec.cuota_capital-rec.iva_adm)
+                    rastreo += (rec.saldo - rec.cuota_adm-rec.seguro-rec.cuota_capital-rec.otro-rec.iva_adm)
                 if cuota_capital>0:
                     if not cuota_capital_obj:
                         raise ValidationError("Debe parametrizar la cuenta para los rubros de los contratos.")
