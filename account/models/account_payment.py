@@ -702,24 +702,24 @@ class account_payment(models.Model):
                     (moves[0] + rec.invoice_ids).line_ids \
                         .filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))\
                         .reconcile()
-            cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
-            seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
-            otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
-            rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
-            lista_diarios=[]
-            for inv in rec.invoice_ids:                     
-                if cuota_capital_obj:
-                    lista_diarios.append(cuota_capital.journal_id.id)
-                if seguro_obj:
-                    lista_diarios.append(seguro_obj.journal_id.id)
-                if otros_obj:
-                    lista_diarios.append(otros_obj.journal_id.id)
-                if rastreo_obj:
-                    lista_diarios.append(rastreo_obj.journal_id.id)
-                movimientos_occ=self.env['account.move'].search([('journal_id','in',lista_diarios),('ref','=',pago.invoice_id.name)])
-                movimientos_occ.line_ids \
-                        .filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))\
-                        .reconcile()
+                cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
+                seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
+                otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
+                rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
+                lista_diarios=[]
+                for inv in rec.invoice_ids:                     
+                    if cuota_capital_obj:
+                        lista_diarios.append(cuota_capital.journal_id.id)
+                    if seguro_obj:
+                        lista_diarios.append(seguro_obj.journal_id.id)
+                    if otros_obj:
+                        lista_diarios.append(otros_obj.journal_id.id)
+                    if rastreo_obj:
+                        lista_diarios.append(rastreo_obj.journal_id.id)
+                    movimientos_occ=self.env['account.move'].search([('journal_id','in',lista_diarios),('ref','=',pago.invoice_id.name)])
+                    movimientos_occ.line_ids \
+                            .filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))\
+                            .reconcile()
 
 
             elif rec.payment_type == 'transfer':
