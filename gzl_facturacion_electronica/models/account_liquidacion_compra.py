@@ -16,6 +16,7 @@ class AccountMove(models.Model):
     _inherit = 'account.move'
 
 
+
     documento_reembolso_id = fields.Many2one('account.move', 'Documento Reembolso',copy=False)
 
     marca= fields.Char(string="Máquina")
