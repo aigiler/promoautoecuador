@@ -457,7 +457,9 @@ class AccountMove(models.Model):
                 if inv.is_electronic==False:
                     secuencia=inv.manual_establishment.zfill(3)+inv.manual_referral_guide.zfill(3)+str(inv.manual_sequence).zfill(9)
                     facturas_obj=self.env['account.move'].search([('journal_id','=',inv.journal_id.id),
-                                                                ('l10n_latam_document_number','=',secuencia)])
+                                                                ('l10n_latam_document_number','=',secuencia),
+                                                                ('l10n_latam_document_type_id','=',inv.l10n_latam_document_type_id.id),
+                                                                ('partner_id','=',inv.partner_id.id)])
                     if facturas_obj:
                         raise ValidationError("El numero de documento {0} ya ha sido asignado para este tipo de documentos".format(secuencia))
 
