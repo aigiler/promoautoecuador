@@ -718,7 +718,7 @@ class account_payment(models.Model):
                         lista_diarios.append(rastreo_obj.journal_id.id)
                     movimientos_occ=self.env['account.move'].search([('journal_id','in',lista_diarios),('ref','=',inv.name)])
                     movimientos_occ.line_ids \
-                            .filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))\
+                            .filtered(lambda line:line.account_id == rec.destination_account_id)\
                             .reconcile()
 
 
