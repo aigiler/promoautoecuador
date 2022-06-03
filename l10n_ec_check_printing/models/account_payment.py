@@ -540,7 +540,7 @@ class AccountPayment(models.Model):
          #   raise ValidationError(invoice_id)
 
             if invoice_id:
-                self.invoice_ids = invoice_id
+                self.invoice_ids = invoice_id+lista_asientos
             account_check = rec.env['account.cheque']
             
 
