@@ -500,7 +500,7 @@ class AccountPayment(models.Model):
                             contrato.monto_pagado=pago.amount
                             contrato.saldo=contrato.saldo-pago.amount  
                 rec.update({'invoice_ids': [(6, 0, lista_invoice)]})
-            if rec.amount==0:
+            if rec.amount==0: 
                 raise ValidationError("Ingrese el valor del monto")
             invoice_id=list(set([l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]))
             lista_respaldo=[]
