@@ -459,7 +459,7 @@ class AccountMove(models.Model):
                     facturas_obj=self.env['account.move'].search([('journal_id','=',inv.journal_id.id),
                                                                 ('l10n_latam_document_number','=',secuencia),
                                                                 ('l10n_latam_document_type_id','=',inv.l10n_latam_document_type_id.id),
-                                                                ('partner_id','=',inv.partner_id.id)])
+                                                                ('partner_id','=',inv.partner_id.id),('id','!=',inv.id)])
                     if facturas_obj:
                         raise ValidationError("El numero de documento {0} ya ha sido asignado para este tipo de documentos y Proveedor/Cliente".format(secuencia))
 
@@ -471,7 +471,7 @@ class AccountMove(models.Model):
                 facturas_obj=self.env['account.move'].search([('journal_id','=',inv.journal_id.id),
                                                             ('l10n_latam_document_number','=',inv.l10n_latam_document_number),
                                                             ('l10n_latam_document_type_id','=',inv.l10n_latam_document_type_id.id),
-                                                            ('partner_id','=',inv.partner_id.id)])
+                                                            ('partner_id','=',inv.partner_id.id),('id','!=',inv.id)])
                 if facturas_obj:
                     raise ValidationError("El numero de documento {0} ya ha sido asignado para este tipo de documentos y Proveedor/Cliente".format(inv.l10n_latam_document_number))
 
