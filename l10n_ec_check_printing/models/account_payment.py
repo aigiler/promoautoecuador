@@ -615,6 +615,7 @@ class AccountPayment(models.Model):
 
             super(AccountPayment, self.with_context({'multi_payment': invoice_id and True or False})).post()
     
+    
             #super(AccountPayment, self.with_context({'multi_payment': lista_asientos and True or False})).post()
 
             rec.payment_line_ids.unlink()
