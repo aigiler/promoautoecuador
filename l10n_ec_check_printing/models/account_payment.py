@@ -1197,7 +1197,7 @@ class AccountPaymentLine(models.Model):
             if l.invoice_id:
                 monto_pendiente_pago=0
                 for x in l.invoice_id.contrato_estado_cuenta_ids:
-                    monto_pendiente_pago+=(x.cuota_capital)
+                    monto_pendiente_pago+=(x.cuota_capital+x.seguro+x.rastreo+x.otro)
                 l.monto_pendiente_pago=monto_pendiente_pago
 
     @api.onchange('pagar')
