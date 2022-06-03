@@ -447,8 +447,7 @@ class AccountMove(models.Model):
         if self.is_electronic:
             self.procesoComprobanteElectronico()
         
-        return super().post()
-                        
+        return super().post()                
 
     @api.onchange('manual_sequence','manual_establishment','manual_referral_guide')
     @api.constrains('manual_sequence','manual_establishment','manual_referral_guide')
