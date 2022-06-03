@@ -18,7 +18,7 @@
         <field name="name">configuracion.rubros.tree</field>
         <field name="model">rubros.contratos</field>
         <field name="arch" type="xml">
-            <form string="Configuración Rubros Contratos" delete="0">
+            <form string="Configuración Rubros Contratos">
                 <sheet>
                     <group>
                         <field name="name"/>
