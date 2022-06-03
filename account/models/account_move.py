@@ -1794,7 +1794,7 @@ class AccountMove(models.Model):
 
     @api.model
     def get_purchase_types(self, include_receipts=False):
-        return ['in_invoice', 'in_refund','in_debit'] + (include_receipts and ['in_receipt'] or [])
+        return ['in_invoice', 'in_refund','in_debit','liq_purchase'] + (include_receipts and ['in_receipt'] or [])
 
     def is_purchase_document(self, include_receipts=False):
         return self.type in self.get_purchase_types(include_receipts)

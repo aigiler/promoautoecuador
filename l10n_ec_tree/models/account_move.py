@@ -24,5 +24,8 @@ class AccountMove(models.Model):
                 domain.extend([('l10n_ec_type', '=', 'in_invoice')])
             if self.type in ['in_refund']:
                 domain.extend([('l10n_ec_type', '=', 'in_refund')])
+
+
+
         return domain
     
