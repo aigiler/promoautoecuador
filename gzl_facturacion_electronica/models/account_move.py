@@ -526,8 +526,10 @@ class AccountMove(models.Model):
                 otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
                 rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
                 #obj_account_haber = self.env['account.account'].search([('code','=','2020601001')])
-                valor_debe = 0
-                valor_haber = 0
+                cuota_capital=0
+                seguro=0
+                otros=0
+                rastreo=0
                 obj_am = self.env['account.move']
                 for rec in self.contrato_id.estado_de_cuenta_ids.search([('id','in',self.contrato_estado_cuenta_ids.ids)]):
                     rec.factura_id = self.id
