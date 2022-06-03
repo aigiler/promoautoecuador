@@ -709,7 +709,7 @@ class account_payment(models.Model):
                 lista_diarios=[]
                 for inv in rec.invoice_ids:                     
                     if cuota_capital_obj:
-                        lista_diarios.append(cuota_capital.journal_id.id)
+                        lista_diarios.append(cuota_capital_obj.journal_id.id)
                     if seguro_obj:
                         lista_diarios.append(seguro_obj.journal_id.id)
                     if otros_obj:
