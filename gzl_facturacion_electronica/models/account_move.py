@@ -459,7 +459,7 @@ class AccountMove(models.Model):
                     facturas_obj=self.env['account.move'].search([('journal_id','=',inv.journal_id.id),
                                                                 ('l10n_latam_document_number','=',secuencia)])
                     if facturas_obj:
-                        raise ValidationError("El numero de documento ya ha sido asignado para este tipo de documentos")
+                        raise ValidationError("El numero de documento {0} ya ha sido asignado para este tipo de documentos".format(secuencia))
 
     def GenerarClaveAcceso(self,clave_acceso_48):
         factores = itertools.cycle((2,3,4,5,6,7))
