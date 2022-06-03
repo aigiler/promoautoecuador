@@ -31,7 +31,7 @@
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="after">
                      <field name="is_group_cobranza" invisible="1"/>
-                    <field name="contrato_id" groups="gzl_facturacion_electronica.grupo_cobranza" domain="[('cliente', '=', partner_id)]" attrs="{'invisible': [('type', '!=', 'out_invoice')], 'readonly': [('state','!=','draft')],'required': [('is_group_cobranza', '=', True),('type', '=', 'out_invoice')]}"  options="{'no_open': True, 'no_create': True}" />
+                    <field name="contrato_id"  domain="[('cliente', '=', partner_id)]" attrs="{'invisible': [('type', '!=', 'out_invoice')], 'readonly': [('state','!=','draft')],'required': [('is_group_cobranza', '=', True),('type', '=', 'out_invoice')]}"  options="{'no_open': True, 'no_create': True}" />
                     <field name="contrato_estado_cuenta_ids"  widget="many2many_tags" domain="[('contrato_id','=',contrato_id),('estado_pago','=','pendiente'),('factura_id','=',False)]" attrs="{'invisible': [('type', '!=', 'out_invoice')], 'readonly': [('state','!=','draft')],'required': [('is_group_cobranza', '=', True),('type', '=', 'out_invoice')]}"  options="{'no_open': True, 'no_create': True}" groups="gzl_facturacion_electronica.grupo_cobranza"/>
                 </xpath>
  
