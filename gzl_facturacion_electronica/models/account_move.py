@@ -453,7 +453,7 @@ class AccountMove(models.Model):
     @api.onchange('manual_sequence','manual_establishment','manual_referral_guide')
     @api.constrains('manual_sequence','manual_establishment','manual_referral_guide')
     def validar_secuencia(self):
-        for l in self:
+        for inv in self:
             if inv.is_electronic==False:
                 secuencia=inv.manual_establishment.zfill(3)+inv.manual_referral_guide.zfill(3)+str(inv.manual_sequence).zfill(9)
                 facturas_obj=self.env['account.move'].search([('journal_id','=',inv.journal_id.id),
