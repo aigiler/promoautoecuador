@@ -440,6 +440,9 @@ class ChequeWizard(models.TransientModel):
         result = super(ChequeWizard, self).default_get(flds)
         account_cheque_id = self.env['account.cheque'].browse(self._context.get('active_id'))
         result['is_outgoing'] = True
+        result['chequed_date']=account_cheque_id.cheque_date
+        result['bank_account_id']=account_cheque_id.bank_account_id.id
+
         return result
         
     def create_cheque_entry(self):
