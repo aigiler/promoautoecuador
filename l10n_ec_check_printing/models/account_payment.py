@@ -475,6 +475,7 @@ class AccountPayment(models.Model):
                 #if l.amount>l.actual_amount:
                     #raise ValidationError("El monto a pagar no puede ser al monto adeudado en la factura {0}".format(l.invoice_id.l10n_latam_document_number))
             lista_invoice=[]
+            lista_asientos=[]
             if rec.tipo_valor:
                 if rec.tipo_valor=='enviar_credito':
                     for y in self.contrato_estado_cuenta_payment_ids:
@@ -491,6 +492,7 @@ class AccountPayment(models.Model):
                             movimientos_occ=self.env['account.move'].search([('journal_id','=',21),('ref','=',pago.invoice_id.name)])
                             for mov in movimientos_occ:
                                 lista_invoice.append(mov.id)
+                                lista_asientos.append(mov.id)
   
 
                         for contrato in pago.invoice_id.contrato_estado_cuenta_ids:
@@ -612,6 +614,8 @@ class AccountPayment(models.Model):
 
             super(AccountPayment, self.with_context({'multi_payment': invoice_id and True or False})).post()
     
+            super(AccountPayment, self.with_context({'multi_payment': lista_asientos and True or False})).post()
+
             rec.payment_line_ids.unlink()
 
             
