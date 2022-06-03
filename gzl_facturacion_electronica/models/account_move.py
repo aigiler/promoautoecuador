@@ -461,7 +461,20 @@ class AccountMove(models.Model):
                                                                 ('l10n_latam_document_type_id','=',inv.l10n_latam_document_type_id.id),
                                                                 ('partner_id','=',inv.partner_id.id)])
                     if facturas_obj:
-                        raise ValidationError("El numero de documento {0} ya ha sido asignado para este tipo de documentos".format(secuencia))
+                        raise ValidationError("El numero de documento {0} ya ha sido asignado para este tipo de documentos y Proveedor/Cliente".format(secuencia))
+
+    @api.constrains('l10n_latam_document_number')
+    @api.onchange('l10n_latam_document_number')
+    def validar_numero_documento(self):
+        for inv in self:
+            if inv.l10n_latam_document_number:
+                facturas_obj=self.env['account.move'].search([('journal_id','=',inv.journal_id.id),
+                                                            ('l10n_latam_document_number','=',inv.l10n_latam_document_number),
+                                                            ('l10n_latam_document_type_id','=',inv.l10n_latam_document_type_id.id),
+                                                            ('partner_id','=',inv.partner_id.id)])
+                if facturas_obj:
+                    raise ValidationError("El numero de documento {0} ya ha sido asignado para este tipo de documentos y Proveedor/Cliente".format(secuencia))
+
 
     def GenerarClaveAcceso(self,clave_acceso_48):
         factores = itertools.cycle((2,3,4,5,6,7))
