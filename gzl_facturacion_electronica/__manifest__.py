@@ -46,6 +46,7 @@
         'views/inventario_servicios_view.xml',
         'views/bitacora_consumo_servicios_view.xml',
         'views/tipo_proveedor_reembolso_view.xml',
+        'views/configuracion_rubros_view.xml',
 
         'wizard/wizard_ats_view.xml',
         'wizard/wizard_import_documents_view.xml',

@@ -521,34 +521,116 @@ class AccountMove(models.Model):
             if self.contrato_estado_cuenta_ids:
                 #obj_account_debe = self.env['account.account'].search([('code','=','1010205001')])
                 obj_account_debe=self.partner_id.property_account_receivable_id
-                obj_account_haber = self.env['account.account'].search([('code','=','2020601001')])
+                cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
+                seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
+                otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
+                rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
+                #obj_account_haber = self.env['account.account'].search([('code','=','2020601001')])
                 valor_debe = 0
                 valor_haber = 0
                 obj_am = self.env['account.move']
                 for rec in self.contrato_id.estado_de_cuenta_ids.search([('id','in',self.contrato_estado_cuenta_ids.ids)]):
                     rec.factura_id = self.id
-                    valor_debe += (rec.saldo - rec.cuota_adm)
-                obj_am.create({
-                    'date':self.invoice_date,
-                    'journal_id':self.env.ref('gzl_facturacion_electronica.account_journal_operaciones_cuotas_capitales').id,
-                    'company_id':self.company_id.id,
-                    'type':'entry',
-                    'ref':self.name,
-                    'line_ids':[
-                        (0,0,{
-                        'account_id':obj_account_debe.id,
-                        'partner_id':self.partner_id.id,
-                        'credit':0,
-                        'debit':valor_debe
-                        }),
-                        (0,0,{
-                        'account_id':obj_account_haber.id,
-                        'partner_id':self.partner_id.id,
-                        'credit':valor_debe,
-                        'debit':0
-                        })
-                    ]
-                }).action_post()
+                    cuota_capital += (rec.saldo - rec.cuota_adm-rec.seguro-rec.rastreo-rec.otros)
+                    seguro += (rec.saldo - rec.cuota_adm-rec.cuota_capital-rec.rastreo-rec.otros)
+                    otros += (rec.saldo - rec.cuota_adm-rec.seguro-rec.rastreo-rec.cuota_capital)
+                    rastreo += (rec.saldo - rec.cuota_adm-rec.seguro-rec.cuota_capital-rec.otros)
+                if cuota_capital>0:
+                    if not cuota_capital_obj:
+                        raise ValidationError("Debe parametrizar la cuenta para los rubros de los contratos.")
+                    obj_am.create({
+                        'date':self.invoice_date,
+                        'journal_id':cuota_capital_obj.journal_id.id,
+                        'company_id':self.company_id.id,
+                        'type':'entry',
+                        'ref':self.name,
+                        'line_ids':[
+                            (0,0,{
+                            'account_id':obj_account_debe.id,
+                            'partner_id':self.partner_id.id,
+                            'credit':0,
+                            'debit':cuota_capital
+                            }),
+                            (0,0,{
+                            'account_id':cuota_capital_obj.cuenta_id.id,
+                            'partner_id':self.partner_id.id,
+                            'credit':cuota_capital,
+                            'debit':0
+                            })
+                        ]
+                    }).action_post()
+                if seguro>0:
+                    if not seguro_obj:
+                        raise ValidationError("Debe parametrizar la cuenta para los rubros de los contratos.")
+                    obj_am.create({
+                        'date':self.invoice_date,
+                        'journal_id':seguro_obj.journal_id.id,
+                        'company_id':self.company_id.id,
+                        'type':'entry',
+                        'ref':self.name,
+                        'line_ids':[
+                            (0,0,{
+                            'account_id':obj_account_debe.id,
+                            'partner_id':self.partner_id.id,
+                            'credit':0,
+                            'debit':seguro
+                            }),
+                            (0,0,{
+                            'account_id':seguro_obj.cuenta_id.id,
+                            'partner_id':self.partner_id.id,
+                            'credit':seguro,
+                            'debit':0
+                            })
+                        ]
+                    }).action_post()
+                if otros>0:
+                    if not otros_obj:
+                        raise ValidationError("Debe parametrizar la cuenta para los rubros de los contratos.")
+                    obj_am.create({
+                        'date':self.invoice_date,
+                        'journal_id':otros_obj.journal_id.id,
+                        'company_id':self.company_id.id,
+                        'type':'entry',
+                        'ref':self.name,
+                        'line_ids':[
+                            (0,0,{
+                            'account_id':obj_account_debe.id,
+                            'partner_id':self.partner_id.id,
+                            'credit':0,
+                            'debit':otros
+                            }),
+                            (0,0,{
+                            'account_id':otros_obj.cuenta_id.id,
+                            'partner_id':self.partner_id.id,
+                            'credit':otros,
+                            'debit':0
+                            })
+                        ]
+                    }).action_post()
+                if rastreo>0:
+                    if not rastreo_obj:
+                        raise ValidationError("Debe parametrizar la cuenta para los rubros de los contratos.")
+                    obj_am.create({
+                        'date':self.invoice_date,
+                        'journal_id':rastreo_obj.journal_id.id,
+                        'company_id':self.company_id.id,
+                        'type':'entry',
+                        'ref':self.name,
+                        'line_ids':[
+                            (0,0,{
+                            'account_id':obj_account_debe.id,
+                            'partner_id':self.partner_id.id,
+                            'credit':0,
+                            'debit':rastreo
+                            }),
+                            (0,0,{
+                            'account_id':rastreo_obj.cuenta_id.id,
+                            'partner_id':self.partner_id.id,
+                            'credit':rastreo,
+                            'debit':0
+                            })
+                        ]
+                    }).action_post()
 
     def action_withholding_create(self):
         TYPES_TO_VALIDATE = ['in_invoice', 'liq_purchase', 'in_debit']
