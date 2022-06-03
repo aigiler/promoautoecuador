@@ -212,6 +212,8 @@ class AccountCheque(models.Model):
             s.status = 'registered'
             # return account_move
 
+
+
     # def set_to_bounced(self):
     #     account_move_obj = self.env['account.move']
     #     for s in self:
@@ -417,6 +419,16 @@ class AccountCheque(models.Model):
             raise ValidationError(_("El Número de Cheque {0} ya se encuentra ingresado en la siguiente secuencia {1} en el {2}").format(self.cheque_number,cheques.sequence,self.journal_id.bank_id.name))
 
 
+    def cheque_wizard_action(self):
+        viewid = self.env.ref('bi_account_cheque.cheque_wizard_wizard_view').id
+        return {   
+            'name':'Validar Cheque',
+            'view_type':'form',
+            'views' : [(viewid,'form')],
+            'res_model':'cheque.wizard',
+            'type':'ir.actions.act_window',
+            'target':'new',
+            }
 
 
 class ChequeWizard(models.TransientModel):
