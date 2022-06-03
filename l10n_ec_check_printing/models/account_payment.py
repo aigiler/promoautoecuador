@@ -23,13 +23,14 @@ class AccountPayment(models.Model):
 
 
     def obtener_facturas_conciliadas(self):
-
-        facturas=self.reconciled_invoice_ids.mapped("l10n_latam_document_number")
-        numeroDocumentos=""
-        for factura in facturas:
-            if factura:
-                numeroDocumentos=numeroDocumentos+factura+','
-        numeroDocumentos=numeroDocumentos.strip(',')
+        numeroDocumentos=False
+        if len(self.reconciled_invoice_ids)>0:
+            facturas=self.reconciled_invoice_ids.mapped("l10n_latam_document_number")
+            numeroDocumentos=""
+            for factura in facturas:
+                if factura:
+                    numeroDocumentos=numeroDocumentos+factura+', '
+            numeroDocumentos=numeroDocumentos.strip(', ')
 
         return numeroDocumentos
 
