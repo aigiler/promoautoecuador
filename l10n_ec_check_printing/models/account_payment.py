@@ -476,7 +476,7 @@ class AccountPayment(models.Model):
                 #if l.amount>l.actual_amount:
                     #raise ValidationError("El monto a pagar no puede ser al monto adeudado en la factura {0}".format(l.invoice_id.l10n_latam_document_number))
             lista_invoice=[]
-            lista_asientos=[]
+            #lista_asientos=[]
             if rec.tipo_valor:
                 if rec.tipo_valor=='enviar_credito':
                     for y in self.contrato_estado_cuenta_payment_ids:
@@ -486,19 +486,18 @@ class AccountPayment(models.Model):
                             for act in cuota_id:
                                 cuota_id.monto_pagado=y.monto_pagar
                                 cuota_id.saldo=cuota_id.saldo-y.monto_pagar
-                else:
-                    for pago in rec.payment_line_ids:
-                        if pago.pagar:
-                            lista_invoice.append(pago.invoice_id.id)
-                            movimientos_occ=self.env['account.move'].search([('journal_id','=',21),('ref','=',pago.invoice_id.name)])
-                            for mov in movimientos_occ:
-                                lista_invoice.append(mov.id)
-                                lista_asientos.append(mov.id)
-  
+            for pago in rec.payment_line_ids:
+                if pago.pagar:
+                    lista_invoice.append(pago.invoice_id.id)
+                    #movimientos_occ=self.env['account.move'].search([('journal_id','=',21),('ref','=',pago.invoice_id.name)])
+                    #for mov in movimientos_occ:
+                    #    lista_invoice.append(mov.id)
+                    #    lista_asientos.append(mov.id)
 
-                        for contrato in pago.invoice_id.contrato_estado_cuenta_ids:
-                            contrato.monto_pagado=pago.amount
-                            contrato.saldo=contrato.saldo-pago.amount  
+
+                for contrato in pago.invoice_id.contrato_estado_cuenta_ids:
+                    contrato.monto_pagado=pago.amount
+                    contrato.saldo=contrato.saldo-pago.amount  
                 rec.update({'invoice_ids': [(6, 0, lista_invoice)]})
             if rec.amount==0: 
                 raise ValidationError("Ingrese el valor del monto")
