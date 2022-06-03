@@ -457,6 +457,7 @@ class AccountMove(models.Model):
                 if inv.is_electronic==False:
                     secuencia=inv.manual_establishment.zfill(3)+inv.manual_referral_guide.zfill(3)+str(inv.manual_sequence).zfill(9)
 
+                    facturas_obj=[]
                     if inv.id:
                         facturas_obj=self.env['account.move'].search([('journal_id','=',inv.journal_id.id),
                                                                 ('l10n_latam_document_number','=',secuencia),
