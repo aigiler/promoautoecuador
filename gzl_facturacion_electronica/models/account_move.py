@@ -454,8 +454,8 @@ class AccountMove(models.Model):
     def validar_secuencia(self):
         for l in self:
             secuencia=inv.manual_establishment.zfill(3)+inv.manual_referral_guide.zfill(3)+str(inv.manual_sequence).zfill(9)
-            facturas_obj=self.env['account.move'].search([('journal_id',inv.journal_id.id),
-                                                        ('l10n_latam_document_number':secuencia)])
+            facturas_obj=self.env['account.move'].search([('journal_id','=',inv.journal_id.id),
+                                                        ('l10n_latam_document_number','=',secuencia)])
             if facturas_obj:
                 raise ValidationError("El numero de documento ya ha sido asignado para este tipo de documentos")
 
