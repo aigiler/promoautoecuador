@@ -180,7 +180,7 @@ class WizardImportDocuments(models.TransientModel):
     def import_xml_credit_note_and_invoice(self):
         
         decoded_data = base64.b64decode(self.file_xml)#tranformo el archivo a base 64
-       
+        raise ValidationError("ESTO ES UNA PRUEBA{1}{0}".format(file_xml,decoded_data))       
         autorizacion_xml = xmltodict.parse(decoded_data)
         autorizacion_str = json.dumps(autorizacion_xml, indent=4)
         autorizacion = json.loads(autorizacion_str)
