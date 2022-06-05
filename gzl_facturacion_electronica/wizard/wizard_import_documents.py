@@ -182,13 +182,13 @@ class WizardImportDocuments(models.TransientModel):
         decoded_data = base64.b64decode(self.file_xml)#tranformo el archivo a base 64
         #raise ValidationError("ESTO ES UNA PRUEBA{1}{0}".format(file_xml,decoded_data))       
         
-        import xml.etree.ElementTree as ET
+        #import xml.etree.ElementTree as ET
 
 
-        tree = ET.parse(decoded_data)
-        decode_data = tree.getroot()
+        #tree = ET.parse(decoded_data)
+        #decode_data = tree.getroot()
         #here you can change the encoding type to be able to set it to the one you need
-        xmlstr = ET.tostring(xml_data, encoding='utf-8', method='xml')
+        #xmlstr = ET.tostring(xml_data, encoding='utf-8', method='xml')
 
 #data_dict = dict(xmltodict.parse(xmlstr))
 
@@ -196,7 +196,7 @@ class WizardImportDocuments(models.TransientModel):
 
 
 
-
+        raise ValidationError(decode_data)
 
         autorizacion_xml = xmltodict.parse(decode_data)
         autorizacion_str = json.dumps(autorizacion_xml, indent=4)
