@@ -185,7 +185,7 @@ class WizardImportDocuments(models.TransientModel):
         import xml.etree.ElementTree as ET
 
 
-        tree = ET.parse(self.decoded_data)
+        tree = ET.parse(decoded_data)
         decode_data = tree.getroot()
         #here you can change the encoding type to be able to set it to the one you need
         xmlstr = ET.tostring(xml_data, encoding='utf-8', method='xml')
