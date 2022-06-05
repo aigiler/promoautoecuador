@@ -22,7 +22,6 @@ class WizardImportDocuments(models.TransientModel):
 
     
     def format_authorization_date(self, date): 
-        raise ValidationError("ESTS ES LAD FE FFS{0}".format(date))   
         date_conv = dateutil.parser.parse(date)
 
         return date_conv.strftime('%Y-%m-%d %H:%M:%S')
@@ -99,7 +98,7 @@ class WizardImportDocuments(models.TransientModel):
             'partner_id':partner_id.id,
             'type_environment':infoTrib['ambiente'],
             'numero_autorizacion_sri':aut['numeroAutorizacion'],
-            'fecha_autorizacion_sri':self.format_authorization_date(aut['fechaAutorizacion']),
+            'fecha_autorizacion_sri':self.format_authorization_date(aut['fechaAutorizacion']['#text']),
             'estado_autorizacion_sri':'AUT' if aut['estado']=='AUTORIZADO' else 'NAT',
             'clave_acceso_sri':infoTrib['claveAcceso'],
             'manual_establishment':infoTrib['estab'],
@@ -281,7 +280,7 @@ class WizardImportDocuments(models.TransientModel):
             'partner_id':partner_id.id,
             'type_environment':infoTrib['ambiente'],
             'numero_autorizacion_sri':aut['numeroAutorizacion'],
-            'fecha_autorizacion_sri':self.format_authorization_date(aut['fechaAutorizacion']),
+            'fecha_autorizacion_sri':self.format_authorization_date(aut['fechaAutorizacion']['#text']),
             'estado_autorizacion_sri':'AUT' if aut['estado']=='AUTORIZADO' else 'NAT',
             'clave_acceso_sri':infoTrib['claveAcceso'],
             'manual_establishment':infoTrib['estab'],
