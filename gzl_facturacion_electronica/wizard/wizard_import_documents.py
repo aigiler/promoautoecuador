@@ -196,7 +196,7 @@ class WizardImportDocuments(models.TransientModel):
 
 
 
-        raise ValidationError(decoded_data)
+        #raise ValidationError(decoded_data)
 
         autorizacion_xml = xmltodict.parse(decoded_data)
         autorizacion_str = json.dumps(autorizacion_xml, indent=4)
