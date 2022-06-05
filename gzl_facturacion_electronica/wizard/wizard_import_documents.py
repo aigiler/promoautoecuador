@@ -179,14 +179,14 @@ class WizardImportDocuments(models.TransientModel):
     
     def import_xml_credit_note_and_invoice(self):
         
-        #decoded_data = base64.b64decode(self.file_xml)#tranformo el archivo a base 64
+        decoded_data = base64.b64decode(self.file_xml)#tranformo el archivo a base 64
         #raise ValidationError("ESTO ES UNA PRUEBA{1}{0}".format(file_xml,decoded_data))       
         
         import xml.etree.ElementTree as ET
 
 
-        tree = ET.parse(self.file_xml)
-        decoded_data = tree.getroot()
+        tree = ET.parse(self.decoded_data)
+        decode_data = tree.getroot()
         #here you can change the encoding type to be able to set it to the one you need
         xmlstr = ET.tostring(xml_data, encoding='utf-8', method='xml')
 
@@ -198,7 +198,7 @@ class WizardImportDocuments(models.TransientModel):
 
 
 
-        autorizacion_xml = xmltodict.parse(decoded_data)
+        autorizacion_xml = xmltodict.parse(decode_data)
         autorizacion_str = json.dumps(autorizacion_xml, indent=4)
         autorizacion = json.loads(autorizacion_str)
 
