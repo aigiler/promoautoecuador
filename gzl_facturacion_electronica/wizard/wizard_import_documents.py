@@ -21,8 +21,10 @@ class WizardImportDocuments(models.TransientModel):
     file_xml = fields.Binary('Archivo')
 
     
-    def format_authorization_date(self, date):    
+    def format_authorization_date(self, date): 
+        raise ValidationError("ESTS ES LAD FE FFS{0}".format(date))   
         date_conv = dateutil.parser.parse(date)
+
         return date_conv.strftime('%Y-%m-%d %H:%M:%S')
     
     def format_date(self, date):    
