@@ -1182,9 +1182,14 @@ class AccountPayment(models.Model):
                 saldo_debito=0
                 valor_credito=0
                 sald_credito=0
-                for x in l.contrato_estado_cuenta_payment_ids:
-                    if x.monto_pagar:
-                        valor_asignado+=x.monto_pagar
+                if tipo_valor=='enviar_credito':
+                    for x in l.contrato_estado_cuenta_payment_ids:
+                        if x.monto_pagar:
+                            valor_asignado+=x.monto_pagar
+                elif tipo_valor=='crear_acticipo':
+                    for x in l.payment_line_ids:
+                        if x.amount:
+                            valor_asignado+=(x.amount+x.monto_pendiente_pago)
                 if self.payment_type=='outbound':
                     credito=l.amount
                     name='Pago a Proveedor'
@@ -1198,7 +1203,7 @@ class AccountPayment(models.Model):
                     name='Pago a Cliente'
                     valor_credito=l.valor_deuda
                     sald_credito=l.amount-valor_asignado
-                if l.amount and l.tipo_valor=='enviar_credito':
+                if l.amount and l.tipo_valor:
                     if valor_asignado==l.amount:
                         self.account_payment_account_ids= [
                             (0, 0, {
@@ -1240,7 +1245,6 @@ class AccountPayment(models.Model):
                                 'analytic_tag_ids':[],
                                 'debit':saldo_debito,
                                 'credit':sald_credito})]
-
 
 
 
