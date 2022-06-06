@@ -8,7 +8,8 @@ class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
     contrato_estado_cuenta_payment_ids = fields.One2many('contrato.estado.cuenta.payment', 'payment_pagos_id')
-    valor_deuda=fields.Float("Cuota Capital a Pagar",compute='_saldo_pagar', store=True)
+    deuda_total=fields.Float("Deuda Total")
+    valor_deuda=fields.Float("Valor a Pagar",compute='_saldo_pagar', store=True)
     saldo_pago=fields.Float("Saldo", compute='_saldo_pagar', store=True)
     total_asignado=fields.Float("Total asignado", compute="total_asignar")
     contrato_id = fields.Many2one('contrato', string='Contrato')
@@ -18,6 +19,18 @@ class AccountPayment(models.Model):
         ('enviar_credito', 'Enviar a Credito'),
         ('crear_acticipo', 'Crear Anticipo')
     ], string='Tipo')
+
+    @api.onchange('partner_id')
+    def obtener_deudas_facturas(self):
+        for l in self:
+            valor_pagar=0
+            for y in l.payment_line_ids:
+                if l.invoice_id:
+                    for x in l.invoice_id.contrato_estado_cuenta_ids:
+                        total_deuda+=(x.cuota_capital+x.seguro+x.rastreo+x.otro+y.actual_amount)
+            l.deuda_total=total_deuda
+
+
 
     @api.onchange('partner_id')
     def obtener_deudas(self):
@@ -139,15 +152,17 @@ class AccountPayment(models.Model):
                 l.total_asignado+=x.monto_pagar
 
     @api.depends('contrato_estado_cuenta_payment_ids')
+    @api.onchange('tipo_valor','l.amount')
     def _saldo_pagar(self):
-        for l in self:    
+        for l in self:
+            self.obtener_deudas_facturas()
             if l.tipo_valor=='enviar_credito':
                 valor_asignado=0
                 for x in l.contrato_estado_cuenta_payment_ids:
                     if x.monto_pagar:
                         valor_asignado+=x.monto_pagar
                 if (l.amount-valor_asignado)<0:
-                    raise ValidationError("Los valores a pagar exceden los ${} especificados.".format(l.amount))
+                    raise ValidationError("Los valores a pagar exceden los ${0} especificados.".format(l.amount))
                 l.saldo_pago=l.amount-valor_asignado
             if l.tipo_valor=='crear_acticipo':
                     valor_asignado=0
@@ -155,8 +170,6 @@ class AccountPayment(models.Model):
                     for x in l.payment_line_ids:
                         if x.amount:
                             #x.amount=x.actual_amount
-                            valor_asignado+=x.amount
-                            valor_facturas+=x.monto_pendiente_pago
-                    l.valor_deuda_admin=valor_asignado
-                    l.valor_deuda=valor_facturas
-                    l.saldo_pago=l.amount-l.valor_deuda-l.valor_deuda_admin
+                            valor_asignado+=(x.amount+x.monto_pendiente_pago)
+                    l.valor_deuda=valor_asignado
+                    l.saldo_pago=l.amount-l.valor_deuda

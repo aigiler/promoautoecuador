@@ -734,7 +734,6 @@ class AccountPayment(models.Model):
             # Compute amounts.
             
             write_off_amount = payment.payment_difference_handling == 'reconcile' and -payment.payment_difference or 0.0
-            print("este es essdfghgfds de write oggffzxcfvf dfgllf ")
             if payment.payment_type in ('outbound', 'transfer'):
                 counterpart_amount = payment.amount
                 if payment.parent_id.id:
@@ -918,18 +917,14 @@ class AccountPayment(models.Model):
                         }),
                     ],
                 }
-
                 if move_names and len(move_names) == 2:
                     transfer_move_vals['name'] = move_names[1]
-
                 all_move_vals.append(transfer_move_vals)
-
             if payment.tipo_valor=='enviar_credito':
                 if payment.saldo_pago:
                     if not self.account_payment_account_ids:
                         raise ValidationError("El saldo Pendiente debe ser asignado a un apunte contable. Favor crear un registro en la sección Cuentas Contables.")
                     listaMovimientos=[
-
                             #  Este se envía al banco 
                             (0, 0, {
                                 'name': payment.name,
@@ -943,8 +938,6 @@ class AccountPayment(models.Model):
                                 'payment_id': payment.id,
                             })
                         ]
-
-
                     saldo_debito=0
                     saldo_credito=0
                     total_credito=0
@@ -954,7 +947,6 @@ class AccountPayment(models.Model):
                             else:
                                 saldo_credito=linea.credit
                                 total_credito+=saldo_credito
-
                                 # Receivable / Payable / Transfer line. Este se envia al proveedor
                             tupla=(0, 0, {
                                 'name': linea.name,
@@ -968,9 +960,6 @@ class AccountPayment(models.Model):
                                 'payment_id': payment.id,
                                 'account_id': linea.cuenta.id,
                                 'analytic_account_id':linea.cuenta_analitica.id or False,
-
-
-
                             })
                             listaMovimientos.append(tupla)
                     if total_credito!=payment.saldo_pago:
@@ -1011,16 +1000,6 @@ class AccountPayment(models.Model):
                         for act in cuota_id:
                             cuota_id.monto_pagado=y.monto_pagar
                             cuota_id.saldo=cuota_id.saldo-y.monto_pagar
-
-
-
-
-
-
-
-
-
-
             if payment.tipo_valor=='crear_acticipo':
                 if not payment.payment_line_ids:
                     raise ValidationError("Debe seleccionar facturas Pagar")
@@ -1048,7 +1027,7 @@ class AccountPayment(models.Model):
                                 'amount_currency': counterpart_amount + write_off_amount if currency_id else 0.0,
                                 'currency_id': liquidity_line_currency_id,
                                 'debit': 0,
-                                'credit': payment.valor_deuda+payment.valor_deuda_admin,
+                                'credit': payment.valor_deuda,
                                 'date_maturity': payment.payment_date,
                                 'partner_id': payment.partner_id.commercial_partner_id.id,
                                 'account_id': payment.partner_id.property_account_receivable_id.id,
@@ -1146,6 +1125,23 @@ class AccountPayment(models.Model):
 
 
 
+    @api.onchange('amount')
+    def crear_asientos(self):
+        for l in self:
+            if l.amount:
+                credito=0
+                debito=0
+                if self.payment_type=='outbound':
+                    credito=l.amount
+                elif self.payment_type=='inbound':
+                    debito=l.amount
+                dct={'payment_id':self.id,
+                        'cuenta':self.journal_id.default_debit_account_id.id,
+                        'name': '',
+                        'cuenta_analitica':'',
+                        'analytic_tag_ids':'',
+                        'debit':debito,
+                        'credit':credito,}
 
 
 

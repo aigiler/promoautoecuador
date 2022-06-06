@@ -60,7 +60,7 @@ class AccountMove(models.Model):
         valor_haber = 0
         values = {
                     'product_id':obj_product.id,
-                    'name': 'Cuota Administrativa\n Pago de Cuota(s) de Contrato. Cuota Administrativa: ',
+                    'name': 'Cuota Administrativa. Pago de Cuota(s) de Contrato. Cuota Administrativa: ',
                     'account_id':obj_account.id,
                     'tax_ids': [(6,0,[obj_tax.id])],
                     'quantity': 0,
@@ -74,7 +74,7 @@ class AccountMove(models.Model):
             numero_cuotas=''
             for rec in obj_contrato_estado_cuenta:
                 if i==0:
-                    nombre=values.get('name')+str(rec.cuota_adm)+'.\n'+'IVA: '+str(rec.iva_adm)+' Cuota(s): '+rec.numero_cuota+','
+                    nombre=values.get('name')+str(rec.cuota_adm)+'.'+' IVA: '+str(rec.iva_adm)+' Cuota(s): '+rec.numero_cuota+','
                 else:
                     nombre=values.get('name')+rec.numero_cuota+','
                 i+=1
