@@ -15,7 +15,7 @@
                 <field name="saldo_pago" /> 
 
             </field>
-          <xpath expr="//field[@name='amount']" position="before">
+          <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="deuda_total" />
             </xpath>
         </field>
