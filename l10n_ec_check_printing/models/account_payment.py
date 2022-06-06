@@ -477,21 +477,25 @@ class AccountPayment(models.Model):
 
     def post(self):
         for rec in self:
+            if self.tipo_valor=='enviar_credito':
+                for y in self.contrato_estado_cuenta_payment_ids:
+                    cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',rec.contrato_id.id),
+                                                                ('numero_cuota','=',y.numero_cuota)])[0]     
+                    if cuota_id:
+                        cuota_id.saldo_cuota_capital=cuota_id.saldo_cuota_capital-y.cuota_capital_pagar
+                        cuota_id.saldo_seguro=cuota_id.saldo_seguro-y.seguro_pagar
+                        cuota_id.saldo_rastreo=cuota_id.saldo_rastreo-y.rastreo_pagar
+                        cuota_id.saldo_otros=cuota_id.saldo_otros-y.otro_pagar
+                        cuota_id.monto_pagado=cuota_id.monto_pagar+y.monto_pagar
+                        cuota_id.saldo=cuota_id.saldo-y.monto_pagar
+
 
             #for l in rec.payment_line_ids:
                 #if l.amount>l.actual_amount:
                     #raise ValidationError("El monto a pagar no puede ser al monto adeudado en la factura {0}".format(l.invoice_id.l10n_latam_document_number))
             lista_invoice=[]
             #lista_asientos=[]
-            if rec.tipo_valor:
-                if rec.tipo_valor=='enviar_credito':
-                    for y in self.contrato_estado_cuenta_payment_ids:
-                        cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',rec.contrato_id.id),
-                                                                  ('numero_cuota','=',y.numero_cuota)])[0]     
-                        if cuota_id:
-                            for act in cuota_id:
-                                cuota_id.monto_pagado=y.monto_pagar
-                                cuota_id.saldo=cuota_id.saldo-y.monto_pagar
+
             for pago in rec.payment_line_ids:
                 if pago.pagar:
                     lista_invoice.append(pago.invoice_id.id)
@@ -1069,17 +1073,7 @@ class AccountPayment(models.Model):
                     }
                 all_move_vals=[]
                 all_move_vals.append(move_vals)
-                if self.tipo_valor=='enviar_credito':
-                    for y in self.contrato_estado_cuenta_payment_ids:
-                        cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',payment.contrato_id.id),
-                                                                    ('numero_cuota','=',y.numero_cuota)])[0]     
-                        if cuota_id:
-                            cuota_id.saldo_cuota_capital=cuota_id.saldo_cuota_capital-y.cuota_capital_pagar
-                            cuota_id.saldo_seguro=cuota_id.saldo_seguro-y.seguro_pagar
-                            cuota_id.saldo_rastreo=cuota_id.saldo_rastreo-y.rastreo_pagar
-                            cuota_id.saldo_otros=cuota_id.saldo_otros-y.otro_pagar
-                            cuota_id.monto_pagado=y.monto_pagar
-                            cuota_id.saldo=cuota_id.saldo-y.monto_pagar
+
 
             if self.is_third_name:
                 listaMovimientos=[
