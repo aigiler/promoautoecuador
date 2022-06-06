@@ -263,6 +263,8 @@ class Contrato(models.Model):
                                                     'cuota_adm':cuota_adm,
                                                     'iva_adm':iva,
                                                     'saldo':saldo,
+                                                    'saldo_cuota_capital':cuota_capital,
+                                                    'saldo_cuota_administrativa':cuota_adm,
                                                     'contrato_id':self.id,                                                    
                                                         })
         vls=[]                                                

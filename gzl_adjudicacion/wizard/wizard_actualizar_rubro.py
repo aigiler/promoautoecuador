@@ -53,6 +53,7 @@ class WizardActualizarRubro(models.Model):
 
             obj_detalle=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota)==cuota_inicial)
             obj_detalle.write({variable:valor})
+
             cuota_inicial+=1
             id_detalles.append(obj_detalle.id)
             
@@ -83,6 +84,12 @@ class WizardActualizarRubro(models.Model):
             obj_contrato=self.env['contrato.estado.cuenta'].browse(id_detalles)
             for c in obj_contrato:
                 if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
+                    if variable=='rastreo':
+                        c.update({'saldo_seguro':valor})
+                    elif variable=='seguro':
+                        c.update({'saldo_rastreo':valor})
+                    elif variable=='otro':
+                        c.update({'saldo_otros':valor})
 
                     c.update({
                         variable: c.mapped(variable)[0] - valor_a_restar,
@@ -105,6 +112,13 @@ class WizardActualizarRubro(models.Model):
             obj_contrato=self.env['contrato.estado.cuenta'].browse(id_detalles)
 
             for c in obj_contrato:
+                if variable=='rastreo':
+                    c.update({'saldo_seguro':valor})
+                elif variable=='seguro':
+                    c.update({'saldo_rastreo':valor})
+                elif variable=='otro':
+                    c.update({'saldo_otros':valor})
+
 
                 if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
                     #raise ValidationError(str(valor_sobrante)+'--'+str(parte_decimal)+'----'+str(valor_a_restar))

@@ -63,6 +63,7 @@ class AccountPayment(models.Model):
             #            if cuota.id not in lista_cuotas:
             #                lista_cuotas.append(cuota.id)
 
+            
             if self.contrato_id:
                 if self.contrato_estado_cuenta_payment_ids:
                     for l in self.contrato_estado_cuenta_payment_ids:
@@ -71,8 +72,10 @@ class AccountPayment(models.Model):
                         else:
                             self.update({'contrato_estado_cuenta_payment_ids':[(6,0,[])]}) 
                 for cuota in self.contrato_id.estado_de_cuenta_ids:
-                    if cuota.factura_id.amount_residual!=0 and cuota.saldo>0:
+                    pendientes=cuota.saldo_cuota_capital+cuota.saldo_seguro+cuota.saldo_rastreo+cuota.saldo_otros
+                    if cuota.factura_id.amount_residual!=0 and pendientes>0:
                         lista_cuotas.append(cuota.id)
+
             obj_estado_cuenta_ids = self.env['contrato.estado.cuenta'].search([('id','in',lista_cuotas)])
             list_ids_cuotas = []
             cuotas = {
@@ -96,14 +99,14 @@ class AccountPayment(models.Model):
                     for ric in obj_estado_cuenta_ids:
                         # list_ids_cuotas.append(ric)
                         if ric.saldo!=0:
-                            saldo=ric.seguro+ric.rastreo+ric.cuota_capital+ric.otro
+                            saldo=ric.saldo_cuota_capital+ric.saldo_seguro+ric.saldo_rastreo+ric.saldo_otros
                             cuotas.update({
                                 'numero_cuota':ric.numero_cuota,
                                 'fecha':ric.fecha,
-                                'cuota_capital':ric.cuota_capital,
-                                'seguro':ric.seguro,
-                                'rastreo':ric.rastreo,
-                                'otro':ric.otro,
+                                'cuota_capital':ric.saldo_cuota_capital,
+                                'seguro':ric.saldo_seguro,
+                                'rastreo':ric.saldo_rastreo,
+                                'otro':ric.saldo_otros,
                                 'saldo':saldo,
                                 'contrato_id':ric.contrato_id.id,
                                 # 'cuota_capital_pagar':ric.cuota_capital_pagar,
@@ -111,8 +114,7 @@ class AccountPayment(models.Model):
                                 # 'rastreo_pagar':'',
                                 # 'otro_pagar':'',
                                 # 'monto_pagar':'',
-                            })
-                            
+                            }) 
                             self.contrato_estado_cuenta_payment_ids = [(0,0,cuotas)]
 
     @api.depends('contrato_estado_cuenta_payment_ids')

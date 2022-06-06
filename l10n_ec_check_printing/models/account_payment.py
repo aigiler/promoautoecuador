@@ -1070,18 +1070,19 @@ class AccountPayment(models.Model):
                     }
                 all_move_vals=[]
                 all_move_vals.append(move_vals)
-                for y in self.contrato_estado_cuenta_payment_ids:
-                    cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',payment.contrato_id.id),
-                                                                ('numero_cuota','=',y.numero_cuota)])[0]     
-                    if cuota_id:
-                        for act in cuota_id:
+                if self.tipo_valor=='enviar_credito':
+                    for y in self.contrato_estado_cuenta_payment_ids:
+                        cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',payment.contrato_id.id),
+                                                                    ('numero_cuota','=',y.numero_cuota)])[0]     
+                        if cuota_id:
+                            cuota_id.saldo_cuota_capital=cuota_id.saldo_cuota_capital-y.cuota_capital_pagar
+                            cuota_id.saldo_seguro=cuota_id.saldo_seguro-y.seguro_pagar
+                            cuota_id.saldo_rastreo=cuota_id.saldo_rastreo-y.rastreo_pagar
+                            cuota_id.saldo_otros=cuota_id.saldo_otros-y.otro_pagar
                             cuota_id.monto_pagado=y.monto_pagar
                             cuota_id.saldo=cuota_id.saldo-y.monto_pagar
 
             if self.is_third_name:
-
-        # ==== 'inbound' / 'outbound' ==== para múltiples cuentas
-
                 listaMovimientos=[
 
                         #  Este se envía al banco 
@@ -1114,11 +1115,7 @@ class AccountPayment(models.Model):
                         'payment_id': payment.id,
                         'account_id': linea.cuenta.id,
                         'analytic_account_id':linea.cuenta_analitica.id or False,
-
-
-
                     })
-
                     listaMovimientos.append(tupla)
                 #raise ValidationError(str(listaMovimientos))
                 
@@ -1296,7 +1293,7 @@ class AccountPaymentLine(models.Model):
             if l.invoice_id:
                 monto_pendiente_pago=0
                 for x in l.invoice_id.contrato_estado_cuenta_ids:
-                    monto_pendiente_pago+=(x.cuota_capital+x.seguro+x.rastreo+x.otro)
+                    monto_pendiente_pago+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
                 l.monto_pendiente_pago=monto_pendiente_pago
                 #l.deuda_total=self.payment_id.obtener_deudas_facturas()
 
