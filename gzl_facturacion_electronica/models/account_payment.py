@@ -22,8 +22,8 @@ class AccountPayment(models.Model):
 
     @api.onchange('partner_id')
     def obtener_deudas_facturas(self):
+        total_deuda=0
         for l in self:
-            valor_pagar=0
             for y in l.payment_line_ids:
                 if l.invoice_id:
                     for x in l.invoice_id.contrato_estado_cuenta_ids:
