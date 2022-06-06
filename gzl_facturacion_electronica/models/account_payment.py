@@ -8,7 +8,7 @@ class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
     contrato_estado_cuenta_payment_ids = fields.One2many('contrato.estado.cuenta.payment', 'payment_pagos_id')
-    deuda_total=fields.Float("Deuda Total", compute='_obtener_deudas_facturas', store=True)
+    deuda_total=fields.Float("Deuda Total")
     valor_deuda=fields.Float("Valor a Pagar",compute='_saldo_pagar', store=True)
     saldo_pago=fields.Float("Saldo", compute='_saldo_pagar', store=True)
     total_asignado=fields.Float("Total asignado", compute="total_asignar")
@@ -21,17 +21,7 @@ class AccountPayment(models.Model):
     ], string='Tipo')
 
 
-    @api.onchange('partner_id','amount')
-    @api.depends('partner_id','amount')
-    def _obtener_deudas_facturas(self):
-        total_deuda=0
-        for l in self:
-            for y in l.payment_line_ids:
-                if l.invoice_id:
-                    for x in l.invoice_id.contrato_estado_cuenta_ids:
-                        total_deuda+=(x.cuota_capital+x.seguro+x.rastreo+x.otro+y.actual_amount)
-        if total_deuda:
-            self.deuda_total=total_deuda
+
 
 
     def crear_detalles(self):
