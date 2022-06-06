@@ -1175,18 +1175,24 @@ class AccountPayment(models.Model):
                 pago_proveedor=0
                 pago_cliente=0
                 cuenta_partner=''
+                valor_debito
+                saldo_debito=0
+                valor_credito=0
+                sald_credito=0
                 if self.payment_type=='outbound':
                     credito=l.amount
                     name='Pago a Proveedor'
                     if l.valor_deuda:
-                        pago_proveedor=l.valor_deuda
+                        valor_debito=l.valor_deuda
+                        saldo_debito=l.saldo_pago
                     cuenta_partner=l.partner_id.property_account_payable_id.id
                 elif self.payment_type=='inbound':
                     debito=l.amount
                     cuenta_partner=l.partner_id.property_account_receivable_id.id
                     name='Pago a Cliente'
                     if l.valor_deuda:
-                        pago_cliente=l.valor_deuda
+                        valor_credito=l.valor_deuda
+                        sald_credito=l.saldo_pago
                 if l.amount and l.tipo_valor=='enviar_credito':
                     if l.valor_deuda==l.amount:
                         self.account_payment_account_ids= [
@@ -1203,8 +1209,33 @@ class AccountPayment(models.Model):
                                 'name': name,
                                 'cuenta_analitica':'',
                                 'analytic_tag_ids':'',
-                                'debit':pago_cliente,
-                                'credit':pago_proveedor,}),
+                                'debit':valor_debito,
+                                'credit':valor_credito,}),
+                        ]
+                    else: 
+                        self.account_payment_account_ids= [
+                            (0, 0, {
+                                'cuenta':self.journal_id.default_debit_account_id.id,
+                                'name': '-',
+                                'cuenta_analitica':'',
+                                'analytic_tag_ids':'',
+                                'debit':debito,
+                                'credit':credito}),
+                            # Liquidity line.
+                            (0, 0, {
+                                'cuenta':cuenta_partner,
+                                'name': name,
+                                'cuenta_analitica':'',
+                                'analytic_tag_ids':'',
+                                'debit':valor_debito,
+                                'credit':valor_credito,}),
+                            (0, 0, {
+                                'cuenta':cuenta_partner,
+                                'name': name,
+                                'cuenta_analitica':'',
+                                'analytic_tag_ids':'',
+                                'debit':saldo_debito,
+                                'credit':sald_credito,}),
                         ]
 
 
