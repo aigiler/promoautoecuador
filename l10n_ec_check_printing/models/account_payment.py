@@ -1132,7 +1132,7 @@ class AccountPayment(models.Model):
 
 
 
-    @api.onchange('amount','partner_id')
+    @api.onchange('amount','partner_id','tipo_valor','saldo_pago','valor_deuda')
     def crear_asientos(self):
         self.account_payment_account_ids=[(6,0,[])]
         for l in self:
@@ -1164,8 +1164,9 @@ class AccountPayment(models.Model):
                             'analytic_tag_ids':'',
                             'debit':credito,
                             'credit':debito,})]
+                else:
+                    crear_asientos_tipo_valor()
 
-    @api.onchange('tipo_valor','amount','saldo_pago','valor_deuda')
     def crear_asientos_tipo_valor(self):
         self.account_payment_account_ids=[(6,0,[])]
         for l in self:
