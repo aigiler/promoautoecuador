@@ -1039,7 +1039,7 @@ class AccountPayment(models.Model):
                     all_move_vals=[]
                     all_move_vals.append(move_vals)
 
-            if not payment.tipo_valor and payment.account_payment_account_ids:
+            if payment.account_payment_account_ids and not self.is_third_name:
                 listaMovimientos=[]
                 for linea in self.account_payment_account_ids:
                         # Receivable / Payable / Transfer line. Este se envia al proveedor
