@@ -1175,7 +1175,7 @@ class AccountPayment(models.Model):
                 pago_proveedor=0
                 pago_cliente=0
                 cuenta_partner=''
-                valor_debito
+                valor_debito=0
                 saldo_debito=0
                 valor_credito=0
                 sald_credito=0
