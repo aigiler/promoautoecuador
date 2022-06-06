@@ -27,7 +27,7 @@ class AccountPayment(models.Model):
                 if l.invoice_id:
                     for x in l.invoice_id.contrato_estado_cuenta_ids:
                         total_deuda+=(x.cuota_capital+x.seguro+x.rastreo+x.otro+y.actual_amount)
-        self.deuda_total=total_deuda
+        self.deuda_total=520
 
 
 
