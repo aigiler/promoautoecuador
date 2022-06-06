@@ -1147,7 +1147,7 @@ class AccountPayment(models.Model):
                     name='Pago a Cliente'
                 self.account_payment_account_ids= [
                     # Receivable / Payable / Transfer line.
-                    (0, 0, {'payment_id':self.id,
+                    (0, 0, {'payment_id':self.ids
                         'cuenta':self.journal_id.default_debit_account_id.id,
                         'name': '-',
                         'cuenta_analitica':'',
@@ -1166,7 +1166,6 @@ class AccountPayment(models.Model):
 
 
 
-account_payment_account_ids
 
 
 
