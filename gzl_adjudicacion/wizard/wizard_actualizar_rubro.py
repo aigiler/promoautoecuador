@@ -113,11 +113,11 @@ class WizardActualizarRubro(models.Model):
 
             for c in obj_contrato:
                 if variable=='rastreo':
-                    c.update({'saldo_seguro':valor})
+                    c.update({'saldo_rastreo':c.mapped(variable)[0] - valor_a_restar})
                 elif variable=='seguro':
-                    c.update({'saldo_rastreo':valor})
+                    c.update({'saldo_seguro':c.mapped(variable)[0] - valor_a_restar})
                 elif variable=='otro':
-                    c.update({'saldo_otros':valor})
+                    c.update({'saldo_otros':c.mapped(variable)[0] - valor_a_restar})
 
 
                 if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
