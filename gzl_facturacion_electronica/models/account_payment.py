@@ -8,7 +8,7 @@ class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
     contrato_estado_cuenta_payment_ids = fields.One2many('contrato.estado.cuenta.payment', 'payment_pagos_id')
-    deuda_total=fields.Float("Deuda Total", compute='obtener_deudas_facturas', store=True)
+    deuda_total=fields.Float("Deuda Total", compute='_obtener_deudas_facturas', store=True)
     valor_deuda=fields.Float("Valor a Pagar",compute='_saldo_pagar', store=True)
     saldo_pago=fields.Float("Saldo", compute='_saldo_pagar', store=True)
     total_asignado=fields.Float("Total asignado", compute="total_asignar")
@@ -20,7 +20,32 @@ class AccountPayment(models.Model):
         ('crear_acticipo', 'Crear Anticipo')
     ], string='Tipo')
 
-    def obtener_deudas_facturas(self):
+    @api.onchange('tipo_valor','amount')
+    @api.depends('tipo_valor','amount')
+    def _saldo_pagar(self):
+        for l in self:
+            if l.tipo_valor=='enviar_credito':
+                valor_asignado=0
+                for x in l.contrato_estado_cuenta_payment_ids:
+                    if x.monto_pagar:
+                        valor_asignado+=x.monto_pagar
+                if (l.amount-valor_asignado)<0:
+                    raise ValidationError("Los valores a pagar exceden los ${0} especificados.".format(l.amount))
+                l.valor_deuda=valor_asignado
+                l.saldo_pago=l.amount-l.valor_deuda
+            if l.tipo_valor=='crear_acticipo':
+                    valor_asignado=0
+                    valor_facturas=0
+                    for x in l.payment_line_ids:
+                        if x.amount:
+                            #x.amount=x.actual_amount
+                            valor_asignado+=(x.amount+x.monto_pendiente_pago)
+                    l.valor_deuda=valor_asignado
+                    l.saldo_pago=l.amount-l.valor_deuda
+
+    @api.onchange('partner_id','amount')
+    @api.depends('partner_id','amount')
+    def _obtener_deudas_facturas(self):
         total_deuda=0
         for l in self:
             for y in l.payment_line_ids:
