@@ -486,7 +486,7 @@ class AccountPayment(models.Model):
                         cuota_id.saldo_seguro=cuota_id.saldo_seguro-y.seguro_pagar
                         cuota_id.saldo_rastreo=cuota_id.saldo_rastreo-y.rastreo_pagar
                         cuota_id.saldo_otros=cuota_id.saldo_otros-y.otro_pagar
-                        cuota_id.monto_pagado=cuota_id.monto_pagar+y.monto_pagar
+                        cuota_id.monto_pagado=cuota_id.monto_pagado+y.monto_pagar
                         cuota_id.saldo=cuota_id.saldo-y.monto_pagar
 
 
