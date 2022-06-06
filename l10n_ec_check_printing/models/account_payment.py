@@ -1140,10 +1140,10 @@ class AccountPayment(models.Model):
                 if self.payment_type=='outbound':
                     credito=l.amount
                     name='Pago a Proveedor'
-                    cuenta_partner=partner_id.property_account_receivable_id.id
+                    cuenta_partner=l.partner_id.property_account_receivable_id.id
                 elif self.payment_type=='inbound':
                     debito=l.amount
-                    cuenta_partner=partner_id.property_account_payable_id.id
+                    cuenta_partner=l.partner_id.property_account_payable_id.id
                     name='Pago a Cliente'
                 self.account_payment_account_ids= [
                     # Receivable / Payable / Transfer line.
