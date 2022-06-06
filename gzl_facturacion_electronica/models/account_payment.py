@@ -21,7 +21,6 @@ class AccountPayment(models.Model):
     ], string='Tipo')
 
     @api.onchange('partner_id','payment_line_ids')
-    @api.constrains('partner_id','payment_line_ids')
     def obtener_deudas_facturas(self):
         total_deuda=0
         for l in self:
@@ -152,8 +151,8 @@ class AccountPayment(models.Model):
             for x in l.contrato_estado_cuenta_payment_ids:
                 l.total_asignado+=x.monto_pagar
 
-    @api.depends('contrato_estado_cuenta_payment_ids')
     @api.onchange('tipo_valor','l.amount')
+    @api.constrains('tipo_valor','l.amount')
     def _saldo_pagar(self):
         for l in self:
             self.obtener_deudas_facturas()
