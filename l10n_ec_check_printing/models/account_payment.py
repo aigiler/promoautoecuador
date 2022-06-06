@@ -1222,7 +1222,7 @@ class AccountPayment(models.Model):
                                 'cuenta':self.journal_id.default_debit_account_id.id,
                                 'name': '-',
                                 'cuenta_analitica':'',
-                                'analytic_tag_ids':'',
+                                'analytic_tag_ids':[],
                                 'debit':debito,
                                 'credit':credito}),
                             # Liquidity line.
@@ -1230,20 +1230,18 @@ class AccountPayment(models.Model):
                                 'cuenta':cuenta_partner,
                                 'name': name,
                                 'cuenta_analitica':'',
-                                'analytic_tag_ids':'',
+                                'analytic_tag_ids':[],
                                 'debit':valor_debito,
                                 'credit':valor_credito,}),
                             (0, 0, {
                                 'cuenta':cuenta_partner,
                                 'name': "Saldo",
                                 'cuenta_analitica':'',
-                                'analytic_tag_ids':'',
+                                'analytic_tag_ids':[],
                                 'debit':saldo_debito,
                                 'credit':sald_credito})]
 
-    @api.depends('saldo_pago','valor_deuda')
-    def actualizar(self):
-        self.crear_asientos()
+
 
 
 
