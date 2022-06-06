@@ -708,30 +708,8 @@ class AccountPayment(models.Model):
 
 
     def _prepare_payment_moves(self):
-        ''' Prepare the creation of journal entries (account.move) by creating a list of python dictionary to be passed
-        to the 'create' method.
 
-        Example 1: outbound with write-off:
-
-        Account             | Debit     | Credit
-        ---------------------------------------------------------
-        BANK                |   900.0   |
-        RECEIVABLE          |           |   1000.0
-        WRITE-OFF ACCOUNT   |   100.0   |
-
-        Example 2: internal transfer from BANK to CASH:
-
-        Account             | Debit     | Credit
-        ---------------------------------------------------------
-        BANK                |           |   1000.0
-        TRANSFER            |   1000.0  |
-        CASH                |   1000.0  |
-        TRANSFER            |           |   1000.0
-
-        :return: A list of Python dictionary to be passed to env['account.move'].create.
-        '''
         all_move_vals = []
-
         for payment in self:
             company_currency = payment.company_id.currency_id
             move_names = payment.move_name.split(payment._get_move_name_transfer_separator()) if payment.move_name else None
@@ -758,10 +736,6 @@ class AccountPayment(models.Model):
                         liquidity_line_account = payment.partner_id.property_account_receivable_id
                 else:
                     liquidity_line_account = payment.journal_id.default_credit_account_id
-
-
-
-
 
 
             # Manage currency.
@@ -1065,9 +1039,34 @@ class AccountPayment(models.Model):
                     all_move_vals=[]
                     all_move_vals.append(move_vals)
 
+            if not payment.tipo_valor and payment.account_payment_account_ids:
+                listaMovimientos=[]
+                for linea in self.account_payment_account_ids:
+                        # Receivable / Payable / Transfer line. Este se envia al proveedor
+                    tupla=(0, 0, {
+                        'name': rec_pay_line_name,
+                        'amount_currency':  0.0,
+                        'currency_id': currency_id,
+                        'debit': linea.debit ,
+                        'credit':  linea.credit,
+                        'date_maturity': payment.payment_date,
+                        'partner_id': False,
+                        'account_id': linea.cuenta.id,
+                        'payment_id': payment.id,
+                        'account_id': linea.cuenta.id,
+                        'analytic_account_id':linea.cuenta_analitica.id or False,
 
-
-
+                    listaMovimientos.append(tupla)
+                move_vals = {
+                        'date': payment.payment_date,
+                        'ref': payment.communication,
+                        'journal_id': payment.journal_id.id,
+                        'currency_id': payment.journal_id.currency_id.id or payment.company_id.currency_id.id,
+                        'partner_id': payment.partner_id.id,
+                        'line_ids': listaMovimientos,
+                    }
+                all_move_vals=[]
+                all_move_vals.append(move_vals)
 
             if self.is_third_name:
 
