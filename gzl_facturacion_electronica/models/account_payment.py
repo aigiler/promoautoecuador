@@ -8,7 +8,7 @@ class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
     contrato_estado_cuenta_payment_ids = fields.One2many('contrato.estado.cuenta.payment', 'payment_pagos_id')
-    deuda_total=fields.Float("Deuda Total")
+    deuda_total=fields.Float("Deuda Total", compute='obtener_deudas_facturas', store=True)
     valor_deuda=fields.Float("Valor a Pagar",compute='_saldo_pagar', store=True)
     saldo_pago=fields.Float("Saldo", compute='_saldo_pagar', store=True)
     total_asignado=fields.Float("Total asignado", compute="total_asignar")
