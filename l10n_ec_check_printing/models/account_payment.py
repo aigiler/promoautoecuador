@@ -1172,6 +1172,7 @@ class AccountPayment(models.Model):
         self._saldo_pagar()
         for l in self:
             if l.partner_id: 
+                valor_asignado=0
                 credito=0
                 debito=0
                 pago_proveedor=0
@@ -1181,20 +1182,24 @@ class AccountPayment(models.Model):
                 saldo_debito=0
                 valor_credito=0
                 sald_credito=0
+                for x in l.contrato_estado_cuenta_payment_ids:
+                    if x.monto_pagar:
+                        valor_asignado+=x.monto_pagar
                 if self.payment_type=='outbound':
                     credito=l.amount
                     name='Pago a Proveedor'
-                    valor_debito=l.valor_deuda
-                    saldo_debito=l.amount-l.valor_deuda
+                    
+                    valor_debito=valor_asignado
+                    saldo_debito=l.amount-valor_asignado
                     cuenta_partner=l.partner_id.property_account_payable_id.id
                 elif self.payment_type=='inbound':
                     debito=l.amount
                     cuenta_partner=l.partner_id.property_account_receivable_id.id
                     name='Pago a Cliente'
                     valor_credito=l.valor_deuda
-                    sald_credito=l.amount-l.valor_deuda
+                    sald_credito=l.amount-valor_asignado
                 if l.amount and l.tipo_valor=='enviar_credito':
-                    if l.valor_deuda==l.amount:
+                    if valor_asignado==l.amount:
                         self.account_payment_account_ids= [
                             (0, 0, {
                                 'cuenta':self.journal_id.default_debit_account_id.id,
