@@ -83,10 +83,10 @@ class AccountPayment(models.Model):
     @api.onchange('tipo_valor','contrato_id','contrato_estado_cuenta_payment_ids')
     def _onchange_tipo_valor(self):
         if self.tipo_valor=='crear_acticipo':
-            self._saldo_pagar()
+            #self._saldo_pagar()
         lista_cuotas = []
         if self.tipo_valor == 'enviar_credito':
-            self.saldo_pago=self._saldo_pagar()
+            #self.saldo_pago=self._saldo_pagar()
             if not self.contrato_id:
                 for rec in self.payment_line_ids:
                     for cuota in rec.invoice_id.contrato_estado_cuenta_ids:
