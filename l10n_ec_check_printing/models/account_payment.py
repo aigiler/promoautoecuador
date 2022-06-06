@@ -1196,7 +1196,7 @@ class AccountPaymentLine(models.Model):
                 for x in l.invoice_id.contrato_estado_cuenta_ids:
                     monto_pendiente_pago+=(x.cuota_capital+x.seguro+x.rastreo+x.otro)
                 l.monto_pendiente_pago=monto_pendiente_pago
-                l.deuda_total=self.payment_id.obtener_deudas_facturas()
+                #l.deuda_total=self.payment_id.obtener_deudas_facturas()
 
     @api.onchange('pagar')
     def actualizar_totales(self):
