@@ -1241,9 +1241,9 @@ class AccountPayment(models.Model):
                                 'debit':saldo_debito,
                                 'credit':sald_credito})]
 
-
-
-
+    @api.depends('saldo_pago','valor_deuda')
+    def actualizar(self):
+        self.crear_asientos()
 
 
 
