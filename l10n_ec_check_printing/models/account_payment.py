@@ -1154,14 +1154,14 @@ class AccountPayment(models.Model):
                             'cuenta':self.journal_id.default_debit_account_id.id,
                             'name': '-',
                             'cuenta_analitica':'',
-                            'analytic_tag_ids':'',
+                            'analytic_tag_ids':[],
                             'debit':debito,
                             'credit':credito}),
                         (0, 0, {
                             'cuenta':cuenta_partner,
                             'name': name,
                             'cuenta_analitica':'',
-                            'analytic_tag_ids':'',
+                            'analytic_tag_ids':[],
                             'debit':credito,
                             'credit':debito,})]
                 else:
@@ -1205,7 +1205,7 @@ class AccountPayment(models.Model):
                                 'cuenta':self.journal_id.default_debit_account_id.id,
                                 'name': '-',
                                 'cuenta_analitica':'',
-                                'analytic_tag_ids':'',
+                                'analytic_tag_ids':[],
                                 'debit':debito,
                                 'credit':credito}),
                             # Liquidity line.
@@ -1213,7 +1213,7 @@ class AccountPayment(models.Model):
                                 'cuenta':cuenta_partner,
                                 'name': name,
                                 'cuenta_analitica':'',
-                                'analytic_tag_ids':'',
+                                'analytic_tag_ids':[],
                                 'debit':valor_debito,
                                 'credit':valor_credito,}),
                         ]
