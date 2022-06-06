@@ -499,11 +499,9 @@ class AccountPayment(models.Model):
                     #for mov in movimientos_occ:
                     #    lista_invoice.append(mov.id)
                     #    lista_asientos.append(mov.id)
-
-
-                for contrato in pago.invoice_id.contrato_estado_cuenta_ids:
-                    contrato.monto_pagado=pago.amount
-                    contrato.saldo=contrato.saldo-pago.amount  
+                    for contrato in pago.invoice_id.contrato_estado_cuenta_ids:
+                        contrato.monto_pagado=pago.amount
+                        contrato.saldo=contrato.saldo-pago.amount  
                 rec.update({'invoice_ids': [(6, 0, lista_invoice)]})
             if rec.amount==0: 
                 raise ValidationError("Ingrese el valor del monto")
