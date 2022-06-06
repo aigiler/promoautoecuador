@@ -1193,7 +1193,7 @@ class AccountPayment(models.Model):
                     name='Pago a Cliente'
                     if l.valor_deuda:
                         valor_credito=l.valor_deuda
-                        sald_credito=l.saldo_pago
+                        sald_credito=l.amount.l.valor_deuda
                 if l.amount and l.tipo_valor=='enviar_credito':
                     if l.valor_deuda==l.amount:
                         self.account_payment_account_ids= [
