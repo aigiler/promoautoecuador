@@ -215,7 +215,7 @@ class AccountPayment(models.Model):
                 list_ids.append(line_id.id)
 
         self.payment_line_ids = [(6, 0, list_ids)]
-        #self.deuda_total=self.obtener_deudas_facturas()
+        self.deuda_total=self.obtener_deudas_facturas()
         
 
 
