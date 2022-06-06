@@ -151,8 +151,8 @@ class AccountPayment(models.Model):
             for x in l.contrato_estado_cuenta_payment_ids:
                 l.total_asignado+=x.monto_pagar
 
-    @api.onchange('tipo_valor','l.amount')
-    @api.depends('tipo_valor','l.amount')
+    @api.onchange('tipo_valor','amount')
+    @api.depends('tipo_valor','amount')
     def _saldo_pagar(self):
         for l in self:
             self.obtener_deudas_facturas()
