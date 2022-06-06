@@ -28,7 +28,7 @@ class AccountPayment(models.Model):
                 if l.invoice_id:
                     for x in l.invoice_id.contrato_estado_cuenta_ids:
                         total_deuda+=(x.cuota_capital+x.seguro+x.rastreo+x.otro+y.actual_amount)
-        return total_deuda
+        self.deuda_total=total_deuda
 
 
 
@@ -78,7 +78,7 @@ class AccountPayment(models.Model):
 
     @api.onchange('amount')
     def _onchange_amount(self):
-        self.saldo_pago=self._saldo_pagar()
+        self._saldo_pagar()
 
     @api.onchange('tipo_valor','contrato_id','contrato_estado_cuenta_payment_ids')
     def _onchange_tipo_valor(self):
@@ -155,7 +155,6 @@ class AccountPayment(models.Model):
     @api.depends('tipo_valor','amount')
     def _saldo_pagar(self):
         for l in self:
-            l.deuda_total=self.obtener_deudas_facturas()
             if l.tipo_valor=='enviar_credito':
                 valor_asignado=0
                 for x in l.contrato_estado_cuenta_payment_ids:
