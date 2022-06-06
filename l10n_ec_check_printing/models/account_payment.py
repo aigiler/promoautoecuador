@@ -1182,11 +1182,11 @@ class AccountPayment(models.Model):
                 saldo_debito=0
                 valor_credito=0
                 sald_credito=0
-                if tipo_valor=='enviar_credito':
+                if self.tipo_valor=='enviar_credito':
                     for x in l.contrato_estado_cuenta_payment_ids:
                         if x.monto_pagar:
                             valor_asignado+=x.monto_pagar
-                elif tipo_valor=='crear_acticipo':
+                elif self.tipo_valor=='crear_acticipo':
                     for x in l.payment_line_ids:
                         if x.amount:
                             valor_asignado+=(x.amount+x.monto_pendiente_pago)
