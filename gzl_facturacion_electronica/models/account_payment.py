@@ -125,8 +125,8 @@ class AccountPayment(models.Model):
     @api.depends('tipo_valor','amount')
     def _saldo_pagar(self):
         for l in self:
-            l.valor_deuda=l.deuda_total
-            l.saldo_pago=l.amount
+            l.valor_deuda=l.amount
+            l.saldo_pago=0
             if l.tipo_valor=='enviar_credito':
                 valor_asignado=0
                 for x in l.contrato_estado_cuenta_payment_ids:
