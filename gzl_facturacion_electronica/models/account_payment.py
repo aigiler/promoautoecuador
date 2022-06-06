@@ -20,7 +20,8 @@ class AccountPayment(models.Model):
         ('crear_acticipo', 'Crear Anticipo')
     ], string='Tipo')
 
-    @api.onchange('partner_id')
+    @api.onchange('partner_id','payment_line_ids')
+    @api.contrains('partner_id','payment_line_ids')
     def obtener_deudas_facturas(self):
         total_deuda=0
         for l in self:
