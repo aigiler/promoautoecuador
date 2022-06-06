@@ -1231,7 +1231,7 @@ class AccountPayment(models.Model):
                                 'credit':valor_credito,}),
                             (0, 0, {
                                 'cuenta':cuenta_partner,
-                                'name': name,
+                                'name': "Saldo",
                                 'cuenta_analitica':'',
                                 'analytic_tag_ids':'',
                                 'debit':saldo_debito,
