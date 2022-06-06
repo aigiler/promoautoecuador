@@ -20,28 +20,6 @@ class AccountPayment(models.Model):
         ('crear_acticipo', 'Crear Anticipo')
     ], string='Tipo')
 
-    @api.onchange('tipo_valor','amount')
-    @api.depends('tipo_valor','amount')
-    def _saldo_pagar(self):
-        for l in self:
-            if l.tipo_valor=='enviar_credito':
-                valor_asignado=0
-                for x in l.contrato_estado_cuenta_payment_ids:
-                    if x.monto_pagar:
-                        valor_asignado+=x.monto_pagar
-                if (l.amount-valor_asignado)<0:
-                    raise ValidationError("Los valores a pagar exceden los ${0} especificados.".format(l.amount))
-                l.valor_deuda=valor_asignado
-                l.saldo_pago=l.amount-l.valor_deuda
-            if l.tipo_valor=='crear_acticipo':
-                    valor_asignado=0
-                    valor_facturas=0
-                    for x in l.payment_line_ids:
-                        if x.amount:
-                            #x.amount=x.actual_amount
-                            valor_asignado+=(x.amount+x.monto_pendiente_pago)
-                    l.valor_deuda=valor_asignado
-                    l.saldo_pago=l.amount-l.valor_deuda
 
     @api.onchange('partner_id','amount')
     @api.depends('partner_id','amount')
@@ -80,7 +58,7 @@ class AccountPayment(models.Model):
 
     @api.onchange('amount')
     def _onchange_amount(self):
-        self._saldo_pagar()
+        self.saldo_pago=self.amount
 
     @api.onchange('tipo_valor','contrato_id','contrato_estado_cuenta_payment_ids')
     def _onchange_tipo_valor(self):
@@ -157,6 +135,8 @@ class AccountPayment(models.Model):
     @api.depends('tipo_valor','amount')
     def _saldo_pagar(self):
         for l in self:
+            l.valor_deuda=l.deuda_total
+            l.saldo_pago=l.amount
             if l.tipo_valor=='enviar_credito':
                 valor_asignado=0
                 for x in l.contrato_estado_cuenta_payment_ids:
@@ -166,12 +146,11 @@ class AccountPayment(models.Model):
                     raise ValidationError("Los valores a pagar exceden los ${0} especificados.".format(l.amount))
                 l.valor_deuda=valor_asignado
                 l.saldo_pago=l.amount-l.valor_deuda
-            if l.tipo_valor=='crear_acticipo':
+            elif l.tipo_valor=='crear_acticipo':
                     valor_asignado=0
                     valor_facturas=0
                     for x in l.payment_line_ids:
                         if x.amount:
-                            #x.amount=x.actual_amount
                             valor_asignado+=(x.amount+x.monto_pendiente_pago)
                     l.valor_deuda=valor_asignado
                     l.saldo_pago=l.amount-l.valor_deuda
