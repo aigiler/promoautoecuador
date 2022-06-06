@@ -71,7 +71,7 @@ class AccountPayment(models.Model):
                         else:
                             self.update({'contrato_estado_cuenta_payment_ids':[(6,0,[])]}) 
                 for cuota in self.contrato_id.estado_de_cuenta_ids:
-                    if cuota.factura_id.amount_residual!=0 and cuota.saldo!=0:
+                    if cuota.factura_id.amount_residual!=0 and cuota.saldo>0:
                         lista_cuotas.append(cuota.id)
             obj_estado_cuenta_ids = self.env['contrato.estado.cuenta'].search([('id','in',lista_cuotas)])
             list_ids_cuotas = []
