@@ -71,7 +71,7 @@ class AccountPayment(models.Model):
                             pass
                         else:
                             self.update({'contrato_estado_cuenta_payment_ids':[(6,0,[])]}) 
-                for cuota in self.contrato_id.estado_de_cuenta_ids:
+                for cuota in self.contra_itod.estado_de_cuenta_ids:
                     pendientes=cuota.saldo_cuota_capital+cuota.saldo_seguro+cuota.saldo_rastreo+cuota.saldo_otros
                     if cuota.factura_id.amount_residual!=0 and pendientes>0:
                         lista_cuotas.append(cuota.id)
