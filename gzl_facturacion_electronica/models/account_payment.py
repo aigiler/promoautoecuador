@@ -152,7 +152,7 @@ class AccountPayment(models.Model):
                 l.total_asignado+=x.monto_pagar
 
     @api.onchange('tipo_valor','l.amount')
-    @api.constrains('tipo_valor','l.amount')
+    @api.depends('tipo_valor','l.amount')
     def _saldo_pagar(self):
         for l in self:
             self.obtener_deudas_facturas()
@@ -163,7 +163,8 @@ class AccountPayment(models.Model):
                         valor_asignado+=x.monto_pagar
                 if (l.amount-valor_asignado)<0:
                     raise ValidationError("Los valores a pagar exceden los ${0} especificados.".format(l.amount))
-                l.saldo_pago=l.amount-valor_asignado
+                l.valor_deuda=valor_asignado
+                l.saldo_pago=l.amount-l.valor_deuda
             if l.tipo_valor=='crear_acticipo':
                     valor_asignado=0
                     valor_facturas=0
