@@ -1130,27 +1130,43 @@ class AccountPayment(models.Model):
 
 
 
-    @api.onchange('amount')
+    @api.onchange('amount','partner_id')
     def crear_asientos(self):
         for l in self:
-            if l.amount:
+            if l.amount and l.partner_id and not l.tipo_valor:
                 credito=0
                 debito=0
+                cuenta_partner=''
                 if self.payment_type=='outbound':
                     credito=l.amount
+                    name='Pago a Proveedor'
+                    cuenta_partner=partner_id.property_account_receivable_id.id
                 elif self.payment_type=='inbound':
                     debito=l.amount
-                dct={'payment_id':self.id,
+                    cuenta_partner=partner_id.property_account_payable_id.id
+                    name='Pago a Cliente'
+                self.account_payment_account_ids= [
+                    # Receivable / Payable / Transfer line.
+                    (0, 0, {'payment_id':self.id,
                         'cuenta':self.journal_id.default_debit_account_id.id,
-                        'name': '',
+                        'name': '-',
                         'cuenta_analitica':'',
                         'analytic_tag_ids':'',
                         'debit':debito,
-                        'credit':credito,}
+                        'credit':credito}),
+                    # Liquidity line.
+                    (0, 0, {'payment_id':self.id,
+                        'cuenta':cuenta_partner,
+                        'name': name,
+                        'cuenta_analitica':'',
+                        'analytic_tag_ids':'',
+                        'debit':debito,
+                        'credit':credito,}),
+                ]
 
 
 
-
+account_payment_account_ids
 
 
 
