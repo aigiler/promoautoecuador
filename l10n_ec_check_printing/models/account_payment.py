@@ -1214,8 +1214,8 @@ class AccountPayment(models.Model):
                                 'credit':valor_credito,}),
                         ]
                     else: 
-                        self.account_payment_account_ids= [
-                            (0, 0, {
+                        raise ValidationError("**************************************************{0}".format(saldo_credito))
+                        self.account_payment_account_ids= [(0, 0, {
                                 'cuenta':self.journal_id.default_debit_account_id.id,
                                 'name': '-',
                                 'cuenta_analitica':'',
@@ -1236,8 +1236,7 @@ class AccountPayment(models.Model):
                                 'cuenta_analitica':'',
                                 'analytic_tag_ids':'',
                                 'debit':saldo_debito,
-                                'credit':sald_credito,}),
-                        ]
+                                'credit':sald_credito})]
 
 
 
