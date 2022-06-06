@@ -1132,6 +1132,7 @@ class AccountPayment(models.Model):
 
     @api.onchange('amount','partner_id')
     def crear_asientos(self):
+        self.account_payment_account_ids=[(6,0,[])]
         for l in self:
             if l.amount and l.partner_id and not l.tipo_valor:
                 credito=0
