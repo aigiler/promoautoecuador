@@ -1140,10 +1140,11 @@ class AccountPayment(models.Model):
                 if self.payment_type=='outbound':
                     credito=l.amount
                     name='Pago a Proveedor'
-                    cuenta_partner=l.partner_id.property_account_receivable_id.id
+                    cuenta_partner=l.partner_id.property_account_payable_id.id
                 elif self.payment_type=='inbound':
                     debito=l.amount
-                    cuenta_partner=l.partner_id.property_account_payable_id.id
+                    
+                    cuenta_partner=l.partner_id.property_account_receivable_id.id
                     name='Pago a Cliente'
                 self.account_payment_account_ids= [
                     # Receivable / Payable / Transfer line.
@@ -1160,8 +1161,8 @@ class AccountPayment(models.Model):
                         'name': name,
                         'cuenta_analitica':'',
                         'analytic_tag_ids':'',
-                        'debit':debito,
-                        'credit':credito,}),
+                        'debit':credito,
+                        'credit':debito,}),
                 ]
 
 
