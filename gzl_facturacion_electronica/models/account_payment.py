@@ -32,23 +32,23 @@ class AccountPayment(models.Model):
 
 
 
-    @api.onchange('partner_id')
-    def obtener_deudas(self):
-        valor_deuda=0
-        for l in self:
-            if l.partner_id:
-                for x in l.payment_line_ids:
-                    valor_deuda+=(x.actual_amount+x.monto_pendiente_pago)
-        self.valor_deuda=valor_deuda
+    # @api.onchange('partner_id')
+    # def obtener_deudas(self):
+    #     valor_deuda=0
+    #     for l in self:
+    #         if l.partner_id:
+    #             for x in l.payment_line_ids:
+    #                 valor_deuda+=(x.actual_amount+x.monto_pendiente_pago)
+    #     self.valor_deuda=valor_deuda
 
-    @api.onchange('amount')
-    def obtener_deudas(self):
-        monto=0
-        for l in self:
-            valor=0
-            if l.amount:
-                valor=l.amount    
-        monto=valor-self.valor_deuda
+    # @api.onchange('amount')
+    # def obtener_deudas(self):
+    #     monto=0
+    #     for l in self:
+    #         valor=0
+    #         if l.amount:
+    #             valor=l.amount    
+    #     monto=valor-self.valor_deuda
 
     #@api.multi
     def crear_detalles(self):
