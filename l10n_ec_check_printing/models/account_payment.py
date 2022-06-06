@@ -1165,7 +1165,7 @@ class AccountPayment(models.Model):
                             'debit':credito,
                             'credit':debito,})]
                 else:
-                    crear_asientos_tipo_valor()
+                    self.crear_asientos_tipo_valor()
 
     def crear_asientos_tipo_valor(self):
         self.account_payment_account_ids=[(6,0,[])]
