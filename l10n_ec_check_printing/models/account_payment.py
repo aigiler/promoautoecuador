@@ -1185,7 +1185,7 @@ class AccountPayment(models.Model):
                     name='Pago a Proveedor'
                     if l.valor_deuda:
                         valor_debito=l.valor_deuda
-                        saldo_debito=l.saldo_pago
+                        saldo_debito=l.amount-l.valor_deuda
                     cuenta_partner=l.partner_id.property_account_payable_id.id
                 elif self.payment_type=='inbound':
                     debito=l.amount
@@ -1193,7 +1193,7 @@ class AccountPayment(models.Model):
                     name='Pago a Cliente'
                     if l.valor_deuda:
                         valor_credito=l.valor_deuda
-                        sald_credito=l.amount.l.valor_deuda
+                        sald_credito=l.amount-l.valor_deuda
                 if l.amount and l.tipo_valor=='enviar_credito':
                     if l.valor_deuda==l.amount:
                         self.account_payment_account_ids= [
