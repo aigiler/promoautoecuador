@@ -1168,7 +1168,7 @@ class AccountPayment(models.Model):
     @api.onchange('tipo_valor','amount','saldo_pago','valor_deuda')
     def crear_asientos(self):
         self.account_payment_account_ids=[(6,0,[])]
-         for l in self:
+        for l in self:
             if l.partner_id: 
                 credito=0
                 debito=0
