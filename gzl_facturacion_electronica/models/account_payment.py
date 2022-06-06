@@ -144,4 +144,3 @@ class AccountPayment(models.Model):
                             valor_asignado+=(x.amount+x.monto_pendiente_pago)
                     l.valor_deuda=valor_asignado
                     l.saldo_pago=l.amount-l.valor_deuda
-            self.crear_asientos()
