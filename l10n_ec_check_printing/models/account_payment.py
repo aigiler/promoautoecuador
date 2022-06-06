@@ -941,8 +941,8 @@ class AccountPayment(models.Model):
                                 'analytic_account_id':linea.cuenta_analitica.id or False,
                             })
                             listaMovimientos.append(tupla)
-                    if total_credito!=payment.saldo_pago:
-                        raise ValidationError("Las lineas ubicadas en la sección Cuentas Contables debe ser igual al saldo.")
+                    #if total_credito!=payment.saldo_pago:
+                    #    raise ValidationError("Las lineas ubicadas en la sección Cuentas Contables debe ser igual al saldo.")
                     credito_asignado=0
                     debito_asignado=0
                     if total_credito:
