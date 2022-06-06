@@ -178,6 +178,7 @@ class AccountPayment(models.Model):
             ('state', '=', 'posted'), ('type', 'in', type),('invoice_payment_state','!=','paid')
         ], order="invoice_date asc")
         list_ids =[]
+        deuda_total=0
         for invoice in invoices:
             payment_term_line = self.env['account.payment.term.line'].search([('payment_id','=',invoice.invoice_payment_term_id.id)])
             amount_balance = 0
@@ -191,6 +192,8 @@ class AccountPayment(models.Model):
                             amount = invoice.amount_total
                         else:
                             amount = invoice.amount_total-amount_balance 
+                    for x in invoice.contrato_estado_cuenta_ids:
+                        deuda_total+=(x.cuota_capital+x.seguro+x.rastreo+x.otro+invoice.amount_residual)
                     line_id = PaymentLine.create([{
                         'invoice_id': invoice.id,
                         'amount_total': invoice.amount_total,
@@ -202,7 +205,8 @@ class AccountPayment(models.Model):
                     }])
                     list_ids.append(line_id.id)
             else:
-
+                for x in invoice.contrato_estado_cuenta_ids:
+                    deuda_total+=(x.cuota_capital+x.seguro+x.rastreo+x.otro+invoice.amount_residual)
                 line_id = PaymentLine.create([{
                     'invoice_id': invoice.id,
                     'amount_total': invoice.amount_total,
@@ -215,7 +219,7 @@ class AccountPayment(models.Model):
                 list_ids.append(line_id.id)
 
         self.payment_line_ids = [(6, 0, list_ids)]
-        #self.deuda_total=self.obtener_deudas_facturas()
+        self.deuda_total=deuda_total
         
 
 
