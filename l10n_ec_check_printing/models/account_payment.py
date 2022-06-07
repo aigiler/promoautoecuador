@@ -559,6 +559,7 @@ class AccountPayment(models.Model):
                     movimientos_occ=self.env['account.move'].search([('journal_id','in',lista_diarios),('ref','=',l.invoice_id.name)])
                     for x in movimientos_occ:
                         invoice_id.append(x.id)                
+            raise ValidationError("ESTA ES LA LISTA FINAL DE IDS{0}".format(invoice_id))
             #invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]
          #   raise ValidationError(invoice_id)
 
