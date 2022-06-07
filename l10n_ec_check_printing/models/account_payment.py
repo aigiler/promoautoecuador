@@ -526,6 +526,7 @@ class AccountPayment(models.Model):
                     lista_respaldo.append(dct)
                 payment_lines.unlink()
                 PaymentLine = self.env['account.payment.line']
+                monto_pendiente_pago=0
                 for x in factura.contrato_estado_cuenta_ids:
                     monto_pendiente_pago+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
                 obj_factura=self.env['account.move'].browse(factura)
