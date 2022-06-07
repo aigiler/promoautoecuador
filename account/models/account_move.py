@@ -3783,6 +3783,7 @@ class AccountMoveLine(models.Model):
         return debit_moves+credit_moves
 
     def auto_reconcile_lines(self):
+        raise ValidationError("dddddddddddddddddddddddddddddd0333333333333")
         # Create list of debit and list of credit move ordered by date-currency
         debit_moves = self.filtered(lambda r: r.debit != 0 or r.amount_currency > 0)
         credit_moves = self.filtered(lambda r: r.credit != 0 or r.amount_currency < 0)
