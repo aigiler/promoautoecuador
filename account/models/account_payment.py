@@ -738,9 +738,9 @@ class account_payment(models.Model):
                                 'company_id': 1,
                                 })
                                 lista.append(tupla)
-                for x in rec.move_line_ids:
-                    if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
-                        x.update({'matched_debit_ids':lista})
+                    for x in rec.move_line_ids:
+                        if x.account_id.id==rec.partner_id.property_account_receivable_id.id and x.credit==rec.valor_deuda:
+                            x.update({'matched_debit_ids':lista})
                         
 
             elif rec.payment_type == 'transfer':
