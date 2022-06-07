@@ -1277,16 +1277,14 @@ class AccountPaymentLine(models.Model):
 
     @api.onchange('pagar')
     def actualizar_totales(self):
-        for l in self:
-            monto_inicial=l.payment_id.amount
-            
+        for l in self:            
             if l.pagar:
                 l.amount=l.actual_amount+l.monto_pendiente_pago
                 l.payment_id._saldo_pagar()
             else:
                 l.amount=0
                 l.payment_id._saldo_pagar()
-            l.payment_id.amount=monto_inicial 
+            #l.payment_id.amount=monto_inicial 
 
     @api.onchange('amount')
     def actualizar_saldo(self):
