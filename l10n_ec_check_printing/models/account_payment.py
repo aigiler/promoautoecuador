@@ -532,7 +532,8 @@ class AccountPayment(models.Model):
                     'amount_total': obj_factura.amount_total,
                     'actual_amount':obj_factura.amount_residual,
                     'residual':obj_factura.amount_residual,
-                    'amount': monto_total,
+                    'amount': pago.amount,
+                    'monto_pendiente_pago':pago.monto_pendiente_pago,
                     'date_due':obj_factura.invoice_date_due,
                     'document_number':obj_factura.l10n_latam_document_number,
                     'payment_id':rec.id
