@@ -229,7 +229,7 @@ class AccountPayment(models.Model):
 
         total=0
         for line in self.payment_line_ids:
-            total += (line.amount+line.monto_pendiente_pago)
+            total += (line.actual_amount+line.monto_pendiente_pago)
         
         if self.tipo_valor:
             self.amount=self.amount
@@ -1171,7 +1171,7 @@ class AccountPayment(models.Model):
                 elif self.tipo_valor=='crear_acticipo':
                     for x in l.payment_line_ids:
                         if x.amount:
-                            valor_asignado+=(x.amount+x.monto_pendiente_pago)
+                            valor_asignado+=(x.actual_amount+x.monto_pendiente_pago)
                 if self.payment_type=='outbound':
                     credito=l.amount
                     name='Pago a Proveedor'
@@ -1273,17 +1273,13 @@ class AccountPaymentLine(models.Model):
                 for x in l.invoice_id.contrato_estado_cuenta_ids:
                     monto_pendiente_pago+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
                 l.monto_pendiente_pago=monto_pendiente_pago
+                l.amount=l.actual_amount+l.monto_pendiente_pago
                 #l.deuda_total=self.payment_id.obtener_deudas_facturas()
 
     @api.onchange('pagar')
     def actualizar_totales(self):
         for l in self:            
-            if l.pagar:
-                l.amount=l.actual_amount+l.monto_pendiente_pago
-                l.payment_id._saldo_pagar()
-            else:
-                l.amount=0
-                l.payment_id._saldo_pagar()
+            l.amount=l.actual_amount+l.monto_pendiente_pago
             #l.payment_id.amount=monto_inicial 
 
     @api.onchange('amount')
