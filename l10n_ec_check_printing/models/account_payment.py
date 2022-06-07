@@ -1281,7 +1281,7 @@ class AccountPaymentLine(models.Model):
             monto_inicial=l.payment_id.amount
             
             if l.pagar:
-                l.amount=l.actual_amount
+                l.amount=l.actual_amount+l.monto_pendiente_pago
                 l.payment_id._saldo_pagar()
             else:
                 l.amount=0
