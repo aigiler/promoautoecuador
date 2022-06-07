@@ -1170,8 +1170,8 @@ class AccountPayment(models.Model):
                             valor_asignado+=x.monto_pagar
                 elif self.tipo_valor=='crear_acticipo':
                     for x in l.payment_line_ids:
-                        if x.amount:
-                            valor_asignado+=(x.actual_amount+x.monto_pendiente_pago)
+                        if x.pagar:
+                            valor_asignado+=(x.amount)
                 if self.payment_type=='outbound':
                     credito=l.amount
                     name='Pago a Proveedor'
