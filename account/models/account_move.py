@@ -3857,7 +3857,7 @@ class AccountMoveLine(models.Model):
         not_paid_invoices.filtered(
             lambda m: m.invoice_payment_state in ('paid', 'in_payment')
         ).action_invoice_paid()
-        raise ValidationError("**********************************{0}".format(not_paid_invoices))
+
 
         return True
 
@@ -3872,6 +3872,7 @@ class AccountMoveLine(models.Model):
             line_values['debit'], line_values['credit'] = line_values['credit'], line_values['debit']
             if 'amount_currency' in values:
                 line_values['amount_currency'] = -line_values['amount_currency']
+            raise ValidationError("**********************************{0}".format(line_values))
             return line_values
         # Group writeoff_vals by journals
         writeoff_dict = {}
