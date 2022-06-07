@@ -229,8 +229,9 @@ class AccountPayment(models.Model):
 
         total=0
         for line in self.payment_line_ids:
-            total += (line.actual_amount+line.monto_pendiente_pago)
-        
+            if line.pagar:
+                total += (line.actual_amount+line.monto_pendiente_pago)
+            self.amount=total
         if self.tipo_valor:
             self.amount=self.amount
         elif self.tipo_transaccion=='Pago':
