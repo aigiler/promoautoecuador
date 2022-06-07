@@ -3595,6 +3595,7 @@ class AccountMoveLine(models.Model):
         In case of full reconciliation, all moves belonging to the reconciliation will belong to the same account_full_reconcile object.
         """
         # Get first all aml involved
+        raise ValidationError("dddddddddddddddddddddddddddddd01111")
         todo = self.env['account.partial.reconcile'].search_read(['|', ('debit_move_id', 'in', self.ids), ('credit_move_id', 'in', self.ids)], ['debit_move_id', 'credit_move_id'])
         amls = set(self.ids)
         seen = set()
