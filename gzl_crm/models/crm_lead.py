@@ -471,9 +471,13 @@ class CrmLead(models.Model):
                 calendar=self.crear_calendar_event('Reunión Socio {0}'.format(self.partner_id.name),now,1,'Reunión para evidenciar Calidad de la Venta')
         
             stage_cotizacion = self.env['crm.stage'].search([('generar_cotizacion','=',True)], limit=1).id
-            if self.stage_id != stage_cotizacion and self.quotation_count==0:
+            if self.stage_id != stage_cotizacion and self.quotation_count==0 and self.sale_order_count ==0:
                 raise ValidationError("Para pasar a la siguiente etapa, debe crear mínimo una cotización")
         
+
+
+
+
         return crm
 
 
