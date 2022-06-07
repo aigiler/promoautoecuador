@@ -109,14 +109,19 @@ class AccountMove(models.Model):
             numero_cuotas=numero_cuotas+registros.numero_cuota+','
             saldo_credito+=registros.saldo
         lista_dic=[] 
-        if self.method_payment:
-            lista_dic.append({'nombre':'Desde','valor':str(self.invoice_date)}) 
-            lista_dic.append({'nombre':'F/pago','valor':self.method_payment.name}) 
 
         if self.invoice_payment_term_id:
             lista_dic.append({
                             'nombre': 'CRÉDITO',
                             'valor':str(saldo_credito)+' a '+self.invoice_payment_term_id.name})
+        else:
+            lista_dic.append({
+                            'nombre': 'CRÉDITO',
+                            'valor':str(saldo_credito)+' a '+self.invoice_date})
+        if self.method_payment:
+            lista_dic.append({'nombre':'Desde','valor':str(self.invoice_date)}) 
+            lista_dic.append({'nombre':'F/pago','valor':self.method_payment.name}) 
+
 
         if self.partner_id:
             lista_dic.append({'nombre':'Nota','valor':self.partner_id.name+self.name+'Cancela Cuotas'+numero_cuotas})
@@ -129,16 +134,6 @@ class AccountMove(models.Model):
             lista_ids.append(id_registro.id)
             self.update({'campos_adicionales_facturacion':[(6,0,lista_ids)]}) 
         
-        # else:
-        #     for x in self.campos_adicionales_facturacion:
-        #         if x.nombre=='CRÉDITO':
-        #             x.valor=str(saldo_credito)+' a '+self.invoice_payment_term_id.name
-        #         elif x.nombre=='Desde':
-        #             x.valor=str(self.invoice_date)
-        #         elif x.nombre=='F/pago':
-        #             x.valor=self.method_payment.name
-        #         elif x.nombre=='Nota':
-        #             x.valor=self.partner_id.name+self.name+'Cancela Cuotas'+numero_cuotas
 
     establecimiento = fields.Many2one('establecimiento')
     reversed_entry_nc_id = fields.Many2one(related='reversed_entry_id', store=True)
