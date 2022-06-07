@@ -229,7 +229,7 @@ class AccountPayment(models.Model):
 
         total=0
         for line in self.payment_line_ids:
-            total += line.amount
+            total += (line.amount+line.monto_pendiente_pago)
         
         if self.tipo_valor:
             self.amount=self.amount
@@ -488,24 +488,21 @@ class AccountPayment(models.Model):
                         cuota_id.saldo_otros=cuota_id.saldo_otros-y.otro_pagar
                         cuota_id.monto_pagado=cuota_id.monto_pagado+y.monto_pagar
                         cuota_id.saldo=cuota_id.saldo-y.monto_pagar
-
-
-            #for l in rec.payment_line_ids:
-                #if l.amount>l.actual_amount:
-                    #raise ValidationError("El monto a pagar no puede ser al monto adeudado en la factura {0}".format(l.invoice_id.l10n_latam_document_number))
             lista_invoice=[]
-            #lista_asientos=[]
-
             for pago in rec.payment_line_ids:
                 if pago.pagar:
                     lista_invoice.append(pago.invoice_id.id)
-                    #movimientos_occ=self.env['account.move'].search([('journal_id','=',21),('ref','=',pago.invoice_id.name)])
-                    #for mov in movimientos_occ:
-                    #    lista_invoice.append(mov.id)
-                    #    lista_asientos.append(mov.id)
                     for contrato in pago.invoice_id.contrato_estado_cuenta_ids:
-                        contrato.monto_pagado=pago.amount
-                        contrato.saldo=contrato.saldo-pago.amount  
+                        cuota_id.monto_pagado=cuota_id.cuota_capital+cuota_id.seguro+cuota_id.otro+cuota_id.rastreo+cuota_id.cuota_adm+cuota_id.iva_adm
+                        cuota_id.saldo=0
+                        cuota_cap_ant=cuota_id.saldo_cuota_capital
+                        saldo_seg_ant=cuota_id.saldo_seguro
+                        rastreo_ant=cuota_id.saldo_rastreo
+                        otro_ant=cuota_id.saldo_otros
+                        cuota_id.saldo_cuota_capital=0
+                        cuota_id.saldo_seguro=0
+                        cuota_id.saldo_rastreo=0
+                        cuota_id.saldo_otros=0
                 rec.update({'invoice_ids': [(6, 0, lista_invoice)]})
             if rec.amount==0: 
                 raise ValidationError("Ingrese el valor del monto")
@@ -542,8 +539,27 @@ class AccountPayment(models.Model):
 
                 }])
             
-            
-            invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]
+            invoice_id=[]
+            cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
+            seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
+            otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
+            rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
+            lista_diarios=[]
+            for l in rec.payment_line_ids:
+                if l.amount>0:
+                    invoice_id.append(l.invoice_id.id)
+                    if cuota_capital_obj:
+                        lista_diarios.append(cuota_capital_obj.journal_id.id)
+                    if seguro_obj:
+                        lista_diarios.append(seguro_obj.journal_id.id)
+                    if otros_obj:
+                        lista_diarios.append(otros_obj.journal_id.id)
+                    if rastreo_obj:
+                        lista_diarios.append(rastreo_obj.journal_id.id)
+                    movimientos_occ=self.env['account.move'].search([('journal_id','in',lista_diarios),('ref','=',l.invoice_id.name)])
+                    for x in movimientos_occ:
+                        invoice_id.append(x.id)                
+            #invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]
          #   raise ValidationError(invoice_id)
 
             if invoice_id:
