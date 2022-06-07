@@ -731,7 +731,7 @@ class account_payment(models.Model):
                                 tupla=(0, 0, {
                                 'debit_move_id': x.id,
                                 'credit_move_id':  move_credito,
-                                'amount': x.credit,
+                                'amount': x.debit,
                                 'amount_currency': '',
                                 'currency_id':  '',
                                 'company_currency_id': 2,
