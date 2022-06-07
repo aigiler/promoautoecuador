@@ -492,7 +492,7 @@ class AccountPayment(models.Model):
             for pago in rec.payment_line_ids:
                 if pago.pagar:
                     lista_invoice.append(pago.invoice_id.id)
-                    for contrato in pago.invoice_id.contrato_estado_cuenta_ids:
+                    for cuota_id in pago.invoice_id.contrato_estado_cuenta_ids:
                         cuota_id.monto_pagado=cuota_id.cuota_capital+cuota_id.seguro+cuota_id.otro+cuota_id.rastreo+cuota_id.cuota_adm+cuota_id.iva_adm
                         cuota_id.saldo=0
                         cuota_cap_ant=cuota_id.saldo_cuota_capital
