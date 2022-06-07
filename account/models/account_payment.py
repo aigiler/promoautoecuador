@@ -712,7 +712,7 @@ class account_payment(models.Model):
                     lista=[]
                     move_credito=''
                     for x in rec.move_line_ids:
-                        if x.account.id==rec.partner_id.property_account_receivable_id.id:
+                        if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
                             move_credito=x.id
                     for l in rec.invoice_ids:
                         if cuota_capital_obj:
@@ -739,7 +739,7 @@ class account_payment(models.Model):
                                 })
                                 lista.append(tupla)
                 for x in rec.move_line_ids:
-                    if x.account.id==rec.partner_id.property_account_receivable_id.id:
+                    if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
                         x.update({'matched_debit_ids':lista})
                         
 
