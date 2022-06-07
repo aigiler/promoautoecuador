@@ -3701,6 +3701,7 @@ class AccountMoveLine(models.Model):
             can find a debit and a credit to reconcile together. It returns the recordset of the
             account move lines that were not reconciled during the process.
         """
+        raise ValidationError("dddddddddddddddddddddddddddddd0111111111111123456")
         (debit_moves + credit_moves).read([field])
         to_create = []
         cash_basis = debit_moves and debit_moves[0].account_id.internal_type in ('receivable', 'payable') or False
@@ -3783,7 +3784,6 @@ class AccountMoveLine(models.Model):
         return debit_moves+credit_moves
 
     def auto_reconcile_lines(self):
-        raise ValidationError("dddddddddddddddddddddddddddddd0333333333333")
         # Create list of debit and list of credit move ordered by date-currency
         debit_moves = self.filtered(lambda r: r.debit != 0 or r.amount_currency > 0)
         credit_moves = self.filtered(lambda r: r.credit != 0 or r.amount_currency < 0)
