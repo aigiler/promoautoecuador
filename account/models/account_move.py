@@ -3834,7 +3834,7 @@ class AccountMoveLine(models.Model):
         reconciled_lines = self.filtered(lambda aml: float_is_zero(aml.balance, precision_rounding=aml.move_id.company_id.currency_id.rounding) and aml.reconciled)
         (self - reconciled_lines)._check_reconcile_validity()
         #reconcile everything that can be
-        raise ValidationError("**********************************{0}".format(not_paid_invoices))
+        raise ValidationError("**********************************{0}".format(reconciled_lines))
         remaining_moves = self.auto_reconcile_lines()
 
         writeoff_to_reconcile = self.env['account.move.line']
