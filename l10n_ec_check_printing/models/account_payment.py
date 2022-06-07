@@ -539,27 +539,27 @@ class AccountPayment(models.Model):
 
                 }])
             
-            invoice_id=[]
-            cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
-            seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
-            otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
-            rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
-            lista_diarios=[]
-            for l in rec.payment_line_ids:
-                if l.amount>0:
-                    invoice_id.append(l.invoice_id.id)
-                    if cuota_capital_obj:
-                        lista_diarios.append(cuota_capital_obj.journal_id.id)
-                    if seguro_obj:
-                        lista_diarios.append(seguro_obj.journal_id.id)
-                    if otros_obj:
-                        lista_diarios.append(otros_obj.journal_id.id)
-                    if rastreo_obj:
-                        lista_diarios.append(rastreo_obj.journal_id.id)
-                    movimientos_occ=self.env['account.move'].search([('journal_id','in',lista_diarios),('ref','=',l.invoice_id.name)])
-                    for x in movimientos_occ:
-                        invoice_id.append(x.id)                
-            #invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]
+            # invoice_id=[]
+            # cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
+            # seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
+            # otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
+            # rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
+            # lista_diarios=[]
+            # for l in rec.payment_line_ids:
+            #     if l.amount>0:
+            #         invoice_id.append(l.invoice_id.id)
+            #         if cuota_capital_obj:
+            #             lista_diarios.append(cuota_capital_obj.journal_id.id)
+            #         if seguro_obj:
+            #             lista_diarios.append(seguro_obj.journal_id.id)
+            #         if otros_obj:
+            #             lista_diarios.append(otros_obj.journal_id.id)
+            #         if rastreo_obj:
+            #             lista_diarios.append(rastreo_obj.journal_id.id)
+            #         movimientos_occ=self.env['account.move'].search([('journal_id','in',lista_diarios),('ref','=',l.invoice_id.name)])
+            #         for x in movimientos_occ:
+            #             invoice_id.append(x.id)                
+            invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]
          #   raise ValidationError(invoice_id)
 
             if invoice_id:
