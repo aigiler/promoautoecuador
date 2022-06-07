@@ -725,7 +725,7 @@ class account_payment(models.Model):
                             lista_diarios.append(rastreo_obj.journal_id.id)
                         movimientos_occ=self.env['account.move'].search([('journal_id','in',lista_diarios),('ref','=',l.name)])
                         
-                        for x in movimientos_occ:
+                        for x in movimientos_occ.invoice_line_ids:
                             if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
                                 movimiento_debito=x.id
                                 tupla=(0, 0, {
