@@ -697,6 +697,7 @@ class account_payment(models.Model):
             rec.write({'state': 'posted', 'move_name': move_name})
 
             if rec.payment_type in ('inbound', 'outbound'):
+                raise ValidationError("qqqqqqqqqqq{0}".format(rec.invoice_ids))
                 # ==== 'inbound' / 'outbound' ====
                 if rec.invoice_ids:
                     (moves[0] + rec.invoice_ids).line_ids \
