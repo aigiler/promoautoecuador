@@ -697,9 +697,9 @@ class account_payment(models.Model):
             rec.write({'state': 'posted', 'move_name': move_name})
 
             if rec.payment_type in ('inbound', 'outbound'):
-                raise ValidationError("qqqqqqqqqqq{0}".format(rec.invoice_ids))
                 # ==== 'inbound' / 'outbound' ====
                 if rec.invoice_ids:
+                    raise ValidationError("{0}".format(moves[0]))
                     (moves[0] + rec.invoice_ids).line_ids \
                         .filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))\
                         .reconcile()
