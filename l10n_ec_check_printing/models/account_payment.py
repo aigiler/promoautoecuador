@@ -518,7 +518,7 @@ class AccountPayment(models.Model):
                         'amount':pago.amount  ,
                         'amount_total': pago.amount_total,
                         'residual': pago.residual,
-                        'amount': pago.amount,
+                        'amount': monto_total,
                         'date_due': pago.date_due,
                         'document_number':pago.document_number,
                         'payment_id':pago.payment_id.id
@@ -540,16 +540,12 @@ class AccountPayment(models.Model):
 
                 }])
             
-
-
             invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]
          #   raise ValidationError(invoice_id)
 
             if invoice_id:
                 self.invoice_ids = invoice_id
             account_check = rec.env['account.cheque']
-            
-
  
             if rec.payment_method_id.code in ['check_printing','batch_payment'] and not rec.payment_type == 'transfer':
                 #types = 'outgoing'
