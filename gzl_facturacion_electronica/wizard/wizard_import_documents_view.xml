@@ -20,6 +20,7 @@
 		<record id="action_wizard_import_documents" model="ir.actions.act_window">
             <field name="name">Importar Documentos</field>
             <field name="res_model">wizard.import.documents</field>
+            <field name="view_mode">form</field>
            <field name="view_id" ref="wizard_import_documents"/>
            <field name="target">current</field>
         </record>
