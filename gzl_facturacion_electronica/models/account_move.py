@@ -117,7 +117,7 @@ class AccountMove(models.Model):
         else:
             lista_dic.append({
                             'nombre': 'CRÉDITO',
-                            'valor':str(saldo_credito)+' a '+self.invoice_date_due})
+                            'valor':str(saldo_credito)+' a '+str(self.invoice_date_due)})
         if self.method_payment:
             lista_dic.append({'nombre':'Desde','valor':str(self.invoice_date)}) 
             lista_dic.append({'nombre':'F/pago','valor':self.method_payment.name}) 
