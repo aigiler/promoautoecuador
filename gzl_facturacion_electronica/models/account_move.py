@@ -109,29 +109,34 @@ class AccountMove(models.Model):
             numero_cuotas=numero_cuotas+registros.numero_cuota+','
             saldo_credito+=registros.saldo
         lista_dic=[] 
-        if self.method_payment and self.invoice_payment_term_id and self.name:
-            if not self.campos_adicionales_facturacion:
-                lista_dic=[{
+        if self.method_payment:
+            lista_dic.append({'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':self.method_payment.name}) 
+        if self.invoice_payment_term_id:
+            lista_dic.append({
                             'nombre': 'CRÉDITO',
-                            'valor':str(saldo_credito)+' a '+self.invoice_payment_term_id.name},
-                            {'nombre':'Desde','valor':str(self.invoice_date)},{'nombre':'F/pago','valor':self.method_payment.name},
-                            {'nombre':'Nota','valor':self.partner_id.name+self.name+'Cancela Cuotas'+numero_cuotas}]
+                            'valor':str(saldo_credito)+' a '+self.invoice_payment_term_id.name})
 
-                lista_ids=[]
-                for prueba in lista_dic:
-                    id_registro=self.env['campos.adicionales.facturacion'].create(prueba) 
-                    lista_ids.append(id_registro.id)
-                    self.update({'campos_adicionales_facturacion':[(6,0,lista_ids)]}) 
-            else:
-                for x in self.campos_adicionales_facturacion:
-                    if x.nombre=='CRÉDITO':
-                        x.valor=str(saldo_credito)+' a '+self.invoice_payment_term_id.name
-                    elif x.nombre=='Desde':
-                        x.valor=str(self.invoice_date)
-                    elif x.nombre=='F/pago':
-                        x.valor=self.method_payment.name
-                    elif x.nombre=='Nota':
-                        x.valor=self.partner_id.name+self.name+'Cancela Cuotas'+numero_cuotas
+        if self.partner_id:
+            lista_dic.append({'nombre':'Nota','valor':self.partner_id.name+self.name+'Cancela Cuotas'+numero_cuotas})
+            if self.partner_id.email:
+                lista_dic.append({'nombre':'Email','valor':self.partner_id.email})
+        #if not self.campos_adicionales_facturacion:
+        lista_ids=[]
+        for prueba in lista_dic:
+            id_registro=self.env['campos.adicionales.facturacion'].create(prueba) 
+            lista_ids.append(id_registro.id)
+            self.update({'campos_adicionales_facturacion':[(6,0,lista_ids)]}) 
+        
+        # else:
+        #     for x in self.campos_adicionales_facturacion:
+        #         if x.nombre=='CRÉDITO':
+        #             x.valor=str(saldo_credito)+' a '+self.invoice_payment_term_id.name
+        #         elif x.nombre=='Desde':
+        #             x.valor=str(self.invoice_date)
+        #         elif x.nombre=='F/pago':
+        #             x.valor=self.method_payment.name
+        #         elif x.nombre=='Nota':
+        #             x.valor=self.partner_id.name+self.name+'Cancela Cuotas'+numero_cuotas
 
     establecimiento = fields.Many2one('establecimiento')
     reversed_entry_nc_id = fields.Many2one(related='reversed_entry_id', store=True)
