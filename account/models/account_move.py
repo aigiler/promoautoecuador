@@ -3840,6 +3840,7 @@ class AccountMoveLine(models.Model):
         writeoff_to_reconcile = self.env['account.move.line']
         #if writeoff_acc_id specified, then create write-off move with value the remaining amount from move in self
         if writeoff_acc_id and writeoff_journal_id and remaining_moves:
+            raise ValidationError("dddddddddddddddddddddddddddddd0")
             all_aml_share_same_currency = all([x.currency_id == self[0].currency_id for x in self])
             writeoff_vals = {
                 'account_id': writeoff_acc_id.id,
@@ -3867,12 +3868,13 @@ class AccountMoveLine(models.Model):
             :param writeoff_vals: list of dicts containing values suitable for account_move_line.create(). The data in vals will
                 be processed to create bot writeoff account.move.line and their enclosing account.move.
         """
+        raise ValidationError("**********************************")
         def compute_writeoff_counterpart_vals(values):
             line_values = values.copy()
             line_values['debit'], line_values['credit'] = line_values['credit'], line_values['debit']
             if 'amount_currency' in values:
                 line_values['amount_currency'] = -line_values['amount_currency']
-            raise ValidationError("**********************************{0}".format(line_values))
+            
             return line_values
         # Group writeoff_vals by journals
         writeoff_dict = {}
