@@ -3823,18 +3823,18 @@ class AccountMoveLine(models.Model):
 
         
         # List unpaid invoices
-        not_paid_invoices = self.mapped('move_id').filtered(
-            lambda m: m.is_invoice(include_receipts=True) and m.invoice_payment_state not in ('paid', 'in_payment')
-        )
         #not_paid_invoices = self.mapped('move_id').filtered(
-        #    lambda m: m.invoice_payment_state not in ('paid', 'in_payment')
+        #    lambda m: m.is_invoice(include_receipts=True) and m.invoice_payment_state not in ('paid', 'in_payment')
         #)
+        not_paid_invoices = self.mapped('move_id').filtered(
+            lambda m: m.invoice_payment_state not in ('paid', 'in_payment')
+        )
         #raise ValidationError("**********************************{0}".format(not_paid_invoices))
 
         reconciled_lines = self.filtered(lambda aml: float_is_zero(aml.balance, precision_rounding=aml.move_id.company_id.currency_id.rounding) and aml.reconciled)
         (self - reconciled_lines)._check_reconcile_validity()
         #reconcile everything that can be
-        raise ValidationError("**********************************{0}".format(reconciled_lines))
+        
         remaining_moves = self.auto_reconcile_lines()
 
         writeoff_to_reconcile = self.env['account.move.line']
@@ -3857,6 +3857,7 @@ class AccountMoveLine(models.Model):
         not_paid_invoices.filtered(
             lambda m: m.invoice_payment_state in ('paid', 'in_payment')
         ).action_invoice_paid()
+        raise ValidationError("**********************************{0}".format(not_paid_invoices))
 
         return True
 
