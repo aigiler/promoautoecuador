@@ -11,33 +11,12 @@
                 <field name="contrato_id" groups="gzl_facturacion_electronica.grupo_cobranza" domain="[('cliente', '=', partner_id)]"/>
                 <button  name="crear_detalles" string="Obtener Cuotas" type="object" class='btn-primary' attrs="{'invisible': [('tipo_valor','!=','enviar_credito')]}"></button>
                 <field name="valor_deuda" />
-                <field name="valor_deuda_admin" />
                 <field name="saldo_pago" /> 
 
             </field>
-           <!-- <xpath expr="//group[@name='payment_difference']" position="after">
-                    
-                     <notebook>
-                        <page string="Pago de Cuotas" attrs="{'invisible': [('tipo_valor','!=','enviar_credito')]}">
-                            <field name="contrato_estado_cuenta_payment_ids" >
-                                <tree editable="bottom" create="0">
-                                    <field name="numero_cuota" force_save="1"/>
-                                    <field name="fecha" force_save="1"/>
-                                    <field name="cuota_capital" force_save="1"/>
-                                    <field name="seguro" force_save="1"/>
-                                    <field name="rastreo" force_save="1"/>
-                                    <field name="otro" force_save="1"/>
-                                    <field name="saldo" force_save="1"/>
-                                    <field name="cuota_capital_pagar" />
-                                    <field name="seguro_pagar" />
-                                    <field name="rastreo_pagar" />
-                                    <field name="otro_pagar" />
-                                    <field name="monto_pagar" />
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
-            </xpath> -->
+          <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="deuda_total" />
+            </xpath>
         </field>
     </record>
 

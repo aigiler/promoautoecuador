@@ -3821,14 +3821,20 @@ class AccountMoveLine(models.Model):
         if not self:
             return
 
+        
         # List unpaid invoices
+        #not_paid_invoices = self.mapped('move_id').filtered(
+        #    lambda m: m.is_invoice(include_receipts=True) and m.invoice_payment_state not in ('paid', 'in_payment')
+        #)
         not_paid_invoices = self.mapped('move_id').filtered(
-            lambda m: m.is_invoice(include_receipts=True) and m.invoice_payment_state not in ('paid', 'in_payment')
+            lambda m: m.invoice_payment_state not in ('paid', 'in_payment')
         )
+        #raise ValidationError("**********************************{0}".format(not_paid_invoices))
 
         reconciled_lines = self.filtered(lambda aml: float_is_zero(aml.balance, precision_rounding=aml.move_id.company_id.currency_id.rounding) and aml.reconciled)
         (self - reconciled_lines)._check_reconcile_validity()
         #reconcile everything that can be
+        
         remaining_moves = self.auto_reconcile_lines()
 
         writeoff_to_reconcile = self.env['account.move.line']
@@ -3852,6 +3858,7 @@ class AccountMoveLine(models.Model):
             lambda m: m.invoice_payment_state in ('paid', 'in_payment')
         ).action_invoice_paid()
 
+
         return True
 
     def _create_writeoff(self, writeoff_vals):
@@ -3865,6 +3872,7 @@ class AccountMoveLine(models.Model):
             line_values['debit'], line_values['credit'] = line_values['credit'], line_values['debit']
             if 'amount_currency' in values:
                 line_values['amount_currency'] = -line_values['amount_currency']
+            
             return line_values
         # Group writeoff_vals by journals
         writeoff_dict = {}

@@ -178,7 +178,9 @@ class AccountPayment(models.Model):
             ('state', '=', 'posted'), ('type', 'in', type),('invoice_payment_state','!=','paid')
         ], order="invoice_date asc")
         list_ids =[]
+        deuda_total=0
         for invoice in invoices:
+            deuda_total+=invoice.amount_residual
             payment_term_line = self.env['account.payment.term.line'].search([('payment_id','=',invoice.invoice_payment_term_id.id)])
             amount_balance = 0
             if len(payment_term_line) >0:
@@ -191,6 +193,8 @@ class AccountPayment(models.Model):
                             amount = invoice.amount_total
                         else:
                             amount = invoice.amount_total-amount_balance 
+                    for x in invoice.contrato_estado_cuenta_ids:
+                        deuda_total+=(x.cuota_capital+x.seguro+x.rastreo+x.otro)
                     line_id = PaymentLine.create([{
                         'invoice_id': invoice.id,
                         'amount_total': invoice.amount_total,
@@ -202,7 +206,8 @@ class AccountPayment(models.Model):
                     }])
                     list_ids.append(line_id.id)
             else:
-
+                for x in invoice.contrato_estado_cuenta_ids:
+                    deuda_total+=(x.cuota_capital+x.seguro+x.rastreo+x.otro)
                 line_id = PaymentLine.create([{
                     'invoice_id': invoice.id,
                     'amount_total': invoice.amount_total,
@@ -215,6 +220,7 @@ class AccountPayment(models.Model):
                 list_ids.append(line_id.id)
 
         self.payment_line_ids = [(6, 0, list_ids)]
+        self.deuda_total=deuda_total
         
 
 
@@ -223,7 +229,7 @@ class AccountPayment(models.Model):
 
         total=0
         for line in self.payment_line_ids:
-            total += line.amount
+            total += (line.amount+line.monto_pendiente_pago)
         
         if self.tipo_valor:
             self.amount=self.amount
@@ -471,33 +477,32 @@ class AccountPayment(models.Model):
 
     def post(self):
         for rec in self:
-
-            #for l in rec.payment_line_ids:
-                #if l.amount>l.actual_amount:
-                    #raise ValidationError("El monto a pagar no puede ser al monto adeudado en la factura {0}".format(l.invoice_id.l10n_latam_document_number))
+            if self.tipo_valor=='enviar_credito':
+                for y in self.contrato_estado_cuenta_payment_ids:
+                    cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',rec.contrato_id.id),
+                                                                ('numero_cuota','=',y.numero_cuota)])[0]     
+                    if cuota_id:
+                        cuota_id.saldo_cuota_capital=cuota_id.saldo_cuota_capital-y.cuota_capital_pagar
+                        cuota_id.saldo_seguro=cuota_id.saldo_seguro-y.seguro_pagar
+                        cuota_id.saldo_rastreo=cuota_id.saldo_rastreo-y.rastreo_pagar
+                        cuota_id.saldo_otros=cuota_id.saldo_otros-y.otro_pagar
+                        cuota_id.monto_pagado=cuota_id.monto_pagado+y.monto_pagar
+                        cuota_id.saldo=cuota_id.saldo-y.monto_pagar
             lista_invoice=[]
-            #lista_asientos=[]
-            if rec.tipo_valor:
-                if rec.tipo_valor=='enviar_credito':
-                    for y in self.contrato_estado_cuenta_payment_ids:
-                        cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',rec.contrato_id.id),
-                                                                  ('numero_cuota','=',y.numero_cuota)])[0]     
-                        if cuota_id:
-                            for act in cuota_id:
-                                cuota_id.monto_pagado=y.monto_pagar
-                                cuota_id.saldo=cuota_id.saldo-y.monto_pagar
             for pago in rec.payment_line_ids:
                 if pago.pagar:
                     lista_invoice.append(pago.invoice_id.id)
-                    #movimientos_occ=self.env['account.move'].search([('journal_id','=',21),('ref','=',pago.invoice_id.name)])
-                    #for mov in movimientos_occ:
-                    #    lista_invoice.append(mov.id)
-                    #    lista_asientos.append(mov.id)
-
-
-                for contrato in pago.invoice_id.contrato_estado_cuenta_ids:
-                    contrato.monto_pagado=pago.amount
-                    contrato.saldo=contrato.saldo-pago.amount  
+                    for cuota_id in pago.invoice_id.contrato_estado_cuenta_ids:
+                        cuota_id.monto_pagado=cuota_id.cuota_capital+cuota_id.seguro+cuota_id.otro+cuota_id.rastreo+cuota_id.cuota_adm+cuota_id.iva_adm
+                        cuota_id.saldo=0
+                        cuota_cap_ant=cuota_id.saldo_cuota_capital
+                        saldo_seg_ant=cuota_id.saldo_seguro
+                        rastreo_ant=cuota_id.saldo_rastreo
+                        otro_ant=cuota_id.saldo_otros
+                        cuota_id.saldo_cuota_capital=0
+                        cuota_id.saldo_seguro=0
+                        cuota_id.saldo_rastreo=0
+                        cuota_id.saldo_otros=0
                 rec.update({'invoice_ids': [(6, 0, lista_invoice)]})
             if rec.amount==0: 
                 raise ValidationError("Ingrese el valor del monto")
@@ -534,7 +539,8 @@ class AccountPayment(models.Model):
 
                 }])
             
-            
+
+
             invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]
          #   raise ValidationError(invoice_id)
 
@@ -632,25 +638,11 @@ class AccountPayment(models.Model):
                 self.estado_anticipo='posted'
                 self.aplicar_anticipo_pagos()
 
-    @api.onchange('state')
-    def obtener_estado(self):
-        for l in self:
-            if l.state=='posted':
-                full_reconcile_id=''
-                if l.tipo_valor=='crear_acticipo':
-                    for inv in rec.invoice_ids:
-                        for lin in inv.line_ids:
-                            if lin.account_id==rec.partner_id.property_account_receivable_id.id:
-                                full_reconcile_id=lin.full_reconcile_id.id
-                    for pagos in rec.payment_line_ids:
-                        if pagos.pagar:
-                            movimientos_occ=self.env['account.move'].search([('journal_id','=',21),('ref','=',pagos.invoice_id.name)])
-                            for mov in movimientos_occ:
-                                lista_invoice.append(mov.id)
-                                for line_ext in mov.line_ids:
-                                    if line_ext.account_id==rec.partner_id.property_account_receivable_id.id:
-                                        if full_reconcile_id:
-                                            line_ext.full_reconcile_id=full_reconcile_id
+
+    def prueba(self):
+        for x in self.move_line_ids:
+            if x.name!=self.name:
+                raise ValidationError("{0}".format(x.full_reconcile_id)) 
 
     @api.onchange('name')
     @api.constrains('name')
@@ -703,30 +695,8 @@ class AccountPayment(models.Model):
 
 
     def _prepare_payment_moves(self):
-        ''' Prepare the creation of journal entries (account.move) by creating a list of python dictionary to be passed
-        to the 'create' method.
 
-        Example 1: outbound with write-off:
-
-        Account             | Debit     | Credit
-        ---------------------------------------------------------
-        BANK                |   900.0   |
-        RECEIVABLE          |           |   1000.0
-        WRITE-OFF ACCOUNT   |   100.0   |
-
-        Example 2: internal transfer from BANK to CASH:
-
-        Account             | Debit     | Credit
-        ---------------------------------------------------------
-        BANK                |           |   1000.0
-        TRANSFER            |   1000.0  |
-        CASH                |   1000.0  |
-        TRANSFER            |           |   1000.0
-
-        :return: A list of Python dictionary to be passed to env['account.move'].create.
-        '''
         all_move_vals = []
-
         for payment in self:
             company_currency = payment.company_id.currency_id
             move_names = payment.move_name.split(payment._get_move_name_transfer_separator()) if payment.move_name else None
@@ -734,7 +704,6 @@ class AccountPayment(models.Model):
             # Compute amounts.
             
             write_off_amount = payment.payment_difference_handling == 'reconcile' and -payment.payment_difference or 0.0
-            print("este es essdfghgfds de write oggffzxcfvf dfgllf ")
             if payment.payment_type in ('outbound', 'transfer'):
                 counterpart_amount = payment.amount
                 if payment.parent_id.id:
@@ -754,10 +723,6 @@ class AccountPayment(models.Model):
                         liquidity_line_account = payment.partner_id.property_account_receivable_id
                 else:
                     liquidity_line_account = payment.journal_id.default_credit_account_id
-
-
-
-
 
 
             # Manage currency.
@@ -918,18 +883,14 @@ class AccountPayment(models.Model):
                         }),
                     ],
                 }
-
                 if move_names and len(move_names) == 2:
                     transfer_move_vals['name'] = move_names[1]
-
                 all_move_vals.append(transfer_move_vals)
-
             if payment.tipo_valor=='enviar_credito':
                 if payment.saldo_pago:
                     if not self.account_payment_account_ids:
                         raise ValidationError("El saldo Pendiente debe ser asignado a un apunte contable. Favor crear un registro en la sección Cuentas Contables.")
                     listaMovimientos=[
-
                             #  Este se envía al banco 
                             (0, 0, {
                                 'name': payment.name,
@@ -943,8 +904,6 @@ class AccountPayment(models.Model):
                                 'payment_id': payment.id,
                             })
                         ]
-
-
                     saldo_debito=0
                     saldo_credito=0
                     total_credito=0
@@ -954,7 +913,6 @@ class AccountPayment(models.Model):
                             else:
                                 saldo_credito=linea.credit
                                 total_credito+=saldo_credito
-
                                 # Receivable / Payable / Transfer line. Este se envia al proveedor
                             tupla=(0, 0, {
                                 'name': linea.name,
@@ -968,13 +926,10 @@ class AccountPayment(models.Model):
                                 'payment_id': payment.id,
                                 'account_id': linea.cuenta.id,
                                 'analytic_account_id':linea.cuenta_analitica.id or False,
-
-
-
                             })
                             listaMovimientos.append(tupla)
-                    if total_credito!=payment.saldo_pago:
-                        raise ValidationError("Las lineas ubicadas en la sección Cuentas Contables debe ser igual al saldo.")
+                    #if total_credito!=payment.saldo_pago:
+                    #    raise ValidationError("Las lineas ubicadas en la sección Cuentas Contables debe ser igual al saldo.")
                     credito_asignado=0
                     debito_asignado=0
                     if total_credito:
@@ -1004,23 +959,13 @@ class AccountPayment(models.Model):
                     }
                     all_move_vals=[]
                     all_move_vals.append(move_vals)
-                for y in self.contrato_estado_cuenta_payment_ids:
-                    cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',payment.contrato_id.id),
-                                                                ('numero_cuota','=',y.numero_cuota)])[0]     
-                    if cuota_id:
-                        for act in cuota_id:
-                            cuota_id.monto_pagado=y.monto_pagar
-                            cuota_id.saldo=cuota_id.saldo-y.monto_pagar
-
-
-
-
-
-
-
-
-
-
+                # for y in self.contrato_estado_cuenta_payment_ids:
+                #     cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',payment.contrato_id.id),
+                #                                                 ('numero_cuota','=',y.numero_cuota)])[0]     
+                #     if cuota_id:
+                #         for act in cuota_id:
+                #             cuota_id.monto_pagado=y.monto_pagar
+                #             cuota_id.saldo=cuota_id.saldo-y.monto_pagar
             if payment.tipo_valor=='crear_acticipo':
                 if not payment.payment_line_ids:
                     raise ValidationError("Debe seleccionar facturas Pagar")
@@ -1048,7 +993,7 @@ class AccountPayment(models.Model):
                                 'amount_currency': counterpart_amount + write_off_amount if currency_id else 0.0,
                                 'currency_id': liquidity_line_currency_id,
                                 'debit': 0,
-                                'credit': payment.valor_deuda+payment.valor_deuda_admin,
+                                'credit': payment.valor_deuda,
                                 'date_maturity': payment.payment_date,
                                 'partner_id': payment.partner_id.commercial_partner_id.id,
                                 'account_id': payment.partner_id.property_account_receivable_id.id,
@@ -1081,14 +1026,40 @@ class AccountPayment(models.Model):
                     all_move_vals=[]
                     all_move_vals.append(move_vals)
 
+            if payment.account_payment_account_ids and not self.is_third_name:
+                listaMovimientos=[]
+                for linea in self.account_payment_account_ids:
+                        # Receivable / Payable / Transfer line. Este se envia al proveedor
+                    nombre=rec_pay_line_name
+                    if linea.name=='-':
+                        nombre=payment.name
+                    tupla=(0, 0, {
+                        'name': nombre,
+                        'amount_currency':  0.0,
+                        'currency_id': currency_id,
+                        'debit': linea.debit ,
+                        'credit':  linea.credit,
+                        'date_maturity': payment.payment_date,
+                        'partner_id': False,
+                        'account_id': linea.cuenta.id,
+                        'payment_id': payment.id,
+                        'account_id': linea.cuenta.id,
+                        'analytic_account_id':linea.cuenta_analitica.id or False,})
 
-
+                    listaMovimientos.append(tupla)
+                move_vals = {
+                        'date': payment.payment_date,
+                        'ref': payment.communication,
+                        'journal_id': payment.journal_id.id,
+                        'currency_id': payment.journal_id.currency_id.id or payment.company_id.currency_id.id,
+                        'partner_id': payment.partner_id.id,
+                        'line_ids': listaMovimientos,
+                    }
+                all_move_vals=[]
+                all_move_vals.append(move_vals)
 
 
             if self.is_third_name:
-
-        # ==== 'inbound' / 'outbound' ==== para múltiples cuentas
-
                 listaMovimientos=[
 
                         #  Este se envía al banco 
@@ -1121,11 +1092,7 @@ class AccountPayment(models.Model):
                         'payment_id': payment.id,
                         'account_id': linea.cuenta.id,
                         'analytic_account_id':linea.cuenta_analitica.id or False,
-
-
-
                     })
-
                     listaMovimientos.append(tupla)
                 #raise ValidationError(str(listaMovimientos))
                 
@@ -1146,13 +1113,119 @@ class AccountPayment(models.Model):
 
 
 
+    @api.onchange('amount','partner_id','tipo_valor','saldo_pago','valor_deuda')
+    def crear_asientos(self):
+        self.account_payment_account_ids=[(6,0,[])]
+        for l in self:
+            if l.partner_id: 
+                credito=0
+                debito=0
+                cuenta_partner=''
+                if self.payment_type=='outbound':
+                    credito=l.amount
+                    name='Pago a Proveedor'
+                    cuenta_partner=l.partner_id.property_account_payable_id.id
+                elif self.payment_type=='inbound':
+                    debito=l.amount
+                    cuenta_partner=l.partner_id.property_account_receivable_id.id
+                    name='Pago a Cliente'
+                if l.amount and not l.tipo_valor:
+                    self.account_payment_account_ids= [
+                        (0, 0, {
+                            'cuenta':self.journal_id.default_debit_account_id.id,
+                            'name': '-',
+                            'cuenta_analitica':'',
+                            'analytic_tag_ids':[],
+                            'debit':debito,
+                            'credit':credito}),
+                        (0, 0, {
+                            'cuenta':cuenta_partner,
+                            'name': name,
+                            'cuenta_analitica':'',
+                            'analytic_tag_ids':[],
+                            'debit':credito,
+                            'credit':debito,})]
+                else:
+                    self.crear_asientos_tipo_valor()
 
-
-
-
-
-
-
+    def crear_asientos_tipo_valor(self):
+        self.account_payment_account_ids=[(6,0,[])]
+        self._saldo_pagar()
+        for l in self:
+            if l.partner_id: 
+                valor_asignado=0
+                credito=0
+                debito=0
+                pago_proveedor=0
+                pago_cliente=0
+                cuenta_partner=''
+                valor_debito=0
+                saldo_debito=0
+                valor_credito=0
+                sald_credito=0
+                if self.tipo_valor=='enviar_credito':
+                    for x in l.contrato_estado_cuenta_payment_ids:
+                        if x.monto_pagar:
+                            valor_asignado+=x.monto_pagar
+                elif self.tipo_valor=='crear_acticipo':
+                    for x in l.payment_line_ids:
+                        if x.amount:
+                            valor_asignado+=(x.amount+x.monto_pendiente_pago)
+                if self.payment_type=='outbound':
+                    credito=l.amount
+                    name='Pago a Proveedor'
+                    
+                    valor_debito=valor_asignado
+                    saldo_debito=l.amount-valor_asignado
+                    cuenta_partner=l.partner_id.property_account_payable_id.id
+                elif self.payment_type=='inbound':
+                    debito=l.amount
+                    cuenta_partner=l.partner_id.property_account_receivable_id.id
+                    name='Pago a Cliente'
+                    valor_credito=l.valor_deuda
+                    sald_credito=l.amount-valor_asignado
+                if l.amount and l.tipo_valor:
+                    if valor_asignado==l.amount:
+                        self.account_payment_account_ids= [
+                            (0, 0, {
+                                'cuenta':self.journal_id.default_debit_account_id.id,
+                                'name': '-',
+                                'cuenta_analitica':'',
+                                'analytic_tag_ids':[],
+                                'debit':debito,
+                                'credit':credito}),
+                            # Liquidity line.
+                            (0, 0, {
+                                'cuenta':cuenta_partner,
+                                'name': name,
+                                'cuenta_analitica':'',
+                                'analytic_tag_ids':[],
+                                'debit':valor_debito,
+                                'credit':valor_credito,}),
+                        ]
+                    else: 
+                        self.account_payment_account_ids= [(0, 0, {
+                                'cuenta':self.journal_id.default_debit_account_id.id,
+                                'name': '-',
+                                'cuenta_analitica':'',
+                                'analytic_tag_ids':[],
+                                'debit':debito,
+                                'credit':credito}),
+                            # Liquidity line.
+                            (0, 0, {
+                                'cuenta':cuenta_partner,
+                                'name': name,
+                                'cuenta_analitica':'',
+                                'analytic_tag_ids':[],
+                                'debit':valor_debito,
+                                'credit':valor_credito,}),
+                            (0, 0, {
+                                'cuenta':cuenta_partner,
+                                'name': "Saldo",
+                                'cuenta_analitica':'',
+                                'analytic_tag_ids':[],
+                                'debit':saldo_debito,
+                                'credit':sald_credito})]
 
 
 
@@ -1197,8 +1270,9 @@ class AccountPaymentLine(models.Model):
             if l.invoice_id:
                 monto_pendiente_pago=0
                 for x in l.invoice_id.contrato_estado_cuenta_ids:
-                    monto_pendiente_pago+=(x.cuota_capital+x.seguro+x.rastreo+x.otro)
+                    monto_pendiente_pago+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
                 l.monto_pendiente_pago=monto_pendiente_pago
+                #l.deuda_total=self.payment_id.obtener_deudas_facturas()
 
     @api.onchange('pagar')
     def actualizar_totales(self):
