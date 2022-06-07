@@ -703,7 +703,45 @@ class account_payment(models.Model):
                         .filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))\
                         .reconcile()
 
-
+                if rec.payment_type=='inbound':
+                    cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
+                    seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
+                    otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
+                    rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
+                    lista_diarios=[]
+                    lista=[]
+                    move_credito=''
+                    for x in rec.move_line_ids:
+                    if x.account.id==rec.partner_id.property_account_receivable_id.id:
+                        move_credito=x.id
+                    for l in rec.invoice_ids:
+                        if cuota_capital_obj:
+                            lista_diarios.append(cuota_capital_obj.journal_id.id)
+                        if seguro_obj:
+                            lista_diarios.append(seguro_obj.journal_id.id)
+                        if otros_obj:
+                            lista_diarios.append(otros_obj.journal_id.id)
+                        if rastreo_obj:
+                            lista_diarios.append(rastreo_obj.journal_id.id)
+                        movimientos_occ=self.env['account.move'].search([('journal_id','in',lista_diarios),('ref','=',l.name)])
+                        
+                        for x in movimientos_occ:
+                            if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
+                                movimiento_debito=x.id
+                                tupla=(0, 0, {
+                                'debit_move_id': x.id,
+                                'credit_move_id':  move_credito,
+                                'amount': x.credit,
+                                'amount_currency': '',
+                                'currency_id':  '',
+                                'company_currency_id': 2,
+                                'company_id': 1,
+                                })
+                                lista.append(tupla)
+                for x in rec.move_line_ids:
+                    if x.account.id==rec.partner_id.property_account_receivable_id.id:
+                        x.update({'matched_debit_ids':lista})
+                        
 
             elif rec.payment_type == 'transfer':
                 # ==== 'transfer' ====
