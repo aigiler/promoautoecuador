@@ -518,7 +518,7 @@ class AccountPayment(models.Model):
                         'amount':pago.amount  ,
                         'amount_total': pago.amount_total,
                         'residual': pago.residual,
-                        'amount': monto_total,
+                        'amount': pago.amount,
                         'date_due': pago.date_due,
                         'document_number':pago.document_number,
                         'payment_id':pago.payment_id.id
@@ -526,14 +526,16 @@ class AccountPayment(models.Model):
                     lista_respaldo.append(dct)
                 payment_lines.unlink()
                 PaymentLine = self.env['account.payment.line']
+                for x in factura.contrato_estado_cuenta_ids:
+                    monto_pendiente_pago+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
                 obj_factura=self.env['account.move'].browse(factura)
                 line_id = PaymentLine.create([{
                     'invoice_id': obj_factura.id,
                     'amount_total': obj_factura.amount_total,
                     'actual_amount':obj_factura.amount_residual,
                     'residual':obj_factura.amount_residual,
-                    'amount': pago.amount,
-                    'monto_pendiente_pago':pago.monto_pendiente_pago,
+                    'amount': monto_pendiente_pago+obj_factura.amount_residual,
+                    'monto_pendiente_pago':monto_pendiente_pago,
                     'date_due':obj_factura.invoice_date_due,
                     'document_number':obj_factura.l10n_latam_document_number,
                     'payment_id':rec.id
