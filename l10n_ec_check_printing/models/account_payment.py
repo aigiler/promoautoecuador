@@ -1270,9 +1270,11 @@ class AccountPaymentLine(models.Model):
         for l in self:
             monto_pendiente_pago=0
             if l.invoice_id:
-                for x in l.invoice_id.contrato_estado_cuenta_ids:
-                    raise ValidationError(l.invoice_id)
-                    monto_pendiente_pago+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
+                if l.invoice_id.contrato_estado_cuenta_ids:
+                    obj_contrato_estado_cuenta = self.env['contrato.estado.cuenta'].search([('id','in',l.invoice_id.contrato_estado_cuenta_ids.ids)])
+                    for x in obj_contrato_estado_cuenta:
+                        #raise ValidationError(l.invoice_id)
+                        monto_pendiente_pago+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
             l.monto_pendiente_pago=monto_pendiente_pago
             l.amount=l.actual_amount+monto_pendiente_pago
                 #l.deuda_total=self.payment_id.obtener_deudas_facturas()
