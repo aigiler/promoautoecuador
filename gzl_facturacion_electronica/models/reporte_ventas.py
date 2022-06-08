@@ -112,6 +112,8 @@ class ReportCrm(models.TransientModel):
         row=3
         crm = self.env['crm.lead'].search([('create_date','>=',self.date_start),('create_date','<=',self.date_end)])
         for l in crm:
+            semana=datetime.strptime(l.date_start, '%Y-%m-%d').date().isocalendar()
+
             sheet.write(row,0, semana, body_center)
             sheet.write(row, 1, l.create_date or '###', body_center)
             sheet.write(row, 2,l.partner_id.name or '###', body_center)
@@ -121,7 +123,7 @@ class ReportCrm(models.TransientModel):
             sheet.write(row, 6, round(l.valor_inscripcion-(l.valor_inscripcion*0.12),2) or '###', body_center)
             sheet.write(row, 7, round(l.valor_inscripcion*0.12,2) or '###', body_center)
             sheet.write(row, 8, round(l.valor_inscripcion,2) or '###', body_center)
-            sheet.write(row, 9, l.user_id.codigo_asesor or '###', body_center)
+            sheet.write(row, 9, "" or '###', body_center)
             sheet.write(row, 10, l.user_id.name or '###', body_center)
             sheet.write(row, 11, l.team_id.user_id.id or '###', body_center)
             sheet.write(row, 12, l.factura_inscripcion_id.name or '###', body_center)
