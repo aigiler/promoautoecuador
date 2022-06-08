@@ -1268,12 +1268,13 @@ class AccountPaymentLine(models.Model):
     @api.constrains('invoice_id')
     def obtener_monto(self):
         for l in self:
-            monto_pendiente_pago=l.actual_amount
+            monto_pendiente_pago=0
             if l.invoice_id:
                 for x in l.invoice_id.contrato_estado_cuenta_ids:
+                    raise ValidationError(x.saldo_cuota_capital)
                     monto_pendiente_pago+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
             l.monto_pendiente_pago=monto_pendiente_pago
-            l.amount=monto_pendiente_pago
+            l.amount=l.actual_amount+monto_pendiente_pago
                 #l.deuda_total=self.payment_id.obtener_deudas_facturas()
 
     @api.onchange('pagar')
