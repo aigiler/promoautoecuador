@@ -44,20 +44,20 @@ class ReportCrm(models.TransientModel):
         }
 
     def xslx_body(self,workbook,name):
-        format2 = workbook.add_format({'num_format': 'dd/mm/yy','align': 'center','border':0,'text_wrap':True})
-        format3 = workbook.add_format({'num_format': '#,##0.000000','align': 'center','border':0,'text_wrap':True})
-        bold = workbook.add_format({'bold':True,'border':0, 'bg_color':'#442484','color':'#FFFFFF'})
+        format2 = workbook.add_format({'num_format': 'dd/mm/yy','align': 'center','border':True,'text_wrap':True})
+        format3 = workbook.add_format({'num_format': '#,##0.000000','align': 'center','border':True,'text_wrap':True})
+        bold = workbook.add_format({'bold':True,'border':True, 'bg_color':'#442484','color':'#FFFFFF'})
         bold.set_center_across()
         bold.set_font_size(14)
-        bold2 = workbook.add_format({'bold':True,'border':0, 'bg_color':'#989899','color':'#FFFFFF'})
+        bold2 = workbook.add_format({'bold':True,'border':True, 'bg_color':'#989899','color':'#FFFFFF'})
         bold2.set_center_across()
         format_title = workbook.add_format({'bold':True,'border':0})
         format_title.set_center_across()
-        body_right = workbook.add_format({'align': 'right','border':1})
-        body_left = workbook.add_format({'align': 'left','border':0})
-        body_center = workbook.add_format({'align': 'center','border':0,'text_wrap':True})
+        body_right = workbook.add_format({'align': 'right','border':True})
+        body_left = workbook.add_format({'align': 'left','border':True})
+        body_center = workbook.add_format({'align': 'center','border':True,'text_wrap':True})
         body_center.set_center_across()
-        format_title2 = workbook.add_format({'align': 'center', 'bold':True,'border':0 })
+        format_title2 = workbook.add_format({'align': 'center', 'bold':True,'border':True })
         sheet = workbook.add_worksheet(name)
         mesesDic = {
                 "1":'ENERO',
