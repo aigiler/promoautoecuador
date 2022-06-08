@@ -44,6 +44,7 @@ class ReportCrm(models.TransientModel):
         }
 
     def xslx_body(self,workbook,name):
+        format2 = workbook.add_format({'num_format': 'dd/mm/yy'})
         bold = workbook.add_format({'bold':True,'border':0, 'bg_color':'#442484','color':'#FFFFFF'})
         bold.set_center_across()
         bold.set_font_size(14)
@@ -95,27 +96,27 @@ class ReportCrm(models.TransientModel):
         sheet.set_column('K:K', 17)
         
       
-        sheet.write(2, 0, 'SEMANA', bold2)
-        sheet.write(2, 1, 'FECHA DE INGRESO', bold2)
-        sheet.write(2, 2, 'CLIENTE', bold2)
-        sheet.write(2, 3, 'NUMERO', bold2)
-        sheet.write(2, 4, 'CONTRATO', bold2)
-        sheet.write(2, 5, 'MONTO', bold2)
-        sheet.write(2, 6, 'SUBTOTAL', bold2)
-        sheet.write(2, 7, 'IVA', bold2)
-        sheet.write(2, 8, 'TOTAL', bold2)
-        sheet.write(2, 9, 'CODIGO ASESOR', bold2)
+        sheet.write(4, 0, 'SEMANA', bold2)
+        sheet.write(4, 1, 'FECHA DE INGRESO', bold2)
+        sheet.write(4, 2, 'CLIENTE', bold2)
+        sheet.write(4, 3, 'NUMERO', bold2)
+        sheet.write(4, 4, 'CONTRATO', bold2)
+        sheet.write(4, 5, 'MONTO', bold2)
+        sheet.write(4, 6, 'SUBTOTAL', bold2)
+        sheet.write(4, 7, 'IVA', bold2)
+        sheet.write(4, 8, 'TOTAL', bold2)
+        sheet.write(4, 9, 'CODIGO ASESOR', bold2)
         
         sheet.write(2, 10, 'ASESOR', bold2)
         sheet.write(2, 11, 'SUPERVISOR', bold2)
         sheet.write(2, 12, 'FACTURA', bold2)
-        row=3
+        row=5
         crm = self.env['crm.lead'].search([('create_date','>=',self.date_start),('create_date','<=',self.date_end)])
         for l in crm:
             semana=l.create_date.date().isocalendar()[1]
 
             sheet.write(row,0, semana, body_center)
-            sheet.write(row, 1, l.create_date or '###', body_center)
+            sheet.write(row, 1, l.create_date, format2)
             sheet.write(row, 2,l.partner_id.name or '###', body_center)
             sheet.write(row, 3, l.partner_id.vat or '####', body_center)
             sheet.write(row, 4, l.contrato_id.secuencia or '###', body_center)
@@ -127,3 +128,4 @@ class ReportCrm(models.TransientModel):
             sheet.write(row, 10, l.user_id.name or '###', body_center)
             sheet.write(row, 11, l.team_id.user_id.id or '###', body_center)
             sheet.write(row, 12, l.factura_inscripcion_id.name or '###', body_center)
+            row+=1
