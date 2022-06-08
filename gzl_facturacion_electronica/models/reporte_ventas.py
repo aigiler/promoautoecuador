@@ -49,7 +49,9 @@ class ReportCrm(models.TransientModel):
         bold = workbook.add_format({'bold':True,'border':True, 'bg_color':'#442484','color':'#FFFFFF'})
         bold.set_center_across()
         bold.set_font_size(14)
-        bold2 = workbook.add_format({'bold':True,'border':True, 'bg_color':'#989899','color':'#FFFFFF'})
+        bold2 = wb.add_format({'align':'center','valign':'vcenter','bold':True,
+                                'font_size': 13, 'bg_color':'#989899','color':'#FFFFFF',
+                                'text_wrap':True,'border':True})
         bold2.set_center_across()
         format_title = workbook.add_format({'bold':True,'border':0})
         format_title.set_center_across()
