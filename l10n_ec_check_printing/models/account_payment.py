@@ -228,11 +228,13 @@ class AccountPayment(models.Model):
     def _onchange_residual(self):
 
         total=0
-        if self.tipo_valor:
-            total=self.amount
+        
         for line in self.payment_line_ids:
-            if line.pagar:
-                total += (line.amount)
+            if self.tipo_valor:
+                total=self.amount
+            else:
+                if line.pagar:
+                    total += (line.amount)
         self.amount=total
         
         elif self.tipo_transaccion=='Pago':
