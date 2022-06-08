@@ -507,7 +507,7 @@ class AccountPayment(models.Model):
                 rec.update({'invoice_ids': [(6, 0, lista_invoice)]})
             if rec.amount==0: 
                 raise ValidationError("Ingrese el valor del monto")
-            invoice_id=list(set([l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]))
+            invoice_id=list(set([l.invoice_id.id for l in rec.payment_line_ids if l.pagar]))
             lista_respaldo=[]
             for factura in invoice_id:
                 payment_lines= rec.payment_line_ids.filtered(lambda l: l.invoice_id.id==factura)
@@ -544,7 +544,7 @@ class AccountPayment(models.Model):
 
                 }])
             
-            invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.amount>0]
+            invoice_id=[l.invoice_id.id for l in rec.payment_line_ids if l.pagar]
          #   raise ValidationError(invoice_id)
 
             if invoice_id:

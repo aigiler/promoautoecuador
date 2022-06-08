@@ -33,12 +33,11 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
                     
                 return {'domain': {'payment_method_id': [('payment_type', '=', 'inbound'),('id', 'in', list_method)]}}
 
-    
-    def validar_pago(self,cuotaAdelantada=False):
 
-        if not (self.amount <= self.tabla_amortizacion_id.saldo):
-            raise ValidationError("Ingrese una Cantidad menor al saldo a pagar.")
-        
+
+    
+    def validar_pago_cobranzas(self,pago_obj):
+
 
         transacciones=self.env['transaccion.grupo.adjudicado']
 
@@ -54,52 +53,15 @@ class WizardPagoCuotaAmortizacion(models.TransientModel):
 
         transacciones.create(dct)
 
-        pago = self.env['account.payment'].create({
-                'payment_date': self.payment_date,
-                'communication':self.tabla_amortizacion_id.contrato_id.cliente.name+' - Cuota '+self.tabla_amortizacion_id.numero_cuota,
-               # 'invoice_ids': [(6, 0, [factura.id])],
-                'payment_type': 'inbound',
-                'amount': self.amount ,
-                'partner_id': self.tabla_amortizacion_id.contrato_id.cliente.id,
-                'partner_type': 'customer',
-                'payment_method_id': self.payment_method_id.id,
-                'journal_id': self.journal_id.id,
-           #     'invoice_id':factura,
-          #     'communication':factura.name,
-                'pago_id':self.tabla_amortizacion_id.id
-                })
+        pago = pago_obj
 
-
-        #factura.action_post()
-        pago.post()
         self.tabla_amortizacion_id.calcular_monto_pagado()
         self.tabla_amortizacion_id.estado_pago='pendiente'
 
 
         if self.tabla_amortizacion_id.saldo==0:
-            impuesto_iva12=self.env['account.tax'].search([('description','=','401')],limit=1)
-            journal_id = self.env['account.journal'].search([('type','=','sale')],limit=1)
-            product = self.env['product.product'].search([('default_code','=','CA1')])
             
-            
-            factura = self.env['account.move'].create({
-                        'type': 'out_invoice',
-                        'partner_id': self.tabla_amortizacion_id.contrato_id.cliente.id,
-                        'journal_id':journal_id.id,
-
-                
-                        'invoice_line_ids': [(0, 0, {
-                            'product_id':product.id,
-                            'tax_ids':  impuesto_iva12,
-                            'quantity': 1,
-                            'price_unit': self.tabla_amortizacion_id.cuota_adm ,
-                            'name': self.tabla_amortizacion_id.contrato_id.cliente.name+' - Cuota '+self.tabla_amortizacion_id.numero_cuota,
-                        })],
-                        'invoice_date':self.payment_date,
-                    })
-            self.tabla_amortizacion_id.factura_id=factura.id
             self.tabla_amortizacion_id.estado_pago='pagado'
-            self.tabla_amortizacion_id.cuotaAdelantada=cuotaAdelantada
 
 
 
