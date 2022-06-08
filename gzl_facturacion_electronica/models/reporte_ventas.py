@@ -9,8 +9,8 @@ import base64
 from odoo.exceptions import ValidationError
 
 
-class User(models.Model):
-    _inherit = ['res.users']
+class Usuarios(models.Model):
+    _inherit = 'res.users'
 
     codigo_asesor=fields.Char("Codigo de Asesor")
 
