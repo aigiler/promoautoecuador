@@ -51,6 +51,17 @@
             <xpath expr="//button[@name='action_draft']" position="after">
                 <button name="print_xlsx_payroll" string="Imprimir Nomina Excel" type="object" class="oe_highlight"/>
             </xpath>
+
+            <xpath expr="//button[@name='action_draft']" position="after">
+                <button name="print_xlsx_payroll_rubro" string="Imprimir Documento Banco" type="object" class="oe_highlight"/>
+            </xpath>
+
+
+
+
+
+
+
              <xpath expr="//sheet/group" position="inside">
                 <group>
                     <field name="type_payroll" required="1"/>

@@ -57,7 +57,8 @@ class WizardImportDocuments(models.TransientModel):
                     partner_id = self.env['res.partner'].search([('vat','=',fila[2])],limit=1)
                     if partner_id.id == False:
                         raise ValidationError("El proveedor {1} con el RUC {0} no esta ingresado en la aplicación, proceda a ingresarlo.".format(fila[2],fila[3]))
-                        
+                    if not partner_id.property_account_payable_id or not partner_id.property_account_receivable_id:
+                        raise ValidationError("Configure las Cuentas Contables del Proveedor {0}.".format(partner_id.name))
                     serie=fila[1].split('-')
                 
                     factura=self.env['mantenedor.importacion.masiva'].search([('code','=','FAC')])

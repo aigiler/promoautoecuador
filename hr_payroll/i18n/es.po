@@ -2050,7 +2050,7 @@ msgstr "Reglas salariales"
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Salary Slip"
-msgstr "Recibo de Salario"
+msgstr "Rol de Pago"
 
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_hr_payroll_structure

@@ -450,6 +450,7 @@ class AccountMove(models.Model):
             'tag_ids': [(6, 0, tax_line.tag_ids.ids)],
         }
 
+
     @api.model
     def _get_tax_grouping_key_from_base_line(self, base_line, tax_vals):
         ''' Create the dictionary based on a base line that will be used as key to group taxes together.
@@ -1266,6 +1267,7 @@ class AccountMove(models.Model):
             domain = [('account_id', 'in', pay_term_line_ids.mapped('account_id').ids),
                       '|', ('move_id.state', '=', 'posted'), '&', ('move_id.state', '=', 'draft'), ('journal_id.post_at', '=', 'bank_rec'),
                       ('partner_id', 'in', [move.commercial_partner_id.id,False]),
+
                       ('reconciled', '=', False), '|', ('amount_residual', '!=', 0.0),
                       ('amount_residual_currency', '!=', 0.0)]
 
@@ -1793,7 +1795,7 @@ class AccountMove(models.Model):
 
     @api.model
     def get_purchase_types(self, include_receipts=False):
-        return ['in_invoice', 'in_refund','in_debit'] + (include_receipts and ['in_receipt'] or [])
+        return ['in_invoice', 'in_refund','in_debit','liq_purchase'] + (include_receipts and ['in_receipt'] or [])
 
     def is_purchase_document(self, include_receipts=False):
         return self.type in self.get_purchase_types(include_receipts)
@@ -3587,6 +3589,7 @@ class AccountMoveLine(models.Model):
     # -------------------------------------------------------------------------
 
     def check_full_reconcile(self):
+
         """
         This method check if a move is totally reconciled and if we need to create exchange rate entries for the move.
         In case exchange rate entries needs to be created, one will be created per currency present.
@@ -3819,14 +3822,20 @@ class AccountMoveLine(models.Model):
         if not self:
             return
 
+        
         # List unpaid invoices
+        #not_paid_invoices = self.mapped('move_id').filtered(
+        #    lambda m: m.is_invoice(include_receipts=True) and m.invoice_payment_state not in ('paid', 'in_payment')
+        #)
         not_paid_invoices = self.mapped('move_id').filtered(
-            lambda m: m.is_invoice(include_receipts=True) and m.invoice_payment_state not in ('paid', 'in_payment')
+            lambda m: m.invoice_payment_state not in ('paid', 'in_payment')
         )
+        #raise ValidationError("**********************************{0}".format(not_paid_invoices))
 
         reconciled_lines = self.filtered(lambda aml: float_is_zero(aml.balance, precision_rounding=aml.move_id.company_id.currency_id.rounding) and aml.reconciled)
         (self - reconciled_lines)._check_reconcile_validity()
         #reconcile everything that can be
+        
         remaining_moves = self.auto_reconcile_lines()
 
         writeoff_to_reconcile = self.env['account.move.line']
@@ -3850,6 +3859,7 @@ class AccountMoveLine(models.Model):
             lambda m: m.invoice_payment_state in ('paid', 'in_payment')
         ).action_invoice_paid()
 
+
         return True
 
     def _create_writeoff(self, writeoff_vals):
@@ -3863,6 +3873,7 @@ class AccountMoveLine(models.Model):
             line_values['debit'], line_values['credit'] = line_values['credit'], line_values['debit']
             if 'amount_currency' in values:
                 line_values['amount_currency'] = -line_values['amount_currency']
+            
             return line_values
         # Group writeoff_vals by journals
         writeoff_dict = {}

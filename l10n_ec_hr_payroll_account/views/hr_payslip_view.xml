@@ -8,6 +8,12 @@
                 <xpath expr="//button[@name='print_xlsx_payroll']" position="before">
                     <button name="action_paid" string="Pagar Nomina" states="close" type="object" class="oe_highlight"/>
                 </xpath>
+
+                <xpath expr="//button[@name='action_validate']" position="attributes">
+                    <attribute name="string">Crear Registro de Nomina Borrador</attribute>
+                </xpath>
+
+
             </field>
         </record>
     </data>

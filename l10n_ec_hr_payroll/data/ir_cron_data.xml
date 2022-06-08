@@ -14,7 +14,17 @@
         </record>
 
 
-
+        <record forcecreate="True" id="ir_cron_envio_correo_finalizacion_periodo_prueba" model="ir.cron">
+            <field name="name">Envio de Correo para finalziar el periodo de prueba</field>
+            <field name="model_id" ref="model_hr_contract"/>
+            <field name="state">code</field>
+            <field name="code">model.job_enviar_correos_finalizacion_periodo_pruebas()</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+        </record>
 
 
     </data>

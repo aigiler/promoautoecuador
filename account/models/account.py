@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 import time
 import math
 import re
@@ -605,6 +604,7 @@ class AccountGroup(models.Model):
     parent_path = fields.Char(index=True)
     name = fields.Char(required=True)
     code_prefix = fields.Char()
+    company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
 
     def name_get(self):
         result = []

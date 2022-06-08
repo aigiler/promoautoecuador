@@ -381,6 +381,8 @@ class AccountRetention(models.Model):
             lines = []
             
             for line in ret.tax_ids:
+                if line.tax_repartition_line_id.account_id:
+                    raise ValidationError("Verifique que en la sección Repartición de Facturas del Menu Impestos se encuentre configurada la cuenta.")
 
                 lines.append((0, 0, {
                     'partner_id': ret.partner_id.id,

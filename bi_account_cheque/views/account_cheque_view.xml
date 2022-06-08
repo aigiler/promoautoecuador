@@ -40,6 +40,8 @@
                 <form string="Outgoing Account Cheque">
                 <header>
                     <button name="set_to_submit" string="Submit" type="object" class="btn-primary" attrs="{'invisible': [('status', 'in', ['registered','cashed','bounced','return','cancel','transfered','deposited'])]}"/>
+                    <button name="cheque_wizard_action" string="Contabilizar" type="object" class="btn-primary" attrs="{'invisible': [('status', 'in', ['draft','cashed','bounced','return','cancel','transfered','deposited'])]}"/>
+
                     <!-- <button name="%(cheque_wizard_action)d" string="Cashed" type="action" class="btn-primary" attrs="{'invisible': [('status', 'in', ['draft','cashed','bounced','return','cancel','transfered','deposited'])]}"/> -->
                     <!-- <button name="set_to_bounced" string="Bounced" type="object" class="btn-primary" attrs="{'invisible': [('status', 'in', ['draft','bounced','return','cancel','transfered','deposited'])]}"/> 
                     <button name="set_to_return" string="Returned" type="object" class="btn-primary" attrs="{'invisible': [('status', 'in', ['draft','return','cancel','transfered','deposited'])]}"/>

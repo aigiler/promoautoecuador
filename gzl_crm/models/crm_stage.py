@@ -50,3 +50,6 @@ class Stage(models.Model):
     notificar_facturacion = fields.Boolean( string='Notificar Facturacion' )
     crear_factura = fields.Boolean( string='Crear Factura' )
     notificar_nomina = fields.Boolean( string='Notificar Nómina' )
+    generar_cotizacion = fields.Boolean( string='Generar Cotización' )
+    etapa_inicial = fields.Boolean( string='Etapa Inicial' )
+    crear_contrato = fields.Boolean( string='Crear Contrato' )

@@ -55,6 +55,8 @@ class HrEmployee(models.Model):
     identification_id = fields.Char('Cédula')
     type_identifier = fields.Selection([('cedula', 'CEDULA'),('ruc', 'RUC'),
             ('pasaporte', 'PASAPORTE'),('nit', 'NIT')],'Tipo Identificación',required=True, default='cedula')
+    fecha_salida =  fields.Date('Fecha de Salida')
+    monto_liquidacion =  fields.Float('Monto de Liquidación')
 
     @api.model
     def create(self, vals):
@@ -101,3 +103,27 @@ class HrEmployee(models.Model):
             self.address_home_id = partner.id
         else:
             self.address_home_id = partner_id.id
+
+
+
+class HrEmployeePublic(models.Model):
+    _inherit = 'hr.employee.public'
+
+    @api.onchange('firstname', 'lastname')
+    def get_name(self):
+        if self.firstname and self.lastname:
+            self.name = self._get_name(self.lastname, self.firstname)
+
+    def _firstname_default(self):
+        return ' ' if self.env.context.get('module') else False
+
+
+    firstname = fields.Char(
+        "Firstname", default=_firstname_default)
+    lastname = fields.Char(
+        "Lastname", required=True, default=_firstname_default)
+    identification_id = fields.Char('Cédula')
+    type_identifier = fields.Selection([('cedula', 'CEDULA'),('ruc', 'RUC'),
+            ('pasaporte', 'PASAPORTE'),('nit', 'NIT')],'Tipo Identificación',required=True, default='cedula')
+    fecha_salida =  fields.Date('Fecha de Salida')
+    monto_liquidacion =  fields.Float('Monto de Liquidación')

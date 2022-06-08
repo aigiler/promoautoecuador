@@ -505,6 +505,7 @@ class account_payment(models.Model):
             else:
                 # Multi-currencies.
                 balance = payment.currency_id._convert(counterpart_amount, company_currency, payment.company_id, payment.payment_date)
+                
                 write_off_balance = payment.currency_id._convert(write_off_amount, company_currency, payment.company_id, payment.payment_date)
                 currency_id = payment.currency_id.id
 
@@ -548,7 +549,6 @@ class account_payment(models.Model):
                 liquidity_line_name = payment.name
 
             # ==== 'inbound' / 'outbound' ====
-
             move_vals = {
                 'date': payment.payment_date,
                 'ref': payment.communication,
@@ -692,7 +692,6 @@ class account_payment(models.Model):
 
             moves = AccountMove.create(rec._prepare_payment_moves())
             moves.filtered(lambda move: move.journal_id.post_at != 'bank_rec').post()
-
             # Update the state / move before performing any reconciliation.
             move_name = self._get_move_name_transfer_separator().join(moves.mapped('name'))
             rec.write({'state': 'posted', 'move_name': move_name})
@@ -703,6 +702,46 @@ class account_payment(models.Model):
                     (moves[0] + rec.invoice_ids).line_ids \
                         .filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))\
                         .reconcile()
+
+                if rec.payment_type=='inbound':
+                    cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
+                    seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
+                    otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
+                    rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
+                    lista_diarios=[]
+                    lista=[]
+                    move_credito=''
+                    for x in rec.move_line_ids:
+                        if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
+                            move_credito=x.id
+                    for l in rec.invoice_ids:
+                        if cuota_capital_obj:
+                            lista_diarios.append(cuota_capital_obj.journal_id.id)
+                        if seguro_obj:
+                            lista_diarios.append(seguro_obj.journal_id.id)
+                        if otros_obj:
+                            lista_diarios.append(otros_obj.journal_id.id)
+                        if rastreo_obj:
+                            lista_diarios.append(rastreo_obj.journal_id.id)
+                        movimientos_occ=self.env['account.move'].search([('journal_id','in',lista_diarios),('ref','=',l.name)])
+                        
+                        for x in movimientos_occ.invoice_line_ids:
+                            if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
+                                movimiento_debito=x.id
+                                tupla=(0, 0, {
+                                'debit_move_id': x.id,
+                                'credit_move_id':  move_credito,
+                                'amount': x.debit,
+                                'amount_currency': '',
+                                'currency_id':  '',
+                                'company_currency_id': 2,
+                                'company_id': 1,
+                                })
+                                lista.append(tupla)
+                    for x in rec.move_line_ids:
+                        if x.account_id.id==rec.partner_id.property_account_receivable_id.id and x.credit==rec.valor_deuda:
+                            x.update({'matched_debit_ids':lista})                        
+
             elif rec.payment_type == 'transfer':
                 # ==== 'transfer' ====
                 moves.mapped('line_ids')\

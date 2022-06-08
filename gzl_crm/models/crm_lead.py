@@ -18,6 +18,7 @@ class CrmLead(models.Model):
     contacto_domicilio = fields.Char(string='Domicilio',track_visibility='onchange')
     tasa_interes = fields.Integer(string='Tasa de Interés',track_visibility='onchange')
     numero_cuotas = fields.Many2one('numero.meses',default=lambda self: self.env.ref('gzl_adjudicacion.{0}'.format('numero_meses60')).id ,track_visibility='onchange' )
+    grupo_adjudicado_id = fields.Many2one('grupo.adjudicado', string='Grupo', track_visibility='onchange')
 
     supervisor = fields.Many2one('res.users',string="Supervisor",track_visibility='onchange' )
     surcursal_id = fields.Many2one('surcursal',string="Surcursal",track_visibility='onchange' )
@@ -417,77 +418,13 @@ class CrmLead(models.Model):
                     vls.append(valor_sobrante)
                     valor_sobrante = valor_sobrante -valor_a_restar
                     valor_sobrante = round(valor_sobrante,2)
-        #raise ValidationError(str(vls)+'--')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         self.cuota_capital = cuota_capital
         self.iva =  iva  
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     def write(self, vals):
-        
-
      #   if self.fecha_ganada and not(vals.get('date_action_last',False)):
-            
        #     raise ValidationError("No se puede editar en estado ganado")
-
-
         if vals.get('stage_id',False) and self.stage_id.restringir_movimiento:
             estados_habilitados=[]
             estados_habilitados.append(self.stage_id.stage_anterior_id.id)
@@ -499,27 +436,13 @@ class CrmLead(models.Model):
             if self.stage_id.modificacion_solo_equipo:
                 self.modificar_contrato()
 
-
         crm = super(CrmLead, self).write(vals)
 
         if  vals.get('stage_id',False):
             stage_id = self.env['crm.stage'].browse(vals['stage_id'])
-            if stage_id.is_won:
-                if not (self.factura_inscripcion_id ):
-                    raise ValidationError("Ingrese la factura de inscripción")
-                
-                if not (self.factura_inscripcion_id.amount_residual==0 ):
-                    raise ValidationError("Se debe ingresar la factura como Factura de inscripción y La factura debe registrarse como pagada.")
-
-
-
-                obj_partner=self.partner_id
-                obj_partner.tipo='preAdjudicado'
-
-
-
+            if stage_id.crear_contrato:
                 contrato = self.env['contrato'].create({
-                                            'cliente':obj_partner.id,
+                                            'cliente':self.partner_id.id,
                                             'dia_corte':self.dia_pago,
                                             'monto_financiamiento':self.planned_revenue,
                                             'tipo_de_contrato':self.tipo_contrato.id,
@@ -528,12 +451,33 @@ class CrmLead(models.Model):
                                             'cuota_capital':self.cuota_capital,
                                             'iva_administrativo':self.iva,
                                             'factura_inscripcion':self.factura_inscripcion_id.id,
+                                            'grupo':self.grupo_adjudicado_id.id,
                                         })
                 self.contrato_id=contrato.id
+
+            if stage_id.is_won:
+                if not (self.factura_inscripcion_id ):
+                    raise ValidationError("Ingrese la factura de inscripción")
+                
+                if not (self.factura_inscripcion_id.amount_residual==0 ):
+                    raise ValidationError("Se debe ingresar la factura como Factura de inscripción y La factura debe registrarse como pagada.")
+
+                obj_partner=self.partner_id
+                obj_partner.tipo='preAdjudicado'
+
 
             if stage_id.crear_reunion_en_calendar:
                 now=datetime.now()
                 calendar=self.crear_calendar_event('Reunión Socio {0}'.format(self.partner_id.name),now,1,'Reunión para evidenciar Calidad de la Venta')
+        
+            stage_cotizacion = self.env['crm.stage'].search([('generar_cotizacion','=',True)], limit=1).id
+            if self.stage_id != stage_cotizacion and self.quotation_count==0 and self.sale_order_count ==0:
+                raise ValidationError("Para pasar a la siguiente etapa, debe crear mínimo una cotización")
+        
+
+
+
+
         return crm
 
 

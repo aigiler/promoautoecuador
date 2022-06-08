@@ -54,6 +54,10 @@
             <xpath expr="//field[@name='name']" position="after">
                 <field name="pago_quincena" />
             </xpath>
+
+            <xpath expr="//field[@name='worked_days_line_ids']/tree/field[6]" position="replace">
+                <field name="amount" string="Sueldo Mensual" />
+            </xpath>
         </field>
     </record>
 

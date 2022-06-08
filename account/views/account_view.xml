@@ -1901,6 +1901,8 @@ action = model.setting_init_bank_account_action()
                         <field name="name"/>
                         <field name="code_prefix"/>
                         <field name="parent_id"/>
+
+                        
                     </group>
                 </sheet>
                 </form>

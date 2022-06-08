@@ -60,9 +60,11 @@
 
 
 
+                   <!--   <separator string="Cuentas Contables" attrs="{'invisible': [ ('is_third_name','!=',True)] }"/>
+                      <field name="account_payment_account_ids" nolabel="1" attrs="{'invisible': [('is_third_name','!=',True)]}"> -->
+                    <separator string="Cuentas Contables"/>
 
-                    <separator string="Cuentas Contables" attrs="{'invisible': [ ('is_third_name','!=',True)] }"/>
-                    <field name="account_payment_account_ids" nolabel="1" attrs="{'invisible': [('is_third_name','!=',True)]}">
+                    <field name="account_payment_account_ids" nolabel="1">
                         <tree string="Pagos" editable="bottom"  >
                             <field name="cuenta"  domain="[('deprecated', '=', False), ('user_type_id.type', 'not in', ('receivable', 'payable')), ('company_id', '=', parent.company_id)]"  required="1"/>
 
@@ -76,35 +78,15 @@
                             <field name="debit"   />
                             <field name="credit" />
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                         </tree>
 
 
                     </field>
 
-
-
-
-
-
-
                     <separator string="Pagos de Varias Facturas" attrs="{'invisible': ['|',('partner_id', '=', False),('payment_difference', '&lt;',0)],'readonly':[('state','in',['done','reconciled'])]}"/>
                     <field name="payment_line_ids" nolabel="1" attrs="{'invisible': ['|',('partner_id', '=', False),('payment_difference', '&lt;',0)],'readonly':[('state','in',['done','reconciled'])]}">
                         <tree string="Pagos" editable="bottom" create="0" delete="0" >
+                            <field name="pagar" />
                             <field name="document_number" readonly="1"/>
                             <field name="invoice_id" readonly="1" force_save="1"/>
                             <field name="date_due" readonly="0" force_save="1"/>
@@ -112,7 +94,9 @@
                             <field name="amount_total" readonly="1" widget="monetary" force_save="1"/>
                             <field name="actual_amount" readonly="1" widget="monetary" force_save="1"/>
                             <field name="residual" readonly="1" widget="monetary" force_save="1"/>
+                            <field name="monto_pendiente_pago" readonly="0" widget="monetary" force_save="1" />
                             <field name="amount" readonly="0" sum="amount" widget="monetary" force_save="1" />
+                            
                         </tree>
                     </field>
 

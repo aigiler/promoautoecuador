@@ -3,7 +3,7 @@
     'name': 'gzl_employee',
     'version': '1.0',
     'description': 'Modificaciones en Empleados',
-    'depends': ['hr','hr_payroll'],
+    'depends': ['hr','hr_payroll','l10n_ec_hr_payroll'],
     'data': [
             'security/ir.model.access.csv',
 

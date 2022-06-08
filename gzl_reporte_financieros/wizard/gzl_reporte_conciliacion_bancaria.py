@@ -122,12 +122,12 @@ class bankStatementReport(models.TransientModel):
                         ('2050','2050'),
 
 
-                        ],string="Año")
+                        ],string="Año",default="2022")
     def print_report(self):
         self.saldo_cuenta_calculo()
 
 
-        return self.env.ref('gzl_reporte.bank_statement_report').report_action(self)
+        return self.env.ref('gzl_reporte_financiero.bank_statement_report').report_action(self)
 
 
     @api.onchange("extracto_saldo")

@@ -263,6 +263,8 @@ class Contrato(models.Model):
                                                     'cuota_adm':cuota_adm,
                                                     'iva_adm':iva,
                                                     'saldo':saldo,
+                                                    'saldo_cuota_capital':cuota_capital,
+                                                    'saldo_cuota_administrativa':cuota_adm,
                                                     'contrato_id':self.id,                                                    
                                                         })
         vls=[]                                                
@@ -285,6 +287,7 @@ class Contrato(models.Model):
                     c.update({
                         'cuota_capital': c.cuota_capital - valor_a_restar,
                         'contrato_id':self.id,
+                        'saldo_cuota_capital': c.cuota_capital - valor_a_restar,
                     })
                     vls.append(valor_sobrante)
                     valor_sobrante = valor_sobrante -valor_a_restar
@@ -308,6 +311,7 @@ class Contrato(models.Model):
                     #raise ValidationError(str(valor_sobrante)+'--'+str(parte_decimal)+'----'+str(valor_a_restar))
                     c.update({
                         'cuota_capital': c.cuota_capital + valor_a_restar,
+                        'saldo_cuota_capital': c.cuota_capital + valor_a_restar,
                         'contrato_id':self.id,
                     })  
                     vls.append(valor_sobrante)
@@ -325,10 +329,8 @@ class Contrato(models.Model):
 
     @api.model
     def create(self, vals):
-        
-
-
-        obj_secuencia= self.grupo.secuencia_id
+        grupo=self.env['grupo.adjudicado'].browse(vals['grupo'])
+        obj_secuencia= grupo.secuencia_id
 
         vals['secuencia'] = obj_secuencia.next_by_code(obj_secuencia.code)
         dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
@@ -748,10 +750,7 @@ class Contrato(models.Model):
         crm = super(Contrato, self).write(vals)
         return crm
 
-
-
-
-
+    
 
 
 
@@ -784,7 +783,7 @@ class ContratoCongelamiento(models.Model):
 class ContratoEstadoCuenta(models.Model):
     _name = 'contrato.estado.cuenta'
     _description = 'Contrato - Tabla de estado de cuenta de Aporte'
-    _rec_name = 'fecha'
+    _rec_name = 'numero_cuota'
 
 
     idContrato = fields.Char("ID de Contrato en base")

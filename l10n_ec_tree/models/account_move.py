@@ -24,5 +24,19 @@ class AccountMove(models.Model):
                 domain.extend([('l10n_ec_type', '=', 'in_invoice')])
             if self.type in ['in_refund']:
                 domain.extend([('l10n_ec_type', '=', 'in_refund')])
+
+
+
+
+            if self.type in ['in_debit']:
+                domain.extend([('l10n_ec_type', '=', 'in_debit')])
+            if self.type in ['out_debit']:
+                domain.extend([('l10n_ec_type', '=', 'out_debit')])
+            if self.type in ['liq_purchase']:
+                domain.extend([('l10n_ec_type', '=', 'liq_purchase')])
+
+
+
+
         return domain
     

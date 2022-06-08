@@ -21,8 +21,9 @@ class WizardImportDocuments(models.TransientModel):
     file_xml = fields.Binary('Archivo')
 
     
-    def format_authorization_date(self, date):    
+    def format_authorization_date(self, date): 
         date_conv = dateutil.parser.parse(date)
+
         return date_conv.strftime('%Y-%m-%d %H:%M:%S')
     
     def format_date(self, date):    
@@ -97,7 +98,7 @@ class WizardImportDocuments(models.TransientModel):
             'partner_id':partner_id.id,
             'type_environment':infoTrib['ambiente'],
             'numero_autorizacion_sri':aut['numeroAutorizacion'],
-            'fecha_autorizacion_sri':self.format_authorization_date(aut['fechaAutorizacion']),
+            'fecha_autorizacion_sri':self.format_authorization_date(aut['fechaAutorizacion']['#text']),
             'estado_autorizacion_sri':'AUT' if aut['estado']=='AUTORIZADO' else 'NAT',
             'clave_acceso_sri':infoTrib['claveAcceso'],
             'manual_establishment':infoTrib['estab'],
@@ -180,7 +181,24 @@ class WizardImportDocuments(models.TransientModel):
     def import_xml_credit_note_and_invoice(self):
         
         decoded_data = base64.b64decode(self.file_xml)#tranformo el archivo a base 64
-       
+        #raise ValidationError("ESTO ES UNA PRUEBA{1}{0}".format(file_xml,decoded_data))       
+        
+        #import xml.etree.ElementTree as ET
+
+
+        #tree = ET.parse(decoded_data)
+        #decode_data = tree.getroot()
+        #here you can change the encoding type to be able to set it to the one you need
+        #xmlstr = ET.tostring(xml_data, encoding='utf-8', method='xml')
+
+#data_dict = dict(xmltodict.parse(xmlstr))
+
+
+
+
+
+        #raise ValidationError(decoded_data)
+
         autorizacion_xml = xmltodict.parse(decoded_data)
         autorizacion_str = json.dumps(autorizacion_xml, indent=4)
         autorizacion = json.loads(autorizacion_str)
@@ -262,7 +280,7 @@ class WizardImportDocuments(models.TransientModel):
             'partner_id':partner_id.id,
             'type_environment':infoTrib['ambiente'],
             'numero_autorizacion_sri':aut['numeroAutorizacion'],
-            'fecha_autorizacion_sri':self.format_authorization_date(aut['fechaAutorizacion']),
+            'fecha_autorizacion_sri':self.format_authorization_date(aut['fechaAutorizacion']['#text']),
             'estado_autorizacion_sri':'AUT' if aut['estado']=='AUTORIZADO' else 'NAT',
             'clave_acceso_sri':infoTrib['claveAcceso'],
             'manual_establishment':infoTrib['estab'],
