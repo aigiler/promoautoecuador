@@ -15,7 +15,7 @@ from odoo.exceptions import ValidationError
 #     codigo_asesor=fields.Char("Codigo de Asesor")
 
 class ReportCrm(models.TransientModel):
-    _name = "report.crm.ventas"
+    _name = "report.crm.prospecto"
 
     date_start = fields.Date('Fecha Inicio', required=True)
     date_end = fields.Date('Fecha Corte', required=True, default = date.today())
@@ -96,38 +96,75 @@ class ReportCrm(models.TransientModel):
         sheet.set_column('K:K', 45)
         sheet.set_column('L:L', 45)
         sheet.set_column('M:M', 45)
+
         
       
-        sheet.write(4, 0, 'SEMANA', bold2)
-        sheet.write(4, 1, 'FECHA DE INGRESO', bold2)
-        sheet.write(4, 2, 'CLIENTE', bold2)
-        sheet.write(4, 3, 'NUMERO', bold2)
-        sheet.write(4, 4, 'CONTRATO', bold2)
-        sheet.write(4, 5, 'MONTO', bold2)
-        sheet.write(4, 6, 'SUBTOTAL', bold2)
-        sheet.write(4, 7, 'IVA', bold2)
-        sheet.write(4, 8, 'TOTAL', bold2)
-        sheet.write(4, 9, 'CODIGO ASESOR', bold2)
-        
-        sheet.write(4, 10, 'ASESOR', bold2)
-        sheet.write(4, 11, 'SUPERVISOR', bold2)
-        sheet.write(4, 12, 'FACTURA', bold2)
+        sheet.write(4, 0, 'FECHA DE GESTION', bold2)
+        sheet.write(4, 1, 'SEMANA', bold2)
+        sheet.write(4, 2, 'ASESOR', bold2)
+        sheet.write(4, 3, 'CLIENTE', bold2)
+        sheet.write(4, 4, 'PRESUPUESTO', bold2)
+        sheet.write(4, 5, 'PROSPECTOS', bold2)
+        sheet.write(4, 6, 'LLAMADAS', bold2)
+        sheet.write(4, 7, 'CITAS', bold2)
+        sheet.write(4, 8, 'VENTAS', bold2)
+        sheet.write(4, 9, '% CUMPLIMIENTO', bold2)
+
         row=5
         crm = self.env['crm.lead'].search([('create_date','>=',self.date_start),('create_date','<=',self.date_end)])
+        lista_asesores=[]
+        lista_final=[]
         for l in crm:
             semana=l.create_date.date().isocalendar()[1]
+            if l.user_id:
+                if l.user_id.id not in lista_asesores:
+                    lista_asesores.append(l.user_id.id)
+                    dct={'fecha_gestion':l.create_date,
+                        'semana':semana,
+                        'id_asesor':l.user_id.id,
+                        'asesor':l.user_id.name,
+                        'cliente':l.partner_id.name,
+                        'presupuesto':100,
+                        'prospectos':1,
+                        'llamadas':1,
+                        'citas':1,
+                        'ventas':1}
+                    lista_final.append(dct)
+                else:
+                    for x in lista_final:
+                        if x['id_asesor']==l.user_id.id:
+                            x['prospectos']+=1
+                            x['llamadas']+=1
+                            x['citas']+=1
+                            x['ventas']+=1
+            else:
+                dct={'fecha_gestion':l.create_date,
+                        'semana':semana,
+                        'id_asesor':l.user_id.id,
+                        'asesor':l.user_id.name,
+                        'cliente':l.partner_id.name,
+                        'presupuesto':100,
+                        'prospectos':1,
+                        'llamadas':1,
+                        'citas':1,
+                        'ventas':1}
+                lista_final.append(dct)
 
-            sheet.write(row,0, semana, registros_tabla)
-            sheet.write(row, 1, l.create_date, formato_fecha)
-            sheet.write(row, 2,l.partner_id.name or '', registros_tabla)
-            sheet.write(row, 3, l.partner_id.vat or '', registros_tabla)
-            sheet.write(row, 4, l.contrato_id.secuencia or '', registros_tabla)
-            sheet.write(row, 5, l.planned_revenue or '', registros_tabla)
-            sheet.write(row, 6, round(l.valor_inscripcion-(l.valor_inscripcion*0.12),2) or 0, formato_numero)
-            sheet.write(row, 7, round(l.valor_inscripcion*0.12,2) or 0, formato_numero)
-            sheet.write(row, 8, round(l.valor_inscripcion,2) or 0, formato_numero)
-            sheet.write(row, 9, "", registros_tabla)
-            sheet.write(row, 10, l.user_id.name or '', registros_tabla)
-            sheet.write(row, 11, l.team_id.user_id.name or '', registros_tabla)
-            sheet.write(row, 12, l.factura_inscripcion_id.name or '', registros_tabla)
+        for line in lista_final:
+            if line.presupuesto:
+                cumplimiento=line.ventas/line.presupuesto
+            else:
+                cumplimiento=0
+
+            sheet.write(row,0, line.fecha_gestion, formato_fecha)
+            sheet.write(row, 1, line.semana, registros_tabla)
+            sheet.write(row, 2,line.asesor or '', registros_tabla)
+            sheet.write(row, 3, line.cliente or '', registros_tabla)
+            sheet.write(row, 4, line.presupuesto or 0, registros_tabla)
+            sheet.write(row, 5, line.prospectos or 0, registros_tabla)
+            sheet.write(row, 6, line.llamadas or 0, registros_tabla)
+            sheet.write(row, 7,line.citas  or 0, registros_tabla)
+            sheet.write(row, 8, line.ventas or 0, registros_tabla)
+            sheet.write(row, 9,cumplimiento, registros_tabla)
+
             row+=1

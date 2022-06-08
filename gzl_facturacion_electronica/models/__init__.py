@@ -24,3 +24,4 @@ from . import tipo_proveedor_reembolso
 from . import account_payment
 from . import contrato_estado_cuenta_pagos
 from . import reporte_ventas
+from . import reporte_prospecto
