@@ -25,7 +25,7 @@ class ReportCrm(models.TransientModel):
         today = date.today()
         file_data = BytesIO()
         workbook = xlsxwriter.Workbook(file_data)
-        name = 'REPORTE DE VENTAS '+ str(today.year)
+        name = 'REPORTE DE PROSPECTOS '+ str(today.year)
         self.xslx_body(workbook,name)
         workbook.close()
         file_data.seek(0)
@@ -81,8 +81,8 @@ class ReportCrm(models.TransientModel):
                            {'image_data':  BytesIO(base64.b64decode( self.env.company.imagen_excel_company)), 'x_scale': 0.9, 'y_scale': 0.8,'x_scale': 0.8,
                             'y_scale':     0.8, 'align': 'left','bg_color':'#442484'})
         
-        sheet.merge_range('B1:Q1', ' ', bold)
-        sheet.merge_range('A2:Q2', 'REPORTE DE VENTAS DEL '+str(dia_start)+' DE '+str(mesesDic[str(mes_start)])+' DEL '+str(year)+' AL '+str(dia_end)+' DE '+str(mesesDic[str(mes_end)])+' DEL '+str(year), bold)
+        sheet.merge_range('B1:J1', ' ', bold)
+        sheet.merge_range('A2:J2', 'REPORTE DE PROSPECTOS DEL '+str(dia_start)+' DE '+str(mesesDic[str(mes_start)])+' DEL '+str(year)+' AL '+str(dia_end)+' DE '+str(mesesDic[str(mes_end)])+' DEL '+str(year), bold)
         sheet.set_column('A:A', 15)
         sheet.set_column('B:B', 15)
         sheet.set_column('C:C', 45)
@@ -165,6 +165,6 @@ class ReportCrm(models.TransientModel):
             sheet.write(row, 6, line['llamadas'] or 0, registros_tabla)
             sheet.write(row, 7,line['citas']  or 0, registros_tabla)
             sheet.write(row, 8, line['ventas'] or 0, registros_tabla)
-            sheet.write(row, 9, cumplimiento, registros_tabla)
+            sheet.write(row, 9, cumplimiento*100, registros_tabla)
 
             row+=1

@@ -81,8 +81,8 @@ class ReportCrm(models.TransientModel):
                            {'image_data':  BytesIO(base64.b64decode( self.env.company.imagen_excel_company)), 'x_scale': 0.9, 'y_scale': 0.8,'x_scale': 0.8,
                             'y_scale':     0.8, 'align': 'left','bg_color':'#442484'})
         
-        sheet.merge_range('B1:Q1', ' ', bold)
-        sheet.merge_range('A2:Q2', 'REPORTE DE VENTAS DEL '+str(dia_start)+' DE '+str(mesesDic[str(mes_start)])+' DEL '+str(year)+' AL '+str(dia_end)+' DE '+str(mesesDic[str(mes_end)])+' DEL '+str(year), bold)
+        sheet.merge_range('B1:M1', ' ', bold)
+        sheet.merge_range('A2:M2', 'REPORTE DE VENTAS DEL '+str(dia_start)+' DE '+str(mesesDic[str(mes_start)])+' DEL '+str(year)+' AL '+str(dia_end)+' DE '+str(mesesDic[str(mes_end)])+' DEL '+str(year), bold)
         sheet.set_column('A:A', 15)
         sheet.set_column('B:B', 15)
         sheet.set_column('C:C', 45)
