@@ -1271,7 +1271,7 @@ class AccountPaymentLine(models.Model):
             monto_pendiente_pago=0
             if l.invoice_id:
                 for x in l.invoice_id.contrato_estado_cuenta_ids:
-                    raise ValidationError(x.saldo_cuota_capital)
+                    raise ValidationError(x)
                     monto_pendiente_pago+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
             l.monto_pendiente_pago=monto_pendiente_pago
             l.amount=l.actual_amount+monto_pendiente_pago
