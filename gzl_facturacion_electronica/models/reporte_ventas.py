@@ -9,10 +9,10 @@ import base64
 from odoo.exceptions import ValidationError
 
 
-class Usuarios(models.Model):
-    _inherit = 'res.users'
+# class Users(models.Model):
+#     _inherit = 'res.users'
 
-    codigo_asesor=fields.Char("Codigo de Asesor")
+#     codigo_asesor=fields.Char("Codigo de Asesor")
 
 class ReportCrm(models.TransientModel):
     _name = "report.crm.ventas"
