@@ -71,7 +71,7 @@ class ReportCrm(models.TransientModel):
                 "11":'NOVIEMBRE',
                 "12":'DICIEMBRE'
             }
-                year = self.date_start.year
+        year = self.date_start.year
         mes_start = self.date_start.month
         mes_end = self.date_end.month
         dia_start = self.date_start.day
