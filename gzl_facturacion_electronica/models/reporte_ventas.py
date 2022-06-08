@@ -45,7 +45,7 @@ class ReportCrm(models.TransientModel):
 
     def xslx_body(self,workbook,name):
         format2 = workbook.add_format({'num_format': 'dd/mm/yy','align': 'center','border':True,'text_wrap':True})
-        format3 = workbook.add_format({'num_format': '#,##0.000000','align': 'center','border':True,'text_wrap':True})
+        format3 = workbook.add_format({'num_format': '#,##0.00','align': 'center','border':True,'text_wrap':True})
         bold = workbook.add_format({'bold':True,'border':True, 'bg_color':'#442484','color':'#FFFFFF'})
         bold.set_center_across()
         bold.set_font_size(14)
@@ -55,9 +55,12 @@ class ReportCrm(models.TransientModel):
         format_title.set_center_across()
         body_right = workbook.add_format({'align': 'right','border':True})
         body_left = workbook.add_format({'align': 'left','border':True})
-        body_center = workbook.add_format({'align': 'center','border':True,'text_wrap':True})
+        #body_center = workbook.add_format({'align': 'center','border':True,'text_wrap':True})
         body_center.set_center_across()
         format_title2 = workbook.add_format({'align': 'center', 'bold':True,'border':True })
+        registros_tabla= wb.add_format({'align':'center','valign':'vcenter',
+                                'font_size': 13,
+                                'text_wrap':True,'border':True})
         sheet = workbook.add_worksheet(name)
         mesesDic = {
                 "1":'ENERO',
@@ -118,17 +121,17 @@ class ReportCrm(models.TransientModel):
         for l in crm:
             semana=l.create_date.date().isocalendar()[1]
 
-            sheet.write(row,0, semana, body_center)
+            sheet.write(row,0, semana, registros_tabla)
             sheet.write(row, 1, l.create_date, format2)
-            sheet.write(row, 2,l.partner_id.name or '', body_center)
-            sheet.write(row, 3, l.partner_id.vat or '', body_center)
-            sheet.write(row, 4, l.contrato_id.secuencia or '', body_center)
-            sheet.write(row, 5, l.planned_revenue or '', body_center)
+            sheet.write(row, 2,l.partner_id.name or '', registros_tabla)
+            sheet.write(row, 3, l.partner_id.vat or '', registros_tabla)
+            sheet.write(row, 4, l.contrato_id.secuencia or '', registros_tabla)
+            sheet.write(row, 5, l.planned_revenue or '', registros_tabla)
             sheet.write(row, 6, round(l.valor_inscripcion-(l.valor_inscripcion*0.12),2) or 0, format3)
             sheet.write(row, 7, round(l.valor_inscripcion*0.12,2) or 0, format3)
             sheet.write(row, 8, round(l.valor_inscripcion,2) or 0, format3)
-            sheet.write(row, 9, "", body_center)
-            sheet.write(row, 10, l.user_id.name or '', body_center)
-            sheet.write(row, 11, l.team_id.user_id.id or '', body_center)
-            sheet.write(row, 12, l.factura_inscripcion_id.name or '', body_center)
+            sheet.write(row, 9, "", registros_tabla)
+            sheet.write(row, 10, l.user_id.name or '', registros_tabla)
+            sheet.write(row, 11, l.team_id.user_id.name or '', registros_tabla)
+            sheet.write(row, 12, l.factura_inscripcion_id.name or '', registros_tabla)
             row+=1
