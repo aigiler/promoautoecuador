@@ -23,3 +23,4 @@ from . import account_liquidacion_compra
 from . import tipo_proveedor_reembolso
 from . import account_payment
 from . import contrato_estado_cuenta_pagos
+from . import reporte_ventas

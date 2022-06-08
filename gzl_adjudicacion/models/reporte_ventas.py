@@ -7,19 +7,25 @@ import xlsxwriter
 from io import BytesIO
 import base64
 from odoo.exceptions import ValidationError
+
+
+class User(models.Model):
+    _inherit = 'res.users'
+
+    codigo_asesor=fields.Char("Codigo de Asesor")
+
 class ReportCrm(models.TransientModel):
-    _name = "report.crm"
+    _name = "report.crm.ventas"
 
     date_start = fields.Date('Fecha Inicio', required=True)
     date_end = fields.Date('Fecha Corte', required=True, default = date.today())
 
-  
 
     def print_report_xls(self):
         today = date.today()
         file_data = BytesIO()
         workbook = xlsxwriter.Workbook(file_data)
-        name = 'REPORTE CRM '+ str(today.year)
+        name = 'REPORTE DE VENTAS '+ str(today.year)
         self.xslx_body(workbook,name)
         workbook.close()
         file_data.seek(0)
@@ -65,7 +71,7 @@ class ReportCrm(models.TransientModel):
                 "11":'NOVIEMBRE',
                 "12":'DICIEMBRE'
             }
-        year = self.date_start.year
+                year = self.date_start.year
         mes_start = self.date_start.month
         mes_end = self.date_end.month
         dia_start = self.date_start.day
@@ -75,7 +81,7 @@ class ReportCrm(models.TransientModel):
                             'y_scale':     0.8, 'align': 'left','bg_color':'#442484'})
         
         sheet.merge_range('B1:Q1', ' ', bold)
-        sheet.merge_range('A2:Q2', 'COMISIONES DEL PERIODO'+str(dia_start)+' DE '+str(mesesDic[str(mes_start)])+' DEL '+str(year)+' AL '+str(dia_end)+' DE '+str(mesesDic[str(mes_end)])+' DEL '+str(year), bold)
+        sheet.merge_range('A2:Q2', 'REPORTE DE VENTAS DEL '+str(dia_start)+' DE '+str(mesesDic[str(mes_start)])+' DEL '+str(year)+' AL '+str(dia_end)+' DE '+str(mesesDic[str(mes_end)])+' DEL '+str(year), bold)
         sheet.set_column('A:A', 20)
         sheet.set_column('B:B', 45)
         sheet.set_column('C:C', 16)
@@ -89,48 +95,33 @@ class ReportCrm(models.TransientModel):
         sheet.set_column('K:K', 17)
         
       
-        sheet.write(2, 0, 'OPORTUNIDAD', bold2)
-        sheet.write(2, 1, 'CLIENTE', bold2)
-        sheet.write(2, 2, 'MONTO DE PLAN', bold2)
-        sheet.write(2, 3, 'PROBABILIDAD', bold2)
-        sheet.write(2, 4, 'COMERCIAL', bold2)
-        sheet.write(2, 5, 'EQUIPO DE VENTAS', bold2)
-        sheet.write(2, 6, 'VENTA GANADA', bold2)
-        sheet.write(2, 7, 'CIERRE PREVISTO', bold2)
-        sheet.write(2, 8, 'SUCURSAL', bold2)
-        sheet.write(2, 9, 'PROVINCIA', bold2)
+        sheet.write(2, 0, 'SEMANA', bold2)
+        sheet.write(2, 1, 'FECHA DE INGRESO', bold2)
+        sheet.write(2, 2, 'CLIENTE', bold2)
+        sheet.write(2, 3, 'NUMERO', bold2)
+        sheet.write(2, 4, 'CONTRATO', bold2)
+        sheet.write(2, 5, 'MONTO', bold2)
+        sheet.write(2, 6, 'SUBTOTAL', bold2)
+        sheet.write(2, 7, 'IVA', bold2)
+        sheet.write(2, 8, 'TOTAL', bold2)
+        sheet.write(2, 9, 'CODIGO ASESOR', bold2)
         
-        sheet.write(2, 10, 'CIUDAD', bold2)
-        sheet.write(2, 11, 'VALOR DE INSCRIPCION', bold2)
-        sheet.write(2, 12, 'FECHA GANADA', bold2)
-        sheet.write(2, 13, 'CONTRATO ASOCIADO', bold2)
-        sheet.write(2, 14, 'TIPO CONTRATO ASOCIADO', bold2)
-        sheet.write(2, 15, 'PRIORIDAD', bold2)
-        sheet.write(2, 16, 'FACTURA', bold2)
-        
+        sheet.write(2, 10, 'ASESOR', bold2)
+        sheet.write(2, 11, 'SUPERVISOR', bold2)
+        sheet.write(2, 12, 'FACTURA', bold2)
         row=3
         crm = self.env['crm.lead'].search([('create_date','>=',self.date_start),('create_date','<=',self.date_end)])
         for l in crm:
-            venta_ganada=''
-            if l.colocar_venta_como_ganada:
-                venta_ganada='SI'
-            else:
-                venta_ganada='NO'
-            sheet.write(row,0, l.name or '###', body_center)
-            sheet.write(row, 1, l.partner_id.name or '###', body_center)
-            sheet.write(row, 2,l.planned_revenue or '###', body_center)
-            sheet.write(row, 3, l.probability or '####', body_center)
-            sheet.write(row, 4, l.user_id.name or '###', body_center)
-            sheet.write(row, 5, l.team_id.name or '####', body_center)
-            sheet.write(row, 6, venta_ganada or '###', body_center)
-            sheet.write(row, 7, l.date_deadline or '###', body_center)
-            sheet.write(row, 8, l.surcursal_id.name or '###', body_center)
-            sheet.write(row, 9, l.provincia_id.name or '###', body_center)
-            sheet.write(row, 10, l.ciudad_id.nombre_ciudad or '###', body_center)
-            sheet.write(row, 11, l.valor_inscripcion or '###', body_center)
-            sheet.write(row, 12, l.fecha_ganada or '###', body_center)
-            sheet.write(row, 13, l.contrato_id.secuencia or '###', body_center)
-            sheet.write(row, 14, l.tipo_contrato.name or '###', body_center)
-            sheet.write(row, 15, l.priority or '###', body_center)
-            sheet.write(row, 16, l.factura_inscripcion_id.name or '###', body_center)
-            row+=1
+            sheet.write(row,0, semana, body_center)
+            sheet.write(row, 1, l.create_date or '###', body_center)
+            sheet.write(row, 2,l.partner_id.name or '###', body_center)
+            sheet.write(row, 3, l.partner_id.vat or '####', body_center)
+            sheet.write(row, 4, l.contrato_id.secuencia or '###', body_center)
+            sheet.write(row, 5, l.planned_revenue or '####', body_center)
+            sheet.write(row, 6, round(l.valor_inscripcion-(l.valor_inscripcion*0.12),2) or '###', body_center)
+            sheet.write(row, 7, round(l.valor_inscripcion*0.12,2) or '###', body_center)
+            sheet.write(row, 8, round(l.valor_inscripcion,2) or '###', body_center)
+            sheet.write(row, 9, l.user_id.codigo_asesor or '###', body_center)
+            sheet.write(row, 10, l.user_id.name or '###', body_center)
+            sheet.write(row, 11, l.team_id.user_id.id or '###', body_center)
+            sheet.write(row, 12, l.factura_inscripcion_id.name or '###', body_center)

@@ -711,18 +711,61 @@ class account_payment(models.Model):
                     lista_diarios=[]
                     lista=[]
                     move_credito=''
+                    if cuota_capital_obj:
+                        lista_diarios.append(cuota_capital_obj.journal_id.id)
+                    if seguro_obj:
+                        lista_diarios.append(seguro_obj.journal_id.id)
+                    if otros_obj:
+                        lista_diarios.append(otros_obj.journal_id.id)
+                    if rastreo_obj:
+                        lista_diarios.append(rastreo_obj.journal_id.id)
+
                     for x in rec.move_line_ids:
                         if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
                             move_credito=x.id
+
+                    lista_cap=[]
+                    lista_seg=[]
+                    lista_ras=[]
+                    lista_otro=[]
+                    lista_dct=[]
+                    for y in rec.contrato_estado_cuenta_payment_ids:
+                        cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',rec.contrato_id.id),
+                                                                ('numero_cuota','=',y.numero_cuota)])[0] 
+                        if y.cuota_capital_pagar:
+                            movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',factura_id.id.name)])
+                            for x in movimientos_cuota.invoice_line_ids:
+                                if x.id not lista_cap:
+                                    lista_cap.append(x.id)
+                                    if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
+                                        tupla=(0, 0, {
+                                            'debit_move_id': x.id,
+                                            'credit_move_id':  move_credito,
+                                            'amount': x.cuota_capital_pagar,
+                                            'amount_currency': '',
+                                            'currency_id':  '',
+                                            'company_currency_id': 2,
+                                            'company_id': 1,
+                                            })  
+                                        lista.append(tupla)
+
+                                else:
+                                    if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
+                                        for m in lista:
+                                            if m[2]['debit_move_id']==x.id:
+                                                m[2]['amount']+=x.cuota_capital_pagar
+                        if y.seguro_pagar:
+                            movimientos_seguro=self.env['account.move'].search([('journal_id','=',seguro_obj.journal_id.id),('ref','=',factura_id.id.name)])
+                        if y.rastreo_pagar:
+                            movimientos_rastreo=self.env['account.move'].search([('journal_id','=',otros_obj.journal_id.id),('ref','=',factura_id.id.name)])
+                        if y.otro_pagar:
+                            movimientos_otro=self.env['account.move'].search([('journal_id','=',rastreo_obj.journal_id.id),('ref','=',factura_id.id.name)])
+                        
+
+
+
                     for l in rec.invoice_ids:
-                        if cuota_capital_obj:
-                            lista_diarios.append(cuota_capital_obj.journal_id.id)
-                        if seguro_obj:
-                            lista_diarios.append(seguro_obj.journal_id.id)
-                        if otros_obj:
-                            lista_diarios.append(otros_obj.journal_id.id)
-                        if rastreo_obj:
-                            lista_diarios.append(rastreo_obj.journal_id.id)
+                        
                         movimientos_occ=self.env['account.move'].search([('journal_id','in',lista_diarios),('ref','=',l.name)])
                         
                         for x in movimientos_occ.invoice_line_ids:
