@@ -10,7 +10,7 @@ from odoo.exceptions import ValidationError
 
 
 class User(models.Model):
-    _inherit = 'res.users'
+    _inherit = ['res.users']
 
     codigo_asesor=fields.Char("Codigo de Asesor")
 
