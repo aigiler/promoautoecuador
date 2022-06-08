@@ -55,7 +55,7 @@ class ReportCrm(models.TransientModel):
         format_title.set_center_across()
         body_right = workbook.add_format({'align': 'right','border':True})
         body_left = workbook.add_format({'align': 'left','border':True})
-        #body_center = workbook.add_format({'align': 'center','border':True,'text_wrap':True})
+        body_center = workbook.add_format({'align': 'center','border':True,'text_wrap':True})
         body_center.set_center_across()
         format_title2 = workbook.add_format({'align': 'center', 'bold':True,'border':True })
         registros_tabla= wb.add_format({'align':'center','valign':'vcenter',
