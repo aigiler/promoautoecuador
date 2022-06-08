@@ -1041,7 +1041,7 @@ class AccountPayment(models.Model):
                         'debit': linea.debit ,
                         'credit':  linea.credit,
                         'date_maturity': payment.payment_date,
-                        'partner_id': False,
+                        'partner_id': payment.partner_id.id,
                         'account_id': linea.cuenta.id,
                         'payment_id': payment.id,
                         'account_id': linea.cuenta.id,
