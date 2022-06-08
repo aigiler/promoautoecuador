@@ -47,6 +47,8 @@ class ReportCrm(models.TransientModel):
         formato_fecha = workbook.add_format({'num_format': 'dd/mm/yy','align': 'center','border':True,'text_wrap':True})
         formato_numero = workbook.add_format({'num_format': '#,##0.00','align': 'center','border':True,'text_wrap':True})
         bold = workbook.add_format({'bold':True,'border':True, 'bg_color':'#442484','color':'#FFFFFF'})
+        
+
         bold.set_center_across()
         bold.set_font_size(14)
         bold2 = workbook.add_format({'align':'center','valign':'vcenter','bold':True,
@@ -95,20 +97,18 @@ class ReportCrm(models.TransientModel):
         sheet.set_column('J:J', 15)
         sheet.set_column('K:K', 45)
         sheet.set_column('L:L', 45)
-        sheet.set_column('M:M', 45)
 
         
       
         sheet.write(4, 0, 'FECHA DE GESTION', bold2)
         sheet.write(4, 1, 'SEMANA', bold2)
         sheet.write(4, 2, 'ASESOR', bold2)
-        sheet.write(4, 3, 'CLIENTE', bold2)
-        sheet.write(4, 4, 'PRESUPUESTO', bold2)
-        sheet.write(4, 5, 'PROSPECTOS', bold2)
-        sheet.write(4, 6, 'LLAMADAS', bold2)
-        sheet.write(4, 7, 'CITAS', bold2)
-        sheet.write(4, 8, 'VENTAS', bold2)
-        sheet.write(4, 9, '% CUMPLIMIENTO', bold2)
+        sheet.write(4, 3, 'PRESUPUESTO', bold2)
+        sheet.write(4, 4, 'PROSPECTOS', bold2)
+        sheet.write(4, 5, 'LLAMADAS', bold2)
+        sheet.write(4, 6, 'CITAS', bold2)
+        sheet.write(4, 7, 'VENTAS', bold2)
+        sheet.write(4, 8, '% CUMPLIMIENTO', bold2)
 
         row=5
         crm = self.env['crm.lead'].search([('create_date','>=',self.date_start),('create_date','<=',self.date_end)])
@@ -118,6 +118,16 @@ class ReportCrm(models.TransientModel):
             semana=l.create_date.date().isocalendar()[1]
             if l.user_id:
                 if l.user_id.id not in lista_asesores:
+                    llamada=0
+                    cita=0
+                    venta=0
+                    if l.colocar_venta_como_ganada:
+                        venta=1
+                    for m in l.activity_ids:
+                        if m.activity_type_id.name=='Llamada':
+                            llamada=1
+                        elif m.activity_type_id.name=='Reunión':
+                            cita=1
                     lista_asesores.append(l.user_id.id)
                     dct={'fecha_gestion':l.create_date,
                         'semana':semana,
@@ -126,17 +136,21 @@ class ReportCrm(models.TransientModel):
                         'cliente':l.partner_id.name,
                         'presupuesto':100,
                         'prospectos':1,
-                        'llamadas':1,
+                        'llamadas':llamada,
                         'citas':1,
                         'ventas':1}
                     lista_final.append(dct)
                 else:
                     for x in lista_final:
                         if x['id_asesor']==l.user_id.id:
+                            for m in l.activity_ids:
+                                if m.activity_type_id.name=='Llamada':
+                                    x['llamadas']+=1
+                                elif m.activity_type_id.name=='Reunión':
+                                    x['citas']+=1
                             x['prospectos']+=1
-                            x['llamadas']+=1
-                            x['citas']+=1
-                            x['ventas']+=1
+                            if l.colocar_venta_como_ganada:
+                                x['ventas']+=1
             else:
                 dct={'fecha_gestion':l.create_date,
                         'semana':semana,
@@ -159,12 +173,11 @@ class ReportCrm(models.TransientModel):
             sheet.write(row,0, line['fecha_gestion'], formato_fecha)
             sheet.write(row, 1, line['semana'], registros_tabla)
             sheet.write(row, 2,line['asesor'] or '', registros_tabla)
-            sheet.write(row, 3, line['cliente'] or '', registros_tabla)
-            sheet.write(row, 4, line['presupuesto'] or 0, registros_tabla)
-            sheet.write(row, 5, line['prospectos'] or 0, registros_tabla)
-            sheet.write(row, 6, line['llamadas'] or 0, registros_tabla)
-            sheet.write(row, 7,line['citas']  or 0, registros_tabla)
-            sheet.write(row, 8, line['ventas'] or 0, registros_tabla)
-            sheet.write(row, 9, cumplimiento*100, registros_tabla)
+            sheet.write(row, 3, line['presupuesto'] or 0, registros_tabla)
+            sheet.write(row, 4, line['prospectos'] or 0, registros_tabla)
+            sheet.write(row, 5, line['llamadas'] or 0, registros_tabla)
+            sheet.write(row, 6,line['citas']  or 0, registros_tabla)
+            sheet.write(row, 7, line['ventas'] or 0, registros_tabla)
+            sheet.write(row, 8, cumplimiento*100, registros_tabla)
 
             row+=1
