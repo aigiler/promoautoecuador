@@ -112,7 +112,7 @@ class ReportCrm(models.TransientModel):
         row=3
         crm = self.env['crm.lead'].search([('create_date','>=',self.date_start),('create_date','<=',self.date_end)])
         for l in crm:
-            semana=l.create_date.date().isocalendar()
+            semana=l.create_date.date().isocalendar()[1]
 
             sheet.write(row,0, semana, body_center)
             sheet.write(row, 1, l.create_date or '###', body_center)
