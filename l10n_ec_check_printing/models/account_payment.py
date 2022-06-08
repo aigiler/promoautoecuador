@@ -228,12 +228,13 @@ class AccountPayment(models.Model):
     def _onchange_residual(self):
 
         total=0
+        if self.tipo_valor:
+            total=self.amount
         for line in self.payment_line_ids:
             if line.pagar:
-                total += (line.actual_amount+line.monto_pendiente_pago)
-            self.amount=total
-        if self.tipo_valor:
-            self.amount=self.amount
+                total += (line.amount)
+        self.amount=total
+        
         elif self.tipo_transaccion=='Pago':
             self.amount = total
         elif self.tipo_transaccion=='Anticipo':
@@ -1175,7 +1176,6 @@ class AccountPayment(models.Model):
                 if self.payment_type=='outbound':
                     credito=l.amount
                     name='Pago a Proveedor'
-                    
                     valor_debito=valor_asignado
                     saldo_debito=l.amount-valor_asignado
                     cuenta_partner=l.partner_id.property_account_payable_id.id
@@ -1281,7 +1281,7 @@ class AccountPaymentLine(models.Model):
 
     @api.onchange('pagar')
     def actualizar_totales(self):
-        for l in self:            
+        for l in self:
             l.amount=l.actual_amount+l.monto_pendiente_pago
             #l.payment_id.amount=monto_inicial 
 
