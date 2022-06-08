@@ -156,7 +156,7 @@ class ReportCrm(models.TransientModel):
             else:
                 cumplimiento=0
 
-            sheet.write(row,0, line.['fecha_gestion'], formato_fecha)
+            sheet.write(row,0, line['fecha_gestion'], formato_fecha)
             sheet.write(row, 1, line['semana'], registros_tabla)
             sheet.write(row, 2,line['asesor'] or '', registros_tabla)
             sheet.write(row, 3, line['cliente'] or '', registros_tabla)
