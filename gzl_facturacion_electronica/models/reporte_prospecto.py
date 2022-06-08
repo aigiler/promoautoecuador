@@ -151,20 +151,20 @@ class ReportCrm(models.TransientModel):
                 lista_final.append(dct)
 
         for line in lista_final:
-            if line.presupuesto:
-                cumplimiento=line.ventas/line.presupuesto
+            if line['presupuesto']:
+                cumplimiento=line['ventas']/line['presupuesto']
             else:
                 cumplimiento=0
 
             sheet.write(row,0, line.fecha_gestion, formato_fecha)
-            sheet.write(row, 1, line.semana, registros_tabla)
-            sheet.write(row, 2,line.asesor or '', registros_tabla)
-            sheet.write(row, 3, line.cliente or '', registros_tabla)
-            sheet.write(row, 4, line.presupuesto or 0, registros_tabla)
-            sheet.write(row, 5, line.prospectos or 0, registros_tabla)
-            sheet.write(row, 6, line.llamadas or 0, registros_tabla)
-            sheet.write(row, 7,line.citas  or 0, registros_tabla)
-            sheet.write(row, 8, line.ventas or 0, registros_tabla)
-            sheet.write(row, 9,cumplimiento, registros_tabla)
+            sheet.write(row, 1, line['semana'], registros_tabla)
+            sheet.write(row, 2,line['asesor'] or '', registros_tabla)
+            sheet.write(row, 3, line['cliente'] or '', registros_tabla)
+            sheet.write(row, 4, line['presupuesto'] or 0, registros_tabla)
+            sheet.write(row, 5, line['prospectos'] or 0, registros_tabla)
+            sheet.write(row, 6, line['llamadas'] or 0, registros_tabla)
+            sheet.write(row, 7,line['citas']  or 0, registros_tabla)
+            sheet.write(row, 8, line['ventas'] or 0, registros_tabla)
+            sheet.write(row, 9, cumplimiento, registros_tabla)
 
             row+=1
