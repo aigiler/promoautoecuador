@@ -927,6 +927,7 @@ class account_payment(models.Model):
                                 suma_total=cuota_id.saldo_seguro+cuota_id.saldo_cuota_capital+cuota_id.saldo_rastreo+cuota_id.saldo_otros
                                 if cuota_id.saldo_cuota_capital:
                                     movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',y.name)])
+                                    raise ValidationError("{0}".format(movimientos_cuota))
                                     for x in movimientos_cuota.invoice_line_ids:
                                         if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
                                             if x.id in lista_ids:
@@ -937,7 +938,7 @@ class account_payment(models.Model):
                                                         monto_cruzado=mov['amount']
                                                         if lista:
                                                             for z in lista:
-                                                                if z[2]['debit_move_id']== x.id:
+                                                                if z[2]['debit_move_id']==x.id:
                                                                     z[2]['amount']+=cuota_id.saldo_cuota_capital
                                                         else:
                                                             tupla=(0, 0, {
