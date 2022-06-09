@@ -912,6 +912,7 @@ class account_payment(models.Model):
                             cuota_id.saldo_otros=cuota_id.saldo_otros-y.otro_pagar
                             cuota_id.monto_pagado=cuota_id.monto_pagado+y.monto_pagar
                             cuota_id.saldo=cuota_id.saldo-y.monto_pagar
+                            cuota_id.fecha_pagada=rec.payment_date
                             if cuota_id.saldo==0:
                                 cuota_id.estado_pago='pagado'
 
@@ -1100,6 +1101,7 @@ class account_payment(models.Model):
                                 cuota_id.saldo=0
                                 cuota_id.monto_pagado=cuota_id.cuota_capital+cuota_id.seguro+cuota_id.otro+cuota_id.rastreo+cuota_id.cuota_adm+cuota_id.iva_adm
                                 cuota_id.saldo=0
+                                cuota_id.fecha_pagada=rec.payment_date
                                 if cuota_id.saldo==0:
                                     cuota_id.estado_pago='pagado'
       
