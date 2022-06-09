@@ -720,8 +720,8 @@ class account_payment(models.Model):
                     if rastreo_obj:
                         lista_diarios.append(rastreo_obj.journal_id.id)
 
-                   lista=[]
-                   lista_ids=[]
+                    lista=[]
+                    lista_ids=[]
                     lista_movimientos=[]
                     for x in rec.move_line_ids:
                         if x.account_id.id==rec.partner_id.property_account_receivable_id.id and x.credit==rec.valor_deuda:
