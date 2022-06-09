@@ -1124,7 +1124,7 @@ class account_payment(models.Model):
 
                         for x in rec.move_line_ids:
 
-                            if x.account_id.id==rec.partner_id.property_account_receivable_id.id and round(x.credit,2)==round(x.valor_deuda,2):
+                            if x.account_id.id==rec.partner_id.property_account_receivable_id.id and round(x.credit,2)==round(rec.valor_deuda,2):
                                 x.update({'matched_debit_ids':lista})
                                 pass                     
 
