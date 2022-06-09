@@ -926,7 +926,6 @@ class account_payment(models.Model):
                             for cuota_id in y.contrato_estado_cuenta_ids:
                                 suma_total=cuota_id.saldo_seguro+cuota_id.saldo_cuota_capital+cuota_id.saldo_rastreo+cuota_id.saldo_otros
                                 if cuota_id.saldo_cuota_capital:
-                                    raise ValidationError("Aqui un ejemplooooooo")
                                     movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',y.name)])
                                     for x in movimientos_cuota.invoice_line_ids:
                                         if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
