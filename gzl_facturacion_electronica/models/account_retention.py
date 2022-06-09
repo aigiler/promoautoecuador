@@ -380,17 +380,16 @@ class AccountRetention(models.Model):
             total_counter = 0
             lines = []
             
-            #for line in ret.tax_ids:
-                #if line.tax_repartition_line_id.account_id:
-                #    raise ValidationError("Verifique que en la sección Repartición de Facturas del Menu Impestos se encuentre configurada la cuenta.")
-
-            lines.append((0, 0, {
-                'partner_id': ret.partner_id.id,
-                'account_id': line.tax_repartition_line_id.account_id.id,
-                'name': ret.name,
-                'debit': abs(line.amount),
-                'credit': 0.00
-            }))
+            for line in ret.tax_ids:
+                if line.tax_repartition_line_id.account_id:
+                    if line.tax_repartition_line_id:
+                        lines.append((0, 0, {
+                            'partner_id': ret.partner_id.id,
+                            'account_id': line.tax_repartition_line_id.account_id.id,
+                            'name': ret.name,
+                            'debit': abs(line.amount),
+                            'credit': 0.00
+                        }))
 
                 total_counter += abs(line.amount)
             rec_account = inv.partner_id.property_account_receivable_id.id
