@@ -1269,6 +1269,10 @@ class AccountPaymentLine(models.Model):
     def obtener_monto(self):
         for l in self:
             monto_pendiente_pago=0
+            saldo_cap=0
+            saldo_seg=0
+            saldo_ras=0
+            saldo_otros=0
             if l.invoice_id:
                 if l.invoice_id.contrato_estado_cuenta_ids:
                     obj_contrato_estado_cuenta = self.env['contrato.estado.cuenta'].search([('id','in',l.invoice_id.contrato_estado_cuenta_ids.ids)])
