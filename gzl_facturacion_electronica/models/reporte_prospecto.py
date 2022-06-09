@@ -84,7 +84,7 @@ class ReportCrm(models.TransientModel):
                             'y_scale':     0.8, 'align': 'left','bg_color':'#442484'})
         
         sheet.merge_range('B1:J1', ' ', bold)
-        sheet.merge_range('A2:J2', 'REPORTE DE PROSPECTOS DEL '+str(dia_start)+' DE '+str(mesesDic[str(mes_start)])+' DEL '+str(year)+' AL '+str(dia_end)+' DE '+str(mesesDic[str(mes_end)])+' DEL '+str(year), bold)
+        sheet.merge_range('A2:I2', 'REPORTE DE PROSPECTOS DEL '+str(dia_start)+' DE '+str(mesesDic[str(mes_start)])+' DEL '+str(year)+' AL '+str(dia_end)+' DE '+str(mesesDic[str(mes_end)])+' DEL '+str(year), bold)
         sheet.set_column('A:A', 15)
         sheet.set_column('B:B', 15)
         sheet.set_column('C:C', 45)

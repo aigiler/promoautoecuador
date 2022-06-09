@@ -15,6 +15,11 @@ class AccountPayment(models.Model):
     contrato_id = fields.Many2one('contrato', string='Contrato')
     valor_deuda_admin=fields.Float("Cuota Administrativa a Pagar",compute='_saldo_pagar', store=True)
 
+    saldo_cuota_capital = fields.Float(string='Saldo Cuota Capital')
+    saldo_seguro = fields.Float(string='Saldo_seguro')
+    saldo_rastreo = fields.Float(string='Saldo Rastreo')
+    saldo_otros = fields.Float(string='Saldo Otros')
+
     tipo_valor = fields.Selection([
         ('enviar_credito', 'Enviar a Credito'),
         ('crear_acticipo', 'Crear Anticipo')

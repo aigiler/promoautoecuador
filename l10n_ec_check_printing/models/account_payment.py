@@ -479,32 +479,32 @@ class AccountPayment(models.Model):
 
     def post(self):
         for rec in self:
-            if self.tipo_valor=='enviar_credito':
-                for y in self.contrato_estado_cuenta_payment_ids:
-                    cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',rec.contrato_id.id),
-                                                                ('numero_cuota','=',y.numero_cuota)])[0]     
-                    if cuota_id:
-                        cuota_id.saldo_cuota_capital=cuota_id.saldo_cuota_capital-y.cuota_capital_pagar
-                        cuota_id.saldo_seguro=cuota_id.saldo_seguro-y.seguro_pagar
-                        cuota_id.saldo_rastreo=cuota_id.saldo_rastreo-y.rastreo_pagar
-                        cuota_id.saldo_otros=cuota_id.saldo_otros-y.otro_pagar
-                        cuota_id.monto_pagado=cuota_id.monto_pagado+y.monto_pagar
-                        cuota_id.saldo=cuota_id.saldo-y.monto_pagar
+            # if self.tipo_valor=='enviar_credito':
+            #     for y in self.contrato_estado_cuenta_payment_ids:
+            #         cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',rec.contrato_id.id),
+            #                                                     ('numero_cuota','=',y.numero_cuota)])[0]     
+            #         if cuota_id:
+            #             cuota_id.saldo_cuota_capital=cuota_id.saldo_cuota_capital-y.cuota_capital_pagar
+            #             cuota_id.saldo_seguro=cuota_id.saldo_seguro-y.seguro_pagar
+            #             cuota_id.saldo_rastreo=cuota_id.saldo_rastreo-y.rastreo_pagar
+            #             cuota_id.saldo_otros=cuota_id.saldo_otros-y.otro_pagar
+            #             cuota_id.monto_pagado=cuota_id.monto_pagado+y.monto_pagar
+            #             cuota_id.saldo=cuota_id.saldo-y.monto_pagar
             lista_invoice=[]
             for pago in rec.payment_line_ids:
                 if pago.pagar:
                     lista_invoice.append(pago.invoice_id.id)
-                    for cuota_id in pago.invoice_id.contrato_estado_cuenta_ids:
-                        cuota_id.monto_pagado=cuota_id.cuota_capital+cuota_id.seguro+cuota_id.otro+cuota_id.rastreo+cuota_id.cuota_adm+cuota_id.iva_adm
-                        cuota_id.saldo=0
-                        cuota_cap_ant=cuota_id.saldo_cuota_capital
-                        saldo_seg_ant=cuota_id.saldo_seguro
-                        rastreo_ant=cuota_id.saldo_rastreo
-                        otro_ant=cuota_id.saldo_otros
-                        cuota_id.saldo_cuota_capital=0
-                        cuota_id.saldo_seguro=0
-                        cuota_id.saldo_rastreo=0
-                        cuota_id.saldo_otros=0
+                    # for cuota_id in pago.invoice_id.contrato_estado_cuenta_ids:
+                    #     cuota_id.monto_pagado=cuota_id.cuota_capital+cuota_id.seguro+cuota_id.otro+cuota_id.rastreo+cuota_id.cuota_adm+cuota_id.iva_adm
+                    #     cuota_id.saldo=0
+                    #     cuota_cap_ant=cuota_id.saldo_cuota_capital
+                    #     saldo_seg_ant=cuota_id.saldo_seguro
+                    #     rastreo_ant=cuota_id.saldo_rastreo
+                    #     otro_ant=cuota_id.saldo_otros
+                    #     cuota_id.saldo_cuota_capital=0
+                    #     cuota_id.saldo_seguro=0
+                    #     cuota_id.saldo_rastreo=0
+                    #     cuota_id.saldo_otros=0
                 rec.update({'invoice_ids': [(6, 0, lista_invoice)]})
             if rec.amount==0: 
                 raise ValidationError("Ingrese el valor del monto")
@@ -1274,7 +1274,16 @@ class AccountPaymentLine(models.Model):
                     obj_contrato_estado_cuenta = self.env['contrato.estado.cuenta'].search([('id','in',l.invoice_id.contrato_estado_cuenta_ids.ids)])
                     for x in obj_contrato_estado_cuenta:
                         #raise ValidationError(l.invoice_id)
+                        saldo_cap+=x.saldo_cuota_capital
+                        saldo_seg+=x.saldo_seguro
+                        saldo_ras+=x.saldo_rastreo
+                        saldo_otros+=x.saldo_otros
                         monto_pendiente_pago+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
+            
+            l.saldo_cuota_capital=saldo_cap
+            l.saldo_seguro=saldo_seg
+            l.saldo_rastreo=saldo_ras
+            l.saldo_otros=saldo_otros
             l.monto_pendiente_pago=monto_pendiente_pago
             l.amount=l.actual_amount+monto_pendiente_pago
                 #l.deuda_total=self.payment_id.obtener_deudas_facturas()
