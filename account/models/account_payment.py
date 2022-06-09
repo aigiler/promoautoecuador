@@ -1125,7 +1125,7 @@ class account_payment(models.Model):
 
                         for x in rec.move_line_ids:
 
-                            if x.account_id.id==rec.partner_id.property_account_receivable_id.id and x.credit==rec.valor_deuda:
+                            if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
                                 x.update({'matched_debit_ids':lista})                        
 
                 elif rec.payment_type == 'transfer':
