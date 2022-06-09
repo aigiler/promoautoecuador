@@ -745,7 +745,7 @@ class account_payment(models.Model):
                                 movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',cuota_id.factura_id.name)])
                                 
                                 for x in movimientos_cuota.invoice_line_ids:
-                                    if x.account_id.id==rec.partner_id.property_accoun_receivable_id.id:
+                                    if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
                                         if x.id in lista_ids:
                                             i=0
                                             for mov in lista_movimientos:
