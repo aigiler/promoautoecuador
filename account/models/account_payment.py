@@ -967,7 +967,6 @@ class account_payment(models.Model):
                                                     })
 
                                                 lista.append(tupla)
-                                    raise ValidationError("{0}".format(lista))
                                 if cuota_id.saldo_seguro:
                                     movimientos_seguro=self.env['account.move'].search([('journal_id','=',seguro_obj.journal_id.id),('ref','=',y.name)])
                                     for x in movimientos_seguro.invoice_line_ids:
@@ -1122,8 +1121,8 @@ class account_payment(models.Model):
                         #             })
                         #             lista.append(tupla)
                         
-                        raise ValidationError("ESTEEDCDCVB{0}".format(lista))
                         for x in rec.move_line_ids:
+                            raise ValidationError("{0},{1},{2},{3}".format(x.account_id.id,rec.partner_id.property_account_receivable_id.id,x.credit,rec.valor_deuda))
                             if x.account_id.id==rec.partner_id.property_account_receivable_id.id and x.credit==rec.valor_deuda:
                                 x.update({'matched_debit_ids':lista})                        
 
