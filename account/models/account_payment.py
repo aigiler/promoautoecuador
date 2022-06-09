@@ -915,9 +915,9 @@ class account_payment(models.Model):
                             if cuota_id.saldo==0:
                                 cuota_id.estado_pago='pagado'
 
-                        for x in rec.move_line_ids:
-                            if x.account_id.id==rec.partner_id.property_account_receivable_id.id and x.credit==rec.valor_deuda:
-                                x.update({'matched_debit_ids':lista})                        
+                        for r in rec.move_line_ids:
+                            if r.account_id.id==rec.partner_id.property_account_receivable_id.id and r.credit==rec.valor_deuda:
+                                r.update({'matched_debit_ids':lista})                        
 
                     else:
                         for y in rec.invoice_ids:
@@ -1124,7 +1124,7 @@ class account_payment(models.Model):
 
                         for x in rec.move_line_ids:
 
-                            if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
+                            if x.account_id.id==rec.partner_id.property_account_receivable_id.id and round(x.credit,2)==round(x.valor_deuda,2):
                                 x.update({'matched_debit_ids':lista})
                                 pass                     
 
