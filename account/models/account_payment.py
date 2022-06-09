@@ -1121,7 +1121,7 @@ class account_payment(models.Model):
                         #             })
                         #             lista.append(tupla)
                         
-                        raise ValidationError("{0},{1},{2},{3}".format(rec.move_line_ids))
+                        raise ValidationError("{0}".format(rec.move_line_ids))
 
                         for x in rec.move_line_ids:
 
