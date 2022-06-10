@@ -920,10 +920,12 @@ class account_payment(models.Model):
                         #raise ValidationError('{0}'.format(lista))
                         for r in rec.move_line_ids:
                             if r.account_id.id==rec.partner_id.property_account_receivable_id.id and round(r.credit,2)==round(rec.valor_deuda,2):
-                                r.update({'matched_debit_ids':lista})                        
+                                r.update({'matched_debit_ids':lista})
+                                pass                        
 
                     else:
                         for y in rec.invoice_ids:
+                            raise ValidationError('{0}'.format(y))
                             #obj_contrato_estado_cuenta = self.env['contrato.estado.cuenta'].search([('id','in',y.invoice_id.contrato_estado_cuenta_ids.ids)])
                             #    for x in obj_contrato_estado_cuenta:
                             for cuota_id in y.contrato_estado_cuenta_ids:
