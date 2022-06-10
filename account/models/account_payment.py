@@ -903,18 +903,19 @@ class account_payment(models.Model):
 
                                             lista.append(tupla)
                             
-                            pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
-                                                                                                            'monto_pagado':rec.amount,'valor_asociado':suma_total})
-                            
-                            cuota_id.saldo_cuota_capital=cuota_id.saldo_cuota_capital-y.cuota_capital_pagar
-                            cuota_id.saldo_seguro=cuota_id.saldo_seguro-y.seguro_pagar
-                            cuota_id.saldo_rastreo=cuota_id.saldo_rastreo-y.rastreo_pagar
-                            cuota_id.saldo_otros=cuota_id.saldo_otros-y.otro_pagar
-                            cuota_id.monto_pagado=cuota_id.monto_pagado+y.monto_pagar
-                            cuota_id.saldo=cuota_id.saldo-y.monto_pagar
-                            cuota_id.fecha_pagada=rec.payment_date
-                            if cuota_id.saldo==0:
-                                cuota_id.estado_pago='pagado'
+                            if suma_total:
+                                pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
+                                                                                                                'monto_pagado':rec.amount,'valor_asociado':suma_total})
+                                
+                                cuota_id.saldo_cuota_capital=cuota_id.saldo_cuota_capital-y.cuota_capital_pagar
+                                cuota_id.saldo_seguro=cuota_id.saldo_seguro-y.seguro_pagar
+                                cuota_id.saldo_rastreo=cuota_id.saldo_rastreo-y.rastreo_pagar
+                                cuota_id.saldo_otros=cuota_id.saldo_otros-y.otro_pagar
+                                cuota_id.monto_pagado=cuota_id.monto_pagado+y.monto_pagar
+                                cuota_id.saldo=cuota_id.saldo-y.monto_pagar
+                                cuota_id.fecha_pagada=rec.payment_date
+                                if cuota_id.saldo==0:
+                                    cuota_id.estado_pago='pagado'
 
                         #raise ValidationError('{0}'.format(lista))
                         for r in rec.move_line_ids:
@@ -1094,20 +1095,21 @@ class account_payment(models.Model):
                                 pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
                                                                                                                         'monto_pagado':rec.amount,'valor_asociado':suma_total})
                                 
-                                pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
+                                if suma_total:
+                                    pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
                                                                                                                         'monto_pagado':rec.amount,'valor_asociado':suma_total})
                                 
-                                cuota_id.saldo_cuota_capital=0
-                                cuota_id.saldo_seguro=0
-                                cuota_id.saldo_rastreo=0
-                                cuota_id.saldo_otros=0
-                                cuota_id.monto_pagado=0
-                                cuota_id.saldo=0
-                                cuota_id.monto_pagado=cuota_id.cuota_capital+cuota_id.seguro+cuota_id.otro+cuota_id.rastreo+cuota_id.cuota_adm+cuota_id.iva_adm
-                                cuota_id.saldo=0
-                                cuota_id.fecha_pagada=rec.payment_date
-                                if cuota_id.saldo==0:
-                                    cuota_id.estado_pago='pagado'
+                                    cuota_id.saldo_cuota_capital=0
+                                    cuota_id.saldo_seguro=0
+                                    cuota_id.saldo_rastreo=0
+                                    cuota_id.saldo_otros=0
+                                    cuota_id.monto_pagado=0
+                                    cuota_id.saldo=0
+                                    cuota_id.monto_pagado=cuota_id.cuota_capital+cuota_id.seguro+cuota_id.otro+cuota_id.rastreo+cuota_id.cuota_adm+cuota_id.iva_adm
+                                    cuota_id.saldo=0
+                                    cuota_id.fecha_pagada=rec.payment_date
+                                    if cuota_id.saldo==0:
+                                        cuota_id.estado_pago='pagado'
       
                         # for l in rec.invoice_ids:
                             
