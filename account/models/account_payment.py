@@ -925,7 +925,7 @@ class account_payment(models.Model):
 
                     else:
                         for y in rec.invoice_ids:
-                            raise ValidationError('{0}'.format(y))
+                            raise ValidationError('{0}'.format(y.name))
                             #obj_contrato_estado_cuenta = self.env['contrato.estado.cuenta'].search([('id','in',y.invoice_id.contrato_estado_cuenta_ids.ids)])
                             #    for x in obj_contrato_estado_cuenta:
                             for cuota_id in y.contrato_estado_cuenta_ids:
