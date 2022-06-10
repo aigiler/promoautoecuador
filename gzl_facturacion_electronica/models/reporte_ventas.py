@@ -44,8 +44,11 @@ class ReportCrm(models.TransientModel):
         }
 
     def xslx_body(self,workbook,name):
-        formato_fecha = workbook.add_format({'num_format': 'dd/mm/yy','align': 'center','border':True,'text_wrap':True})
-        formato_numero = workbook.add_format({'num_format': '#,##0.00','align': 'center','border':True,'text_wrap':True})
+        formato_fecha = workbook.add_format({'num_format': 'dd/mm/yy','align':'center','valign':'vcenter','font_size': 13,
+                                            'text_wrap':True,'border':True})
+        formato_numero = workbook.add_format({'num_format': '#,##0.00','align':'center','valign':'vcenter','font_size': 13,
+                                            'text_wrap':True,'border':True})
+        registros_tabla= workbook.add_format({'align':'center','valign':'vcenter','font_size': 13,'text_wrap':True,'border':True})
         bold = workbook.add_format({'bold':True,'border':True, 'bg_color':'#442484','color':'#FFFFFF'})
         bold.set_center_across()
         bold.set_font_size(14)
@@ -108,7 +111,6 @@ class ReportCrm(models.TransientModel):
         sheet.write(4, 7, 'IVA', bold2)
         sheet.write(4, 8, 'TOTAL', bold2)
         sheet.write(4, 9, 'CODIGO ASESOR', bold2)
-        
         sheet.write(4, 10, 'ASESOR', bold2)
         sheet.write(4, 11, 'SUPERVISOR', bold2)
         sheet.write(4, 12, 'FACTURA', bold2)

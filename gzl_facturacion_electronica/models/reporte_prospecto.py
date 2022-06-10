@@ -44,19 +44,21 @@ class ReportCrm(models.TransientModel):
         }
 
     def xslx_body(self,workbook,name):
-        formato_fecha = workbook.add_format({'num_format': 'dd/mm/yy','align': 'center','border':True,'text_wrap':True})
-        formato_numero = workbook.add_format({'num_format': '#,##0.00','align': 'center','border':True,'text_wrap':True})
-        bold = workbook.add_format({'bold':True,'border':True, 'bg_color':'#442484','color':'#FFFFFF'})
         
+        formato_fecha = workbook.add_format({'align':'center','valign':'vcenter','font_size': 13,'text_wrap':True,
+                                                'border':True,'bg_color':'#3bbf13','color':'#0f0000','num_format': 'dd/mm/yy'})
+        formato_numero = workbook.add_format({'align':'center','valign':'vcenter','font_size': 13,'text_wrap':True,
+                                            'border':True,'bg_color':'#3bbf13','color':'#0f0000','num_format': '#,##0.00'})
+        registros_tabla= workbook.add_format({'align':'center','valign':'vcenter','font_size': 13,'text_wrap':True,
+                                                'border':True,'bg_color':'#3bbf13','color':'#0f0000'})
 
+        bold = workbook.add_format({'bold':True,'border':True, 'bg_color':'#442484','color':'#FFFFFF'})
         bold.set_center_across()
         bold.set_font_size(14)
-        bold2 = workbook.add_format({'align':'center','valign':'vcenter','bold':True,
-                                'font_size': 13, 'bg_color':'#989899','color':'#FFFFFF',
-                                'text_wrap':True,'border':True})
+
+        bold2 = workbook.add_format({'align':'center','valign':'vcenter','bold':True,'font_size': 13, 'bg_color':'#989899',
+                                    'color':'#FFFFFF','text_wrap':True,'border':True})
         bold2.set_center_across()
-
-
 
         sheet = workbook.add_worksheet(name)
         mesesDic = {
@@ -84,21 +86,17 @@ class ReportCrm(models.TransientModel):
         
         sheet.merge_range('B1:I1', ' ', bold)
         sheet.merge_range('A2:I2', 'REPORTE DE PROSPECTOS DEL '+str(dia_start)+' DE '+str(mesesDic[str(mes_start)])+' DEL '+str(year)+' AL '+str(dia_end)+' DE '+str(mesesDic[str(mes_end)])+' DEL '+str(year), bold)
-        sheet.set_column('A:A', 15)
-        sheet.set_column('B:B', 15)
-        sheet.set_column('C:C', 45)
-        sheet.set_column('D:D', 15)
-        sheet.set_column('E:E', 15)
+        sheet.set_column('A:A', 10)
+        sheet.set_column('B:B', 10)
+        sheet.set_column('C:C', 40)
+        sheet.set_column('D:D', 10)
+        sheet.set_column('E:E', 10)
         sheet.set_column('F:F', 10)
         sheet.set_column('G:G', 10)
         sheet.set_column('H:H', 10)
         sheet.set_column('I:I', 10)
-        sheet.set_column('J:J', 15)
-        sheet.set_column('K:K', 45)
-        sheet.set_column('L:L', 45)
 
-        
-      
+
         sheet.write(4, 0, 'FECHA DE GESTION', bold2)
         sheet.write(4, 1, 'SEMANA', bold2)
         sheet.write(4, 2, 'ASESOR', bold2)
@@ -120,13 +118,13 @@ class ReportCrm(models.TransientModel):
                     llamada=0
                     cita=0
                     venta=0
-                    if l.colocar_venta_como_ganada:
-                        venta=1
                     for m in l.activity_ids:
                         if m.activity_type_id.name=='Llamada':
                             llamada=1
                         elif m.activity_type_id.name=='Reunión':
                             cita=1
+                    if l.colocar_venta_como_ganada:
+                        venta=1
                     lista_asesores.append(l.user_id.id)
                     dct={'fecha_gestion':l.create_date,
                         'semana':semana,
@@ -136,8 +134,8 @@ class ReportCrm(models.TransientModel):
                         'presupuesto':100,
                         'prospectos':1,
                         'llamadas':llamada,
-                        'citas':1,
-                        'ventas':1}
+                        'citas':cita,
+                        'ventas':venta}
                     lista_final.append(dct)
                 else:
                     for x in lista_final:
@@ -151,16 +149,27 @@ class ReportCrm(models.TransientModel):
                             if l.colocar_venta_como_ganada:
                                 x['ventas']+=1
             else:
+                llamada=0
+                cita=0
+                venta=0
+                for m in l.activity_ids:
+                        if m.activity_type_id.name=='Llamada':
+                            llamada=1
+                        elif m.activity_type_id.name=='Reunión':
+                            cita=1
+                    if l.colocar_venta_como_ganada:
+                        venta=1
+
                 dct={'fecha_gestion':l.create_date,
                         'semana':semana,
                         'id_asesor':l.user_id.id,
-                        'asesor':l.user_id.name,
+                        'asesor':'',
                         'cliente':l.partner_id.name,
                         'presupuesto':100,
                         'prospectos':1,
-                        'llamadas':1,
-                        'citas':1,
-                        'ventas':1}
+                        'llamadas':llamada,
+                        'citas':cita,
+                        'ventas':venta}
                 lista_final.append(dct)
 
         for line in lista_final:
@@ -168,18 +177,25 @@ class ReportCrm(models.TransientModel):
                 cumplimiento=(line['ventas']/line['presupuesto'])*100
             else:
                 cumplimiento=0
+            if cumplimiento<=25:
+                formato_fecha = workbook.add_format({'align':'center','valign':'vcenter','font_size': 13,'text_wrap':True,
+                                                'border':True,'bg_color':'#f5051d','color':'#FFFFFF','num_format': 'dd/mm/yy'})
+                formato_numero = workbook.add_format({'align':'center','valign':'vcenter','font_size': 13,'text_wrap':True,
+                                                'border':True,'bg_color':'#f5051d','color':'#FFFFFF','num_format': '#,##0.00'})
+                registros_tabla= workbook.add_format({'align':'center','valign':'vcenter','font_size': 13,'text_wrap':True,
+                                                'border':True,'bg_color':'#f5051d','color':'#FFFFFF'})
+            
 
-            if cumplimiento==100:
-                registros_tabla= workbook.add_format({'align':'center','valign':'vcenter',
-                                'font_size': 13,
-                                'text_wrap':True,'border':True,'bg_color':'#442484','color':'#FFFFFF'})
-            if cumplimiento==100:
-                registros_tabla= workbook.add_format({'align':'center','valign':'vcenter',
-                                'font_size': 13,
-                                'text_wrap':True,'border':True,'bg_color':'#442484','color':'#FFFFFF'})
+            elif cumplimiento>25 and cumplimiento<=50:
+                formato_fecha = workbook.add_format({'align':'center','valign':'vcenter','font_size': 13,'text_wrap':True,
+                                                'border':True,'bg_color':'#e9f50f','color':'#0f0000','num_format': 'dd/mm/yy'})
+                formato_numero = workbook.add_format({'align':'center','valign':'vcenter','font_size': 13,'text_wrap':True,
+                                                'border':True,'bg_color':'#e9f50f','color':'#0f0000','num_format': '#,##0.00'})
+                registros_tabla= workbook.add_format({'align':'center','valign':'vcenter','font_size': 13,'text_wrap':True,
+                                                'border':True,'bg_color':'#e9f50f','color':'#0f0000'})
 
             sheet.write(row,0, line['fecha_gestion'], formato_fecha)
-            sheet.write(row, 1, line['semana'], registros_tabla)
+            sheet.write(row, 1, 'Semana '+str(line['semana']), registros_tabla)
             sheet.write(row, 2,line['asesor'] or '', registros_tabla)
             sheet.write(row, 3, line['presupuesto'] or 0, registros_tabla)
             sheet.write(row, 4, line['prospectos'] or 0, registros_tabla)
@@ -189,3 +205,6 @@ class ReportCrm(models.TransientModel):
             sheet.write(row, 8, cumplimiento*100, registros_tabla)
 
             row+=1
+
+
+            > y “menor que” <
