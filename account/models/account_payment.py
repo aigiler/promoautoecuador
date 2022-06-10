@@ -1093,9 +1093,7 @@ class account_payment(models.Model):
                                                 lista.append(tupla)
 
                           
-                                pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
-                                                                                                                        'monto_pagado':rec.amount,'valor_asociado':suma_total})
-                                
+
                                 if suma_total:
                                     pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
                                                                                                                         'monto_pagado':rec.amount,'valor_asociado':suma_total})
