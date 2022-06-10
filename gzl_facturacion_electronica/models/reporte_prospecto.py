@@ -207,4 +207,3 @@ class ReportCrm(models.TransientModel):
             row+=1
 
 
-            > y “menor que” <
