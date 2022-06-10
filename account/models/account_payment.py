@@ -916,6 +916,7 @@ class account_payment(models.Model):
                             if cuota_id.saldo==0:
                                 cuota_id.estado_pago='pagado'
 
+                        raise ValidationError('{0}'.format(lista))
                         for r in rec.move_line_ids:
                             if r.account_id.id==rec.partner_id.property_account_receivable_id.id and round(r.credit,2)==round(rec.valor_deuda,2):
                                 r.update({'matched_debit_ids':lista})                        
