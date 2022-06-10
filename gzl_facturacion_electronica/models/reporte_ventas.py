@@ -56,10 +56,6 @@ class ReportCrm(models.TransientModel):
                                 'font_size': 13, 'bg_color':'#989899','color':'#FFFFFF',
                                 'text_wrap':True,'border':True})
         bold2.set_center_across()
-
-        registros_tabla= workbook.add_format({'align':'center','valign':'vcenter',
-                                'font_size': 13,
-                                'text_wrap':True,'border':True})
         sheet = workbook.add_worksheet(name)
         mesesDic = {
                 "1":'ENERO',

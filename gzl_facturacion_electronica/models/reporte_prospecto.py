@@ -153,12 +153,12 @@ class ReportCrm(models.TransientModel):
                 cita=0
                 venta=0
                 for m in l.activity_ids:
-                        if m.activity_type_id.name=='Llamada':
-                            llamada=1
-                        elif m.activity_type_id.name=='Reunión':
-                            cita=1
-                    if l.colocar_venta_como_ganada:
-                        venta=1
+                    if m.activity_type_id.name=='Llamada':
+                        llamada=1
+                    elif m.activity_type_id.name=='Reunión':
+                        cita=1
+                if l.colocar_venta_como_ganada:
+                    venta=1
 
                 dct={'fecha_gestion':l.create_date,
                         'semana':semana,
