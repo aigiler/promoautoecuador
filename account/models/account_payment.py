@@ -875,7 +875,7 @@ class account_payment(models.Model):
                                                     if lista:
                                                         for z in lista:
                                                             if z[2]['debit_move_id']== x.id:
-                                                                z[2]['amount']y.otro_pagar
+                                                                z[2]['amount']+=y.otro_pagar
                                                     else:
                                                         tupla=(0, 0, {
                                                                 'debit_move_id': x.id,
