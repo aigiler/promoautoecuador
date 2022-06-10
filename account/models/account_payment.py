@@ -925,7 +925,6 @@ class account_payment(models.Model):
 
                     else:
                         for y in rec.invoice_ids:
-                            raise ValidationError('{0}'.format(y['name']))
                             #obj_contrato_estado_cuenta = self.env['contrato.estado.cuenta'].search([('id','in',y.invoice_id.contrato_estado_cuenta_ids.ids)])
                             #    for x in obj_contrato_estado_cuenta:
                             for cuota_id in y.contrato_estado_cuenta_ids:
@@ -1018,7 +1017,7 @@ class account_payment(models.Model):
                                         if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
                                             if x.id in lista_ids:
                                                 i=0
-                                                for y in lista_movimientos:
+                                                for mov in lista_movimientos:
                                                     if x.id==mov['debit_move_id']:
                                                         mov['amount']+=cuota_id.saldo_rastreo
                                                         monto_cruzado=mov['amount']
