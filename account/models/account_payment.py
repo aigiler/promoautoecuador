@@ -785,7 +785,7 @@ class account_payment(models.Model):
                             if y.seguro_pagar:
                                 movimientos_seguro=self.env['account.move'].search([('journal_id','=',seguro_obj.journal_id.id),('ref','=',cuota_id.factura_id.name)])
                                 for x in movimientos_seguro.invoice_line_ids:
-                                    if x.account_id.id==rec.partner_id.property_accoun_receivable_id.id:
+                                    if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
                                         if x.id in lista_ids:
                                             i=0
                                             for mov in lista_movimientos:
@@ -795,7 +795,7 @@ class account_payment(models.Model):
                                                     if lista:
                                                         for z in lista:
                                                             if z[2]['debit_move_id']== x.id:
-                                                                z[2]['amount']=monto_cruzado
+                                                                z[2]['amount']+=y.seguro_pagar
                                                     else:
                                                         tupla=(0, 0, {
                                                                 'debit_move_id': x.id,
@@ -825,7 +825,7 @@ class account_payment(models.Model):
                             if y.rastreo_pagar:
                                 movimientos_rastreo=self.env['account.move'].search([('journal_id','=',otros_obj.journal_id.id),('ref','=',cuota_id.factura_id.name)])
                                 for x in movimientos_rastreo.invoice_line_ids:
-                                    if x.account_id.id==rec.partner_id.property_accoun_receivable_id.id:
+                                    if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
                                         if x.id in lista_ids:
                                             i=0
                                             for mov in lista_movimientos:
@@ -835,7 +835,7 @@ class account_payment(models.Model):
                                                     if lista:
                                                         for z in lista:
                                                             if z[2]['debit_move_id']== x.id:
-                                                                z[2]['amount']=monto_cruzado
+                                                                z[2]['amount']+=y.rastreo_pagar
                                                     else:
                                                         tupla=(0, 0, {
                                                                 'debit_move_id': x.id,
@@ -865,7 +865,7 @@ class account_payment(models.Model):
                             if y.otro_pagar:
                                 movimientos_otro=self.env['account.move'].search([('journal_id','=',rastreo_obj.journal_id.id),('ref','=',cuota_id.factura_id.name)])
                                 for x in movimientos_otro.invoice_line_ids:
-                                    if x.account_id.id==rec.partner_id.property_accoun_receivable_id.id:
+                                    if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
                                         if x.id in lista_ids:
                                             i=0
                                             for mov in lista_movimientos:
@@ -875,7 +875,7 @@ class account_payment(models.Model):
                                                     if lista:
                                                         for z in lista:
                                                             if z[2]['debit_move_id']== x.id:
-                                                                z[2]['amount']=monto_cruzado
+                                                                z[2]['amount']y.otro_pagar
                                                     else:
                                                         tupla=(0, 0, {
                                                                 'debit_move_id': x.id,
@@ -971,7 +971,7 @@ class account_payment(models.Model):
                                 if cuota_id.saldo_seguro:
                                     movimientos_seguro=self.env['account.move'].search([('journal_id','=',seguro_obj.journal_id.id),('ref','=',y.name)])
                                     for x in movimientos_seguro.invoice_line_ids:
-                                        if x.account_id.id==rec.partner_id.property_accoun_receivable_id.id:
+                                        if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
                                             if x.id in lista_ids:
                                                 i=0
                                                 for mov in lista_movimientos:
@@ -1011,7 +1011,7 @@ class account_payment(models.Model):
                                 if cuota_id.saldo_rastreo:
                                     movimientos_rastreo=self.env['account.move'].search([('journal_id','=',otros_obj.journal_id.id),('ref','=',y.name)])
                                     for x in movimientos_rastreo.invoice_line_ids:
-                                        if x.account_id.id==rec.partner_id.property_accoun_receivable_id.id:
+                                        if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
                                             if x.id in lista_ids:
                                                 i=0
                                                 for y in lista_movimientos:
@@ -1051,7 +1051,7 @@ class account_payment(models.Model):
                                 if cuota_id.saldo_otros:
                                     movimientos_otro=self.env['account.move'].search([('journal_id','=',rastreo_obj.journal_id.id),('ref','=',y.name)])
                                     for x in movimientos_otro.invoice_line_ids:
-                                        if x.account_id.id==rec.partner_id.property_accoun_receivable_id.id:
+                                        if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
                                             if x.id in lista_ids:
                                                 i=0
                                                 for mov in lista_movimientos:
