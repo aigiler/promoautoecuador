@@ -925,7 +925,7 @@ class account_payment(models.Model):
                             #obj_contrato_estado_cuenta = self.env['contrato.estado.cuenta'].search([('id','in',y.invoice_id.contrato_estado_cuenta_ids.ids)])
                             #    for x in obj_contrato_estado_cuenta:
                             for cuota_id in y.contrato_estado_cuenta_ids:
-                                suma_total=cuota_id.saldo_seguro+cuota_id.saldo_cuota_capital+cuota_id.saldo_rastreo+cuota_id.saldo_otros
+                                suma_total=cuota_id.saldo_seguro+cuota_id.saldo_cuota_capital+cuota_id.saldo_rastreo+cuota_id.saldo_otros+cuota_id.saldo_iva+cuota_id.saldo_cuota_administrativa
                                 if cuota_id.saldo_cuota_capital:
                                     movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',y.name)])
                                     
@@ -1090,6 +1090,9 @@ class account_payment(models.Model):
                                                 lista.append(tupla)
 
                           
+                                pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
+                                                                                                                        'monto_pagado':rec.amount,'valor_asociado':suma_total})
+                                
                                 pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
                                                                                                                         'monto_pagado':rec.amount,'valor_asociado':suma_total})
                                 

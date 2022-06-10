@@ -265,7 +265,8 @@ class Contrato(models.Model):
                                                     'saldo':saldo,
                                                     'saldo_cuota_capital':cuota_capital,
                                                     'saldo_cuota_administrativa':cuota_adm,
-                                                    'contrato_id':self.id,                                                    
+                                                    'saldo_iva':iva,
+                                                    'contrato_id':self.id,
                                                         })
         vls=[]                                                
         monto_finan_contrato = sum(self.tabla_amortizacion.mapped('cuota_capital'))

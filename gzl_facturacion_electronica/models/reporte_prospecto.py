@@ -56,9 +56,8 @@ class ReportCrm(models.TransientModel):
                                 'text_wrap':True,'border':True})
         bold2.set_center_across()
 
-        registros_tabla= workbook.add_format({'align':'center','valign':'vcenter',
-                                'font_size': 13,
-                                'text_wrap':True,'border':True})
+
+
         sheet = workbook.add_worksheet(name)
         mesesDic = {
                 "1":'ENERO',
@@ -83,7 +82,7 @@ class ReportCrm(models.TransientModel):
                            {'image_data':  BytesIO(base64.b64decode( self.env.company.imagen_excel_company)), 'x_scale': 0.9, 'y_scale': 0.8,'x_scale': 0.8,
                             'y_scale':     0.8, 'align': 'left','bg_color':'#442484'})
         
-        sheet.merge_range('B1:J1', ' ', bold)
+        sheet.merge_range('B1:I1', ' ', bold)
         sheet.merge_range('A2:I2', 'REPORTE DE PROSPECTOS DEL '+str(dia_start)+' DE '+str(mesesDic[str(mes_start)])+' DEL '+str(year)+' AL '+str(dia_end)+' DE '+str(mesesDic[str(mes_end)])+' DEL '+str(year), bold)
         sheet.set_column('A:A', 15)
         sheet.set_column('B:B', 15)
@@ -166,9 +165,18 @@ class ReportCrm(models.TransientModel):
 
         for line in lista_final:
             if line['presupuesto']:
-                cumplimiento=line['ventas']/line['presupuesto']
+                cumplimiento=(line['ventas']/line['presupuesto'])*100
             else:
                 cumplimiento=0
+
+            if cumplimiento==100:
+                registros_tabla= workbook.add_format({'align':'center','valign':'vcenter',
+                                'font_size': 13,
+                                'text_wrap':True,'border':True,'bg_color':'#442484','color':'#FFFFFF'})
+            if cumplimiento==100:
+                registros_tabla= workbook.add_format({'align':'center','valign':'vcenter',
+                                'font_size': 13,
+                                'text_wrap':True,'border':True,'bg_color':'#442484','color':'#FFFFFF'})
 
             sheet.write(row,0, line['fecha_gestion'], formato_fecha)
             sheet.write(row, 1, line['semana'], registros_tabla)
