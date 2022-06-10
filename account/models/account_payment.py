@@ -824,7 +824,7 @@ class account_payment(models.Model):
                                             lista.append(tupla)
                             if y.rastreo_pagar:
                                 movimientos_rastreo=self.env['account.move'].search([('journal_id','=',otros_obj.journal_id.id),('ref','=',cuota_id.factura_id.name)])
-                                for x in movimientos_cuota.invoice_line_ids:
+                                for x in movimientos_rastreo.invoice_line_ids:
                                     if x.account_id.id==rec.partner_id.property_accoun_receivable_id.id:
                                         if x.id in lista_ids:
                                             i=0
@@ -864,7 +864,7 @@ class account_payment(models.Model):
                                             lista.append(tupla)
                             if y.otro_pagar:
                                 movimientos_otro=self.env['account.move'].search([('journal_id','=',rastreo_obj.journal_id.id),('ref','=',cuota_id.factura_id.name)])
-                                for x in movimientos_cuota.invoice_line_ids:
+                                for x in movimientos_otro.invoice_line_ids:
                                     if x.account_id.id==rec.partner_id.property_accoun_receivable_id.id:
                                         if x.id in lista_ids:
                                             i=0
