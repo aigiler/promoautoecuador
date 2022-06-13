@@ -20,6 +20,11 @@ class Contrato(models.Model):
     entrega_vehiculo_id = fields.Many2one('entrega.vehiculo',string="Solicitud de entrega vehículo" ,track_visibility='onchange')
 
 
+    porcentaje_programado = fields.Float(
+        string='Porcentaje Programado')
+    monto_programado = fields.Monetary(
+        string='Saldo Programado ', currency_field='currency_id')
+
     idEstadoContrato = fields.Char("ID Estado Contrato")
     idTipoContrato = fields.Char("ID Tipo Contrato")
     idContrato = fields.Char("ID de Contrato en base")
@@ -809,10 +814,7 @@ class ContratoEstadoCuenta(models.Model):
     fecha_pagada = fields.Date(String='Fecha Pagada')
     currency_id = fields.Many2one(
         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
-    porcentaje_programado = fields.Float(
-        string='Porcentaje Programado')
-    monto_programado = fields.Monetary(
-        string='Saldo Programado ', currency_field='currency_id')
+
 
     cuota_capital = fields.Monetary(
         string='Cuota Capital', currency_field='currency_id')
