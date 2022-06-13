@@ -20,20 +20,20 @@
                                 <td colspan="4"><span><center><h3 style = "font-weight: bold;">ESTADO DE CUENTA DE APORTES</h3></center></span></td>
                             </tr>
                             <tr>
-                                <td colspan="3" style="text-align: left; width:75% !important;"><span>Cliente: </span> <span t-esc="o.contrato_id.cliente.name"/></td>
+                                <td colspan="2" style="text-align: left; width:75% !important;"><span>Cliente: </span> <span t-esc="o.contrato_id.cliente.name"/></td>
                                 <td style="text-align: left; width:25% !important;"><span>Ced/RUC: </span> <span t-esc="o.contrato_id.cliente.vat"/></td>
                             </tr>
                             <tr>
-                                <td colspan="3" style="text-align: left"><span>Dirección: </span><span style="text-transform: uppercase;" t-esc="o.contrato_id.cliente.street"/></td>
+                                <td colspan="2" style="text-align: left"><span>Dirección: </span><span style="text-transform: uppercase;" t-esc="o.contrato_id.cliente.street"/></td>
                                 <td><span>Telefono: </span><span t-esc="o.contrato_id.cliente.phone"/><text> - </text><span t-esc="o.contrato_id.cliente.mobile"/></td>
                             </tr>
                             <tr>
-                                <td colspan="3" style="text-align: left"><span>Grupo: </span><text>[</text><span t-esc="o.contrato_id.grupo.codigo"/><text>] </text><span t-esc="o.contrato_id.grupo.name"/></td>
+                                <td colspan="2" style="text-align: left"><span>Grupo: </span><text>[</text><span t-esc="o.contrato_id.grupo.codigo"/><text>] </text><span t-esc="o.contrato_id.grupo.name"/></td>
                                 <td><span>Tipo de contrato: </span> <span style="text-transform: uppercase;" t-esc="o.contrato_id.tipo_de_contrato.name"/></td>
                             </tr>
                             <tr>
-                                <td colspan="3" t-if="o.contrato_id.state != 'adjudicar' " style="text-align: left"><span>Estado: </span><span style="text-transform: uppercase;" t-esc="o.contrato_id.state"/></td>
-                                <td colspan="3" t-if="o.contrato_id.state == 'adjudicar' and o.contrato_id.fecha_adjudicado" style="text-align: left">
+                                <td colspan="2" t-if="o.contrato_id.state != 'adjudicar' " style="text-align: left"><span>Estado: </span><span style="text-transform: uppercase;" t-esc="o.contrato_id.state"/></td>
+                                <td colspan="2" t-if="o.contrato_id.state == 'adjudicar' and o.contrato_id.fecha_adjudicado" style="text-align: left">
                                     <span>Fecha Adjudicado: </span>
                                         <span style="text-transform: uppercase;" t-esc="o.contrato_id.state"/>
                                         <span>(</span><span t-esc="o.contrato_id.fecha_adjudicado"/>
