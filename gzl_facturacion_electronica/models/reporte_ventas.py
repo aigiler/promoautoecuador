@@ -115,7 +115,7 @@ class ReportCrm(models.TransientModel):
         for l in crm:
             semana=l.create_date.date().isocalendar()[1]
 
-            sheet.write(row,0, semana, registros_tabla)
+            sheet.write(row,0, 'Semana '+str(semana), registros_tabla)
             sheet.write(row, 1, l.create_date, formato_fecha)
             sheet.write(row, 2,l.partner_id.name or '', registros_tabla)
             sheet.write(row, 3, l.partner_id.vat or '', registros_tabla)

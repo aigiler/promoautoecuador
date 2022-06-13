@@ -58,6 +58,11 @@
                             <th>SEGURO</th>
                             <th>RASTREO</th>
                             <th>OTRO</th>
+                            <th>SALDO CUOTA CAPITAL</th>
+                            <th>SALDO PROGRAMADO</th>
+                            <th>SALDO SEGURO</th>
+                            <th>SALDO RASTREO</th>
+                            <th>SALDO OTRO</th>
                             <th>SALDO</th>
                         </thead>
                         <tfoot style="margin-bottom: 10px; ">
@@ -69,6 +74,11 @@
                                 <td t-esc="round(sum(m.seguro for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
                                 <td t-esc="round(sum(m.rastreo for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
                                 <td t-esc="round(sum(m.otro for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
+                                <td t-esc="round(sum(m.saldo_cuota_capital for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
+                                <td t-esc="round(sum(m.saldo_programado for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
+                                <td t-esc="round(sum(m.saldo_seguro for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
+                                <td t-esc="round(sum(m.saldo_rastreo for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
+                                <td t-esc="round(sum(m.saldo_otros for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
                                 <td t-esc="round(sum(m.saldo for m in o.contrato_id.estado_de_cuenta_ids), 2)"></td>
                             </tr>
                         </tfoot>
@@ -82,6 +92,11 @@
                             <td><span t-esc="estado_cuenta.seguro"/></td>
                             <td><span t-esc="estado_cuenta.rastreo"/></td>
                             <td><span t-esc="estado_cuenta.otro"/></td>
+                            <td><span t-esc="estado_cuenta.saldo_cuota_capital"/></td>
+                            <td><span t-esc="estado_cuenta.saldo_programado"/></td>
+                            <td><span t-esc="estado_cuenta.saldo_seguro"/></td>
+                            <td><span t-esc="estado_cuenta.saldo_rastreo"/></td>
+                            <td><span t-esc="estado_cuenta.saldo_otros"/></td>
                             <td><span t-esc="estado_cuenta.saldo"/></td>
                         </tr>
                         </tbody>

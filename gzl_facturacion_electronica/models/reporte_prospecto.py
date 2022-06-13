@@ -202,7 +202,7 @@ class ReportCrm(models.TransientModel):
             sheet.write(row, 5, line['llamadas'] or 0, registros_tabla)
             sheet.write(row, 6,line['citas']  or 0, registros_tabla)
             sheet.write(row, 7, line['ventas'] or 0, registros_tabla)
-            sheet.write(row, 8, cumplimiento*100, registros_tabla)
+            sheet.write(row, 8, cumplimiento, registros_tabla)
 
             row+=1
 
