@@ -94,6 +94,10 @@ class Contrato(models.Model):
 
 
 
+    direccion = fields.Char(string='Dirección',
+                              track_visibility='onchange')
+    descripcion_adjudicaciones = fields.Char(string='Descripción de Adjudicaciones',
+                              track_visibility='onchange')
 
 
     observacion = fields.Char(string='Observación',
@@ -149,6 +153,14 @@ class Contrato(models.Model):
                 rec.codigo_grupo =' '
 
 
+
+    @api.onchange('porcentaje_programado')
+    def obtener_monto_programo(self):
+        for l in self:
+            if l.porcentaje_programado:
+                l.monto_programado=l.monto_financiamiento*(l.porcentaje_programado/100)
+                l.saldo_programado=l.monto_programado
+
 #    @api.constrains('state')
     def crear_registro_fondo_grupo(self):
         if self.grupo and self.state!='pendiente':
@@ -181,9 +193,6 @@ class Contrato(models.Model):
 
 
                 transacciones.create(dct)
-
-
-
 
 
     @api.depends('tabla_amortizacion.saldo')
@@ -800,6 +809,11 @@ class ContratoEstadoCuenta(models.Model):
     fecha_pagada = fields.Date(String='Fecha Pagada')
     currency_id = fields.Many2one(
         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
+    porcentaje_programado = fields.Float(
+        string='Porcentaje Programado')
+    monto_programado = fields.Monetary(
+        string='Saldo Programado ', currency_field='currency_id')
+
     cuota_capital = fields.Monetary(
         string='Cuota Capital', currency_field='currency_id')
     cuota_adm = fields.Monetary(
