@@ -232,10 +232,10 @@ class AccountPayment(models.Model):
         #if self.tipo_valor:
         #    self.amount=self.amount
         #elif not self.tipo_valor:
-        #for line in self.payment_line_ids:
-        #    if line.pagar:
-        #       total += (line.amount)
-        #    self.amount=total
+        for line in self.payment_line_ids:
+            if line.pagar:
+               total += (line.amount)
+            self.valor_deuda=total
         
         #elif self.tipo_transaccion=='Pago':
         #    self.amount = total
