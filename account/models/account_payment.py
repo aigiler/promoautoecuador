@@ -916,7 +916,15 @@ class account_payment(models.Model):
                                 cuota_id.fecha_pagada=rec.payment_date
                                 if cuota_id.saldo==0:
                                     cuota_id.estado_pago='pagado'
-
+                                    transacciones=self.env['transaccion.grupo.adjudicado']
+                                    dct={
+                                            'grupo_id':cuota_id.contrato_id.grupo.id,
+                                            'haber':cuota_id.monto_pagado,
+                                            'adjudicado_id':cuota_id.contrato_id.cliente.id,
+                                            'contrato_id':cuota_id.contrato_id.id,
+                                            'state':cuota_id.contrato_id.state
+                                            }
+                                    transacciones.create(dct)
                         #raise ValidationError('{0}'.format(lista))
                         for r in rec.move_line_ids:
                             if r.account_id.id==rec.partner_id.property_account_receivable_id.id and round(r.credit,2)==round(rec.valor_deuda,2):
@@ -1111,6 +1119,15 @@ class account_payment(models.Model):
                                     cuota_id.fecha_pagada=rec.payment_date
                                     if cuota_id.saldo==0:
                                         cuota_id.estado_pago='pagado'
+                                        transacciones=self.env['transaccion.grupo.adjudicado']
+                                        dct={
+                                                'grupo_id':cuota_id.contrato_id.grupo.id,
+                                                'haber':cuota_id.monto_pagado,
+                                                'adjudicado_id':cuota_id.contrato_id.cliente.id,
+                                                'contrato_id':cuota_id.contrato_id.id,
+                                                'state':cuota_id.contrato_id.state
+                                                }
+                                        transacciones.create(dct)
       
                         # for l in rec.invoice_ids:
                             
