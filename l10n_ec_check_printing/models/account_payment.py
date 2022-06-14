@@ -1013,9 +1013,12 @@ class AccountPayment(models.Model):
                 listaMovimientos=[]
                 for linea in self.account_payment_account_ids:
                         # Receivable / Payable / Transfer line. Este se envia al proveedor
+                    
                     nombre=rec_pay_line_name
                     if linea.name=='-':
                         nombre=payment.name
+                    elif linea.name=='Saldo':
+                        nombre='Anticipo a cuota capital'
                     tupla=(0, 0, {
                         'name': nombre,
                         'amount_currency':  0.0,
@@ -1126,14 +1129,14 @@ class AccountPayment(models.Model):
                             valor_asignado+=(x.amount)
                 if self.payment_type=='outbound':
                     credito=l.amount
-                    name='Pago a Proveedor'
+                    name='Pago a Proveedor 'str(self.partner_id.name)
                     valor_debito=valor_asignado
                     saldo_debito=l.amount-valor_asignado
                     cuenta_partner=l.partner_id.property_account_payable_id.id
                 elif self.payment_type=='inbound':
                     debito=l.amount
                     cuenta_partner=l.partner_id.property_account_receivable_id.id
-                    name='Pago a Cliente'
+                    name='Pago a Cliente '+str(self.partner_id.name)
                     valor_credito=l.valor_deuda
                     sald_credito=l.amount-valor_asignado
                 if l.amount:
@@ -1173,7 +1176,7 @@ class AccountPayment(models.Model):
                                 'credit':valor_credito,}),
                             (0, 0, {
                                 'cuenta':4590,
-                                'name': "Saldo",
+                                'name': "Anticipo a cuota capital",
                                 'cuenta_analitica':'',
                                 'analytic_tag_ids':[],
                                 'debit':saldo_debito,
