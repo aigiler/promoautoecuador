@@ -287,10 +287,10 @@ class Contrato(models.Model):
                                                         })
                 if rec.cuota_pago:
                     if cuota_asignada==rec.cuota_pago:
-                        self.env['contrato.estado.cuenta'].create('numero_cuota':rec.cuota_pago,
-                                                                'contrato_id':self.id,
-                                                                'fecha':rec.fecha_inicio_pago + relativedelta(months=i),
-                                                                'saldo_programado':l.monto_programado,'programado':l.monto_programado)
+                        self.env['contrato.estado.cuenta'].create({'numero_cuota':rec.cuota_pago,
+                                                                                'contrato_id':self.id,
+                                                                                'fecha':rec.fecha_inicio_pago + relativedelta(months=i),
+                                                                                'saldo_programado':l.monto_programado,'programado':l.monto_programado})
 
 
 
