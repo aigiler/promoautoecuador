@@ -851,7 +851,7 @@ class ContratoEstadoCuenta(models.Model):
                                     ('congelado', 'Congelado')
                                     ], string='Estado de Pago', default='pendiente')
 
-    programado=field.Monetary(string="Cuota Programada", currency_field='currency_id')
+    programado=fields.Monetary(string="Cuota Programada", currency_field='currency_id')
     pago_ids = fields.One2many(
         'account.payment', 'pago_id', track_visibility='onchange')
     
