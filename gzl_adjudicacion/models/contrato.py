@@ -25,6 +25,8 @@ class Contrato(models.Model):
     monto_programado = fields.Monetary(
         string='Saldo Programado ', currency_field='currency_id')
 
+    cuota_pago = fields.Integer(
+        string='Cuota de Pago Programado', track_visibility='onchange')
     idEstadoContrato = fields.Char("ID Estado Contrato")
     idTipoContrato = fields.Char("ID Tipo Contrato")
     idContrato = fields.Char("ID de Contrato en base")
@@ -157,14 +159,14 @@ class Contrato(models.Model):
             else:
                 rec.codigo_grupo =' '
 
-
-
     @api.onchange('porcentaje_programado')
     def obtener_monto_programo(self):
         for l in self:
             if l.porcentaje_programado:
                 l.monto_programado=l.monto_financiamiento*(l.porcentaje_programado/100)
-                l.saldo_programado=l.monto_programado
+                if l.tipo_de_contrato.code=='programo':
+                    l.cuota_pago=self.plazo_meses.numero
+                    
 
 #    @api.constrains('state')
     def crear_registro_fondo_grupo(self):
@@ -270,6 +272,7 @@ class Contrato(models.Model):
 
                 cuota_administrativa_neto= cuota_adm + iva
                 saldo = cuota_capital+cuota_adm+iva
+                cuota_asignada=i+1
                 self.env['contrato.estado.cuenta'].create({
                                                     'numero_cuota':i+1,
                                                     'fecha':rec.fecha_inicio_pago + relativedelta(months=i),
@@ -282,6 +285,15 @@ class Contrato(models.Model):
                                                     'saldo_iva':iva,
                                                     'contrato_id':self.id,
                                                         })
+                if rec.cuota_pago:
+                    if cuota_asignada==rec.cuota_pago:
+                        self.env['contrato.estado.cuenta'].create('numero_cuota':rec.cuota_pago,
+                                                                'contrato_id':self.id,
+                                                                'fecha':rec.fecha_inicio_pago + relativedelta(months=i),
+                                                                'saldo_programado':l.monto_programado,'programado':l.monto_programado)
+
+
+
         vls=[]                                                
         monto_finan_contrato = sum(self.tabla_amortizacion.mapped('cuota_capital'))
         monto_finan_contrato = round(monto_finan_contrato,2)
@@ -839,6 +851,7 @@ class ContratoEstadoCuenta(models.Model):
                                     ('congelado', 'Congelado')
                                     ], string='Estado de Pago', default='pendiente')
 
+    programado=field.Monetary(string="Cuota Programada", currency_field='currency_id')
     pago_ids = fields.One2many(
         'account.payment', 'pago_id', track_visibility='onchange')
     

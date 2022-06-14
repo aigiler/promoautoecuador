@@ -127,8 +127,10 @@
                                     <field name="archivo" filename="name"/>
                                     <field name="fecha_contrato" />
                                     <field name="plazo_meses" widget="selection" />
-                                    <field name="porcentaje_programado"/>
-                                    <field name="monto_programado"/>
+                                    <field name="porcentaje_programado" attrs="{'invisible': [('tipo_de_contrato.code', 'not in', ['programo','exacto'])]}"/>
+                                    <field name="monto_programado" attrs="{'invisible': [('tipo_de_contrato.code', 'not in', ['programo','exacto'])]}"/>
+                                    <field name="cuota_pago" attrs="{'invisible': [('tipo_de_contrato.code', 'not in', ['exacto'])],
+                                                        'required': [('tipo_de_contrato.code', 'in', ['exacto'])]}"/>
                                     <field name="cuota_adm"/>
                                     <field name="factura_inscripcion" options="{'no_create': True, 'no_open': True}"/>
                                 </group>
