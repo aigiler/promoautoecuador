@@ -1070,9 +1070,9 @@ class account_payment(models.Model):
                                                         mov['amount']+=cuota_id.saldo_otros
                                                         monto_cruzado=mov['amount']
                                                         if lista:
-                                                            for x in lista:
-                                                                if x[2]['debit_move_id']== x.id:
-                                                                    x[2]['amount']=monto_cruzado
+                                                            for z in lista:
+                                                                if z[2]['debit_move_id']== x.id:
+                                                                    z[2]['amount']=monto_cruzado
                                                         else:
                                                             tupla=(0, 0, {
                                                                     'debit_move_id': x.id,
