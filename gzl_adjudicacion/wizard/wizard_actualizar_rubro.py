@@ -48,7 +48,7 @@ class WizardActualizarRubro(models.Model):
         #obj_detalle=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.fecha.year==year and l.fecha.month==month)
         obj_detalle=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota)==int(month))
         cuota_inicial=int(obj_detalle.numero_cuota)
-        detalle_a_pagar=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota)>=int(obj_detalle.cuota_inicial))
+        detalle_a_pagar=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota)>=int(obj_detalle.numero_cuota))
         id_detalles=[]
         for i in range(0,diferido):
 
