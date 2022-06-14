@@ -1170,7 +1170,7 @@ class AccountPayment(models.Model):
                     for x in l.contrato_estado_cuenta_payment_ids:
                         if x.monto_pagar:
                             valor_asignado+=x.monto_pagar
-                elif self.tipo_valor=='crear_acticipo':
+                elif self.tipo_valor=='crear_acticipo' or  not self.tipo_valor:
                     for x in l.payment_line_ids:
                         if x.pagar:
                             valor_asignado+=(x.amount)
@@ -1186,7 +1186,7 @@ class AccountPayment(models.Model):
                     name='Pago a Cliente'
                     valor_credito=l.valor_deuda
                     sald_credito=l.amount-valor_asignado
-                if l.amount and l.tipo_valor:
+                if l.amount:
                     if valor_asignado==l.amount:
                         self.account_payment_account_ids= [
                             (0, 0, {
