@@ -172,5 +172,5 @@ class ContratoEstadoCuentaPagos(models.Model):
 
     def cerrar_ventana(self):
         return {
-        'type':'ir.actions.act_window_close'
+        'type':'ir.actions.act_window'
         }
