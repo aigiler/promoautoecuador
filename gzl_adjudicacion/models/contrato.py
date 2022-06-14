@@ -68,7 +68,7 @@ class Contrato(models.Model):
 
     plazo_meses = fields.Many2one('numero.meses',default=lambda self: self.env.ref('gzl_adjudicacion.{0}'.format('numero_meses60')).id ,track_visibility='onchange' )
 
-
+    tiene_cuota = fields.Boolean(String='Cuota de Entrada',default=False)
     cuota_adm = fields.Monetary(
         string='Cuota Administrativa',store=True, compute='calcular_valores_contrato', currency_field='currency_id', track_visibility='onchange')
     factura_inscripcion = fields.Many2one(
@@ -158,6 +158,13 @@ class Contrato(models.Model):
                 rec.codigo_grupo = "["+rec.grupo.codigo+"] "+ rec.grupo.name or ' '
             else:
                 rec.codigo_grupo =' '
+
+    @api.onchange('tipo_de_contrato')
+    @api.contrains('tipo_de_contrato')
+    def validar_entrada(self):
+        for l in self:
+            if l.tipo_de_contrato.code in ['exacto','programo']:
+                l.tiene_cuota=True
 
     @api.onchange('porcentaje_programado')
     def obtener_monto_programo(self):
