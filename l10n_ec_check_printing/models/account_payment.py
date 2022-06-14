@@ -1017,8 +1017,8 @@ class AccountPayment(models.Model):
                     nombre=rec_pay_line_name
                     if linea.name=='-':
                         nombre=payment.name
-                    elif linea.name=='Saldo':
-                        nombre='Anticipo a cuota capital'
+                    elif linea.name=='Anticipo a cuota capital':
+                        nombre=linea.name
                     tupla=(0, 0, {
                         'name': nombre,
                         'amount_currency':  0.0,
