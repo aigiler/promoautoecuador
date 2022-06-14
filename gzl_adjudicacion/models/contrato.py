@@ -160,7 +160,7 @@ class Contrato(models.Model):
                 rec.codigo_grupo =' '
 
     @api.onchange('tipo_de_contrato')
-    @api.contrains('tipo_de_contrato')
+    @api.constrains('tipo_de_contrato')
     def validar_entrada(self):
         for l in self:
             if l.tipo_de_contrato.code in ['exacto','programo']:
