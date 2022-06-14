@@ -919,7 +919,7 @@ class account_payment(models.Model):
                                     transacciones=self.env['transaccion.grupo.adjudicado']
                                     dct={
                                             'grupo_id':cuota_id.contrato_id.grupo.id,
-                                            'haber':cuota_id.monto_pagado,
+                                            'haber':cuota_id.cuota_capital+cuota_id.seguro+cuota_id.otro+cuota_id.rastreo+cuota_id.iva_adm,
                                             'adjudicado_id':cuota_id.contrato_id.cliente.id,
                                             'contrato_id':cuota_id.contrato_id.id,
                                             'state':cuota_id.contrato_id.state
@@ -1122,7 +1122,7 @@ class account_payment(models.Model):
                                         transacciones=self.env['transaccion.grupo.adjudicado']
                                         dct={
                                                 'grupo_id':cuota_id.contrato_id.grupo.id,
-                                                'haber':cuota_id.monto_pagado,
+                                                'haber':cuota_id.cuota_capital+cuota_id.seguro+cuota_id.otro+cuota_id.rastreo+cuota_id.iva_adm,
                                                 'adjudicado_id':cuota_id.contrato_id.cliente.id,
                                                 'contrato_id':cuota_id.contrato_id.id,
                                                 'state':cuota_id.contrato_id.state
