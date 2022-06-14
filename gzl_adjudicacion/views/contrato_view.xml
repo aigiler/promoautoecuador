@@ -126,6 +126,7 @@
                                     <field name="direccion"/>
                                     <field name="archivo" filename="name"/>
                                     <field name="fecha_contrato" />
+                                    <field name="tiene_cuota" invisible="1"/>
                                     <field name="plazo_meses" widget="selection" />
                                     <field name="porcentaje_programado" attrs="{'invisible': [('tiene_cuota', '=',False)]}"/>
                                     <field name="monto_programado" attrs="{'invisible': [('tiene_cuota', '=',False)]}"/>
