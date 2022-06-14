@@ -294,10 +294,17 @@ class Contrato(models.Model):
                                                     'saldo_iva':iva,
                                                     'contrato_id':self.id,
                                                         })
-                if rec.cuota_pago:
+                if rec.cuota_pago and rec.tiene_cuota:
                     if cuota_asignada==rec.cuota_pago:
                         self.env['contrato.estado.cuenta'].create({'numero_cuota':rec.cuota_pago,
                                                                                 'contrato_id':self.id,
+                                                                                'cuota_capital':0,
+                                                                                'cuota_adm':0,
+                                                                                'iva_adm':0,
+                                                                                'saldo':rec.monto_programado,
+                                                                                'saldo_cuota_capital':0,
+                                                                                'saldo_cuota_administrativa':0,
+                                                                                'saldo_iva':0,
                                                                                 'fecha':rec.fecha_inicio_pago + relativedelta(months=i),
                                                                                 'saldo_programado':rec.monto_programado,'programado':rec.monto_programado})
 
@@ -905,7 +912,7 @@ class ContratoEstadoCuenta(models.Model):
             monto=sum(l.pago_ids.mapped("amount"))
             l.monto_pagado=monto
 
-            l.saldo=l.cuota_capital+l.cuota_adm+l.iva_adm + l.seguro+ l.rastreo + l.otro - l.monto_pagado
+            l.saldo=l.cuota_capital+l.cuota_adm+l.iva_adm + l.seguro+ l.rastreo + l.otro + l.monto_programado - l.monto_pagado
 
 
 
