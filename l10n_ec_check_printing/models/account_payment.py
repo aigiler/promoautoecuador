@@ -480,32 +480,12 @@ class AccountPayment(models.Model):
 
     def post(self):
         for rec in self:
-            # if self.tipo_valor=='enviar_credito':
-            #     for y in self.contrato_estado_cuenta_payment_ids:
-            #         cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',rec.contrato_id.id),
-            #                                                     ('numero_cuota','=',y.numero_cuota)])[0]     
-            #         if cuota_id:
-            #             cuota_id.saldo_cuota_capital=cuota_id.saldo_cuota_capital-y.cuota_capital_pagar
-            #             cuota_id.saldo_seguro=cuota_id.saldo_seguro-y.seguro_pagar
-            #             cuota_id.saldo_rastreo=cuota_id.saldo_rastreo-y.rastreo_pagar
-            #             cuota_id.saldo_otros=cuota_id.saldo_otros-y.otro_pagar
-            #             cuota_id.monto_pagado=cuota_id.monto_pagado+y.monto_pagar
-            #             cuota_id.saldo=cuota_id.saldo-y.monto_pagar
+            if rec.saldo_pago<0:
+                raise ValidationError("El saldo no puede ser negativo.")
             lista_invoice=[]
             for pago in rec.payment_line_ids:
                 if pago.pagar:
                     lista_invoice.append(pago.invoice_id.id)
-                    # for cuota_id in pago.invoice_id.contrato_estado_cuenta_ids:
-                    #     cuota_id.monto_pagado=cuota_id.cuota_capital+cuota_id.seguro+cuota_id.otro+cuota_id.rastreo+cuota_id.cuota_adm+cuota_id.iva_adm
-                    #     cuota_id.saldo=0
-                    #     cuota_cap_ant=cuota_id.saldo_cuota_capital
-                    #     saldo_seg_ant=cuota_id.saldo_seguro
-                    #     rastreo_ant=cuota_id.saldo_rastreo
-                    #     otro_ant=cuota_id.saldo_otros
-                    #     cuota_id.saldo_cuota_capital=0
-                    #     cuota_id.saldo_seguro=0
-                    #     cuota_id.saldo_rastreo=0
-                    #     cuota_id.saldo_otros=0
                 rec.update({'invoice_ids': [(6, 0, lista_invoice)]})
             if rec.amount==0: 
                 raise ValidationError("Ingrese el valor del monto")
