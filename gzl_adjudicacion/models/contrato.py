@@ -165,6 +165,8 @@ class Contrato(models.Model):
         for l in self:
             if l.tipo_de_contrato.code in ['exacto','programo']:
                 l.tiene_cuota=True
+            else:
+                l.tiene_cuota=False
 
     @api.onchange('porcentaje_programado')
     def obtener_monto_programo(self):
