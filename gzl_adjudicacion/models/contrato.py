@@ -912,7 +912,7 @@ class ContratoEstadoCuenta(models.Model):
             monto=sum(l.pago_ids.mapped("amount"))
             l.monto_pagado=monto
 
-            l.saldo=l.cuota_capital+l.cuota_adm+l.iva_adm + l.seguro+ l.rastreo + l.otro + l.monto_programado - l.monto_pagado
+            l.saldo=l.cuota_capital+l.cuota_adm+l.iva_adm + l.seguro+ l.rastreo + l.otro + l.programado - l.monto_pagado
 
 
 
