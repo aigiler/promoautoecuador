@@ -969,7 +969,7 @@ class AccountPayment(models.Model):
                 #         for act in cuota_id:
                 #             cuota_id.monto_pagado=y.monto_pagar
                 #             cuota_id.saldo=cuota_id.saldo-y.monto_pagar
-            if payment.tipo_valor=='crear_acticipo':
+            if payment.tipo_valor=='crear_acticipo' or not payment.tipo_valor:
                 if not payment.payment_line_ids:
                     raise ValidationError("Debe seleccionar facturas Pagar")
 
