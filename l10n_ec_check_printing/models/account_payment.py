@@ -229,19 +229,19 @@ class AccountPayment(models.Model):
 
         total=0
         
-        if self.tipo_valor:
-            self.amount=self.amount
-        elif not self.tipo_valor:
-            for line in self.payment_line_ids:
-                if line.pagar:
-                    total += (line.amount)
-            self.amount=total
+        #if self.tipo_valor:
+        #    self.amount=self.amount
+        #elif not self.tipo_valor:
+        #for line in self.payment_line_ids:
+        #    if line.pagar:
+        #       total += (line.amount)
+        #    self.amount=total
         
-        elif self.tipo_transaccion=='Pago':
-            self.amount = total
-        elif self.tipo_transaccion=='Anticipo':
-            if total>self.amount_residual:
-                raise ValidationError('El Anticipo no puede ser mayor al valor a pagar de todas las facturas.')
+        #elif self.tipo_transaccion=='Pago':
+        #    self.amount = total
+        #elif self.tipo_transaccion=='Anticipo':
+        #    if total>self.amount_residual:
+        #        raise ValidationError('El Anticipo no puede ser mayor al valor a pagar de todas las facturas.')
 
 
     @api.returns('self', lambda value: value.id)
