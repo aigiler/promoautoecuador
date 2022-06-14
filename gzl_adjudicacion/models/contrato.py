@@ -168,7 +168,7 @@ class Contrato(models.Model):
             else:
                 l.tiene_cuota=False
 
-    @api.onchange('porcentaje_programado')
+    @api.onchange('porcentaje_programado','monto_financiamiento','plazo_meses')
     def obtener_monto_programo(self):
         for l in self:
             if l.porcentaje_programado:
@@ -299,7 +299,7 @@ class Contrato(models.Model):
                         self.env['contrato.estado.cuenta'].create({'numero_cuota':rec.cuota_pago,
                                                                                 'contrato_id':self.id,
                                                                                 'fecha':rec.fecha_inicio_pago + relativedelta(months=i),
-                                                                                'saldo_programado':l.monto_programado,'programado':l.monto_programado})
+                                                                                'saldo_programado':rec.monto_programado,'programado':rec.monto_programado})
 
 
 
