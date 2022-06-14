@@ -1129,7 +1129,7 @@ class AccountPayment(models.Model):
                             valor_asignado+=(x.amount)
                 if self.payment_type=='outbound':
                     credito=l.amount
-                    name='Pago a Proveedor 'str(self.partner_id.name)
+                    name='Pago a Proveedor '+str(self.partner_id.name)
                     valor_debito=valor_asignado
                     saldo_debito=l.amount-valor_asignado
                     cuenta_partner=l.partner_id.property_account_payable_id.id
