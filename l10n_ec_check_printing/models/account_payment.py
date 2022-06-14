@@ -226,7 +226,7 @@ class AccountPayment(models.Model):
 
     @api.onchange('payment_line_ids')
     def _onchange_residual(self):
-
+        monto=self.amount
         total=0
         
         #if self.tipo_valor:
@@ -236,6 +236,7 @@ class AccountPayment(models.Model):
             if line.pagar:
                total += (line.amount)
             self.valor_deuda=total
+            self.saldo_pago=monto-self.valor_deuda
         
         #elif self.tipo_transaccion=='Pago':
         #    self.amount = total
