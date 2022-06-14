@@ -157,5 +157,5 @@ class AccountPayment(models.Model):
                     if x.pagar:
                         valor_asignado+=x.amount
                 l.valor_deuda=valor_asignado
-                l.saldo_pago=l.amount+valor_asignado
+                l.saldo_pago=l.amount-valor_asignado
 
