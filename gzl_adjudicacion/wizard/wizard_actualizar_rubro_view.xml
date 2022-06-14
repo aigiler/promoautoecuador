@@ -15,6 +15,7 @@
                         <field name="monto" required="1"/>
                         <field name="diferido" required="1"/>
                         <field name="contrato_id" invisible="1"/>
+                        <field name="partner_id" invisible="0"/>
 
                         
                     </group>
