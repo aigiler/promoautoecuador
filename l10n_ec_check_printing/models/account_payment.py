@@ -1098,44 +1098,14 @@ class AccountPayment(models.Model):
 
     @api.onchange('amount','partner_id','tipo_valor','saldo_pago','valor_deuda')
     def crear_asientos(self):
-        # self.account_payment_account_ids=[(6,0,[])]
-        # for l in self:
-        #     if l.partner_id: 
-        #         credito=0
-        #         debito=0
-        #         cuenta_partner=''
-        #         if self.payment_type=='outbound':
-        #             credito=l.amount
-        #             name='Pago a Proveedor'
-        #             cuenta_partner=l.partner_id.property_account_payable_id.id
-        #         elif self.payment_type=='inbound':
-        #             debito=l.amount
-        #             cuenta_partner=l.partner_id.property_account_receivable_id.id
-        #             name='Pago a Cliente'
-        #         if l.amount and not l.tipo_valor:
-        #             self.account_payment_account_ids= [
-        #                 (0, 0, {
-        #                     'cuenta':self.journal_id.default_debit_account_id.id,
-        #                     'name': '-',
-        #                     'cuenta_analitica':'',
-        #                     'analytic_tag_ids':[],
-        #                     'debit':debito,
-        #                     'credit':credito}),
-        #                 (0, 0, {
-        #                     'cuenta':cuenta_partner,
-        #                     'name': name,
-        #                     'cuenta_analitica':'',
-        #                     'analytic_tag_ids':[],
-        #                     'debit':credito,
-        #                     'credit':debito,})]
-        #         else:
+
         self.crear_asientos_tipo_valor()
 
     def crear_asientos_tipo_valor(self):
         self.account_payment_account_ids=[(6,0,[])]
         self._saldo_pagar()
         for l in self:
-            if l.partner_id: 
+            if l.partner_id and not l.is_third_name: 
                 valor_asignado=0
                 credito=0
                 debito=0
