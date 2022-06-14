@@ -194,7 +194,7 @@ class AccountPayment(models.Model):
                         else:
                             amount = invoice.amount_total-amount_balance 
                     for x in invoice.contrato_estado_cuenta_ids:
-                        deuda_total+=(x.cuota_capital+x.seguro+x.rastreo+x.otro)
+                        deuda_total+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
                     line_id = PaymentLine.create([{
                         'invoice_id': invoice.id,
                         'amount_total': invoice.amount_total,
