@@ -33,7 +33,7 @@
         <field name="model">contrato</field>
         <field name="inherit_id" ref="gzl_adjudicacion.view_contrato_form"/>
         <field name="arch" type="xml">
-          <xpath expr="//field[@name='estado_de_cuenta_ids']/form/field[@name='saldo_tabla']" position="before">
+          <xpath expr="//field[@name='estado_de_cuenta_ids']/form/sheet/group/group/field[@name='saldo_tabla']" position="before">
                 <field name="ids_pagos">
                                         <tree string="Detalle de Pagos Realizados" >
                                         <field name="pago_id" string="Pago" readonly="1"/>
