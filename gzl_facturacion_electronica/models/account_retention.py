@@ -232,6 +232,7 @@ class AccountRetention(models.Model):
             'ret_out_invoice':self.env.ref('l10n_ec_tree.ec_03'),
             'ret_in_invoice':self.env.ref('l10n_ec_tree.ec_11'),
             'ret_in_refund':self.env.ref('l10n_ec_tree.ec_11'),
+            'ret_in_debit':self.env.ref('l10n_ec_tree.ec_11'),
             'ret_out_refund':self.env.ref('l10n_ec_tree.ec_03'),
 
             }  
