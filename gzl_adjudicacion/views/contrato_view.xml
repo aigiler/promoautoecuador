@@ -143,6 +143,7 @@
                                     <field name="descripcion_adjudicaciones" />
                                     
                                     <field name="observacion"/>
+                                    <field name="nota"/>
                                     <field name="aplicaGarante"/>
                                     <field name="garante" attrs="{'invisible': [('aplicaGarante', '=', False)]}"/>
                                     
