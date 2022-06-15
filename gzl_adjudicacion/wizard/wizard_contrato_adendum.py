@@ -228,15 +228,15 @@ class WizardContratoAdendum(models.Model):
                     obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')] , order ='fecha desc')
                     #raise ValidationError('aaaaaaaaaaaaa{0}'.format(obj_contrato))
                     for c in obj_contrato:
-                        raise ValidationError('{0}'.format(c.programado))
                         if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
-                            c.update({
-                                'cuota_capital': c.cuota_capital - valor_a_restar,
-                                'contrato_id':self.contrato_id.id,
-                            })
-                            vls.append(valor_sobrante)
-                            valor_sobrante = valor_sobrante -valor_a_restar
-                            valor_sobrante = round(valor_sobrante,2)
+                            if c.programado == 0.00 or c.programado == 0 or c.programado == 0.0:
+                                c.update({
+                                    'cuota_capital': c.cuota_capital - valor_a_restar,
+                                    'contrato_id':self.contrato_id.id,
+                                })
+                                vls.append(valor_sobrante)
+                                valor_sobrante = valor_sobrante -valor_a_restar
+                                valor_sobrante = round(valor_sobrante,2)
                             
                             
                 if  monto_finan_contrato  < self.monto_financiamiento:
@@ -249,19 +249,19 @@ class WizardContratoAdendum(models.Model):
                     else:
                         valor_a_restar= (valor_sobrante/parte_decimal)*0.01
 
-                    obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente'),('programado','=',0)] , order ='fecha desc')
+                    obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')] , order ='fecha desc')
 
                     for c in obj_contrato:
-
                         if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
+                            if c.programado == 0.00 or c.programado == 0 or c.programado == 0.0:
                             #raise ValidationError(str(valor_sobrante)+'--'+str(parte_decimal)+'----'+str(valor_a_restar))
-                            c.update({
-                                'cuota_capital': c.cuota_capital + valor_a_restar,
-                                'contrato_id':self.contrato_id.id,
-                            })  
-                            vls.append(valor_sobrante)
-                            valor_sobrante = valor_sobrante -valor_a_restar
-                            valor_sobrante = round(valor_sobrante,2)
+                                c.update({
+                                    'cuota_capital': c.cuota_capital + valor_a_restar,
+                                    'contrato_id':self.contrato_id.id,
+                                })  
+                                vls.append(valor_sobrante)
+                                valor_sobrante = valor_sobrante -valor_a_restar
+                                valor_sobrante = round(valor_sobrante,2)
                 ##si esta ejecutado se ocultara el boton de validar                  
                 self.ejecutado =True
                 #asignar nuevos valores 
