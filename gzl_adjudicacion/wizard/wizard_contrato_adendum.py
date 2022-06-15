@@ -240,7 +240,6 @@ class WizardContratoAdendum(models.Model):
                             
                             
                 if  monto_finan_contrato  < self.monto_financiamiento:
-                    raise ValidationError('{0},{1}'.format(monto_finan_contrato,self.monto_financiamiento))
                     valor_sobrante = self.monto_financiamiento  - monto_finan_contrato 
                     valor_sobrante = round(valor_sobrante,2)
                     parte_decimal, parte_entera = math.modf(valor_sobrante)
