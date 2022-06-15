@@ -213,7 +213,6 @@ class WizardContratoAdendum(models.Model):
                 ##########################################validar que la cuota capital este bien ####################################################
                 monto_finan_contrato = sum(self.contrato_id.tabla_amortizacion.mapped('cuota_capital'))
                 monto_finan_contrato = round(monto_finan_contrato,2)
-                
                 vls=[]
                 if  monto_finan_contrato  > self.monto_financiamiento:
                     valor_sobrante = monto_finan_contrato - self.contrato_id.monto_financiamiento 
@@ -224,7 +223,7 @@ class WizardContratoAdendum(models.Model):
                         valor_a_restar= (valor_sobrante/parte_decimal)*0.1
                     else:
                         valor_a_restar= (valor_sobrante/parte_decimal)*0.01
-
+                    raise ValidationError('aaaaaaaaaaaaa{0}'.format(valor_a_restar))
                     obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')] , order ='fecha desc')
                     #raise ValidationError('aaaaaaaaaaaaa{0}'.format(obj_contrato))
                     for c in obj_contrato:
