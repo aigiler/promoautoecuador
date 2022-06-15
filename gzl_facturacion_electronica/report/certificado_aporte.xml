@@ -51,7 +51,7 @@
                                     <li>IVA:<span><t t-options='{"widget": "float", "precision": 2}' t-esc="cuota.iva_adm"/></span></li>
                                 </ul>
                             </td>
-                            <td style="text-align: center;"><t t-options='{"widget": "float", "precision": 2}' t-esc="cuota.cuota_adm+cuota.cuota_capital+cuota.iva_adm+cuota.rastreo+cuota.seguro+cuota.otros"/></td>
+                            <td style="text-align: center;"><t t-options='{"widget": "float", "precision": 2}' t-esc="cuota.cuota_adm+cuota.cuota_capital+cuota.iva_adm+cuota.rastreo+cuota.seguro+cuota.otro"/></td>
                         </tr>
                     <!-- </table>
 
