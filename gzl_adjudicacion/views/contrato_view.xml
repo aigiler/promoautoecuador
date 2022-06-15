@@ -216,13 +216,7 @@
                                         <field name="iva"   readonly="1"/>
                                         <field name="saldo_tabla"   readonly="1"/>
                                     </group>
-                                    <field name="ids_pagos">
-                                        <tree string="Detalle de Pagos Realizados" >
-                                        <field name="pago_id" string="Pago" readonly="1"/>
-                                        <field name="monto_pagado" string="Total Pago" readonly="1"/>
-                                        <field name="valor_asociado" sum="Valor asociado a la cuota" readonly="1"/>
-                                        </tree>
-                                    </field>
+                                    
                                 </group>
                                 </sheet>
                             </form>
