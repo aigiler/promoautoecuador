@@ -225,9 +225,10 @@ class WizardContratoAdendum(models.Model):
                     else:
                         valor_a_restar= (valor_sobrante/parte_decimal)*0.01
 
-                    obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente'),('programado','=',0)] , order ='fecha desc')
-                    #raise ValidationError('{0}'.format(obj_contrato))
+                    obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente'),('programado','=',0.00)] , order ='fecha desc')
+                    raise ValidationError('aaaaaaaaaaaaa{0}'.format(obj_contrato))
                     for c in obj_contrato:
+                        raise ValidationError('{0}'.format(obj_contrato))
                         if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
                             c.update({
                                 'cuota_capital': c.cuota_capital - valor_a_restar,
