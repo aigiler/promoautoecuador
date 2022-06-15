@@ -92,7 +92,7 @@ class WizardContratoAdendum(models.Model):
                 cont =0
                 monto_finan_contrato= 0.00
                 for l in obj_contrato:
-                    if l.cuota_programada!=0:
+                    if l.programado!=0:
                         entrada=True
                     cont+=1
                     dct ={}
