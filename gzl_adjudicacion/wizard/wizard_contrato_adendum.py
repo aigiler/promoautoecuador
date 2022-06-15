@@ -154,8 +154,10 @@ class WizardContratoAdendum(models.Model):
                                                             })
                    
 
-                    if cuota_asignada==self.contrato_id.cuota_pago and not entrada:
-                        self.env['contrato.estado.cuenta'].create({'numero_cuota':self.contrato_id.cuota_pago,
+                    if self.contrato_id.tiene_cuota and not entrada:
+
+                        if cuota_asignada==self.contrato_id.cuota_pago:
+                            self.env['contrato.estado.cuenta'].create({'numero_cuota':self.contrato_id.cuota_pago,
                                                                                 'contrato_id':self.contrato_id.id,
                                                                                 'cuota_capital':0,
                                                                                 'cuota_adm':0,
