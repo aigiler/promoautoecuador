@@ -114,7 +114,7 @@ class WizardContratoAdendum(models.Model):
                 if not entrada:
                     if self.contrato_id.cuota_pago and self.contrato_id.tiene_cuota:
                         self.contrato_id.monto_programado=self.monto_financiamiento*(self.contrato_id.porcentaje_programado/100)
-                        if l.tipo_de_contrato.code=='programo':
+                        if self.contrato_id.tipo_de_contrato.code=='programo':
                             self.contrato_id.cuota_pago=self.plazo_meses.numero
                 ####crear cuotas pagadas para listar segun el nuevo plazo o monto
                 for a in lista_cuotapagadas:
