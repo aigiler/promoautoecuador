@@ -108,7 +108,7 @@ class WizardContratoAdendum(models.Model):
                     lista_cuotapagadas.append(dct)
 
 
-                obj_contrato_detalle=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id)])
+                obj_contrato_detalle=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','!=','pagado')])
                 obj_contrato_detalle.unlink()
 
                 if not entrada:
@@ -117,17 +117,17 @@ class WizardContratoAdendum(models.Model):
                         if self.contrato_id.tipo_de_contrato.code=='programo':
                             self.contrato_id.cuota_pago=self.plazo_meses.numero
                 ####crear cuotas pagadas para listar segun el nuevo plazo o monto
-                for a in lista_cuotapagadas:
-                    self.env['contrato.estado.cuenta'].create({
-                                                        'numero_cuota':a['numero_cuota'],
-                                                        'fecha':a['fecha'],
-                                                        'cuota_capital':a['cuota_capital'],
-                                                        'cuota_adm':a['cuota_adm'],
-                                                        'iva_adm':a['iva_adm'],
-                                                        'saldo':a['saldo'],
-                                                        'contrato_id':a['contrato_id'],
-                                                        'estado_pago':a['estado_pago'],                                                
-                                                            })
+                #for a in lista_cuotapagadas:
+                #    self.env['contrato.estado.cuenta'].create({
+                #                                        'numero_cuota':a['numero_cuota'],
+                #                                        'fecha':a['fecha'],
+                #                                        'cuota_capital':a['cuota_capital'],
+                #                                        'cuota_adm':a['cuota_adm'],
+                #                                        'iva_adm':a['iva_adm'],
+                #                                        'saldo':a['saldo'],
+                #                                        'contrato_id':a['contrato_id'],
+                #                                        'estado_pago':a['estado_pago'],                                                
+                #                                            })
                 #crear el nuevo estado de cuenta 
                 cuota_capital_nueva = (nuevoMontoReeestructura/int(intervalo_nuevo))
                 cuota_capital_nueva =round(cuota_capital_nueva, 2)
@@ -150,7 +150,10 @@ class WizardContratoAdendum(models.Model):
                                                         'cuota_adm':cuota_adm,
                                                         'iva_adm':iva,
                                                         'saldo':saldo,
-                                                        'contrato_id':self.contrato_id.id,                                                    
+                                                        'saldo_cuota_capital':cuota_capital,
+                                                        'saldo_cuota_administrativa':cuota_adm,
+                                                        'saldo_iva':iva,
+                                                        'contrato_id':self.contrato_id.id,                                      
                                                             })
                    
 
