@@ -146,7 +146,7 @@ class WizardContratoAdendum(models.Model):
                     self.env['contrato.estado.cuenta'].create({
                                                         'numero_cuota':i+1, 
                                                         'fecha':self.contrato_id.fecha_inicio_pago + relativedelta(months=i),
-                                                        'cuota_capital':cuota_capital,
+                                                        'cuota_capital':cuota_capital_nueva,
                                                         'cuota_adm':cuota_adm,
                                                         'iva_adm':iva,
                                                         'saldo':saldo,
