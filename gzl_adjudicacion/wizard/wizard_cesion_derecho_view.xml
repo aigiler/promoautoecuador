@@ -9,10 +9,12 @@
                     <group string="Cesion de Derecho"> 
 
 
+                        <field name="partner_id" required="1"/>
                         <field name="contrato_id" invisible="1"/>
-                        <field name="monto_a_ceder" readonly="1"/>
-                        <field name="contrato_a_ceder" required="1"/>
-                        <field name="carta_adjunto" required="1"/>
+                        <field name="monto_a_ceder" invisible="1"/>
+                        <field name="contrato_a_ceder" invisible="1"/>
+                        <field name="carta_adjunto" />
+                        
 
                     </group>
                 </sheet>

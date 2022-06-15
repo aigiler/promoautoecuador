@@ -105,7 +105,7 @@ class Contrato(models.Model):
                               track_visibility='onchange')
     descripcion_adjudicaciones = fields.Char(string='Descripción de Adjudicaciones',
                               track_visibility='onchange')
-
+    nota = fields.Char(string='Cesión de Derecho')
 
     observacion = fields.Char(string='Observación',
                               track_visibility='onchange')
@@ -709,18 +709,6 @@ class Contrato(models.Model):
                     'default_monto_a_ceder': pago,
                 }
         }
-
-
-
-
-
-
-
-
-
-
-
-
 
     def actualizar_rubros_por_adelantado(self):
         view_id = self.env.ref('gzl_adjudicacion.wizard_actualizar_rubro_form').id
