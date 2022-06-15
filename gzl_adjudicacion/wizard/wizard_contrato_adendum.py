@@ -111,11 +111,11 @@ class WizardContratoAdendum(models.Model):
                 obj_contrato_detalle=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id)])
                 obj_contrato_detalle.unlink()
 
-                 if not entrada:
+                if not entrada:
                     if self.contrato_id.cuota_pago and self.contrato_id.tiene_cuota:
                         self.contrato_id.monto_programado=self.monto_financiamiento*(self.contrato_id.porcentaje_programado/100)
                         if l.tipo_de_contrato.code=='programo':
-                                self.contrato_id.cuota_pago=self.plazo_meses.numero
+                            self.contrato_id.cuota_pago=self.plazo_meses.numero
                 ####crear cuotas pagadas para listar segun el nuevo plazo o monto
                 for a in lista_cuotapagadas:
                     self.env['contrato.estado.cuenta'].create({
