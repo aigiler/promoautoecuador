@@ -25,8 +25,8 @@ class WizardAdelantarCuotas(models.Model):
         for l in self:
             if l.contrato_id:
                 if l.partner_id:
-                    l.contrato_id.nota=" "+str(self.contrato_id.partner_id.name)+' Cede el contrato a la persona: '+str(self.partner_id.name)
-                    l.contrato_id.partner_id=self.partner_id.id
+                    l.contrato_id.nota=" "+str(self.contrato_id.cliente.name)+' Cede el contrato a la persona: '+str(self.partner_id.name)
+                    l.contrato_id.cliente=self.partner_id.id
 
         # view_id = self.env.ref('gzl_adjudicacion.wizard_adelantar_cuotas_readonly_form').id
 
