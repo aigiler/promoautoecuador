@@ -219,13 +219,14 @@ class WizardContratoAdendum(models.Model):
                     valor_sobrante = monto_finan_contrato - self.contrato_id.monto_financiamiento 
                     valor_sobrante = round(valor_sobrante,2)
                     parte_decimal, parte_entera = math.modf(valor_sobrante)
-                    raise ValidationError('{0}'.format(parte_decimal))
+                    
                     if parte_decimal >=1:
                         valor_a_restar= (valor_sobrante/parte_decimal)*0.1
                     else:
                         valor_a_restar= (valor_sobrante/parte_decimal)*0.01
 
-                    obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente'),('programado','!=',0)] , order ='fecha desc')
+                    obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente'),('programado','=',0)] , order ='fecha desc')
+                    #raise ValidationError('{0}'.format(obj_contrato))
                     for c in obj_contrato:
                         if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
                             c.update({
@@ -247,7 +248,7 @@ class WizardContratoAdendum(models.Model):
                     else:
                         valor_a_restar= (valor_sobrante/parte_decimal)*0.01
 
-                    obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente'),('programado','!=',0)] , order ='fecha desc')
+                    obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente'),('programado','=',0)] , order ='fecha desc')
 
                     for c in obj_contrato:
 
