@@ -175,11 +175,58 @@
                                 <field name="monto_pagado" sum="monto_pagado" readonly="1"/>
                                 <field name="saldo" sum="saldo" readonly="1"/>
                                 <field name="estado_pago"   readonly="1"/>
-                                <button name="pagar_cuota" attrs="{'invisible':[('estado_pago','=','pagado')]}"  type="object" string="Pagar"/>
+                                <button name="pagar_cuota" invisible="1"  type="object" string="Pagar"/>
                             </tree>
+                            <form string="Estado de Cuenta" >
+                                <header>
+                                    <field name="estado_pago" widget="statusbar" readonly="1"/>
+                                </header>
+                                <sheet>
+                                <group>
+                                    <field name="idContrato" readonly="1"/>
+                                    <field name="contrato_id" invisible="1"/>
+                                    <field name="numero_cuota"  readonly="1"/>
+                                    <field name="fecha" readonly="1"/>
+                                    <field name="fecha_pagada" readonly="1"/>
+                                    <field name="referencia"   readonly="1"/>
+                                </group>
+                                <group>    
+                                    <group>
+                                        <field name="cuota_capital" readonly="1"/>
+                                        <field name="cuota_adm" readonly="1"/>
+                                        <field name="iva_adm" readonly="1"/>
+                                        <field name="seguro" sum="seguro" readonly="1"/>
+                                        <field name="rastreo" sum="rastreo" readonly="1"/>
+                                        <field name="otro" sum="otro" readonly="1"/>
+                                        <field name="programado"   readonly="1"/>
+                                        <field name="fondo_reserva"   readonly="1"/> 
+                                        <field name="monto_pagado" sum="monto_pagado" readonly="1"/>
+                                        <field name="factura_id" />
+                                    </group>
+                                    <group>
+                                        <field name="saldo_cuota_capital"   readonly="1"/>
+                                        <field name="saldo_cuota_administrativa"   readonly="1"/>
+                                        <field name="saldo_iva"   readonly="1"/>
+                                        <field name="saldo_seguro"   readonly="1"/>
+                                        <field name="saldo_rastreo"   readonly="1"/>
+                                        <field name="saldo_otros"   readonly="1"/>
+                                        <field name="saldo_programado"   readonly="1"/>
+                                        <field name="saldo_fondo_reserva"   readonly="1"/>
+                                        <field name="saldo" sum="saldo" readonly="1"/>
+                                        <field name="iva"   readonly="1"/>
+                                        <field name="saldo_tabla"   readonly="1"/>
+                                    </group>
+                                    <field name="ids_pagos">
+                                        <tree string="Detalle de Pagos Realizados" >
+                                        <field name="pago_id" string="Pago" readonly="1"/>
+                                        <field name="monto_pagado" string="Total Pago" readonly="1"/>
+                                        <field name="valor_asociado" sum="Valor asociado a la cuota" readonly="1"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                                </sheet>
+                            </form>
                         </field>
-
-
                     </div>
                 <!-- Attachment preview -->
                 <div class="o_attachment_preview" />
