@@ -54,19 +54,15 @@ class WizardActualizarRubro(models.Model):
 
             obj_detalle=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota)==cuota_inicial)
             obj_detalle.write({variable:valor})
+            if variable=='rastreo':
+                obj_detalle.write({'saldo_rastreo':valor})
+            elif variable=='seguro':
+                obj_detalle.write({'saldo_seguro':valor})
+            elif variable=='otro':
+                obj_detalle.write({'saldo_otros':valor})
 
             cuota_inicial+=1
             id_detalles.append(obj_detalle.id)
-            
-
-
-
-
-
-
-
-
-
 
         vls=[]                                                
 
