@@ -224,7 +224,7 @@ class AccountMove(models.Model):
         iva = 0
         for rec in cuotas:
             iva += rec.iva_adm
-            total += (rec.cuota_adm+rec.cuota_capital+rec.seguro+rec.rastreo+rec.otro+iva)
+            total += (rec.cuota_adm+rec.cuota_capital+rec.seguro+rec.rastreo+rec.otro+rec.iva_adm)
             subtotal = total - iva
         
         return {'subtotal':subtotal, 'total':total}
