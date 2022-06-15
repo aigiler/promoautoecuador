@@ -79,6 +79,7 @@ class WizardContratoAdendum(models.Model):
                 estado_cuenta_anterior.append(dct)
 
 
+            entrada=False
             porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
             valor_porcentaje = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum)/100
             valor_menos_porc = self.contrato_id.monto_financiamiento - valor_porcentaje
@@ -91,6 +92,8 @@ class WizardContratoAdendum(models.Model):
                 cont =0
                 monto_finan_contrato= 0.00
                 for l in obj_contrato:
+                    if l.cuota_programada!=0:
+                        entrada=True
                     cont+=1
                     dct ={}
                     dct['numero_cuota'] = cont
@@ -108,7 +111,11 @@ class WizardContratoAdendum(models.Model):
                 obj_contrato_detalle=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id)])
                 obj_contrato_detalle.unlink()
 
-
+                 if not entrada:
+                    if self.contrato_id.cuota_pago and self.contrato_id.tiene_cuota:
+                        self.contrato_id.monto_programado=self.monto_financiamiento*(self.contrato_id.porcentaje_programado/100)
+                        if l.tipo_de_contrato.code=='programo':
+                                self.contrato_id.cuota_pago=self.plazo_meses.numero
                 ####crear cuotas pagadas para listar segun el nuevo plazo o monto
                 for a in lista_cuotapagadas:
                     self.env['contrato.estado.cuenta'].create({
@@ -133,6 +140,7 @@ class WizardContratoAdendum(models.Model):
                     cuota_adm = nuevoMontoReeestructura * self.contrato_id.tasa_administrativa / 100 / 12
                     iva = cuota_adm * 0.12
                     #monto_finan_contrato+= cuota_capital
+                    cuota_asignada=i+1
                     cuota_administrativa_neto= cuota_adm + iva
                     saldo = cuota_capital+cuota_adm+iva
                     self.env['contrato.estado.cuenta'].create({
@@ -144,6 +152,23 @@ class WizardContratoAdendum(models.Model):
                                                         'saldo':saldo,
                                                         'contrato_id':self.contrato_id.id,                                                    
                                                             })
+                   
+
+                    if cuota_asignada==self.contrato_id.cuota_pago and not entrada:
+                        self.env['contrato.estado.cuenta'].create({'numero_cuota':self.contrato_id.cuota_pago,
+                                                                                'contrato_id':self.contrato_id.id,
+                                                                                'cuota_capital':0,
+                                                                                'cuota_adm':0,
+                                                                                'iva_adm':0,
+                                                                                'saldo':self.contrato_id.monto_programado,
+                                                                                'saldo_cuota_capital':0,
+                                                                                'saldo_cuota_administrativa':0,
+                                                                                'saldo_iva':0,
+                                                                                'fecha':self.contrato_id.fecha_inicio_pago + relativedelta(months=i) + relativedelta(months=i),
+                                                                                'saldo_programado':self.contrato_id.monto_programado,
+                                                                                'programado':self.contrato_id.monto_programado})
+
+
                 #si se creo el nuevo estado de cuenta agregar el estado de cuenta anterior a las tablas de bitacora
                 obj_estado_cuenta_nuevo=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id)])
                 if len(obj_estado_cuenta_nuevo) >0:
