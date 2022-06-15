@@ -191,7 +191,7 @@
                                     <field name="fecha_pagada" readonly="1"/>
                                     <field name="referencia"   readonly="1"/>
                                 </group>
-                                <group>    
+                                <group name="totales">    
                                     <group>
                                         <field name="cuota_capital" readonly="1"/>
                                         <field name="cuota_adm" readonly="1"/>
