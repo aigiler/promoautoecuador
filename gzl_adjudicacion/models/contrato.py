@@ -707,7 +707,7 @@ class Contrato(models.Model):
                     return {
                     'name': 'Signed Document',
                     'type': 'ir.actions.act_url',
-                    'url': '/sign/download/%(request_id)s/%(access_token)s/completed' % {'request_id': contrato_documento.sign_request_id.id, 'access_token': contrato_documento.sign_request_id.access_token},
+                    'url': '/sign/document/%(request_id)s/%(access_token)s/completed' % {'request_id': contrato_documento.sign_request_id.id, 'access_token': contrato_documento.sign_request_id.access_token},
                     }
 
 
