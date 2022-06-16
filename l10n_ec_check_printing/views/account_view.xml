@@ -24,7 +24,9 @@
 
 
 
-
+                <field name="journal_id" position="attributes">
+                    <attribute name="string">Banco</attribute>
+                </field>
 
                 <field name="payment_method_id" position="after">
                     <field name="invoice_id" invisible="1" />
