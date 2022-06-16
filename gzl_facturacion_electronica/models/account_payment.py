@@ -139,10 +139,14 @@ class AccountPayment(models.Model):
                 for x in l.contrato_estado_cuenta_payment_ids:
                     if x.monto_pagar:
                         valor_asignado+=x.monto_pagar
+
                 if round(valor_asignado,2) > round(l.amount,2):
                     raise ValidationError("Los valores a pagar {0} exceden los ${0} especificados.".format(l.amount,valor_asignado))
                 l.valor_deuda=valor_asignado
-                l.saldo_pago=l.amount-l.valor_deuda
+                if round(valor_asignado,2)==round(l.amount,2):
+                    l.saldo_pago=0
+                else:
+                    l.saldo_pago=l.amount-l.valor_deuda
             elif l.tipo_valor=='crear_acticipo':
                     valor_asignado=0
                     valor_facturas=0
