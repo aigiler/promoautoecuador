@@ -10,8 +10,8 @@
                 <field name="tipo_valor"  attrs="{'invisible': [('payment_type','!=','inbound')]}"/>
                 <field name="contrato_id" groups="gzl_facturacion_electronica.grupo_cobranza" attrs="{'invisible': [('tipo_valor','!=','enviar_credito')]}" domain="[('cliente', '=', partner_id)]"/>
                 <button  name="crear_detalles" string="Obtener Cuotas" type="object" class='btn-primary' attrs="{'invisible': [('tipo_valor','!=','enviar_credito')]}"></button>
-                <field name="valor_deuda" string="Valor a Pagar de Facturas" attrs="{'invisible': [('tipo_valor','=',False)]}"/>
-                <field name="saldo_pago" attrs="{'invisible': [('tipo_valor','=',False)]}"/> 
+                <field name="valor_deuda" string="Valor a Pagar de Facturas"/>
+                <field name="saldo_pago" /> 
 
             </field>
           <xpath expr="//field[@name='partner_id']" position="after">

@@ -157,6 +157,7 @@ class AccountPayment(models.Model):
                     l.saldo_pago=l.amount-l.valor_deuda
             elif not l.tipo_valor:
                 valor_asignado=0
+                
                 for x in l.payment_line_ids:
                     if x.pagar:
                         valor_asignado+=x.amount
