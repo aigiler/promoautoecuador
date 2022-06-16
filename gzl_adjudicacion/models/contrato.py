@@ -696,7 +696,15 @@ class Contrato(models.Model):
 
             contrato_documento=self.env['sign.request'].search([('id','=',39)])
             if contrato_documento:
-                contrato_documento.go_to_document()
+                contrato_documento.ensure_one()
+                if not contrato_documento.completed_document:
+                    self.generate_completed_document()
+
+                return {
+                    'name': 'Signed Document',
+                    'type': 'ir.actions.act_url',
+                    'url': '/sign/download/%(request_id)s/%(access_token)s/completed' % {'request_id': contrato_documento.id, 'access_token': contrato_documento.access_token},
+                }
 
 
     def cesion_derecho(self):
