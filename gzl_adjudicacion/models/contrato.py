@@ -704,11 +704,11 @@ class Contrato(models.Model):
                     'url': '/sign/document/%(request_id)s/%(access_token)s' % {'request_id': contrato_documento.id, 'access_token': contrato_documento.access_token},
                 }
 
-                return {
-                    'name': 'Signed Document',
-                    'type': 'ir.actions.act_url',
-                    'url': '/sign/download/%(request_id)s/%(access_token)s/completed' % {'request_id': contrato_documento.id, 'access_token': contrato_documento.access_token},
-                }
+               # return {
+                #    'name': 'Signed Document',
+                #    'type': 'ir.actions.act_url',
+                #    'url': '/sign/download/%(request_id)s/%(access_token)s/completed' % {'request_id': contrato_documento.id, 'access_token': contrato_documento.access_token},
+                #}
 
 
     def cesion_derecho(self):
