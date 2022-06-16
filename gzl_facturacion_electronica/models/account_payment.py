@@ -139,7 +139,7 @@ class AccountPayment(models.Model):
                 for x in l.contrato_estado_cuenta_payment_ids:
                     if x.monto_pagar:
                         valor_asignado+=x.monto_pagar
-                if (l.amount-valor_asignado)<0:
+                if (l.amount-valor_asignado)==0:
                     raise ValidationError("Los valores a pagar exceden los ${0} especificados.".format(l.amount))
                 l.valor_deuda=valor_asignado
                 l.saldo_pago=l.amount-l.valor_deuda
