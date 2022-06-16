@@ -690,6 +690,15 @@ class Contrato(models.Model):
         }
 
 
+
+    def obtener_contrato(self):
+        for l in self:
+
+            contrato_documento=self.env['sign.request'].search([('id','=',39)])
+            if contrato_documento:
+                contrato_documento.get_completed_document()
+
+
     def cesion_derecho(self):
 
 
@@ -908,13 +917,6 @@ class ContratoEstadoCuenta(models.Model):
             l.saldo=l.cuota_capital+l.cuota_adm+l.iva_adm + l.seguro+ l.rastreo + l.otro + l.programado - l.monto_pagado
 
 
-
-    def obtener_contrato(self):
-        for l in self:
-
-            contrato_documento=self.env['sign.request'].search([('id','=',39)])
-            if contrato_documento:
-                contrato_documento.get_completed_document()
 
 
     def pagar_cuota(self):
