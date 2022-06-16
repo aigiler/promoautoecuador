@@ -46,13 +46,13 @@ class WizardActualizarRubro(models.Model):
 
 
         #obj_detalle=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.fecha.year==year and l.fecha.month==month)
-        obj_detalle=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota)==int(month))
+        obj_detalle=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota)==int(month) and l.cuota_capital>0)
         cuota_inicial=int(obj_detalle.numero_cuota)
-        detalle_a_pagar=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota)>=int(obj_detalle.numero_cuota))
+        detalle_a_pagar=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota)>=int(obj_detalle.numero_cuota) and l.cuota_capital>0)
         id_detalles=[]
         for i in range(0,diferido):
 
-            obj_detalle=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota)==cuota_inicial)
+            obj_detalle=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota)==cuota_inicial and l.cuota_capital>0)
             obj_detalle.write({variable:valor})
             if variable=='rastreo':
                 obj_detalle.write({'saldo_rastreo':valor})
