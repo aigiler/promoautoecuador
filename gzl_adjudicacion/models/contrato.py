@@ -698,7 +698,11 @@ class Contrato(models.Model):
             if contrato_documento:
                 contrato_documento.ensure_one()
                 if not contrato_documento.completed_document:
-                    contrato_documento.generate_completed_document()
+                    return {
+                    'name': 'Signed Document',
+                    'type': 'ir.actions.act_url',
+                    'url': '/sign/download/%(request_id)s/%(access_token)s' % {'request_id': contrato_documento.id, 'access_token': contrato_documento.access_token},
+                }
 
                 return {
                     'name': 'Signed Document',
