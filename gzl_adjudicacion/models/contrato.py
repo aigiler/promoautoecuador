@@ -912,7 +912,6 @@ class ContratoEstadoCuenta(models.Model):
 
 
 
-
     def pagar_cuota(self):
         view_id = self.env.ref('gzl_adjudicacion.wizard_pago_cuota_amortizaciones_contrato').id
 
