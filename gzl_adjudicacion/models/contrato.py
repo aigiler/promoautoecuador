@@ -698,7 +698,7 @@ class Contrato(models.Model):
             if contrato_documento:
                 contrato_documento.ensure_one()
                 if not contrato_documento.completed_document:
-                    self.generate_completed_document()
+                    contrato_documento.generate_completed_document()
 
                 return {
                     'name': 'Signed Document',
