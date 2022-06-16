@@ -697,7 +697,7 @@ class Contrato(models.Model):
             contrato_documento=self.env['sign.request.item'].search([('partner_id','=',l.cliente.id)], limit=1)
             if contrato_documento:
                 contrato_documento.ensure_one()
-                if not contrato_documento.completed_document:
+                if not contrato_documento.sign_request_id.completed_document:
                     return {
                     'name': 'Signed Document',
                     'type': 'ir.actions.act_url',
