@@ -694,7 +694,7 @@ class Contrato(models.Model):
     def obtener_contrato(self):
         for l in self:
 
-            contrato_documento=self.env['sign.request.item'].search([('partner_id','=',l.cliente)], limit=1)
+            contrato_documento=self.env['sign.request.item'].search([('partner_id','=',l.cliente.id)], limit=1)
             if contrato_documento:
                 contrato_documento.ensure_one()
                 if not contrato_documento.completed_document:
