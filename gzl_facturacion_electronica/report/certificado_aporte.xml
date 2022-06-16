@@ -13,8 +13,6 @@
 
                      <t t-set="o" t-value="o.with_context(lang=lang)"/>
                     <div class="page">
-                        <h3><strong>CERTIFICADO DE APORTE</strong></h3>
-
                     <style>
                         table, tr, td {
                         border: 1px solid black;
@@ -22,57 +20,68 @@
                         }
                     </style>
                     <table>
+                      <tr>
+                        <td style="text-align: center;" colspan="8"><b>CERTIFICADO DE APORTE</b></td>
+                        </tr>
+    
+                      <tr>
+                            <td colspan="1"><b>Nombre:</b></td>
+                            <td colspan="2"><t t-esc="o.partner_id.name"/></td>
+                            <td colspan="2"><b>Grupo/Orden:</b></td>
+                            <td colspan="1"><t t-esc="o.contrato_id.grupo.name"/></td>
+                            <td colspan="1"><b>Fecha:</b></td>
+                            <td colspan="1"><t t-esc="o.invoice_date"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="1"><b>Ciudad:</b></td>
+                            <td colspan="2"><t t-esc="o.contrato_id.ciudad.nombre_ciudad"/></td>
+                            <td colspan="2"><b>Plazo/Meses:</b></td>
+                            <td colspan="1"><t t-esc="o.contrato_id.plazo_meses.numero"/></td>
+                            <td colspan="1"><b>Valor Vigente:</b></td>
+                            <td colspan="1"><t t-options='{"widget": "float", "precision": 2}' t-esc="o.contrato_id.monto_financiamiento"/></td>
+                        </tr>
 
-                        <tr>
-                            <td>Nombre:<t t-esc="o.partner_id.name"/></td>
-                            <td colspan="3">Grupo/Orden:<t t-esc="o.contrato_id.grupo.name"/></td>
-                        </tr>
-                        <tr>
-                            <td>Ciudad:<t t-esc="o.contrato_id.ciudad.nombre_ciudad"/></td>
-                            <td>Plazo/Meses:<t t-esc="o.contrato_id.plazo_meses.numero"/></td>
-                            <td colspan="2">Valor Vigente:<t t-options='{"widget": "float", "precision": 2}' t-esc="o.contrato_id.monto_financiamiento"/></td>
-                        </tr>
                     <!-- </table>
 
                     <table> -->
                         <tr>
-                            <td style="text-align: center;">Cuota</td>
-                            <td style="text-align: center;">Vencimiento</td>
-                            <td style="text-align: center;">Descripcion</td>
-                            <td style="text-align: center;">Total</td>
+                            <td style="text-align: center;" colspan="1"><b>Cuota</b></td>
+                            <td style="text-align: center;" colspan="1"><b>Vencimiento</b></td>
+                            <td style="text-align: center;" colspan="5"><b>Descripcion</b></td>
+                            <td style="text-align: center;" colspan="1"><b>Total</b></td>
                         </tr>
                         <tr t-foreach="o.get_cuotas_lines()" t-as="cuota">
-                            <td style="text-align: center;"><t t-esc="cuota.numero_cuota"/></td>
-                            <td style="text-align: center;"><t t-esc="cuota.fecha_pagada"/></td>
-                            <td>
+                            <td style="text-align: center;" colspan="1"><t t-esc="cuota.numero_cuota"/></td>
+                            <td style="text-align: center;" colspan="1"><t t-esc="cuota.fecha_pagada"/></td>
+                            <td colspan="5">
                                 <ul>
-                                    <li>Cuota Capital:<span><t t-options='{"widget": "float", "precision": 2}' t-esc="cuota.cuota_capital"/></span></li>
-                                    <li>Cuota Adm.:<span><t t-options='{"widget": "float", "precision": 2}' t-esc="cuota.cuota_adm"/></span></li>
-                                    <li>IVA:<span><t t-options='{"widget": "float", "precision": 2}' t-esc="cuota.iva_adm"/></span></li>
+                                    <li><b>Cuota Capital:</b><span><t t-options="{widget: float, precision: 2}" t-esc="cuota.cuota_capital"/></span></li>
+                                    <li><b>Cuota Adm.:</b><span><t t-options="{widget: float, precision: 2}" t-esc="cuota.cuota_adm"/></span></li>
+                                    <li><b>IVA:</b><span><t t-options="{widget: float, precision: 2}" t-esc="cuota.iva_adm"/></span></li>
                                 </ul>
                             </td>
-                            <td style="text-align: center;"><t t-options='{"widget": "float", "precision": 2}' t-esc="cuota.cuota_adm+cuota.cuota_capital+cuota.iva_adm+cuota.rastreo+cuota.seguro+cuota.otro"/></td>
+                            <td colspan="1" style="text-align: center;"><t t-options="{widget: float, precision: 2}" t-esc="cuota.cuota_adm+cuota.cuota_capital+cuota.iva_adm+cuota.rastreo+cuota.seguro+cuota.otro"/></td>
                         </tr>
                     <!-- </table>
 
                     <table> -->
                         <tr>
-                            <td rowspan="3">
-                                Forma de Pago:
+                            <td  colspan="2" rowspan="2">
+                                <b>Forma de Pago:</b>
                                 <ul>
                                     <li><t t-esc="o.method_payment.name"/></li>
                                 </ul>
                             </td>
-                            <td style="width:36%" colspan="2">Subtotal:</td>
-                            <td style="text-align: center;"><t t-options='{"widget": "float", "precision": 2}' t-esc="o.get_total_and_subtotal_cuotas().get('subtotal')"/></td>
+                            <td style="width:36%" colspan="5"><b>Subtotal:</b></td>
+                            <td style="text-align: center;" colspan="1"><t t-options="{widget: float, precision: 2}" t-esc="o.get_total_and_subtotal_cuotas().get('subtotal')"/></td>
                         </tr>
                         <tr>
-                            <td colspan="2">Total:</td>
-                            <td style="text-align: center;"><t t-options='{"widget": "float", "precision": 2}' t-esc="o.get_total_and_subtotal_cuotas().get('total')"/></td>
+                            <td colspan="5"><b>Total:</b></td>
+                            <td style="text-align: center;" colspan="1"><t t-options="{widget: float, precision: 2}" t-esc="o.get_total_and_subtotal_cuotas().get('total')"/></td>
                         </tr>
                         <tr>
-                            <td colspan="2">Observaciones:</td>
-                            <td><t t-esc="o.l10n_latam_document_number"/></td>
+                            <td colspan="7"><b>Observaciones:</b></td>
+                            <td colspan="1"><b><t t-esc="o.l10n_latam_document_number"/></b></td>
                         </tr>
                     </table>
                 </div>
@@ -81,6 +90,7 @@
 
             </t>
 
+    
         </template>
 <!-- 
     <template id="report_certificado_aporte">
