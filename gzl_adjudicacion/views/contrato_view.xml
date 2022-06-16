@@ -49,22 +49,23 @@
         <field name="arch" type="xml">
             <form string="Contrato">
                 <header>
-                    <button name="cambio_estado_boton_borrador" string="Activo" type="object" states="pendiente" class="oe_highlight"/>
+                    <field name="is_group_cobranza" invisible="1"/>
+                    <button name="cambio_estado_boton_borrador" attrs="{'invisible': [('is_group_cobranza', '=', True)]}" string="Activo" type="object" states="pendiente" class="oe_highlight"/>
 
-                    <button name="cambio_estado_congelar_contrato" string="Congelar " states="inactivo" type="object" class="oe_highlight"/>
-                    <button name="reactivar_contrato_congelado" string="Reactivar Contrato " states="congelar_contrato" type="object" class="oe_highlight"/>
+                    <button name="cambio_estado_congelar_contrato" attrs="{'invisible': [('is_group_cobranza', '=', True)]}" string="Congelar " states="inactivo" type="object" class="oe_highlight"/>
+                    <button name="reactivar_contrato_congelado" attrs="{'invisible': [('is_group_cobranza', '=', True)]}" string="Reactivar Contrato " states="congelar_contrato" type="object" class="oe_highlight"/>
 
 
-                    <button name="cambio_estado_boton_desistir" string="Desistir" type="object" states="inactivo"  class="oe_highlight"/>
+                    <button name="cambio_estado_boton_desistir" attrs="{'invisible': [('is_group_cobranza', '=', True)]}" string="Desistir" type="object" states="inactivo"  class="oe_highlight"/>
                     
-                    <button name="detalle_tabla_amortizacion" string="Generar estado cuenta contrato" invisible="1" type="object" class="oe_highlight"/>
-                    <button name="pagar_cuotas_por_adelantado" string="Pagar Cuotas por Adelantado" states="activo,adjudicar" type="object" class="oe_highlight"/>
-                    <button name="actualizar_rubros_por_adelantado" string="Actualizar Rubros" states="activo,adjudicar" type="object" class="oe_highlight"/>
-                    <button name="cambio_estado_boton_inactivar" string="Inactivar" states="activo" type="object" class="oe_highlight"/>
+                    <button name="detalle_tabla_amortizacion" attrs="{'invisible': [('is_group_cobranza', '=', True)]}" string="Generar estado cuenta contrato" invisible="1" type="object" class="oe_highlight"/>
+                    <button name="pagar_cuotas_por_adelantado" attrs="{'invisible': [('is_group_cobranza', '=', True)]}" string="Pagar Cuotas por Adelantado" states="activo,adjudicar" type="object" class="oe_highlight"/>
+                    <button name="actualizar_rubros_por_adelantado" attrs="{'invisible': [('is_group_cobranza', '=', True)]}" string="Actualizar Rubros" states="activo,adjudicar" type="object" class="oe_highlight"/>
+                    <button name="cambio_estado_boton_inactivar" attrs="{'invisible': [('is_group_cobranza', '=', True)]}" string="Inactivar" states="activo" type="object" class="oe_highlight"/>
 
 
 
-                    <button name="cesion_derecho" string="Cesión de Derecho" attrs="{'invisible':['|',('state','not in',['inactivo','desistir','congelar']),('desistido','=',True)]}" states="inactivo,desistir,congelar" type="object" class="oe_highlight"/>
+                    <button name="cesion_derecho" string="Cesión de Derecho" attrs="{'invisible':['|','|',('state','not in',['inactivo','desistir','congelar']),('desistido','=',True),('is_group_cobranza', '=', True)]}" states="inactivo,desistir,congelar" type="object" class="oe_highlight"/>
 
 
 
@@ -72,7 +73,7 @@
 
 
 
-                    <button name="crear_adendum" string="Crear Adendum" states="activo" type="object" class="oe_highlight"/>
+                    <button name="crear_adendum"  attrs="{'invisible': [('is_group_cobranza', '=', True)]}"  string="Crear Adendum" states="activo" type="object" class="oe_highlight"/>
 
 
                     <field name="state" widget="statusbar" statusbar_visible="pendiente,activo,congelar_contrato,adjudicar,adendum,desistir"/>
