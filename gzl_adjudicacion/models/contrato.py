@@ -902,7 +902,7 @@ class ContratoEstadoCuenta(models.Model):
     def calcular_monto_pagado(self):
 
         for l in self:
-            monto=sum(l.pago_ids.mapped("amount"))
+            monto=sum(l.ids_pagos.mapped("valor_asociado"))
             l.monto_pagado=monto
 
             l.saldo=l.cuota_capital+l.cuota_adm+l.iva_adm + l.seguro+ l.rastreo + l.otro + l.programado - l.monto_pagado
