@@ -696,7 +696,6 @@ class Contrato(models.Model):
 
             contrato_documento=self.env['sign.request'].search([('id','=',39)])
             if contrato_documento:
-                raise ValidationError("Contrato encontrado")
                 contrato_documento.get_completed_document()
 
 
