@@ -909,7 +909,12 @@ class ContratoEstadoCuenta(models.Model):
 
 
 
+    def obtener_contrato(self):
+        for l in self:
 
+            contrato_documento=self.env['sign.request'].search([('id','=',39)])
+            if contrato_documento:
+                contrato_documento.get_completed_document()
 
 
     def pagar_cuota(self):
