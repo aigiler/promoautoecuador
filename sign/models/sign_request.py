@@ -164,7 +164,6 @@ class SignRequest(models.Model):
     def get_completed_document(self):
         self.ensure_one()
         if not self.completed_document:
-            raise ValidationEroor("CCCCCCCCCCCCCCCCCCC")
             self.generate_completed_document()
 
         return {

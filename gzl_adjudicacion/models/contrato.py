@@ -696,7 +696,7 @@ class Contrato(models.Model):
 
             contrato_documento=self.env['sign.request'].search([('id','=',39)])
             if contrato_documento:
-                contrato_documento.get_completed_document()
+                contrato_documento.go_to_document()
 
 
     def cesion_derecho(self):
