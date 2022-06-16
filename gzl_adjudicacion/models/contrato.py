@@ -694,21 +694,21 @@ class Contrato(models.Model):
     def obtener_contrato(self):
         for l in self:
 
-            contrato_documento=self.env['sign.request'].search([('id','=',49)])
+            contrato_documento=self.env['sign.request.item'].search([('partner_id','=',l.cliente)], limit=1)
             if contrato_documento:
                 contrato_documento.ensure_one()
                 if not contrato_documento.completed_document:
                     return {
                     'name': 'Signed Document',
                     'type': 'ir.actions.act_url',
-                    'url': '/sign/document/%(request_id)s/%(access_token)s' % {'request_id': contrato_documento.id, 'access_token': contrato_documento.access_token},
-                }
-
-               # return {
-                #    'name': 'Signed Document',
-                #    'type': 'ir.actions.act_url',
-                #    'url': '/sign/download/%(request_id)s/%(access_token)s/completed' % {'request_id': contrato_documento.id, 'access_token': contrato_documento.access_token},
-                #}
+                    'url': '/sign/document/%(request_id)s/%(access_token)s' % {'request_id': contrato_documento.sign_request_id.id, 'access_token': contrato_documento.access_token},
+                    }
+                else:
+                    return {
+                    'name': 'Signed Document',
+                    'type': 'ir.actions.act_url',
+                    'url': '/sign/download/%(request_id)s/%(access_token)s/completed' % {'request_id': contrato_documento.id, 'access_token': contrato_documento.access_token},
+                    }
 
 
     def cesion_derecho(self):
