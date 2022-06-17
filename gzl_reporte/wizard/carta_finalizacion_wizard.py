@@ -118,10 +118,10 @@ class CartaFinalizacion(models.TransientModel):
             mes = datetime.now().month
             dia = datetime.now().day
             #print(mesesDic[str(mes)][:3])
-            valordia = amount_to_text_es.amount_to_text(dia)
-            valordia = valordia.split()
-            valordia = valordia[0]
-            fechacontr = str(valordia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
+            #valordia = amount_to_text_es.amount_to_text(dia)
+            #valordia = valordia.split()
+            #valordia = valordia[0]
+            fechacontr = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
             dct = {}
             dct['identificar_docx']='txt_factual'
             dct['valor']=fechacontr
