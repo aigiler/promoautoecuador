@@ -26,6 +26,7 @@
             'report/reporte_estado_de_cuenta_template.xml',
             'report/reporte_estado_de_cuenta.xml',
             'wizard/contrato_adendum_wizard_view.xml',
+            'wizard/carta_finalizacion_wizard.xml',
 
 
 
