@@ -28,6 +28,7 @@ class CartaFinalizacion(models.TransientModel):
     vehiculo_id = fields.Many2one('entrega.vehiculo',string='entrega.vehiculo')
 
     @api.depends("partner_id")
+    @api.onchange("partner_id")
     def obtener_vehiculo(self):
         vehiculo_id = self.env['entrega.vehiculo'].search(
                 [('nombreSocioAdjudicado', '=', self.partner_id.id)], limit=1)
