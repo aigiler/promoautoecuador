@@ -37,7 +37,7 @@ class WizardContratoAdendum(models.Model):
         else:
             obj=self.contrato_id
 
-            pagos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado')
+            pagos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado' or l.factura_id!=False)
             pago_capital=sum(pagos.mapped("cuota_capital"))
 
             nuevoMontoReeestructura=self.monto_financiamiento-pago_capital
@@ -108,7 +108,7 @@ class WizardContratoAdendum(models.Model):
                     lista_cuotapagadas.append(dct)
 
 
-                obj_contrato_detalle=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','!=','pagado')])
+                obj_contrato_detalle=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','!=','pagado'),('factura_id','!=',False)])
                 obj_contrato_detalle.unlink()
 
                 if not entrada:
