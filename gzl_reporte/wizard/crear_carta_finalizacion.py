@@ -8,7 +8,7 @@ from odoo.exceptions import AccessError, UserError, ValidationError
 def crear_carta_finalizacion(ruta,detalle):
     #Se abre el documento en la ruta
     doc = Document(ruta)
-    tabla2=doc.tables[0]
+    #tabla2=doc.tables[0]
     contador=1
 
     for campo in detalle:
