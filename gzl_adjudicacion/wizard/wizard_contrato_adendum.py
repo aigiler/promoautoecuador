@@ -223,7 +223,9 @@ class WizardContratoAdendum(models.Model):
                     valor_sobrante = round(valor_sobrante,2)
                     parte_decimal, parte_entera = math.modf(valor_sobrante)
                     #raise ValidationError('{0},{1},{2}'.format(valor_sobrante,parte_decimal,parte_entera))
-                    if parte_decimal >=1:
+                    if parte_decimal==0:
+                        valor_a_restar=0
+                    elif parte_decimal >=1:
                         valor_a_restar= (valor_sobrante/parte_decimal)*0.1
                     else:
                         valor_a_restar= (valor_sobrante/parte_decimal)*0.01
@@ -246,7 +248,9 @@ class WizardContratoAdendum(models.Model):
                     valor_sobrante = self.monto_financiamiento  - monto_finan_contrato 
                     valor_sobrante = round(valor_sobrante,2)
                     parte_decimal, parte_entera = math.modf(valor_sobrante)
-                    if parte_decimal >=1:
+                    if parte_decimal==0:
+                        valor_a_restar=0
+                    elif parte_decimal >=1:
                         valor_a_restar= (valor_sobrante/parte_decimal)*0.1
                     else:
                         valor_a_restar= (valor_sobrante/parte_decimal)*0.01
