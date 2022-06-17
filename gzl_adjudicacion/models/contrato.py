@@ -667,10 +667,10 @@ class Contrato(models.Model):
 
 
     def crear_adendum(self):
-        if len(self.adendums_contrato_ids)>1:
-            raise ValidationError("El contrato solo puede realizar un adendum")
-        elif self.state !='activo':
-            raise ValidationError("El contrato solo puede realizar un adendum en estado activo")
+        #if len(self.adendums_contrato_ids)>1:
+            #raise ValidationError("El contrato solo puede realizar un adendum")
+        #elif self.state !='activo':
+            #raise ValidationError("El contrato solo puede realizar un adendum en estado activo")
 
         view_id = self.env.ref('gzl_adjudicacion.wizard_crear_adendum_form').id
 
@@ -698,7 +698,7 @@ class Contrato(models.Model):
             if contrato_documento:
                 contrato_documento.ensure_one()
                 
-            
+
                 return {
                 'name': 'Signed Document',
                 'type': 'ir.actions.act_url',
