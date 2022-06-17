@@ -69,8 +69,6 @@ class CartaFinalizacion(models.TransientModel):
             shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
             campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
             lista_campos=[]
-            estado_cuenta=[]
-            estado_cuenta_anterior=[]
             for campo in campos:
                 dct={}
                 resultado=self.mapped(campo.name)
