@@ -33,28 +33,24 @@ class CartaFinalizacion(models.TransientModel):
         for l in self:
             if l.partner_id:
                 vehiculo_id = self.env['entrega.vehiculo'].search(
-                        [('nombreSocioAdjudicado', '=', self.partner_id.id)], limit=1)
+                        [('nombreSocioAdjudicado', '=', self.partner_id.id),('estado','=','entrega_vehiculo')], limit=1)
                 contrato_id = self.env['contrato'].search(
-                        [('cliente', '=', self.partner_id.id)], limit=1)
+                        [('cliente', '=', self.partner_id.id),('state','=','adjudicar')], limit=1)
                 #if vehiculo_id:
                 #    self.vehiculo_id=vehiculo_id.id
                 #if contrato_id:
                 #    self.contrato_id=contrato_id.id
+        ###PARA PRUEBA
         self.vehiculo_id=190
         self.contrato_id=8605
 
     def print_report_xls(self):
-        #raise ValidationError(str(self.clave))
         if self.clave=='carta_finalizacion':
             dct=self.crear_plantilla_contrato_reserva()
             return dct
 
-
-
     def crear_plantilla_contrato_reserva(self,):
-        #Instancia la plantilla
         obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','carta_finalizacion')],limit=1)
-        
         if obj_plantilla:
             mesesDic = {
                 "1":'Enero',
@@ -70,24 +66,14 @@ class CartaFinalizacion(models.TransientModel):
                 "11":'Noviembre',
                 "12":'Diciembre'
             }
-                
-
             shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
-            #fecha_suscripcion
-
-            #####Se sacan los campos de la plantilla del objeto plantillas.dinamicas.informes
             campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
-            
             lista_campos=[]
             estado_cuenta=[]
             estado_cuenta_anterior=[]
             for campo in campos:
-                #if campo:
-                #    raise ValidationError(str(campo.vat))
                 dct={}
-
                 resultado=self.mapped(campo.name)
-                
                 if campo.identificar_docx =='fecha_contrato':
                     dct={}
                     year = resultado[0].year
@@ -98,49 +84,27 @@ class CartaFinalizacion(models.TransientModel):
                     dct['identificar_docx']=campo.identificar_docx
                     lista_campos.append(dct)
                 else:
-
                     if campo.name!=False:
                         dct={}
                         if len(resultado)>0:
-
-
                             dct['valor']=str(resultado[0])
-
                         else:
                             dct['valor']=''
                     dct['identificar_docx']=campo.identificar_docx
                     lista_campos.append(dct)
-            
-            #if resultado:
-            #    raise ValidationError(str(lista_campos))
-            
             year = datetime.now().year
             mes = datetime.now().month
             dia = datetime.now().day
-            #print(mesesDic[str(mes)][:3])
-            #valordia = amount_to_text_es.amount_to_text(dia)
-            #valordia = valordia.split()
-            #valordia = valordia[0]
             fechacontr = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
             dct = {}
             dct['identificar_docx']='txt_factual'
             dct['valor']=fechacontr
             lista_campos.append(dct)
-            #if fechacontr: 
-            #    raise ValidationError(str(fechacontr) )
             estado_cuenta.append(self.contrato_id)
-            #obj_estado_cuenta_cabecera=self.env['contrato.estado.cuenta.historico.cabecera'].search([('contrato_id','=',self.contrato_id.id)])
-            #estado_cuenta_anterior.append(obj_estado_cuenta_cabecera)
-            #crear_documento_contrato_reserva.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
-            #raise ValidationError(str(lista_campos))
             crear_carta_finalizacion.crear_carta_finalizacion(obj_plantilla.directorio_out,lista_campos)
-
-
             with open(obj_plantilla.directorio_out, "rb") as f:
                 data = f.read()
                 file=bytes(base64.b64encode(data))
-
-
         obj_attch=self.env['ir.attachment'].create({
                                                     'name':'Carta_Finalizacion.docx',
                                                     'datas':file,
