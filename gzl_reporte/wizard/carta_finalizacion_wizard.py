@@ -83,7 +83,7 @@ class CartaFinalizacion(models.TransientModel):
 
                 resultado=self.mapped(campo.name)
                 
-                if campo.identificar_docx =='fecha_suscripcion':
+                if campo.identificar_docx =='fecha_contrato':
                     dct={}
                     raise ValidationError(resultado)
                     year = resultado[0].year
@@ -94,6 +94,7 @@ class CartaFinalizacion(models.TransientModel):
                     dct['identificar_docx']=campo.identificar_docx
                     lista_campos.append(dct)
                 else:
+
                     if campo.name!=False:
                         dct={}
                         if len(resultado)>0:
@@ -103,12 +104,9 @@ class CartaFinalizacion(models.TransientModel):
 
                         else:
                             dct['valor']=''
-
-
-
-
                     dct['identificar_docx']=campo.identificar_docx
                     lista_campos.append(dct)
+            raise ValidationError("CCCC{0}".format(lista_campos))
             
             #if resultado:
             #    raise ValidationError(str(lista_campos))
@@ -120,7 +118,7 @@ class CartaFinalizacion(models.TransientModel):
             valordia = amount_to_text_es.amount_to_text(dia)
             valordia = valordia.split()
             valordia = valordia[0]
-            fechacontr = 'a los '+valordia.lower()+' dias del mes de '+str(mesesDic[str(mes)])+' del Año '+str(year)
+            fechacontr = str(valordia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
             dct = {}
             dct['identificar_docx']='txt_factual'
             dct['valor']=fechacontr
