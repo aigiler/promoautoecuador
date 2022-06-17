@@ -99,7 +99,6 @@ class CartaFinalizacion(models.TransientModel):
             dct['identificar_docx']='txt_factual'
             dct['valor']=fechacontr
             lista_campos.append(dct)
-            estado_cuenta.append(self.contrato_id)
             crear_carta_finalizacion.crear_carta_finalizacion(obj_plantilla.directorio_out,lista_campos)
             with open(obj_plantilla.directorio_out, "rb") as f:
                 data = f.read()
