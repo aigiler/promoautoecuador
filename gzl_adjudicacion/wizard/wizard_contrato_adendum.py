@@ -35,13 +35,13 @@ class WizardContratoAdendum(models.Model):
         #elif self.contrato_id.state !='activo':
             #raise ValidationError("El contrato solo puede realizar un adendum en estado activo")
         #else:
-        
+
             obj=self.contrato_id
 
             pagos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado')
             cuotas_pgadas=sum(pagos.mapped("cuota_capital"))
-            pagos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago!='pagado' and l.factura_id)
-            cuotas_pendientes_pago=sum(pagos.mapped("cuota_capital"))
+            pagos_pendiente=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago!='pagado' and l.factura_id)
+            cuotas_pendientes_pago=sum(pagos_pendiente.mapped("cuota_capital"))
             pago_capital=cuotas_pgadas+cuotas_pendientes_pago
             #raise ValidationError('{0}'.format(pago_capital))
 
@@ -61,7 +61,7 @@ class WizardContratoAdendum(models.Model):
 
             numeroCuotasTotal=diferenciaPlazoAdendum
 
-            intervalo_nuevo=self.plazo_meses.numero - numeroCuotasPagadaTotal + len(numcuotas_congeladas)-len(cuotas_pendientes_pago)
+            intervalo_nuevo=self.plazo_meses.numero - numeroCuotasPagadaTotal + len(numcuotas_congeladas)-len(pagos_pendiente)
             #raise ValidationError('{0}'.format(intervalo_nuevo))
             #lleno lista con estado de cuenta anterior 
             estado_cuenta_anterior=[]
