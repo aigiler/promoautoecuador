@@ -110,7 +110,6 @@ class CartaFinalizacion(models.TransientModel):
                             dct['valor']=''
                     dct['identificar_docx']=campo.identificar_docx
                     lista_campos.append(dct)
-            raise ValidationError("CCCC{0}".format(lista_campos))
             
             #if resultado:
             #    raise ValidationError(str(lista_campos))
