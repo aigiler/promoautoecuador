@@ -108,7 +108,7 @@ class WizardContratoAdendum(models.Model):
                     lista_cuotapagadas.append(dct)
 
 
-                obj_contrato_detalle=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','!=','pagado'),('factura_id','!=',False)])
+                obj_contrato_detalle=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','!=','pagado'),('factura_id','=',False)])
                 obj_contrato_detalle.unlink()
 
                 if not entrada:
