@@ -31,7 +31,7 @@ class CartaFinalizacion(models.TransientModel):
     @api.onchange("partner_id")
     def obtener_vehiculo(self):
         for l in self:
-            if partner_id:
+            if l.partner_id:
                 vehiculo_id = self.env['entrega.vehiculo'].search(
                         [('nombreSocioAdjudicado', '=', self.partner_id.id)], limit=1)
                 contrato_id = self.env['contrato'].search(
