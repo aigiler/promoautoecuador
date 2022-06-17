@@ -82,9 +82,10 @@ class CartaFinalizacion(models.TransientModel):
                 dct={}
 
                 resultado=self.mapped(campo.name)
-                raise ValidationError(resultado)
+                
                 if campo.identificar_docx =='fecha_suscripcion':
                     dct={}
+                    raise ValidationError(resultado)
                     year = resultado[0].year
                     mes = resultado[0].month
                     dia = resultado[0].day
