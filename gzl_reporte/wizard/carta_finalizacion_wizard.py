@@ -85,7 +85,6 @@ class CartaFinalizacion(models.TransientModel):
                 
                 if campo.identificar_docx =='fecha_contrato':
                     dct={}
-                    raise ValidationError(resultado)
                     year = resultado[0].year
                     mes = resultado[0].month
                     dia = resultado[0].day
