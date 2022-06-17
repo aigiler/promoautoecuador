@@ -35,6 +35,7 @@ class WizardContratoAdendum(models.Model):
         #elif self.contrato_id.state !='activo':
             #raise ValidationError("El contrato solo puede realizar un adendum en estado activo")
         #else:
+        
             obj=self.contrato_id
 
             pagos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado')
