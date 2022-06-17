@@ -39,7 +39,7 @@ class WizardContratoAdendum(models.Model):
 
             pagos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado' or l.factura_id!=False)
             pago_capital=sum(pagos.mapped("cuota_capital"))
-            raise ValidationError('{0}',.format(pago_capital))
+            raise ValidationError('{0}'.format(pago_capital))
 
             nuevoMontoReeestructura=self.monto_financiamiento-pago_capital
 
@@ -231,7 +231,7 @@ class WizardContratoAdendum(models.Model):
                     else:
                         valor_a_restar= (valor_sobrante/parte_decimal)*0.01
                     #raise ValidationError('aaaaaaaaaaaaa{0}'.format(valor_a_restar)) 
-                    obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')] , order ='fecha desc')
+                    obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente'),('factura_id','=',False)] , order ='fecha desc')
                     #raise ValidationError('aaaaaaaaaaaaa{0}'.format(obj_contrato))
                     for c in obj_contrato:
                         if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
@@ -256,7 +256,7 @@ class WizardContratoAdendum(models.Model):
                     else:
                         valor_a_restar= (valor_sobrante/parte_decimal)*0.01
 
-                    obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente')] , order ='fecha desc')
+                    obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pendiente'),('factura_id','=',False)] , order ='fecha desc')
 
                     for c in obj_contrato:
                         if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
