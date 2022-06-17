@@ -9,7 +9,8 @@
                          <group col="2">
 
                             <field name="partner_id" required="1"   options="{'no_open': True, 'no_create': True}" />
-
+                            <field name="contrato_id" required="1"   options="{'no_open': True, 'no_create': True}" />
+                            <field name="vehiculo_id" required="1"   options="{'no_open': True, 'no_create': True}" />
                         </group>
 
                     </group>                        
