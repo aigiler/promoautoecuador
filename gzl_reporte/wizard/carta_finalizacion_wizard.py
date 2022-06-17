@@ -22,7 +22,7 @@ import shutil
 class CartaFinalizacion(models.TransientModel):
     _name = "carta.finalizacion.report"
     
-    partner_id = fields.Many2one('contrato',string='Contrato')
+    partner_id = fields.Many2one('res.partner',string='Cliente')
     contrato_id = fields.Many2one('contrato',string='Contrato')
     clave =  fields.Char( default="carta_finalizacion")
     vehiculo_id = fields.Many2one('entrega.vehiculo',string='entrega.vehiculo')
