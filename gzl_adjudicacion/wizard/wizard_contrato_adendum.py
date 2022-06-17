@@ -60,7 +60,7 @@ class WizardContratoAdendum(models.Model):
 
             numeroCuotasTotal=diferenciaPlazoAdendum
 
-            intervalo_nuevo=self.plazo_meses.numero - numeroCuotasPagadaTotal + len(numcuotas_congeladas)+len(cuotas_pendientes_pago)
+            intervalo_nuevo=self.plazo_meses.numero - numeroCuotasPagadaTotal + len(numcuotas_congeladas)-len(cuotas_pendientes_pago)
             #raise ValidationError('{0}'.format(intervalo_nuevo))
             #lleno lista con estado de cuenta anterior 
             estado_cuenta_anterior=[]
