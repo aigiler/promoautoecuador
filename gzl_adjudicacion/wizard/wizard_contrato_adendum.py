@@ -37,8 +37,11 @@ class WizardContratoAdendum(models.Model):
         #else:
             obj=self.contrato_id
 
-            pagos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado' or l.factura_id!=False)
-            pago_capital=sum(pagos.mapped("cuota_capital"))
+            pagos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado')
+            cuotas_pgadas=sum(pagos.mapped("cuota_capital"))
+            pagos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago!='pagado' and l.factura_id)
+            cuotas_pendientes_pago=sum(pagos.mapped("cuota_capital"))
+            pago_capital=cuotas_pgadas+cuotas_pendientes_pago
             raise ValidationError('{0}'.format(pago_capital))
 
             nuevoMontoReeestructura=self.monto_financiamiento-pago_capital
