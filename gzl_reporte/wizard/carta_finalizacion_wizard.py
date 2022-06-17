@@ -34,9 +34,9 @@ class CartaFinalizacion(models.TransientModel):
         contrato_id = self.env['contrato_id'].search(
                 [('cliente', '=', self.partner_id.id)], limit=1)
         if vehiculo_id:
-            self.vehiculo_id=vehiculo_id.id
+            self.vehiculo_id=190
         if contrato_id:
-            self.contrato_id=contrato_id.id
+            self.contrato_id=8605
 
     def print_report_xls(self):
         #raise ValidationError(str(self.clave))
