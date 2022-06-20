@@ -29,11 +29,8 @@ class WizardContratoAct(models.Model):
     observacion = fields.Char(string='Observacion')
     def ejecutar_cambio(self,):
 
-        #if   self.contrato_id.ejecutado:
-        #    raise ValidationError("El contrato ya fue modificado")
-        #else:
         monto_excedente=self.monto_financiamiento_anterior-self.monto_financiamiento
-        monto_programado_anterior=self.contrato_id.monto_programado
+        #monto_programado_anterior=self.contrato_id.monto_programado
         if self.contrato_id.tiene_cuota:
             self.contrato_id.monto_programado=self.monto_financiamiento/(self.contrato_id.porcentaje_programado/100)
             monto_excedente=self.monto_financiamiento_anterior-monto_programado_anterior-self.monto_financiamiento+self.contrato_id.monto_programado
@@ -60,9 +57,9 @@ class WizardContratoAct(models.Model):
                 cuota_ultima=cuota_ultima-1
         self.ejecutado=True
         self.contrato_id.monto_financiamiento=self.monto_financiamiento
-        cuota_inscripcion_anterior=self.contrato_id.valor_inscripcion
-        nuevo_valor_inscripcion=self.monto_financiamiento*0.05
-        if nuevo_valor_inscripcion>cuota_inscripcion_anterior:
-            self.contrato_id.valor_inscripcion=nuevo_valor_inscripcion
+        #cuota_inscripcion_anterior=self.contrato_id.valor_inscripcion
+        #nuevo_valor_inscripcion=self.monto_financiamiento*0.05
+        #if nuevo_valor_inscripcion>cuota_inscripcion_anterior:
+        #    self.contrato_id.valor_inscripcion=nuevo_valor_inscripcion
         
             
