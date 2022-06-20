@@ -141,7 +141,7 @@ class Contrato(models.Model):
         'contrato.adendum', 'contrato_id', track_visibility='onchange')
 
 
-    actualizacion_ids=fields.One2many('actualizacion.valores.contrato','contrato_id',track_visibility='onchange')
+    actualizacion_ids=fields.One2many('actualizacion.contrato.valores','contrato_id',track_visibility='onchange')
 
 
 
