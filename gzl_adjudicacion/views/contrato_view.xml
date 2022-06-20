@@ -170,6 +170,7 @@
                                 <field name="cuota_capital" sum="cuota_capital" readonly="1"/>
                                 <field name="cuota_adm" sum="cuota_adm" readonly="1"/>
                                 <field name="iva_adm" sum="iva_adm" readonly="1"/>
+                                <field name="programado" sum="Cuota Programada" readonly="1"/>
                                 <field name="factura_id" />
                                 <!-- <field name="pago_ids" widget="many2many_tags" /> -->
                                 <field name="seguro" sum="seguro" readonly="1"/>

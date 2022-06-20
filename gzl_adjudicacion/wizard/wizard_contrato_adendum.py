@@ -115,6 +115,7 @@ class WizardContratoAdendum(models.Model):
                 obj_contrato_detalle=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','!=','pagado'),('factura_id','=',False)])
                 obj_contrato_detalle.unlink()
 
+                
                 if not entrada:
                     if self.contrato_id.cuota_pago and self.contrato_id.tiene_cuota:
                         self.contrato_id.monto_programado=self.monto_financiamiento*(self.contrato_id.porcentaje_programado/100)
@@ -281,6 +282,11 @@ class WizardContratoAdendum(models.Model):
                 self.ejecutado =True
                 #asignar nuevos valores 
                 self.contrato_id.monto_financiamiento = self.monto_financiamiento
+                cuota_inscripcion_anterior=self.contrato_id.valor_inscripcion
+                nuevo_valor_inscripcion=self.monto_financiamiento*0.05
+                if nuevo_valor_inscripcion>cuota_inscripcion_anterior:
+                    self.contrato_id.valor_inscripcion=self.monto_financiamiento*0.05
+                ##crear_nueva factura
                 self.contrato_id.plazo_meses =self.plazo_meses.id
                 self.contrato_id.cuota_capital=cuota_capital_nueva
                 self.contrato_id.ejecutado = True
