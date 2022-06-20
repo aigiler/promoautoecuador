@@ -29,27 +29,27 @@ class WizardContratoAct(models.Model):
     observacion = fields.Char(string='Observacion')
     def ejecutar_cambio(self,):
 
-        if   self.contrato_id.ejecutado:
-            raise ValidationError("El contrato ya fue modificado")
-        else:
-            monto_excedente=self.monto_financiamiento_anterior-self.monto_financiamiento
-            obj=self.contrato_id
-            monto_restado=0
-            cuota_ultima=self.contrato_id.plazo_meses.numero
-            for x in self.contrato.tabla_amortizacion:
-                if x.cuota_capital:
-                    if monto_restado<monto_excedente:
-                        if (monto_restado+x.cuota_capital)>monto_excedente:
-                            valor_restado=monto_excedente-(monto_restado+x.cuota_capital)
-                            monto_restado+=(x.cuota_capital-valor_restado)
-                            x.cuota_capital=x.cuota_capital-valor_restado
-                            x.fecha_pagada=date.today()
-                        else:
-                            monto_restado+=x.cuota_capital
-                            x.cuota_capital=0
-                            x.cuota_adm=0
-                            x.iva_adm=0
-                            x.fecha_pagada=date.today()
+        #if   self.contrato_id.ejecutado:
+        #    raise ValidationError("El contrato ya fue modificado")
+        #else:
+        monto_excedente=self.monto_financiamiento_anterior-self.monto_financiamiento
+        obj=self.contrato_id
+        monto_restado=0
+        cuota_ultima=self.contrato_id.plazo_meses.numero
+        for x in self.contrato.tabla_amortizacion:
+            if x.cuota_capital:
+                if monto_restado<monto_excedente:
+                    if (monto_restado+x.cuota_capital)>monto_excedente:
+                        valor_restado=monto_excedente-(monto_restado+x.cuota_capital)
+                        monto_restado+=(x.cuota_capital-valor_restado)
+                        x.cuota_capital=x.cuota_capital-valor_restado
+                        x.fecha_pagada=date.today()
                     else:
-                        pass
-            self.ejecutado=True
+                        monto_restado+=x.cuota_capital
+                        x.cuota_capital=0
+                        x.cuota_adm=0
+                        x.iva_adm=0
+                        x.fecha_pagada=date.today()
+                else:
+                    pass
+        self.ejecutado=True
