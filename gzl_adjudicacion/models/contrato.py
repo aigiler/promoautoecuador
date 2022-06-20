@@ -281,7 +281,7 @@ class Contrato(models.Model):
                 
                 cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses.numero)
                 if self.tiene_cuota:
-                    cuota_capital=(rec.monto_financiamiento-rec.programado)/int(plazo_meses.numero)
+                    cuota_capital=(rec.monto_financiamiento-rec.cuota_pago)/int(plazo_meses.numero)
                 cuota_adm = rec.monto_financiamiento *tasa_administrativa / 100 / 12
                 iva = cuota_adm * 0.12
 
