@@ -34,7 +34,7 @@ class WizardContratoAct(models.Model):
         #else:
         monto_excedente=self.monto_financiamiento_anterior-self.monto_financiamiento
         if self.contrato_id.tiene_cuota:
-            monto_excedente=self.monto_financiamiento_anterior-self.contrato_id.monto_programado-self.monto_financiamiento
+            monto_excedente=self.monto_financiamiento_anterior-self.monto_financiamiento
         obj=self.contrato_id
         monto_restado=0
         cuota_ultima=self.contrato_id.plazo_meses.numero
