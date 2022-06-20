@@ -36,20 +36,21 @@ class WizardContratoAct(models.Model):
         obj=self.contrato_id
         monto_restado=0
         cuota_ultima=self.contrato_id.plazo_meses.numero
-        for x in self.contrato.tabla_amortizacion:
-            if x.cuota_capital:
-                if monto_restado<monto_excedente:
-                    if (monto_restado+x.cuota_capital)>monto_excedente:
-                        valor_restado=monto_excedente-(monto_restado+x.cuota_capital)
-                        monto_restado+=(x.cuota_capital-valor_restado)
-                        x.cuota_capital=x.cuota_capital-valor_restado
-                        x.fecha_pagada=date.today()
-                    else:
-                        monto_restado+=x.cuota_capital
-                        x.cuota_capital=0
-                        x.cuota_adm=0
-                        x.iva_adm=0
-                        x.fecha_pagada=date.today()
+        #for x in self.contrato.tabla_amortizacion:
+        while(monto_restado<monto_excedente):
+            valor_cuota=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.numero_cuota==cuota_ultima)  
+            if valor_cuota.cuota_capital:
+                if (monto_restado+x.cuota_capital)>monto_excedente:
+                    valor_restado=monto_excedente-(monto_restado+valor_cuota.cuota_capital)
+                    monto_restado+=(valor_cuota.cuota_capital-valor_restado)
+                    valor_cuota.cuota_capital=valor_cuota.cuota_capital-valor_restado
+                    valor_cuota.fecha_pagada=date.today()
                 else:
-                    pass
+                    monto_restado+=valor_cuota.cuota_capital
+                    valor_cuota.cuota_capital=0
+                    valor_cuota.cuota_adm=0
+                    valor_cuota.iva_adm=0
+                    valor_cuota.fecha_pagada=date.today()
+                cuota_ultima=cuota_ultima-1
+
         self.ejecutado=True
