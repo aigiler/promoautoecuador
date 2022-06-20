@@ -786,39 +786,39 @@ class Contrato(models.Model):
     def write(self, vals):
 
         if vals.get('grupo',False) :
-            transacciones=self.env['transaccion.grupo.adjudicado']
+           # transacciones=self.env['transaccion.grupo.adjudicado']
 
-            contrato_id=self.env['contrato'].browse(self.id)
-            pagos=self.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado')
+            #contrato_id=self.env['contrato'].browse(self.id)
+            #pagos=self.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado')
             #pago=sum(pagos.mapped("cuota_capital"))+sum(pagos.mapped("cuota_adm"))+sum(pagos.mapped("cuota_adm"))+sum(pagos.mapped("iva_adm"))+sum(pagos.mapped("seguro"))+sum(pagos.mapped("rastreo"))+sum(pagos.mapped("otro"))
-            pago=sum(pagos.mapped("cuota_capital"))+sum(pagos.mapped("iva_adm"))+sum(pagos.mapped("seguro"))+sum(pagos.mapped("rastreo"))+sum(pagos.mapped("otro"))
+            #pago=sum(pagos.mapped("cuota_capital"))+sum(pagos.mapped("iva_adm"))+sum(pagos.mapped("seguro"))+sum(pagos.mapped("rastreo"))+sum(pagos.mapped("otro"))
 
 
-            dct={
-                'grupo_id':contrato_id.grupo.id,
-                'debe':pago,
-                'adjudicado_id':self.cliente.id,
-                'contrato_id':contrato_id.id,
-                'state':contrato_id.state
+            #dct={
+            #    'grupo_id':contrato_id.grupo.id,
+            #    'debe':pago,
+            #    'adjudicado_id':self.cliente.id,
+            #    'contrato_id':contrato_id.id,
+            #    'state':contrato_id.state
 
 
-            }
+            #}
 
 
-            transacciones.create(dct)
+            #transacciones.create(dct)
 
-            dct={
-                'grupo_id':vals['grupo'],
-                'haber':pago,
-                'adjudicado_id':self.cliente.id,
-                'contrato_id':contrato_id.id,
-                'state':contrato_id.state
-
-
-            }
+            #dct={
+            #    'grupo_id':vals['grupo'],
+            #    'haber':pago,
+            #    'adjudicado_id':self.cliente.id,
+            #    'contrato_id':contrato_id.id,
+            #    'state':contrato_id.state
 
 
-            transacciones.create(dct)
+            #}
+
+
+            #transacciones.create(dct)
 
 
 

@@ -59,7 +59,7 @@
                     <button name="cambio_estado_boton_desistir" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','!=','inactivo')]}" string="Desistir" type="object" class="oe_highlight"/>
                     
                     <button name="detalle_tabla_amortizacion" attrs="{'invisible': ['|',('is_group_cobranza', '=', True)]}" string="Generar estado cuenta contrato" invisible="1" type="object" class="oe_highlight"/>
-                    <button name="pagar_cuotas_por_adelantado" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','not in',['activo','adjudicar'])]}" string="Pagar Cuotas por Adelantado" type="object" class="oe_highlight"/>
+                    <button name="pagar_cuotas_por_adelantado" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','not in',['activo','adjudicar'])]}" invisible="1" string="Pagar Cuotas por Adelantado" type="object" class="oe_highlight"/>
                     <button name="actualizar_rubros_por_adelantado" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','not in',['activo','adjudicar'])]}"  string="Actualizar Rubros" type="object" class="oe_highlight"/>
                     <button name="cambio_estado_boton_inactivar" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','!=','activo')]}"  string="Inactivar" type="object" class="oe_highlight"/>
 
