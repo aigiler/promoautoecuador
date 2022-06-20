@@ -56,5 +56,4 @@ class WizardContratoAct(models.Model):
                     valor_cuota.iva_adm=0
                     valor_cuota.fecha_pagada=date.today()
                 cuota_ultima=cuota_ultima-1
-
         self.ejecutado=True
