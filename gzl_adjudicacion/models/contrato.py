@@ -324,8 +324,8 @@ class Contrato(models.Model):
             valor_sobrante = monto_finan_contrato - self.monto_financiamiento 
             valor_sobrante = round(valor_sobrante,2)
             parte_decimal, parte_entera = math.modf(valor_sobrante)
-            if parte_decimal==0:
-                valor_a_restar=0
+            #if parte_decimal==0:
+            #    valor_a_restar=0
             elif parte_decimal >=1:
                 valor_a_restar= (valor_sobrante/parte_decimal)*0.1
             else:
@@ -349,8 +349,8 @@ class Contrato(models.Model):
             valor_sobrante = self.monto_financiamiento  - monto_finan_contrato 
             valor_sobrante = round(valor_sobrante,2)
             parte_decimal, parte_entera = math.modf(valor_sobrante)
-            if parte_decimal==0:
-                valor_a_restar=0
+            #if parte_decimal==0:
+            #    valor_a_restar=0
             elif parte_decimal >=1:
                 valor_a_restar= (valor_sobrante/parte_decimal)*0.1
             else:
