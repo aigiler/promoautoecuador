@@ -220,10 +220,13 @@ class WizardContratoAdendum(models.Model):
                 ##########################################validar que la cuota capital este bien ####################################################
                 monto_finan_contrato = sum(self.contrato_id.tabla_amortizacion.mapped('cuota_capital'))
                 monto_finan_contrato = round(monto_finan_contrato,2)
+                monto_financiamiento_contrato=self.monto_financiamiento
+                if self.contrato_id.tiene_cuota:
+                    monto_financiamiento_contrato=self.monto_financiamiento-self.contrato_id.monto_programado
 
                 vls=[]
-                if  monto_finan_contrato  > self.monto_financiamiento:
-                    valor_sobrante = monto_finan_contrato - self.monto_financiamiento 
+                if  monto_finan_contrato  > monto_financiamiento_contrato:
+                    valor_sobrante = monto_finan_contrato - monto_financiamiento_contrato 
                     valor_sobrante = round(valor_sobrante,2)
                     parte_decimal, parte_entera = math.modf(valor_sobrante)
                     #raise ValidationError('{0},{1},{2}'.format(valor_sobrante,parte_decimal,parte_entera))
@@ -248,8 +251,8 @@ class WizardContratoAdendum(models.Model):
                                 valor_sobrante = round(valor_sobrante,2)
                             
                             
-                if  monto_finan_contrato  < self.monto_financiamiento:
-                    valor_sobrante = self.monto_financiamiento  - monto_finan_contrato 
+                if  monto_finan_contrato  < monto_financiamiento_contrato:
+                    valor_sobrante = monto_financiamiento_contrato  - monto_finan_contrato 
                     valor_sobrante = round(valor_sobrante,2)
                     parte_decimal, parte_entera = math.modf(valor_sobrante)
                     if parte_decimal==0:
