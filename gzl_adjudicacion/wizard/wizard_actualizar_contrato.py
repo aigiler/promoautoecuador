@@ -41,7 +41,7 @@ class WizardContratoAct(models.Model):
         #for x in self.contrato.tabla_amortizacion:
         while(monto_restado<monto_excedente):
             #raise ValidationError("qqqqqqqqqqqqqqqqqqqq")
-            valor_cuota=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('numero_cuota','=',cuota_ultima)])
+            valor_cuota=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('numero_cuota','=',cuota_ultima),('cuota_capital','!=',0)])
 
             if valor_cuota.cuota_capital:
                 if (monto_restado+valor_cuota.cuota_capital)>monto_excedente:
