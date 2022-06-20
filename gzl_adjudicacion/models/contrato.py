@@ -281,7 +281,7 @@ class Contrato(models.Model):
                 
                 cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses.numero)
                 if self.tiene_cuota:
-                    cuota_capital=(rec.monto_financiamiento-rec.cuota_pago)/int(rec.plazo_meses.numero)
+                    cuota_capital=(rec.monto_financiamiento-rec.monto_programado)/int(rec.plazo_meses.numero)
                 cuota_adm = rec.monto_financiamiento *tasa_administrativa / 100 / 12
                 iva = cuota_adm * 0.12
 
@@ -324,10 +324,9 @@ class Contrato(models.Model):
             valor_sobrante = monto_finan_contrato - self.monto_financiamiento 
             valor_sobrante = round(valor_sobrante,2)
             parte_decimal, parte_entera = math.modf(valor_sobrante)
-            #if parte_decimal==0:
-            #    valor_a_restar=0
-            
-            if parte_decimal >=1:
+            if parte_decimal==0:
+                valor_a_restar=0
+            elif parte_decimal >=1:
                 valor_a_restar= (valor_sobrante/parte_decimal)*0.1
             else:
                 valor_a_restar= (valor_sobrante/parte_decimal)*0.01
@@ -350,9 +349,9 @@ class Contrato(models.Model):
             valor_sobrante = self.monto_financiamiento  - monto_finan_contrato 
             valor_sobrante = round(valor_sobrante,2)
             parte_decimal, parte_entera = math.modf(valor_sobrante)
-            #if parte_decimal==0:
-            #    valor_a_restar=0
-            if parte_decimal >=1:
+            if parte_decimal==0:
+                valor_a_restar=0
+            elif parte_decimal >=1:
                 valor_a_restar= (valor_sobrante/parte_decimal)*0.1
             else:
                 valor_a_restar= (valor_sobrante/parte_decimal)*0.01
