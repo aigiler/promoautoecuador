@@ -120,6 +120,8 @@ class WizardContratoAdendum(models.Model):
                         self.contrato_id.monto_programado=self.monto_financiamiento*(self.contrato_id.porcentaje_programado/100)
                         if self.contrato_id.tipo_de_contrato.code=='programo':
                             self.contrato_id.cuota_pago=self.plazo_meses.numero
+                        nuevoMontoReeestructura=nuevoMontoReeestructura-self.contrato_id.monto_programado
+
                 ####crear cuotas pagadas para listar segun el nuevo plazo o monto
                 #for a in lista_cuotapagadas:
                 #    self.env['contrato.estado.cuenta'].create({
