@@ -264,6 +264,8 @@ class Contrato(models.Model):
 
             if int(rec.plazo_meses.numero):
                 rec.cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses.numero)
+                if rec.tiene_cuota:
+                    cuota_capital=(rec.monto_financiamiento-rec.monto_programado)/int(rec.plazo_meses.numero)
                 cuotaAdministrativa= rec.monto_financiamiento*((rec.tasa_administrativa/100)/12)
                 rec.iva_administrativo = cuotaAdministrativa * 0.12
                 rec.cuota_adm = cuotaAdministrativa
