@@ -19,6 +19,9 @@ class WizardContratoAct(models.Model):
     monto_financiamiento = fields.Monetary(
         string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
 
+    
+    currency_id = fields.Many2one(
+        'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
     ##valores anteriores
     monto_financiamiento_anterior = fields.Monetary(
         string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
