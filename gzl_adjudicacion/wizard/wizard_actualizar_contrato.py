@@ -45,9 +45,9 @@ class WizardContratoAct(models.Model):
 
             if valor_cuota.cuota_capital:
                 if (monto_restado+valor_cuota.cuota_capital)>monto_excedente:
-                    valor_restado=monto_restado+valor_cuota.cuota_capital-monto_excedente
-                    monto_restado=monto_restado+(valor_cuota.cuota_capital-valor_restado)
-                    valor_cuota.cuota_capital=valor_cuota.cuota_capital-valor_restado
+                    diferencia=monto_excedente-monto_restado
+                    monto_restado+=diferencia
+                    valor_cuota.cuota_capital=valor_cuota.cuota_capital-diferencia
                     valor_cuota.fecha_pagada=date.today()
                 else:
                     monto_restado+=valor_cuota.cuota_capital
