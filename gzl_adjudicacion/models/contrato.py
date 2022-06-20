@@ -273,8 +273,6 @@ class Contrato(models.Model):
                 rec.iva_administrativo = cuotaAdministrativa * 0.12
                 rec.cuota_adm = cuotaAdministrativa
 
-
-
     def detalle_tabla_amortizacion(self):
         dia_corte =  self.dia_corte
         tasa_administrativa = self.tasa_administrativa
