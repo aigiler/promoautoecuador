@@ -74,6 +74,7 @@
 
 
                     <button name="crear_adendum" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','!=','activo')]}" string="Crear Adendum" type="object" class="oe_highlight"/>
+                    <button name="modificar_tabla_contrato" attrs="{'invisible': [('is_group_cobranza', '=', True)]}" string="Bajada de Montos" type="object" class="oe_highlight"/>
 
 
                     <field name="state" widget="statusbar" statusbar_visible="pendiente,activo,congelar_contrato,adjudicar,adendum,desistir"/>
