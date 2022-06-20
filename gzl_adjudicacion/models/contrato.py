@@ -268,9 +268,6 @@ class Contrato(models.Model):
                 rec.iva_administrativo = cuotaAdministrativa * 0.12
                 rec.cuota_adm = cuotaAdministrativa
 
-    def modificar_tabla_contrato(self):
-        for l in self:
-
 
 
     def detalle_tabla_amortizacion(self):
@@ -669,6 +666,27 @@ class Contrato(models.Model):
                     'default_contrato_id': self.id,
                 }
         }
+
+
+    def modificar_tabla_contrato(self):
+        if len(self.adendums_contrato_ids)>1:
+            raise ValidationError("El contrato ya sufrio modificacion con anterioridad")
+        view_id = self.env.ref('gzl_adjudicacion.wizard_crear_valores_form').id
+
+
+        return {'type': 'ir.actions.act_window',
+                'name': 'Modificar contrato',
+                'res_model': 'actualizacion.valores.contrato',
+                'target': 'new',
+                'view_mode': 'form',
+                'views': [[view_id, 'form']],
+                'context': {
+                    'default_contrato_id': self.id,
+                    'default_socio_id': self.cliente.id,
+                    'default_monto_financiamiento': self.monto_financiamiento,
+                }
+        }
+
 
 
     def crear_adendum(self):

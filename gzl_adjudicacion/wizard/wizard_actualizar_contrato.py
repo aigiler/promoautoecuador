@@ -28,15 +28,16 @@ class WizardContratoAct(models.Model):
 
         if   self.contrato_id.ejecutado:
             raise ValidationError("El contrato ya fue modificado")
-        #else:
+        else:
+            monto_excedente=self.monto_financiamiento_anterior-self.monto_financiamiento
             obj=self.contrato_id
             monto_restado=0
             cuota_ultima=self.contrato_id.plazo_meses.numero
             for x in self.contrato.tabla_amortizacion:
                 if x.cuota_capital:
-                    if monto_restado<seld.monto_financiamiento:
-                        if (monto_restado+x.cuota_capital)>self.monto_financiamiento:
-                            valor_restado=self.monto_financiamiento-(monto_restado+x.cuota_capital)
+                    if monto_restado<monto_excedente:
+                        if (monto_restado+x.cuota_capital)>monto_excedente:
+                            valor_restado=monto_excedente-(monto_restado+x.cuota_capital)
                             monto_restado+=(x.cuota_capital-valor_restado)
                             x.cuota_capital=x.cuota_capital-valor_restado
                             x.fecha_pagada=date.today()
@@ -48,4 +49,4 @@ class WizardContratoAct(models.Model):
                             x.fecha_pagada=date.today()
                     else:
                         pass
-
+            self.ejecutado=True
