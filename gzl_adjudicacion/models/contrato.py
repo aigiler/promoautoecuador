@@ -822,8 +822,8 @@ class Contrato(models.Model):
 
 
 
-        crm = super(Contrato, self).write(vals)
-        return crm
+    crm = super(Contrato, self).write(vals)
+    return crm
 
     
 
