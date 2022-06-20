@@ -669,14 +669,14 @@ class Contrato(models.Model):
 
 
     def modificar_tabla_contrato(self):
-        if len(self.adendums_contrato_ids)>1:
+        if len(self.actualizacion_ids)>1:
             raise ValidationError("El contrato ya sufrio modificacion con anterioridad")
         view_id = self.env.ref('gzl_adjudicacion.wizard_crear_valores_form').id
 
 
         return {'type': 'ir.actions.act_window',
                 'name': 'Modificar contrato',
-                'res_model': 'actualizacion.valores.contrato',
+                'res_model': 'actualizacion.contrato.valores',
                 'target': 'new',
                 'view_mode': 'form',
                 'views': [[view_id, 'form']],
