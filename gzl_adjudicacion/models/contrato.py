@@ -261,7 +261,7 @@ class Contrato(models.Model):
                 else:
                     rec.fecha_inicio_pago =False
     
-    @api.depends('plazo_meses', 'monto_financiamiento')
+    @api.depends('plazo_meses', 'monto_financiamiento','monto_programado')
     def calcular_valores_contrato(self):
         for rec in self:
 
