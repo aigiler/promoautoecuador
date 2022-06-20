@@ -16,6 +16,19 @@ class ContratoEstadoCuenta(models.Model):
     ids_pagos = fields.One2many(
         'account.payment.cuotas', 'cuotas_id', track_visibility='onchange')
 
+
+
+    @api.depends("seguro","rastreo","otro","pago_ids","ids_pagos")
+    def calcular_monto_pagado(self):
+
+        for l in self:
+            monto=sum(l.ids_pagos.mapped("valor_asociado"))
+            l.monto_pagado=monto
+
+            l.saldo=l.cuota_capital+l.cuota_adm+l.iva_adm + l.seguro+ l.rastreo + l.otro + l.programado - l.monto_pagado
+
+
+
 class CuotasPagadas(models.Model):
     _name = 'account.payment.cuotas'
     _description = 'Pagos Asociados'
