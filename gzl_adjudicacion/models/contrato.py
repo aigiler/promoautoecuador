@@ -689,7 +689,6 @@ class Contrato(models.Model):
         }
 
 
-
     def crear_adendum(self):
         if len(self.adendums_contrato_ids)>1:
             raise ValidationError("El contrato solo puede realizar un adendum")
