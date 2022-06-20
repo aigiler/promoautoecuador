@@ -172,14 +172,17 @@ class Contrato(models.Model):
             else:
                 l.tiene_cuota=False
 
-    @api.onchange('porcentaje_programado','monto_financiamiento','plazo_meses')
+    @api.onchange('porcentaje_programado','monto_financiamiento','plazo_meses','tipo_de_contrato')
     def obtener_monto_programo(self):
         for l in self:
             if l.porcentaje_programado:
                 l.monto_programado=l.monto_financiamiento*(l.porcentaje_programado/100)
-                if l.tipo_de_contrato.code=='programo':
-                    l.cuota_pago=self.plazo_meses.numero
-                    
+            if l.tipo_de_contrato.code=='programo' and l.plazo_meses:
+                l.cuota_pago=self.plazo_meses.numero
+            else:
+                l.cuota_pago=0
+            
+
 
 #    @api.constrains('state')
     def crear_registro_fondo_grupo(self):
