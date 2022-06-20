@@ -326,7 +326,7 @@ class Contrato(models.Model):
             parte_decimal, parte_entera = math.modf(valor_sobrante)
             #if parte_decimal==0:
             #    valor_a_restar=0
-            elif parte_decimal >=1:
+            if parte_decimal >=1:
                 valor_a_restar= (valor_sobrante/parte_decimal)*0.1
             else:
                 valor_a_restar= (valor_sobrante/parte_decimal)*0.01
@@ -351,7 +351,7 @@ class Contrato(models.Model):
             parte_decimal, parte_entera = math.modf(valor_sobrante)
             #if parte_decimal==0:
             #    valor_a_restar=0
-            elif parte_decimal >=1:
+            if parte_decimal >=1:
                 valor_a_restar= (valor_sobrante/parte_decimal)*0.1
             else:
                 valor_a_restar= (valor_sobrante/parte_decimal)*0.01
