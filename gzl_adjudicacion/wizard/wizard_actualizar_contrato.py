@@ -62,7 +62,7 @@ class WizardContratoAct(models.Model):
         self.contrato_id.monto_financiamiento=self.monto_financiamiento
         cuota_inscripcion_anterior=self.contrato_id.valor_inscripcion
         nuevo_valor_inscripcion=self.monto_financiamiento*0.05
-            if nuevo_valor_inscripcion>cuota_inscripcion_anterior:
-                self.contrato_id.valor_inscripcion=self.monto_financiamiento*0.05
+        if nuevo_valor_inscripcion>cuota_inscripcion_anterior:
+            self.contrato_id.valor_inscripcion=self.monto_financiamiento*0.05
         
             
