@@ -141,7 +141,7 @@ class Contrato(models.Model):
         'contrato.adendum', 'contrato_id', track_visibility='onchange')
 
 
-
+    actualizacion_ids=fields.One2many('actualizacion.valores.contrato','contrato_id',track_visibility='onchange')
 
 
 
@@ -268,7 +268,9 @@ class Contrato(models.Model):
                 rec.iva_administrativo = cuotaAdministrativa * 0.12
                 rec.cuota_adm = cuotaAdministrativa
 
-            
+    def modificar_tabla_contrato(self):
+        for l in self:
+
 
 
     def detalle_tabla_amortizacion(self):
@@ -279,7 +281,10 @@ class Contrato(models.Model):
 
         for rec in self:
             for i in range(0, int(rec.plazo_meses.numero)):
+                
                 cuota_capital = rec.monto_financiamiento/int(rec.plazo_meses.numero)
+                if self.tiene_cuota:
+                    cuota_capital=(rec.monto_financiamiento-rec.programado)/int(plazo_meses.numero)
                 cuota_adm = rec.monto_financiamiento *tasa_administrativa / 100 / 12
                 iva = cuota_adm * 0.12
 
@@ -667,10 +672,10 @@ class Contrato(models.Model):
 
 
     def crear_adendum(self):
-        #if len(self.adendums_contrato_ids)>1:
-            #raise ValidationError("El contrato solo puede realizar un adendum")
-        #elif self.state !='activo':
-            #raise ValidationError("El contrato solo puede realizar un adendum en estado activo")
+        if len(self.adendums_contrato_ids)>1:
+            raise ValidationError("El contrato solo puede realizar un adendum")
+        elif self.state !='activo':
+            raise ValidationError("El contrato solo puede realizar un adendum en estado activo")
 
         view_id = self.env.ref('gzl_adjudicacion.wizard_crear_adendum_form').id
 
