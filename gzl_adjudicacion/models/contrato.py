@@ -785,7 +785,7 @@ class Contrato(models.Model):
 
     def write(self, vals):
 
-        if vals.get('grupo',False) :
+#        if vals.get('grupo',False) :
            # transacciones=self.env['transaccion.grupo.adjudicado']
 
             #contrato_id=self.env['contrato'].browse(self.id)
