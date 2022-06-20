@@ -684,6 +684,7 @@ class Contrato(models.Model):
                     'default_contrato_id': self.id,
                     'default_socio_id': self.cliente.id,
                     'default_monto_financiamiento': self.monto_financiamiento,
+                    'default_monto_financiamiento_anterior': self.monto_financiamiento,
                 }
         }
 
