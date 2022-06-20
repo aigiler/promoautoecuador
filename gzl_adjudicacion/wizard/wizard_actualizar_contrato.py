@@ -36,7 +36,7 @@ class WizardContratoAct(models.Model):
         monto_programado_anterior=self.contrato_id.monto_programado
         if self.contrato_id.tiene_cuota:
             self.contrato_id.monto_programado=self.monto_financiamiento/(self.contrato_id.porcentaje_programado/100)
-            monto_excedente=self.monto_financiamiento_anterior-monto_programado_anterior-self.monto_financiamiento-self.contrato_id.monto_programado
+            monto_excedente=self.monto_financiamiento_anterior-monto_programado_anterior-self.monto_financiamiento+self.contrato_id.monto_programado
         obj=self.contrato_id
         monto_restado=0
         cuota_ultima=self.contrato_id.plazo_meses.numero
