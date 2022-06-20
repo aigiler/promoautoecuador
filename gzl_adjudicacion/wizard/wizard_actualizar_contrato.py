@@ -42,7 +42,7 @@ class WizardContratoAct(models.Model):
             valor_cuota=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('numero_cuota','=',cuota_ultima)])
 
             if valor_cuota.cuota_capital:
-                if (monto_restado+x.cuota_capital)>monto_excedente:
+                if (monto_restado+valor_cuota.cuota_capital)>monto_excedente:
                     valor_restado=monto_excedente-(monto_restado+valor_cuota.cuota_capital)
                     monto_restado+=(valor_cuota.cuota_capital-valor_restado)
                     valor_cuota.cuota_capital=valor_cuota.cuota_capital-valor_restado
