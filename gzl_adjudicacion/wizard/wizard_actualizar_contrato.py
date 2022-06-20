@@ -34,7 +34,7 @@ class WizardContratoAct(models.Model):
             nuevo_monto=self.monto_financiamiento/(self.contrato_id.porcentaje_programado/100)
             monto_programado_anterior=self.contrato_id.monto_programado
         monto_excedente=self.monto_financiamiento_anterior-monto_programado_anterior-self.monto_financiamiento+nuevo_monto
-        raise ValidationError('{0}'.format(monto_excedente))
+        raise ValidationError('{0}**{1}**{2}**{3}'.format(self.monto_financiamiento_anterior,monto_programado_anterior,self.monto_financiamiento,nuevo_monto))
         obj=self.contrato_id
         monto_restado=0
         cuota_ultima=self.contrato_id.plazo_meses.numero
