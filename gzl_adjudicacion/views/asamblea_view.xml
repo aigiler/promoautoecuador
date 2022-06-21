@@ -69,7 +69,7 @@
 
 
 
-                                        <field name="calificacion" string="Calificación" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '!=', 'programo')]}"/>
+                                        <field name="calificacion" invisible="1" string="Calificación" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '!=', 'programo')]}"/>
                                          <field name="cuota_pago" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '!=', 'programo')]}"/>
                                         
                                         
@@ -109,8 +109,8 @@
                                                 <field name="grupo_cliente" invisible="1"/>
 
                                                 <field name="adjudicado_id" options="{'no_open': True, 'no_create': True}" domain="dominio" required="1" />
-                                                <field name="nro_cuota_licitar" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'evaluacion')],'required': [('parent.codigo_tipo_contrato', '=', 'licitacion')]}" required="1"/>
-                                                <field name="carta_licitacion" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'evaluacion')],'required': [('parent.codigo_tipo_contrato', '=', 'licitacion')]}"/>
+                                                <field name="nro_cuota_licitar" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', 'in', ['evaluacion','programo'])],'required': [('parent.codigo_tipo_contrato', '=', 'ahorro')]}" required="1"/>
+                                                <field name="carta_licitacion" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', 'in', ['evaluacion','programo'])],'required': [('parent.codigo_tipo_contrato', '=', 'ahorro')]}"/>
                                             </tree>
                                         </field>
 
