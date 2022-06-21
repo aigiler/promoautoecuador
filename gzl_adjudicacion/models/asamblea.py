@@ -35,9 +35,15 @@ class Asamblea(models.Model):
             ], string='Estado', copy=False, tracking=True, default='inicio',track_visibility='onchange')
 
 
+    currency_id = fields.Many2one(
+        'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
+    licitaciones=fields.Monetary(string='Licitaciones', currency_field='currency_id', track_visibility='onchange')
+    evaluacion=fields.Monetary(string='Evaluación', currency_field='currency_id', track_visibility='onchange')
+    programo=fields.Monetary(string='Plan Programo', currency_field='currency_id', track_visibility='onchange')
 
-
-
+    recuperacionCartera = fields.Monetary(string='Recuperación de Cartera', currency_field='currency_id', track_visibility='onchange')
+    adjudicados = fields.Monetary(string='Adjudicados', currency_field='currency_id', track_visibility='onchange')
+    fondos_mes=fields.Monetary(string='Fondos del Mes', currency_field='currency_id', track_visibility='onchange')
 
 
 
@@ -206,6 +212,9 @@ class GrupoAsamblea(models.Model):
 
 
     recuperacionCartera = fields.Monetary(compute='calculo_recuperacion_cartera',string='Recuperación de Cartera', currency_field='currency_id', track_visibility='onchange')
+    adjudicados = fields.Monetary(compute='calculo_recuperacion_cartera',string='Adjudicados', currency_field='currency_id', track_visibility='onchange')
+    fondos_mes=fields.Monetary(compute='calculo_recuperacion_cartera',string='Fondos del Mes', currency_field='currency_id', track_visibility='onchange')
+
 
     @api.depends('grupo_adjudicado_id')
     def calculo_recuperacion_cartera(self):
@@ -213,6 +222,14 @@ class GrupoAsamblea(models.Model):
             hoy=date.today()
             grupoParticipante=l.grupo_adjudicado_id.transacciones_ids.filtered(lambda l: l.create_date.month==hoy.month and l.create_date.year==hoy.year)
             l.recuperacionCartera= sum(grupoParticipante.mapped('haber'))
+            l.adjudicados= sum(grupoParticipante.mapped('debe'))
+            l.fondos_mes=l.recuperacionCartera-l.adjudicados
+            l.asamblea.fondos_mes+=l.fondos_mes
+            l.asamblea.recuperacionCartera+=l.recuperacionCartera
+
+
+            l.asamblea.adjudicados+=l.adjudicados
+
 
 
 
@@ -301,7 +318,12 @@ class GanadoresAsamblea(models.Model):
         for l in self:
             l.total_cuotas=l.nro_cuotas_adelantadas+ l.puntos
             l.total_or=l.cuota_capital*l.puntos
-
+            if l.grupo_id.codigo_tipo_contrato=='ahorro':
+                l.grupo_id.licitaciones+=l.total_or
+            elif l.grupo_id.codigo_tipo_contrato=='evaluacion':
+                l.grupo_id.evaluacion+=l.monto_financiamiento
+            elif l.grupo_id.codigo_tipo_contrato=='programo':
+                l.grupo_id.programo+=(l.monto_financiamiento-l.cuota_pago)
 
 
 class JuntaGrupoAsamblea(models.Model):

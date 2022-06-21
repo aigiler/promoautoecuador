@@ -57,6 +57,9 @@ class GrupoSocios(models.Model):
 
 
 
+
+
+
     contador_transacciones = fields.Integer(string='Contador de Transacciones',compute="calcular_transacciones",store=True)
 
 
