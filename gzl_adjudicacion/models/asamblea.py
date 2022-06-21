@@ -56,7 +56,7 @@ class Asamblea(models.Model):
 
     def cambio_estado_boton_precierre(self):
         self.write({"state": "pre_cierre"})
-        if self.tipo_asamblea.id==self.env.ref('gzl_adjudicacion.tipo_contrato1').id:
+        if self.tipo_asamblea.id in ['ahorro','evaluacion','exacto']:
             listaGanadores=[]
             for grupo in self.integrantes:
                 for integrante in grupo.integrantes_g:
@@ -256,19 +256,25 @@ class GanadoresAsamblea(models.Model):
     calificacion = fields.Integer(related='puntos',string='Calificación')
     plazo_meses = fields.Many2one('numero.meses',related="contrato_id.plazo_meses")
     cuota=fields.Float("Cuota")
+    cuota_capital=fields.Float("Cuota Capital")
     nro_cuotas_adelantadas = fields.Integer(string='Nro de Cuotas Pagadas por Adelantado',compute="calcular_cuotas")
     total_cuotas = fields.Integer(string='Total de Cuotas',compute="calcular_cuotas")
-
     @api.constrains('contrato_id')
     def actualizar_monto_financiamiento(self):
         self.cuota=self.contrato_id.cuota_adm+self.contrato_id.cuota_capital+self.contrato_id.iva_administrativo
+        self.cuota_adm=self.contrato_id.cuota_capital
         self.monto_adjudicar=self.cuota*self.puntos
 
     @api.depends('contrato_id')
     def calcular_cuotas(self):
         for l in self:
-            l.nro_cuotas_adelantadas=len(self.contrato_id.tabla_amortizacion.filtered(lambda m: m.cuotaAdelantada))
-            l.total_cuotas=l.nro_cuotas_adelantadas + l.puntos
+            cuotasadelantadas=len(self.contrato_id.tabla_amortizacion.filtered(lambda m: m.cuotaAdelantada))
+            cuotas_pagadas=len(self.contrato_id.tabla_amortizacion.filtered(lambda m: m.estado=='pagado'))
+            l.nro_cuotas_adelantadas=cuotasadelantadas+cuotas_pagadas
+            l.total_cuotas=l.nro_cuotas_adelantadas+ l.puntos
+            l.total_cuota_capital=l.cuota_capital*l.puntos
+            
+
 
 class JuntaGrupoAsamblea(models.Model):
     _name = 'junta.grupo.asamblea'
