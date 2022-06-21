@@ -87,6 +87,7 @@ class Asamblea(models.Model):
 
             
         elif self.tipo_asamblea.code in ['evaluacion']:
+            listaGanadores=[]
             for grupo in self.integrantes:
                 for integrante in grupo.integrantes_g:
                     dct={}
@@ -104,7 +105,7 @@ class Asamblea(models.Model):
             # This returns a new list (a is not modified)
             #raise ValidationError(str(listaGanadores))
             
-            listaGanadores=sorted(listaGanadores, key=lambda k : k['grupo_adjudicado_id'],reverse=True) 
+            #listaGanadores=sorted(listaGanadores, key=lambda k : k['grupo_adjudicado_id'],reverse=True) 
 
             numero_ganadores=self.tipo_asamblea.numero_ganadores*2
             for ganador in listaGanadores[:numero_ganadores]:
@@ -130,7 +131,7 @@ class Asamblea(models.Model):
             # This changes the list a
 
             # This returns a new list (a is not modified)
-            listaGanadores=sorted(listaGanadores, key=lambda k : k['grupo_adjudicado_id'],reverse=True)            
+            #listaGanadores=sorted(listaGanadores, key=lambda k : k['grupo_adjudicado_id'],reverse=True)            
             numero_ganadores=self.tipo_asamblea.numero_ganadores*2
 
 
