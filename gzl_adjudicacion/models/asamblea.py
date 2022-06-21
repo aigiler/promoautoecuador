@@ -54,6 +54,48 @@ class Asamblea(models.Model):
             l.saldo=l.fondos_mes-l.invertir_licitacion-l.programo-l.evaluacion
 
 
+    @api.constrains('integrantes')
+    @api.onchange('integrantes')
+    def obtener_valores(self):
+        for l in self:
+            fondos_mes=0
+            recuperacionCartera=0
+            adjudicados=0
+            for x in l.integrantes:
+                fondos_mes+=x.fondos_mes
+                recuperacionCartera+=x.recuperacionCartera
+                adjudicados+=x.adjudicados
+            l.fondos_mes=fondos_mes
+            l.recuperacionCartera=recuperacionCartera
+            l.adjudicados=adjudicados
+
+
+    @api.constrains('ganadores')
+    @api.onchange('ganadores')
+    def obtener_valores_contrato(self):
+        for l in self:
+            monto_financiamiento=0
+            licitaciones=0
+            invertir_licitacion=0
+            evaluacion=0
+            programo=0
+            for x in codigo_tipo_contrato:
+                if l.codigo_tipo_contrato=='ahorro':
+                    monto_financiamiento+=x.monto_financiamiento
+                    licitaciones+=x.total_or
+                    invertir_licitacion=monto_financiamiento-licitaciones
+                elif l.grupo_id.codigo_tipo_contrato=='evaluacion':
+                    evaluacion+=x.monto_financiamiento
+                elif l.grupo_id.codigo_tipo_contrato=='programo':
+                    programo+=(l.monto_financiamiento-x.monto_programado)
+            l.monto_financiamiento=monto_financiamiento
+            l.licitaciones=licitaciones
+            l.invertir_licitacion=invertir_licitacion
+            l.evaluacion=evaluacion
+            l.programo=programo
+
+
+
     @api.model
     def create(self, vals):
         vals['secuencia'] = self.env['ir.sequence'].next_by_code('asamblea')
@@ -230,11 +272,7 @@ class GrupoAsamblea(models.Model):
             l.recuperacionCartera= sum(grupoParticipante.mapped('haber'))
             l.adjudicados= sum(grupoParticipante.mapped('debe'))
             l.fondos_mes=l.recuperacionCartera-l.adjudicados
-            l.asamblea_id.fondos_mes+=l.fondos_mes
-            l.asamblea_id.recuperacionCartera+=l.recuperacionCartera
-
-
-            l.asamblea_id.adjudicados+=l.adjudicados
+            
 
 
 
@@ -310,9 +348,9 @@ class GanadoresAsamblea(models.Model):
     total_cuotas = fields.Integer(string='Total de Cuotas',compute="calcular_cuotas")
     currency_id = fields.Many2one(
         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
-    cuota_pago = fields.Integer(
-        string='Entrada', relate="contrato_id.cuota_pago")
-
+    cuota_pago = fields.Integer( related="contrato_id.cuota_pago")
+    monto_programado = fields.Monetary(
+        string='Entrada', related="contrato_id.monto_programado", currency_field='currency_id')
     @api.constrains('contrato_id')
     def actualizar_monto_financiamiento(self):
         self.cuota=self.contrato_id.cuota_adm+self.contrato_id.cuota_capital+self.contrato_id.iva_administrativo
@@ -324,15 +362,6 @@ class GanadoresAsamblea(models.Model):
         for l in self:
             l.total_cuotas=l.nro_cuotas_adelantadas+ l.puntos
             l.total_or=l.cuota_capital*l.puntos
-            if l.grupo_id.codigo_tipo_contrato=='ahorro':
-                l.grupo_id.monto_financiamiento+=l.monto_financiamiento
-                l.grupo_id.licitaciones+=l.total_or
-                l.invertir_licitacion=l.grupo_id.monto_financiamiento-l.grupo_id.licitaciones
-            elif l.grupo_id.codigo_tipo_contrato=='evaluacion':
-                l.grupo_id.evaluacion+=l.monto_financiamiento
-            elif l.grupo_id.codigo_tipo_contrato=='programo':
-                l.grupo_id.programo+=(l.monto_financiamiento-l.cuota_pago)
-
 
 class JuntaGrupoAsamblea(models.Model):
     _name = 'junta.grupo.asamblea'
