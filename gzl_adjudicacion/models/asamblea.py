@@ -89,7 +89,8 @@ class Asamblea(models.Model):
                 elif l.codigo_tipo_contrato=='evaluacion':
                     evaluacion+=x.monto_financiamiento
                 elif l.codigo_tipo_contrato=='programo':
-                    programo+=(l.monto_financiamiento-x.monto_programado)
+                    monto_financiamiento+=x.monto_financiamiento
+                    programo+=(monto_financiamiento-x.monto_programado)
             l.monto_financiamiento=monto_financiamiento
             l.licitaciones=licitaciones
             l.invertir_licitacion=invertir_licitacion
