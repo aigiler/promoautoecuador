@@ -270,7 +270,7 @@ class GanadoresAsamblea(models.Model):
     def calcular_cuotas(self):
         for l in self:
             cuotasadelantadas=len(self.contrato_id.tabla_amortizacion.filtered(lambda m: m.cuotaAdelantada))
-            cuotas_pagadas=len(self.contrato_id.tabla_amortizacion.filtered(lambda m: m.estado=='pagado'))
+            cuotas_pagadas=len(self.contrato_id.tabla_amortizacion.filtered(lambda m: m.estado_pago=='pagado'))
             l.nro_cuotas_adelantadas=cuotasadelantadas+cuotas_pagadas
             l.total_cuotas=l.nro_cuotas_adelantadas+ l.puntos
             l.total_cuota_capital=l.cuota_capital*l.puntos
