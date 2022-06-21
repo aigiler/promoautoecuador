@@ -60,16 +60,16 @@
                                         <field name="monto_financiamiento" readonly="1"/>
                                         <field name="cuota" readonly="1"/>
                                         <field name="monto_adjudicar"/>
-                                        <field name="puntos" string="Cuotas Licitadas" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'evaluacion')]}"/>
-                                        <field name="nro_cuotas_adelantadas" string="Cuotas Adelantadas" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'evaluacion')]}"/>
+                                        <field name="puntos" string="Cuotas Licitadas" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'programo')]}"/>
+                                        <field name="nro_cuotas_adelantadas" string="Cuotas Adelantadas" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'programo')]}"/>
 
-                                        <field name="total_cuotas" string="Total Cuotas" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'evaluacion')]}"/>
-                                        <field name="cuota_capital" string="Total Cuotas" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'evaluacion')]}"/>
-                                        <field name="total_or" string="Total Cuotas" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'evaluacion')]}"/>
+                                        <field name="total_cuotas" string="Total Cuotas" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'programo')]}"/>
+                                        <field name="cuota_capital" string="Total Cuotas" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'programo')]}"/>
+                                        <field name="total_or" string="Total Cuotas" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'programo')]}"/>
 
 
 
-                                        <field name="calificacion" string="Calificación" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '!=', 'evaluacion')]}"/>
+                                        <field name="calificacion" string="Calificación" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '!=', 'programo')]}"/>
                                         
                                         
                                         
