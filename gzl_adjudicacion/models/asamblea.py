@@ -81,14 +81,14 @@ class Asamblea(models.Model):
             invertir_licitacion=0
             evaluacion=0
             programo=0
-            for x in codigo_tipo_contrato:
+            for x in l.ganadores:
                 if l.codigo_tipo_contrato=='ahorro':
                     monto_financiamiento+=x.monto_financiamiento
                     licitaciones+=x.total_or
                     invertir_licitacion=monto_financiamiento-licitaciones
-                elif l.grupo_id.codigo_tipo_contrato=='evaluacion':
+                elif l.codigo_tipo_contrato=='evaluacion':
                     evaluacion+=x.monto_financiamiento
-                elif l.grupo_id.codigo_tipo_contrato=='programo':
+                elif l.codigo_tipo_contrato=='programo':
                     programo+=(l.monto_financiamiento-x.monto_programado)
             l.monto_financiamiento=monto_financiamiento
             l.licitaciones=licitaciones
