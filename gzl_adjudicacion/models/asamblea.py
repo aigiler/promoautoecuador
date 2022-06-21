@@ -40,12 +40,18 @@ class Asamblea(models.Model):
     licitaciones=fields.Monetary(string='Licitaciones', currency_field='currency_id', track_visibility='onchange')
     evaluacion=fields.Monetary(string='Evaluación', currency_field='currency_id', track_visibility='onchange')
     programo=fields.Monetary(string='Plan Programo', currency_field='currency_id', track_visibility='onchange')
+    monto_financiamiento=fields.Monetary(string='Monto', currency_field='currency_id', track_visibility='onchange')
 
     recuperacionCartera = fields.Monetary(string='Recuperación de Cartera', currency_field='currency_id', track_visibility='onchange')
     adjudicados = fields.Monetary(string='Adjudicados', currency_field='currency_id', track_visibility='onchange')
     fondos_mes=fields.Monetary(string='Fondos del Mes', currency_field='currency_id', track_visibility='onchange')
+    invertir_licitacion=fields.Monetary(string='Invertir-Licitacion', currency_field='currency_id', track_visibility='onchange')
+    saldo=fields.Monetary(string='Saldo', compute="obtener_saldo",currency_field='currency_id', track_visibility='onchange')
 
-
+    @api.depends('fondos_mes','invertir_licitacion','programo','evaluacion')
+    def obtener_monto(self):
+        for l in self:
+            l.saldo=l.fondos_mes-l.invertir_licitacion-l.programo-l.evaluacion
 
 
     @api.model
@@ -224,11 +230,11 @@ class GrupoAsamblea(models.Model):
             l.recuperacionCartera= sum(grupoParticipante.mapped('haber'))
             l.adjudicados= sum(grupoParticipante.mapped('debe'))
             l.fondos_mes=l.recuperacionCartera-l.adjudicados
-            l.asamblea.fondos_mes+=l.fondos_mes
-            l.asamblea.recuperacionCartera+=l.recuperacionCartera
+            l.asamblea_id.fondos_mes+=l.fondos_mes
+            l.asamblea_id.recuperacionCartera+=l.recuperacionCartera
 
 
-            l.asamblea.adjudicados+=l.adjudicados
+            l.asamblea_id.adjudicados+=l.adjudicados
 
 
 
@@ -319,7 +325,9 @@ class GanadoresAsamblea(models.Model):
             l.total_cuotas=l.nro_cuotas_adelantadas+ l.puntos
             l.total_or=l.cuota_capital*l.puntos
             if l.grupo_id.codigo_tipo_contrato=='ahorro':
+                l.grupo_id.monto_financiamiento+=l.monto_financiamiento
                 l.grupo_id.licitaciones+=l.total_or
+                l.invertir_licitacion=l.grupo_id.monto_financiamiento-l.grupo_id.licitaciones
             elif l.grupo_id.codigo_tipo_contrato=='evaluacion':
                 l.grupo_id.evaluacion+=l.monto_financiamiento
             elif l.grupo_id.codigo_tipo_contrato=='programo':

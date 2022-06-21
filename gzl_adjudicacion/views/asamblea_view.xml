@@ -43,6 +43,25 @@
                                 <field name="fecha_fin" required="1" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
                                 <field name="active" invisible="1 "/>
                                 <field name="codigo_tipo_contrato" invisible="1"/>
+                                <field name="recuperacionCartera" invisible="0"/>
+                                <field name="adjudicados" invisible="0"/>
+                                <field name="fondos_mes" invisible="0"/>
+                                
+                                <field name="invertir_licitacion" invisible="0"/>
+                                <field name="evaluacion" invisible="0"/>
+                                <field name="programo" invisible="0"/>
+                                <field name="licitaciones" invisible="0"/>
+                                
+                                <field name="saldo" invisible="0"/>
+
+                                
+
+
+
+
+
+
+
 
 
                             </group>
