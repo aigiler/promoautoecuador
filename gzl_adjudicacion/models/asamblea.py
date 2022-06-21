@@ -104,7 +104,7 @@ class Asamblea(models.Model):
             # This returns a new list (a is not modified)
             #raise ValidationError(str(listaGanadores))
             
-
+            listaGanadores=sorted(listaGanadores, key=lambda k : k['grupo_adjudicado_id'],reverse=True) 
 
             numero_ganadores=self.tipo_asamblea.numero_ganadores*2
             for ganador in listaGanadores[:numero_ganadores]:
@@ -123,7 +123,6 @@ class Asamblea(models.Model):
 
                     dct['adjudicado_id']=integrante.adjudicado_id.id
                     dct['grupo_adjudicado_id']=contrato.grupo.id
-                    dct['puntos']=integrante.adjudicado_id.calificacion
                     dct['contrato_id']=contrato.id
                     listaGanadores.append(dct)
 
@@ -131,6 +130,7 @@ class Asamblea(models.Model):
             # This changes the list a
 
             # This returns a new list (a is not modified)
+            listaGanadores=sorted(listaGanadores, key=lambda k : k['grupo_adjudicado_id'],reverse=True)            
             numero_ganadores=self.tipo_asamblea.numero_ganadores*2
 
 
