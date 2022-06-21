@@ -257,12 +257,12 @@ class GanadoresAsamblea(models.Model):
     plazo_meses = fields.Many2one('numero.meses',related="contrato_id.plazo_meses")
     cuota=fields.Float("Cuota")
     cuota_capital=fields.Monetary("Cuota Capital", currency_field='currency_id',related="contrato_id.cuota_capital")
-    total_or=fields.Float("O.R",,compute="calcular_cuotas")
+    total_or=fields.Float("O.R",compute="calcular_cuotas")
     nro_cuotas_adelantadas = fields.Integer(string='Cuotas Pagadas', related="contrato_id.numero_cuotas_pagadas")
     total_cuotas = fields.Integer(string='Total de Cuotas',compute="calcular_cuotas")
     currency_id = fields.Many2one(
         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
-    
+
     @api.constrains('contrato_id')
     def actualizar_monto_financiamiento(self):
         self.cuota=self.contrato_id.cuota_adm+self.contrato_id.cuota_capital+self.contrato_id.iva_administrativo
