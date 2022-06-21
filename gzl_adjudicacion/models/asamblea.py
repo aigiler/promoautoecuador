@@ -256,10 +256,13 @@ class GanadoresAsamblea(models.Model):
     calificacion = fields.Integer(related='puntos',string='Calificación')
     plazo_meses = fields.Many2one('numero.meses',related="contrato_id.plazo_meses")
     cuota=fields.Float("Cuota")
-    cuota_capital=fields.Float("Cuota Capital")
-    total_or=fields.Float("O.R")
-    nro_cuotas_adelantadas = fields.Integer(string='Nro de Cuotas Pagadas por Adelantado',compute="calcular_cuotas")
+    cuota_capital=fields.Monetary("Cuota Capital", currency_field='currency_id',related="contrato_id.cuota_capital")
+    total_or=fields.Float("O.R",,compute="calcular_cuotas")
+    nro_cuotas_adelantadas = fields.Integer(string='Cuotas Pagadas', related="contrato_id.numero_cuotas_pagadas")
     total_cuotas = fields.Integer(string='Total de Cuotas',compute="calcular_cuotas")
+    currency_id = fields.Many2one(
+        'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
+    
     @api.constrains('contrato_id')
     def actualizar_monto_financiamiento(self):
         self.cuota=self.contrato_id.cuota_adm+self.contrato_id.cuota_capital+self.contrato_id.iva_administrativo
@@ -269,10 +272,6 @@ class GanadoresAsamblea(models.Model):
     @api.depends('contrato_id')
     def calcular_cuotas(self):
         for l in self:
-            cuotasadelantadas=len(self.contrato_id.tabla_amortizacion.filtered(lambda m: m.cuotaAdelantada))
-            cuotas_pagadas=self.contrato_id.numero_cuotas_pagadas
-            l.nro_cuotas_adelantadas=cuotasadelantadas+cuotas_pagadas
-            l.cuota_capital=self.contrato_id.cuota_capital
             l.total_cuotas=l.nro_cuotas_adelantadas+ l.puntos
             l.total_or=l.cuota_capital*l.puntos
 
