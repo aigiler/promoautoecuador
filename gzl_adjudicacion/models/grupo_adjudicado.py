@@ -135,7 +135,7 @@ class IntegrantesGrupo(models.Model):
 
     @api.constrains("adjudicado_id")
     @api.onchange("adjudicado_id")
-    def agregar_contrato(self, ):
+    def agregar_contrato(self):
 
         if self.adjudicado_id.id:
             contrato=self.env['contrato'].search([('cliente','=',self.adjudicado_id.id)],limit=1)

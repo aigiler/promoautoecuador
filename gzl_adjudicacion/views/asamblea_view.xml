@@ -52,9 +52,14 @@
                                 <field name="ganadores" nolabel="1" attrs="{'readonly': [('state', '=', 'cerrado')]}">
                                     <tree string="Ganadores" editable="top">
                                         <field name="grupo_adjudicado_id"/>
+                                        <field name="contrato_id" readonly="1" invisible="0"/>
+
                                         <field name="adjudicado_id"/>
                                         <field name="fecha_antiguedad" widget="date"/>
-
+                                        <field name="plazo_meses" readonly="1" invisible="0"/>
+                                        <field name="monto_financiamiento" readonly="1"/>
+                                        <field name="cuota" readonly="1"/>
+                                        <field name="monto_adjudicar"/>
                                         <field name="puntos" string="Cuotas Licitadas" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'evaluacion')]}"/>
                                         <field name="nro_cuotas_adelantadas" string="Cuotas Adelantadas" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'evaluacion')]}"/>
 
@@ -62,9 +67,9 @@
 
 
                                         <field name="calificacion" string="Calificación" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'licitacion')]}"/>
-                                        <field name="contrato_id" readonly="1" invisible="1"/>
-                                        <field name="monto_financiamiento" readonly="1"/>
-                                        <field name="monto_adjudicar"/>
+                                        
+                                        
+                                        
 
 
                                     </tree>

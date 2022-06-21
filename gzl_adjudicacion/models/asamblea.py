@@ -254,14 +254,15 @@ class GanadoresAsamblea(models.Model):
     grupo_adjudicado_id = fields.Many2one('grupo.adjudicado',string="Grupo")
     puntos = fields.Integer(string='Nro de Cuotas a Licitar')
     calificacion = fields.Integer(related='puntos',string='Calificación')
-
+    plazo_meses = fields.Many2one('numero.meses',related="contrato_id.plazo_meses")
+    cuota=fields.Float("Cuota")
     nro_cuotas_adelantadas = fields.Integer(string='Nro de Cuotas Pagadas por Adelantado',compute="calcular_cuotas")
     total_cuotas = fields.Integer(string='Total de Cuotas',compute="calcular_cuotas")
 
     @api.constrains('contrato_id')
     def actualizar_monto_financiamiento(self):
-        self.monto_adjudicar=self.contrato_id.monto_financiamiento
-
+        self.cuota=self.contrato_id.cuota_adm+self.contrato_id.cuota_capital+self.contrato_id.iva_administrativo
+        self.monto_adjudicar=self.cuota*self.puntos
 
     @api.depends('contrato_id')
     def calcular_cuotas(self):
@@ -269,17 +270,9 @@ class GanadoresAsamblea(models.Model):
             l.nro_cuotas_adelantadas=len(self.contrato_id.tabla_amortizacion.filtered(lambda m: m.cuotaAdelantada))
             l.total_cuotas=l.nro_cuotas_adelantadas + l.puntos
 
-
-
-
-
 class JuntaGrupoAsamblea(models.Model):
     _name = 'junta.grupo.asamblea'
     _description = 'Comité que realiza la asamblea'
 
     asamblea_id = fields.Many2one('asamblea', string='Asamblea')
     empleado_id = fields.Many2one('hr.employee', string="Empleado")
-
-
-
-
