@@ -89,7 +89,7 @@
 
 
                                         <field name="calificacion" invisible="1" string="Calificación" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '!=', 'programo')]}"/>
-                                         <field name="cuota_pago" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '!=', 'programo')]}"/>
+                                         <field name="monto_programado" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '!=', 'programo')]}"/>
                                         
                                         
                                         

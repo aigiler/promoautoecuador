@@ -56,6 +56,7 @@ class Asamblea(models.Model):
 
     @api.constrains('integrantes')
     @api.onchange('integrantes')
+    @api.depends('integrantes')
     def obtener_valores(self):
         for l in self:
             fondos_mes=0
@@ -72,6 +73,7 @@ class Asamblea(models.Model):
 
     @api.constrains('ganadores')
     @api.onchange('ganadores')
+    @api.depends('ganadores')
     def obtener_valores_contrato(self):
         for l in self:
             monto_financiamiento=0
