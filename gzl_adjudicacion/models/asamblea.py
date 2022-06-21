@@ -353,17 +353,20 @@ class GanadoresAsamblea(models.Model):
     cuota_pago = fields.Integer( related="contrato_id.cuota_pago")
     monto_programado = fields.Monetary(
         string='Entrada', related="contrato_id.monto_programado", currency_field='currency_id')
+
     @api.constrains('contrato_id')
     def actualizar_monto_financiamiento(self):
         self.cuota=self.contrato_id.cuota_adm+self.contrato_id.cuota_capital+self.contrato_id.iva_administrativo
         self.cuota_adm=self.contrato_id.cuota_capital
         self.monto_adjudicar=self.cuota*self.puntos
+        self.grupo_id.obtener_valores_contrato()
 
     @api.depends('contrato_id')
     def calcular_cuotas(self):
         for l in self:
             l.total_cuotas=l.nro_cuotas_adelantadas+ l.puntos
             l.total_or=l.cuota_capital*l.puntos
+            l.grupo_id.obtener_valores_contrato()
 
 class JuntaGrupoAsamblea(models.Model):
     _name = 'junta.grupo.asamblea'
