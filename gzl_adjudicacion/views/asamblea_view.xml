@@ -64,8 +64,8 @@
                                         <field name="nro_cuotas_adelantadas" string="Cuotas Adelantadas" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'programo')]}"/>
 
                                         <field name="total_cuotas" string="Total Cuotas" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'programo')]}"/>
-                                        <field name="cuota_capital" string="Total Cuotas" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'programo')]}"/>
-                                        <field name="total_or" string="Total Cuotas" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'programo')]}"/>
+                                        <field name="cuota_capital" string="Cuota Capital" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'programo')]}"/>
+                                        <field name="total_or" string="OR" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'programo')]}"/>
 
 
 
