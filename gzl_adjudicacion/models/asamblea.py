@@ -19,6 +19,7 @@ class Asamblea(models.Model):
     # integrantes = fields.Many2many('integrante.grupo.adjudicado')
     codigo_tipo_contrato = fields.Char(related="tipo_asamblea.code", string='Tipo de Asamblea' )
     #fecha_asamblea = fields.Date(String='Fecha de Asamblea')
+    
     junta = fields.One2many('junta.grupo.asamblea', 'asamblea_id',track_visibility='onchange')
     ganadores = fields.One2many('gana.grupo.adjudicado.asamblea.clientes', 'grupo_id',track_visibility='onchange')
     fecha_inicio = fields.Datetime(String='Fecha Inicio',track_visibility='onchange')
@@ -56,7 +57,7 @@ class Asamblea(models.Model):
 
     def cambio_estado_boton_precierre(self):
         self.write({"state": "pre_cierre"})
-        if self.tipo_asamblea.code in ['ahorro','evaluacion','exacto']:
+        if self.tipo_asamblea.code in ['ahorro']:
             listaGanadores=[]
             for grupo in self.integrantes:
                 for integrante in grupo.integrantes_g:
@@ -85,9 +86,33 @@ class Asamblea(models.Model):
                 self.env['gana.grupo.adjudicado.asamblea.clientes'].create(ganador)
 
             
+        elif self.tipo_asamblea.code in ['evaluacion']:
+            for grupo in self.integrantes:
+                for integrante in grupo.integrantes_g:
+                    dct={}
+
+                    contrato = self.env['contrato'].search(
+                        [('cliente', '=', integrante.adjudicado_id.id)], limit=1)
+                    dct['contrato_id']=contrato.id
+                    dct['adjudicado_id']=integrante.adjudicado_id.id
+                    dct['grupo_adjudicado_id']=contrato.grupo.id
+                    listaGanadores.append(dct)
+
+
+            # This changes the list a
+
+            # This returns a new list (a is not modified)
+            #raise ValidationError(str(listaGanadores))
             
+
+
+            numero_ganadores=self.tipo_asamblea.numero_ganadores*2
+            for ganador in listaGanadores[:numero_ganadores]:
+                ganador['grupo_id']=self.id
+                self.env['gana.grupo.adjudicado.asamblea.clientes'].create(ganador)
+      
             
-        else:
+        elif self.tipo_asamblea.code in ['programo']:
             listaGanadores=[]
             for grupo in self.integrantes:
                 for integrante in grupo.integrantes_g:
@@ -106,7 +131,6 @@ class Asamblea(models.Model):
             # This changes the list a
 
             # This returns a new list (a is not modified)
-            listaGanadores=sorted(listaGanadores, key=lambda k : k['puntos'],reverse=True) 
             numero_ganadores=self.tipo_asamblea.numero_ganadores*2
 
 
@@ -262,6 +286,8 @@ class GanadoresAsamblea(models.Model):
     total_cuotas = fields.Integer(string='Total de Cuotas',compute="calcular_cuotas")
     currency_id = fields.Many2one(
         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
+    cuota_pago = fields.Integer(
+        string='Entrada', relate="contrato_id.cuota_pago")
 
     @api.constrains('contrato_id')
     def actualizar_monto_financiamiento(self):

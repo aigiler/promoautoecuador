@@ -58,18 +58,19 @@
                                         <field name="fecha_antiguedad" widget="date"/>
                                         <field name="plazo_meses" readonly="1" invisible="0"/>
                                         <field name="monto_financiamiento" readonly="1"/>
-                                        <field name="cuota" readonly="1"/>
-                                        <field name="monto_adjudicar"/>
-                                        <field name="puntos" string="Cuotas Licitadas" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'programo')]}"/>
-                                        <field name="nro_cuotas_adelantadas" string="Cuotas Adelantadas" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'programo')]}"/>
+                                        <field name="cuota" readonly="1" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '!=', 'ahorro')]}"/>
+                                        <field name="monto_adjudicar" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '!=', 'ahorro')]}"/>
+                                        <field name="puntos" string="Cuotas Licitadas" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '!=', 'ahorro')]}"/>
+                                        <field name="nro_cuotas_adelantadas" string="Cuotas Pagadas" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', 'not in',['ahorro','evaluacion'] )]}"/>
 
-                                        <field name="total_cuotas" string="Total Cuotas" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'programo')]}"/>
-                                        <field name="cuota_capital" string="Cuota Capital" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'programo')]}"/>
-                                        <field name="total_or" string="OR" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '=', 'programo')]}"/>
+                                        <field name="total_cuotas" string="Total Cuotas" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '!=', 'ahorro')]}"/>
+                                        <field name="cuota_capital" string="Cuota Capital" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '!=', 'ahorro')]}"/>
+                                        <field name="total_or" string="OR" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '!=', 'ahorro')]}"/>
 
 
 
                                         <field name="calificacion" string="Calificación" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '!=', 'programo')]}"/>
+                                         <field name="cuota_pago" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', '!=', 'programo')]}"/>
                                         
                                         
                                         
