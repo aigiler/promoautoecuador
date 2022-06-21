@@ -49,7 +49,7 @@ class Asamblea(models.Model):
     saldo=fields.Monetary(string='Saldo', compute="obtener_saldo",currency_field='currency_id', track_visibility='onchange')
 
     @api.depends('fondos_mes','invertir_licitacion','programo','evaluacion')
-    def obtener_monto(self):
+    def obtener_saldo(self):
         for l in self:
             l.saldo=l.fondos_mes-l.invertir_licitacion-l.programo-l.evaluacion
 
