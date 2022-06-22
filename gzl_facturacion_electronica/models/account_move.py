@@ -44,22 +44,22 @@ class AccountMove(models.Model):
     is_group_cobranza = fields.Boolean(string='Es Cobranza',compute="_compute_is_group_cobranza")
 
 
-    @api.constrains("partner_id")
     @api.onchange("partner_id")
     def obtener_anticipos(self):
         for l in self:
             lista=[]
             self.update({'anticipos_ids':[(6,0,[])]}) 
-            linea_pago_ids=self.env['account.payment.line.account'].search([('partner_id','=',self.partner_id.id),('aplicar_anticipo','=',True)])
-            raise ValidationError("Esto se ejecuta")
-            for x in linea_pago_ids:
-                tupla=(0,0,{'linea_pago_id':x.id,
-                          'payment_id':x.payment_id.id,
-                          'credit':x.credit,
-                          'anticipo_pendiente':False})
-                lista.append(tupla)
-            self.anticipos_ids=lista
-         
+            if l.partner_id:
+                linea_pago_ids=self.env['account.payment.line.account'].search([('partner_id','=',self.partner_id.id),('aplicar_anticipo','=',True)])
+                #raise ValidationError("Esto se ejecuta")
+                for x in linea_pago_ids:
+                    tupla=(0,0,{'linea_pago_id':x.id,
+                              'payment_id':x.payment_id.id,
+                              'credit':x.credit,
+                              'anticipo_pendiente':False})
+                    lista.append(tupla)
+                self.anticipos_ids=lista
+             
          
 
     @api.depends("partner_id")
