@@ -1188,7 +1188,16 @@ class AccountPayment(models.Model):
                                     'debit':0,
                                     'credit':otro_pagar})
                         lista.append(tupla)
-                    
+                elif self.credito:
+                    credito_obj = self.env['rubros.contratos'].search([('name','=','credito_obj')]) 
+                    tupla=(0, 0, {
+                                    'cuenta':credito_obj.cuenta_id.id,
+                                    'name': '-',
+                                    'cuenta_analitica':'',
+                                    'analytic_tag_ids':[],
+                                    'debit':0,
+                                    'credit':self.credito})
+                    lista.append(tupla)
                 if self.payment_type=='outbound':
                     credito=l.amount
                     name='Pago a Proveedor '+str(self.partner_id.name)
