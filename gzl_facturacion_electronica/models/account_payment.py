@@ -134,6 +134,7 @@ class AccountPayment(models.Model):
         for l in self:
             valor_asignado=0
             contrato_valor=0
+            credito_contrato=0
             for x in l.payment_line_ids:
                 if x.pagar:
                     valor_asignado+=x.amount
