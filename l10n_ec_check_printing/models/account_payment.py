@@ -1102,8 +1102,7 @@ class AccountPayment(models.Model):
 
     @api.onchange('amount','valor_deuda','credito_contrato','abono_contrato')
     def crear_asientos(self):
-        for reg in self.account_payment_account_ids:
-            self.update({'account_payment_account_ids':[(3,reg.id)]}) 
+
         lista_ids=[]
         lista=[]
         self._saldo_pagar()
@@ -1149,47 +1148,47 @@ class AccountPayment(models.Model):
                             otro_pagar+=y.otro_pagar
                     if  cuota_capital_pagar:
                         cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
-                        tupla=(0,0,{
+                        tupla={
                                                             'partner_id':l.partner_id.id,
                                                             'cuenta':cuota_capital_obj.cuenta_id.id,
                                                             'name': '-',
                                                             'cuenta_analitica':'',
                                                             'analytic_tag_ids':[],
                                                             'debit':0,
-                                                            'credit':cuota_capital_pagar})
+                                                            'credit':cuota_capital_pagar}
                         lista.append(tupla)
                     if seguro_pagar:
                         seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
-                        tupla=(0,0,{
+                        tupla={
                                                             'partner_id':l.partner_id.id,
                                                             'cuenta':seguro_obj.cuenta_id.id,
                                                             'name': '-',
                                                             'cuenta_analitica':'',
                                                             'analytic_tag_ids':[],
                                                             'debit':0,
-                                                            'credit':seguro_pagar})
+                                                            'credit':seguro_pagar}
                         lista.append(tupla)
                     if rastreo_pagar:
                         rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
-                        tupla=(0,0,{
+                        tupla={
                                                             'partner_id':l.partner_id.id,
                                                             'cuenta':rastreo_obj.cuenta_id.id,
                                                             'name': '-',
                                                             'cuenta_analitica':'',
                                                             'analytic_tag_ids':[],
                                                             'debit':0,
-                                                            'credit':rastreo_pagar})
+                                                            'credit':rastreo_pagar}
                         lista.append(tupla)
                     if otro_pagar:
                         otros_obj = self.env['rubros.contratos'].search([('name','=','otros')]) 
-                        tupla=(0,0,{
+                        tupla={
                                                             'partner_id':l.partner_id.id,
                                                             'cuenta':otros_obj.cuenta_id.id,
                                                             'name': '-',
                                                             'cuenta_analitica':'',
                                                             'analytic_tag_ids':[],
                                                             'debit':0,
-                                                            'credit':otro_pagar})
+                                                            'credit':otro_pagar}
                         lista.append(tupla)
                     
                         lista.append(tupla)
@@ -1218,29 +1217,35 @@ class AccountPayment(models.Model):
                     valor_credito=valor_asignado
                     sald_credito=l.amount-valor_asignado
                 if l.amount:
-                        tupla=(0,0,{
+                        tupla={
                                                         'partner_id':l.partner_id.id,
                                                         'cuenta':self.journal_id.default_debit_account_id.id,
                                                         'name': '-',
                                                         'cuenta_analitica':'',
                                                         'analytic_tag_ids':[],
                                                         'debit':debito,
-                                                        'credit':credito})
+                                                        'credit':credito}
                         lista.append(tupla)
                 if valor_asignado:
-                        tupla=(0,0,{
+                        tupla={
                                                         'partner_id':l.partner_id.id,
                                                         'cuenta':cuenta_partner,
                                                         'name': name,
                                                         'cuenta_analitica':'',
                                                         'analytic_tag_ids':[],
                                                         'debit':valor_debito,
-                                                        'credit':valor_credito,})
+                                                        'credit':valor_credito,}
                         lista.append(tupla)
 
-        for reg in self.account_payment_account_ids:
-            self.update({'account_payment_account_ids':[(3,reg.id)]}) 
-        self.account_payment_account_ids=lista 
+        lista_ids=[]
+        for prueba in lista_dic:
+            id_registro=self.env['contrato.estado.cuenta.payment'].create(prueba) 
+            lista_ids.append(id_registro.id)
+            self.update({'campos_adicionales_facturacion':[(6,0,lista_ids)]}) 
+        
+        #for reg in self.account_payment_account_ids:
+        #    self.update({'account_payment_account_ids':[(6,0,lista)]}) 
+        #self.account_payment_account_ids=lista 
         
 
 class AccountPaymentLine(models.Model):
