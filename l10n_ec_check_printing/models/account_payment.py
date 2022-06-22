@@ -1104,7 +1104,7 @@ class AccountPayment(models.Model):
         lista_ids=[]
         lista=[]
         for reg in self.account_payment_account_ids:
-            reg.unlink()
+            self.write({"account_payment_account_ids": [(2, reg.id)]})
         self._saldo_pagar()
         for l in self:
             if l.partner_id and not l.is_third_name: 

@@ -34,9 +34,9 @@ class AccountPayment(models.Model):
     #def asignar_contrato(self):
         #self.crear_asientos()
 
-    @api.onchange('credito_contrato')
-    def asignar_credito(self):
-        self.crear_asientos()
+    #@api.onchange('credito_contrato')
+    #def asignar_credito(self):
+    #    self.crear_asientos()
 
 
     def crear_detalles(self):
