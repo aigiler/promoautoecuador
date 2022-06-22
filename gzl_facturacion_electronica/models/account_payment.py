@@ -132,6 +132,7 @@ class AccountPayment(models.Model):
     @api.depends('tipo_valor','amount')
     def _saldo_pagar(self):
         for l in self:
+            valor_asignado=0
             for x in l.payment_line_ids:
                 if x.pagar:
                     valor_asignado+=x.amount
