@@ -41,3 +41,10 @@ class AnticiposPendientes(models.Model):
     anticipo_pendiente=fields.Boolean("Anticipo")
     factura_id = fields.Many2one('account.move',string='Factura' )
 
+    @api.onchange('anticipo_pendiente')
+    def obtener_montos_anticipados(self):
+        for l in self:
+            if l.anticipo_pendiente:
+                self.factura_id.obtener_total()
+            else:
+                self.obtener_total()

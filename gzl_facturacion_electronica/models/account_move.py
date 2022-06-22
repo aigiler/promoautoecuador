@@ -118,6 +118,23 @@ class AccountMove(models.Model):
                         })]          
             self._move_autocomplete_invoice_lines_values()
 
+    def obtener_total(self):
+        for l in self:
+            saldo=0
+            saldo_credito=0
+            for registros in self.contrato_estado_cuenta_ids:
+                longitud+=1
+                numero_cuotas=numero_cuotas+registros.numero_cuota+','
+                saldo_credito+=registros.saldo
+            for m in l.anticipos_ids:
+                if m.aplicar_anticipo:
+                    saldo+=m.credit
+            for x in l.campos_adicionales_facturacion:
+                if x['nombre']=='CRÉDITO':
+                    x['valor']=str(round(saldo_credito-saldo,2))+' a '+str(self.invoice_date_due)
+
+
+
     @api.onchange('invoice_payment_term_id','method_payment','contrato_estado_cuenta_ids','name')
     def obtener_infoadicional(self):
         numero_cuotas=","      
