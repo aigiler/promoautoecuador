@@ -1202,7 +1202,7 @@ class AccountPayment(models.Model):
                                     'analytic_tag_ids':[],
                                     'debit':0,
                                     'credit':self.credito,
-                                    'anticipo':True})
+                                    'aplicar_anticipo':True})
                     lista.append(tupla)
                 if self.payment_type=='outbound':
                     credito=l.amount

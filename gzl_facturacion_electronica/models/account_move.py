@@ -50,7 +50,7 @@ class AccountMove(models.Model):
         for l in self:
             lista=[]
             self.update({'anticipos_ids':[(6,0,[])]}) 
-            linea_pago_ids=self.env['account.payment.line.account'].search([('partner_id','=',self.partner_id.id),('anticipo','=',True)])
+            linea_pago_ids=self.env['account.payment.line.account'].search([('partner_id','=',self.partner_id.id),('aplicar_anticipo','=',True)])
             for x in linea_pago_ids:
                 tupla=(0,0,{'linea_pago_id':x.id,
                           'payment_id':x.payment_id.id,
