@@ -3,6 +3,7 @@
 
 from odoo import api, fields, models, _
 from odoo.addons.web.controllers.main import clean_action
+from odoo.exceptions import UserError, ValidationError
 
 class PaymentLineAccount(models.Model):
     _name = 'account.payment.line.account'
@@ -45,6 +46,7 @@ class AnticiposPendientes(models.Model):
     def obtener_montos_anticipados(self):
         for l in self:
             if l.anticipo_pendiente:
+                raise ValidationError('asdfghjhgfds')
                 self.factura_id.obtener_infoadicional()
             else:
                 self.factura_id.obtener_infoadicional()
