@@ -638,7 +638,7 @@ class AccountMove(models.Model):
                             (0,0,{
                             'account_id':cuota_capital_obj.cuenta_id.id,
                             'partner_id':self.partner_id.id,
-                            'credit':cuota_capital-valor_credito,
+                            'credit':cuota_capital,
                             'debit':0
                             })
                         ]
