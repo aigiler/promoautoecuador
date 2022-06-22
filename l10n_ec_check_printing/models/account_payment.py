@@ -1238,8 +1238,9 @@ class AccountPayment(models.Model):
                                                         'credit':valor_credito,})
                         lista.append(tupla)
 
-                self.update({'account_payment_account_ids':[(6,0,[])]}) 
-                self.account_payment_account_ids=lista 
+        for reg in self.account_payment_account_ids:
+            self.update({'account_payment_account_ids':[(3,reg.id)]}) 
+        self.account_payment_account_ids=lista 
         
 
 class AccountPaymentLine(models.Model):
