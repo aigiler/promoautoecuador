@@ -1103,8 +1103,6 @@ class AccountPayment(models.Model):
     def crear_asientos(self):
         lista_ids=[]
         lista=[]
-        #for reg in self.account_payment_account_ids:
-            #self.write({"account_payment_account_ids": [(2, reg.id)]})
         self._saldo_pagar()
         for l in self:
             if l.partner_id and not l.is_third_name: 
@@ -1237,7 +1235,7 @@ class AccountPayment(models.Model):
                                                         'credit':valor_credito,})
                         lista.append(tupla)
 
-            self.update({'account_payment_account_ids':lista}) 
+                self.update({'account_payment_account_ids':lista}) 
         
 
 class AccountPaymentLine(models.Model):
