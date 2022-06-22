@@ -43,7 +43,7 @@ class AccountMove(models.Model):
     
     is_group_cobranza = fields.Boolean(string='Es Cobranza',compute="_compute_is_group_cobranza")
 
-    anticipos_ids=fields.One2many('anticipos.pendientes',string='Anticipos Pendientes')
+    anticipos_ids=fields.One2many('anticipos.pendientes','factura_id',string='Anticipos Pendientes')
 
     @api.constrains("partner_id")
     @api.onchange("partner_id")
@@ -53,9 +53,9 @@ class AccountMove(models.Model):
             self.update({'anticipos_ids':[(6,0,[])]}) 
             linea_pago_ids=self.env['account.payment.line.account'].search([('partner_id','=',self.partner_id),('aplicar_anticipo','=',True)])
             for x in linea_pago_ids:
-                tupla=(0,0,{'linea_pago_id':x.id
-                                  'payment_id':x.payment_id.id
-                                  'credit':x.credit
+                tupla=(0,0,{'linea_pago_id':x.id,
+                                  'payment_id':x.payment_id.id,
+                                  'credit':x.credit,
                                   'aplicar_anticipo':False})
                 lista.append(tupla)
             self.anticipos_ids=lista
