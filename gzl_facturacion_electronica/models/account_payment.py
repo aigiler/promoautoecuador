@@ -36,7 +36,7 @@ class AccountPayment(models.Model):
 
     #@api.onchange('credito_contrato')
     #def asignar_credito(self):
-    #    self.crear_asientos()
+     #   self.crear_asientos()
 
 
     def crear_detalles(self):
@@ -102,7 +102,7 @@ class AccountPayment(models.Model):
                 for ric in obj_estado_cuenta_ids:
                     # list_ids_cuotas.append(ric)
                     if ric.saldo!=0:
-                        saldo=ric.saldo_cuota_capital+ric.saldo_seguro+ric.saldo_rastreo+ric.saldo_otros+ric.saldo+ric.saldo_programado
+                        saldo=ric.saldo_cuota_capital+ric.saldo_seguro+ric.saldo_rastreo+ric.saldo_otros+ric.saldo_programado
                         cuotas.update({
                             'numero_cuota':ric.numero_cuota,
                             'fecha':ric.fecha,
