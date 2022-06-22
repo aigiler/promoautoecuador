@@ -604,12 +604,21 @@ class AccountMove(models.Model):
                             valor_credito+=credit
                             m.linea_pago_id.aplicar_anticipo=False
 
+                valor_restar=valor_credito
                 for rec in self.contrato_id.estado_de_cuenta_ids.search([('id','in',self.contrato_estado_cuenta_ids.ids)]):
                     rec.factura_id = self.id
-                    cuota_capital += (rec.saldo - rec.cuota_adm-rec.seguro-rec.rastreo-rec.otro-rec.iva_adm)
-                    seguro += (rec.saldo - rec.cuota_adm-rec.cuota_capital-rec.rastreo-rec.otro-rec.iva_adm)
-                    otros += (rec.saldo - rec.cuota_adm-rec.seguro-rec.rastreo-rec.cuota_capital-rec.iva_adm)
-                    rastreo += (rec.saldo - rec.cuota_adm-rec.seguro-rec.cuota_capital-rec.otro-rec.iva_adm)
+                    if valor_restar:
+                        if valor_restar<=rec.saldo_cuota_capital:
+                            rec.saldo_cuota_capital=rec.saldo_cuota_capital-valor_restar
+                            valor_restar=0
+                            for pag in self.anticipos_ids:
+                                pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':rec.id,'pago_id':pag.payment_id.id,
+                                                                                                                        'monto_pagado':pag.payment_id.amount,'valor_asociado':valor_restar})
+                                pass
+                    cuota_capital += rec.saldo_cuota_capital
+                    seguro += rec.saldo_seguro
+                    otros += rec.saldo_otros
+                    rastreo +=rec.saldo_rastreo
                 if cuota_capital>0:
                     if not cuota_capital_obj:
                         raise ValidationError("Debe parametrizar la cuenta para los rubros de los contratos.")
@@ -624,7 +633,7 @@ class AccountMove(models.Model):
                             'account_id':obj_account_debe.id,
                             'partner_id':self.partner_id.id,
                             'credit':0,
-                            'debit':cuota_capital-valor_credito
+                            'debit':cuota_capital
                             }),
                             (0,0,{
                             'account_id':cuota_capital_obj.cuenta_id.id,
