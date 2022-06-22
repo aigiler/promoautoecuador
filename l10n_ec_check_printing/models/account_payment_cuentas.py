@@ -20,7 +20,7 @@ class PaymentLineAccount(models.Model):
     aplicar_anticipo=fields.Boolean(default=False)
 
 
-class PaymentLineAccount(models.Model):
+class AnticiposPendientes(models.Model):
     _name = 'anticipos.pendientes'
 
     linea_pago_id=fields.Many2one('account.payment.line.account',string='Anticipo Pendiente' )
