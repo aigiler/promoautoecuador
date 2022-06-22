@@ -23,7 +23,7 @@ class PaymentLineAccount(models.Model):
     @api.onchange('credit')
     def validar_anticipo(self):
         for l in self:
-            if round(l.payment_id.credito,2)==round(l.credit,2):
+            if round(l.payment_id.credito,2)==round(l.credit,2) and l.credito_contrato:
                l.aplicar_anticipo=True 
 
 
