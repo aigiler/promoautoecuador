@@ -142,7 +142,7 @@ class AccountPayment(models.Model):
                     if y.monto_pagar:
                         contrato_valor+=y.monto_pagar
             if l.credito_contrato:
-                credito_contrato=l.amount-valor_asignado
+                credito_contrato=l.amount-valor_asignado-contrato_valor
             l.contrato_valor=contrato_valor
             l.credito=credito_contrato
             l.valor_deuda=valor_asignado
