@@ -55,7 +55,7 @@ class AccountMove(models.Model):
                 tupla=(0,0,{'linea_pago_id':x.id,
                           'payment_id':x.payment_id.id,
                           'credit':x.credit,
-                          'aplicar_anticipo':False})
+                          'anticipo_pendiente':False})
                 lista.append(tupla)
             self.anticipos_ids=lista
          

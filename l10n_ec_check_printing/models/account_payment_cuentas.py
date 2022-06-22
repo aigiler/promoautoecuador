@@ -31,13 +31,13 @@ class AnticiposPendientes(models.Model):
     linea_pago_id=fields.Many2one('account.payment.line.account',string='Anticipo Pendiente' )
     payment_id = fields.Many2one('account.payment',related='linea_pago_id.payment_id',string='Pago' )
     credit=fields.Float(related='linea_pago_id.credit',string="Monto")
-    aplicar_anticipo=fields.Boolean("Anticipo")
+    anticipo_pendiente=fields.Boolean("Anticipo")
     factura_id = fields.Many2one('account.move',string='Factura' )
 
-    @api.onchange('aplicar_anticipo')
+    @api.onchange('anticipo_pendiente')
     def aplicar_anticipo(self):
         for l in self:
-            if l.aplicar_anticipo:
+            if l.anticipo_pendiente:
                 l.linea_pago_id.aplicar_anticipo=False
             else:
                 l.linea_pago_id.aplicar_anticipo=True
