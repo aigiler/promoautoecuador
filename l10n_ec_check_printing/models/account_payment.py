@@ -1157,6 +1157,7 @@ class AccountPayment(models.Model):
                                     'analytic_tag_ids':[],
                                     'debit':0,
                                     'credit':cuota_capital_pagar})
+                        lista.append(tupla)
                     if seguro_pagar:
                         seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
                         tupla=(0, 0, {
@@ -1166,6 +1167,7 @@ class AccountPayment(models.Model):
                                     'analytic_tag_ids':[],
                                     'debit':0,
                                     'credit':seguro_pagar})
+                        lista.append(tupla)
                     if rastreo_pagar:
                         rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
                         tupla=(0, 0, {
@@ -1175,6 +1177,7 @@ class AccountPayment(models.Model):
                                     'analytic_tag_ids':[],
                                     'debit':0,
                                     'credit':rastreo_pagar})
+                        lista.append(tupla)
                     if otro_pagar:
                         otros_obj = self.env['rubros.contratos'].search([('name','=','otros')]) 
                         tupla=(0, 0, {
@@ -1184,6 +1187,7 @@ class AccountPayment(models.Model):
                                     'analytic_tag_ids':[],
                                     'debit':0,
                                     'credit':otro_pagar})
+                        lista.append(tupla)
                     
                 if self.payment_type=='outbound':
                     credito=l.amount
