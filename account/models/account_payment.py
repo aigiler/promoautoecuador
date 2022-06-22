@@ -759,7 +759,7 @@ class account_payment(models.Model):
                                 if y.seguro_pagar:
                                     cuota_id.saldo_seguro=cuota_id.saldo_seguro-y.seguro_pagar
                                 if y.entrada_pagar:
-                                    cuota_id.saldo_seguro=cuota_id.saldo_programado-y.entrada_pagar
+                                    cuota_id.saldo_programado=cuota_id.saldo_programado-y.entrada_pagar
 
                                 cuota_id.saldo=cuota_id.saldo-y.monto_pagar
                                 pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
@@ -767,7 +767,7 @@ class account_payment(models.Model):
                                 transacciones=self.env['transaccion.grupo.adjudicado']
                                 transacciones.create({
                                             'grupo_id':cuota_id.contrato_id.grupo.id,
-                                            'haber':cuota_id.entrada_pagar,
+                                            'haber':entrada_pagar,
                                             'adjudicado_id':cuota_id.contrato_id.cliente.id,
                                             'contrato_id':cuota_id.contrato_id.id,
                                             'state':cuota_id.contrato_id.state
