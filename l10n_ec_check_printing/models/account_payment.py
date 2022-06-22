@@ -1108,7 +1108,6 @@ class AccountPayment(models.Model):
     def crear_asientos_tipo_valor(self):
 
         self.update({'account_payment_account_ids':[(6,0,[])]}) 
-        self.=[(6,0,[])]
         self._saldo_pagar()
         for l in self:
             if l.partner_id and not l.is_third_name: 
