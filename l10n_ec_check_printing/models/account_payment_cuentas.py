@@ -9,7 +9,8 @@ class PaymentLineAccount(models.Model):
 
 
     payment_id = fields.Many2one('account.payment',string='Pago' )
-    partner_id=fields.Many2one('res.partner')
+
+    partner_id=fields.Many2one('res.partner', related="payment_id.partner_id")
     cuenta = fields.Many2one('account.account',string='Cuentas' )
     name = fields.Char(string='Descripcion' )
     cuenta_analitica = fields.Many2one('account.analytic.account',string='Cuenta Analítica' )
