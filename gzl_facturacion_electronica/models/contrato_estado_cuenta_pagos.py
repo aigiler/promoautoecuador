@@ -27,6 +27,7 @@ class ContratoEstadoCuentaPagos(models.Model):
     seguro_pagar = fields.Monetary('Seguro a Pagar')
     rastreo_pagar = fields.Monetary('Rastreo a Pagar')
     otro_pagar = fields.Monetary('Otro a Pagar')
+
     monto_pagar = fields.Monetary('Monto a Pagar', compute='_obtener_monto',store=True)
 
     @api.onchange('cuota_capital_pagar')

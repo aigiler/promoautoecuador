@@ -1107,7 +1107,8 @@ class AccountPayment(models.Model):
 
     def crear_asientos_tipo_valor(self):
 
-        self.account_payment_account_ids=[(6,0,[])]
+        self.update({'account_payment_account_ids':[(6,0,[])]}) 
+        self.=[(6,0,[])]
         self._saldo_pagar()
         for l in self:
             if l.partner_id and not l.is_third_name: 
@@ -1122,6 +1123,10 @@ class AccountPayment(models.Model):
                 saldo_debito=0
                 valor_credito=0
                 sald_credito=0
+                cuota_capital_pagar=0
+                seguro_pagar=0
+                rastreo_pagar=0
+                otro_pagar=0
                 #if self.tipo_valor=='enviar_credito':
                 #    for x in l.contrato_estado_cuenta_payment_ids:
                 #        if x.monto_pagar:
@@ -1130,6 +1135,57 @@ class AccountPayment(models.Model):
                 for x in l.payment_line_ids:
                     if x.pagar:
                         valor_asignado+=(x.amount)
+                
+                if self.abono_contrato and self.contrato_id:    
+                    for y in l.contrato_estado_cuenta_payment_ids:
+                        if y.cuota_capital_pagar: 
+                            cuota_capital_pagar+=y.cuota_capital_pagar
+
+                        if y.seguro_pagar:
+                            seguro_pagar+= y.seguro_pagar
+                            
+                        if  y.rastreo_pagar:
+                            rastreo_pagar+=y.rastreo_pagar
+                            
+                        if  y.otro_pagar:
+                            otro_pagar+=y.otro_pagar
+                    if  cuota_capital_pagar:
+                        cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
+                        tupla=(0, 0, {
+                                    'cuenta':cuota_capital_obj.cuenta_id.id,
+                                    'name': '-',
+                                    'cuenta_analitica':'',
+                                    'analytic_tag_ids':[],
+                                    'debit':0,
+                                    'credit':cuota_capital_pagar})
+                    if seguro_pagar:
+                        seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
+                        tupla=(0, 0, {
+                                    'cuenta':seguro_obj.cuenta_id.id,
+                                    'name': '-',
+                                    'cuenta_analitica':'',
+                                    'analytic_tag_ids':[],
+                                    'debit':0,
+                                    'credit':seguro_pagar})
+                    if rastreo_pagar:
+                        rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
+                        tupla=(0, 0, {
+                                    'cuenta':rastreo_obj.cuenta_id.id,
+                                    'name': '-',
+                                    'cuenta_analitica':'',
+                                    'analytic_tag_ids':[],
+                                    'debit':0,
+                                    'credit':rastreo_pagar})
+                    if otro_pagar:
+                        otros_obj = self.env['rubros.contratos'].search([('name','=','otros')]) 
+                        tupla=(0, 0, {
+                                    'cuenta':otros_obj.cuenta_id.id,
+                                    'name': '-',
+                                    'cuenta_analitica':'',
+                                    'analytic_tag_ids':[],
+                                    'debit':0,
+                                    'credit':otro_pagar})
+                    
                 if self.payment_type=='outbound':
                     credito=l.amount
                     name='Pago a Proveedor '+str(self.partner_id.name)
