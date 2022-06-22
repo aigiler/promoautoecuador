@@ -19,6 +19,12 @@ class PaymentLineAccount(models.Model):
     credit = fields.Float(string='Crédito' )
     aplicar_anticipo=fields.Boolean("Anticipo")
 
+    @api.contrains('credit')
+    @api.onchange('credit')
+    def validar_anticipo(self):
+        for l in self:
+            if round(l.payment_id.credito,2)==round(l.credit,2):
+               l.aplicar_anticipo=True 
 
 
 class AccountMove(models.Model):
