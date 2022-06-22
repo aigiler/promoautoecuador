@@ -41,10 +41,3 @@ class AnticiposPendientes(models.Model):
     anticipo_pendiente=fields.Boolean("Anticipo")
     factura_id = fields.Many2one('account.move',string='Factura' )
 
-    @api.onchange('anticipo_pendiente')
-    def aplicar_anticipo(self):
-        for l in self:
-            if l.anticipo_pendiente:
-                l.linea_pago_id.aplicar_anticipo=False
-            else:
-                l.linea_pago_id.aplicar_anticipo=True
