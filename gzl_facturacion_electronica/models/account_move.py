@@ -133,7 +133,7 @@ class AccountMove(models.Model):
             saldo_credito+=registros.saldo
         lista_dic=[] 
         saldo=0
-        for m in l.anticipos_ids:
+        for m in self.anticipos_ids:
                 if m.anticipo_pendiente:
                     saldo+=m.credit
         if self.invoice_payment_term_id:
