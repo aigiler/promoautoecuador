@@ -19,7 +19,7 @@ class PaymentLineAccount(models.Model):
     credit = fields.Float(string='Crédito' )
     aplicar_anticipo=fields.Boolean("Anticipo")
 
-    @api.contrains('credit')
+    @api.constrains('credit')
     @api.onchange('credit')
     def validar_anticipo(self):
         for l in self:
