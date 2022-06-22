@@ -142,16 +142,15 @@ class AccountPayment(models.Model):
                 for y in l.contrato_estado_cuenta_payment_ids:
                     if y.monto_pagar:
                         contrato_valor+=y.monto_pagar
-            
-                l.contrato_valor=contrato_valor
-                l.valor_deuda=valor_asignado
             elif l.credito_contrato:
-                l.credito_contrato=l.saldo_pago
-
+                l.credito_contrato=l.amount-valor_asignado
+            l.contrato_valor=contrato_valor
+            l.valor_deuda=valor_asignado
+            l.saldo_pago=l.amount-valor_asignado-contrato_valor-l.credito_contrato
             if round(valor_asignado+contrato_valor,2)==round(l.amount,2):
                 l.saldo_pago=0
-            else:
-                l.saldo_pago=l.amount-valor_asignado-contrato_valor-l.credito_contrato
+
+                
 
 
             #l.valor_deuda=l.amount
