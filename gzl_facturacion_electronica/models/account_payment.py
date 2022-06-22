@@ -30,14 +30,18 @@ class AccountPayment(models.Model):
     contrato_valor = fields.Monetary('Contrato')
     credito = fields.Monetary('Credito')
 
-    @api.onchange('abono_contrato','credito_contrato')
+    @api.onchange('abono_contrato')
     def asignar_saldo(self):
         if self.abono_contrato:
             self.credito_contrato=False
+            self.credito=0
+
+    @api.onchange('credito_contrato')
+    def asignar_saldo(self):
         if self.credito_contrato:
             self.abono_contrato=False
-            self.credito=self.saldo_pago
-            self.saldo_pago=self.amount-self.valor_deuda-self.credito
+            self.contrato_valor=0
+
 
     def crear_detalles(self):
         for l in self:
@@ -125,7 +129,7 @@ class AccountPayment(models.Model):
             for x in l.contrato_estado_cuenta_payment_ids:
                 l.total_asignado+=x.monto_pagar
 
-    @api.onchange('tipo_valor','amount')
+    @api.onchange('tipo_valor','amount','credito_contrato','abono_contrato')
     @api.depends('tipo_valor','amount')
     def _saldo_pagar(self):
         for l in self:
@@ -141,10 +145,13 @@ class AccountPayment(models.Model):
             
                 l.contrato_valor=contrato_valor
                 l.valor_deuda=valor_asignado
+            elif l.credito_contrato:
+                l.credito_contrato=l.saldo_pago
+
             if round(valor_asignado+contrato_valor,2)==round(l.amount,2):
                 l.saldo_pago=0
             else:
-                l.saldo_pago=l.amount-valor_asignado-contrato_valor
+                l.saldo_pago=l.amount-valor_asignado-contrato_valor-l.credito_contrato
 
 
             #l.valor_deuda=l.amount
