@@ -45,6 +45,6 @@ class AnticiposPendientes(models.Model):
     def obtener_montos_anticipados(self):
         for l in self:
             if l.anticipo_pendiente:
-                self.factura_id.obtener_total()
+                self.factura_id.obtener_infoadicional()
             else:
-                self.factura_id.obtener_total()
+                self.factura_id.obtener_infoadicional()

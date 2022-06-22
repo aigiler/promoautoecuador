@@ -118,24 +118,10 @@ class AccountMove(models.Model):
                         })]          
             self._move_autocomplete_invoice_lines_values()
 
-    def obtener_total(self):
-        for l in self:
-            saldo=0
-            saldo_credito=0
-            for registros in self.contrato_estado_cuenta_ids:
-                longitud+=1
-                numero_cuotas=numero_cuotas+registros.numero_cuota+','
-                saldo_credito+=registros.saldo
-            for m in l.anticipos_ids:
-                if m.anticipo_pendiente:
-                    saldo+=m.credit
-            for x in l.campos_adicionales_facturacion:
-                if x['nombre']=='CRÉDITO':
-                    x['valor']=str(round(saldo_credito-saldo,2))+' a '+str(self.invoice_date_due)
 
 
 
-    @api.onchange('invoice_payment_term_id','method_payment','contrato_estado_cuenta_ids','name')
+    @api.onchange('invoice_payment_term_id','method_payment','contrato_estado_cuenta_ids','name','anticipos_ids')
     def obtener_infoadicional(self):
         numero_cuotas=","      
         saldo_credito=0
@@ -146,11 +132,14 @@ class AccountMove(models.Model):
             numero_cuotas=numero_cuotas+registros.numero_cuota+','
             saldo_credito+=registros.saldo
         lista_dic=[] 
-
+        saldo=0
+        for m in l.anticipos_ids:
+                if m.anticipo_pendiente:
+                    saldo+=m.credit
         if self.invoice_payment_term_id:
             lista_dic.append({
                             'nombre': 'CRÉDITO',
-                            'valor':str(round(saldo_credito,2))+' a '+self.invoice_payment_term_id.name})
+                            'valor':str(round(saldo_credito-saldo,2))+' a '+self.invoice_payment_term_id.name})
         else:
             lista_dic.append({
                             'nombre': 'CRÉDITO',
@@ -608,7 +597,7 @@ class AccountMove(models.Model):
                 rastreo=0
                 obj_am = self.env['account.move']
                 valor_credito=0
-                
+
                 if self.anticipos_ids:
                     for m in self.anticipos_ids:
                         if m.aplicar_anticipo:
