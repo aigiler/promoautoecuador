@@ -35,9 +35,9 @@ class AccountMove(models.Model):
 class AnticiposPendientes(models.Model):
     _name = 'anticipos.pendientes'
 
-    linea_pago_id=fields.Many2one('account.payment.line.account',string='Anticipo Pendiente' )
-    payment_id = fields.Many2one('account.payment',related='linea_pago_id.payment_id',string='Pago' )
-    credit=fields.Float(related='linea_pago_id.credit',string="Monto")
+    linea_pago_id=fields.Many2one('account.payment.line.account')
+    payment_id = fields.Many2one('account.payment',string='Pago' )
+    credit=fields.Float(string="Monto")
     anticipo_pendiente=fields.Boolean("Anticipo")
     factura_id = fields.Many2one('account.move',string='Factura' )
 
