@@ -1236,18 +1236,11 @@ class AccountPayment(models.Model):
                                 'credit':valor_credito,}
                         lista.append(tupla)
 
-
-
         for prueba in lista:
             id_registro=self.env['account.payment.line.account'].create(prueba) 
             lista_ids.append(id_registro.id)
-            self.update({'account_payment_account_ids':[(6,0,lista_ids)]}) 
+        self.update({'account_payment_account_ids':[(6,0,lista_ids)]}) 
         
-        #self.update({'account_payment_account_ids':[(6,0,[])]}) 
-        
-        #for l in self:
-        #    
-        #        self.account_payment_account_ids=lista
 
 class AccountPaymentLine(models.Model):
     _name = 'account.payment.line'
