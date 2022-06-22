@@ -51,6 +51,7 @@ class AccountMove(models.Model):
             lista=[]
             self.update({'anticipos_ids':[(6,0,[])]}) 
             linea_pago_ids=self.env['account.payment.line.account'].search([('partner_id','=',self.partner_id.id),('aplicar_anticipo','=',True)])
+            raise ValidationError("Esto se ejecuta")
             for x in linea_pago_ids:
                 tupla=(0,0,{'linea_pago_id':x.id,
                           'payment_id':x.payment_id.id,
