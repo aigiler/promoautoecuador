@@ -212,7 +212,6 @@ class Asamblea(models.Model):
             dct['monto']=l.monto_adjudicar
             listaGanadores.append(dct)
 
-
         listaGanadores=sorted(listaGanadores, key=lambda k : k['puntos'],reverse=True) 
         numero_ganadores=self.tipo_asamblea.numero_ganadores
 
@@ -231,8 +230,6 @@ class Asamblea(models.Model):
             'adjudicado_id':l['adjudicado_id'],
             'contrato_id':l['contrato_id'],
             'state':contrato_id.state
-
-
             }
 
 
@@ -315,7 +312,7 @@ class IntegrantesGrupoAsamblea(models.Model):
         numero_cuotas_pagadas_limite =  int(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.numero_cuotas_pagadas'))
         for rec in self:
 
-            integrantes=rec.grupo_id.grupo_adjudicado_id.integrantes.filtered(lambda l: l.contrato_id.tipo_de_contrato.id==rec.grupo_id.tipo_contrato.id and l.contrato_id.numero_cuotas_pagadas>=numero_cuotas_pagadas_limite).mapped('adjudicado_id').ids
+            integrantes=rec.grupo_id.grupo_adjudicado_id.integrantes.filtered(lambda l: l.contrato_id.tipo_de_contrato.id==rec.grupo_id.tipo_contrato.id and l.contrato_id.numero_cuotas_pagadas>=numero_cuotas_pagadas_limite and l.contrato_id.state=='activo').mapped('adjudicado_id').ids
             integrantes_res=rec.grupo_id.integrantes_g.mapped("adjudicado_id").ids
             if len(integrantes)>0:
                 rec.dominio=json.dumps( [('id','in',integrantes),('id','not in',integrantes_res)] )

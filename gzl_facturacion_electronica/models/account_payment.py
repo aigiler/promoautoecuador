@@ -132,35 +132,40 @@ class AccountPayment(models.Model):
     @api.depends('tipo_valor','amount')
     def _saldo_pagar(self):
         for l in self:
+            for x in l.payment_line_ids:
+                if x.pagar:
+                    valor_asignado+=x.amount
+            l.valor_deuda=valor_asignado
+            l.saldo_pago=l.amount-valor_asignado
             #l.valor_deuda=l.amount
             #l.saldo_pago=0
-            if l.tipo_valor=='enviar_credito':
-                valor_asignado=0
-                for x in l.contrato_estado_cuenta_payment_ids:
-                    if x.monto_pagar:
-                        valor_asignado+=x.monto_pagar
+            #if l.tipo_valor=='enviar_credito':
+            #    valor_asignado=0
+            #    for x in l.contrato_estado_cuenta_payment_ids:
+            #        if x.monto_pagar:
+            #            valor_asignado+=x.monto_pagar
 
-                if round(valor_asignado,2) > round(l.amount,2):
-                    raise ValidationError("Los valores a pagar exceden los ${0} especificados.".format(l.amount))
-                l.valor_deuda=valor_asignado
-                if round(valor_asignado,2)==round(l.amount,2):
-                    l.saldo_pago=0
-                else:
-                    l.saldo_pago=l.amount-l.valor_deuda
-            elif l.tipo_valor=='crear_acticipo':
-                    valor_asignado=0
-                    valor_facturas=0
-                    for x in l.payment_line_ids:
-                        if x.pagar:
-                            valor_asignado+=(x.actual_amount+x.monto_pendiente_pago)
-                    l.valor_deuda=valor_asignado
-                    l.saldo_pago=l.amount-l.valor_deuda
-            elif not l.tipo_valor:
-                valor_asignado=0
+            #    if round(valor_asignado,2) > round(l.amount,2):
+            #        raise ValidationError("Los valores a pagar exceden los ${0} especificados.".format(l.amount))
+            #    l.valor_deuda=valor_asignado
+            #    if round(valor_asignado,2)==round(l.amount,2):
+            #        l.saldo_pago=0
+            #    else:
+            #        l.saldo_pago=l.amount-l.valor_deuda
+            #elif l.tipo_valor=='crear_acticipo':
+            #        valor_asignado=0
+            #        valor_facturas=0
+            #        for x in l.payment_line_ids:
+            #            if x.pagar:
+            #                valor_asignado+=(x.actual_amount+x.monto_pendiente_pago)
+            #        l.valor_deuda=valor_asignado
+            #        l.saldo_pago=l.amount-l.valor_deuda
+            #elif not l.tipo_valor:
+            #    valor_asignado=0
 
-                for x in l.payment_line_ids:
-                    if x.pagar:
-                        valor_asignado+=x.amount
-                l.valor_deuda=valor_asignado
-                l.saldo_pago=l.amount-valor_asignado
+            #    for x in l.payment_line_ids:
+            #        if x.pagar:
+            #            valor_asignado+=x.amount
+            #    l.valor_deuda=valor_asignado
+            #    l.saldo_pago=l.amount-valor_asignado
 
