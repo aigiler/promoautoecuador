@@ -145,7 +145,7 @@ class AccountPayment(models.Model):
             elif l.credito_contrato:
                 credito_contrato=l.amount-valor_asignado
             l.contrato_valor=contrato_valor
-            l.credito_contrato=credito_contrato
+            l.credito=credito_contrato
             l.valor_deuda=valor_asignado
             l.saldo_pago=l.amount-valor_asignado-contrato_valor-credito_contrato
             if round(valor_asignado+contrato_valor,2)==round(l.amount,2):
