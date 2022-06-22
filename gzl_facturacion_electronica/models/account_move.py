@@ -43,7 +43,6 @@ class AccountMove(models.Model):
     
     is_group_cobranza = fields.Boolean(string='Es Cobranza',compute="_compute_is_group_cobranza")
 
-    anticipos_ids=fields.One2many('anticipos.pendientes','factura_id',string='Anticipos Pendientes')
 
     @api.constrains("partner_id")
     @api.onchange("partner_id")

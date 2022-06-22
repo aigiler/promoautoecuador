@@ -20,6 +20,11 @@ class PaymentLineAccount(models.Model):
     aplicar_anticipo=fields.Boolean(default=False)
 
 
+class AccountMove(models.Model):
+    _inherit = 'account.move'
+    anticipos_ids=fields.One2many('anticipos.pendientes','factura_id',string='Anticipos Pendientes')
+
+
 class AnticiposPendientes(models.Model):
     _name = 'anticipos.pendientes'
 
