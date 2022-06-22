@@ -30,9 +30,9 @@ class AccountPayment(models.Model):
     contrato_valor = fields.Monetary('Contrato')
     credito = fields.Monetary('Credito')
 
-    @api.onchange('abono_contrato')
-    def asignar_contrato(self):
-        self.crear_asientos()
+    #@api.onchange('abono_contrato')
+    #def asignar_contrato(self):
+        #self.crear_asientos()
 
     @api.onchange('credito_contrato')
     def asignar_credito(self):
