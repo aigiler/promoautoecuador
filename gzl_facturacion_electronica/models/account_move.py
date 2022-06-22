@@ -47,19 +47,20 @@ class AccountMove(models.Model):
     @api.onchange("partner_id")
     def obtener_anticipos(self):
         for l in self:
+            lista_ids=[]
             lista=[]
             if l.partner_id:
                 linea_pago_ids=self.env['account.payment.line.account'].search([('partner_id','=',self.partner_id.id),('aplicar_anticipo','=',True)])
-                #raise ValidationError("Esto se ejecuta")
                 for x in linea_pago_ids:
-                    tupla=(0,0,{'linea_pago_id':x.id,
+                    lista.append({'linea_pago_id':x.id,
                               'payment_id':x.payment_id.id,
                               'credit':x.credit,
                               'anticipo_pendiente':False,
                               })
-                    lista.append(tupla)
-                self.anticipos_ids=lista
-             
+            for prueba in lista:
+                id_registro=self.env['anticipos.pendientes'].create(prueba) 
+                lista_ids.append(id_registro.id)
+                self.update({'anticipos_ids':[(6,0,lista_ids)]}) 
          
 
     @api.depends("partner_id")
