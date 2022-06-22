@@ -43,6 +43,25 @@ class AccountMove(models.Model):
     
     is_group_cobranza = fields.Boolean(string='Es Cobranza',compute="_compute_is_group_cobranza")
 
+    anticipos_ids=fields.One2many('anticipos.pendientes',string='Anticipos Pendientes')
+
+    @api.constrains("partner_id")
+    @api.onchange("partner_id")
+    def obtener_anticipos(self):
+        for l in self:
+            lista=[]
+            self.update({'anticipos_ids':[(6,0,[])]}) 
+            linea_pago_ids=self.env['account.payment.line.account'].search([('partner_id','=',self.partner_id),('aplicar_anticipo','=',True)])
+            for x in linea_pago_ids:
+                tupla=(0,0,{'linea_pago_id':x.id
+                                  'payment_id':x.payment_id.id
+                                  'credit':x.credit
+                                  'aplicar_anticipo':False})
+                lista.append(tupla)
+            self.anticipos_ids=lista
+         
+         
+
     @api.depends("partner_id")
     def _compute_is_group_cobranza(self):
         self.is_group_cobranza = self.env['res.users'].has_group('gzl_facturacion_electronica.grupo_cobranza')
@@ -570,6 +589,13 @@ class AccountMove(models.Model):
                 otros=0
                 rastreo=0
                 obj_am = self.env['account.move']
+                valor_credito=0
+                if self.anticipos_ids:
+                    for m in self.anticipos_ids:
+                        if m.aplicar_anticipo:
+                            valor_credito+=credit
+                            m.linea_pago_id.aplicar_anticipo=False
+
                 for rec in self.contrato_id.estado_de_cuenta_ids.search([('id','in',self.contrato_estado_cuenta_ids.ids)]):
                     rec.factura_id = self.id
                     cuota_capital += (rec.saldo - rec.cuota_adm-rec.seguro-rec.rastreo-rec.otro-rec.iva_adm)
@@ -590,16 +616,18 @@ class AccountMove(models.Model):
                             'account_id':obj_account_debe.id,
                             'partner_id':self.partner_id.id,
                             'credit':0,
-                            'debit':cuota_capital
+                            'debit':cuota_capital-valor_credito
                             }),
                             (0,0,{
                             'account_id':cuota_capital_obj.cuenta_id.id,
                             'partner_id':self.partner_id.id,
-                            'credit':cuota_capital,
+                            'credit':cuota_capital-valor_credito,
                             'debit':0
                             })
                         ]
                     }).action_post()
+                obj_anticipo=self.env['anticipos.pendientes'].search([('factura_id','=',self.id),('aplicar_anticipo','=',False)])
+                obj_anticipo.unlink()
                 if seguro>0:
                     if not seguro_obj:
                         raise ValidationError("Debe parametrizar la cuenta para los rubros de los contratos.")

@@ -1151,6 +1151,7 @@ class AccountPayment(models.Model):
                     if  cuota_capital_pagar:
                         cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
                         tupla=(0, 0, {
+                                    'partner_id':self.partner_id.id,
                                     'cuenta':cuota_capital_obj.cuenta_id.id,
                                     'name': '-',
                                     'cuenta_analitica':'',
@@ -1161,6 +1162,7 @@ class AccountPayment(models.Model):
                     if seguro_pagar:
                         seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
                         tupla=(0, 0, {
+                                    'partner_id':self.partner_id.id,
                                     'cuenta':seguro_obj.cuenta_id.id,
                                     'name': '-',
                                     'cuenta_analitica':'',
@@ -1171,6 +1173,7 @@ class AccountPayment(models.Model):
                     if rastreo_pagar:
                         rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
                         tupla=(0, 0, {
+                                    'partner_id':self.partner_id.id,
                                     'cuenta':rastreo_obj.cuenta_id.id,
                                     'name': '-',
                                     'cuenta_analitica':'',
@@ -1181,6 +1184,7 @@ class AccountPayment(models.Model):
                     if otro_pagar:
                         otros_obj = self.env['rubros.contratos'].search([('name','=','otros')]) 
                         tupla=(0, 0, {
+                                    'partner_id':self.partner_id.id,
                                     'cuenta':otros_obj.cuenta_id.id,
                                     'name': '-',
                                     'cuenta_analitica':'',
@@ -1191,12 +1195,14 @@ class AccountPayment(models.Model):
                 elif self.credito:
                     cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
                     tupla=(0, 0, {
+                                    'partner_id':self.partner_id.id,
                                     'cuenta':cuota_capital_obj.cuenta_id.id,
                                     'name': '-',
                                     'cuenta_analitica':'',
                                     'analytic_tag_ids':[],
                                     'debit':0,
-                                    'credit':self.credito})
+                                    'credit':self.credito,
+                                    'aplicar_anticipo':True})
                     lista.append(tupla)
                 if self.payment_type=='outbound':
                     credito=l.amount
@@ -1212,6 +1218,7 @@ class AccountPayment(models.Model):
                     sald_credito=l.amount-valor_asignado
                 if l.amount:
                         tupla=(0, 0, {
+                                'partner_id':self.partner_id.id,
                                 'cuenta':self.journal_id.default_debit_account_id.id,
                                 'name': '-',
                                 'cuenta_analitica':'',
@@ -1221,6 +1228,7 @@ class AccountPayment(models.Model):
                         lista.append(tupla)
                 if valor_asignado:
                         tupla=(0, 0, {
+                                'partner_id':self.partner_id.id,
                                 'cuenta':cuenta_partner,
                                 'name': name,
                                 'cuenta_analitica':'',
