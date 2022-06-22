@@ -68,6 +68,7 @@ class AccountPayment(models.Model):
 
     @api.onchange('contrato_id')
     def _onchange_tipo_valor(self):    
+        lista_cuotas=[]
         if self.contrato_id:
             if self.contrato_estado_cuenta_payment_ids:
                 for l in self.contrato_estado_cuenta_payment_ids:
