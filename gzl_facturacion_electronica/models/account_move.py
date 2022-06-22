@@ -608,6 +608,7 @@ class AccountMove(models.Model):
                 rastreo=0
                 obj_am = self.env['account.move']
                 valor_credito=0
+                
                 if self.anticipos_ids:
                     for m in self.anticipos_ids:
                         if m.aplicar_anticipo:
