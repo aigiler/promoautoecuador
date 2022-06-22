@@ -32,15 +32,10 @@ class AccountPayment(models.Model):
 
     @api.onchange('abono_contrato')
     def asignar_contrato(self):
-        if self.abono_contrato:
-            self.credito_contrato=False
-            self.credito=0
+        self.crear_asientos()
 
     @api.onchange('credito_contrato')
     def asignar_credito(self):
-        if self.credito_contrato:
-            self.abono_contrato=False
-            self.contrato_valor=0
         self.crear_asientos()
 
 
@@ -146,7 +141,7 @@ class AccountPayment(models.Model):
                 for y in l.contrato_estado_cuenta_payment_ids:
                     if y.monto_pagar:
                         contrato_valor+=y.monto_pagar
-            elif l.credito_contrato:
+            if l.credito_contrato:
                 credito_contrato=l.amount-valor_asignado
             l.contrato_valor=contrato_valor
             l.credito=credito_contrato

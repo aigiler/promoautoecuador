@@ -1196,7 +1196,7 @@ class AccountPayment(models.Model):
                         lista.append(tupla)
                     
                         lista.append(tupla)
-                elif self.credito_contrato:
+                if self.credito_contrato:
                     cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
                     tupla=(0, 0, {
                                     'partner_id':l.partner_id.id,
