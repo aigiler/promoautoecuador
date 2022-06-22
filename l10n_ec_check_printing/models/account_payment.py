@@ -1103,7 +1103,8 @@ class AccountPayment(models.Model):
     def crear_asientos(self):
         lista_ids=[]
         lista=[]
-        self.update({'account_payment_account_ids':[(6,0,lista_ids)]})
+        for reg in self.account_payment_account_ids:
+            reg.unlink()
         self._saldo_pagar()
         for l in self:
             if l.partner_id and not l.is_third_name: 
