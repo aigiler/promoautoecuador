@@ -57,7 +57,7 @@ class ContratoEstadoCuentaPagos(models.Model):
             if l.otro_pagar>l.otro:
                 raise ValidationError("El valor a Pagar no puede ser mayor que el permitido")
 
-    @api.depends('cuota_capital_pagar','seguro_pagar','rastreo_pagar','otro_pagar')
+    @api.depends('cuota_capital_pagar','seguro_pagar','rastreo_pagar','otro_pagar','entrada_pagar')
     def _obtener_monto(self):
         for l in self:
             l.monto_pagar=l.cuota_capital_pagar+l.seguro_pagar+l.rastreo_pagar+l.otro_pagar+l.entrada_pagar
