@@ -49,7 +49,6 @@ class AccountMove(models.Model):
         for l in self:
             lista=[]
             if l.partner_id:
-                self.update({'anticipos_ids':[(6,0,[])]}) 
                 linea_pago_ids=self.env['account.payment.line.account'].search([('partner_id','=',self.partner_id.id),('aplicar_anticipo','=',True)])
                 #raise ValidationError("Esto se ejecuta")
                 for x in linea_pago_ids:
