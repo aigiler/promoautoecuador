@@ -1229,68 +1229,6 @@ class AccountPayment(models.Model):
                                 'credit':valor_credito,})
                         lista.append(tupla)
                 self.account_payment_account_ids=lista
-                #    if valor_asignado==l.amount:
-
-                #        self.account_payment_account_ids= [
-                #            (0, 0, {
-                #                'cuenta':self.journal_id.default_debit_account_id.id,
-                #                'name': '-',
-                #                'cuenta_analitica':'',
-                #                'analytic_tag_ids':[],
-                #                'debit':debito,
-                #                'credit':credito}),
-                            # Liquidity line.
-                #            (0, 0, {
-                #                'cuenta':cuenta_partner,
-                #                'name': name,
-                #                'cuenta_analitica':'',
-                #                'analytic_tag_ids':[],
-                #                'debit':valor_debito,
-                #                'credit':valor_credito,}),
-                #        ]
-                #    else: 
-                #        self.account_payment_account_ids= [(0, 0, {
-                #                'cuenta':self.journal_id.default_debit_account_id.id,
-                #                'name': '-',
-                #                'cuenta_analitica':'',
-                #                'analytic_tag_ids':[],
-                #                'debit':debito,
-                #                'credit':credito}),
-                            # Liquidity line.
-                #            (0, 0, {
-                #                'cuenta':cuenta_partner,
-                #                'name': name,
-                #                'cuenta_analitica':'',
-                #                'analytic_tag_ids':[],
-                #                'debit':valor_debito,
-                #                'credit':valor_credito,}),
-                #            (0, 0, {
-                #                'cuenta':4590,
-                #                'name': "Anticipo a cuota capital",
-                #                'cuenta_analitica':'',
-                #                'analytic_tag_ids':[],
-                #                'debit':saldo_debito,
-                #                'credit':sald_credito})]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 class AccountPaymentLine(models.Model):
     _name = 'account.payment.line'
