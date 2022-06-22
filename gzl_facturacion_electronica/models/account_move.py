@@ -600,7 +600,7 @@ class AccountMove(models.Model):
 
                 if self.anticipos_ids:
                     for m in self.anticipos_ids:
-                        if m.aplicar_anticipo:
+                        if m.anticipo_pendiente:
                             valor_credito+=credit
                             m.linea_pago_id.aplicar_anticipo=False
 
@@ -643,7 +643,7 @@ class AccountMove(models.Model):
                             })
                         ]
                     }).action_post()
-                obj_anticipo=self.env['anticipos.pendientes'].search([('factura_id','=',self.id),('aplicar_anticipo','=',False)])
+                obj_anticipo=self.env['anticipos.pendientes'].search([('factura_id','=',self.id),('anticipo_pendiente','=',False)])
                 obj_anticipo.unlink()
                 if seguro>0:
                     if not seguro_obj:
