@@ -35,10 +35,13 @@ class AccountPayment(models.Model):
         if self.abono_contrato:
             self.credito_contrato=False
         if self.credito_contrato:
-            self.abono_contrato=False    
+            self.abono_contrato=False
+            self.credito=self.saldo_pago
+            self.saldo_pago=self.amount-self.valor_deuda-self.credito
 
     def crear_detalles(self):
         for l in self:
+            l.abono_contrato=True
             if l.amount==0 or not l.amount:
                 raise ValidationError("Debe Asignar un monto a Pagar")
         

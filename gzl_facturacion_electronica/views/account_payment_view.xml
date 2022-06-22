@@ -8,8 +8,17 @@
         <field name="arch" type="xml">
             <field name="communication" position="before">
                 <field name="tipo_valor"  attrs="{'invisible': [('payment_type','!=','inbound')]}"/>
-                <field name="contrato_id" groups="gzl_facturacion_electronica.grupo_cobranza" attrs="{'invisible': [('tipo_valor','!=','enviar_credito')]}" domain="[('cliente', '=', partner_id)]"/>
-                <button  name="crear_detalles" string="Contrato" type="object" class='btn-primary' attrs="{'invisible': [('tipo_valor','!=','enviar_credito')]}"></button>
+                <field name="contrato_id" groups="gzl_facturacion_electronica.grupo_cobranza" />
+                <field name="abono_contrato" groups="gzl_facturacion_electronica.grupo_cobranza" />
+                <field name="credito_contrato" groups="gzl_facturacion_electronica.grupo_cobranza" />
+                <field name="contrato_valor" groups="gzl_facturacion_electronica.grupo_cobranza" />
+                <field name="credito" groups="gzl_facturacion_electronica.grupo_cobranza" />
+                
+
+
+
+
+                <button  name="crear_detalles" string="Contrato" type="object" class='btn-primary'></button>
                 <field name="valor_deuda" string="Valor a Pagar de Facturas"/>
                 <field name="saldo_pago" /> 
 
