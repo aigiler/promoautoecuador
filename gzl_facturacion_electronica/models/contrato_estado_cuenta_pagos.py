@@ -62,7 +62,7 @@ class ContratoEstadoCuentaPagos(models.Model):
         for l in self:
             l.monto_pagar=l.cuota_capital_pagar+l.seguro_pagar+l.rastreo_pagar+l.otro_pagar+l.entrada_pagar
             l.payment_pagos_id._saldo_pagar()
-            l.payment_pagos_id.crear_asientos()
+            #l.payment_pagos_id.crear_asientos()
 
 
     # @api.onchange('cuota_capital_pagar','seguro_pagar','rastreo_pagar','otro_pagar')

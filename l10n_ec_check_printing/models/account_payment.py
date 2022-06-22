@@ -1100,7 +1100,7 @@ class AccountPayment(models.Model):
 
 
 
-    @api.onchange('amount','valor_deuda','credito_contrato')
+    @api.onchange('amount','valor_deuda','credito_contrato','abono_contrato')
     def crear_asientos(self):
         for reg in self.account_payment_account_ids:
             self.update({'account_payment_account_ids':[(3,reg.id)]}) 

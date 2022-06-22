@@ -739,7 +739,7 @@ class account_payment(models.Model):
                         for y in rec.contrato_estado_cuenta_payment_ids:
                             if y.monto_pagar:
                                 cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',rec.contrato_id.id),
-                                                                    ('numero_cuota','=',y.numero_cuota),('cuota_capital','=',y.cuota_capital)])[0] 
+                                                                    ('numero_cuota','=',y.numero_cuota),('cuota_capital','=',y.cuota_capital),('saldo_programado','=',y.programado)])[0] 
                             
                                 if y.cuota_capital_pagar:
                                     cuota_id.saldo_cuota_capital=cuota_id.saldo_cuota_capital-y.cuota_capital_pagar
