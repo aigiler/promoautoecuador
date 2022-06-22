@@ -1189,9 +1189,9 @@ class AccountPayment(models.Model):
                                     'credit':otro_pagar})
                         lista.append(tupla)
                 elif self.credito:
-                    credito_obj = self.env['rubros.contratos'].search([('name','=','credito_obj')]) 
-                    tupla=(0, 0, {
-                                    'cuenta':credito_obj.cuenta_id.id,
+                    cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
+                        tupla=(0, 0, {
+                                    'cuenta':cuota_capital_obj.cuenta_id.id,
                                     'name': '-',
                                     'cuenta_analitica':'',
                                     'analytic_tag_ids':[],
