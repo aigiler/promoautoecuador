@@ -41,7 +41,8 @@ class AccountPayment(models.Model):
         if self.credito_contrato:
             self.abono_contrato=False
             self.contrato_valor=0
-            self.crear_asientos()
+        self.crear_asientos()
+
 
     def crear_detalles(self):
         for l in self:
