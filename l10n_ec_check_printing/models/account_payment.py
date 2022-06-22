@@ -1126,6 +1126,7 @@ class AccountPayment(models.Model):
                 seguro_pagar=0
                 rastreo_pagar=0
                 otro_pagar=0
+                entrada_pagar=0
                 #if self.tipo_valor=='enviar_credito':
                 #    for x in l.contrato_estado_cuenta_payment_ids:
                 #        if x.monto_pagar:
