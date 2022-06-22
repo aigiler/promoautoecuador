@@ -1237,7 +1237,7 @@ class AccountPayment(models.Model):
                                                         'credit':valor_credito,})
                         lista.append(tupla)
 
-            self.write({'account_payment_account_ids':lista}) 
+            self.update({'account_payment_account_ids':lista}) 
         
 
 class AccountPaymentLine(models.Model):
