@@ -17,7 +17,7 @@ class PaymentLineAccount(models.Model):
     analytic_tag_ids = fields.Many2many('account.analytic.tag',string='Etiquetas Analíticas' )
     debit = fields.Float(string='Débito' )
     credit = fields.Float(string='Crédito' )
-    aplicar_anticipo=fields.Boolean(default=False)
+    anticipo=fields.Boolean("Anticipo")
 
 
 class AccountMove(models.Model):
@@ -34,3 +34,10 @@ class AnticiposPendientes(models.Model):
     aplicar_anticipo=fields.Boolean(string="Aplicar")
     factura_id = fields.Many2one('account.move',string='Factura' )
 
+    @api.onchange('aplicar_anticipo')
+    def aplicar_anticipo(self):
+        for l in self:
+            if l.aplicar_anticipo:
+                l.linea_pago_id=False
+            else:
+                l.linea_pago_id=True
