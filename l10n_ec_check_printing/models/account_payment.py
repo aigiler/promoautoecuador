@@ -1190,7 +1190,7 @@ class AccountPayment(models.Model):
                         lista.append(tupla)
                 elif self.credito:
                     cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
-                        tupla=(0, 0, {
+                    tupla=(0, 0, {
                                     'cuenta':cuota_capital_obj.cuenta_id.id,
                                     'name': '-',
                                     'cuenta_analitica':'',
