@@ -15,16 +15,17 @@
             <field name="invoice_line_ids" position="after">
                 
                     <field name="anticipo_ids" nolabel="1">
-                            <tree string="Anticipos Pendientes" create="0" editable="bottom" limit="10" delete="0">
-                                <field name="linea_pago_id"  readonly="1"/>
-                                <field name="payment_id"  readonly="1"/>
-                                <field name="credit" readonly="1"/>
-                                <field name="aplicar_anticipo" readonly="0"/>
-                               
-                            </tree>
+                        <tree string="Anticipos Pendientes" create="0" editable="bottom" limit="10" delete="0">
+                            <field name="linea_pago_id"  readonly="1"/>
+                            <field name="payment_id"  readonly="1"/>
+                            <field name="credit" readonly="1"/>
+                            <field name="aplicar_anticipo" readonly="0"/>
+                           
+                        </tree>
             </field>  
  
           
+        </field>
         </field>
     </record>
 
