@@ -17,7 +17,7 @@
                             <field name="linea_pago_id"  readonly="1"/>
                             <field name="payment_id"  readonly="1"/>
                             <field name="credit" readonly="1"/>
-                            <field name="aplicar_anticipo" readonly="0"/>
+                            <field name="anticipo_pendiente" readonly="0"/>
                            
                         </tree>
             </field>  
