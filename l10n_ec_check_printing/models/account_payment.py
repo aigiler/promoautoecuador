@@ -1102,7 +1102,7 @@ class AccountPayment(models.Model):
 
     @api.onchange('amount','valor_deuda','credito_contrato')
     def crear_asientos(self):
-        #self.update({'account_payment_account_ids':[(5)]}) 
+        self.update({'account_payment_account_ids':[(6,0,[])]}) 
         lista_ids=[]
         lista=[]
         self._saldo_pagar()
@@ -1237,6 +1237,7 @@ class AccountPayment(models.Model):
                                                         'credit':valor_credito,})
                         lista.append(tupla)
 
+                self.update({'account_payment_account_ids':[(6,0,[])]}) 
                 self.account_payment_account_ids=lista 
         
 
