@@ -1139,7 +1139,8 @@ class AccountPayment(models.Model):
                     for y in l.contrato_estado_cuenta_payment_ids:
                         if y.cuota_capital_pagar: 
                             cuota_capital_pagar+=y.cuota_capital_pagar
-
+                        if y.entrada_pagar:
+                            entrada_pagar+=y.entrada_pagar
                         if y.seguro_pagar:
                             seguro_pagar+= y.seguro_pagar
                             
@@ -1191,6 +1192,17 @@ class AccountPayment(models.Model):
                                     'analytic_tag_ids':[],
                                     'debit':0,
                                     'credit':otro_pagar})
+                        lista.append(tupla)
+                    if  entrada_pagar:
+                        cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
+                        tupla=(0, 0, {
+                                    'partner_id':l.partner_id.id,
+                                    'cuenta':cuota_capital_obj.cuenta_id.id,
+                                    'name': '-',
+                                    'cuenta_analitica':'',
+                                    'analytic_tag_ids':[],
+                                    'debit':0,
+                                    'credit':entrada_pagar})
                         lista.append(tupla)
                 elif self.credito_contrato:
                     cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])

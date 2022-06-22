@@ -739,14 +739,14 @@ class account_payment(models.Model):
                         for y in rec.contrato_estado_cuenta_payment_ids:
                             if y.monto_pagar:
                                 cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',rec.contrato_id.id),
-                                                                    ('numero_cuota','=',y.numero_cuota)])[0] 
+                                                                    ('numero_cuota','=',y.numero_cuota),('cuota_capital','=',y.cuota_capital)])[0] 
                             
                                 if y.cuota_capital_pagar:
                                     cuota_id.saldo_cuota_capital=cuota_id.saldo_cuota_capital-y.cuota_capital_pagar
                                     transacciones=self.env['transaccion.grupo.adjudicado']
                                     transacciones.create({
                                             'grupo_id':cuota_id.contrato_id.grupo.id,
-                                            'haber':cuota_id.cuota_capital,
+                                            'haber':cuota_id.cuota_capital_pagar,
                                             'adjudicado_id':cuota_id.contrato_id.cliente.id,
                                             'contrato_id':cuota_id.contrato_id.id,
                                             'state':cuota_id.contrato_id.state
@@ -758,10 +758,20 @@ class account_payment(models.Model):
                                     cuota_id.saldo_otros=cuota_id.saldo_otros-y.otro_pagar
                                 if y.seguro_pagar:
                                     cuota_id.saldo_seguro=cuota_id.saldo_seguro-y.seguro_pagar
+                                if y.entrada_pagar:
+                                    cuota_id.saldo_seguro=cuota_id.saldo_programado-y.entrada_pagar
+
                                 cuota_id.saldo=cuota_id.saldo-y.monto_pagar
                                 pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
                                                                                                                 'monto_pagado':rec.amount,'valor_asociado':y.monto_pagar})
-                                
+                                transacciones=self.env['transaccion.grupo.adjudicado']
+                                transacciones.create({
+                                            'grupo_id':cuota_id.contrato_id.grupo.id,
+                                            'haber':cuota_id.entrada_pagar,
+                                            'adjudicado_id':cuota_id.contrato_id.cliente.id,
+                                            'contrato_id':cuota_id.contrato_id.id,
+                                            'state':cuota_id.contrato_id.state
+                                            })
                                 if cuota_id.saldo==0:
                                     cuota_id.estado_pago='pagado'
                                     

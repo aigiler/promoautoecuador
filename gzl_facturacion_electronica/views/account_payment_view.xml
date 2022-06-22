@@ -75,6 +75,7 @@
                 <field name="seguro" force_save="1"/>
                 <field name="rastreo" force_save="1"/>
                 <field name="otro" force_save="1"/>
+                <field name="programado" force_save="1"/>
                  <field name="saldo" force_save="1"/>
            </group>
            <group>
@@ -82,6 +83,7 @@
             <field name="seguro_pagar" />
             <field name="rastreo_pagar" />
             <field name="otro_pagar" />
+            <field name="entrada_pagar" />
             <field name="monto_pagar" />
            </group>
         </group>

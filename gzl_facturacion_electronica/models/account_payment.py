@@ -81,7 +81,7 @@ class AccountPayment(models.Model):
                     else:
                         self.update({'contrato_estado_cuenta_payment_ids':[(6,0,[])]}) 
             for cuota in self.contrato_id.estado_de_cuenta_ids:
-                if not cuota.factura_id:
+                if not cuota.factura_id and cuota.estado_pago=='pendiente':
                     lista_cuotas.append(cuota.id)
 
         obj_estado_cuenta_ids = self.env['contrato.estado.cuenta'].search([('id','in',lista_cuotas)])
@@ -92,11 +92,13 @@ class AccountPayment(models.Model):
             'seguro':'',
             'rastreo':'',
             'otro':'',
+            'programado':'',
             'saldo':'',
             'cuota_capital_pagar':'',
             'seguro_pagar':'',
             'rastreo_pagar':'',
             'otro_pagar':'',
+            'entrada_pagar':'',
             'monto_pagar':'',
             'contrato_id':'',
         }
@@ -105,7 +107,7 @@ class AccountPayment(models.Model):
                 for ric in obj_estado_cuenta_ids:
                     # list_ids_cuotas.append(ric)
                     if ric.saldo!=0:
-                        saldo=ric.saldo_cuota_capital+ric.saldo_seguro+ric.saldo_rastreo+ric.saldo_otros
+                        saldo=ric.saldo_cuota_capital+ric.saldo_seguro+ric.saldo_rastreo+ric.saldo_otros+ric.saldo+ric.saldo_programado
                         cuotas.update({
                             'numero_cuota':ric.numero_cuota,
                             'fecha':ric.fecha,
@@ -113,6 +115,7 @@ class AccountPayment(models.Model):
                             'seguro':ric.saldo_seguro,
                             'rastreo':ric.saldo_rastreo,
                             'otro':ric.saldo_otros,
+                            'programado':ric.programado,
                             'saldo':saldo,
                             'contrato_id':ric.contrato_id.id,
                             # 'cuota_capital_pagar':ric.cuota_capital_pagar,

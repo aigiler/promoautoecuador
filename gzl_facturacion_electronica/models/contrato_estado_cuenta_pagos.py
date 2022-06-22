@@ -27,6 +27,9 @@ class ContratoEstadoCuentaPagos(models.Model):
     seguro_pagar = fields.Monetary('Seguro a Pagar')
     rastreo_pagar = fields.Monetary('Rastreo a Pagar')
     otro_pagar = fields.Monetary('Otro a Pagar')
+    programado = fields.Monetary('Cuota Programada')
+    entrada_pagar = fields.Monetary('Programado a pagar')
+    otro_pagar = fields.Monetary('Otro a Pagar')
 
     monto_pagar = fields.Monetary('Monto a Pagar', compute='_obtener_monto',store=True)
 
@@ -57,7 +60,7 @@ class ContratoEstadoCuentaPagos(models.Model):
     @api.depends('cuota_capital_pagar','seguro_pagar','rastreo_pagar','otro_pagar')
     def _obtener_monto(self):
         for l in self:
-            l.monto_pagar=l.cuota_capital_pagar+l.seguro_pagar+l.rastreo_pagar+l.otro_pagar
+            l.monto_pagar=l.cuota_capital_pagar+l.seguro_pagar+l.rastreo_pagar+l.otro_pagar+l.entrada_pagar
             l.payment_pagos_id._saldo_pagar()
             l.payment_pagos_id.crear_asientos()
 
