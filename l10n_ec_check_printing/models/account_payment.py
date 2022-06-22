@@ -1238,7 +1238,7 @@ class AccountPayment(models.Model):
                         lista.append(tupla)
 
         lista_ids=[]
-        for prueba in lista_dic:
+        for prueba in lista:
             id_registro=self.env['contrato.estado.cuenta.payment'].create(prueba) 
             lista_ids.append(id_registro.id)
             self.update({'campos_adicionales_facturacion':[(6,0,lista_ids)]}) 
