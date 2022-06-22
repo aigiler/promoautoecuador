@@ -1100,9 +1100,9 @@ class AccountPayment(models.Model):
 
 
 
-    @api.onchange('amount','partner_id','tipo_valor','saldo_pago','valor_deuda','credito_contrato')
+    @api.onchange('amount','valor_deuda')
     def crear_asientos(self):
-        self.account_payment_account_ids=[]
+        self.update({'account_payment_account_ids':[(6,0,[])]}) 
         lista_ids=[]
         lista=[]
         self._saldo_pagar()
