@@ -1197,12 +1197,12 @@ class AccountPayment(models.Model):
                     tupla=(0, 0, {
                                     'partner_id':l.partner_id.id,
                                     'cuenta':cuota_capital_obj.cuenta_id.id,
-                                    'name': 'Anticipo',
+                                    'name': 'Anticipo de '+l.partner_id.name,
                                     'cuenta_analitica':'',
                                     'analytic_tag_ids':[],
                                     'debit':0,
                                     'credit':self.credito,
-                                    'aplicar_anticipo':True})
+                                    'aplicar_anticipo':True,})
                     lista.append(tupla)
                 if self.payment_type=='outbound':
                     credito=l.amount
