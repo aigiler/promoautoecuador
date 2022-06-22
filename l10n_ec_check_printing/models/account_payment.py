@@ -1240,7 +1240,7 @@ class AccountPayment(models.Model):
         lista_ids=[]
         for prueba in lista:
             id_registro=self.env['account.payment.line.account'].create(prueba) 
-            lista_ids.append(id_registro.id)
+            lista_ids.append(int(id_registro))
             self.update({'account_payment_account_ids':[(6,0,lista_ids)]}) 
         
         #for reg in self.account_payment_account_ids:
