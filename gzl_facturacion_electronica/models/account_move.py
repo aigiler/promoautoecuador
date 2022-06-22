@@ -612,7 +612,7 @@ class AccountMove(models.Model):
                     for m in self.anticipos_ids:
                         if m.aplicar_anticipo:
                             valor_credito+=credit
-                            #m.linea_pago_id.aplicar_anticipo=False
+                            m.linea_pago_id.aplicar_anticipo=False
 
                 for rec in self.contrato_id.estado_de_cuenta_ids.search([('id','in',self.contrato_estado_cuenta_ids.ids)]):
                     rec.factura_id = self.id
