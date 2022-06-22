@@ -610,10 +610,11 @@ class AccountMove(models.Model):
                     if valor_restar:
                         if valor_restar<=rec.saldo_cuota_capital:
                             rec.saldo_cuota_capital=rec.saldo_cuota_capital-valor_restar
-                            valor_restar=0
+                            
                             for pag in self.anticipos_ids:
                                 pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':rec.id,'pago_id':pag.payment_id.id,
                                                                                                                         'monto_pagado':pag.payment_id.amount,'valor_asociado':valor_restar})
+                                valor_restar=0
                                 pass
                     cuota_capital += rec.saldo_cuota_capital
                     seguro += rec.saldo_seguro
