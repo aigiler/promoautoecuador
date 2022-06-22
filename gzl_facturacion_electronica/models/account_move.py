@@ -601,7 +601,7 @@ class AccountMove(models.Model):
                 if self.anticipos_ids:
                     for m in self.anticipos_ids:
                         if m.anticipo_pendiente:
-                            valor_credito+=credit
+                            valor_credito+=m.credit
                             m.linea_pago_id.aplicar_anticipo=False
 
                 valor_restar=valor_credito
