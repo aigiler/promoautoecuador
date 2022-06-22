@@ -1102,9 +1102,8 @@ class AccountPayment(models.Model):
 
     @api.onchange('amount','valor_deuda','credito_contrato')
     def crear_asientos(self):
-        registros_vinculados = self.env['account.payment.line.account'].search([('payment_id','=',self.id)])
-        if registros_vinculados:
-            registros_vinculados.unlink() 
+        for reg in self.account_payment_account_ids:
+            self.update({'account_payment_account_ids':[(3,reg.id)]}) 
         lista_ids=[]
         lista=[]
         self._saldo_pagar()
