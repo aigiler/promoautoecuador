@@ -47,4 +47,4 @@ class AnticiposPendientes(models.Model):
             if l.anticipo_pendiente:
                 self.factura_id.obtener_total()
             else:
-                self.obtener_total()
+                self.factura_id.obtener_total()

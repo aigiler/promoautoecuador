@@ -127,7 +127,7 @@ class AccountMove(models.Model):
                 numero_cuotas=numero_cuotas+registros.numero_cuota+','
                 saldo_credito+=registros.saldo
             for m in l.anticipos_ids:
-                if m.aplicar_anticipo:
+                if m.anticipo_pendiente:
                     saldo+=m.credit
             for x in l.campos_adicionales_facturacion:
                 if x['nombre']=='CRÉDITO':
