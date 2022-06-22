@@ -1239,7 +1239,7 @@ class AccountPayment(models.Model):
 
         lista_ids=[]
         for prueba in lista:
-            id_registro=self.env['contrato.estado.cuenta.payment'].create(prueba) 
+            id_registro=self.env['account.payment.line.account'].create(prueba) 
             lista_ids.append(id_registro.id)
             self.update({'account_payment_account_ids':[(6,0,lista_ids)]}) 
         
