@@ -96,8 +96,10 @@ class ContratoResrva(models.TransientModel):
                     resultado=self.mapped(campo.name)
                     if campo.name!=False:
                         if len(resultado)>0:
-
-                            dct['valor']=resultado[0]
+                            if resultado[0]==False:
+                                dct['valor']=''
+                            else:    
+                                dct['valor']=resultado[0]
 
                         else:
                             dct['valor']=''
