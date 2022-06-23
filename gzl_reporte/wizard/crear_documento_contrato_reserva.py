@@ -112,7 +112,7 @@ def docx_replace_regex_ram(doc_obj, regex , replace):
             inline = p.runs
             # Loop added to work with runs (strings with same style)
             for i in range(len(inline)):
-                raise ValidationError('{0}'.format(inline[i].text))
+                raise ValidationError('{0}'.format(inline[2].text))
                 if regex in inline[i].text:
 
                     text = inline[i].text.replace(regex, replace)
