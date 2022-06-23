@@ -26,6 +26,7 @@ class PaymentLineAccount(models.Model):
         for l in self:
             if round(l.payment_id.credito,2)==round(l.credit,2) and l.payment_id.credito_contrato:
                l.aplicar_anticipo=True 
+               l.saldo_pendiente=l.credit
 
 
 class AccountMove(models.Model):
@@ -39,6 +40,7 @@ class AnticiposPendientes(models.Model):
     linea_pago_id=fields.Many2one('account.payment.line.account')
     payment_id = fields.Many2one('account.payment',string='Pago' )
     credit=fields.Float(string="Monto")
+    valor_sobrante=fields.Float(string="Valor Sobrante")
     anticipo_pendiente=fields.Boolean("Anticipo")
     factura_id = fields.Many2one('account.move',string='Factura' )
 
