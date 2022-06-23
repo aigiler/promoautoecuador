@@ -62,48 +62,36 @@ class ContratoResrva(models.TransientModel):
                         #vehiculo_serie  vehiculo_motor vehiculo_color  vehiculo_anio vehiculo_pais_origen vehiculo_combustible vehiculo_pasajeros vehiculo_tonelaje. 
                         #raise ValidationError(str(l.nombreGarante.id)+' -jg- '+campo.name)
                         if l.nombreSocioAdjudicado.id == self.contrato_id.cliente.id: #vehiculo_clase 238
-                            dct['valor']=l.tipoVehiculo
-                            dct['identificar_docx']='vehiculo_tipo'
-                            lista_campos.append(dct)
-                            dct['valor']=l.claseVehiculo
-                            dct['identificar_docx']='vehiculo_clase'
-                            lista_campos.append(dct)
-                            dct['valor']=l.marcaVehiculo
-                            dct['identificar_docx']='vehiculo_marca'
-                            lista_campos.append(dct)
-                            dct['valor']=l.modeloVehiculoSRI
-                            dct['identificar_docx']='modelo_regist_sri'
-                            lista_campos.append(dct)
-                            dct['valor']=l.modeloHomologado
-                            dct['identificar_docx']='modelo_homologado_ant'
-                            lista_campos.append(dct)
-                            dct['valor']=l.serieVehiculo
-                            dct['identificar_docx']='vehiculo_serie'
-                            lista_campos.append(dct)
-                            dct['valor']=l.motorVehiculo
-                            dct['identificar_docx']='vehiculo_motor'
-                            lista_campos.append(dct)
-                            dct['valor']=l.colorVehiculo
-                            dct['identificar_docx']='vehiculo_color'
-                            lista_campos.append(dct)
-                            dct['valor']=l.anioVehiculo
-                            dct['identificar_docx']='vehiculo_anio'
-                            lista_campos.append(dct)
-                            dct['valor']=l.paisOrigenVehiculo.name
-                            dct['identificar_docx']='vehiculo_pais_origen'
-                            lista_campos.append(dct)
-                            dct['valor']=l.conbustibleVehiculo or ''
-                            dct['identificar_docx']='vehiculo_combustible'
-                            lista_campos.append(dct)
-                            dct['valor']=str(l.numPasajeros)
-                            dct['identificar_docx']='vehiculo_pasajeros'
-                            lista_campos.append(dct)
-                            dct['valor']=l.tonelajeVehiculo
-                            dct['identificar_docx']='vehiculo_tonelaje'
-                            lista_campos.append(dct)
-                            dct['valor']=str(l.plazoMeses) or '0'
-                            dct['identificar_docx']='plazo_meses'    
-                            lista_campos.append(dct)
+                            lista_vehiculos=[{'identificar_docx':'vehiculo_tipo',
+                                            'valor':l.tipoVehiculo},
+                                            {'identificar_docx':'vehiculo_clase',
+                                            'valor':l.claseVehiculo},
+                                            {'identificar_docx':'vehiculo_marca',
+                                            'valor':l.marcaVehiculo},
+                                            {'identificar_docx':'modelo_regist_sri',
+                                            'valor':l.modeloVehiculoSRI},
+                                            {'identificar_docx':'modelo_homologado_ant',
+                                            'valor':l.modeloHomologado},
+                                            {'identificar_docx':'vehiculo_serie',
+                                            'valor':l.serieVehiculo},
+                                            {'identificar_docx':'vehiculo_motor',
+                                            'valor':l.motorVehiculo},
+                                            {'identificar_docx':'vehiculo_color',
+                                            'valor':l.colorVehiculo},
+                                            {'identificar_docx':'vehiculo_anio',
+                                            'valor':l.anioVehiculo},
+                                            {'identificar_docx':'vehiculo_pais_origen',
+                                            'valor':l.paisOrigenVehiculo.name},
+                                            {'identificar_docx':'vehiculo_combustible',
+                                            'valor':l.conbustibleVehiculo},
+                                            {'identificar_docx':'vehiculo_pasajeros',
+                                            'valor':str(l.numPasajeros)},
+                                            {'identificar_docx':'vehiculo_tonelaje',
+                                            'valor':l.tonelajeVehiculo},
+                                            {'identificar_docx':'plazo_meses',
+                                            'valor':str(l.contrato_id.plazo_meses.numero)},]
+  
+                            lista_campos+=lista_vehiculos
                 else:
                     resultado=self.mapped(campo.name)
                     if campo.name!=False:
@@ -113,10 +101,6 @@ class ContratoResrva(models.TransientModel):
 
                         else:
                             dct['valor']=''
-
-                    
-
-
                     dct['identificar_docx']=campo.identificar_docx
                     lista_campos.append(dct)
             
