@@ -108,17 +108,27 @@ def docx_replace_regex_header_ram(doc_obj, regex , replace):
 def docx_replace_regex_ram(doc_obj, regex , replace):
 
     for p in doc_obj.paragraphs:
-        
-        if regex.search(p.text):
-        #if regex in p.text:
+        if regex in p.text:
             inline = p.runs
-
-            #raise ValidationError("{0},wwwwwwwwwwwwwwww".format(len(inline)))
             # Loop added to work with runs (strings with same style)
             for i in range(len(inline)):
-                if regex.search(inline[i].text):
-                    text = regex.sub(replace, inline[i].text)
+                if regex in inline[i].text:
+                    text = inline[i].text.replace(regex, replace)
                     inline[i].text = text
+
+
+    #for p in doc_obj.paragraphs:
+        
+        # if regex.search(p.text):
+        # #if regex in p.text:
+        #     inline = p.runs
+
+        #     #raise ValidationError("{0},wwwwwwwwwwwwwwww".format(len(inline)))
+        #     # Loop added to work with runs (strings with same style)
+        #     for i in range(len(inline)):
+        #         if regex.search(inline[i].text):
+        #             text = regex.sub(replace, inline[i].text)
+        #             inline[i].text = text
 
     for table in doc_obj.tables:
         for row in table.rows:
