@@ -93,9 +93,6 @@ class ContratoResrva(models.TransientModel):
   
                             lista_campos+=lista_vehiculos
                 else:
-                    if campo.name=='contrato_id.garante.street':
-
-                        raise ValidationError(str(campo.name))
                     resultado=self.mapped(campo.name)
                     if campo.name!=False:
                         if len(resultado)>0:
@@ -108,7 +105,7 @@ class ContratoResrva(models.TransientModel):
                     lista_campos.append(dct)
             
             #if resultado:
-            #    raise ValidationError(str(lista_campos))
+            raise ValidationError(str(lista_campos))
             mesesDic = {
                 "1":'Enero',
                 "2":'Febrero',
