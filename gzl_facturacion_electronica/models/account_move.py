@@ -141,8 +141,7 @@ class AccountMove(models.Model):
                 valor_restar+=m.credit
 
         
-        for rec in self.contrato_id.estado_de_cuenta_ids.search([('id','in',self.contrato_estado_cuenta_ids.ids)]):
-            rec.factura_id = self.id
+        for rec in self.contrato_estado_cuenta_ids:
             if valor_restar:
                 if valor_restar<=rec.saldo_cuota_capital:
                     rec.saldo_cuota_capital=rec.saldo_cuota_capital-valor_restar
