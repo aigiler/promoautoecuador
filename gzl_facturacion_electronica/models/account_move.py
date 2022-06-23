@@ -133,9 +133,34 @@ class AccountMove(models.Model):
             saldo_credito+=registros.saldo
         lista_dic=[] 
         saldo=0
+
+
+
         for m in self.anticipos_ids:
             if m.anticipo_pendiente:
-                saldo+=m.credit-m.valor_sobrante
+                valor_restar+=m.credit
+
+        for rec in self.contrato_id.estado_de_cuenta_ids.search([('id','in',self.contrato_estado_cuenta_ids.ids)]):
+            rec.factura_id = self.id
+            if valor_restar:
+                if valor_restar<=rec.saldo_cuota_capital:
+                    rec.saldo_cuota_capital=rec.saldo_cuota_capital-valor_restar
+                    for pag in self.anticipos_ids:
+                        valor_restar=0
+                        pass
+                else:
+                    rec.saldo_cuota_capital=0
+                    for pag in self.anticipos_ids:
+                        pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':rec.id,'pago_id':pag.payment_id.id,
+                                                                                                                'monto_pagado':pag.payment_id.amount,'valor_asociado':rec.saldo_cuota_capital})
+                        valor_restar=valor_restar-rec.saldo_cuota_capital
+                            
+        for ant in self.anticipos_ids:
+            ant.linea_pago_id.saldo_pendiente=valor_restar
+            ant.valor_sobrante=valor_restar
+            if not ant.linea_pago_id.saldo_pendiente:
+                ant.linea_pago_id.aplicar_anticipo=False
+                saldo+=ant.credit-m.valor_sobrante
         if self.invoice_payment_term_id:
             lista_dic.append({
                             'nombre': 'CRÉDITO',
@@ -638,12 +663,11 @@ class AccountMove(models.Model):
                         ]
                     }).action_post()
                 obj_anticipo=self.env['anticipos.pendientes'].search([('factura_id','=',self.id),('anticipo_pendiente','=',False)])
-                if valor_restar:
-                    for ant in self.anticipos_ids:
-                        ant.linea_pago_id.saldo_pendiente=valor_restar
-                        ant.valor_sobrante=valor_restar
-                        if not ant.linea_pago_id.saldo_pendiente:
-                            ant.linea_pago_id.aplicar_anticipo=False
+                for ant in self.anticipos_ids:
+                    ant.linea_pago_id.saldo_pendiente=valor_restar
+                    ant.valor_sobrante=valor_restar
+                    if not ant.linea_pago_id.saldo_pendiente:
+                        ant.linea_pago_id.aplicar_anticipo=False
                 obj_anticipo.unlink()
                 if seguro>0:
                     if not seguro_obj:
