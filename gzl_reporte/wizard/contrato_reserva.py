@@ -132,7 +132,7 @@ class ContratoResrva(models.TransientModel):
             lista_fecha=[{'identificar_docx':'txt_factual','valor':fechacontr}]
             lista_campos+=lista_fecha
             #if fechacontr:
-            raise ValidationError(str(lista_campos))
+            #raise ValidationError(str(lista_campos))
             #    raise ValidationError(str(fechacontr) )
             #raise ValidationError('{0}'.format(lista_campos))
             estado_cuenta.append(self.contrato_id.estado_de_cuenta_ids)
