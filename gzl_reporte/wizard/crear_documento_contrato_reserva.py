@@ -49,7 +49,7 @@ def crear_documento_reserva(ruta,detalle,lista_estado_cuenta):
 
       #  Reemplaza los valores de identificadores de la plantilla con los del json
         if campo['identificar_docx']=='dir_provincia_socio':
-            docx_replace_regex_ram(doc,regex1,campo['valor'] or "" )
+            docx_replace_regex_ram(doc,campo['identificar_docx'],campo['valor'] or "" )
             docx_replace_regex_header_ram(doc.sections[0].header,regex1,campo['valor'] or "")
 
 
@@ -68,19 +68,30 @@ def identificar_parrafo(doc_obj, regex):
 
 
 def docx_replace_regex_header_ram(doc_obj, regex , replace):
-
-    for p in doc_obj.paragraphs:
-        if regex.search(p.text):
-
+    for p in doc.paragraphs:
+        if regex in p.text:
             inline = p.runs
-
-
             # Loop added to work with runs (strings with same style)
             for i in range(len(inline)):
-
-                if regex.search(inline[i].text):
-                    text = regex.sub(replace, inline[i].text)
+                if regex in inline[i].text:
+                    text = inline[i].text.replace(regex, replace)
                     inline[i].text = text
+            print p.text
+
+
+    # for p in doc_obj.paragraphs:
+    #     if regex.search(p.text):
+
+    #         inline = p.runs
+
+
+    #         # Loop added to work with runs (strings with same style)
+    #         for i in range(len(inline)):
+
+    #             if regex.search(inline[i].text):
+    #                 text = inline[i].text.replace(regex, )
+    #                 #text = regex.sub(replace, inline[i].text)
+    #                 inline[i].text = text
 
     for table in doc_obj.tables:
         for row in table.rows:
