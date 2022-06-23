@@ -607,7 +607,7 @@ class AccountPayment(models.Model):
             #super(AccountPayment, self.with_context({'multi_payment': lista_asientos and True or False})).post()
 
             rec.payment_line_ids.unlink()
-            contrato_estado_cuenta_payment_ids=self.env['contrato.estado.cuenta.payment'].search([('monto_pagar','=',False)])
+            contrato_estado_cuenta_payment_ids=self.env['contrato.estado.cuenta.payment'].search([('monto_pagar','=',0)])
 
             contrato_estado_cuenta_payment_ids.unlink()
             
