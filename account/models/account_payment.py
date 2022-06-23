@@ -698,10 +698,7 @@ class account_payment(models.Model):
 
             if rec.payment_type in ('inbound', 'outbound'):
                 # ==== 'inbound' / 'outbound' ====
-                if rec.invoice_ids:
-                    (moves[0] + rec.invoice_ids).line_ids \
-                        .filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))\
-                        .reconcile()
+                
 
                 if rec.payment_type=='inbound':
                     cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
@@ -979,6 +976,11 @@ class account_payment(models.Model):
                         if x.account_id.id==rec.partner_id.property_account_receivable_id.id and round(x.credit,2)==round(rec.valor_deuda,2):
                             x.update({'matched_debit_ids':lista})
                             pass                     
+
+                if rec.invoice_ids:
+                    (moves[0] + rec.invoice_ids).line_ids \
+                        .filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))\
+                        .reconcile()
 
                 elif rec.payment_type == 'transfer':
                     # ==== 'transfer' ====
