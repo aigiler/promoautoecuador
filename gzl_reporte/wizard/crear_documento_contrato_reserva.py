@@ -76,7 +76,6 @@ def docx_replace_regex_header_ram(doc_obj, regex , replace):
                 if regex in inline[i].text:
                     text = inline[i].text.replace(regex, replace)
                     inline[i].text = text
-            print p.text
 
 
     # for p in doc_obj.paragraphs:
