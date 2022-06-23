@@ -625,12 +625,12 @@ class AccountMove(models.Model):
                                     valor_restar=0
                                     pass
                         else:
-                            if pag.anticipo_pendiente:
+                            
+                            for pag in self.anticipos_ids:
                                 if pag.anticipo_pendiente:
-                                    for pag in self.anticipos_ids:
-                                        pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':rec.id,'pago_id':pag.payment_id.id,
-                                                                                                                        'monto_pagado':pag.payment_id.amount,'valor_asociado':rec.saldo_cuota_capital})
-                                valor_restar=valor_restar-rec.saldo_cuota_capital
+                                    pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':rec.id,'pago_id':pag.payment_id.id,
+                                                                                                    'monto_pagado':pag.payment_id.amount,'valor_asociado':rec.saldo_cuota_capital})
+                                    valor_restar=valor_restar-rec.saldo_cuota_capital
                             rec.saldo_cuota_capital=0
                     cuota_capital += rec.saldo_cuota_capital
                     seguro += rec.saldo_seguro
