@@ -103,10 +103,10 @@ def docx_replace_regex_ram(doc_obj, regex , replace):
 
             inline = p.runs
 
+            raise ValidationError("{0},wwwwwwwwwwwwwwww".format(len(inline)))
             # Loop added to work with runs (strings with same style)
             for i in range(len(inline)):
                 if regex.search(inline[i].text):
-                    raise ValidationError("{0},wwwwwwwwwwwwwwww".format(inline[i].text))
                     text = regex.sub(replace, inline[i].text)
                     inline[i].text = text
 
