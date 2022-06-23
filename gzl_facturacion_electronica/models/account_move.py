@@ -155,7 +155,7 @@ class AccountMove(models.Model):
                             
         for ant in self.anticipos_ids:
             if ant.anticipo_pendiente:
-                ant.linea_pago_id.saldo_pendiente=valor_restar
+                
                 ant.valor_sobrante=valor_restar
                 
                 saldo+=ant.credit-valor_restar
@@ -630,9 +630,11 @@ class AccountMove(models.Model):
                             
                             for pag in self.anticipos_ids:
                                 if pag.anticipo_pendiente:
+
                                     pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':rec.id,'pago_id':pag.payment_id.id,
                                                                                                     'monto_pagado':pag.payment_id.amount,'valor_asociado':rec.saldo_cuota_capital})
                                     valor_restar=valor_restar-rec.saldo_cuota_capital
+
                             rec.saldo_cuota_capital=0
                     cuota_capital += rec.saldo_cuota_capital
                     seguro += rec.saldo_seguro
@@ -664,7 +666,7 @@ class AccountMove(models.Model):
                     }).action_post()
                 obj_anticipo=self.env['anticipos.pendientes'].search([('factura_id','=',self.id),('anticipo_pendiente','=',False)])
                 for ant in self.anticipos_ids:
-                #    ant.linea_pago_id.saldo_pendiente=valor_restar
+                    ant.linea_pago_id.saldo_pendiente=valor_restar
                 #    ant.valor_sobrante=valor_restar
                     if not ant.linea_pago_id.saldo_pendiente:
                         ant.linea_pago_id.aplicar_anticipo=False
