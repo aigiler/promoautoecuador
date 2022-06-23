@@ -127,7 +127,7 @@ class AccountPayment(models.Model):
             for x in l.contrato_estado_cuenta_payment_ids:
                 l.total_asignado+=x.monto_pagar
 
-    @api.onchange('tipo_valor','amount','')
+    @api.onchange('tipo_valor','amount','credito_contrato')
     @api.depends('tipo_valor','amount')
     def _saldo_pagar(self):
         for l in self:
@@ -147,7 +147,7 @@ class AccountPayment(models.Model):
             l.credito=credito_contrato
             l.valor_deuda=valor_asignado
             l.saldo_pago=l.amount-valor_asignado-contrato_valor-credito_contrato
-            if round(valor_asignado+contrato_valor,2)==round(l.amount,2):
+            if round(valor_asignado+contrato_valor+credito_contrato,2)==round(l.amount,2):
                 l.saldo_pago=0
 
                 
