@@ -155,7 +155,7 @@ class AccountMove(models.Model):
             ant.linea_pago_id.saldo_pendiente=valor_restar
             ant.valor_sobrante=valor_restar
             
-                saldo+=ant.credit-m.valor_sobrante
+            saldo+=ant.credit-m.valor_sobrante
         if self.invoice_payment_term_id:
             lista_dic.append({
                             'nombre': 'CRÉDITO',
