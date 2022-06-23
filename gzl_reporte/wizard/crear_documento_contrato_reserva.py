@@ -49,7 +49,7 @@ def crear_documento_reserva(ruta,detalle,lista_estado_cuenta):
 
       #  Reemplaza los valores de identificadores de la plantilla con los del json
         if campo['identificar_docx']=='dir_provincia_socio':
-            docx_replace_regex_ram(doc,campo['identificar_docx'],campo['valor'] or "" )
+            docx_replace_regex_ram(doc,regex1,campo['valor'] or "" )
             docx_replace_regex_header_ram(doc.sections[0].header,regex1,campo['valor'] or "")
 
 
@@ -99,8 +99,8 @@ def docx_replace_regex_ram(doc_obj, regex , replace):
 
     for p in doc_obj.paragraphs:
         
-        #if regex.search(p.text):
-        if regex in p.text:
+        if regex.search(p.text):
+        #if regex in p.text:
             inline = p.runs
 
             #raise ValidationError("{0},wwwwwwwwwwwwwwww".format(len(inline)))
