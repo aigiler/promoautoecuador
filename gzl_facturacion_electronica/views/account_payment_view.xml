@@ -30,6 +30,7 @@
                 <field name="saldo_pago" /> 
             </group>
         </group>
+        </field>
       </record>
             <!-- <field name="communication" position="before">
               <field name="abono_contrato" string="Abonar Contrato" groups="gzl_facturacion_electronica.grupo_cobranza" />
