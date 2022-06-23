@@ -50,7 +50,7 @@ def crear_documento_reserva(ruta,detalle,lista_estado_cuenta):
       #  Reemplaza los valores de identificadores de la plantilla con los del json
         if campo['identificar_docx']=='dir_provincia_socio':
             docx_replace_regex_ram(doc,campo['identificar_docx'],campo['valor'] or "" )
-            docx_replace_regex_header_ram(doc.sections[0].header,regex1,campo['valor'] or "")
+            docx_replace_regex_header_ram(doc.sections[0].header,campo['identificar_docx'],campo['valor'] or "")
 
 
     doc.save(ruta)
