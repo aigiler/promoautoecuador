@@ -175,4 +175,5 @@ class ContratoEstadoCuentaPagos(models.Model):
 
 
     def cerrar_ventana(self):
+        self.payment_pagos_id.crear_asientos()
         self.payment_pagos_id.crear_detalles()
