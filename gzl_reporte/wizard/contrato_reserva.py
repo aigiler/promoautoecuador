@@ -105,7 +105,6 @@ class ContratoResrva(models.TransientModel):
                     lista_campos.append(dct)
             
             #if resultado:
-            raise ValidationError(str(lista_campos))
             mesesDic = {
                 "1":'Enero',
                 "2":'Febrero',
@@ -128,10 +127,10 @@ class ContratoResrva(models.TransientModel):
             valordia = valordia.split()
             valordia = valordia[0]
             fechacontr = 'a los '+valordia.lower()+' dias del mes de '+str(mesesDic[str(mes)])+' del Año '+str(year)
-            dct['identificar_docx']='txt_factual'
-            dct['valor']=fechacontr
-            lista_campos.append(dct)
+            lista_fecha=[{'identificar_docx':'txt_factual','valor':fechacontr}]
+            lista_campos+=lista_fecha
             #if fechacontr:
+            raise ValidationError(str(lista_campos))
             #    raise ValidationError(str(fechacontr) )
             #raise ValidationError('{0}'.format(lista_campos))
             estado_cuenta.append(self.contrato_id.estado_de_cuenta_ids)
