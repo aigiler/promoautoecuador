@@ -52,7 +52,8 @@ class AccountMove(models.Model):
             if l.partner_id:
                 linea_pago_ids=self.env['account.payment.line.account'].search([('partner_id','=',self.partner_id.id),('aplicar_anticipo','=',True)])
                 for x in linea_pago_ids:
-                    lista.append({'linea_pago_id':x.id,
+                    if x.payment_id.state=='posted':
+                        lista.append({'linea_pago_id':x.id,
                               'payment_id':x.payment_id.id,
                               'credit':x.saldo_pendiente,
                               'anticipo_pendiente':False,
