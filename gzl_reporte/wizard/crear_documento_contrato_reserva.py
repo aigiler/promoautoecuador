@@ -98,9 +98,9 @@ def docx_replace_regex_header_ram(doc_obj, regex , replace):
 def docx_replace_regex_ram(doc_obj, regex , replace):
 
     for p in doc_obj.paragraphs:
-        raise ValidationError("{0},wwwwwwwwwwwwwwww".format(doc_obj.paragraphs[2].text))
+        
         if regex.search(p.text):
-
+            raise ValidationError("{0},wwwwwwwwwwwwwwww".format(p.text))
             inline = p.runs
 
             # Loop added to work with runs (strings with same style)
