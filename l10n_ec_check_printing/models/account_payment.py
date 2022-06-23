@@ -1100,6 +1100,7 @@ class AccountPayment(models.Model):
 
 
 
+    @api.depends('contrato_valor')
     @api.onchange('amount','valor_deuda','credito_contrato','contrato_valor')
     def crear_asientos(self):
 
