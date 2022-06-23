@@ -134,12 +134,13 @@ class AccountMove(models.Model):
         lista_dic=[] 
         saldo=0
 
-
+        valor_restar=0
 
         for m in self.anticipos_ids:
             if m.anticipo_pendiente:
                 valor_restar+=m.credit
 
+        
         for rec in self.contrato_id.estado_de_cuenta_ids.search([('id','in',self.contrato_estado_cuenta_ids.ids)]):
             rec.factura_id = self.id
             if valor_restar:
