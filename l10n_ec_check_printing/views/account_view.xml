@@ -91,14 +91,14 @@
                     <field name="payment_line_ids" nolabel="1" attrs="{'invisible': ['|',('partner_id', '=', False),('payment_difference', '&lt;',0)],'readonly':[('state','in',['done','reconciled'])]}">
                         <tree string="Pagos" editable="bottom" create="0" delete="0" >
                             <field name="pagar" />
-                            <field name="document_number" readonly="1"/>
+                            <field name="document_number" readonly="1" invisible="1"/>
                             <field name="invoice_id" readonly="1" force_save="1"/>
                             <field name="date_due" readonly="0" force_save="1"/>
                             <field name="currency_id" readonly="1" invisible="1"/>
-                            <field name="amount_total" readonly="1" widget="monetary" force_save="1"/>
-                            <field name="actual_amount" readonly="1" widget="monetary" force_save="1"/>
-                            <field name="residual" readonly="1" widget="monetary" force_save="1"/>
-                            <field name="monto_pendiente_pago" readonly="0" widget="monetary" force_save="1" />
+                            <field name="amount_total"  invisible="1" readonly="1" widget="monetary" force_save="1"/>
+                            <field name="actual_amount"  invisible="1" readonly="1" widget="monetary" force_save="1"/>
+                            <field name="residual"  invisible="1" readonly="1" widget="monetary" force_save="1"/>
+                            <field name="monto_pendiente_pago"  invisible="1" readonly="0" widget="monetary" force_save="1" />
                             <field name="amount" readonly="0" sum="amount" widget="monetary" force_save="1" />
                             
                         </tree>

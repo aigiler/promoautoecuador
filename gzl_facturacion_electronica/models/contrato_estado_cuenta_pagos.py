@@ -22,14 +22,14 @@ class ContratoEstadoCuentaPagos(models.Model):
     seguro = fields.Monetary(string='Seguro', currency_field='currency_id', readonly=True)
     rastreo = fields.Monetary(string='Rastreo', currency_field='currency_id', readonly=True)
     otro = fields.Monetary(string='Otro', currency_field='currency_id', readonly=True)
+    
+    programado = fields.Monetary('Cuota Programada')
     saldo = fields.Monetary(string='Saldo', currency_field='currency_id' , readonly=True)
     cuota_capital_pagar = fields.Monetary('Cuota Capital a Pagar')
     seguro_pagar = fields.Monetary('Seguro a Pagar')
     rastreo_pagar = fields.Monetary('Rastreo a Pagar')
     otro_pagar = fields.Monetary('Otro a Pagar')
-    programado = fields.Monetary('Cuota Programada')
     entrada_pagar = fields.Monetary('Programado a pagar')
-    otro_pagar = fields.Monetary('Otro a Pagar')
 
     monto_pagar = fields.Monetary('Monto a Pagar', compute='_obtener_monto',store=True)
 
