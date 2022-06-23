@@ -128,7 +128,7 @@ class AccountPayment(models.Model):
                 l.total_asignado+=x.monto_pagar
 
     @api.onchange('tipo_valor','amount','credito_contrato','credito')
-    @api.depends('tipo_valor','amount')
+    @api.depends('tipo_valor','amount','credito_contrato','credito')
     def _saldo_pagar(self):
         for l in self:
             valor_asignado=0
