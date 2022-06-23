@@ -743,7 +743,7 @@ class account_payment(models.Model):
                                                                     ('numero_cuota','=',y.numero_cuota),('saldo_programado','=',y.programado)])[0]
                                 else:                                         
                                     cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',rec.contrato_id.id),
-                                                                    ('numero_cuota','=',y.numero_cuota),('saldo_programado','=',y.programado)])[0] 
+                                                                    ('numero_cuota','=',y.numero_cuota),('saldo_programado','=',0.0)])[0] 
                             
                                     #raise ValidationError('{0}'.format(cuota_id.programado))
                                 if y.cuota_capital_pagar:
