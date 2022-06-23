@@ -94,6 +94,7 @@ class ContratoResrva(models.TransientModel):
                             lista_campos+=lista_vehiculos
                 else:
                     resultado=self.mapped(campo.name)
+                    raise ValidationError(str(resultado))
                     if campo.name!=False:
                         if len(resultado)>0:
 
