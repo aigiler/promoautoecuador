@@ -17,6 +17,7 @@ class PaymentLineAccount(models.Model):
     cuenta_analitica = fields.Many2one('account.analytic.account',string='Cuenta Analítica' )
     analytic_tag_ids = fields.Many2many('account.analytic.tag',string='Etiquetas Analíticas' )
     debit = fields.Float(string='Débito' )
+    saldo_pendiente = fields.Float(string='Saldo' )
     credit = fields.Float(string='Crédito' )
     aplicar_anticipo=fields.Boolean("Anticipo")
 
