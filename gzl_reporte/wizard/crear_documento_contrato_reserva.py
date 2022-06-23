@@ -2,6 +2,7 @@
 
 import re
 from docx import Document
+from odoo.exceptions import AccessError, UserError, ValidationError
 
 
 
