@@ -62,105 +62,10 @@ class ContratoEstadoCuentaPagos(models.Model):
         for l in self:
             l.monto_pagar=l.cuota_capital_pagar+l.seguro_pagar+l.rastreo_pagar+l.otro_pagar+l.entrada_pagar
             l.payment_pagos_id._saldo_pagar()
-            #l.payment_pagos_id.crear_asientos()
-
-
-    # @api.onchange('cuota_capital_pagar','seguro_pagar','rastreo_pagar','otro_pagar')
-    # def validar_saldos(self):
-    #     for l in self:
-    #         if l.cuota_capital_pagar:
-    #             if (l.payment_pagos_id.saldo_pago-l.cuota_capital_pagar)<0:
-    #                 raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(l.payment_pagos_id.saldo_pago))
-    #             else:
-    #                 l.payment_pagos_id.saldo_pago=l.payment_pagos_id.saldo_pago-l.cuota_capital_pagar
-    #         if l.otro_pagar:
-    #             if (l.payment_pagos_id.saldo_pago-l.otro_pagar)<0:
-    #                 raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(l.payment_pagos_id.saldo_pago))
-    #             else:
-    #                 l.payment_pagos_id.saldo_pago=l.payment_pagos_id.saldo_pago-l.otro_pagar
-    #         if l.seguro_pagar:
-    #             if (l.payment_pagos_id.saldo_pago-l.seguro_pagar)<0:
-    #                 raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(l.payment_pagos_id.saldo_pago))
-    #             else:
-    #                 l.payment_pagos_id.saldo_pago=l.payment_pagos_id.saldo_pago-l.seguro_pagar
-    #         if l.rastreo_pagar:
-    #             if (l.payment_pagos_id.saldo_pago-l.rastreo_pagar)<0:
-    #                 raise ValidationError("El valor excede al saldo restante. Puede signar hasta {0}.".format(l.payment_pagos_id.saldo_pago))
-    #             else:
-    #                 l.payment_pagos_id.saldo_pago=l.payment_pagos_id.saldo_pago-l.rastreo_pagar
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # certificado = fields.Binary(string='Certificado')
-    # cuotaAdelantada = fields.Boolean(string='Cuota Adelantada')
-    # estado_pago = fields.Selection([('pendiente', 'Pendiente'),
-    #                                 ('pagado', 'Pagado'),
-    #                                 ('congelado', 'Congelado')
-    #                                 ], string='Estado de Pago', default='pendiente')
-
-    # pago_ids = fields.One2many(
-    #     'account.payment', 'pago_id', track_visibility='onchange')
-    
-
-    # fondo_reserva = fields.Monetary(
-    #     string='Fondo Reserva', currency_field='currency_id')
-
-    # iva = fields.Monetary(
-    #     string='Iva ', currency_field='currency_id')
-    
-    # referencia = fields.Char(String='Referencia')
-
-    # saldo_cuota_capital = fields.Monetary(
-    #     string='Saldo cuota capital', currency_field='currency_id')
-    # saldo_cuota_administrativa = fields.Monetary(
-    #     string='Saldo cuota adm ', currency_field='currency_id')
-    # saldo_fondo_reserva = fields.Monetary(
-    #     string='Saldo fondo de reserva ', currency_field='currency_id')
-    
-    # saldo_iva = fields.Monetary(
-    #     string='Saldo Iva ', currency_field='currency_id')
-    
-    # saldo_programado = fields.Monetary(
-    #     string='Saldo Programado ', currency_field='currency_id')
-    
-    # saldo_seguro = fields.Monetary(
-    #     string='Saldo Seguro ', currency_field='currency_id')
-    
-    # saldo_rastreo = fields.Monetary(
-    #     string='Saldo rastreo ', currency_field='currency_id')
-    
-    # saldo_otros = fields.Monetary(
-    #     string='Saldo Otros ', currency_field='currency_id')
-    
-    # saldo_tabla = fields.Monetary(
-    #     string='Saldo Tabla ', currency_field='currency_id')
-
-    # @api.depends("seguro","rastreo","otro","pago_ids")
-    # def calcular_monto_pagado(self):
-
-    #     for l in self:
-    #         monto=sum(l.pago_ids.mapped("amount"))
-    #         l.monto_pagado=monto
-
-    #         l.saldo=l.cuota_capital+ l.seguro+ l.rastreo + l.otro
-
-
-    #@api.multi
     def crear_detalles(self):
         viewid = self.env.ref('gzl_facturacion_electronica.estado_contrato_form').id
         return {   
