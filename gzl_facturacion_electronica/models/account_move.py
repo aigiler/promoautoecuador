@@ -135,7 +135,7 @@ class AccountMove(models.Model):
         saldo=0
         for m in self.anticipos_ids:
             if m.anticipo_pendiente:
-                saldo+=m.credit
+                saldo+=m.credit-m.valor_sobrante
         if self.invoice_payment_term_id:
             lista_dic.append({
                             'nombre': 'CRÉDITO',
