@@ -161,6 +161,7 @@ class ContratoResrva(models.TransientModel):
                 file=bytes(base64.b64encode(data))
 
 
+        raise ValidationError('{0}'.format(lista_campos))
         obj_attch=self.env['ir.attachment'].create({
                                                     'name':'Contrato_Reserva.docx',
                                                     'datas':file,
