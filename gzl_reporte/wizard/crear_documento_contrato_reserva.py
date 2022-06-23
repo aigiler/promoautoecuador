@@ -68,7 +68,7 @@ def identificar_parrafo(doc_obj, regex):
 
 
 def docx_replace_regex_header_ram(doc_obj, regex , replace):
-    for p in doc.paragraphs:
+    for p in doc_obj.paragraphs:
         if regex in p.text:
             inline = p.runs
             # Loop added to work with runs (strings with same style)
