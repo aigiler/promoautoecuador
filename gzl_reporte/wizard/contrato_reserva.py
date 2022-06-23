@@ -133,6 +133,7 @@ class ContratoResrva(models.TransientModel):
             lista_campos.append(dct)
             #if fechacontr:
             #    raise ValidationError(str(fechacontr) )
+            #raise ValidationError('{0}'.format(lista_campos))
             estado_cuenta.append(self.contrato_id.estado_de_cuenta_ids)
             
             #crear_documento_contrato_reserva.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
@@ -145,7 +146,6 @@ class ContratoResrva(models.TransientModel):
                 file=bytes(base64.b64encode(data))
 
 
-        raise ValidationError('{0}'.format(lista_campos))
         obj_attch=self.env['ir.attachment'].create({
                                                     'name':'Contrato_Reserva.docx',
                                                     'datas':file,
