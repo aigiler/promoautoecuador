@@ -1132,7 +1132,7 @@ class AccountPayment(models.Model):
                     if x.pagar:
                         valor_asignado+=(x.amount)
                 
-                if self.abono_contrato and self.contrato_id:    
+                if self.contrato_valor:    
                     for y in l.contrato_estado_cuenta_payment_ids:
                         if y.cuota_capital_pagar: 
                             cuota_capital_pagar+=y.cuota_capital_pagar
