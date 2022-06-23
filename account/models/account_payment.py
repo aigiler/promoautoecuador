@@ -750,7 +750,7 @@ class account_payment(models.Model):
                                     transacciones=self.env['transaccion.grupo.adjudicado']
                                     transacciones.create({
                                             'grupo_id':cuota_id.contrato_id.grupo.id,
-                                            'haber':cuota_id.cuota_capital_pagar,
+                                            'haber':y.cuota_capital_pagar,
                                             'adjudicado_id':cuota_id.contrato_id.cliente.id,
                                             'contrato_id':cuota_id.contrato_id.id,
                                             'state':cuota_id.contrato_id.state
