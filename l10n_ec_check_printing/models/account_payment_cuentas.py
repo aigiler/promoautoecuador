@@ -54,11 +54,11 @@ class AnticiposPendientes(models.Model):
             else:
                 self.factura_id.obtener_infoadicional()
 
-    @api.constrains('valor_sobrante')
-    def obtener_montos_anticipados(self):
-        for l in self:
-            if l.valor_sobrante:
-                #raise ValidationError('asdfghjhgfds')
-                self.factura_id.obtener_infoadicional()
-            else:
-                self.factura_id.obtener_infoadicional()
+    #@api.constrains('valor_sobrante')
+    #def obtener_montos_anticipados(self):
+    #    for l in self:
+    #        if l.valor_sobrante:
+    #            #raise ValidationError('asdfghjhgfds')
+    #            self.factura_id.obtener_infoadicional()
+    #        else:
+                #self.factura_id.obtener_infoadicional()
