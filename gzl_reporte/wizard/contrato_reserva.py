@@ -89,7 +89,7 @@ class ContratoResrva(models.TransientModel):
                                             {'identificar_docx':'vehiculo_tonelaje',
                                             'valor':l.tonelajeVehiculo},
                                             {'identificar_docx':'plazo_meses',
-                                            'valor':str(l.contrato_id.plazo_meses.numero)},]
+                                            'valor':str(self.plazo_meses.numero)},]
   
                             lista_campos+=lista_vehiculos
                 else:
