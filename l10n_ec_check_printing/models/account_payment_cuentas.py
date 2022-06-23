@@ -27,7 +27,7 @@ class PaymentLineAccount(models.Model):
         for l in self:
             if round(l.payment_id.credito,2)==round(l.credit,2) and l.payment_id.credito_contrato:
                l.aplicar_anticipo=True 
-               l.saldo_pendiente=l.credit
+               l.saldo_pendiente=l.payment_id.credito
 
 
 class AccountMove(models.Model):
