@@ -145,18 +145,20 @@ class AccountMove(models.Model):
             if valor_restar:
                 if valor_restar<=rec.saldo_cuota_capital:
                     for pag in self.anticipos_ids:
-                        valor_restar=0
-                        pass
+                        if pag.anticipo_pendiente:
+                            valor_restar=0
+                            pass
                 else:
                     for pag in self.anticipos_ids:
-                        valor_restar=valor_restar-rec.saldo_cuota_capital
+                        if pag.anticipo_pendiente:
+                            valor_restar=valor_restar-rec.saldo_cuota_capital
                             
         for ant in self.anticipos_ids:
             if ant.anticipo_pendiente:
                 ant.linea_pago_id.saldo_pendiente=valor_restar
                 ant.valor_sobrante=valor_restar
                 
-                saldo+=ant.credit-m.valor_sobrante
+                saldo+=ant.credit-valor_restar
         if self.invoice_payment_term_id:
             lista_dic.append({
                             'nombre': 'CRÉDITO',
