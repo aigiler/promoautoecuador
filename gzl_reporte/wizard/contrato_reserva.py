@@ -39,7 +39,7 @@ class ContratoResrva(models.TransientModel):
         #Instancia la plantilla
         
         obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','contrato_reserva')],limit=1)
-        if self.garante:
+        if self.contrato_id.garante:
             obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','contrato_reserva_garante')],limit=1)
         if obj_plantilla:
             shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
