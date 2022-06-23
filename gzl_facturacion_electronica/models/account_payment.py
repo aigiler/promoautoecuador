@@ -138,9 +138,9 @@ class AccountPayment(models.Model):
                 if x.pagar:
                     valor_asignado+=x.amount
             if l.abono_contrato:
-                #for y in l.contrato_estado_cuenta_payment_ids:
-                    #if y.monto_pagar:
-                contrato_valor=l.contrato_valor
+                for y in l.contrato_estado_cuenta_payment_ids:
+                    if y.monto_pagar:
+                        contrato_valor+=y.monto_pagar
             if l.credito_contrato:
                 credito_contrato=l.amount-valor_asignado-contrato_valor
             l.contrato_valor=contrato_valor
