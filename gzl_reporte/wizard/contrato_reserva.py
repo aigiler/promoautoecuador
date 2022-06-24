@@ -196,7 +196,7 @@ class ContratoResrva(models.TransientModel):
                                             {'identificar_docx':'vehiculotonelaje',
                                             'valor':l.tonelajeVehiculo},
                                             {'identificar_docx':'numeroeje',
-                                            'valor':l.numEjesVehiculo},
+                                            'valor':str(l.numEjesVehiculo)},
                                             {'identificar_docx':'plazomeses',
                                             'valor':str(self.contrato_id.plazo_meses.numero)},
                                             {'identificar_docx':'fechaasamblea',
