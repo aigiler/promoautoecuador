@@ -112,7 +112,12 @@ def docx_replace_regex_ram(doc_obj, regex , replace):
     palabras=[]
     for p in doc_obj.paragraphs:
         if regex in p.text:
-            palabras=p.text.split(" ")
+            i=0
+            for x in p.run:
+                i+=1
+                palabras.append({'numero':i,'valor':x.text})
+
+
     raise ValidationError('{0}'.format(palabras))
                 #if regex in run.text:
             # Loop added to work with runs (strings with same style)
