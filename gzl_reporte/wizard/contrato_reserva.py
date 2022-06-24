@@ -107,21 +107,13 @@ class ContratoResrva(models.TransientModel):
 
         return numero_letras
 
-    def crear_plantilla_contrato_reserva(self,):
-        #Instancia la plantilla
-        
+    def crear_plantilla_contrato_reserva(self,):        
         obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','contrato_reserva')],limit=1)
         if self.contrato_id.garante:
             obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','contrato_reserva_garante')],limit=1)
-        
         if obj_plantilla:
             shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
-
-
-            #####Se sacan los campos de la plantilla del objeto plantillas.dinamicas.informes
             campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
-
-            
             lista_campos=[]
             estado_cuenta=[]
             mesesDic = {
@@ -138,28 +130,18 @@ class ContratoResrva(models.TransientModel):
                 "11":'Noviembre',
                 "12":'Diciembre'
             }
-
             enteraletras=""
             if self.contrato_id.monto_financiamiento:
                 enteraletras=self.numero_to_letras(self.contrato_id.monto_financiamiento)
-
-            
             lista_campos.append({'identificar_docx':'enteraletras',
-                                            'valor':enteraletras})
+                                'valor':enteraletras})
             lista_campos.append({'identificar_docx':'montofinanciamiento',
-                                            'valor':str(round(self.contrato_id.monto_financiamiento,2))})
+                                'valor':str(round(self.contrato_id.monto_financiamiento,2))})
             for campo in campos:
-                #if campo:
-                #    raise ValidationError(str(campo.vat))
                 dct={}
-                #vehiculoooo
-                
-                
                 if campo.name == 'vehiculo_id.tipoVehiculo':
                     obj_veh=self.env['entrega.vehiculo'].search([])
                     for l in obj_veh :
-                        #vehiculo_serie  vehiculo_motor vehiculo_color  vehiculo_anio vehiculo_pais_origen vehiculo_combustible vehiculo_pasajeros vehiculo_tonelaje. 
-                        #raise ValidationError(str(l.nombreGarante.id)+' -jg- '+campo.name)
                         if l.nombreSocioAdjudicado.id == self.contrato_id.cliente.id: #vehiculo_clase 238
                             fechaasamblea=' '
                             if l.asamblea:
@@ -211,40 +193,24 @@ class ContratoResrva(models.TransientModel):
                                 dct['valor']=''
                             else:    
                                 dct['valor']=str(resultado[0])
-
                         else:
                             dct['valor']=''
                     dct['identificar_docx']=campo.identificar_docx
-                    lista_campos.append(dct)
-            
-            #if resultado:
-            
+                    lista_campos.append(dct)            
             year = datetime.now().year
             mes = datetime.now().month
             dia = datetime.now().day
-            #print(mesesDic[str(mes)][:3])
             valordia = amount_to_text_es.amount_to_text(dia)
             valordia = valordia.split()
             valordia = valordia[0]
             fechacontr = 'a los '+valordia.lower()+' dias del mes de '+str(mesesDic[str(mes)])+' del Año '+str(year)
             lista_fecha=[{'identificar_docx':'txt_factual','valor':fechacontr}]
             lista_campos+=lista_fecha
-            #if fechacontr:
-            #raise ValidationError(str(lista_campos))
-            #    raise ValidationError(str(fechacontr) )
-            #raise ValidationError('{0}'.format(lista_campos))
             estado_cuenta.append(self.contrato_id.estado_de_cuenta_ids)
-            
-            #crear_documento_contrato_reserva.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
-
             crear_documento_contrato_reserva.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
-
-
             with open(obj_plantilla.directorio_out, "rb") as f:
                 data = f.read()
                 file=bytes(base64.b64encode(data))
-
-
         obj_attch=self.env['ir.attachment'].create({
                                                     'name':'Contrato_Reserva.docx',
                                                     'datas':file,
