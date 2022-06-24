@@ -697,8 +697,7 @@ class account_payment(models.Model):
             rec.write({'state': 'posted', 'move_name': move_name})
 
             if rec.payment_type in ('inbound', 'outbound'):
-                # ==== 'inbound' / 'outbound' ====
-                
+                # ==== 'inbound' / 'outbound' ====    
 
                 if rec.payment_type=='inbound':
                     cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
@@ -946,6 +945,7 @@ class account_payment(models.Model):
                       
 
                             if suma_total:
+                                #monto_restar=
                                 pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
                                                                                                                     'monto_pagado':rec.amount,'valor_asociado':suma_total})
                             
