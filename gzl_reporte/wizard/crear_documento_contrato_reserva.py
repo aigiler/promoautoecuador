@@ -108,7 +108,7 @@ def docx_replace_regex_header_ram(doc_obj, regex , replace):
 def docx_replace_regex_ram(doc_obj, regex , replace):
 
     for paragraph in doc_obj.paragraphs:
-        if key in paragraph.text:
+        if regex in paragraph.text:
             paragraph.text = paragraph.text.replace(str(regex), str(replace))
 
     #for p in doc_obj.paragraphs:
