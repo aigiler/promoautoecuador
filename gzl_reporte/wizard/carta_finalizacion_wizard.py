@@ -69,9 +69,9 @@ class CartaFinalizacion(models.TransientModel):
             dct['identificar_docx']='fecha_contrato'
             dct['valor'] =''
             if self.contrato_id.fecha_contrato:
-                year = resultado[0].year
-                mes = resultado[0].month
-                dia = resultado[0].day
+                year = self.contrato_id.fecha_contrato.year
+                mes = self.contrato_id.fecha_contrato.month
+                dia = self.contrato_id.fecha_contrato.day
                 fechacontr2 = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
                 dct['valor'] = fechacontr2
             lista_campos.append(dct)
@@ -79,9 +79,9 @@ class CartaFinalizacion(models.TransientModel):
             dct['identificar_docx']='fecha_inscripcion'
             dct['valor'] =''
             if self.vehiculo_id.fecha_inscripcion:
-                year = resultado[0].year
-                mes = resultado[0].month
-                dia = resultado[0].day
+                year = self.vehiculo_id.fecha_inscripcion.year
+                mes = self.vehiculo_id.fecha_inscripcion.month
+                dia = self.vehiculo_id.fecha_inscripcion.day
                 fechacontr2 = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
                 dct['valor'] = fechacontr2
             lista_campos.append(dct)
@@ -89,9 +89,9 @@ class CartaFinalizacion(models.TransientModel):
             dct['identificar_docx']='fecha_reserva'
             dct['valor'] =''
             if self.vehiculo_id.fecha_reserva:
-                year = resultado[0].year
-                mes = resultado[0].month
-                dia = resultado[0].day
+                year = self.vehiculo_id.fecha_reserva.year
+                mes = self.vehiculo_id.fecha_reserva.month
+                dia = self.vehiculo_id.fecha_reserva.day
                 fechacontr2 = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
                 dct['valor'] = fechacontr2
             lista_campos.append(dct)
