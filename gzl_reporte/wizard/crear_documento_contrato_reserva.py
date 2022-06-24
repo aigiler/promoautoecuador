@@ -38,6 +38,8 @@ def crear_documento_reserva(ruta,detalle,lista_estado_cuenta):
             if l['iva_adm']!=False:
                 tabla.cell(contador, 4).text = str(l.iva_adm)
             if l['saldo']!=False:
+                if str(l.saldo)=='':
+                    l.saldo=0.00
                 tabla.cell(contador, 5).text = str(l.saldo)
             contador+=1
     #     if contador!=len(lista_estado_cuenta)+1:
