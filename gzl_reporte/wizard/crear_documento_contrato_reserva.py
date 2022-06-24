@@ -30,7 +30,7 @@ def crear_documento_reserva(ruta,detalle,lista_estado_cuenta):
                 tabla.cell(contador, 5).text = str(0)
 
             contador+=1
-    detalle.append({'identificar_docx':'total_deuda','valor':str(suma)})
+    detalle.append({'identificar_docx':'total_deuda','valor':str(round(suma,2))})
     for campo in detalle:
         regex1 = re.compile(campo['identificar_docx'])
         docx_replace_regex_ram(doc,regex1,campo['valor'] or "" )
