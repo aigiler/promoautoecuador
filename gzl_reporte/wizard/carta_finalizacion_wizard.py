@@ -42,10 +42,10 @@ class CartaFinalizacion(models.TransientModel):
 
     def print_report_xls(self):
         if self.clave=='carta_finalizacion':
-            dct=self.crear_plantilla_contrato_reserva()
+            dct=self.crear_plantilla_carta_finalizacion()
             return dct
 
-    def crear_plantilla_contrato_reserva(self,):
+    def crear_plantilla_carta_finalizacion(self,):
         obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','carta_finalizacion')],limit=1)
         if obj_plantilla:
             mesesDic = {
@@ -131,10 +131,10 @@ class CartaFinalizacion(models.TransientModel):
                 data = f.read()
                 file=bytes(base64.b64encode(data))
         obj_attch=self.env['ir.attachment'].create({
-                                                    'name':'Carta_Finalizacion.docx',
+                                                    'name':'Carta Finalizacion de Deuda.docx',
                                                     'datas':file,
                                                     'type':'binary', 
-                                                    'store_fname':'Carta_Finalizacion.docx'
+                                                    'store_fname':'Carta_Finalizacion de Deuda.docx'
                                                     })
 
         url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')

@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-        <record id="carta_finalizacion_report_reporte_form" model="ir.ui.view">
-            <field name="name">carta.finalizacion.reportform</field>
-            <field name="model">carta.finalizacion.report</field>
+        <record id="pagare_reporte_form" model="ir.ui.view">
+            <field name="name">pagare.report.form</field>
+            <field name="model">pagare.report</field>
             <field name="arch" type="xml">
-                <form string="Carta de Finalizacion">
+                <form string="Pagare a la Orden">
                     <group>
                          <group col="2">
 
-                            <field name="partner_id" required="1" invisible="1"  options="{'no_open': True, 'no_create': True}" />
                             <field name="contrato_id" required="1"   options="{'no_open': True, 'no_create': True}" />
-                            <field name="vehiculo_id" required="1" invisible="1"  options="{'no_open': True, 'no_create': True}" />
+                            <field name="fecha_vencimiento" required="1" />
                         </group>
 
                     </group>                        
@@ -28,9 +27,9 @@
             </field>
         </record>
 
-        <record id="action_carta_finalizacion_form" model="ir.actions.act_window">
-            <field name="name">Carta de Finalizacion</field>
-            <field name="res_model">carta.finalizacion.report</field>
+        <record id="action_pagare_report_form" model="ir.actions.act_window">
+            <field name="name">Pagare a la Orden</field>
+            <field name="res_model">pagare.report</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>
@@ -39,10 +38,10 @@
 
         <menuitem 
         id = "menu_carta_finalizacion_report_reporte_form"
-        name = "Carta de Finalizacion"  
+        name = "Pagare a la Orden"  
         parent="menu_reporte" 
         sequence="1" 
-        action="action_carta_finalizacion_form"/>
+        action="action_pagare_report_form"/>
 
 
 </odoo>
