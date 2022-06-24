@@ -109,7 +109,7 @@ class CartaFinalizacion(models.TransientModel):
                     else:
                         dct['valor']=''
                 dct['identificar_docx']=campo.identificar_docx
-                    lista_campos.append(dct)
+                lista_campos.append(dct)
             year = datetime.now().year
             mes = datetime.now().month
             dia = datetime.now().day
