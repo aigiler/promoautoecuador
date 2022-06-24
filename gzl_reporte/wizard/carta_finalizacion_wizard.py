@@ -78,11 +78,34 @@ class CartaFinalizacion(models.TransientModel):
                     dct['valor'] = fechacontr2
                     dct['identificar_docx']=campo.identificar_docx
                     lista_campos.append(dct)
+                if campo.identificar_docx =='fecha_inscripcion':
+                    #raise ValidationError('{0}'.format(resultado))
+                    dct={}
+                    year = resultado[0].year
+                    mes = resultado[0].month
+                    dia = resultado[0].day
+                    fechacontr2 = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
+                    dct['valor'] = fechacontr2
+                    dct['identificar_docx']=campo.identificar_docx
+                    lista_campos.append(dct)
+                if campo.identificar_docx =='fecha_reserva':
+                    #raise ValidationError('{0}'.format(resultado))
+                    dct={}
+                    year = resultado[0].year
+                    mes = resultado[0].month
+                    dia = resultado[0].day
+                    fechacontr2 = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
+                    dct['valor'] = fechacontr2
+                    dct['identificar_docx']=campo.identificar_docx
+                    lista_campos.append(dct)
                 else:
                     if campo.name!=False:
                         dct={}
                         if len(resultado)>0:
-                            dct['valor']=str(resultado[0])
+                            if resultado[0]==False:
+                                dct['valor']=''
+                            else:    
+                                dct['valor']=str(resultado[0])
                         else:
                             dct['valor']=''
                     dct['identificar_docx']=campo.identificar_docx
