@@ -91,7 +91,7 @@ class CartaFinalizacion(models.TransientModel):
             dct['identificar_docx']='fecha_reserva'
             dct['valor'] =''
             dct_anio['identificar_docx']='anio_reserva'
-            dct['valor'] =''
+            dct_anio['valor'] =''
             if self.vehiculo_id.fecha_reserva:
                 year = self.vehiculo_id.fecha_reserva.year
                 mes = self.vehiculo_id.fecha_reserva.month
