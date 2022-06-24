@@ -24,7 +24,10 @@ class EntegaVehiculo(models.Model):
     rolAdjudicacion = fields.Many2one('adjudicaciones.team', string="Rol Adjudicacion", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol2'))
     asamblea = fields.Many2one('asamblea','Asamblea del Adjudicado')
 
-
+    fecha_reserva = fields.Date(string='Fecha de Reserva')
+    fecha_inscripcion = fields.Date(string='Fecha de Inscripción')
+    num_inscripcion = fields.Date(string='Numero de Inscripción')
+    num_repertorio = fields.Date(string='Número de Repertorio')
     secuencia = fields.Char(index=True)
     requisitosPoliticasCredito = fields.Html(string='Informacion Cobranzas', default=lambda self: self._capturar_valores_por_defecto())
     
