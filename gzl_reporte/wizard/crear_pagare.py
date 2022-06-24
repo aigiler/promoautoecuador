@@ -100,7 +100,7 @@ def crear_pagare(ruta,detalle,lista_estado_cuenta):
                     suma+=l.saldo
                     tabla.cell(contador, 5).text = str(l.saldo)
 
-            contador+=1
+                contador+=1
     detalle.append({'identificar_docx':'monto_pendiente','valor':str(round(suma,2))})
     if suma:
         valor_letras=numero_to_letras(suma)
