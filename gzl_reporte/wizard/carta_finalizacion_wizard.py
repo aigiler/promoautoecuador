@@ -87,6 +87,7 @@ class CartaFinalizacion(models.TransientModel):
             lista_campos.append(dct)
                  
             dct={}
+            dct_anio={}
             dct['identificar_docx']='fecha_reserva'
             dct['valor'] =''
             dct_anio['identificar_docx']='anio_reserva'
@@ -99,6 +100,7 @@ class CartaFinalizacion(models.TransientModel):
                 dct['valor'] = fechacontr2
                 dct_anio['valor'] = str(year)
             lista_campos.append(dct)
+            lista_campos.append(dct_anio)
                 
 
             for campo in campos:
