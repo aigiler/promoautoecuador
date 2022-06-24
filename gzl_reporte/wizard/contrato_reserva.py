@@ -121,20 +121,6 @@ class ContratoResrva(models.TransientModel):
             #####Se sacan los campos de la plantilla del objeto plantillas.dinamicas.informes
             campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
 
-# montofinanciamiento 
- 
- 
-# tipocontrato
-# nombregrupo
-# valorinscripcion
-# fechacontrato
-
-# capitalcontrato
-# adminpag
-# ivaadm
-
-
-
             
             lista_campos=[]
             estado_cuenta=[]
@@ -159,7 +145,9 @@ class ContratoResrva(models.TransientModel):
 
             
             lista_campos.append({'identificar_docx':'enteraletras',
-                                            'valor':enteraletras})
+                                            'valor':enteraletras},
+                                {'identificar_docx':'montofinanciamiento',
+                                            'valor':round(self.contrato_id.monto_financiamiento,2)})
             for campo in campos:
                 #if campo:
                 #    raise ValidationError(str(campo.vat))
