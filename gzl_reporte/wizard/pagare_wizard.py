@@ -60,7 +60,7 @@ class PagareOrden(models.TransientModel):
             dct['identificar_docx']='fecha_vencimiento'
             dct['valor'] =''
             if self.fecha_vencimiento:
-                dct['valor'] = fecha_vencimiento
+                dct['valor'] = self.fecha_vencimiento
             lista_campos.append(dct)
             for campo in campos:
                 dct={}
