@@ -10,6 +10,7 @@ def crear_documento_reserva(ruta,detalle,lista_estado_cuenta):
     doc = Document(ruta)
     tabla=doc.tables[1]
     contador=1
+    suma=suma
     for estado_cuenta in lista_estado_cuenta:
         for l in estado_cuenta:
             if l.numero_cuota!=False:
@@ -23,10 +24,13 @@ def crear_documento_reserva(ruta,detalle,lista_estado_cuenta):
             if l['iva_adm']!=False:
                 tabla.cell(contador, 4).text = str(l.iva_adm)
             if l['saldo']!=False:
-                if str(l.saldo)=='':
-                    l.saldo=0.00
+                suma+=l.saldo
                 tabla.cell(contador, 5).text = str(l.saldo)
+            else:
+                tabla.cell(contador, 5).text = str(0)
+
             contador+=1
+    detalle.append({'identificar_docx':'total_deuda','valor':str(suma)})
     for campo in detalle:
         regex1 = re.compile(campo['identificar_docx'])
         docx_replace_regex_ram(doc,regex1,campo['valor'] or "" )
