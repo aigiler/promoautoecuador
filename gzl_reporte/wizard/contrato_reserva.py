@@ -145,8 +145,8 @@ class ContratoResrva(models.TransientModel):
 
             
             lista_campos.append({'identificar_docx':'enteraletras',
-                                            'valor':enteraletras},
-                                {'identificar_docx':'montofinanciamiento',
+                                            'valor':enteraletras})
+            lista_campos.append({'identificar_docx':'montofinanciamiento',
                                             'valor':round(self.contrato_id.monto_financiamiento,2)})
             for campo in campos:
                 #if campo:
