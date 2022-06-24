@@ -65,50 +65,50 @@ class CartaFinalizacion(models.TransientModel):
             shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
             campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
             lista_campos=[]
+            dct={}
+            dct['identificar_docx']='fecha_contrato'
+            dct['valor'] =''
+            if self.contrato_id.fecha_contrato:
+                year = resultado[0].year
+                mes = resultado[0].month
+                dia = resultado[0].day
+                fechacontr2 = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
+                dct['valor'] = fechacontr2
+            lista_campos.append(dct)
+            dct={}
+            dct['identificar_docx']='fecha_inscripcion'
+            dct['valor'] =''
+            if self.vehiculo_id.fecha_inscripcion:
+                year = resultado[0].year
+                mes = resultado[0].month
+                dia = resultado[0].day
+                fechacontr2 = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
+                dct['valor'] = fechacontr2
+            lista_campos.append(dct)
+            dct={}
+            dct['identificar_docx']='fecha_reserva'
+            dct['valor'] =''
+            if self.vehiculo_id.fecha_reserva:
+                year = resultado[0].year
+                mes = resultado[0].month
+                dia = resultado[0].day
+                fechacontr2 = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
+                dct['valor'] = fechacontr2
+            lista_campos.append(dct)
             for campo in campos:
                 dct={}
                 resultado=self.mapped(campo.name)
-                if campo.identificar_docx =='fecha_contrato':
-                    #raise ValidationError('{0}'.format(resultado))
+                
+                if campo.name!=False:
                     dct={}
-                    year = resultado[0].year
-                    mes = resultado[0].month
-                    dia = resultado[0].day
-                    fechacontr2 = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
-                    dct['valor'] = fechacontr2
-                    dct['identificar_docx']=campo.identificar_docx
-                    lista_campos.append(dct)
-                if campo.identificar_docx =='fecha_inscripcion':
-                    #raise ValidationError('{0}'.format(resultado))
-                    dct={}
-                    year = resultado[0].year
-                    mes = resultado[0].month
-                    dia = resultado[0].day
-                    fechacontr2 = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
-                    dct['valor'] = fechacontr2
-                    dct['identificar_docx']=campo.identificar_docx
-                    lista_campos.append(dct)
-                if campo.identificar_docx =='fecha_reserva':
-                    #raise ValidationError('{0}'.format(resultado))
-                    dct={}
-                    year = resultado[0].year
-                    mes = resultado[0].month
-                    dia = resultado[0].day
-                    fechacontr2 = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
-                    dct['valor'] = fechacontr2
-                    dct['identificar_docx']=campo.identificar_docx
-                    lista_campos.append(dct)
-                else:
-                    if campo.name!=False:
-                        dct={}
-                        if len(resultado)>0:
-                            if resultado[0]==False:
-                                dct['valor']=''
-                            else:    
-                                dct['valor']=str(resultado[0])
-                        else:
+                    if len(resultado)>0:
+                        if resultado[0]==False:
                             dct['valor']=''
-                    dct['identificar_docx']=campo.identificar_docx
+                        else:    
+                            dct['valor']=str(resultado[0])
+                    else:
+                        dct['valor']=''
+                dct['identificar_docx']=campo.identificar_docx
                     lista_campos.append(dct)
             year = datetime.now().year
             mes = datetime.now().month
