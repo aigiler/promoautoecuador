@@ -34,6 +34,78 @@ class ContratoResrva(models.TransientModel):
             return dct
 
 
+    def convierte_cifra(numero,sw):
+        lista_centana = ["",("CIEN","CIENTO"),"DOSCIENTOS","TRESCIENTOS","CUATROCIENTOS","QUINIENTOS","SEISCIENTOS","SETECIENTOS","OCHOCIENTOS","NOVECIENTOS"]
+        lista_decena = ["",("DIEZ","ONCE","DOCE","TRECE","CATORCE","QUINCE","DIECISEIS","DIECISIETE","DIECIOCHO","DIECINUEVE"),
+                        ("VEINTE","VEINTI"),("TREINTA","TREINTA Y "),("CUARENTA" , "CUARENTA Y "),
+                        ("CINCUENTA" , "CINCUENTA Y "),("SESENTA" , "SESENTA Y "),
+                        ("SETENTA" , "SETENTA Y "),("OCHENTA" , "OCHENTA Y "),
+                        ("NOVENTA" , "NOVENTA Y ")
+                    ]
+        lista_unidad = ["",("UN" , "UNO"),"DOS","TRES","CUATRO","CINCO","SEIS","SIETE","OCHO","NUEVE"]
+        centena = int (numero / 100)
+        decena = int((numero -(centena * 100))/10)
+        unidad = int(numero - (centena * 100 + decena * 10))
+        #print "centena: ",centena, "decena: ",decena,'unidad: ',unidad
+     
+        texto_centena = ""
+        texto_decena = ""
+        texto_unidad = ""
+     
+        #Validad las centenas
+        texto_centena = lista_centana[centena]
+        if centena == 1:
+            if (decena + unidad)!=0:
+                texto_centena = texto_centena[1]
+            else :
+                texto_centena = texto_centena[0]
+     
+        #Valida las decenas
+        texto_decena = lista_decena[decena]
+        if decena == 1 :
+             texto_decena = texto_decena[unidad]
+        elif decena > 1 :
+            if unidad != 0 :
+                texto_decena = texto_decena[1]
+            else:
+                texto_decena = texto_decena[0]
+        #Validar las unidades
+        #print "texto_unidad: ",texto_unidad
+        if decena != 1:
+            texto_unidad = lista_unidad[unidad]
+            if unidad == 1:
+                texto_unidad = texto_unidad[sw]
+     
+        return "%s %s %s" %(texto_centena,texto_decena,texto_unidad)
+
+    def numero_to_letras(self,numero):
+        indicador = [("",""),("MIL","MIL"),("MILLON","MILLONES"),("MIL","MIL"),("BILLON","BILLONES")]
+        entero = int(numero)
+        decimal = int(round((numero - entero)*100))
+        #print 'decimal : ',decimal 
+        contador = 0
+        numero_letras = ""
+        while entero >0:
+            a = entero % 1000
+            if contador == 0:
+                en_letras = self.onvierte_cifra(a,1).strip()
+            else :
+                en_letras = self.convierte_cifra(a,0).strip()
+            if a==0:
+                numero_letras = en_letras+" "+numero_letras
+            elif a==1:
+                if contador in (1,3):
+                    numero_letras = indicador[contador][0]+" "+numero_letras
+                else:
+                    numero_letras = en_letras+" "+indicador[contador][0]+" "+numero_letras
+            else:
+                numero_letras = en_letras+" "+indicador[contador][1]+" "+numero_letras
+            numero_letras = numero_letras.strip()
+            contador = contador + 1
+            entero = int(entero / 1000)
+        numero_letras = numero_letras+" con " + str(decimal) +"/100"
+
+        return numero_letras
 
     def crear_plantilla_contrato_reserva(self,):
         #Instancia la plantilla
@@ -48,20 +120,65 @@ class ContratoResrva(models.TransientModel):
 
             #####Se sacan los campos de la plantilla del objeto plantillas.dinamicas.informes
             campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
+
+# montofinanciamiento 
+ 
+ 
+# tipocontrato
+# nombregrupo
+# valorinscripcion
+# fechacontrato
+
+# capitalcontrato
+# adminpag
+# ivaadm
+
+
+
             
             lista_campos=[]
             estado_cuenta=[]
+            mesesDic = {
+                "1":'Enero',
+                "2":'Febrero',
+                "3":'Marzo',
+                "4":'Abril',
+                "5":'Mayo',
+                "6":'Junio',
+                "7":'Julio',
+                "8":'Agosto',
+                "9":'Septiembre',
+                "10":'Octubre',
+                "11":'Noviembre',
+                "12":'Diciembre'
+            }
+
+            enteraletras=""
+            if self.contrato_id.monto_financiamiento:
+                enteraletras=self.numero_to_letras(self.contrato_id.monto_financiamiento)
+
+            
+            lista_campos.append({'identificar_docx':'enteraletras',
+                                            'valor':enteraletras})
             for campo in campos:
                 #if campo:
                 #    raise ValidationError(str(campo.vat))
                 dct={}
                 #vehiculoooo
+                
+                
                 if campo.name == 'vehiculo_id.tipoVehiculo':
                     obj_veh=self.env['entrega.vehiculo'].search([])
                     for l in obj_veh :
                         #vehiculo_serie  vehiculo_motor vehiculo_color  vehiculo_anio vehiculo_pais_origen vehiculo_combustible vehiculo_pasajeros vehiculo_tonelaje. 
                         #raise ValidationError(str(l.nombreGarante.id)+' -jg- '+campo.name)
                         if l.nombreSocioAdjudicado.id == self.contrato_id.cliente.id: #vehiculo_clase 238
+                            fechaasamblea=' '
+                            if l.asamblea:
+                                year = resultado[0].year
+                                mes = resultado[0].month
+                                dia = resultado[0].day
+                                fechaasamblea = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
                             lista_vehiculos=[{'identificar_docx':'vehiculo_tipo',
                                             'valor':l.tipoVehiculo},
                                             {'identificar_docx':'vehiculoclase',
@@ -86,10 +203,16 @@ class ContratoResrva(models.TransientModel):
                                             'valor':l.conbustibleVehiculo},
                                             {'identificar_docx':'vehiculopasajeros',
                                             'valor':str(l.numPasajeros)},
-                                            {'identificar_docx':'vehiculotonelaje',
+                                            {'identificar_docx':'valorcpn',
+                                            'valor':''},
+                                            {'identificar_docx':'numEjesVehiculo',
                                             'valor':l.tonelajeVehiculo},
+                                            {'identificar_docx':'vehiculotonelaje',
+                                            'valor':''},
                                             {'identificar_docx':'plazomeses',
-                                            'valor':str(self.contrato_id.plazo_meses.numero)},]
+                                            'valor':str(self.contrato_id.plazo_meses.numero)},
+                                            {'identificar_docx':'fechaasamblea',
+                                            'valor':fechaasamblea}]
   
                             lista_campos+=lista_vehiculos
                 else:
@@ -107,20 +230,7 @@ class ContratoResrva(models.TransientModel):
                     lista_campos.append(dct)
             
             #if resultado:
-            mesesDic = {
-                "1":'Enero',
-                "2":'Febrero',
-                "3":'Marzo',
-                "4":'Abril',
-                "5":'Mayo',
-                "6":'Junio',
-                "7":'Julio',
-                "8":'Agosto',
-                "9":'Septiembre',
-                "10":'Octubre',
-                "11":'Noviembre',
-                "12":'Diciembre'
-            }
+            
             year = datetime.now().year
             mes = datetime.now().month
             dia = datetime.now().day
