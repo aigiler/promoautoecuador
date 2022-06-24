@@ -147,7 +147,7 @@ class ContratoResrva(models.TransientModel):
             lista_campos.append({'identificar_docx':'enteraletras',
                                             'valor':enteraletras})
             lista_campos.append({'identificar_docx':'montofinanciamiento',
-                                            'valor':round(self.contrato_id.monto_financiamiento,2)})
+                                            'valor':str(round(self.contrato_id.monto_financiamiento,2))})
             for campo in campos:
                 #if campo:
                 #    raise ValidationError(str(campo.vat))
@@ -210,7 +210,7 @@ class ContratoResrva(models.TransientModel):
                             if resultado[0]==False:
                                 dct['valor']=''
                             else:    
-                                dct['valor']=resultado[0]
+                                dct['valor']=str(resultado[0])
 
                         else:
                             dct['valor']=''
