@@ -117,7 +117,7 @@ def docx_replace_regex_ram(doc_obj, regex , replace):
             for run in inline:
                 i+=1
                 lista.append({'texto':i,'valor':run.text})
-        raise ValidationError('{0}'.format(lista))
+    raise ValidationError('{0}'.format(lista))
                 #if regex in run.text:
             # Loop added to work with runs (strings with same style)
             #for i in range(len(inline)):
