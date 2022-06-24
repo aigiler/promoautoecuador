@@ -113,7 +113,7 @@ def docx_replace_regex_ram(doc_obj, regex , replace):
     for p in doc_obj.paragraphs:
         if regex in p.text:
             i=0
-            for x in p.run:
+            for x in p.runs:
                 i+=1
                 palabras.append({'numero':i,'valor':x.text})
 
