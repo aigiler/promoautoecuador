@@ -85,6 +85,7 @@ class CartaFinalizacion(models.TransientModel):
                 fechacontr2 = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
                 dct['valor'] = fechacontr2
             lista_campos.append(dct)
+                 
             dct={}
             dct['identificar_docx']='fecha_reserva'
             dct['valor'] =''
@@ -94,7 +95,12 @@ class CartaFinalizacion(models.TransientModel):
                 dia = self.vehiculo_id.fecha_reserva.day
                 fechacontr2 = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
                 dct['valor'] = fechacontr2
-            lista_campos.append(dct)
+                lista_campos.append(dct)
+                dct={}
+                dct['identificar_docx']='anio_reserva'
+                dct['valor'] =year
+                lista_campos.append(dct)
+
             for campo in campos:
                 dct={}
                 resultado=self.mapped(campo.name)
