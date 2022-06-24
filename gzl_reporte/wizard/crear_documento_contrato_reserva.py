@@ -109,12 +109,15 @@ def docx_replace_regex_ram(doc_obj, regex , replace):
 
 
 
+    lista=[]
     for p in doc_obj.paragraphs:
         if regex in p.text:
             inline = p.runs
+            i=0
             for run in inline:
-                raise ValidationError(run.text)
-
+                i+=1
+                lista.append({'texto':i,'valor':run.text})
+        raise ValidationError('{0}'.format(lista))
                 #if regex in run.text:
             # Loop added to work with runs (strings with same style)
             #for i in range(len(inline)):
