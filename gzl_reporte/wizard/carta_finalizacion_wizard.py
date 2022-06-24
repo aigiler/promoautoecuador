@@ -27,22 +27,18 @@ class CartaFinalizacion(models.TransientModel):
     clave =  fields.Char( default="carta_finalizacion")
     vehiculo_id = fields.Many2one('entrega.vehiculo',string='entrega.vehiculo')
 
-    @api.depends("partner_id")
-    @api.onchange("partner_id")
+    @api.depends("contrato_id")
+    @api.onchange("contrato_id")
     def obtener_vehiculo(self):
         for l in self:
             if l.partner_id:
                 vehiculo_id = self.env['entrega.vehiculo'].search(
-                        [('nombreSocioAdjudicado', '=', self.partner_id.id),('estado','=','entrega_vehiculo')], limit=1)
-                contrato_id = self.env['contrato'].search(
-                        [('cliente', '=', self.partner_id.id),('state','=','adjudicar')], limit=1)
-                #if vehiculo_id:
-                #    self.vehiculo_id=vehiculo_id.id
-                #if contrato_id:
-                #    self.contrato_id=contrato_id.id
-        ###PARA PRUEBA
-        self.vehiculo_id=190
-        self.contrato_id=8605
+                        [('nombreSocioAdjudicado', '=', self.contrato_id.cliente.id),('estado','=','entrega_vehiculo')], limit=1)
+                partner_id = self.env['res.partner'].search(
+                        [('id', '=', self.contrato_id.cliente.id)], limit=1)
+
+        self.vehiculo_id=vehiculo_id
+        self.partner_id=partner_id
 
     def print_report_xls(self):
         if self.clave=='carta_finalizacion':
