@@ -10,7 +10,7 @@ def crear_documento_reserva(ruta,detalle,lista_estado_cuenta):
     doc = Document(ruta)
     tabla=doc.tables[1]
     contador=1
-    suma=suma
+    suma=0
     for estado_cuenta in lista_estado_cuenta:
         for l in estado_cuenta:
             if l.numero_cuota!=False:
