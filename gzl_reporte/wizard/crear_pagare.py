@@ -80,7 +80,7 @@ def numero_to_letras(numero):
 
 def crear_pagare(ruta,detalle,lista_estado_cuenta):
     doc = Document(ruta)
-    tabla=doc.tables[1]
+    tabla=doc.tables[0]
     contador=1
     suma=0
     for estado_cuenta in lista_estado_cuenta:
