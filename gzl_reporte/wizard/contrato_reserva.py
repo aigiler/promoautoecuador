@@ -88,9 +88,9 @@ class ContratoResrva(models.TransientModel):
         while entero >0:
             a = entero % 1000
             if contador == 0:
-                en_letras = self.onvierte_cifra(a,1).strip()
+                en_letras = self.convierte_cifra(a,1).strip()
             else :
-                en_letras = self.convierte_cifra(a,0).strip()
+                en_letras = self.cconvierte_cifra(a,0).strip()
             if a==0:
                 numero_letras = en_letras+" "+numero_letras
             elif a==1:
