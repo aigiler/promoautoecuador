@@ -86,19 +86,19 @@ def crear_pagare(ruta,detalle,lista_estado_cuenta):
     for estado_cuenta in lista_estado_cuenta:
         for l in estado_cuenta:
             if l.saldo:
-            if l.numero_cuota!=False:
-                tabla.cell(contador, 0).text = str(l.numero_cuota)
-            if l['fecha']!=False:
-                tabla.cell(contador, 1).text = str(l.fecha)
-            if l['cuota_capital']!=False:
-                tabla.cell(contador, 2).text = str(l.cuota_capital)
-            if l['cuota_adm']!=False:
-                tabla.cell(contador, 3).text = str(l.cuota_adm)
-            if l['iva_adm']!=False:
-                tabla.cell(contador, 4).text = str(l.iva_adm)
-            if l['saldo']!=False:
-                suma+=l.saldo
-                tabla.cell(contador, 5).text = str(l.saldo)
+                if l.numero_cuota!=False:
+                    tabla.cell(contador, 0).text = str(l.numero_cuota)
+                if l['fecha']!=False:
+                    tabla.cell(contador, 1).text = str(l.fecha)
+                if l['cuota_capital']!=False:
+                    tabla.cell(contador, 2).text = str(l.cuota_capital)
+                if l['cuota_adm']!=False:
+                    tabla.cell(contador, 3).text = str(l.cuota_adm)
+                if l['iva_adm']!=False:
+                    tabla.cell(contador, 4).text = str(l.iva_adm)
+                if l['saldo']!=False:
+                    suma+=l.saldo
+                    tabla.cell(contador, 5).text = str(l.saldo)
 
             contador+=1
     detalle.append({'identificar_docx':'monto_pendiente','valor':str(round(suma,2))})
