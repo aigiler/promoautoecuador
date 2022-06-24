@@ -128,4 +128,3 @@ def docx_replace_regex_ram(doc_obj, regex , replace):
         for row in table.rows:
             for cell in row.cells:
                 docx_replace_regex_ram(cell, regex , replace)
-
