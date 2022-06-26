@@ -144,7 +144,7 @@ class ReportGrupos(models.TransientModel):
                     lista_cuota.append(mes.id)
             else:
                 dct['estado_deuda']='Al dia'
-            total_vencer=contrato.tabla_amortizacion.filtered(lambda l: l.id not in lista_cuota and l.estado_pago=='pendiente')
+            total_vencer=contrato.tabla_amortizacion.filtered(lambda l: l.id not in lista_cuota and l.estado_pago=='pendiente' and l.fecha>hoy)
             for total in total_vencer:
                 dct['total_vencer']+=total.saldo_cuota_capital
 
