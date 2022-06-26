@@ -72,36 +72,36 @@ class ReportGrupos(models.TransientModel):
         contrato_ids = self.env['contrato'].search([('grupo','=',self.grupo.id)])
         lista_final=[]
         for contrato in contrato_ids:
-            dct={'codigo_grupo':contrato.grupo.name,
-                    'contrato':contrato.secuencia,
-                    'tipo_contrato':contrato.tipo_de_contrato.name,
-                    'nombre_cliente':contrato.cliente.name,
-                    'identificacion_cliente':contrato.cliente.vat,
-                    'telefono':contrato.cliente.phone,
-                    'telefono_opcional':contrato.cliente.mobile,
+            dct={'codigo_grupo':contrato.grupo.name or '',
+                    'contrato':contrato.secuencia  or '',
+                    'tipo_contrato':contrato.tipo_de_contrato.name  or '',
+                    'nombre_cliente':contrato.cliente.name  or '',
+                    'identificacion_cliente':contrato.cliente.vat  or '',
+                    'telefono':contrato.cliente.phone  or '',
+                    'telefono_opcional':contrato.cliente.mobile  or '',
                     'telefono_trabajo':'',
                     'direccion_trabajo':'',
                     'referenciauno':'',
                     'referenciados':'',
-                    'fecha_nacimiento':contrato.cliente.fecha_nacimiento,
-                    'ciudad_residencia':contrato.cliente.city,
+                    'fecha_nacimiento':contrato.cliente.fecha_nacimiento  or '',
+                    'ciudad_residencia':contrato.cliente.city  or '',
                     'sucursal':'',
-                    'fecha_contrato':contrato.fecha_contrato,
-                    'inicio_pago':contrato.fechaInicioPago,
-                    'plazo':contrato.plazo_meses.numero,
-                    'monto':contrato.monto_financiamiento,
-                    'cuota_capital':contrato.cuota_capital,
-                    'cuota_adm':contrato.cuota_adm,
-                    'monto_programo':contrato.monto_programado,
-                    'cuota_programo':contrato.cuota_pago,
+                    'fecha_contrato':contrato.fecha_contrato  or '',
+                    'inicio_pago':contrato.fechaInicioPago  or '',
+                    'plazo':contrato.plazo_meses.numero  or '',
+                    'monto':contrato.monto_financiamiento  or '',
+                    'cuota_capital':contrato.cuota_capital  or 0.00,
+                    'cuota_adm':contrato.cuota_adm or 0.00,
+                    'monto_programo':contrato.monto_programado or 0.00,
+                    'cuota_programo':contrato.cuota_pago or '',
                     'seguro':0,
                     'rastreo':0,
                     'otros':0,
-                    'iva_adm':contrato.iva_administrativo,
+                    'iva_adm':contrato.iva_administrativo or 0.00,
                     'cuota_mensual':0,
-                    'tasa_adm':contrato.tasa_administrativa,
+                    'tasa_adm':contrato.tasa_administrativa or 0.00,
                     'capital_pagado':0,
-                    'saldo_adendum':contrato.saldo_a_favor_de_capital_por_adendum,
+                    'saldo_adendum':contrato.saldo_a_favor_de_capital_por_adendum or 0.00,
                     'cuotas_consecutivas':0,
                     'cuotasAdelantadas':0,
                     'cuotas_pagadas':0,
@@ -113,8 +113,8 @@ class ReportGrupos(models.TransientModel):
                     'capital_vencido':0,
                     'total_vencer':0,
                     'observacion':'',
-                    'email':contrato.cliente.email,
-                    'direccion':contrato.cliente.street,
+                    'email':contrato.cliente.email or '',
+                    'direccion':contrato.cliente.street or '',
                     'asesor':'',
                     'supervisor':'',}
             dct['cuota_mensual']=contrato.iva_administrativo+contrato.cuota_capital+contrato.cuota_adm
@@ -218,16 +218,7 @@ class ReportGrupos(models.TransientModel):
         sheet.set_column('AQ:AQ', 20)
         sheet.set_column('AR:AR', 25)
         sheet.set_column('AS:AS', 25)
-        sheet.set_column('AT:AT', 40)
-        sheet.set_column('AU:AU', 10)
-        sheet.set_column('AV:AV', 10)
-        sheet.set_column('AW:AW', 10)
-        sheet.set_column('AX:AX', 10)
-        sheet.set_column('AY:AY', 10)
-        sheet.set_column('AZ:AZ', 10)
-        sheet.set_column('BA:BA', 10)
-        sheet.set_column('BB:BB', 10)
-        sheet.set_column('BC:BC', 40)
+
 
 
         sheet.write(4, 0, 'Cod. Grupo', bold2)
