@@ -126,6 +126,7 @@ class ReportGrupos(models.TransientModel):
             rastreo_id = self.env['wizard.actualizar.rubro'].search([('contrato_id','=',contrato.id),('rubro','=','rastreo')],limit=1)
             otros_id = self.env['wizard.actualizar.rubro'].search([('contrato_id','=',contrato.id),('rubro','=','otro')],limit=1)
             lista_cuota=[]
+            hoy=date.today()
             if contrato.en_mora:
                 dct['estado_deuda']='En Mora'
                 dias_vencidos=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month and l.fecha.day >5 and l.estado_pago=='pendiente')
