@@ -157,7 +157,7 @@ class ReportGrupos(models.TransientModel):
             if crm_id:
                 dct['sucursal']=crm_id.surcursal_id.name
                 dct['asesor']=crm_id.team_id.user_id.name
-                ['supervisor']=crm_id.cerrador.name
+                dt['supervisor']=crm_id.cerrador.name
             if contrato.cliente:
                 for contacto in contrato.cliente.child_ids:
                     if not referenciauno:
