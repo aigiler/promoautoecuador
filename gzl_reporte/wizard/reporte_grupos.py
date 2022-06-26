@@ -73,7 +73,7 @@ class ReportGrupos(models.TransientModel):
         lista_final=[]
         for contrato in contrato_ids:
             dct={'codigo_grupo':contrato.grupo.name,
-                    'contrato':contrato.name,
+                    'contrato':contrato.secuencia,
                     'tipo_contrato':contrato.tipo_de_contrato.name,
                     'nombre_cliente':contrato.cliente.name,
                     'identificacion_cliente':contrato.cliente.vat,
