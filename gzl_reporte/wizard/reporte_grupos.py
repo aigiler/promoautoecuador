@@ -122,9 +122,9 @@ class ReportGrupos(models.TransientModel):
             dct['cuotas_consecutivas']=len(contrato.estado_de_cuenta_ids.filtered(lambda l: l.estado_pago=='pagado' and l.cuotaAdelantada==False))
             dct['cuotasAdelantadas']=len(contrato.estado_de_cuenta_ids.filtered(lambda l: l.estado_pago=='pagado' and l.cuotaAdelantada==True))
             dct['cuotas_pagadas']=dct['cuotas_consecutivas']+dct['cuotasAdelantadas']
-            seguro_id = self.env['wizard.actualizar.rubro'].search([('contrato_id','=',contrato_id.id),('rubro','=','seguro')],limit=1)
-            rastreo_id = self.env['wizard.actualizar.rubro'].search([('contrato_id','=',contrato_id.id),('rubro','=','rastreo')],limit=1)
-            otros_id = self.env['wizard.actualizar.rubro'].search([('contrato_id','=',contrato_id.id),('rubro','=','otro')],limit=1)
+            seguro_id = self.env['wizard.actualizar.rubro'].search([('contrato_id','=',contrato.id),('rubro','=','seguro')],limit=1)
+            rastreo_id = self.env['wizard.actualizar.rubro'].search([('contrato_id','=',contrato.id),('rubro','=','rastreo')],limit=1)
+            otros_id = self.env['wizard.actualizar.rubro'].search([('contrato_id','=',contrato.id),('rubro','=','otro')],limit=1)
             lista_cuota=[]
             if contrato.en_mora:
                 dct['estado_deuda']='En Mora'
