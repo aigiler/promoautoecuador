@@ -124,8 +124,8 @@ class ReportCrm(models.TransientModel):
             sheet.write(row, 6, round(l.valor_inscripcion-(l.valor_inscripcion*0.12),2) or 0, formato_numero)
             sheet.write(row, 7, round(l.valor_inscripcion*0.12,2) or 0, formato_numero)
             sheet.write(row, 8, round(l.valor_inscripcion,2) or 0, formato_numero)
-            sheet.write(row, 9, "", registros_tabla)
-            sheet.write(row, 10, l.user_id.name or '', registros_tabla)
+            sheet.write(row, 9, l.cerrador.codigo_cliente or '', registros_tabla)
+            sheet.write(row, 10, l.cerrador.name or '', registros_tabla)
             sheet.write(row, 11, l.team_id.user_id.name or '', registros_tabla)
             sheet.write(row, 12, l.factura_inscripcion_id.name or '', registros_tabla)
             row+=1

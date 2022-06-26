@@ -28,6 +28,7 @@
             'wizard/contrato_adendum_wizard_view.xml',
             'wizard/carta_finalizacion_wizard.xml',
             'wizard/pagare_wizard.xml',
+            'wizard/reporte_grupos.xml',
 
 
 

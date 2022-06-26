@@ -113,8 +113,8 @@ class ReportCrm(models.TransientModel):
         lista_final=[]
         for l in crm:
             semana=l.create_date.date().isocalendar()[1]
-            if l.user_id:
-                if l.user_id.id not in lista_asesores:
+            if l.cerrador:
+                if l.cerrador.id not in lista_asesores:
                     llamada=0
                     cita=0
                     venta=0
@@ -125,11 +125,11 @@ class ReportCrm(models.TransientModel):
                             cita=1
                     if l.colocar_venta_como_ganada:
                         venta=1
-                    lista_asesores.append(l.user_id.id)
+                    lista_asesores.append(l.cerrador.id)
                     dct={'fecha_gestion':l.create_date,
                         'semana':semana,
-                        'id_asesor':l.user_id.id,
-                        'asesor':l.user_id.name,
+                        'id_asesor':l.cerrador.id,
+                        'asesor':l.cerrador.name,
                         'cliente':l.partner_id.name,
                         'presupuesto':100,
                         'prospectos':1,
@@ -139,7 +139,7 @@ class ReportCrm(models.TransientModel):
                     lista_final.append(dct)
                 else:
                     for x in lista_final:
-                        if x['id_asesor']==l.user_id.id:
+                        if x['id_asesor']==l.cerrador.id:
                             for m in l.activity_ids:
                                 if m.activity_type_id.name=='Llamada':
                                     x['llamadas']+=1
@@ -162,7 +162,7 @@ class ReportCrm(models.TransientModel):
 
                 dct={'fecha_gestion':l.create_date,
                         'semana':semana,
-                        'id_asesor':l.user_id.id,
+                        'id_asesor':'',
                         'asesor':'',
                         'cliente':l.partner_id.name,
                         'presupuesto':100,

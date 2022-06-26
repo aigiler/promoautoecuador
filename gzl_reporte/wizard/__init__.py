@@ -8,3 +8,4 @@ from . import crear_documento_adendum
 from . import carta_finalizacion_wizard
 from . import crear_carta_finalizacion
 from . import pagare_wizard
+from . import reporte_grupos
