@@ -118,7 +118,7 @@ class ReportGrupos(models.TransientModel):
                     'asesor':'',
                     'supervisor':'',}
             dct['cuota_mensual']=contrato.iva_administrativo+contrato.cuota_capital+contrato.cuota_adm
-            dct['capital_pagado'] =round(sum(l.estado_de_cuenta_ids.mapped("cuota_capital"),2))-round(sum(l.estado_de_cuenta_ids.mapped("saldo_cuota_capital"),2))
+            dct['capital_pagado'] =round(sum(contrato.estado_de_cuenta_ids.mapped("cuota_capital"),2))-round(sum(contrato.estado_de_cuenta_ids.mapped("saldo_cuota_capital"),2))
             dct['cuotas_consecutivas']=len(contrato.estado_de_cuenta_ids.filtered(lambda l: l.estado_pago=='pagado' and l.cuotaAdelantada==False))
             dct['cuotasAdelantadas']=len(contrato.estado_de_cuenta_ids.filtered(lambda l: l.estado_pago=='pagado' and l.cuotaAdelantada==True))
             dct['cuotas_pagadas']=dct['cuotas_consecutivas']+dct['cuotasAdelantadas']
