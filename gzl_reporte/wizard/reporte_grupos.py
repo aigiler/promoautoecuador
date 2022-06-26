@@ -132,7 +132,7 @@ class ReportGrupos(models.TransientModel):
                 dias_vencidos=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month and l.estado_pago=='pendiente')
                 for dias in dias_vencidos:
                     if hoy.day>dias.fecha.day:
-                        dct['dias_vencidos']=hoy.day-dias.fecha.hoy
+                        dct['dias_vencidos']=hoy.day-dias.fecha.day
                         dct['capital_vencido']+=dias.saldo_cuota_capital
                         lista_cuota.append(dias.id)
                         dct['cuotas_vencidas']+=1
