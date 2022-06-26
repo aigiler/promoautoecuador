@@ -129,12 +129,13 @@ class ReportGrupos(models.TransientModel):
             hoy=date.today()
             if contrato.en_mora:
                 dct['estado_deuda']='En Mora'
-                dias_vencidos=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month and l.fecha.day >5 and l.estado_pago=='pendiente')
+                dias_vencidos=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month and l.estado_pago=='pendiente')
                 for dias in dias_vencidos:
-                    lista_cuota.append(dias.id)
-                    dct['cuotas_vencidas']+=1
-                    dct['dias_vencidos']=dias.fecha.day-5
-                    dct['capital_vencido']+=dias.saldo_cuota_capital
+                    if hoy.day>dias.fecha.day:
+                        dct['dias_vencidos']=hoy.day-dias.fecha.hoy
+                        dct['capital_vencido']+=dias.saldo_cuota_capital
+                        lista_cuota.append(dias.id)
+                        dct['cuotas_vencidas']+=1
                     
                 meses_vencidos=contrato.tabla_amortizacion.filtered(lambda l: l.fecha<hoy and l.id not in lista_cuota and l.estado_pago=='pendiente')
                 for mes in meses_vencidos:
@@ -282,7 +283,7 @@ class ReportGrupos(models.TransientModel):
         lista_asesores=[]
         
         for line in lista_final:
-            sheet.write(row,0, line['codigo_grupo'], formato_fecha)
+            sheet.write(row,0, line['codigo_grupo'], registros_tabla)
             sheet.write(row, 1, line['contrato'], registros_tabla)
             sheet.write(row, 2,line['tipo_contrato'], registros_tabla)
             sheet.write(row, 3, line['nombre_cliente'], registros_tabla)
@@ -293,25 +294,25 @@ class ReportGrupos(models.TransientModel):
             sheet.write(row, 8, line['direccion_trabajo'], registros_tabla)
             sheet.write(row, 9, line['referenciauno'], registros_tabla)
             sheet.write(row, 10, line['referenciados'], registros_tabla)
-            sheet.write(row, 11, line['fecha_nacimiento'], registros_tabla)
+            sheet.write(row, 11, line['fecha_nacimiento'], formato_fecha)
             sheet.write(row, 12,line['ciudad_residencia'], registros_tabla)
             sheet.write(row, 13, line['sucursal'], registros_tabla)
-            sheet.write(row, 14, line['fecha_contrato'], registros_tabla)
-            sheet.write(row, 15, line['inicio_pago'], registros_tabla)
+            sheet.write(row, 14, line['fecha_contrato'], formato_fecha)
+            sheet.write(row, 15, line['inicio_pago'], formato_fecha)
             sheet.write(row, 16,line['plazo'] , registros_tabla)
-            sheet.write(row, 17, line['monto'], registros_tabla)
-            sheet.write(row, 18, line['cuota_capital'], registros_tabla)
-            sheet.write(row, 19, line['cuota_adm'], registros_tabla)
-            sheet.write(row, 20, line['monto_programo'], registros_tabla)
-            sheet.write(row, 21, line['cuota_programo'], registros_tabla)
-            sheet.write(row, 22,line['seguro'], registros_tabla)
-            sheet.write(row, 23, line['rastreo'], registros_tabla)
-            sheet.write(row, 24, line['otros'], registros_tabla)
-            sheet.write(row, 25, line['iva_adm'], registros_tabla)
-            sheet.write(row, 26,line['cuota_mensual'] , registros_tabla)
-            sheet.write(row, 27, line['tasa_adm'], registros_tabla)
-            sheet.write(row, 28, line['capital_pagado'], registros_tabla)
-            sheet.write(row, 29, line['saldo_adendum'], registros_tabla)
+            sheet.write(row, 17, line['monto'], formato_numero)
+            sheet.write(row, 18, line['cuota_capital'], formato_numero)
+            sheet.write(row, 19, line['cuota_adm'], formato_numero)
+            sheet.write(row, 20, line['monto_programo'], formato_numero)
+            sheet.write(row, 21, line['cuota_programo'], formato_numero)
+            sheet.write(row, 22,line['seguro'], formato_numero)
+            sheet.write(row, 23, line['rastreo'], formato_numero)
+            sheet.write(row, 24, line['otros'], formato_numero)
+            sheet.write(row, 25, line['iva_adm'], formato_numero)
+            sheet.write(row, 26,line['cuota_mensual'] , formato_numero)
+            sheet.write(row, 27, line['tasa_adm'], formato_numero)
+            sheet.write(row, 28, line['capital_pagado'], formato_numero)
+            sheet.write(row, 29, line['saldo_adendum'], formato_numero)
             sheet.write(row, 30, line['cuotas_consecutivas'], registros_tabla)
             sheet.write(row, 31, line['cuotasAdelantadas'], registros_tabla)
             sheet.write(row, 32,line['cuotas_pagadas'], registros_tabla)
@@ -320,8 +321,8 @@ class ReportGrupos(models.TransientModel):
             sheet.write(row, 35, line['dias_vencidos'], registros_tabla)
             sheet.write(row, 36,line['meses_vencidos'] , registros_tabla)
             sheet.write(row, 37, line['cuotas_vencidas'], registros_tabla)
-            sheet.write(row, 38, line['capital_vencido'], registros_tabla)
-            sheet.write(row, 39, line['total_vencer'], registros_tabla)
+            sheet.write(row, 38, line['capital_vencido'], formato_numero)
+            sheet.write(row, 39, line['total_vencer'], formato_numero)
             sheet.write(row, 40, line['observacion'], registros_tabla)
             sheet.write(row, 41, line['email'], registros_tabla)
             sheet.write(row, 42, line['direccion'], registros_tabla)
