@@ -18,8 +18,8 @@ class ReportGrupos(models.TransientModel):
     _name = "reporte.grupos"
 
     grupo=fields.Many2one('grupo.adjudicado',string="Grupo")
-    date_start = fields.Date('Fecha Inicio', required=True)
-    date_end = fields.Date('Fecha Corte', required=True, default = date.today())
+    date_start = fields.Date('Fecha Inicio', required=False)
+    date_end = fields.Date('Fecha Corte', required=False, default = date.today())
 
 
     def print_report_xls(self):
