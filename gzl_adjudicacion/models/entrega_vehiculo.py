@@ -797,6 +797,7 @@ class EntegaVehiculo(models.Model):
     def create(self, vals):
         vals['secuencia'] = self.env['ir.sequence'].next_by_code(
             'entrega.vehiculo')
+        self.llenar_tabla()
         return super(EntegaVehiculo, self).create(vals)
 
 

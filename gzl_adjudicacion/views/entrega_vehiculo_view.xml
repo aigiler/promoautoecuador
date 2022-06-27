@@ -27,7 +27,7 @@
                 <sheet>
                     <notebook>
 
- <page string="Informe de Credito y Cobranza">
+                    <page string="Informe de Credito y Cobranza">
                             <separator class="text-center" string="ANTECEDENTES DEL ASOCIADO"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
