@@ -111,23 +111,18 @@ class EntegaVehiculo(models.Model):
 
     montoAhorroInversiones = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',track_visibility='onchange')
 
+    ahorro_garante=fields.Boolean(default=False)
     def llenar_tabla(self):
-        
-        lista=[]
-        obj_patrimonio=self.env['items.patrimonio'].search([])
-        
-        for patrimonio in obj_patrimonio:
-            dct={'patrimonio_id':patrimonio.id,'entrega_id':self.id,'garante':False}
-            lista.append(dct)
-            if self.garante:
-                dct={'patrimonio_id':patrimonio.id,'entrega_id':self.id,'garante':True}
-                lista.append(dct)
+        obj_patrimonio=self.env['items.patrimonio'].search([])  
         lista_ids=[]
-        for prueba in lista:
-            id_registro=self.env['items.patrimonio.entrega.vehiculo'].create(prueba) 
-            lista_ids.append(int(id_registro))
-        self.update({'montoAhorroInversiones':[(6,0,lista_ids)]}) 
-
+        if not self.montoAhorroInversiones: 
+            for patrimonio in obj_patrimonio:
+                self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id,'garante':False})
+        else:
+            if self.garante and not self.ahorro_garante:
+                for patrimonio in obj_patrimonio:
+                    self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id,'garante':True})
+                self.ahorro_garante=True
 
     institucionFinanciera = fields.Many2one('res.bank',string='Institución')
     direccion = fields.Char(string='Direccion de Casa' , default=' ')
@@ -219,20 +214,20 @@ class EntegaVehiculo(models.Model):
 
     # REVISION EN PAGINAS DE CONTROL
     paginasDeControl = fields.One2many('paginas.de.control.entrega.vehiculo','entrega_id',track_visibility='onchange')
+    pagcontrol_garante=fields.Boolean(default=False)
     
     def llenar_tabla_paginas(self):
         obj_paginas_de_control=self.env['paginas.de.control'].search([])
-        ids_paginas=self.env['paginas.de.control.entrega.vehiculo'].search([('entrega_id','=',self.id),('garante','=',False)])
-        if not ids_paginas:
+        if not self.paginasDeControl:
             for paginas in obj_paginas_de_control:
                 self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'entrega_id':self.id,'garante':False})
-        if self.garante:
-            ids_paginas_garante=self.env['paginas.de.control.entrega.vehiculo'].search([('entrega_id','=',self.id),('garante','=',True)])
-            if not ids_paginas_garante:
+        else:
+            if self.garante and not self.pagcontrol_garante:
                 for paginas in obj_paginas_de_control:
                     self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'entrega_id':self.id,'garante':True})
-
+                self.pagcontrol_garante=True
     
+
     tablaPuntosBienes = fields.One2many('puntos.bienes.entrega.vehiculo','entrega_id',track_visibility='onchange')
     
     def llenar_tabla_puntos_bienes(self):
@@ -791,17 +786,15 @@ class EntegaVehiculo(models.Model):
         transacciones.create(dct)
 
 
-    @api.onchange('nombreSocioAdjudicado')
-    def buscar_contrato_partner(self):
-        for rec in self:
-            self.llenar_tabla()
-            self.llenar_tabla_paginas()
-            self.llenar_tabla_puntos_bienes()
+
 
     @api.onchange('nombreSocioAdjudicado')
     @api.depends('nombreSocioAdjudicado')
     def buscar_contrato_partner(self):
         for rec in self:
+            self.llenar_tabla()
+            self.llenar_tabla_paginas()
+            self.llenar_tabla_puntos_bienes()
             contrato = self.env['contrato'].search(
                 [('cliente', '=', rec.nombreSocioAdjudicado.id)], limit=1)
             rec.montoAdjudicado = contrato.monto_financiamiento
