@@ -66,8 +66,10 @@ class EntegaVehiculo(models.Model):
     estadoCivilAdj = fields.Selection(related="nombreSocioAdjudicado.estado_civil" ,store=True)
     edadAdjudicado = fields.Integer(compute='calcular_edad', string="Edad", readonly=True, store=True, default = 0)
     cargasFamiliares = fields.Integer(string="Cargas Fam." , default = 0)
+    edadGarante = fields.Integer(compute='calcular_edad_Garante', string="Edad", readonly=True, store=True, default = 0)
 
-
+    codigoGarante = fields.Char(related="nombreGarante.codigo_cliente", string='Código', track_visibility='onchange',store=True, default=' ') 
+    cargasFamiliaresGarante = fields.Integer(string="Cargas Fam." , default = 0)
     # datos del conyuge
     nombreConyuge = fields.Char(string="Nombre del Conyuge", default = 'N/A')
     fechaNacimientoConyuge = fields.Date(string='Fecha de Nacimiento')
@@ -81,26 +83,45 @@ class EntegaVehiculo(models.Model):
     ], string='Estado Civil', default='soltero')
     edadConyuge = fields.Integer(compute='calcular_edad_conyuge', string="Edad", default = 0)
 
+    nombreConyugeGarante = fields.Char(string="Nombre del Conyuge", default = 'N/A')
+    fechaNacimientoConyugeGarante = fields.Date(string='Fecha de Nacimiento')
+    vatConyugeGarante = fields.Char(string='Cedula de Ciudadanía', default = 'N/A')
+    estadoCivilConyugeGarante = fields.Selection(selection=[
+        ('soltero', 'Soltero/a'),
+        ('union_libre', 'Unión libre'),
+        ('casado', 'Casado/a'),
+        ('divorciado', 'Divorciado/a'),
+        ('viudo', 'Viudo/a')
+    ], string='Estado Civil', default='soltero')
+    edadConyugeGarante = fields.Integer(compute='calcular_edad_conyuge', string="Edad", default = 0)
+
     # datos domiciliarios
     referenciaDomiciliaria = fields.Text(string='Referencias indican:', default=' ')
 
     # datos laborales
     referenciasLaborales = fields.Text(string='Referencias indican:', default=' ')
 
+
+    referenciaDomiciliariaGarante = fields.Text(string='Referencias indican:', default=' ')
+    referenciasLaboralesGarante = fields.Text(string='Referencias indican:', default=' ')
+
     # datos del patrimonio del socio
     currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
     #    junta = fields.One2many('junta.grupo.asamblea', 'asamblea_id',track_visibility='onchange')
 
     montoAhorroInversiones = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',track_visibility='onchange')
-    
 
     def llenar_tabla(self):
         obj_patrimonio=self.env['items.patrimonio'].search([])  
-        if not self.montoAhorroInversiones:    
+        ids_inversiones=self.env['items.patrimonio.entrega.vehiculo'].search([('entrega_id','=',self.id),('garante','=',False)])
+        if not ids_inversiones:
             for patrimonio in obj_patrimonio:
-            
-                self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id})
-        
+                self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id,'garante':False})
+        if self.garante:
+            ids_inversiones_garante=self.env['items.patrimonio.entrega.vehiculo'].search([('entrega_id','=',self.id),('garante','=',True)])
+            if not ids_inversiones_garante:
+                for patrimonio in obj_patrimonio:    
+                    self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id,'garante':True})
 
     institucionFinanciera = fields.Many2one('res.bank',string='Institución')
     direccion = fields.Char(string='Direccion de Casa' , default=' ')
@@ -111,6 +132,15 @@ class EntegaVehiculo(models.Model):
     facturas = fields.Many2one('account.move', string="Liquidacion de Compra", track_visibility='onchange')
     products_id = fields.Many2one('product.product', track_visibility='onchange')
     asamblea_id = fields.Many2one('asamblea', string="Asamblea", track_visibility='onchange')
+
+
+    institucionFinancieraGarante = fields.Many2one('res.bank',string='Institución')
+    direccionGarante = fields.Char(string='Direccion de Casa' , default=' ')
+    direccion1Garante = fields.Char(string='Direccion de Terreno', default=' ')
+    placaGarante = fields.Char(string='Placa de Vehículo', default=' ')
+
+
+
 
 
 #####Funcion para crear purchase order
@@ -186,13 +216,16 @@ class EntegaVehiculo(models.Model):
     
     def llenar_tabla_paginas(self):
         obj_paginas_de_control=self.env['paginas.de.control'].search([])
-        if not self.paginasDeControl:
+        ids_paginas=self.env['paginas.de.control.entrega.vehiculo'].search([('entrega_id','=',self.id),('garante','=',False)])
+        if not ids_paginas:
             for paginas in obj_paginas_de_control:
-                self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'entrega_id':self.id})
-    
-    
-    
-    
+                self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'entrega_id':self.id,'garante':False})
+        if self.garante:
+            ids_paginas_garante=self.env['paginas.de.control.entrega.vehiculo'].search([('entrega_id','=',self.id),('garante','=',True)])
+            if not ids_paginas_garante:
+                for paginas in obj_paginas_de_control:
+                    self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'entrega_id':self.id,'garante':True})
+
     
     tablaPuntosBienes = fields.One2many('puntos.bienes.entrega.vehiculo','entrega_id',track_visibility='onchange')
     
@@ -206,7 +239,7 @@ class EntegaVehiculo(models.Model):
     
     scoreBuroCredito = fields.Integer(string='Buró de Crédito')
 
-
+    scoreBuroCreditoGarante = fields.Integer(string='Buró de Crédito')
     # observaciones
     observaciones = fields.Text(string='Observaciones', default=' ')
 
@@ -775,7 +808,6 @@ class EntegaVehiculo(models.Model):
                 rec.nombreGarante = contrato.garante
 
 
-
     @api.depends('fechaNacimientoAdj')
     def calcular_edad(self):
         edad = 0
@@ -789,9 +821,22 @@ class EntegaVehiculo(models.Model):
             else:
                 rec.edadAdjudicado = 0
     
+    @api.depends('fechaNacimientoGarante')
+    def calcular_edad_Garante(self):
+        edad = 0
+        for rec in self:
+            today = date.today()
+            if rec.fechaNacimientoGarante:
+                edad = today.year - rec.fechaNacimientoGarante.year - \
+                    ((today.month, today.day) < (
+                        rec.fechaNacimientoGarante.month, rec.fechaNacimientoGarante.day))
+                rec.edadGarante = edad
+            else:
+                rec.edadGarante = 0
+    
 
 
-    @api.onchange('fechaNacimientoConyuge')
+    @api.onchange('fechaNacimientoConyuge','fechaNacimientoConyugeGarante')
     def calcular_edad_conyuge(self):
         edad = 0
         for rec in self:
@@ -803,6 +848,13 @@ class EntegaVehiculo(models.Model):
                 rec.edadConyuge = edad
             else:
                 rec.edadConyuge = 0
+            if rec.fechaNacimientoConyugeGarante:
+                edad = today.year - rec.fechaNacimientoConyugeGarante.year - \
+                    ((today.month, today.day) < (
+                        rec.fechaNacimientoConyugeGarante.month, rec.fechaNacimientoConyugeGarante.day))
+                rec.edadConyuge = edad
+            else:
+                rec.edadConyugeGarante = 0
     
 
 
@@ -825,7 +877,8 @@ class ItemPatrimonioEntregaVehiculo(models.Model):
     entrega_id = fields.Many2one('entrega.vehiculo')
     patrimonio_id = fields.Many2one('items.patrimonio')
     valor  = fields.Monetary(string="Monto($)",digits=(6, 2))
-    
+    garante= fields.Boolean(default=False)
+
 class PaginasDeControlEntregaVehiculo(models.Model):
     _name = 'paginas.de.control.entrega.vehiculo'
     _description = 'Revisión de páginas de control en Entrega de vehiculo'
@@ -834,7 +887,7 @@ class PaginasDeControlEntregaVehiculo(models.Model):
     pagina_id = fields.Many2one('paginas.de.control')
     descripcion  = fields.Char(related='pagina_id.descripcion')
     pagina = fields.Selection(selection=[ ('SI', 'SI'),('NO', 'NO')], default='SI')
-
+    garante= fields.Boolean(default=False)
 
 class PuntosBienesEntregaVehiculo(models.Model):
     _name = 'puntos.bienes.entrega.vehiculo'

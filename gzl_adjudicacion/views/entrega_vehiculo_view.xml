@@ -34,7 +34,6 @@
                                     <group>  
                                         <field name="nombreSocioAdjudicado" required="1" options="{'no_open': True, 'no_create': True}" />
                                         <field name="garante" invisible="1"/>
-                                        <field name="nombreGarante" options="{'no_open': True, 'no_create': True}" attrs="{'invisible':[('garante', '=', False)]}"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
@@ -42,11 +41,6 @@
                                         <field name="vatAdjudicado" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
                                         <field name="fechaNacimientoAdj" readonly="0"/>
                                         <field name="estadoCivilAdj" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                    <group attrs="{'invisible':[('garante', '=', False)]}"> 
-                                        <field name="vatGarante" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
-                                        <field name="fechaNacimientoAdj" string="Fecha de Nacimiento" readonly="0"/>
-                                        <field name="estadoCivilGarante" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
    
                                 </div>
@@ -56,13 +50,9 @@
                                         <field name="edadAdjudicado" string="Edad"/>
                                         <field name="cargasFamiliares" />
                                     </group>
-                                    <group attrs="{'invisible':[('garante', '=', False)]}"> 
-                                        <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
-                                        <field name="edadAdjudicado" string="Edad"/>
-                                        <field name="cargasFamiliares" string ="Cargas Fam." />
-                                    </group>
                                 </div>
                             </div>
+
                             <separator class="text-center" string="DATOS DEL CONYUGE"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
@@ -94,9 +84,10 @@
                             <separator class="text-center" string="PATRIMONIO"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-sm-8"> 
-                                    <field name="montoAhorroInversiones" nolabel="1">
+                                    <field name="montoAhorroInversiones" domain="[('garante','=',False)]" nolabel="1">
                                         <tree create='0' delete='0' editable='top'>
                                             <field name="patrimonio_id" readonly='1'/>
+                                            <field name="garante" invisible='1'/>
                                             <field name="valor" sum="valor" />
                                         </tree>
                                     </field>
@@ -128,9 +119,10 @@
                                 </tbody>
                             </div>
                             <div class="col-xs-12 col-sm-12" > 
-                                <field name="paginasDeControl" nolabel="1">
+                                <field name="paginasDeControl" domain="[('garante','=',False)]" nolabel="1">
                                     <tree create='0' delete='0' editable='top'>
                                         <field name="pagina_id" readonly='1'/>
+                                         <field name="garante" invisible='1'/>
                                         <field name="descripcion" readonly='1'/>
                                         <field name="pagina"/>
                                     </tree>
@@ -144,6 +136,129 @@
                             <separator/>
 
                         </page>
+
+
+                        <page string="Informe de Credito y Cobranza Garante" attrs="{'invisible':[('garante', '=', False)]}">
+                            <separator class="text-center" string="ANTECEDENTES DEL Garante"/>
+                            <div class="row" style="border: 1px solid black;">
+                                <div class="col-xs-12 col-md-12">
+                                    <group>  
+                                        <field name="garante" invisible="1"/>
+                                        <field name="nombreGarante" options="{'no_open': True, 'no_create': True}" attrs="{'invisible':[('garante', '=', False)]}"/>
+                                    </group>
+                                </div>
+                                <div class="col-xs-12 col-sm-4">
+                                    <group attrs="{'invisible':[('garante', '=', False)]}"> 
+                                        <field name="vatGarante" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
+                                        <field name="fechaNacimientoGarante" string="Fecha de Nacimiento" readonly="0"/>
+                                        <field name="estadoCivilGarante" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+   
+                                </div>
+                                <div class="col-xs-4" >
+                                    <group > 
+                                        <field name="codigoGarante" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="edadGarante" string="Edad"/>
+                                        <field name="cargasFamiliaresGarante" />
+                                    </group>
+                                    
+                                </div>
+                            </div>
+                            
+                            <separator class="text-center" string="DATOS DEL CONYUGE"/>
+                            <div class="row" style="border: 1px solid black;">
+                                <div class="col-xs-12 col-md-12">
+                                    <group>
+                                        <field name="nombreConyugeGarante" string="Nombre del Cónyuge" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
+                                    </group>
+                                </div>
+                                <div class="col-xs-12 col-sm-4">
+                                    <group> 
+                                        <field name="vatConyugeGarante" string="Cedula de Ciudadanía" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
+                                        <field name="estadoCivilConyugeGarante" string="Estado Civil" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
+                                    </group>
+                                </div>
+                                <div class="col-xs-4">
+                                    <group> 
+                                        <field name="fechaNacimientoConyugeGarante" string="Fecha de Nacimiento"/>
+                                        <field name="edadConyugeGarante" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                </div>
+                            </div>
+                            <separator class="text-center fw-bold" string="DATOS DOMICIARIOS"/>
+                            <div class="row" style="border: 1px solid black;">
+                                <field name="referenciaDomiciliariaGarante" widget="pad" string='Referencias indican:' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
+                            </div>
+                            <separator class="text-center fw-bold" string="DATOS LABORALES"/>
+                            <div class="row" style="border: 1px solid black;">
+                                <field name="referenciasLaboralesGarante" widget="pad" string='Referencias indican:' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
+                            </div>
+                            <separator class="text-center" string="PATRIMONIO"/>
+                            <div class="row" style="border: 1px solid black;">
+                                <div class="col-xs-12 col-sm-8"> 
+                                    <field name="montoAhorroInversiones" domain="[('garante','=',True)]" nolabel="1">
+                                        <tree create='0' delete='0' editable='top'>
+                                            <field name="patrimonio_id" readonly='1'/>
+                                            <field name="garante" invisible='1'/>
+                                            <field name="valor" sum="valor" />
+                                        </tree>
+                                    </field>
+                                </div>
+                                <div class="col-xs-4">
+                                    <group> 
+                                        <field name="institucionFinancieraGarante"/>
+                                        <field name="direccionGarante"/>
+                                        <field name="direccion1Garante"/>
+                                        <field name="placaGarante"/>
+
+                                    </group>
+                                </div>
+                            </div>
+                            <separator/>
+                            <separator class="text-center" string="REVISION EN PAGINAS DE CONTROL"/>
+                            <div class="col-xs-12 col-sm-12">
+                                <tbody>
+                                    <tr>
+                                        <td class="col-xs-12 col-sm-7">
+                                            <label for="scoreBuroCreditoGarante"/>
+                                        </td>
+                                        <td class="col-xs-12 col-sm-4">
+                                            <text>Score</text>
+                                        </td>
+                                        <td class="col-xs-12 col-sm-3"> 
+                                            <field name="scoreBuroCreditoGarante" nolabel="1"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </div>
+                            <div class="col-xs-12 col-sm-12" > 
+                                <field name="paginasDeControl" domain="[('garante','=',True)]" nolabel="1">
+                                    <tree create='0' delete='0' editable='top'>
+                                        <field name="pagina_id" readonly='1'/>
+                                        <field name="garante" invisible='1'/>
+                                        <field name="descripcion" readonly='1'/>
+                                        <field name="pagina"/>
+                                    </tree>
+                                </field>
+                            </div>
+                            <separator/>
+                            <separator class="text-center" string="OBSERVACIONES"/>
+                            <div class="row">
+                                <field name="observaciones"/>
+                            </div>
+                            <separator/>
+
+                        </page>
+
+
+
+
+
+
+
+
+
+
 
                                                 <!-- CALIFICADOR DE COMPRA -->
                         <page string="Calificador de Compra" attrs="{'readonly': [('id', '!=', False)]}">
@@ -701,7 +816,7 @@
                                                 <field name="facturas" attrs="{'invisible':[('facturas', '=', False)]}" />
                                             </td>
                                         </tr>
-                    
+
                                     <button type="object" string="Generar Orden Compra" name="create_purchase_order" attrs="{'invisible':[('purchase_order', '!=', False)]}" class="btn btn-primary o_invoice_new"/>
                                     <button type="object" string="Generar Factura" name="create_liq_compra" attrs="{'invisible':[('facturas', '!=', False)]}" class="btn btn-primary o_invoice_new"/>
 
