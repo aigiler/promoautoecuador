@@ -791,9 +791,7 @@ class EntegaVehiculo(models.Model):
     @api.depends('nombreSocioAdjudicado')
     def buscar_contrato_partner(self):
         for rec in self:
-            self.llenar_tabla()
-            self.llenar_tabla_paginas()
-            self.llenar_tabla_puntos_bienes()
+            
             contrato = self.env['contrato'].search(
                 [('cliente', '=', rec.nombreSocioAdjudicado.id)], limit=1)
             rec.montoAdjudicado = contrato.monto_financiamiento
@@ -806,6 +804,9 @@ class EntegaVehiculo(models.Model):
             rec.telefonosAdj = str(contrato.cliente.phone) +' - '+ str(contrato.cliente.mobile)
             if rec.garante == True:
                 rec.nombreGarante = contrato.garante
+            self.llenar_tabla()
+            self.llenar_tabla_paginas()
+            self.llenar_tabla_puntos_bienes()
 
 
     @api.depends('fechaNacimientoAdj')
