@@ -109,8 +109,8 @@ class EntegaVehiculo(models.Model):
     currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
     #    junta = fields.One2many('junta.grupo.asamblea', 'asamblea_id',track_visibility='onchange')
 
-    montoAhorroInversiones = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',domain=[('garante','=',False)], context={'default_garante',':',False} ,track_visibility='onchange')
-    montoAhorroInversionesGarante = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',domain=[('garante','=',True)], context={'default_garante',':',True} ,track_visibility='onchange')
+    montoAhorroInversiones = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',domain=[('garante','=',False)] ,track_visibility='onchange')
+    montoAhorroInversionesGarante = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',domain=[('garante','=',True)], track_visibility='onchange')
 
 
     ahorro_garante=fields.Boolean(default=False)
@@ -214,9 +214,9 @@ class EntegaVehiculo(models.Model):
 
 
     # REVISION EN PAGINAS DE CONTROL
-    paginasDeControl = fields.One2many('paginas.de.control.entrega.vehiculo','entrega_id',domain=[('garante','=',False)], context={'default_garante',':',False}, track_visibility='onchange')
+    paginasDeControl = fields.One2many('paginas.de.control.entrega.vehiculo','entrega_id',domain=[('garante','=',False)],  track_visibility='onchange')
     pagcontrol_garante=fields.Boolean(default=False)
-    paginasDeControlGarante = fields.One2many('paginas.de.control.entrega.vehiculo','entrega_id', domain=[('garante','=',True)], context={'default_garante',':',True}, track_visibility='onchange')
+    paginasDeControlGarante = fields.One2many('paginas.de.control.entrega.vehiculo','entrega_id', domain=[('garante','=',True)], track_visibility='onchange')
     
     def llenar_tabla_paginas(self):
         obj_paginas_de_control=self.env['paginas.de.control'].search([])
