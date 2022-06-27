@@ -112,7 +112,7 @@ class EntegaVehiculo(models.Model):
     montoAhorroInversiones = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',track_visibility='onchange')
 
     def llenar_tabla(self):
-        lista_ids=[]
+        
         lista=[]
         obj_patrimonio=self.env['items.patrimonio'].search([])
         
@@ -122,7 +122,7 @@ class EntegaVehiculo(models.Model):
             if self.garante:
                 dct={'patrimonio_id':patrimonio.id,'entrega_id':self.id,'garante':True}
                 lista.append(dct)
-
+        lista_ids=[]
         for prueba in lista:
             id_registro=self.env['items.patrimonio.entrega.vehiculo'].create(prueba) 
             lista_ids.append(int(id_registro))
@@ -791,15 +791,17 @@ class EntegaVehiculo(models.Model):
         transacciones.create(dct)
 
 
-
-
     @api.onchange('nombreSocioAdjudicado')
-    @api.depends('nombreSocioAdjudicado')
     def buscar_contrato_partner(self):
         for rec in self:
             self.llenar_tabla()
             self.llenar_tabla_paginas()
             self.llenar_tabla_puntos_bienes()
+
+    @api.onchange('nombreSocioAdjudicado')
+    @api.depends('nombreSocioAdjudicado')
+    def buscar_contrato_partner(self):
+        for rec in self:
             contrato = self.env['contrato'].search(
                 [('cliente', '=', rec.nombreSocioAdjudicado.id)], limit=1)
             rec.montoAdjudicado = contrato.monto_financiamiento
