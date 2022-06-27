@@ -112,16 +112,20 @@ class EntegaVehiculo(models.Model):
     montoAhorroInversiones = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',track_visibility='onchange')
 
     def llenar_tabla(self):
-        obj_patrimonio=self.env['items.patrimonio'].search([])  
-        ids_inversiones=self.env['items.patrimonio.entrega.vehiculo'].search([('entrega_id','=',self.id),('garante','=',False)])
-        if not ids_inversiones:
-            for patrimonio in obj_patrimonio:
-                self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id,'garante':False})
-        if self.garante:
-            ids_inversiones_garante=self.env['items.patrimonio.entrega.vehiculo'].search([('entrega_id','=',self.id),('garante','=',True)])
-            if not ids_inversiones_garante:
-                for patrimonio in obj_patrimonio:    
-                    self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id,'garante':True})
+        lista_ids=[]
+        obj_patrimonio=self.env['items.patrimonio'].search([])
+        for patrimonio in obj_patrimonio:
+            dct={'patrimonio_id':patrimonio.id,'entrega_id':self.id,'garante':False}
+            lista.append(dct)
+            if self.garante:
+                dct={'patrimonio_id':patrimonio.id,'entrega_id':self.id,'garante':True}
+                lista.append(dct)
+
+        for prueba in lista:
+            id_registro=self.env['account.payment.line.account'].create(prueba) 
+            lista_ids.append(int(id_registro))
+            self.update({'montoAhorroInversiones':[(6,0,lista_ids)]}) 
+
 
     institucionFinanciera = fields.Many2one('res.bank',string='Institución')
     direccion = fields.Char(string='Direccion de Casa' , default=' ')
