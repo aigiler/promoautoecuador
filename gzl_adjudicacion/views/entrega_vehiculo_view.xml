@@ -32,13 +32,13 @@
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <group>  
-                                        <field name="nombreSocioAdjudicado" required="1" options="{'no_open': True, 'no_create': True}" attrs="{'invisible':[('garante', '=', True)]}"/>
+                                        <field name="nombreSocioAdjudicado" required="1" options="{'no_open': True, 'no_create': True}" />
                                         <field name="garante" invisible="1"/>
                                         <field name="nombreGarante" options="{'no_open': True, 'no_create': True}" attrs="{'invisible':[('garante', '=', False)]}"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
-                                    <group attrs="{'invisible':[('garante', '=', True)]}"> 
+                                    <group > 
                                         <field name="vatAdjudicado" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
                                         <field name="fechaNacimientoAdj" readonly="0"/>
                                         <field name="estadoCivilAdj" options="{'no_create': True, 'no_open': True}"/>
@@ -51,7 +51,7 @@
    
                                 </div>
                                 <div class="col-xs-4" >
-                                    <group attrs="{'invisible':[('garante', '=', True)]}"> 
+                                    <group > 
                                         <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
                                         <field name="edadAdjudicado" string="Edad"/>
                                         <field name="cargasFamiliares" />
