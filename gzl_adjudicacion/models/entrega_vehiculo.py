@@ -148,6 +148,7 @@ class EntegaVehiculo(models.Model):
                     
                     'journal_id':2,
                     'l10n_latam_document_type_id':5,
+                    'purchase_id':self.purchase_order.id,
                     'invoice_date': datetime.datetime.now(),
                 })  
         factura.write({'invoice_line_ids': [(0, 0, {
