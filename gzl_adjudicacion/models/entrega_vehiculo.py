@@ -113,30 +113,34 @@ class EntegaVehiculo(models.Model):
     asamblea_id = fields.Many2one('asamblea', string="Asamblea", track_visibility='onchange')
 
 
-
-
 #####Funcion para crear purchase order
     def create_purchase_order(self):
         #obj_purchase=self.env['purchase.order']
         #for l in self:
         #product=self.env['product.product'].search([('default_code','=','GE')] , limit=1)
-
-        purchase_creado= self.env['purchase.order'].create({
-        'partner_id': self.nombreConsesionario.id,
-        'date_order': datetime.datetime.now(),
-        #'currency_id': eur_currency.id,
-        'order_line': [
-            (0, 0, {
-                'name': self.products_id.name,
-                'product_id': self.products_id.id,
-                'product_qty': 1.0,
-                'product_uom': self.products_id.uom_id.id,
-                'price_unit': self.montoVehiculo,
-                'date_planned': datetime.datetime.now(),
-            }),
-        ],
-        })
-        self.purchase_order = purchase_creado
+        for l in self:
+            if l.marcaVehiculo and l.modeloVehiculoSRI and l.colorVehiculo and l.anioVehiculo:
+                producto_creado=self.env['product.product'].create({'uom_id':1,
+                                                                    'name':str(l.marcaVehiculo)+str(l.modeloVehiculoSRI)+str(l.anioVehiculo)+str(l.colorVehiculo)})
+                self.products_id=producto_creado
+            else:
+                raise ValidationError("Llene todos los datos del Vehiculo")
+            purchase_creado= self.env['purchase.order'].create({
+            'partner_id': self.nombreConsesionario.id,
+            'date_order': datetime.datetime.now(),
+            #'currency_id': eur_currency.id,
+            'order_line': [
+                (0, 0, {
+                    'name': self.products_id.name,
+                    'product_id': self.products_id.id,
+                    'product_qty': 1.0,
+                    'product_uom': self.products_id.uom_id.id,
+                    'price_unit': self.montoVehiculo,
+                    'date_planned': datetime.datetime.now(),
+                }),
+            ],
+            })
+            self.purchase_order = purchase_creado
     
 #####Funcion para crear liquidacion de compra
     def create_liq_compra(self):  

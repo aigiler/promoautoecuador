@@ -628,15 +628,7 @@
                                             </td>
                                         </tr>
 
-                                        <tr>
-                                            <td>
-                                                <text>PRODUCTO</text>
-                                            </td>
-                                            <td></td>
-                                            <td>
-                                                <field name="products_id"  />
-                                            </td>
-                                        </tr>
+                                       
 
                                         <!-- <tr>
                                             <td>
@@ -682,6 +674,16 @@
                         <page string ="Orden de Compra">
                             <separator class="text-center" string="ORDEN DE COMPRA"/>
                             <div class="row">
+                                         <tr>
+                                            <td>
+                                                <text>PRODUCTO</text>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <field name="products_id"  />
+                                            </td>
+                                        </tr>
+                                        
                                         <tr>
                                             <td>
                                                 <text>Documento</text>
