@@ -113,7 +113,9 @@ class EntegaVehiculo(models.Model):
 
     def llenar_tabla(self):
         lista_ids=[]
+        lista=[]
         obj_patrimonio=self.env['items.patrimonio'].search([])
+        
         for patrimonio in obj_patrimonio:
             dct={'patrimonio_id':patrimonio.id,'entrega_id':self.id,'garante':False}
             lista.append(dct)
