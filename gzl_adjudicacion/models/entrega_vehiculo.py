@@ -93,6 +93,13 @@ class EntegaVehiculo(models.Model):
 
     montoAhorroInversiones = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',track_visibility='onchange')
     
+    @api.depends('estado')
+    def llenar_datos(self):
+        if estado=='borrador':
+            self.llenar_tabla()
+            self.llenar_tabla_paginas()
+            self.llenar_tabla_puntos_bienes()
+
     def llenar_tabla(self):
         obj_patrimonio=self.env['items.patrimonio'].search([])  
         for patrimonio in obj_patrimonio:
@@ -797,7 +804,7 @@ class EntegaVehiculo(models.Model):
     def create(self, vals):
         vals['secuencia'] = self.env['ir.sequence'].next_by_code(
             'entrega.vehiculo')
-        self.llenar_tabla()
+
         return super(EntegaVehiculo, self).create(vals)
 
 
