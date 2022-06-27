@@ -109,7 +109,8 @@ class EntegaVehiculo(models.Model):
     currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
     #    junta = fields.One2many('junta.grupo.asamblea', 'asamblea_id',track_visibility='onchange')
 
-    montoAhorroInversiones = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',track_visibility='onchange')
+    montoAhorroInversiones = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',domain="[('garante','=',False)]" ,track_visibility='onchange')
+    montoAhorroInversionesGarante = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',domain="[('garante','=',True)]" ,track_visibility='onchange')
 
     ahorro_garante=fields.Boolean(default=False)
     def llenar_tabla(self):
@@ -118,11 +119,10 @@ class EntegaVehiculo(models.Model):
         if not self.montoAhorroInversiones: 
             for patrimonio in obj_patrimonio:
                 self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id,'garante':False})
-        else:
-            if self.garante and not self.ahorro_garante:
-                for patrimonio in obj_patrimonio:
-                    self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id,'garante':True})
-                self.ahorro_garante=True
+        if not self.montoAhorroInversionesGarante:
+            for patrimonio in obj_patrimonio:
+                self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id,'garante':True})
+#                self.ahorro_garante=True
 
     institucionFinanciera = fields.Many2one('res.bank',string='Institución')
     direccion = fields.Char(string='Direccion de Casa' , default=' ')
@@ -213,19 +213,18 @@ class EntegaVehiculo(models.Model):
 
 
     # REVISION EN PAGINAS DE CONTROL
-    paginasDeControl = fields.One2many('paginas.de.control.entrega.vehiculo','entrega_id',track_visibility='onchange')
+    paginasDeControl = fields.One2many('paginas.de.control.entrega.vehiculo','entrega_id', domain="[('garante','=',False)]", track_visibility='onchange')
     pagcontrol_garante=fields.Boolean(default=False)
+    paginasDeControlGarante = fields.One2many('paginas.de.control.entrega.vehiculo','entrega_id', domain="[('garante','=',True)]", track_visibility='onchange')
     
     def llenar_tabla_paginas(self):
         obj_paginas_de_control=self.env['paginas.de.control'].search([])
         if not self.paginasDeControl:
             for paginas in obj_paginas_de_control:
                 self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'entrega_id':self.id,'garante':False})
-        else:
-            if self.garante and not self.pagcontrol_garante:
-                for paginas in obj_paginas_de_control:
-                    self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'entrega_id':self.id,'garante':True})
-                self.pagcontrol_garante=True
+        if not self.paginasDeControlGarante:
+            for paginas in obj_paginas_de_control:
+                self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'entrega_id':self.id,'garante':True})
     
 
     tablaPuntosBienes = fields.One2many('puntos.bienes.entrega.vehiculo','entrega_id',track_visibility='onchange')
