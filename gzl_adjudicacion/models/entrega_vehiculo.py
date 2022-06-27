@@ -130,7 +130,7 @@ class EntegaVehiculo(models.Model):
                 'name': self.products_id.name,
                 'product_id': self.products_id.id,
                 'product_qty': 1.0,
-                'product_uom': self.products_id.id,
+                'product_uom': self.products_id.uom_id.id,
                 'price_unit': self.montoVehiculo,
                 'date_planned': datetime.datetime.now(),
             }),
