@@ -701,6 +701,7 @@
                                                 <field name="facturas" attrs="{'invisible':[('facturas', '=', False)]}" />
                                             </td>
                                         </tr>
+                    
                                     <button type="object" string="Generar Orden Compra" name="create_purchase_order" attrs="{'invisible':[('purchase_order', '!=', False)]}" class="btn btn-primary o_invoice_new"/>
                                     <button type="object" string="Generar Factura" name="create_liq_compra" attrs="{'invisible':[('facturas', '!=', False)]}" class="btn btn-primary o_invoice_new"/>
 
