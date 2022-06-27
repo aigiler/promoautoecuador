@@ -119,10 +119,10 @@ class EntegaVehiculo(models.Model):
         if not self.montoAhorroInversiones: 
             for patrimonio in obj_patrimonio:
                 self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id,'garante':False})
-        if not self.montoAhorroInversionesGarante:
+        if self.garante and not self.ahorro_garante:
             for patrimonio in obj_patrimonio:
                 self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id,'garante':True})
-#                self.ahorro_garante=True
+            self.ahorro_garante=True
 
     institucionFinanciera = fields.Many2one('res.bank',string='Institución')
     direccion = fields.Char(string='Direccion de Casa' , default=' ')
@@ -222,10 +222,10 @@ class EntegaVehiculo(models.Model):
         if not self.paginasDeControl:
             for paginas in obj_paginas_de_control:
                 self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'entrega_id':self.id,'garante':False})
-        if not self.paginasDeControlGarante:
+        if not self.pagcontrol_garante and self.garante:
             for paginas in obj_paginas_de_control:
                 self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'entrega_id':self.id,'garante':True})
-    
+            self.pagcontrol_garante=True
 
     tablaPuntosBienes = fields.One2many('puntos.bienes.entrega.vehiculo','entrega_id',track_visibility='onchange')
     
