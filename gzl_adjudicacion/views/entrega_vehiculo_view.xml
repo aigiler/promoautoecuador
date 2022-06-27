@@ -122,7 +122,7 @@
                                             <text>Score</text>
                                         </td>
                                         <td class="col-xs-12 col-sm-3"> 
-                                            <field name="scoreBuroCredito" nolabel="1" attrs="{'invisible':[('garante', '=', True)]}"/>
+                                            <field name="scoreBuroCredito" nolabel="1"/>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -151,11 +151,11 @@
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <group>
-                                        <field name="nombreSocioAdjudicado" readonly="1" force_save="1" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))], 'invisible':[('garante', '=', True)]}"/>
+                                        <field name="nombreSocioAdjudicado" readonly="1" force_save="1" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
                                         <field name="nombreGarante" readonly="1" force_save="1" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))], 'invisible':[('garante', '=', False)]}"/>
                                     </group>
                                 </div>
-                                <div class="col-xs-12 col-sm-4" attrs="{'invisible':[('garante', '=', True)]}"> 
+                                <div class="col-xs-12 col-sm-4" > 
                                     <group>
                                         <field name="vatAdjudicado" readonly="1" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
