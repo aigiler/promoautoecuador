@@ -93,17 +93,13 @@ class EntegaVehiculo(models.Model):
 
     montoAhorroInversiones = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',track_visibility='onchange')
     
-    @api.depends('estado')
-    def llenar_datos(self):
-        if estado=='borrador':
-            self.llenar_tabla()
-            self.llenar_tabla_paginas()
-            self.llenar_tabla_puntos_bienes()
 
     def llenar_tabla(self):
         obj_patrimonio=self.env['items.patrimonio'].search([])  
-        for patrimonio in obj_patrimonio:
-            self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id})
+        if not self.montoAhorroInversiones:    
+            for patrimonio in obj_patrimonio:
+            
+                self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id})
         
 
     institucionFinanciera = fields.Many2one('res.bank',string='Institución')
@@ -185,8 +181,9 @@ class EntegaVehiculo(models.Model):
     
     def llenar_tabla_paginas(self):
         obj_paginas_de_control=self.env['paginas.de.control'].search([])
-        for paginas in obj_paginas_de_control:
-            self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'entrega_id':self.id})
+        if not self.paginasDeControl:
+            for paginas in obj_paginas_de_control:
+                self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'entrega_id':self.id})
     
     
     
@@ -196,8 +193,9 @@ class EntegaVehiculo(models.Model):
     
     def llenar_tabla_puntos_bienes(self):
         obj_puntos_bienes=self.env['puntos.bienes'].search([])
-        for bienes in obj_puntos_bienes:
-            self.env['puntos.bienes.entrega.vehiculo'].create({'bien_id':bienes.id,'entrega_id':self.id})
+        if not self.tablaPuntosBienes:
+            for bienes in obj_puntos_bienes:
+                self.env['puntos.bienes.entrega.vehiculo'].create({'bien_id':bienes.id,'entrega_id':self.id})
     
     
     
@@ -755,6 +753,9 @@ class EntegaVehiculo(models.Model):
     @api.depends('nombreSocioAdjudicado')
     def buscar_contrato_partner(self):
         for rec in self:
+            self.llenar_tabla()
+            self.llenar_tabla_paginas()
+            self.llenar_tabla_puntos_bienes()
             contrato = self.env['contrato'].search(
                 [('cliente', '=', rec.nombreSocioAdjudicado.id)], limit=1)
             rec.montoAdjudicado = contrato.monto_financiamiento
