@@ -1043,9 +1043,10 @@ class account_payment(models.Model):
                                     acumulado_cuota=0
 
                             pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
-                                                                                                                'monto_pagado':rec.amount,'valor_asociado':acumulado_cuota})
+                                                                                                                'monto_pagado':rec.amount,'valor_asociado':total_cuota})
                         
 
+                            cuota_id.saldo=cuota_id.saldo-total_cuota
                             if cuota_id.saldo==0:
                                 cuota_id.estado_pago='pagado'
                                 transacciones=self.env['transaccion.grupo.adjudicado']
