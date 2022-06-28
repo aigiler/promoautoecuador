@@ -197,13 +197,12 @@ class EntegaVehiculo(models.Model):
                     })]})
         self.facturas= factura
     
+
     @api.depends("montoAhorroInversiones")
     def calculo_total_activos_adj(self):
         for rec in self:
             rec.totalActivosAdj=sum(rec.montoAhorroInversiones.mapped('valor'))
     
-    
-
     totalPuntosBienesAdj = fields.Integer(compute='calcular_puntos_bienes',store=True)
 
     @api.depends('tablaPuntosBienes')
