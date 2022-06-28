@@ -1043,7 +1043,8 @@ class account_payment(models.Model):
                                     acumulado_cuota=0
 
                             #cuota_id.saldo=cuota_id.saldo-total_cuota
-                            pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
+                            if total_cuota:
+                                pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
                                                                                                                 'monto_pagado':rec.amount,'valor_asociado':total_cuota})
                         
 
@@ -1065,16 +1066,21 @@ class account_payment(models.Model):
                             x.update({'matched_debit_ids':lista})
                             pass                     
 
-                if rec.invoice_ids:
-                    (moves[0] + rec.invoice_ids).line_ids \
+                    (moves[0] + y).line_ids \
                         .filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))\
                         .reconcile()
+                        
+                if rec.payment_type=='inbound':
+                    if rec.invoice_ids:
+                        (moves[0] + rec.invoice_ids).line_ids \
+                            .filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))\
+                            .reconcile()
 
-                elif rec.payment_type == 'transfer':
-                    # ==== 'transfer' ====
-                    moves.mapped('line_ids')\
-                        .filtered(lambda line: line.account_id == rec.company_id.transfer_account_id)\
-                        .reconcile()
+            elif rec.payment_type == 'transfer':
+                # ==== 'transfer' ====
+                moves.mapped('line_ids')\
+                    .filtered(lambda line: line.account_id == rec.company_id.transfer_account_id)\
+                    .reconcile()
 
         return True
 
