@@ -210,8 +210,6 @@ class EntegaVehiculo(models.Model):
         for rec in self:
             rec.totalPuntosBienesAdj = sum(rec.tablaPuntosBienes.mapped('puntosBien'))
 
-
-
     # REVISION EN PAGINAS DE CONTROL
     paginasDeControl = fields.One2many('paginas.de.control.entrega.vehiculo','entrega_id',domain=[('garante','=',False)],  track_visibility='onchange')
     pagcontrol_garante=fields.Boolean(default=False)
