@@ -44,6 +44,14 @@ class AccountMove(models.Model):
     is_group_cobranza = fields.Boolean(string='Es Cobranza',compute="_compute_is_group_cobranza")
 
 
+    def js_assign_outstanding_line(self, line_id):
+        self.ensure_one()
+        #lines = self.env['account.move.line'].browse(line_id)
+        raise ValidationError("Esto es un mensaje")
+        #lines += self.line_ids.filtered(lambda line: line.account_id == lines[0].account_id and not line.reconciled)
+        #return lines.reconcile()
+
+
     @api.onchange("partner_id")
     def obtener_anticipos(self):
         for l in self:
