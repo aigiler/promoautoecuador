@@ -49,6 +49,7 @@ class AccountMove(models.Model):
         self.ensure_one()
         lines = self.env['account.move.line'].browse(line_id)
         if self.contrato_id and self.contrato_estado_cuenta_ids:
+            lista_diarios=[]
             cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
             if cuota_capital_obj:
                 lista_diarios.append(cuota_capital_obj.journal_id.id)
