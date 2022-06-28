@@ -779,9 +779,6 @@ class account_payment(models.Model):
                     
 
 
-
-
-
                     for y in rec.invoice_ids:
                         for cuota_id in y.contrato_estado_cuenta_ids:                            
                             acumulado_cuota=0
@@ -1061,16 +1058,79 @@ class account_payment(models.Model):
                                         }
                                 transacciones.create(dct)
 
+                    
                     for x in rec.move_line_ids:
                         if x.account_id.id==rec.partner_id.property_account_receivable_id.id and round(x.credit,2)==round(rec.valor_deuda,2):
                             x.update({'matched_debit_ids':lista})
                             pass                     
 
-                    (moves[0] + y).line_ids \
-                        .filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))\
-                        .reconcile()
+                    
+                    if rec.invoice_ids:
+                        for fact in rec.invoice_ids:
+                            valor_inicial_factura=fact.amount_residual
+                            movimientos=(moves[0] + fact).line_ids.filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))
+                            if movimientos:
+                                movimientos.reconcile()
+                            valor_final_factura=fact.amount_residual
+                            valor_pagado=valor_inicial_factura-valor_final_factura
+                            for cuota_id in fact.contrato_estado_cuenta_ids:
+                                if valor_pagado:
+                                    if cuota_id.saldo_cuota_administrativa:
+                                        if valor_pagado>=cuota_id.saldo_cuota_administrativa:
+                                            acumulado_cuota+=cuota_id.saldo_cuota_administrativa
+                                            valor_pagado=valor_pagado-cuota_id.saldo_cuota_administrativa
+                                        else:
+                                            acumulado_cuota+=valor_pagado
+                                            valor_pagado=0
+                                if valor_pagado:
+                                    if cuota_id.saldo_iva:
+                                        if valor_pagado>=cuota_id.saldo_iva:
+                                            acumulado_cuota+=cuota_id.saldo_iva
+                                            valor_pagado=valor_pagado-cuota_id.saldo_iva
+                                        else:
+                                            acumulado_cuota+=valor_pagado
+                                            valor_pagado=0
+                                total_cuota=0
+                                if acumulado_cuota:
+                                    if acumulado_cuota>=cuota_id.saldo_cuota_administrativa:
+                                        total_cuota+=cuota_id.saldo_cuota_administrativa
+                                        acumulado_cuota=acumulado_cuota-cuota_id.saldo_cuota_administrativa
+                                        cuota_id.saldo_cuota_administrativa=0
+                                    else:
+                                        total_cuota+=acumulado_cuota
+                                        cuota_id.saldo_cuota_administrativa=cuota_id.saldo_cuota_administrativa-acumulado_cuota
+                                        acumulado_cuota=0
+                                          
+                                if acumulado_cuota:
+                                    if acumulado_cuota>=cuota_id.saldo_iva:
+                                        total_cuota+=cuota_id.saldo_iva
+                                        acumulado_cuota=acumulado_cuota-cuota_id.saldo_iva
+                                        cuota_id.saldo_iva=0
+                                    else:
+                                        total_cuota+=acumulado_cuota
+                                        cuota_id.saldo_iva=cuota_id.saldo_iva-acumulado_cuota
+                                        acumulado_cuota=0
+                                if total_cuota:
+                                    pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
+                                                                                                                    'monto_pagado':rec.amount,'valor_asociado':total_cuota})
+                            
+
+                                
+                                if cuota_id.saldo==0:
+                                    cuota_id.estado_pago='pagado'
+                                    transacciones=self.env['transaccion.grupo.adjudicado']
+                                    dct={
+                                            'grupo_id':cuota_id.contrato_id.grupo.id,
+                                            'haber':cuota_id.cuota_capital+cuota_id.seguro+cuota_id.otro+cuota_id.rastreo+cuota_id.iva_adm,
+                                            'adjudicado_id':cuota_id.contrato_id.cliente.id,
+                                            'contrato_id':cuota_id.contrato_id.id,
+                                            'state':cuota_id.contrato_id.state
+                                            }
+                                    transacciones.create(dct)
+
+
                         
-                if rec.payment_type=='inbound':
+                if rec.payment_type=='outbound':
                     if rec.invoice_ids:
                         (moves[0] + rec.invoice_ids).line_ids \
                             .filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))\
