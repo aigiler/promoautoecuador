@@ -47,14 +47,14 @@ class AccountMove(models.Model):
     def js_assign_outstanding_line(self, line_id):
         
         self.ensure_one()
-        raise ValidationError('{0}'.format(line_id))
-        #if self.contrato_id and self.contrato_estado_cuenta_ids:
-            #cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
-            #if cuota_capital_obj:
-                #lista_diarios.append(cuota_capital_obj.journal_id.id)
-                #movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',y.name)])
-
         lines = self.env['account.move.line'].browse(line_id)
+        if self.contrato_id and self.contrato_estado_cuenta_ids:
+            cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
+            if cuota_capital_obj:
+                lista_diarios.append(cuota_capital_obj.journal_id.id)
+                movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',y.name)],limit=1)
+                lines += movimientos_cuota.line_ids.filtered(lambda line: line.account_id == lines[0].account_id and not line.reconciled)
+                return lines.reconcile()
         lines += self.line_ids.filtered(lambda line: line.account_id == lines[0].account_id and not line.reconciled)
         return lines.reconcile()
 
