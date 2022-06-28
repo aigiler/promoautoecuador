@@ -1042,22 +1042,22 @@ class account_payment(models.Model):
                                     cuota_id.saldo_otros=cuota_id.saldo_otros-acumulado_cuota
                                     acumulado_cuota=0
 
-                                pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
-                                                                                                                    'monto_pagado':rec.amount,'valor_asociado':acumulado_cuota})
-                            
+                            pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
+                                                                                                                'monto_pagado':rec.amount,'valor_asociado':acumulado_cuota})
+                        
 
-                                if cuota_id.saldo==0:
-                                    cuota_id.estado_pago='pagado'
-                                    transacciones=self.env['transaccion.grupo.adjudicado']
-                                    dct={
-                                            'grupo_id':cuota_id.contrato_id.grupo.id,
-                                            'haber':cuota_id.cuota_capital+cuota_id.seguro+cuota_id.otro+cuota_id.rastreo+cuota_id.iva_adm,
-                                            'adjudicado_id':cuota_id.contrato_id.cliente.id,
-                                            'contrato_id':cuota_id.contrato_id.id,
-                                            'state':cuota_id.contrato_id.state
-                                            }
-                                    transacciones.create(dct)
-  
+                            if cuota_id.saldo==0:
+                                cuota_id.estado_pago='pagado'
+                                transacciones=self.env['transaccion.grupo.adjudicado']
+                                dct={
+                                        'grupo_id':cuota_id.contrato_id.grupo.id,
+                                        'haber':cuota_id.cuota_capital+cuota_id.seguro+cuota_id.otro+cuota_id.rastreo+cuota_id.iva_adm,
+                                        'adjudicado_id':cuota_id.contrato_id.cliente.id,
+                                        'contrato_id':cuota_id.contrato_id.id,
+                                        'state':cuota_id.contrato_id.state
+                                        }
+                                transacciones.create(dct)
+
                     for x in rec.move_line_ids:
                         if x.account_id.id==rec.partner_id.property_account_receivable_id.id and round(x.credit,2)==round(rec.valor_deuda,2):
                             x.update({'matched_debit_ids':lista})
