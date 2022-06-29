@@ -140,24 +140,25 @@ class AccountMove(models.Model):
 
     @api.constrains("contrato_estado_cuenta_ids")
     def corregir_cuotas(self):
-        lista=[]
-        lista_anterior=self.env['contrato.estado.cuenta'].search([('factura_id','=',self.id)])
-        longitud_anterior=len(lista_anterior)
-        for mov in lista_anterior:
-            lista.append(mov.id)
-        movimientos_cuota=self.env['account.move'].search([('ref','=',self.name)],limit=1)
-        total=self.amount_total_signed
-        for l in movimientos_cuota:
-            total+=l.amount_total_signed
-        for x in self.anticipos_ids:
-            total+=(x.credit-x.valor_sobrante)
-        total_actual=0
-        for y in self.contrato_estado_cuenta_ids:
-            total_actual+=y.saldo
-        if total_actual==total:
-            return True
-        else:
-            raise ValidationError("Posee valores diferentes en su cuota")
+        if self.state!='draft':
+            lista=[]
+            lista_anterior=self.env['contrato.estado.cuenta'].search([('factura_id','=',self.id)])
+            longitud_anterior=len(lista_anterior)
+            for mov in lista_anterior:
+                lista.append(mov.id)
+            movimientos_cuota=self.env['account.move'].search([('ref','=',self.name)],limit=1)
+            total=self.amount_total_signed
+            for l in movimientos_cuota:
+                total+=l.amount_total_signed
+            for x in self.anticipos_ids:
+                total+=(x.credit-x.valor_sobrante)
+            total_actual=0
+            for y in self.contrato_estado_cuenta_ids:
+                total_actual+=y.saldo
+            if total_actual==total:
+                return True
+            else:
+                raise ValidationError("Posee valores diferentes en su cuota")
 
 
 
