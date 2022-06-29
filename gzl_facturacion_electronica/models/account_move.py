@@ -138,7 +138,7 @@ class AccountMove(models.Model):
                 self._move_autocomplete_invoice_lines_values()
 
 
-    @api.onchange("contrato_estado_cuenta_ids")
+    @api.constrains("contrato_estado_cuenta_ids")
     def corregir_cuotas(self):
         lista=[]
         lista_anterior=self.env['contrato.estado.cuenta'].search([('factura_id','=',self.id)])
