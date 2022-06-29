@@ -40,24 +40,26 @@ class AccountMove(models.Model):
     contrato_id = fields.Many2one('contrato', string='Contrato')
 
     contrato_estado_cuenta_ids = fields.Many2many('contrato.estado.cuenta', copy=False,string='Estado de Cuenta de Aportes',)
+
+    contrato_estado_cuenta_ids_nuevo = fields.Many2many('contrato.estado.cuenta', copy=False,string='Estado de Cuenta de Aportes',)
     
     is_group_cobranza = fields.Boolean(string='Es Cobranza',compute="_compute_is_group_cobranza")
 
 
-    def js_assign_outstanding_line(self, line_id):
+    # def js_assign_outstanding_line(self, line_id):
         
-        self.ensure_one()
-        lines = self.env['account.move.line'].browse(line_id)
-        if self.contrato_id and self.contrato_estado_cuenta_ids:
-            lista_diarios=[]
-            cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
-            if cuota_capital_obj:
-                lista_diarios.append(cuota_capital_obj.journal_id.id)
-                movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',self.name)],limit=1)
-                lines += movimientos_cuota.line_ids.filtered(lambda line: line.account_id == lines[0].account_id and not line.reconciled)
-                return lines.reconcile()
-        lines += self.line_ids.filtered(lambda line: line.account_id == lines[0].account_id and not line.reconciled)
-        return lines.reconcile()
+    #     self.ensure_one()
+    #     lines = self.env['account.move.line'].browse(line_id)
+    #     if self.contrato_id and self.contrato_estado_cuenta_ids:
+    #         lista_diarios=[]
+    #         cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
+    #         if cuota_capital_obj:
+    #             lista_diarios.append(cuota_capital_obj.journal_id.id)
+    #             movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',self.name)],limit=1)
+    #             lines += movimientos_cuota.line_ids.filtered(lambda line: line.account_id == lines[0].account_id and not line.reconciled)
+    #             return lines.reconcile()
+    #     lines += self.line_ids.filtered(lambda line: line.account_id == lines[0].account_id and not line.reconciled)
+    #     return lines.reconcile()
 
 
     @api.onchange("partner_id")
@@ -86,56 +88,60 @@ class AccountMove(models.Model):
 
     @api.onchange('contrato_estado_cuenta_ids')
     def _onchange_contrato_estado_cuenta_ids(self):
-        obj_product = self.env['product.template'].search([('default_code','=','CA1')])
-        obj_account = self.env['account.account'].search([('code','=','4010101002')])
-        obj_tax = self.env['account.tax'].search([('name','=','VENTAS DE ACTIVOS FIJOS GRAVADAS TARIFA 12%')])
-        obj_account_debe = self.env['account.account'].search([('code','=','1010205001')])
-        obj_account_haber = self.env['account.account'].search([('code','=','4010102002')])
-        list_pagos_diferentes = {}
-        valor = 0
-        valor_debe = 0
-        valor_haber = 0
-        values = {
-                    'product_id':obj_product.id,
-                    'name': 'Cuota Administrativa. Pago de Cuota(s) de Contrato. Cuota Administrativa: ',
-                    'account_id':obj_account.id,
-                    'tax_ids': [(6,0,[obj_tax.id])],
-                    'quantity': 0,
-                    'price_unit':0,
-                }
-        cliente=self.partner_id.name
-        if self.contrato_estado_cuenta_ids:
-            obj_contrato_estado_cuenta = self.env['contrato.estado.cuenta'].search([('id','in',self.contrato_estado_cuenta_ids.ids)])
-            i=0
-            saldo_credito=0
-            numero_cuotas=''
-            for rec in obj_contrato_estado_cuenta:
-                if i==0:
-                    nombre=values.get('name')+str(rec.cuota_adm)+'.'+' IVA: '+str(rec.iva_adm)+' Cuota(s): '+rec.numero_cuota+','
-                else:
-                    nombre=values.get('name')+rec.numero_cuota+','
-                i+=1
-                values['quantity'] = values.get('quantity') + 1
-                valor += rec.cuota_adm
-                values['price_unit'] = valor/values.get('quantity')
-                values['name'] =nombre
-                list_pagos_diferentes.update({
-                    str(rec.cuota_adm):values
-                })
-                    
-            for rec in list_pagos_diferentes.values():
-                if not self.invoice_line_ids:
-                    self.invoice_line_ids = [(0,0,rec)] 
-                else:
-                    for ric in self.invoice_line_ids:
-                        self.invoice_line_ids = [(1,ric.id,{
-                            'name': rec.get('name'),
-                            'quantity': rec.get('quantity'),
-                            'price_unit': rec.get('price_unit'),
-                        })]          
-            self._move_autocomplete_invoice_lines_values()
+        if self.state=='draft':
+            obj_product = self.env['product.template'].search([('default_code','=','CA1')])
+            obj_account = self.env['account.account'].search([('code','=','4010101002')])
+            obj_tax = self.env['account.tax'].search([('name','=','VENTAS DE ACTIVOS FIJOS GRAVADAS TARIFA 12%')])
+            obj_account_debe = self.env['account.account'].search([('code','=','1010205001')])
+            obj_account_haber = self.env['account.account'].search([('code','=','4010102002')])
+            list_pagos_diferentes = {}
+            valor = 0
+            valor_debe = 0
+            valor_haber = 0
+            values = {
+                        'product_id':obj_product.id,
+                        'name': 'Cuota Administrativa. Pago de Cuota(s) de Contrato. Cuota Administrativa: ',
+                        'account_id':obj_account.id,
+                        'tax_ids': [(6,0,[obj_tax.id])],
+                        'quantity': 0,
+                        'price_unit':0,
+                    }
+            cliente=self.partner_id.name
+            if self.contrato_estado_cuenta_ids:
+                obj_contrato_estado_cuenta = self.env['contrato.estado.cuenta'].search([('id','in',self.contrato_estado_cuenta_ids.ids)])
+                i=0
+                saldo_credito=0
+                numero_cuotas=''
+                for rec in obj_contrato_estado_cuenta:
+                    if i==0:
+                        nombre=values.get('name')+str(rec.cuota_adm)+'.'+' IVA: '+str(rec.iva_adm)+' Cuota(s): '+rec.numero_cuota+','
+                    else:
+                        nombre=values.get('name')+rec.numero_cuota+','
+                    i+=1
+                    values['quantity'] = values.get('quantity') + 1
+                    valor += rec.cuota_adm
+                    values['price_unit'] = valor/values.get('quantity')
+                    values['name'] =nombre
+                    list_pagos_diferentes.update({
+                        str(rec.cuota_adm):values
+                    })
+                        
+                for rec in list_pagos_diferentes.values():
+                    if not self.invoice_line_ids:
+                        self.invoice_line_ids = [(0,0,rec)] 
+                    else:
+                        for ric in self.invoice_line_ids:
+                            self.invoice_line_ids = [(1,ric.id,{
+                                'name': rec.get('name'),
+                                'quantity': rec.get('quantity'),
+                                'price_unit': rec.get('price_unit'),
+                            })]          
+                self._move_autocomplete_invoice_lines_values()
 
 
+    def corregir_cuotas(self):
+        for l in self:
+            contrato_estado_cuenta_ids_nuevo=contrato_estado_cuenta_ids
 
 
     @api.onchange('invoice_payment_term_id','method_payment','contrato_estado_cuenta_ids','name','anticipos_ids')
