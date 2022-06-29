@@ -41,7 +41,6 @@ class AccountMove(models.Model):
 
     contrato_estado_cuenta_ids = fields.Many2many('contrato.estado.cuenta', copy=False,string='Estado de Cuenta de Aportes',)
 
-    contrato_estado_cuenta_ids_nuevo = fields.Many2many('contrato.estado.cuenta', copy=False,string='Estado de Cuenta de Aportes',)
     
     is_group_cobranza = fields.Boolean(string='Es Cobranza',compute="_compute_is_group_cobranza")
 
@@ -140,8 +139,11 @@ class AccountMove(models.Model):
 
 
     def corregir_cuotas(self):
+        lista_actual=[]
         for l in self:
-            contrato_estado_cuenta_ids_nuevo=contrato_estado_cuenta_ids
+            
+
+
 
 
     @api.onchange('invoice_payment_term_id','method_payment','contrato_estado_cuenta_ids','name','anticipos_ids')
