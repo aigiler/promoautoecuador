@@ -1219,7 +1219,7 @@ class AccountMove(models.Model):
                                     ('type' & 'reversed_entry_id' are computed in the method).
         :return:                    An account.move recordset, reverse of the current self.
         '''
-        lines=False
+        lines=[]
         cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
         seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
         otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
