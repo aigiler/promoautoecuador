@@ -192,7 +192,7 @@ class AccountMove(models.Model):
                                 nuevo_id=self.env['contrato.estado.cuenta'].search([('id','=',j)])
                                 actual_cuota_id=self.env['contrato.estado.cuenta'].browse(actual_id[0])
                                 nueva_cuota_id=self.env['contrato.estado.cuenta'].browse(nuevo_id[0])
-                                #raise ValidationError('total actual: {0},total anterior: {1}'.format(nueva_cuota_id,actual_cuota_id))
+                                raise ValidationError('total actual: {0},total anterior: {1}'.format(nueva_cuota_id,type(nueva_cuota_id)))
                                 nueva_cuota_id.factura_id=self.id
 
                                 actual_cuota_id.factura_id=False
@@ -200,7 +200,6 @@ class AccountMove(models.Model):
                                 monto_sobrante=0
                                 for pag in actual_cuota_id.ids_pagos:
                                     if pag.pago_id.id in (lista_pagos):
-                                        raise ValidationError("Si hay pagos coincidentes")
                                         pag.cuotas_id=nueva_cuota_id.id
                                     else:
                                         monto_sobrante+=pag.valor_asociado
