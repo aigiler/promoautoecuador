@@ -198,7 +198,7 @@ class AccountMove(models.Model):
                 else:
                     total_actual+=cuotas_ids_nuevo.saldo
 
-            #raise ValidationError('total actual: {0},total anterior: {1}'.format(total_actual,total))
+            raise ValidationError('total actual: {0},total anterior: {1}'.format(total_actual,total))
             if total_actual==total:
                 for i in lista_actual:
                     if i not in lista_anterior:
