@@ -169,17 +169,21 @@ class AccountMove(models.Model):
             for y in self.contrato_estado_cuenta_ids:
                 lista_actual.append(y.id)
                 total_actual+=y.saldo
+            
+            for i in lista_actual:
+                cuotas_ids_nuevo=self.env['contrato.estado.cuenta'].search([('id','=',i)])
+                if i in lista_anterior:
+                    valor_pagado=0
+                    for pag in cuotas_ids.ids_pagos:
+                        if pag.payment_id.id in (lista_pagos):
+                            valor_pagado+=pag.valor_asociado
+                    total_actual+=(cuotas_ids_nuevo.saldo+valor_pagado)
+                if not in lista_anterior:
+                    total_actual+=cuotas_ids_nuevo.saldo
+
             if total_actual==total:
                 for i in lista_actual:
-                    if i in lista_anterior:
-                        cuotas_ids_nuevo=self.env['contrato.estado.cuenta'].search([('id','=',i)])
-                        valor_pagado=0
-                        for pag in cuotas_ids.ids_pagos:
-                            if pag.payment_id.id in (lista_pagos):
-                                valor_pagado+=pag.valor_asociado
-                        total_actual+=(cuotas_ids_nuevo.saldo+valor_pagado)
                     if i not in lista_anterior:
-                        total+=y.saldo
                         for j in lista_anterior:
                             if j not in lista_actual:
                                 cuotas_ids=self.env['contrato.estado.cuenta'].search([('id','=',j)])
@@ -215,7 +219,7 @@ class AccountMove(models.Model):
                                     reg.monto_pagado=valores_cuotas-reg.saldo
                                 lista_anterior.remove(j)
                                 pass
-                return True
+                    return True
             else:
                 raise ValidationError("Posee valores diferentes en su cuota")
 
