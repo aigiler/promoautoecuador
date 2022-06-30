@@ -188,9 +188,9 @@ class AccountMove(models.Model):
                     if i not in lista_anterior:
                         for j in lista_anterior:
                             if j not in lista_actual:
-                                actual_cuota_id=self.env['contrato.estado.cuenta'].search([('id','=',j)])[0]
+                                nueva_cuota_id=self.env['contrato.estado.cuenta'].search([('id','=',j)])[0]
+                                actual_cuota_id=self.env['contrato.estado.cuenta'].search([('id','=',i)])[0]
                                 actual_cuota_id.factura_id=False
-                                nueva_cuota_id=self.env['contrato.estado.cuenta'].search([('id','=',i)])[0]
                                 nueva_cuota_id.factura_id=self.id
                                 monto_sobrante=0
                                 for pag in actual_cuota_id.ids_pagos:
@@ -237,7 +237,7 @@ class AccountMove(models.Model):
                                 
                                 lista_anterior.remove(j)
                                 pass
-                    return True
+                    #return True
             else:
                 raise ValidationError("Posee valores diferentes en su cuota")
 
