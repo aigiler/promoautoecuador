@@ -188,8 +188,8 @@ class AccountMove(models.Model):
                     if i not in lista_anterior:
                         for j in lista_anterior:
                             if j not in lista_actual:
-                                actual_cuota_id=self.env['contrato.estado.cuenta'].search([('id','=',i)])[0]
-                                nueva_cuota_id=self.env['contrato.estado.cuenta'].search([('id','=',j)])[0]
+                                actual_cuota_id=self.env['contrato.estado.cuenta'].search([('id','=',j)])[0]
+                                nueva_cuota_id=self.env['contrato.estado.cuenta'].search([('id','=',i)])[0]
                                 raise ValidationError('{0}'.format(actual_cuota_id.numero_cuota))
                                 nueva_cuota_id.factura_id=self.id
                                 actual_cuota_id.factura_id=False
