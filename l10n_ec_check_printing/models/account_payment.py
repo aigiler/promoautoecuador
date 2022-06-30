@@ -1260,7 +1260,7 @@ class AccountPaymentLine(models.Model):
     #partner_id = fields.Many2one(related='payment_id.partner_id', string='Proveedor')
     pagar=fields.Boolean(string="Seleccione para Pagar")
     date_due = fields.Date(string='Fecha de Vencimiento')
-    amount = fields.Monetary('Monto a Pagar')
+    amount = fields.Monetary('Total adeudado')
     currency_id = fields.Many2one(related='invoice_id.currency_id', string="Moneda")
     invoice_id = fields.Many2one('account.move', 'Factura')
     actual_amount = fields.Float(string='Monto actual adeudado')
@@ -1269,7 +1269,8 @@ class AccountPaymentLine(models.Model):
     document_number = fields.Char(string="Número de Documento")
     monto_pendiente_pago = fields.Float(string='Monto de la cuota de Pago')
 
-    @api.constrains('invoice_id')
+
+    @api.onchange('invoice_id')
     def obtener_monto(self):
         for l in self:
             monto_pendiente_pago=0
@@ -1293,7 +1294,7 @@ class AccountPaymentLine(models.Model):
             l.saldo_rastreo=saldo_ras
             l.saldo_otros=saldo_otros
             l.monto_pendiente_pago=monto_pendiente_pago
-            #l.amount=l.actual_amount+monto_pendiente_pago
+            l.amount=l.actual_amount+monto_pendiente_pago
                 #l.deuda_total=self.payment_id.obtener_deudas_facturas()
 
     #@api.onchange('pagar')
@@ -1303,6 +1304,7 @@ class AccountPaymentLine(models.Model):
             #l.payment_id.amount=monto_inicial 
 
     @api.onchange('amount')
+    @api.constrains('amount')
     def actualizar_saldo(self):
         for l in self:
             l.payment_id._saldo_pagar()

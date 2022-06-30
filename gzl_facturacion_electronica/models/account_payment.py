@@ -129,7 +129,6 @@ class AccountPayment(models.Model):
 
     @api.onchange('tipo_valor','amount','credito_contrato','credito')
     @api.depends('tipo_valor','amount','credito_contrato','credito','payment_line_ids')
-    @api.constrains('tipo_valor','amount','credito_contrato','credito','payment_line_ids')
     def _saldo_pagar(self):
         for l in self:
             valor_asignado=0
