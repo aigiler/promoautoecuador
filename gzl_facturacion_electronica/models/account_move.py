@@ -196,10 +196,9 @@ class AccountMove(models.Model):
                                 monto_sobrante=0
                                 for pag in actual_cuota_id.ids_pagos:
                                     if pag.pago_id.id in (lista_pagos):
-                                        pag.cuotas_id=i
+                                        pag.cuotas_id=nueva_cuota_id.id
                                     else:
                                         monto_sobrante+=pag.valor_asociado
-                                
                                 for new_pag in nueva_cuota_id.ids_pagos:
                                     if new_pag.pago_id.id not in (lista_pagos):
                                         nuevo_monto_sobrante+=new_pag.valor_asociado    
