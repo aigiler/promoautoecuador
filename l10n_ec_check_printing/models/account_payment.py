@@ -235,8 +235,8 @@ class AccountPayment(models.Model):
         for line in self.payment_line_ids:
             if line.pagar:
                total += (line.amount)
-            self.valor_deuda=total
-            self.saldo_pago=monto-self.valor_deuda
+        self.valor_deuda=total
+        self.saldo_pago=monto-self.valor_deuda
         
         #elif self.tipo_transaccion=='Pago':
         #    self.amount = total
