@@ -214,10 +214,10 @@ class AccountMove(models.Model):
                                 actual_cuota_id.saldo_seguro+=pagado_seguro
                                 actual_cuota_id.saldo_rastreo+=pagado_rastreo
                                 actual_cuota_id.saldo_otros+=pagado_otros
-                                actual_cuota_id.cuota_adm+=pagado_administrativo
+                                actual_cuota_id.saldo_cuota_adm+=pagado_administrativo
                                 actual_cuota_id.saldo_iva+=pagado_iva
-                                actual_cuota_id.saldo+=pagado_capital+pagado_seguro+pagado_rastreo+pagado_otros+pagado_administrativo+pagado_iva
-                                actual_cuota_id.monto_pagado=actual_cuota_id.monto_pagado-(pagado_capital+pagado_seguro+pagado_rastreo+pagado_otros+pagado_administrativo+pagado_iva)
+                                #actual_cuota_id.saldo+=pagado_capital+pagado_seguro+pagado_rastreo+pagado_otros+pagado_administrativo+pagado_iva
+                                #actual_cuota_id.monto_pagado=actual_cuota_id.monto_pagado-(pagado_capital+pagado_seguro+pagado_rastreo+pagado_otros+pagado_administrativo+pagado_iva)
                                 if actual_cuota_id.saldo==0 or actual_cuota_id.saldo==0.0 or actual_cuota_id.saldo==0.00:
                                     actual_cuota_id.estado_pago='pagado'
                                 else:
@@ -226,10 +226,10 @@ class AccountMove(models.Model):
                                 nueva_cuota_id.saldo_seguro=nueva_cuota_id.saldo_seguro-pagado_seguro
                                 nueva_cuota_id.saldo_rastreo=nueva_cuota_id.saldo_rastreo-pagado_rastreo
                                 nueva_cuota_id.saldo_otros=nueva_cuota_id.saldo_otros-pagado_otros
-                                nueva_cuota_id.cuota_adm=nueva_cuota_id.cuota_adm-pagado_administrativo
+                                nueva_cuota_id.saldo_cuota_adm=nueva_cuota_id.saldo_cuota_adm-pagado_administrativo
                                 nueva_cuota_id.saldo_iva=nueva_cuota_id.saldo_iva-pagado_iva
-                                nueva_cuota_id.saldo=nueva_cuota_id.saldo-(pagado_capital+pagado_seguro+pagado_rastreo+pagado_otros+pagado_administrativo+pagado_iva)
-                                nueva_cuota_id.monto_pagado+=(pagado_capital+pagado_seguro+pagado_rastreo+pagado_otros+pagado_administrativo+pagado_iva)
+                                #nueva_cuota_id.saldo=nueva_cuota_id.saldo-(pagado_capital+pagado_seguro+pagado_rastreo+pagado_otros+pagado_administrativo+pagado_iva)
+                                #nueva_cuota_id.monto_pagado+=(pagado_capital+pagado_seguro+pagado_rastreo+pagado_otros+pagado_administrativo+pagado_iva)
                                 if nueva_cuota_id.saldo==0 or nueva_cuota_id.saldo==0.0 or nueva_cuota_id.saldo==0.00:
                                     nueva_cuota_id.estado_pago='pagado'
                                 else:
