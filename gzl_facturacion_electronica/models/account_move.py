@@ -175,7 +175,7 @@ class AccountMove(models.Model):
                 if i in lista_anterior:
                     valor_pagado=0
                     for pag in cuotas_ids.ids_pagos:
-                        if pag.payment_id.id in (lista_pagos):
+                        if pag.pago_id.id in (lista_pagos):
                             valor_pagado+=pag.valor_asociado
                     total_actual+=(cuotas_ids_nuevo.saldo+valor_pagado)
                 else:
@@ -186,37 +186,53 @@ class AccountMove(models.Model):
                     if i not in lista_anterior:
                         for j in lista_anterior:
                             if j not in lista_actual:
-                                cuotas_ids=self.env['contrato.estado.cuenta'].search([('id','=',j)])
-                                valor_reubicar=0
-                                cuotas_ids_nuevo=self.env['contrato.estado.cuenta'].search([('id','=',i)])
-                                for new in cuotas_ids_nuevo:
-                                    new.factura_id=self.id
-                                for pag in cuotas_ids.ids_pagos:
-                                    if pag.payment_id.id in (lista_pagos):
-                                        #cuotas_id_nuevo=self.env['contrato.estado.cuenta'].search([('id','=',i)])
+                                actual_cuota_id=self.env['contrato.estado.cuenta'].search([('id','=',j)])[0]
+                                actual_cuota_id.factura_id=False
+                                nueva_cuota_id=self.env['contrato.estado.cuenta'].search([('id','=',i)])[0]
+                                nueva_cuota_id.factura_id=self.id
+                                monto_sobrante=0
+                                for pag in actual_cuota_id.ids_pagos:
+                                    if pag.pago_id.id in (lista_pagos):
                                         pag.cuotas_id=i
-                                        valor_reubicar+=pag.valor_asociado
-                                for reg in cuotas_ids:
-                                    reg.factura_id=False
-                                    monto_sobrante=0
-                                    for pag in cuotas_ids.ids_pagos:
+                                    else:
                                         monto_sobrante+=pag.valor_asociado
-                                    pagado_capital=reg.cuota_capital-reg.saldo_cuota_capital-monto_sobrante
-                                    pagado_seguro=reg.seguro-reg.saldo_seguro
-                                    pagado_rastreo=reg.rastreo-reg.saldo_rastreo
-                                    pagado_otros=reg.otro-reg.saldo_otros
-                                    pagado_administrativo=reg.cuota_adm-reg.saldo_cuota_administrativa
-                                    pagado_iva=reg.iva_adm-reg.saldo_iva
-                                    if valor_reubicar:
-                                        reg.saldo_cuota_capital=pagado_capital
-                                        reg.saldo_seguro=pagado_seguro
-                                        reg.saldo_rastreo=pagado_rastreo
-                                        reg.saldo_otros=pagado_otros
-                                        reg.cuota_adm=pagado_administrativo
-                                        reg.saldo_iva=pagado_iva
-                                    valores_cuotas=reg.cuota_capital+reg.seguro+reg.rastreo+reg.otro+reg.iva_adm+reg.cuota_adm
-                                    reg.saldo=reg.saldo_cuota_capital+reg.saldo_seguro+reg.saldo_rastreo+reg.saldo_otros+reg.saldo_cuota_administrativa+reg.saldo_iva
-                                    reg.monto_pagado=valores_cuotas-reg.saldo
+                                
+                                for new_pag in nueva_cuota_id.ids_pagos:
+                                    if new_pag.pago_id.id not in (lista_pagos):
+                                        nuevo_monto_sobrante+=new_pag.valor_asociado    
+                                pagado_capital=actual_cuota_id.cuota_capital-actual_cuota_id.saldo_cuota_capital-monto_sobrante
+                                pagado_seguro=actual_cuota_id.seguro-actual_cuota_id.saldo_seguro
+                                pagado_rastreo=actual_cuota_id.rastreo-actual_cuota_id.saldo_rastreo
+                                pagado_otros=actual_cuota_id.otro-actual_cuota_id.saldo_otros
+                                pagado_administrativo=actual_cuota_id.cuota_adm-actual_cuota_id.saldo_cuota_administrativa
+                                pagado_iva=actual_cuota_id.iva_adm-actual_cuota_id.saldo_iva
+                
+                                actual_cuota_id.saldo_cuota_capital+=pagado_capital
+                                actual_cuota_id.saldo_seguro+=pagado_seguro
+                                actual_cuota_id.saldo_rastreo+=pagado_rastreo
+                                actual_cuota_id.saldo_otros+=pagado_otros
+                                actual_cuota_id.cuota_adm+=pagado_administrativo
+                                actual_cuota_id.saldo_iva+=pagado_iva
+                                actual_cuota_id.saldo+=pagado_capital+pagado_seguro+pagado_rastreo+pagado_otros+pagado_administrativo+pagado_iva
+                                actual_cuota_id.monto_pagado=actual_cuota_id.monto_pagado-(pagado_capital+pagado_seguro+pagado_rastreo+pagado_otros+pagado_administrativo+pagado_iva)
+                                if actual_cuota_id.saldo==0 or actual_cuota_id.saldo==0.0 or actual_cuota_id.saldo==0.00:
+                                    actual_cuota_id.estado_pago='pagado'
+                                else:
+                                    actual_cuota_id.estado_pago='pendiente'
+                                nueva_cuota_id.saldo_cuota_capital=nueva_cuota_id.saldo_cuota_capital-pagado_capital
+                                nueva_cuota_id.saldo_seguro=nueva_cuota_id.saldo_seguro-pagado_seguro
+                                nueva_cuota_id.saldo_rastreo=nueva_cuota_id.saldo_rastreo-pagado_rastreo
+                                nueva_cuota_id.saldo_otros=nueva_cuota_id.saldo_otros-pagado_otros
+                                nueva_cuota_id.cuota_adm=nueva_cuota_id.cuota_adm-pagado_administrativo
+                                nueva_cuota_id.saldo_iva=nueva_cuota_id.saldo_iva-pagado_iva
+                                nueva_cuota_id.saldo=nueva_cuota_id.saldo-(pagado_capital+pagado_seguro+pagado_rastreo+pagado_otros+pagado_administrativo+pagado_iva)
+                                nueva_cuota_id.monto_pagado+=(pagado_capital+pagado_seguro+pagado_rastreo+pagado_otros+pagado_administrativo+pagado_iva)
+                                if nueva_cuota_id.saldo==0 or nueva_cuota_id.saldo==0.0 or nueva_cuota_id.saldo==0.00:
+                                    nueva_cuota_id.estado_pago='pagado'
+                                else:
+                                    nueva_cuota_id.estado_pago='pendiente'
+
+                                
                                 lista_anterior.remove(j)
                                 pass
                     return True
