@@ -178,7 +178,7 @@ class AccountMove(models.Model):
                                 valor_reubicar=0
                                 cuotas_ids_nuevo=self.env['contrato.estado.cuenta'].search([('id','=',i)])
                                 for new in cuotas_ids_nuevo:
-                                    new.factura_id=self.factura_id.id
+                                    new.factura_id=self.id
                                 for pag in cuotas_ids.ids_pagos:
                                     if pag.payment_id.id in (lista_pagos):
                                         #cuotas_id_nuevo=self.env['contrato.estado.cuenta'].search([('id','=',i)])
