@@ -1293,7 +1293,7 @@ class AccountPaymentLine(models.Model):
             l.saldo_rastreo=saldo_ras
             l.saldo_otros=saldo_otros
             l.monto_pendiente_pago=monto_pendiente_pago
-            l.amount=l.actual_amount+monto_pendiente_pago
+            #l.amount=l.actual_amount+monto_pendiente_pago
                 #l.deuda_total=self.payment_id.obtener_deudas_facturas()
 
     #@api.onchange('pagar')
