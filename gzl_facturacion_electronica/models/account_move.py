@@ -176,12 +176,16 @@ class AccountMove(models.Model):
                             if j not in lista_actual:
                                 cuotas_ids=self.env['contrato.estado.cuenta'].search([('id','=',j)])
                                 valor_reubicar=0
+                                cuotas_ids_nuevo=self.env['contrato.estado.cuenta'].search([('id','=',i)])
+                                for new in cuotas_ids_nuevo:
+                                    new.factura_id=self.factura_id.id
                                 for pag in cuotas_ids.ids_pagos:
                                     if pag.payment_id.id in (lista_pagos):
                                         #cuotas_id_nuevo=self.env['contrato.estado.cuenta'].search([('id','=',i)])
                                         pag.cuotas_id=i
                                         valor_reubicar+=pag.valor_asociado
                                 for reg in cuotas_ids:
+                                    reg.factura_id=False
                                     monto_sobrante=0
                                     for pag in cuotas_ids.ids_pagos:
                                         monto_sobrante+=pag.valor_asociado
