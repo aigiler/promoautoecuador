@@ -131,6 +131,6 @@ class AccountMoveReversal(models.TransientModel):
             movimientos_cuota=self.env['account.move'].search([('ref','=',self.move_id.name),('journal_id','in',lista_diarios)])
             for mov in movimientos_cuota:
                 action_rubros = mov.env.ref('account.action_view_account_move_reversal').read()[0]
-                raise ValidationError("{0}".format(action_rubros))
+                #raise ValidationError("{0}".format(action_rubros))
                 action_rubros.reverse_moves()
         return action
