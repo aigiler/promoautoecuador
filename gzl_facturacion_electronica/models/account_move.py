@@ -208,6 +208,7 @@ class AccountMove(models.Model):
                                 pagado_otros=actual_cuota_id.otro-actual_cuota_id.saldo_otros
                                 pagado_administrativo=actual_cuota_id.cuota_adm-actual_cuota_id.saldo_cuota_administrativa
                                 pagado_iva=actual_cuota_id.iva_adm-actual_cuota_id.saldo_iva
+                                raise ValidationError("pagado_capital{0},pagado_seguro{1},pagado_rastreo{2},pagado_otros{3},pagado_administrativo{4},pagado_iva{5}".format(pagado_capital,pagado_seguro,pagado_rastreo,pagado_otros,pagado_administrativo,pagado_iva))
                                 actual_cuota_id.saldo_cuota_capital+=pagado_capital
                                 actual_cuota_id.saldo_seguro+=pagado_seguro
                                 actual_cuota_id.saldo_rastreo+=pagado_rastreo
