@@ -131,7 +131,7 @@ class AccountMoveReversal(models.TransientModel):
             movimientos_cuota=self.env['account.move'].search([('ref','=',self.move_id.name),('journal_id','in',lista_diarios)])
             for mov in movimientos_cuota:
                 movimiento_reverso_id=self.env['account.move.reversal'].create({'move_id':mov.id,'date':fields.Date.context_today(self),
-                                        'journal_id':mov.journal_id.id})
+                                        'journal_id':mov.journal_id.id,'move_type':'entry'})
                                 #raise ValidationError("{0}".format(action_rubros))
                 movimiento_reverso_id.reverse_moves()
         return action
