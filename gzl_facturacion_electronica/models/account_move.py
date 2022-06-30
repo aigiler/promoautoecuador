@@ -141,21 +141,68 @@ class AccountMove(models.Model):
     @api.constrains("contrato_estado_cuenta_ids")
     def corregir_cuotas(self):
         if self.state!='draft':
-            lista=[]
-            lista_anterior=self.env['contrato.estado.cuenta'].search([('factura_id','=',self.id)])
+            lista_anterior=[]
+            lista_actual=[]
+            lista_pagos=[]
+            cuotas_ids=self.env['contrato.estado.cuenta'].search([('factura_id','=',self.id)])
             longitud_anterior=len(lista_anterior)
-            for mov in lista_anterior:
-                lista.append(mov.id)
-            movimientos_cuota=self.env['account.move'].search([('ref','=',self.name)],limit=1)
+            for mov in cuotas_ids:
+                lista_anterior.append(mov.id)
+            movimientos_cuota=self.env['account.move'].search([('ref','=',self.name)])
             total=self.amount_total_signed
+            for line in self.line_ids:
+                if line.account_id.id==self.partner_id.property_account_receivable_id.id:
+                    for rec in line.matched_credit_ids:
+                        lista_pagos.append(rec.credit_move_id.payment_id.id)
             for l in movimientos_cuota:
                 total+=l.amount_total_signed
+                for m in l.line_ids:
+                    if m.account_id.id==self.partner_id.property_account_receivable_id.id:
+                        for rec in m.matched_credit_ids:
+                            lista_pagos.append(rec.credit_move_id.payment_id.id)
+
             for x in self.anticipos_ids:
                 total+=(x.credit-x.valor_sobrante)
+                lista_pagos.append(x.payment_id.id)
+
             total_actual=0
             for y in self.contrato_estado_cuenta_ids:
+                lista_actual.append(y.id)
                 total_actual+=y.saldo
             if total_actual==total:
+                for i in lista_actual:
+                    if i not in lista_anterior:
+                        for j in lista_anterior:
+                            if j not in lista_actual:
+                                cuotas_ids=self.env['contrato.estado.cuenta'].search([('id','=',j)])
+                                valor_reubicar=0
+                                for pag in cuotas_ids.ids_pagos:
+                                    if pag.payment_id.id in (lista_pagos):
+                                        #cuotas_id_nuevo=self.env['contrato.estado.cuenta'].search([('id','=',i)])
+                                        pag.cuotas_id=i
+                                        valor_reubicar+=pag.valor_asociado
+                                for reg in cuotas_ids:
+                                    monto_sobrante=0
+                                    for pag in cuotas_ids.ids_pagos:
+                                        monto_sobrante+=pag.valor_asociado
+                                    pagado_capital=reg.cuota_capital-reg.saldo_cuota_capital-monto_sobrante
+                                    pagado_seguro=reg.seguro-reg.saldo_seguro
+                                    pagado_rastreo=reg.rastreo-reg.saldo_rastreo
+                                    pagado_otros=reg.otro-reg.saldo_otros
+                                    pagado_administrativo=reg.cuota_adm-reg.saldo_cuota_administrativa
+                                    pagado_iva=reg.iva_adm-reg.saldo_iva
+                                    if valor_reubicar:
+                                        reg.saldo_cuota_capital=pagado_capital
+                                        reg.saldo_seguro=pagado_seguro
+                                        reg.saldo_rastreo=pagado_rastreo
+                                        reg.saldo_otros=pagado_otros
+                                        reg.cuota_adm=pagado_administrativo
+                                        reg.saldo_iva=pagado_iva
+                                    valores_cuotas=reg.cuota_capital+reg.seguro+reg.rastreo+reg.otro+reg.iva_adm+reg.cuota_adm
+                                    reg.saldo=reg.saldo_cuota_capital+reg.saldo_seguro+reg.saldo_rastreo+reg.saldo_otros+reg.saldo_cuota_administrativa+reg.saldo_iva
+                                    reg.monto_pagado=valores_cuotas-reg.saldo
+                                lista_actual.pop(j)
+                                pass
                 return True
             else:
                 raise ValidationError("Posee valores diferentes en su cuota")
