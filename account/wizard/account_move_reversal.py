@@ -109,7 +109,7 @@ class AccountMoveReversal(models.TransientModel):
                 'view_mode': 'tree,form',
                 'domain': [('id', 'in', moves_to_redirect.ids)],
             })
-        if self.self.refund_method=='cancel':
+        if self.refund_method=='cancel':
 
             cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
             seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
