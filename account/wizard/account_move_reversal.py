@@ -133,5 +133,5 @@ class AccountMoveReversal(models.TransientModel):
                 movimiento_reverso_id=self.env['account.move.reversal'].create({'move_id':mov.id,'date':fields.Date.context_today,
                                         'journal_id':mov.journal_id.id})
                                 #raise ValidationError("{0}".format(action_rubros))
-                action_rubros['id'].reverse_moves()
+                movimiento_reverso_id.reverse_moves()
         return action
