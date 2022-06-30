@@ -188,15 +188,10 @@ class AccountMove(models.Model):
                     if i not in lista_anterior:
                         for j in lista_anterior:
                             if j not in lista_actual:
-                                actual_id=self.env['contrato.estado.cuenta'].search([('id','=',i)])
-                                nuevo_id=self.env['contrato.estado.cuenta'].search([('id','=',j)])
-                                actual_cuota_id=self.env['contrato.estado.cuenta'].browse(actual_id[0])
-                                nueva_cuota_id=self.env['contrato.estado.cuenta'].browse(nuevo_id[0])
-                                raise ValidationError('total actual: {0},total anterior: {1}'.format(nueva_cuota_id,type(nueva_cuota_id)))
+                                actual_cuota_id=self.env['contrato.estado.cuenta'].search([('id','=',i)])[0]
+                                nueva_cuota_id=self.env['contrato.estado.cuenta'].search([('id','=',j)])[0]
                                 nueva_cuota_id.factura_id=self.id
-
                                 actual_cuota_id.factura_id=False
-                                
                                 monto_sobrante=0
                                 for pag in actual_cuota_id.ids_pagos:
                                     if pag.pago_id.id in (lista_pagos):
@@ -213,7 +208,6 @@ class AccountMove(models.Model):
                                 pagado_otros=actual_cuota_id.otro-actual_cuota_id.saldo_otros
                                 pagado_administrativo=actual_cuota_id.cuota_adm-actual_cuota_id.saldo_cuota_administrativa
                                 pagado_iva=actual_cuota_id.iva_adm-actual_cuota_id.saldo_iva
-                
                                 actual_cuota_id.saldo_cuota_capital+=pagado_capital
                                 actual_cuota_id.saldo_seguro+=pagado_seguro
                                 actual_cuota_id.saldo_rastreo+=pagado_rastreo
