@@ -98,7 +98,7 @@
                             <field name="amount_total"  invisible="1" readonly="1" widget="monetary" force_save="1"/>
                             <field name="actual_amount"  invisible="1" readonly="1" widget="monetary" force_save="1"/>
                             <field name="residual"  invisible="1" readonly="1" widget="monetary" force_save="1"/>
-                            <field name="monto_pendiente_pago"  sum="monto_pendiente_pago" invisible="1" readonly="0" widget="monetary" force_save="1" />
+                            <field name="monto_pendiente_pago"  sum="monto_pendiente_pago" invisible="0" readonly="0" widget="monetary" force_save="1" />
                             <field name="amount" readonly="0" widget="monetary" force_save="1" />
                             
                         </tree>
