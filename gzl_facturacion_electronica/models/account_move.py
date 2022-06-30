@@ -201,7 +201,7 @@ class AccountMove(models.Model):
                                     valores_cuotas=reg.cuota_capital+reg.seguro+reg.rastreo+reg.otro+reg.iva_adm+reg.cuota_adm
                                     reg.saldo=reg.saldo_cuota_capital+reg.saldo_seguro+reg.saldo_rastreo+reg.saldo_otros+reg.saldo_cuota_administrativa+reg.saldo_iva
                                     reg.monto_pagado=valores_cuotas-reg.saldo
-                                lista_actual.pop(j)
+                                lista_anterior.pop(j)
                                 pass
                 return True
             else:
