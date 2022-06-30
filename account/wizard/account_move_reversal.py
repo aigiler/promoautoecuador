@@ -137,7 +137,7 @@ class AccountMoveReversal(models.TransientModel):
         return action
 
 
-    def reverso_diarios(self):
+    def reverso_diarios(self,mov):
         moves = mov.id
 
         # Create default values.
@@ -172,8 +172,8 @@ class AccountMoveReversal(models.TransientModel):
         # Create action.
         # action = {
         #     'name': _('Reverse Moves'),
-        #     'type': 'ir.actions.act_window',
-        #     'res_model': 'account.move',
+        #     'type': 'ir.actiaccountons.act_window',
+        #     'res_model': '.move',
         # }
         # if len(moves_to_redirect) == 1:
         #     action.update({
