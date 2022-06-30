@@ -165,8 +165,10 @@ class AccountMoveReversal(models.TransientModel):
                 for move in moves.with_context(include_business_fields=True):
                     moves_vals_list.append(move.copy_data({'date': self.date or move.date})[0])
                 new_moves = self.env['account.move'].create(moves_vals_list)
+                new_moves.action_post()
 
             moves_to_redirect |= new_moves
+
 
         # Create action.
         # action = {
