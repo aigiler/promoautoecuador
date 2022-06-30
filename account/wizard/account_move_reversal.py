@@ -185,4 +185,4 @@ class AccountMoveReversal(models.TransientModel):
         #         'domain': [('id', 'in', moves_to_redirect.ids)],
         #     })
 
-        return action
+        #return action
