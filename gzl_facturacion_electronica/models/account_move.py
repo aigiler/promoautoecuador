@@ -173,14 +173,11 @@ class AccountMove(models.Model):
                 for i in lista_actual:
                     if i in lista_anterior:
                         cuotas_ids_nuevo=self.env['contrato.estado.cuenta'].search([('id','=',i)])
+                        valor_pagado=0
                         for pag in cuotas_ids.ids_pagos:
                             if pag.payment_id.id in (lista_pagos):
-                                total+=pag.valor_asociado
-                            else:
-                                valor_excluido+=pag.valor_asociado
-                                total+=(cuotas_ids_nuevo.monto_pagado-valor_excluido)
-                        if not cuotas_ids_nuevo.ids_pagos:
-                            total+=y.saldo
+                                valor_pagado+=pag.valor_asociado
+                        total_actual+=(cuotas_ids_nuevo.saldo+valor_pagado)
                     if i not in lista_anterior:
                         total+=y.saldo
                         for j in lista_anterior:
