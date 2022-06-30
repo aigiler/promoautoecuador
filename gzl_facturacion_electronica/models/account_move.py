@@ -182,12 +182,13 @@ class AccountMove(models.Model):
                 else:
                     total_actual+=cuotas_ids_nuevo.saldo
 
-            raise ValidationError('total actual: {0},total anterior: {1}'.format(lista_actual,lista_anterior))
+            
             if total_actual==total:
                 for i in lista_actual:
                     if i not in lista_anterior:
                         for j in lista_anterior:
                             if j not in lista_actual:
+                                raise ValidationError('total actual: {0},total anterior: {1}'.format(lista_actual,lista_anterior))
                                 nueva_cuota_id=self.env['contrato.estado.cuenta'].search([('id','=',j)])[0]
                                 actual_cuota_id=self.env['contrato.estado.cuenta'].search([('id','=',i)])[0]
                                 actual_cuota_id.factura_id=False
@@ -236,8 +237,6 @@ class AccountMove(models.Model):
 
                                 
                                 lista_anterior.remove(j)
-                                pass
-                    #return True
             else:
                 raise ValidationError("Posee valores diferentes en su cuota")
 
