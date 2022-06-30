@@ -165,7 +165,6 @@ class AccountMove(models.Model):
             for mov in cuotas_ids:
                 lista_anterior.append(mov.id)
             movimientos_cuota=self.env['account.move'].search([('ref','=',self.name),('journal_id','in',lista_diarios)])
-
             total=self.amount_total_signed
             for line in self.line_ids:
                 if line.account_id.id==self.partner_id.property_account_receivable_id.id:
@@ -1219,35 +1218,12 @@ class AccountMove(models.Model):
                                     ('type' & 'reversed_entry_id' are computed in the method).
         :return:                    An account.move recordset, reverse of the current self.
         '''
-        lines=[]
-        cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
-        seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
-        otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
-        rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
-        lista_diarios=[]
-        
-        move_credito=''
-        if cuota_capital_obj:
-            lista_diarios.append(cuota_capital_obj.journal_id.id)
-        if seguro_obj:
-            lista_diarios.append(seguro_obj.journal_id.id)
-        if otros_obj:
-            lista_diarios.append(otros_obj.journal_id.id)
-        if rastreo_obj:
-            lista_diarios.append(rastreo_obj.journal_id.id)
-
-        movimientos_cuota=self.env['account.move'].search([('ref','=',self.name),('journal_id','in',lista_diarios)])
-
-        for mov in movimientos_cuota:
-            lines+=mov.mapped('line_ids')
-        default_values_list = [{} for move in movimientos_cuota]
         if not default_values_list:
-            default_values_list.append([{} for move in self])
+            default_values_list = [{} for move in self]
 
-        #raise ValidationError('{0}'.format(default_values_list))
         if cancel:
-            lines+=self.mapped('line_ids')
-            
+            lines = self.mapped('line_ids')
+            # Avoid maximum recursion depth.
             if lines:
                 lines.remove_move_reconcile()
 

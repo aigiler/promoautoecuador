@@ -109,4 +109,28 @@ class AccountMoveReversal(models.TransientModel):
                 'view_mode': 'tree,form',
                 'domain': [('id', 'in', moves_to_redirect.ids)],
             })
+        if self.self.refund_method=='cancel':
+
+            cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
+            seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
+            otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
+            rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
+            lista_diarios=[]
+            
+            move_credito=''
+            if cuota_capital_obj:
+                lista_diarios.append(cuota_capital_obj.journal_id.id)
+            if seguro_obj:
+                lista_diarios.append(seguro_obj.journal_id.id)
+            if otros_obj:
+                lista_diarios.append(otros_obj.journal_id.id)
+            if rastreo_obj:
+                lista_diarios.append(rastreo_obj.journal_id.id)
+
+            for mov in cuotas_ids:
+                lista_anterior.append(mov.id)
+            movimientos_cuota=self.env['account.move'].search([('ref','=',self.name),('journal_id','in',lista_diarios)])
+            for mov in movimientos_cuota:
+                action_rubros = mov.env.ref('account.action_view_account_move_reversal').read()[0]
+                action_rubros.reverse_moves()
         return action
