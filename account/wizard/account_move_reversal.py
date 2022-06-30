@@ -127,8 +127,6 @@ class AccountMoveReversal(models.TransientModel):
             if rastreo_obj:
                 lista_diarios.append(rastreo_obj.journal_id.id)
 
-            for mov in cuotas_ids:
-                lista_anterior.append(mov.id)
             movimientos_cuota=self.env['account.move'].search([('ref','=',self.name),('journal_id','in',lista_diarios)])
             for mov in movimientos_cuota:
                 action_rubros = mov.env.ref('account.action_view_account_move_reversal').read()[0]
