@@ -137,8 +137,7 @@ class AccountMoveReversal(models.TransientModel):
         return action
 
 
-    def reverso_diarios(self,mov):
-        moves = mov.id
+    def reverso_diarios(self,moves):
 
         # Create default values.
         default_values_list = []
