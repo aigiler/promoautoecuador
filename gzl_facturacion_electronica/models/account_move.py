@@ -178,7 +178,7 @@ class AccountMove(models.Model):
                         if pag.payment_id.id in (lista_pagos):
                             valor_pagado+=pag.valor_asociado
                     total_actual+=(cuotas_ids_nuevo.saldo+valor_pagado)
-                if not in lista_anterior:
+                else:
                     total_actual+=cuotas_ids_nuevo.saldo
 
             if total_actual==total:
