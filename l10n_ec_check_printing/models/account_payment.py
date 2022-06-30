@@ -1270,7 +1270,7 @@ class AccountPaymentLine(models.Model):
     monto_pendiente_pago = fields.Float(string='Monto de la cuota de Pago')
 
 
-    @api.onchange('invoice_id')
+    @api.constrains('invoice_id')
     def obtener_monto(self):
         for l in self:
             monto_pendiente_pago=0
@@ -1304,7 +1304,6 @@ class AccountPaymentLine(models.Model):
             #l.payment_id.amount=monto_inicial 
 
     @api.onchange('amount')
-    @api.constrains('amount')
     def actualizar_saldo(self):
         for l in self:
             l.payment_id._saldo_pagar()
