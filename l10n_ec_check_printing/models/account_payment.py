@@ -1296,10 +1296,10 @@ class AccountPaymentLine(models.Model):
             l.amount=l.actual_amount+monto_pendiente_pago
                 #l.deuda_total=self.payment_id.obtener_deudas_facturas()
 
-    @api.onchange('pagar')
-    def actualizar_totales(self):
-        for l in self:
-            l.amount=l.actual_amount+l.monto_pendiente_pago
+    #@api.onchange('pagar')
+    #def actualizar_totales(self):
+    #    for l in self:
+    #        l.amount=l.actual_amount+l.monto_pendiente_pago
             #l.payment_id.amount=monto_inicial 
 
     @api.onchange('amount')
