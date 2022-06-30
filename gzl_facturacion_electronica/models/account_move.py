@@ -168,7 +168,7 @@ class AccountMove(models.Model):
             total_actual=0
             for y in self.contrato_estado_cuenta_ids:
                 lista_actual.append(y.id)
-                total_actual+=y.saldo
+                #total_actual+=y.saldo
             
             for i in lista_actual:
                 cuotas_ids_nuevo=self.env['contrato.estado.cuenta'].search([('id','=',i)])
@@ -178,6 +178,7 @@ class AccountMove(models.Model):
                         if pag.pago_id.id in (lista_pagos):
                             valor_pagado+=pag.valor_asociado
                     total_actual+=(cuotas_ids_nuevo.saldo+valor_pagado)
+                    #raise ValidationError('total actual: {0},total anterior: {1}'.format(total_actual,total))
                 else:
                     total_actual+=cuotas_ids_nuevo.saldo
 
