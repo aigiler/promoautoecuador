@@ -132,5 +132,5 @@ class AccountMoveReversal(models.TransientModel):
             for mov in movimientos_cuota:
                 action_rubros = mov.env.ref('account.action_view_account_move_reversal').read()[0]
                 #raise ValidationError("{0}".format(action_rubros))
-                action_rubros.reverse_moves()
+                action_rubros['id'].reverse_moves()
         return action
