@@ -518,8 +518,8 @@ class AccountPayment(models.Model):
                     'amount_total': obj_factura.amount_total,
                     'actual_amount':obj_factura.amount_residual,
                     'residual':obj_factura.amount_residual,
-                    'amount': monto_pendiente_pago+obj_factura.amount_residual,
-                    'monto_pendiente_pago':monto_pendiente_pago,
+                    'amount': 0,
+                    'monto_pendiente_pago':monto_pendiente_pago+obj_factura.amount_residual,
                     'date_due':obj_factura.invoice_date_due,
                     'document_number':obj_factura.l10n_latam_document_number,
                     'payment_id':rec.id
@@ -1260,14 +1260,14 @@ class AccountPaymentLine(models.Model):
     #partner_id = fields.Many2one(related='payment_id.partner_id', string='Proveedor')
     pagar=fields.Boolean(string="Seleccione para Pagar")
     date_due = fields.Date(string='Fecha de Vencimiento')
-    amount = fields.Monetary('Total adeudado')
+    amount = fields.Monetary('Valor a Pagar')
     currency_id = fields.Many2one(related='invoice_id.currency_id', string="Moneda")
     invoice_id = fields.Many2one('account.move', 'Factura')
     actual_amount = fields.Float(string='Monto actual adeudado')
     amount_total = fields.Monetary('Monto Total')
     residual = fields.Monetary('Cuotas')
     document_number = fields.Char(string="Número de Documento")
-    monto_pendiente_pago = fields.Float(string='Monto de la cuota de Pago')
+    monto_pendiente_pago = fields.Float(string='Saldo Pendiente')
 
 
     @api.constrains('invoice_id')
@@ -1293,13 +1293,14 @@ class AccountPaymentLine(models.Model):
             l.saldo_seguro=saldo_seg
             l.saldo_rastreo=saldo_ras
             l.saldo_otros=saldo_otros
-            l.monto_pendiente_pago=monto_pendiente_pago
-            l.amount=l.actual_amount+monto_pendiente_pago
+            l.monto_pendiente_pago=monto_pendiente_pago+l.actual_amount
+            
                 #l.deuda_total=self.payment_id.obtener_deudas_facturas()
 
-    #@api.onchange('pagar')
-    #def actualizar_totales(self):
-    #    for l in self:
+    @api.onchange('pagar')
+    def actualizar_totales(self):
+        for l in self:
+            l.amount=l.monto_pendiente_pago
     #        l.amount=l.actual_amount+l.monto_pendiente_pago
             #l.payment_id.amount=monto_inicial 
 
