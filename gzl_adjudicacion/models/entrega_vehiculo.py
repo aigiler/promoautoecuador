@@ -603,7 +603,7 @@ class EntegaVehiculo(models.Model):
 
 
     observacionesCalificador = fields.Text(string="Observaciones", default=' ')
-    observacionesCalificador_garante = fields.Text(string="Observaciones", default=' ')
+    observacionesCalificadorGarante = fields.Text(string="Observaciones", default=' ')
 
     titularConyugePuntos = fields.Char(
         string="Titular, Conyugue y Depositario")
