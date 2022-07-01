@@ -148,7 +148,7 @@ class AccountMoveReversal(models.TransientModel):
                 monto_sobrante=0
                 for det in cuota_id.ids_pagos:
                     if det.pago_id not in lista_pagos:
-                        monto_sobrante+=pag.valor_asociado
+                        monto_sobrante+=det.valor_asociado
                     pagado_capital=cuota_id.cuota_capital-cuota_id.saldo_cuota_capital-monto_sobrante
                     pagado_seguro=cuota_id.seguro-cuota_id.saldo_seguro
                     pagado_rastreo=cuota_id.rastreo-cuota_id.saldo_rastreo
