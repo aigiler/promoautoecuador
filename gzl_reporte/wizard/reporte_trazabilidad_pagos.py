@@ -8,6 +8,7 @@ from io import BytesIO
 import base64
 from odoo.exceptions import ValidationError
 from statistics import mode
+from scipy import stats as s
 
 
 # class Users(models.Model):
@@ -156,7 +157,7 @@ class ReportTrazabilidad(models.TransientModel):
                             dct['rango'].append(rang['codigo_rango'])
             detalle_pagos.append(dct)
         for lista_final in detalle_pagos:
-            mayor_coincidencia=mode(lista_final['rango'])
+            mayor_coincidencia=s.mode(lista_final['rango'])[0]
             nombre_rango=self.env['rango.pagos'].search([('codigo_rango','=',int(mayor_coincidencia))])
             lista_final['grupo_asignado']=nombre_rango.name
 
