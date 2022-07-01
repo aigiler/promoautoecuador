@@ -212,4 +212,3 @@ class ReportTrazabilidad(models.TransientModel):
                     sheet.write(row, 5, line['estado_deuda'], registros_tabla)
 
                     row+=1
-
