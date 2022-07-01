@@ -299,7 +299,7 @@ class EntegaVehiculo(models.Model):
 
     porcentajePendiente = fields.Float(digits=(6, 2), compute='calcular_porcentaj_pendiente')
     
-        @api.depends('valorTotalPlan', 'montoCuotasPendientes')
+    @api.depends('valorTotalPlan', 'montoCuotasPendientes')
     def calcular_porcentaj_pendiente(self):
         for rec in self:
             if rec.valorTotalPlan:
