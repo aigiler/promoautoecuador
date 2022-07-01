@@ -176,7 +176,7 @@ class ReportTrazabilidad(models.TransientModel):
         lista_asesores=[]
         
 
-        for line in lista_final:
+        for line in detalle_pagos:
             if self.rango:
                 if self.rango.name==line['grupo_asignado']:
                     sheet.write(row,0, line['grupo_asignado'], registros_tabla)
