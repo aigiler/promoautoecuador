@@ -157,20 +157,21 @@ class ReportTrazabilidad(models.TransientModel):
             detalle_pagos.append(dct)
         for lista_final in detalle_pagos:
             max_mode=0
-            list_table = statistics._counts(lista_final['rango'])
-            len_table = len(list_table)
+            if lista_final['rango']:
+                list_table = statistics._counts(lista_final['rango'])
+                len_table = len(list_table)
 
-            if len_table == 1:
-                max_mode = statistics.mode(lista_final['rango'])
-            else:
-                new_list = []
-                for i in range(len_table):
-                    new_list.append(list_table[i][0])
-                max_mode = max(new_list) # use the max value here
+                if len_table == 1:
+                    max_mode = statistics.mode(lista_final['rango'])
+                else:
+                    new_list = []
+                    for i in range(len_table):
+                        new_list.append(list_table[i][0])
+                    max_mode = max(new_list) # use the max value here
 
 
-            nombre_rango=self.env['rango.pagos'].search([('codigo_rango','=',int(max_mode))])
-            lista_final['grupo_asignado']=nombre_rango.name
+                nombre_rango=self.env['rango.pagos'].search([('codigo_rango','=',int(max_mode))])
+                lista_final['grupo_asignado']=nombre_rango.name
 
         sheet.set_column('A:A', 10)
         sheet.set_column('B:B', 10)
