@@ -7,6 +7,7 @@ import xlsxwriter
 from io import BytesIO
 import base64
 from odoo.exceptions import ValidationError
+from statistics import mode
 
 
 # class Users(models.Model):
