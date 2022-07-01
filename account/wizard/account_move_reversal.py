@@ -110,7 +110,7 @@ class AccountMoveReversal(models.TransientModel):
                 'view_mode': 'tree,form',
                 'domain': [('id', 'in', moves_to_redirect.ids)],
             })
-        if self.refund_method=='cancel':
+        if self.refund_method=='cancel' and self.move_id.contrato_estado_cuenta_ids:
 
             cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
             seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
@@ -129,16 +129,65 @@ class AccountMoveReversal(models.TransientModel):
                 lista_diarios.append(rastreo_obj.journal_id.id)
 
             movimientos_cuota=self.env['account.move'].search([('ref','=',self.move_id.name),('journal_id','in',lista_diarios)])
+            lista_pagos=[]
             for mov in movimientos_cuota:
+                for x in mov.line_ids:
+                    if x.account_id.id==mov.partner_id.property_account_receivable_id.id:
+                        for y in matched_credits_ids:
+                            lista_pagos.append(y.credit_move_id.payment_id.id)
+            for linea in self.move_id:
+                for ant in linea.anticipos_ids:
+                    lista_pagos.append(ant.payment_id.id)
+                    for pag in ant.linea_pago_id:
+                        pag.saldo_pendiente+=(ant.credit-ant.valor_sobrante)
+                        pag.aplicar_anticipo=True
+            for cuota_id in self.move_id.contrato_estado_cuenta_ids:
+                cuota_id.factura_id=False
+                pagos_cuotas=self.env['account.payment.cuotas'].search([('pago_id','in',lista_pagos)])
+                pagos_cuotas.unlink()
+                monto_sobrante=0
+                for det in cuota_id.ids_pagos:
+                    if det.pago_id not in lista_pagos:
+                        monto_sobrante+=pag.valor_asociado
+                    pagado_capital=cuota_id.cuota_capital-cuota_id.saldo_cuota_capital-monto_sobrante
+                    pagado_seguro=cuota_id.seguro-cuota_id.saldo_seguro
+                    pagado_rastreo=cuota_id.rastreo-cuota_id.saldo_rastreo
+                    pagado_otros=cuota_id.otro-cuota_id.saldo_otros
+                    pagado_administrativo=cuota_id.cuota_adm-cuota_id.saldo_cuota_administrativa
+                    pagado_iva=cuota_id.iva_adm-cuota_id.saldo_iva
+                    if cuota_id.estado_pago=='pagado':
+                        transacciones=self.env['transaccion.grupo.adjudicado']
+                        dct={
+                                'grupo_id':cuota_id.contrato_id.grupo.id,
+                                'debe':cuota_id.cuota_capital+cuota_id.seguro+cuota_id.rastreo+cuota_id.otro+cuota_id.cuota_adm+cuota_id.iva_adm
+                                'adjudicado_id':cuota_id.contrato_id.cliente.id,
+                                'contrato_id':cuota_id.contrato_id.id,
+                                'state':cuota_id.contrato_id.state
+                                }
+                        transacciones.create(dct)
+
+                    cuota_id.saldo_cuota_capital+=pagado_capital
+                    cuota_id.saldo_seguro+=pagado_seguro
+                    cuota_id.saldo_rastreo+=pagado_rastreo
+                    cuota_id.saldo_otros+=pagado_otros
+                    cuota_id.saldo_cuota_administrativa+=pagado_administrativo
+                    cuota_id.saldo_iva+=pagado_iva
+                    if cuota_id.saldo==0 or cuota_id.saldo==0.0 or cuota_id.saldo==0.00:
+                        cuota_id.estado_pago='pagado'
+                    else:
+                        cuota_id.estado_pago='pendiente'
+
+            for mov in movimientos_cuota:
+
                 movimiento_reverso_id=self.env['account.move.reversal'].create({'move_id':mov.id,'date':fields.Date.context_today(self),
                                         'journal_id':mov.journal_id.id,'move_type':'entry'})
                                 #raise ValidationError("{0}".format(action_rubros))
                 movimiento_reverso_id.reverso_diarios(mov)
+                
         return action
 
 
     def reverso_diarios(self,moves):
-
         # Create default values.
         default_values_list = []
         for move in moves:
