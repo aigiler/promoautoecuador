@@ -398,7 +398,7 @@ class EntegaVehiculo(models.Model):
     @api.depends('ingresosFamiliares','ingresosFamiliaresGarante')
     def calcular_valor_gastos_familiares(self):
         for rec in self:
-            gastosFamiliaresGarante=0
+            rec.gastosFamiliaresGarante=0.00
             rec.porcentajeIngresos = 100.00
             rec.gastosFamiliares = rec.ingresosFamiliares * 0.7
             if rec.garante:
@@ -412,7 +412,7 @@ class EntegaVehiculo(models.Model):
     @api.depends('gastosFamiliares', 'ingresosFamiliares','gastosFamiliaresGarante', 'ingresosFamiliaresGarante')
     def calcular_porcentaje_gastos_familiares(self):
         for rec in self:
-            gastosFamiliaresGarante=0
+            rec.gastosFamiliaresGarante=0.00
             rec.porcentajeGastos = (
                 rec.gastosFamiliares / rec.ingresosFamiliares) * 100
             if rec.garante:
