@@ -412,6 +412,7 @@ class EntegaVehiculo(models.Model):
     @api.depends('gastosFamiliares', 'ingresosFamiliares','gastosFamiliaresGarante', 'ingresosFamiliaresGarante')
     def calcular_porcentaje_gastos_familiares(self):
         for rec in self:
+            gastosFamiliaresGarante=0
             rec.porcentajeGastos = (
                 rec.gastosFamiliares / rec.ingresosFamiliares) * 100
             if rec.garante:
@@ -422,6 +423,7 @@ class EntegaVehiculo(models.Model):
     @api.depends('ingresosFamiliares', 'gastosFamiliares','gastosFamiliaresGarante', 'ingresosFamiliaresGarante')
     def calcular_porcentaje_gastos_familiares(self):
         for rec in self:
+            rec.porcentajeGastosGarante=0
             if rec.gastosFamiliares:
                 rec.porcentajeGastos = (
                     rec.gastosFamiliares / rec.ingresosFamiliares) * 100
@@ -440,6 +442,7 @@ class EntegaVehiculo(models.Model):
     @api.depends('valorCuota', 'ingresosFamiliares','ingresosFamiliaresGarante')
     def calcular_porcentaje_cuota_plan(self):
         for rec in self:
+            rec.porcentajeCuotaPlanGarante
             if rec.ingresosFamiliares:
                 rec.porcentajeCuotaPlan = round(((rec.valorCuota/rec.ingresosFamiliares) * 100), 0) 
             else:
@@ -458,6 +461,8 @@ class EntegaVehiculo(models.Model):
     @api.depends('porcentajeCuotaPlan','porcentajeCuotaPlanGarante')
     def calcular_puntos_ingresos(self):
         for rec in self:
+            rec.puntosPorcentajeCanceladoGarante = 0
+            rec.puntosCuotaIngresosGarante = 0
             if rec.porcentajeCuotaPlan >= 0.00 and rec.porcentajeCuotaPlan <= 30.00:
                 rec.puntosCuotaIngresos = 200
             elif rec.porcentajeCuotaPlan >= 31.00 and rec.porcentajeCuotaPlan <= 40.00:
@@ -485,6 +490,7 @@ class EntegaVehiculo(models.Model):
     @api.depends('porcentajeCuotaPlan','porcentajeCuotaPlanGarante')
     def calcular_puntos_saldos_plan(self):
         for rec in self:
+            rec.puntosPorcentajeCanceladoGarante = 0
             if rec.porcentajeCuotaPlan >= 0.00 and rec.porcentajeCuotaPlan <= 25.00:
                 rec.puntosPorcentajeCancelado = 0
             elif rec.porcentajeCuotaPlan >= 26.00 and rec.porcentajeCuotaPlan <= 30.00:
@@ -512,6 +518,7 @@ class EntegaVehiculo(models.Model):
     @api.depends('porcentajeGastos', 'porcentajeIngresos','porcentajeGastosGarante', 'porcentajeIngresosGarante')
     def calcular_porcentaje_disponibilidad(self):
         for rec in self:
+            rec.porcentajeDisponibilidadGarante=0
             rec.porcentajeDisponibilidad = rec.porcentajeIngresos - rec.porcentajeGastos
             if rec.garante:
                 rec.porcentajeDisponibilidadGarante = rec.porcentajeIngresosGarante - rec.porcentajeGastosGarante
@@ -523,6 +530,7 @@ class EntegaVehiculo(models.Model):
     @api.depends('ingresosFamiliares', 'gastosFamiliares','ingresosFamiliaresGarante', 'gastosFamiliaresGarante')
     def calcular_valor_disponibilidad(self):
         for rec in self:
+            rec.disponibilidadGarante=0
             rec.disponibilidad = rec.ingresosFamiliares - rec.gastosFamiliares
             if rec.garante:
                 rec.disponibilidadGarante = rec.ingresosFamiliaresGarante - rec.gastosFamiliaresGarante
@@ -535,6 +543,7 @@ class EntegaVehiculo(models.Model):
 
     @api.onchange('scoreBuroCredito','scoreBuroCreditoGarante')
     def calculo_scoreCredito(self):
+        self.scoreCreditoGarante=0
         self.scoreCredito= self.scoreBuroCredito 
         if self.garante:
             self.scoreCreditoGarante= self.scoreBuroCreditoGarante    
@@ -546,6 +555,7 @@ class EntegaVehiculo(models.Model):
     @api.depends('scoreCredito','scoreCreditoGarante')
     def calcular_punto_score_credito(self):
         for rec in self:
+            rec.puntosScoreCreditoGarante = 0
             if rec.scoreCredito >= 500 and rec.scoreCredito <= 799:
                 rec.puntosScoreCredito = 100
             elif rec.scoreCredito >= 800:
@@ -571,6 +581,7 @@ class EntegaVehiculo(models.Model):
     @api.depends('antiguedadLaboral','antiguedadLaboralGarante')
     def calcular_puntos_antiguedad_laboral(self):
         for rec in self:
+            rec.puntosAntiguedadLaboralGarante = 0
             if rec.antiguedadLaboral >= 2:
                 rec.puntosAntiguedadLaboral = 200
             elif rec.antiguedadLaboral >= 1:

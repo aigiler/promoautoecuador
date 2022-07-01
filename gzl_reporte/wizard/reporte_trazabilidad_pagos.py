@@ -27,6 +27,7 @@ class RangoPagos(models.Model):
     @api.depends('minimo','maximo')
     def nombre_rango(self):
         for l in self:
+            l.name=''
             if l.minimo:
                 l.name=str(l.minimo)+' al '
             if l.maximo:
