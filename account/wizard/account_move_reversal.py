@@ -159,7 +159,7 @@ class AccountMoveReversal(models.TransientModel):
                         transacciones=self.env['transaccion.grupo.adjudicado']
                         dct={
                                 'grupo_id':cuota_id.contrato_id.grupo.id,
-                                'debe':cuota_id.cuota_capital+cuota_id.seguro+cuota_id.rastreo+cuota_id.otro+cuota_id.cuota_adm+cuota_id.iva_adm
+                                'debe':cuota_id.cuota_capital+cuota_id.seguro+cuota_id.rastreo+cuota_id.otro+cuota_id.cuota_adm+cuota_id.iva_adm,
                                 'adjudicado_id':cuota_id.contrato_id.cliente.id,
                                 'contrato_id':cuota_id.contrato_id.id,
                                 'state':cuota_id.contrato_id.state
