@@ -250,7 +250,7 @@ class EntegaVehiculo(models.Model):
     def calcular_puntos_bienes(self):
         for rec in self:
             rec.totalPuntosBienesAdj = sum(rec.tablaPuntosBienes.mapped('puntosBien'))
-            if self.garante:
+            if rec.garante:
                 rec.totalPuntosBienesGarante = sum(rec.tablaPuntosBienesGarante.mapped('puntosBien'))
 
     # observaciones
