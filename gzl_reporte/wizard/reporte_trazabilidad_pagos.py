@@ -17,12 +17,21 @@ from odoo.exceptions import ValidationError
 class RangoPagos(models.Model):
     _name = 'rango.pagos'
     _description = 'Rango Pagos'
-    _rec_name="numero"
+    _rec_name="name"
 
+    name = fields.Char( string="Nombre",compute='nombre_rango')
     minimo = fields.Integer( string="Minimo")
     maximo = fields.Integer(string="Maximo")
     codigo_rango = fields.Integer(string="Codigo")
 
+    @api.depends('minimo','maximo')
+    def nombre_rango(self):
+        for l in self:
+            if l.minimo:
+                l.name=str(l.minimo)+' al '
+            if l.maximo:
+                l.name+=str(l.maximo)+' de cada mes'
+        
 class ReportTrazabilidad(models.TransientModel):
     _name = "reporte.pagos.trazabilidad"
 
