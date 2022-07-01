@@ -156,7 +156,7 @@ class ReportTrazabilidad(models.TransientModel):
                             dct['rango'].append(rang['codigo_rango'])
             detalle_pagos.append(dct)
         for lista_final in detalle_pagos:
-            moyor_coincidencia=mode(lista_final['rango'])
+            mayor_coincidencia=mode(lista_final['rango'])
             nombre_rango=self.env['rango.pagos'].search([('codigo_rango','=',int(mayor_coincidencia))])
             lista_final['grupo_asignado']=nombre_rango.name
 
