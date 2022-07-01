@@ -49,7 +49,7 @@
                 <field name="name"/>
                 <field name="minimo"/>
                 <field name="maximo"/>
-                <field name="codigo_rango", required="1"/>
+                <field name="codigo_rango" required="1"/>
             </tree>
         </field>
     </record>
