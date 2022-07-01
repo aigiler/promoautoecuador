@@ -45,7 +45,7 @@
         <field name="name">reporte.pagos.tree</field>
         <field name="model">rango.pagos</field>
         <field name="arch" type="xml">
-            <tree string="Rangos de Fechas de Pago" editable='button'>
+            <tree string="Rangos de Fechas de Pago" editable='bottom'>
                 <field name="name"/>
                 <field name="minimo"/>
                 <field name="maximo"/>
