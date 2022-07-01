@@ -1221,11 +1221,11 @@ class AccountMove(models.Model):
         if not default_values_list:
             default_values_list = [{} for move in self]
 
-        if cancel:
+        #if cancel:
             #lines = self.mapped('line_ids')
             # Avoid maximum recursion depth.
-            if lines:
-                lines.remove_move_reconcile()
+            #if lines:
+            #    lines.remove_move_reconcile()
 
         reverse_type_map = {
             'entry': 'entry',
