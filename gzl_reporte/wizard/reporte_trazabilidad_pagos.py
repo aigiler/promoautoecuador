@@ -132,6 +132,7 @@ class ReportTrazabilidad(models.TransientModel):
         lista_clientes=[]
         detalle_pagos=[]
         rangos_ids=self.env['rango.pagos'].search([])
+        lista_rangos=[]
         for x in rangos_ids:
             lista_rangos.append({'minimo':x.minimo,'maximo':x.maximo,'codigo_rango':x.codigo_rango})
 
