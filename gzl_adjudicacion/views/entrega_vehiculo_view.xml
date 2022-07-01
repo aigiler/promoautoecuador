@@ -598,7 +598,7 @@
 
 
                         <!-- CALIFICADOR DE COMPRA -->
-                        <page string="Calificador de Compra Garante" attrs="{'readonly': [('id', '!=', False)], invisible':[('garante', '=', False)]}">
+                        <page string="Calificador de Compra Garante" attrs="{'readonly': [('id', '!=', False)], 'invisible':[('garante', '=', False)]}">
                             <separator class="text-center" string="CALIFICADOR PARA COMPRA DEL BIEN"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
