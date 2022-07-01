@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+        <record id="report_trazabilidad_form" model="ir.ui.view">
+            <field name="name">Reporte de Trazabilidad Pagos</field>
+            <field name="model">reporte.pagos.trazabilidad</field>
+            <field name="arch" type="xml">
+                <form string="Reporte de Trazabilidad Pagos">
+                    <group>
+                        <group col="2">
+                            <field name="grupo" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="rango" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="estado_contrato"/>
+                            <field name="estado_deuda"/>
+                        </group>                    
+                    </group>                        
+                    <footer>
+                        <button name="print_report_xls"
+                                string="Imprimir"
+                                type="object"
+                                class="oe_highlight" />
+
+                        <button special="cancel"
+                                string="Cancelar"
+                                class="oe_link" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_report_trazabilidad" model="ir.actions.act_window">
+            <field name="name">Reporte de Trazabilidad Pagos</field>
+            <field name="res_model">reporte.pagos.trazabilidad</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem action="action_report_trazabilidad" 
+                  id="menu_action_report_trazabilidad" 
+                  parent="account.menu_finance_reports" 
+                  sequence="13"/>
+
+
+
+    <record id="rango_pagos_tree" model="ir.ui.view">
+        <field name="name">reporte.pagos.tree</field>
+        <field name="model">rango.pagos</field>
+        <field name="arch" type="xml">
+            <tree string="Rangos de Fechas de Pago" editable='button'>
+                <field name="name"/>
+                <field name="cuenta_id"/>
+                <field name="journal_id"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="configuracion_rangos_pagos" model="ir.actions.act_window">
+        <field name="name">Rangos de Fechas de Pago</field>
+        <field name="res_model">rango.pagos</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+
+
+    <menuitem name="Rangos de Fechas de Pago" 
+            action="configuracion_rangos_pagos" 
+            id="menu_fechas_pago" 
+            parent="menu_ajustes_documentos_corporativos" 
+            sequence="1"/>
+
+
+
+
+
+
+
+</odoo>
