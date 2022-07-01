@@ -47,8 +47,9 @@
         <field name="arch" type="xml">
             <tree string="Rangos de Fechas de Pago" editable='button'>
                 <field name="name"/>
-                <field name="cuenta_id"/>
-                <field name="journal_id"/>
+                <field name="minimo"/>
+                <field name="maximo"/>
+                <field name="codigo_rango", required="1"/>
             </tree>
         </field>
     </record>
