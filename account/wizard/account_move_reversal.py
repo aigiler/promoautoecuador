@@ -132,7 +132,7 @@ class AccountMoveReversal(models.TransientModel):
             for mov in movimientos_cuota:
                 for x in mov.line_ids:
                     if x.account_id.id==x.partner_id.property_account_receivable_id.id:
-                        for y in x.matched_credits_ids:
+                        for y in x.matched_credit_ids:
                             lista_pagos.append(y.credit_move_id.payment_id.id)
             for linea in self.move_id:
                 for ant in linea.anticipos_ids:
