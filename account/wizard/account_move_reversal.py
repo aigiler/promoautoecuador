@@ -150,7 +150,7 @@ class AccountMoveReversal(models.TransientModel):
         ]
         for move, default_vals in zip(moves, default_values_list):
             is_auto_post = bool(default_vals.get('auto_post'))
-            is_cancel_needed = not is_auto_post and self.refund_method in ('cancel', 'modify')
+            is_cancel_needed =True
             batch_index = 0 if is_cancel_needed else 1
             batches[batch_index][0] |= move
             batches[batch_index][1].append(default_vals)

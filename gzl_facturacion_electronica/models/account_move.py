@@ -1222,7 +1222,7 @@ class AccountMove(models.Model):
             default_values_list = [{} for move in self]
 
         if cancel:
-            lines = self.mapped('line_ids')
+            #lines = self.mapped('line_ids')
             # Avoid maximum recursion depth.
             if lines:
                 lines.remove_move_reconcile()
