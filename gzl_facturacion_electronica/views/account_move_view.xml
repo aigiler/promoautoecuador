@@ -32,18 +32,61 @@
                 <xpath expr="//field[@name='partner_id']" position="after">
                      <field name="is_group_cobranza" invisible="1"/>
                     <field name="contrato_id"  domain="[('cliente', '=', partner_id)]" attrs="{'invisible': [('type', 'not in', ['out_invoice','in_invoice'])], 'readonly': [('state','!=','draft')]}"  options="{'no_open': True, 'no_create': True}" />
-                    <field name="contrato_estado_cuenta_ids"  domain="[('contrato_id','=',contrato_id),('estado_pago','=','pendiente'),('factura_id','=',False),('programado','=',False)]" attrs="{'invisible': ['|',('type', '!=', 'out_invoice'),('contrato_id', '=', False)], 'readonly': [('state','!=','draft')]}">
+                    <field name="contrato_estado_cuenta_ids"  domain="[('contrato_id','=',contrato_id),('estado_pago','=','pendiente'),('factura_id','=',False),('programado','=',False)]" attrs="{'invisible': ['|',('type', '!=', 'out_invoice'),('contrato_id', '=', False)]}">
                     <tree editable="bottom">
-                        <field name="numero_cuota"/>
-                        <field name="cuota_adm"  class="oe_edit_only"/>
-                        <field name="iva_adm"  class="oe_edit_only"/>
-                        <field name="cuota_capital"  class="oe_edit_only"/>
-                        <field name="seguro"  class="oe_edit_only"/>
-                        <field name="rastreo"  class="oe_edit_only"/>
-                        <field name="otro"  class="oe_edit_only"/>
-                        <field name="saldo" sum="Total"/>
-                  
+                        <field name="numero_cuota" readonly="1"/>
+                        <field name="fecha" readonly="1"/>
+                        <field name="saldo_cuota_administrativa" readonly="1" class="oe_edit_only"/>
+                        <field name="saldo_iva" readonly="1" class="oe_edit_only"/>
+                        <field name="saldo_cuota_capital" readonly="1" class="oe_edit_only"/>
+                        <field name="saldo_seguro" readonly="1" class="oe_edit_only"/>
+                        <field name="saldo_rastreo" readonly="1" class="oe_edit_only"/>
+                        <field name="saldo_otros" readonly="1" class="oe_edit_only"/>
+                        <field name="saldo" sum="Saldo" readonly="1"/>
                     </tree>
+                    <form string="Estado de Cuenta" >
+                                <header>
+                                    <field name="estado_pago" widget="statusbar" readonly="1"/>
+                                </header>
+                                <sheet>
+                                <group>
+                                    <field name="idContrato" readonly="1"/>
+                                    <field name="contrato_id" invisible="1"/>
+                                    <field name="numero_cuota"  readonly="1"/>
+                                    <field name="fecha" readonly="1"/>
+                                    <field name="fecha_pagada" readonly="1"/>
+                                    <field name="referencia"   readonly="1"/>
+                                </group>
+                                <group name="totales">    
+                                    <group>
+                                        <field name="cuota_capital" readonly="1"/>
+                                        <field name="cuota_adm" readonly="1"/>
+                                        <field name="iva_adm" readonly="1"/>
+                                        <field name="seguro" sum="seguro" readonly="1"/>
+                                        <field name="rastreo" sum="rastreo" readonly="1"/>
+                                        <field name="otro" sum="otro" readonly="1"/>
+                                        <field name="programado"   readonly="1"/>
+                                        <field name="fondo_reserva"   readonly="1"/> 
+                                        <field name="monto_pagado" sum="monto_pagado" readonly="1"/>
+                                        <field name="factura_id" />
+                                    </group>
+                                    <group>
+                                        <field name="saldo_cuota_capital"   readonly="1"/>
+                                        <field name="saldo_cuota_administrativa"   readonly="1"/>
+                                        <field name="saldo_iva"   readonly="1"/>
+                                        <field name="saldo_seguro"   readonly="1"/>
+                                        <field name="saldo_rastreo"   readonly="1"/>
+                                        <field name="saldo_otros"   readonly="1"/>
+                                        <field name="saldo_programado"   readonly="1"/>
+                                        <field name="saldo_fondo_reserva"   readonly="1"/>
+                                        <field name="saldo" sum="saldo" readonly="1"/>
+                                        <field name="iva"   readonly="1"/>
+                                        <field name="saldo_tabla"   readonly="1"/>
+                                    </group>
+                                    
+                                </group>
+                                </sheet>
+                            </form>
                     </field>
                 </xpath>
  

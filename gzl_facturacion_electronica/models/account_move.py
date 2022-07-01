@@ -254,20 +254,7 @@ class AccountMove(models.Model):
                                 
                                 lista_anterior.remove(j)
             else:
-                raise ValidationError("Posee valores diferentes en su cuota")
-
-
-
-
-
-
-
-
-
-
-
-
-
+                raise ValidationError("La(s) cuota(s) que está intentando asociar difiera del monto de la cuota_anterior.")
 
 
     @api.onchange('invoice_payment_term_id','method_payment','contrato_estado_cuenta_ids','name','anticipos_ids')
