@@ -203,12 +203,13 @@ class ReportTrazabilidad(models.TransientModel):
 
                     row+=1
             else:
-                sheet.write(row,0, line['grupo_asignado'], registros_tabla)
-                sheet.write(row, 1, line['grupo'], registros_tabla)
-                sheet.write(row, 2,line['contrato'], registros_tabla)
-                sheet.write(row, 3, line['cliente'], registros_tabla)
-                sheet.write(row, 4, line['estado_contrato'], registros_tabla)
-                sheet.write(row, 5, line['estado_deuda'], registros_tabla)
+                if line['grupo_asignado']:
+                    sheet.write(row,0, line['grupo_asignado'], registros_tabla)
+                    sheet.write(row, 1, line['grupo'], registros_tabla)
+                    sheet.write(row, 2,line['contrato'], registros_tabla)
+                    sheet.write(row, 3, line['cliente'], registros_tabla)
+                    sheet.write(row, 4, line['estado_contrato'], registros_tabla)
+                    sheet.write(row, 5, line['estado_deuda'], registros_tabla)
 
-                row+=1
+                    row+=1
 
