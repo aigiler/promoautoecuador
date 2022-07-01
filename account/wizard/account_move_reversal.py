@@ -149,7 +149,7 @@ class AccountMoveReversal(models.TransientModel):
             [self.env['account.move'], [], False],  # Others.
         ]
         for move, default_vals in zip(moves, default_values_list):
-            is_auto_post = bool(default_vals.get('auto_post'))
+            is_auto_post = True
             is_cancel_needed =True
             batch_index = 0 if is_cancel_needed else 1
             batches[batch_index][0] |= move
@@ -165,7 +165,7 @@ class AccountMoveReversal(models.TransientModel):
                 for move in moves.with_context(include_business_fields=True):
                     moves_vals_list.append(move.copy_data({'date': self.date or move.date})[0])
                 new_moves = self.env['account.move'].create(moves_vals_list)
-            new_moves.action_post()
+            #new_moves.action_post()
 
             moves_to_redirect |= new_moves
 
