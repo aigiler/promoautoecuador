@@ -21,6 +21,8 @@ import itertools
 class ReporteEstadoDeCuenta(models.TransientModel):
     _name = "reporte.estado.de.cuenta"
 
+
+    partner_id = fields.Many2one('res.partner',string='Cliente')
     contrato_id = fields.Many2one('contrato',string='Contrato')
     
     

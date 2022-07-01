@@ -7,8 +7,8 @@
                 <form string="Contrato Adendum">
                     <group>
                          <group col="2">
-
-                            <field name="contrato_id" required="1"   options="{'no_open': True, 'no_create': True}" />
+                            <field name="partner_id" required="1"  options="{'no_open': True, 'no_create': True}" />
+                            <field name="contrato_id" required="1"  domain="[('cliente', '=', partner_id)]"   options="{'no_open': True, 'no_create': True}" />
 
                         </group>
 

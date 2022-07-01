@@ -22,6 +22,7 @@ import shutil
 class ContratoAdendum(models.TransientModel):
     _name = "contrato.adendum.report"
     
+    partner_id = fields.Many2one('res.partner',string='Cliente')
     contrato_id = fields.Many2one('contrato',string='Contrato')
     clave =  fields.Char( default="contrato_adendum")
     vehiculo_id = fields.Many2one('entrega.vehiculo',string='entrega.vehiculo')

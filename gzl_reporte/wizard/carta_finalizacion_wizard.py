@@ -34,11 +34,7 @@ class CartaFinalizacion(models.TransientModel):
             if l.contrato_id:
                 vehiculo_id = self.env['entrega.vehiculo'].search(
                         [('nombreSocioAdjudicado', '=', self.contrato_id.cliente.id),('estado','=','entrega_vehiculo')], limit=1)
-                partner_id = self.env['res.partner'].search(
-                        [('id', '=', self.contrato_id.cliente.id)], limit=1)
-
                 self.vehiculo_id=vehiculo_id
-                self.partner_id=partner_id
 
     def print_report_xls(self):
         if self.clave=='carta_finalizacion':

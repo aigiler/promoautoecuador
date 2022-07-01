@@ -22,6 +22,8 @@ import shutil
 class PagareOrden(models.TransientModel):
     _name = "pagare.report"
     
+
+    partner_id = fields.Many2one('res.partner',string='Cliente')
     contrato_id = fields.Many2one('contrato',string='Contrato')
     clave =  fields.Char( default="pagare")
     fecha_vencimiento=fields.Date(string="Fecha de Vencimiento")
