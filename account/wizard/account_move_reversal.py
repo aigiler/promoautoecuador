@@ -118,7 +118,6 @@ class AccountMoveReversal(models.TransientModel):
             rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
             lista_diarios=[]
             
-            move_credito=''
             if cuota_capital_obj:
                 lista_diarios.append(cuota_capital_obj.journal_id.id)
             if seguro_obj:
@@ -132,8 +131,8 @@ class AccountMoveReversal(models.TransientModel):
             lista_pagos=[]
             for mov in movimientos_cuota:
                 for x in mov.line_ids:
-                    if x.account_id.id==mov.partner_id.property_account_receivable_id.id:
-                        for y in matched_credits_ids:
+                    if x.account_id.id==x.partner_id.property_account_receivable_id.id:
+                        for y in x.matched_credits_ids:
                             lista_pagos.append(y.credit_move_id.payment_id.id)
             for linea in self.move_id:
                 for ant in linea.anticipos_ids:
