@@ -148,33 +148,33 @@ class AccountMoveReversal(models.TransientModel):
                 for det in cuota_id.ids_pagos:
                     if det.pago_id not in lista_pagos:
                         monto_sobrante+=det.valor_asociado
-                    pagado_capital=cuota_id.cuota_capital-cuota_id.saldo_cuota_capital-monto_sobrante
-                    pagado_seguro=cuota_id.seguro-cuota_id.saldo_seguro
-                    pagado_rastreo=cuota_id.rastreo-cuota_id.saldo_rastreo
-                    pagado_otros=cuota_id.otro-cuota_id.saldo_otros
-                    pagado_administrativo=cuota_id.cuota_adm-cuota_id.saldo_cuota_administrativa
-                    pagado_iva=cuota_id.iva_adm-cuota_id.saldo_iva
-                    if cuota_id.estado_pago=='pagado':
-                        transacciones=self.env['transaccion.grupo.adjudicado']
-                        dct={
-                                'grupo_id':cuota_id.contrato_id.grupo.id,
-                                'debe':cuota_id.cuota_capital+cuota_id.seguro+cuota_id.rastreo+cuota_id.otro+cuota_id.cuota_adm+cuota_id.iva_adm,
-                                'adjudicado_id':cuota_id.contrato_id.cliente.id,
-                                'contrato_id':cuota_id.contrato_id.id,
-                                'state':cuota_id.contrato_id.state
-                                }
-                        transacciones.create(dct)
+                pagado_capital=cuota_id.cuota_capital-cuota_id.saldo_cuota_capital-monto_sobrante
+                pagado_seguro=cuota_id.seguro-cuota_id.saldo_seguro
+                pagado_rastreo=cuota_id.rastreo-cuota_id.saldo_rastreo
+                pagado_otros=cuota_id.otro-cuota_id.saldo_otros
+                pagado_administrativo=cuota_id.cuota_adm-cuota_id.saldo_cuota_administrativa
+                pagado_iva=cuota_id.iva_adm-cuota_id.saldo_iva
+                if cuota_id.estado_pago=='pagado':
+                    transacciones=self.env['transaccion.grupo.adjudicado']
+                    dct={
+                            'grupo_id':cuota_id.contrato_id.grupo.id,
+                            'debe':cuota_id.cuota_capital+cuota_id.seguro+cuota_id.rastreo+cuota_id.otro+cuota_id.cuota_adm+cuota_id.iva_adm,
+                            'adjudicado_id':cuota_id.contrato_id.cliente.id,
+                            'contrato_id':cuota_id.contrato_id.id,
+                            'state':cuota_id.contrato_id.state
+                            }
+                    transacciones.create(dct)
 
-                    cuota_id.saldo_cuota_capital+=pagado_capital
-                    cuota_id.saldo_seguro+=pagado_seguro
-                    cuota_id.saldo_rastreo+=pagado_rastreo
-                    cuota_id.saldo_otros+=pagado_otros
-                    cuota_id.saldo_cuota_administrativa+=pagado_administrativo
-                    cuota_id.saldo_iva+=pagado_iva
-                    if cuota_id.saldo==0 or cuota_id.saldo==0.0 or cuota_id.saldo==0.00:
-                        cuota_id.estado_pago='pagado'
-                    else:
-                        cuota_id.estado_pago='pendiente'
+                cuota_id.saldo_cuota_capital+=pagado_capital
+                cuota_id.saldo_seguro+=pagado_seguro
+                cuota_id.saldo_rastreo+=pagado_rastreo
+                cuota_id.saldo_otros+=pagado_otros
+                cuota_id.saldo_cuota_administrativa+=pagado_administrativo
+                cuota_id.saldo_iva+=pagado_iva
+                if cuota_id.saldo==0 or cuota_id.saldo==0.0 or cuota_id.saldo==0.00:
+                    cuota_id.estado_pago='pagado'
+                else:
+                    cuota_id.estado_pago='pendiente'
 
             for mov in movimientos_cuota:
 
