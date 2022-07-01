@@ -325,15 +325,16 @@ class EntegaVehiculo(models.Model):
                 rec.puntosPorcentajeCancelado = 200
             else:
                 rec.puntosPorcentajeCancelado = 0
-            if rec.garante:
-                if rec.porcentajeCancelado >= 0.00 and rec.porcentajeCancelado <= 25.00:
-                    rec.puntosPorcentajeCanceladoGarante = 0
-                elif rec.porcentajeCancelado >= 26.00 and rec.porcentajeCancelado <= 30.00:
-                    rec.puntosPorcentajeCanceladoGarante = 100
-                elif rec.porcentajeCancelado >= 31.00:
-                    rec.puntosPorcentajeCanceladoGarante = 200
-                else:
-                    rec.puntosPorcentajeCanceladoGarante = 0
+            
+            #if rec.garante:
+            #    if rec.porcentajeCancelado >= 0.00 and rec.porcentajeCancelado <= 25.00:
+            #        rec.puntosPorcentajeCanceladoGarante = 0
+            #    elif rec.porcentajeCancelado >= 26.00 and rec.porcentajeCancelado <= 30.00:
+            #        rec.puntosPorcentajeCanceladoGarante = 100
+            #    elif rec.porcentajeCancelado >= 31.00:
+            #        rec.puntosPorcentajeCanceladoGarante = 200
+            #    else:
+            #        rec.puntosPorcentajeCanceladoGarante = 0
 
 
 
@@ -783,7 +784,7 @@ class EntegaVehiculo(models.Model):
                 rec.nombresInforme = rec.nombreSocioAdjudicado.name
                 rec.vatInforme = rec.vatAdjudicado
                 rec.estadoCivilInforme = rec.estadoCivilAdj
-                rec.edadInforme 
+                #rec.edadInforme 
                 
             else:
                 rec.nombresInforme = rec.nombreGarante.name
