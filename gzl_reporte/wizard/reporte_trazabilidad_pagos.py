@@ -7,8 +7,7 @@ import xlsxwriter
 from io import BytesIO
 import base64
 from odoo.exceptions import ValidationError
-from statistics import mode
-from scipy import stats as s
+import statistics
 
 
 # class Users(models.Model):
@@ -157,8 +156,20 @@ class ReportTrazabilidad(models.TransientModel):
                             dct['rango'].append(rang['codigo_rango'])
             detalle_pagos.append(dct)
         for lista_final in detalle_pagos:
-            mayor_coincidencia=s.mode(lista_final['rango'])[0]
-            nombre_rango=self.env['rango.pagos'].search([('codigo_rango','=',int(mayor_coincidencia))])
+            max_mode=0
+            list_table = statistics._counts(lista_final['rango'])
+            len_table = len(list_table)
+
+            if len_table == 1:
+                max_mode = statistics.mode(lista_final['rango'])
+            else:
+                new_list = []
+                for i in range(len_table):
+                    new_list.append(list_table[i][0])
+                max_mode = max(new_list) # use the max value here
+
+
+            nombre_rango=self.env['rango.pagos'].search([('codigo_rango','=',int(max_mode))])
             lista_final['grupo_asignado']=nombre_rango.name
 
         sheet.set_column('A:A', 10)
