@@ -144,13 +144,19 @@ class EntegaVehiculo(models.Model):
 
     def llenar_tabla(self):
         obj_patrimonio=self.env['items.patrimonio'].search([])  
-        lista_ids=[]
+        
         if not self.montoAhorroInversiones:
+            lista_ids=[]
             for patrimonio in obj_patrimonio:
-                self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id,'garante':False})
+                registro_id=self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'garante':False})
+                lista_ids.append(int(id_registro))
+            self.update({'montoAhorroInversiones':[(6,0,lista_ids)]})
         if self.garante and not self.ahorro_garante:
+            lista_ids=[]
             for patrimonio in obj_patrimonio:
-                self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id,'garante':True})
+                registro_id=self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'garante':True})
+                lista_ids.append(int(id_registro))
+            self.update({'montoAhorroInversionesGarante':[(6,0,lista_ids)]})
             self.ahorro_garante=True
 
     # REVISION EN PAGINAS DE CONTROL
@@ -161,11 +167,17 @@ class EntegaVehiculo(models.Model):
     def llenar_tabla_paginas(self):
         obj_paginas_de_control=self.env['paginas.de.control'].search([])
         if not self.paginasDeControl:
+            lista_ids=[]
             for paginas in obj_paginas_de_control:
-                self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'entrega_id':self.id,'garante':False})
+                registro_id=self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'garante':False})
+                lista_ids.append(int(id_registro))
+            self.update({'paginasDeControl':[(6,0,lista_ids)]})
         if not self.pagcontrol_garante and self.garante:
+            lista_ids=[]
             for paginas in obj_paginas_de_control:
-                self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'entrega_id':self.id,'garante':True})
+                registro_id=self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'garante':True})
+                lista_ids.append(int(id_registro))
+            self.update({'paginasDeControlGarante':[(6,0,lista_ids)]})
             self.pagcontrol_garante=True
 
     tablaPuntosBienes = fields.One2many('puntos.bienes.entrega.vehiculo','entrega_id', domain=[('garante','=',False)],track_visibility='onchange')
@@ -175,11 +187,17 @@ class EntegaVehiculo(models.Model):
     def llenar_tabla_puntos_bienes(self):
         obj_puntos_bienes=self.env['puntos.bienes'].search([])
         if not self.tablaPuntosBienes:
+            lista_ids=[]
             for bienes in obj_puntos_bienes:
-                self.env['puntos.bienes.entrega.vehiculo'].create({'bien_id':bienes.id,'entrega_id':self.id,'garante':False})
+                registro_id=self.env['puntos.bienes.entrega.vehiculo'].create({'bien_id':bienes.id,'entrega_id':self.id,'garante':False})
+                lista_ids.append(int(id_registro))
+            self.update({'tablaPuntosBienes':[(6,0,lista_ids)]})
         if not self.puentes_bienes and self.garante:
+            lista_ids=[]
             for bienes in obj_puntos_bienes:
-                self.env['puntos.bienes.entrega.vehiculo'].create({'bien_id':bienes.id,'entrega_id':self.id,'garante':True})
+                registro_id=self.env['puntos.bienes.entrega.vehiculo'].create({'bien_id':bienes.id,'entrega_id':self.id,'garante':True})
+                lista_ids.append(int(id_registro))
+            self.update({'tablaPuntosBienesGarante':[(6,0,lista_ids)]})
             self.puentes_bienes=True
     
 
@@ -969,6 +987,7 @@ class EntegaVehiculo(models.Model):
 
     @api.onchange('nombreSocioAdjudicado')
     @api.depends('nombreSocioAdjudicado')
+    @api.constrains('nombreSocioAdjudicado')
     def buscar_contrato_partner(self):
         self.llenar_tabla()
         self.llenar_tabla_paginas()
