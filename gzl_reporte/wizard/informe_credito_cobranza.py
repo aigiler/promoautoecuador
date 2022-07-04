@@ -46,7 +46,7 @@ class InformeCreditoCrobranza(models.TransientModel):
         garante=False
         obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','informe_credito_cobranza')],limit=1)
         
-        if obj_plantilla and self.entrega_vehiculo_id.garante:
+        if obj_plantilla:
             lista_patrimonio_garante=[]
             lista_paginas_garante=[]
             lista_puntos_bienes_garante=[]
@@ -155,7 +155,7 @@ class InformeCreditoCrobranza(models.TransientModel):
 
             informe_excel.informe_credito_cobranza(salida,lista_campos,lista_patrimonio, lista_paginas, lista_puntos_bienes,lista_patrimonio_garante,lista_paginas_garante,lista_puntos_bienes_garante,garante)
 
-            with open(obj_plantilla.directorio_out, "rb") as f:
+            with open(salida, "rb") as f:
                 data = f.read()
                 file=bytes(base64.b64encode(data))
 
