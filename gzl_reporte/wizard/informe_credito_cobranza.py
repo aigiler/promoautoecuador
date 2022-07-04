@@ -43,39 +43,102 @@ class InformeCreditoCrobranza(models.TransientModel):
 
     def crear_plantilla_informe_credito_cobranza(self,):
         #Instancia la plantilla
+        garante=False
         obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','informe_credito_cobranza')],limit=1)
-        if obj_plantilla:
+        
+        if obj_plantilla and self.entrega_vehiculo_id.garante:
+            lista_patrimonio_garante=[]
+            lista_paginas_garante=[]
+            lista_puntos_bienes_garante=[]
+            salida=''
+            if self.entrega_vehiculo_id.garante:
+                obj_plantilla_garante=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','informe_credito_cobranza_garante')],limit=1)
+                salida=obj_plantilla_garante.directorio_out
+                shutil.copy2(obj_plantilla_garante.directorio,obj_plantilla_garante.directorio_out)
+                #####Campos de Cabecera
+                campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
 
+                lista_campos=[]
+                for campo in campos:
 
-            shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
+                    print(campo.name, campo.fila)
+                    dct={}
+                    resultado=self.entrega_vehiculo_id.mapped(campo.name)
+                    if len(resultado)>0:
+                        dct['valor']=resultado[0]
+                    else:
+                        dct['valor']=''
 
+                    dct['fila']=campo.fila
+                    dct['columna']=campo.columna
+                    if campo.hoja_excel==2:
+                        dct['hoja']=3
+                    elif campo.hoja_excel==3:
+                        dct['hoja']=5
+                    elif campo.hoja_excel==4:
+                        dct['hoja']=6
+                    else:
+                        dct['hoja']=campo.hoja_excel
+                    lista_campos.append(dct)
 
-            #####Campos de Cabecera
-            campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
+                campos_garante=obj_plantilla_garante.campos_ids.filtered(lambda l: len(l.child_ids)==0)
 
+                for campo in campos_garante:
 
+                    print(campo.name, campo.fila)
+                    dct={}
+                    resultado=self.entrega_vehiculo_id.mapped(campo.name)
+                    if len(resultado)>0:
+                        dct['valor']=resultado[0]
+                    else:
+                        dct['valor']=''
 
-            lista_campos=[]
-            for campo in campos:
+                    dct['fila']=campo.fila
+                    dct['columna']=campo.columna
+                    if campo.hoja_excel==2:
+                        dct['hoja']=3
+                    elif campo.hoja_excel==3:
+                        dct['hoja']=5
+                    elif campo.hoja_excel==4:
+                        dct['hoja']=6
+                    else:
+                        dct['hoja']=campo.hoja_excel
+                    lista_campos.append(dct)
+                
+                objetos_patrimonio_garante=self.entrega_vehiculo_id.montoAhorroInversionesGarante
 
-                print(campo.name, campo.fila)
-                dct={}
-                resultado=self.entrega_vehiculo_id.mapped(campo.name)
-                if len(resultado)>0:
-                    dct['valor']=resultado[0]
-                else:
-                    dct['valor']=''
+                lista_patrimonio_garante= self.obtenerTablas(obj_plantilla_garante,objetos_patrimonio_garante,'montoAhorroInversionesGarante','patrimonio_id.nombre')
 
-                dct['fila']=campo.fila
-                dct['columna']=campo.columna
-                dct['hoja']=campo.hoja_excel
-                lista_campos.append(dct)
-            #{"valor":"value", "fila": "value", "columna": "value", "hoja": "value"}
-            
-          #  raise ValidationError(str(lista_campos))
+                objetos_paginas_de_control_garante=self.entrega_vehiculo_id.paginasDeControlGarante
 
+                lista_paginas_garante= self.obtenerTablas(obj_plantilla_garante,objetos_paginas_de_control_garante,'paginasDeControlGarante','pagina_id.nombre')
+                
+                objetos_puntos_bienes_garante=self.entrega_vehiculo_id.tablaPuntosBienesGarante
 
+                lista_puntos_bienes_garante= self.obtenerTablas(obj_plantilla_garante,objetos_puntos_bienes_garante,'tablaPuntosBienesGarante','bien_id.nombre')
 
+            else:
+                salida=obj_plantilla.directorio_out
+
+                shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
+                #####Campos de Cabecera
+                campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
+
+                lista_campos=[]
+                for campo in campos:
+
+                    print(campo.name, campo.fila)
+                    dct={}
+                    resultado=self.entrega_vehiculo_id.mapped(campo.name)
+                    if len(resultado)>0:
+                        dct['valor']=resultado[0]
+                    else:
+                        dct['valor']=''
+
+                    dct['fila']=campo.fila
+                    dct['columna']=campo.columna
+                    dct['hoja']=campo.hoja_excel
+                    lista_campos.append(dct)
 
             objetos_patrimonio=self.entrega_vehiculo_id.montoAhorroInversiones
 
@@ -89,10 +152,8 @@ class InformeCreditoCrobranza(models.TransientModel):
 
             lista_puntos_bienes= self.obtenerTablas(obj_plantilla,objetos_puntos_bienes,'tablaPuntosBienes','bien_id.nombre')
             
-            informe_excel.informe_credito_cobranza(obj_plantilla.directorio_out,lista_campos,lista_patrimonio, lista_paginas, lista_puntos_bienes)
 
-            
-
+            informe_excel.informe_credito_cobranza(salida,lista_campos,lista_patrimonio, lista_paginas, lista_puntos_bienes,lista_patrimonio_garante,lista_paginas_garante,lista_puntos_bienes_garante,garante)
 
             with open(obj_plantilla.directorio_out, "rb") as f:
                 data = f.read()

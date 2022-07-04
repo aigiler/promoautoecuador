@@ -22,38 +22,42 @@
                 <header>
                     <field name="state" widget="statusbar"/>
                 </header>
-
-
                 <sheet>
                     <notebook>
 
-                    <page string="Informe de Credito y Cobranza">
-                            <separator class="text-center" string="ANTECEDENTES DEL ASOCIADO"/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-md-12">
-                                    <group>  
-                                        <field name="nombreSocioAdjudicado" required="1" options="{'no_open': True, 'no_create': True}" />
-                                        <field name="garante" invisible="1"/>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-4">
-                                    <group > 
-                                        <field name="vatAdjudicado" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
-                                        <field name="fechaNacimientoAdj" readonly="0"/>
-                                        <field name="estadoCivilAdj" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-   
-                                </div>
-                                <div class="col-xs-4" >
-                                    <group > 
-                                        <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
-                                        <field name="edadAdjudicado" string="Edad"/>
-                                        <field name="cargasFamiliares" />
-                                    </group>
-                                </div>
-                            </div>
 
-                            <separator class="text-center" string="DATOS DEL CONYUGE"/>
+                        <page string="Entrega de Requisitos" attrs="{'readonly':[('estado', 'in', ('inicio', 'borrador','revision_documentos') )]}">
+                            <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
+                            <field name="requisitosPoliticasCredito" widget="html" nolabel="1" force_save="1" readonly="1"/>
+                        </page>
+
+
+                    <page string="Informe de Credito y Cobranza" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}">
+                        <separator class="text-center" string="ANTECEDENTES DEL ASOCIADO"/>
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-md-12">
+                                <group>  
+                                    <field name="nombreSocioAdjudicado" required="1" options="{'no_open': True, 'no_create': True}" />
+                                    <field name="garante" invisible="1"/>
+                                </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="vatAdjudicado" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
+                                    <field name="fechaNacimientoAdj" readonly="0"/>
+                                    <field name="estadoCivilAdj" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+
+                            </div>
+                            <div class="col-xs-4" >
+                                <group > 
+                                    <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="edadAdjudicado" string="Edad"/>
+                                    <field name="cargasFamiliares" />
+                                </group>
+                            </div>
+                        </div>
+                        <separator class="text-center" string="DATOS DEL CONYUGE"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <group>
@@ -138,7 +142,7 @@
                         </page>
 
 
-                        <page string="Informe de Credito y Cobranza Garante" attrs="{'invisible':[('garante', '=', False)]}">
+                        <page string="Informe de Credito y Cobranza Garante" attrs="{'invisible':[('garante', '=', False)],'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}">
                             <separator class="text-center" string="ANTECEDENTES DEL Garante"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
@@ -244,7 +248,7 @@
                             <separator/>
                             <separator class="text-center" string="OBSERVACIONES"/>
                             <div class="row">
-                                <field name="observaciones"/>
+                                <field name="observacionesGarante"/>
                             </div>
                             <separator/>
 
@@ -261,7 +265,7 @@
 
 
                                                 <!-- CALIFICADOR DE COMPRA -->
-                        <page string="Calificador de Compra" attrs="{'readonly': [('id', '!=', False)]}">
+                        <page string="Calificador de Compra" attrs="{'readonly':[('estado', 'not in', ('calificador_compra'))]}">
                             <separator class="text-center" string="CALIFICADOR PARA COMPRA DEL BIEN"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
@@ -598,7 +602,7 @@
 
 
                         <!-- CALIFICADOR DE COMPRA -->
-                        <page string="Calificador de Compra Garante" attrs="{'readonly': [('id', '!=', False)], 'invisible':[('garante', '=', False)]}">
+                        <page string="Calificador de Compra Garante" attrs="{'invisible':[('garante', '=', False)],'readonly':[('estado', 'not in', ('calificador_compra'))]}">
                             <separator class="text-center" string="CALIFICADOR PARA COMPRA DEL BIEN"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
@@ -882,7 +886,7 @@
                             </div>
 
                         </page>
-                         <page string="Liquidación Orden de Compra">
+                         <page string="Liquidación Orden de Compra" attrs="{'readonly':[('estado', 'not in', ('liquidacion_orden_compra'))]}">
                             <separator class="text-center" string="LIQUIDACION DE COMPRA"/>
                             <div style="border: 1px solid black;">
                                 <div class="row">
@@ -1145,7 +1149,7 @@
 
                          <!-- ORDEN DE COMPRA -->
 
-                        <page string ="Orden de Compra">
+                        <page string ="Orden de Compra" attrs="{'readonly':[('estado', 'not in', ('orden_compra'))]}">
                             <separator class="text-center" string="ORDEN DE COMPRA"/>
                             <div class="row">
                                          <tr>
@@ -1177,7 +1181,7 @@
                                         </tr>
 
                                     <button type="object" string="Generar Orden Compra" name="create_purchase_order" attrs="{'invisible':[('purchase_order', '!=', False)]}" class="btn btn-primary o_invoice_new"/>
-                                    <button type="object" string="Generar Factura" name="create_liq_compra" attrs="{'invisible':[('facturas', '!=', False)]}" class="btn btn-primary o_invoice_new"/>
+                                    <button type="object" string="Generar Factura" name="create_liq_compra" attrs="{'invisible':[('facturas', '!=', False),('purchase_order', '!=', False)]}" class="btn btn-primary o_invoice_new"/>
 
 
                                 <div class="col-xs-12 col-sm-12">
@@ -1229,10 +1233,7 @@
                         </page>
                         
 
-                        <page string="Entrega de Requisitos" attrs="{'readonly':[('estado', 'in', ('inicio', 'borrador','revision_documentos') )]}">
-                            <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
-                            <field name="requisitosPoliticasCredito" widget="html" nolabel="1" force_save="1" readonly="1"/>
-                        </page>
+                        
                         <!-- INFORME DE CREDITO Y COBRANZAS -->
                        
                        
