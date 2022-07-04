@@ -145,7 +145,7 @@ class EntegaVehiculo(models.Model):
     def llenar_tabla(self):
         obj_patrimonio=self.env['items.patrimonio'].search([])  
         lista_ids=[]
-        if not self.montoAhorroInversiones: 
+        if not self.montoAhorroInversiones:
             for patrimonio in obj_patrimonio:
                 self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'entrega_id':self.id,'garante':False})
         if self.garante and not self.ahorro_garante:
@@ -970,10 +970,11 @@ class EntegaVehiculo(models.Model):
     @api.onchange('nombreSocioAdjudicado')
     @api.depends('nombreSocioAdjudicado')
     def buscar_contrato_partner(self):
+        self.llenar_tabla()
+        self.llenar_tabla_paginas()
+        self.llenar_tabla_puntos_bienes()
         for rec in self:
-            self.llenar_tabla()
-            self.llenar_tabla_paginas()
-            self.llenar_tabla_puntos_bienes()
+            
             contrato = self.env['contrato'].search(
                 [('cliente', '=', rec.nombreSocioAdjudicado.id)], limit=1)
             rec.montoAdjudicado = contrato.monto_financiamiento
