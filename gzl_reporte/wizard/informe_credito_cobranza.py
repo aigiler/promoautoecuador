@@ -93,16 +93,7 @@ class InformeCreditoCrobranza(models.TransientModel):
                     else:
                         dct['valor']=''
 
-                    dct['fila']=campo.fila
-                    dct['columna']=campo.columna
-                    if campo.hoja_excel==2:
-                        dct['hoja']=3
-                    elif campo.hoja_excel==3:
-                        dct['hoja']=5
-                    elif campo.hoja_excel==4:
-                        dct['hoja']=6
-                    else:
-                        dct['hoja']=campo.hoja_excel
+                    dct['hoja']=campo.hoja_excel
                     lista_campos.append(dct)
                 
                 objetos_patrimonio_garante=self.entrega_vehiculo_id.montoAhorroInversionesGarante
