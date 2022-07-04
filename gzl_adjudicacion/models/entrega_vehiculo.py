@@ -148,13 +148,13 @@ class EntegaVehiculo(models.Model):
         if not self.montoAhorroInversiones:
             lista_ids=[]
             for patrimonio in obj_patrimonio:
-                registro_id=self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'garante':False})
+                id_registro=self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'garante':False})
                 lista_ids.append(int(id_registro))
             self.update({'montoAhorroInversiones':[(6,0,lista_ids)]})
         if self.garante and not self.ahorro_garante:
             lista_ids=[]
             for patrimonio in obj_patrimonio:
-                registro_id=self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'garante':True})
+                id_registro=self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'garante':True})
                 lista_ids.append(int(id_registro))
             self.update({'montoAhorroInversionesGarante':[(6,0,lista_ids)]})
             self.ahorro_garante=True
@@ -169,13 +169,13 @@ class EntegaVehiculo(models.Model):
         if not self.paginasDeControl:
             lista_ids=[]
             for paginas in obj_paginas_de_control:
-                registro_id=self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'garante':False})
+                id_registro=self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'garante':False})
                 lista_ids.append(int(id_registro))
             self.update({'paginasDeControl':[(6,0,lista_ids)]})
         if not self.pagcontrol_garante and self.garante:
             lista_ids=[]
             for paginas in obj_paginas_de_control:
-                registro_id=self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'garante':True})
+                id_registro=self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'garante':True})
                 lista_ids.append(int(id_registro))
             self.update({'paginasDeControlGarante':[(6,0,lista_ids)]})
             self.pagcontrol_garante=True
@@ -189,13 +189,13 @@ class EntegaVehiculo(models.Model):
         if not self.tablaPuntosBienes:
             lista_ids=[]
             for bienes in obj_puntos_bienes:
-                registro_id=self.env['puntos.bienes.entrega.vehiculo'].create({'bien_id':bienes.id,'entrega_id':self.id,'garante':False})
+                id_registro=self.env['puntos.bienes.entrega.vehiculo'].create({'bien_id':bienes.id,'entrega_id':self.id,'garante':False})
                 lista_ids.append(int(id_registro))
             self.update({'tablaPuntosBienes':[(6,0,lista_ids)]})
         if not self.puentes_bienes and self.garante:
             lista_ids=[]
             for bienes in obj_puntos_bienes:
-                registro_id=self.env['puntos.bienes.entrega.vehiculo'].create({'bien_id':bienes.id,'entrega_id':self.id,'garante':True})
+                id_registro=self.env['puntos.bienes.entrega.vehiculo'].create({'bien_id':bienes.id,'entrega_id':self.id,'garante':True})
                 lista_ids.append(int(id_registro))
             self.update({'tablaPuntosBienesGarante':[(6,0,lista_ids)]})
             self.puentes_bienes=True
