@@ -493,15 +493,19 @@ class AccountPayment(models.Model):
             lista_respaldo=[]
             for factura in invoice_id:
                 payment_lines= rec.payment_line_ids.filtered(lambda l: l.invoice_id.id==factura)
+                
                 monto_total=sum(payment_lines.mapped("amount"))
 
                 for pago in payment_lines:
+                    monto_pendiente_pago=0
+                    for x in pago.invoice_id.contrato_estado_cuenta_ids:
+                        monto_pendiente_pago+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
                     dct={
                         'invoice_id':pago.invoice_id.id, 
-                        'amount':pago.amount  ,
+                        'amount':0,
+                        'monto_pendiente_pago':monto_pendiente_pago+pago.amount_total,
                         'amount_total': pago.amount_total,
                         'residual': pago.residual,
-                        'amount': pago.amount,
                         'date_due': pago.date_due,
                         'document_number':pago.document_number,
                         'payment_id':pago.payment_id.id
