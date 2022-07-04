@@ -52,6 +52,7 @@ class InformeCreditoCrobranza(models.TransientModel):
             lista_puntos_bienes_garante=[]
             salida=''
             if self.entrega_vehiculo_id.garante:
+                garante=True
                 obj_plantilla_garante=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','informe_credito_cobranza_garante')],limit=1)
                 salida=obj_plantilla_garante.directorio_out
                 shutil.copy2(obj_plantilla_garante.directorio,obj_plantilla_garante.directorio_out)
