@@ -137,7 +137,7 @@ def informe_credito_cobranza(ruta,lista,lista_patrimonio, lista_paginas, lista_p
             try:
                 cell.value = campo['valor'] or ''
             except:
-                raise ValidationError("""El valor {0} en la fila {1} columna {2} hoja {3} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna'],campo['hoja']))
+                raise ValidationError("""El valor {0} en la fila {1} columna {2} hoja {3} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna'],sheet))
 
 
 
