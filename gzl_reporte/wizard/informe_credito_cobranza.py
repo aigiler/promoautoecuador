@@ -92,7 +92,7 @@ class InformeCreditoCrobranza(models.TransientModel):
                         dct['valor']=resultado[0]
                     else:
                         dct['valor']=''
-
+                    dct['fila']=campo.fila
                     dct['hoja']=campo.hoja_excel
                     lista_campos.append(dct)
                 
