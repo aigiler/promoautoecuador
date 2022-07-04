@@ -503,7 +503,7 @@ class AccountPayment(models.Model):
                     dct={
                         'invoice_id':pago.invoice_id.id, 
                         'amount':0,
-                        'monto_pendiente_pago':monto_pendiente_pago+pago.amount_total,
+                        'monto_pendiente_pago':monto_pendiente_pago+pago.residual,
                         'amount_total': pago.amount_total,
                         'residual': pago.residual,
                         'date_due': pago.date_due,
