@@ -1283,6 +1283,7 @@ class AccountPaymentLine(models.Model):
             saldo_ras=0
             saldo_otros=0
             if l.invoice_id:
+                monto_pendiente_pago=l.invoice_id.amount_residual
                 if l.invoice_id.contrato_estado_cuenta_ids:
                     obj_contrato_estado_cuenta = self.env['contrato.estado.cuenta'].search([('id','in',l.invoice_id.contrato_estado_cuenta_ids.ids)])
                     for x in obj_contrato_estado_cuenta:
@@ -1297,7 +1298,7 @@ class AccountPaymentLine(models.Model):
             l.saldo_seguro=saldo_seg
             l.saldo_rastreo=saldo_ras
             l.saldo_otros=saldo_otros
-            l.monto_pendiente_pago=monto_pendiente_pago+l.actual_amount
+            l.monto_pendiente_pago=monto_pendiente_pago
             
                 #l.deuda_total=self.payment_id.obtener_deudas_facturas()
 
