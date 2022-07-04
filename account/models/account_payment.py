@@ -1128,7 +1128,12 @@ class account_payment(models.Model):
                                             'state':cuota_id.contrato_id.state
                                             }
                                     transacciones.create(dct)
-
+                    
+                    for lineas in rec.payment_line_ids:
+                        monto_pendiente_pago=lineas.invoice_id.amount_residual
+                            for x in invoice_id.contrato_estado_cuenta_ids:
+                                monto_pendiente_pago+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
+                        lineas.monto_pendiente_pago=monto_pendiente_pago
 
                         
                 if rec.payment_type=='outbound':
