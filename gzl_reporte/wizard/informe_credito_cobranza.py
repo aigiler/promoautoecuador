@@ -94,6 +94,7 @@ class InformeCreditoCrobranza(models.TransientModel):
                         dct['valor']=''
                     dct['fila']=campo.fila
                     dct['hoja']=campo.hoja_excel
+                    dct['columna']=campo.columna
                     lista_campos.append(dct)
                 
                 objetos_patrimonio_garante=self.entrega_vehiculo_id.montoAhorroInversionesGarante
