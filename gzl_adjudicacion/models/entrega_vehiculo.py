@@ -180,7 +180,7 @@ class EntegaVehiculo(models.Model):
         if not self.puentes_bienes and self.garante:
             for bienes in obj_puntos_bienes:
                 self.env['puntos.bienes.entrega.vehiculo'].create({'bien_id':bienes.id,'entrega_id':self.id,'garante':True})
-    
+            self.puentes_bienes=True
     
 
 
