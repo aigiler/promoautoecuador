@@ -501,7 +501,7 @@
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-sm-4">
                                 <group > 
-                                    <button type="object" class="btn btn-primary o_invoice_new" name="generar_pago"/>
+                                    <button type="object" string="Generar Pago" class="btn btn-primary o_invoice_new" name="generar_pago"/>
 
                                     <field name="pago_id" />
                                 </group>
