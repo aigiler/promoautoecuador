@@ -208,7 +208,7 @@ class DevolucionMonto(models.Model):
     simulacion_fondos=fields.Text(string="SIMULACION DE FONDOS")
     resolucion_gerencia=fields.Text(string="Resolución de Gerencia")
     pago_id=fields.Many2one("account.payment")
-    journal_id = fields.Many2one('account.journal', string='Banco', readonly=True, tracking=True, domain="[('type', 'in', ('bank', 'cash')), ('company_id', '=', company_id)]")
+    journal_id = fields.Many2one('account.journal', string='Banco', tracking=True, domain="[('type', 'in', ('bank', 'cash')), ('company_id', '=', company_id)]")
 
     def generar_pago(self):
         for l in self:
