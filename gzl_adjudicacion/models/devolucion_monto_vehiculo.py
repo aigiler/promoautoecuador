@@ -219,7 +219,7 @@ class DevolucionMonto(models.Model):
     @api.onchange('tipo_devolucion')
     @api.depends('tipo_devolucion')
     def llenar_tabla_posventa(self):
-        obj_documentos_postventa=self.env['documentos.postventa'].search([('tipo_devolucion','=',self.tipo_devolucion)])
+        obj_documentos_postventa=self.env['documentos.postventa'].search([('tipo_devolucion','=',(self.tipo_devolucion,'TODOS'))])
         lista_ids=[]
         for doc in obj_documentos_postventa:
             id_registro=self.env['devolucion.documentos.postventa'].create({'documento_id':doc.id})
