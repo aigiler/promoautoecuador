@@ -215,12 +215,12 @@ class DevolucionMonto(models.Model):
             if self.journal_id:
                 pago_metodo=self.env.ref('gzl_facturacion_electronica.out_transfer')
 
-                pago_id=self.env['account.payment'].create("journal_id":l.journal_id.id,'partner_id':self.cliente.id,
-                                                    'payment_type':'outbound','amount':l.valor_desistimiento,
-                                                    'payment_method_id':pago_metodo.id,
-                                                    'state':'draft',
-                                                    'tipo_transaccion':'Pago',
-                                                    'company_id':self.env.company.id)
+                pago_id=self.env['account.payment'].create({"journal_id":l.journal_id.id,'partner_id':self.cliente.id,
+                                                                    'payment_type':'outbound','amount':l.valor_desistimiento,
+                                                                    'payment_method_id':pago_metodo.id,
+                                                                    'state':'draft',
+                                                                    'tipo_transaccion':'Pago',
+                                                                    'company_id':self.env.company.id})
                 self.pago_id=pago_id.id
             else:
                 raise ValidationError("Seleccione el Banco con el cual desea realizar la devolución.")
