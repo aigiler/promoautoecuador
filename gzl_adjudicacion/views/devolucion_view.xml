@@ -19,23 +19,405 @@
                 <form string="Devolucion de Monto">
                 
                     <sheet>
+                        <notebook>
+                        <page string="INFORME DE DEVOLUCIÓN ETAPA POSVENTA">
+                        <separator class="text-center" string="DATOS GENERALES"/>
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="contrato_id" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
+                                     <field name="fecha_contrato" />
+                                     <field name="tipo_de_contrato" />
+                                     <field name="supervisor" />
+                                     <field name="fsolicitud" />
+                                   </group>
 
-                        <div class="oe_title">
-                            <h1>
-                                <field name="secuencia" class="oe_inline" readonly="1"/>
-                            </h1>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="cliente" />
+                                    <field name="vatAdjudicado" />
+                                    <field name="monto" />
+                                    <field name="asesor" />
+                                    <field name="asesor_postventa" />
+                                    </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="celular" />
+                                    <field name="correo" />
+                                    <field name="grupo" />
+                                    <field name="valor_inscripcion" />
+                                    <field name="ciudad" />
+                                </group>
+
+                            </div>
+                        </div>
+                        
+                            <separator/>
+                            <div class="row" style="border: 1px solid black;">
+                        <div class="col-xs-12 col-sm-12">
+                          <label for="alerta"/>
+                          <field name="alerta" widget="statusbar" options="{'clickable': '1'}" />
+                        </div>
+                        <div class="col-xs-12 col-sm-12">
+                          <label for="calidad_venta"/>
+                          <field name="calidad_venta" widget="statusbar" options="{'clickable': '1'}"/>
+                        </div>
+                        </div>
+                        <separator class="text-center" string="RESUMEN DEL CASO POR POSTVENTA"/>
+                            <div class="row" style="border: 1px solid black;">
+                                <field name="resumen_postventa"/>
+                            </div>
+                            <separator/>
+
+                        
+                          <separator class="text-center" string="DETALLES DE DEVOLUCION"/>
+                        
+                          <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-6">
+                                <group > 
+                                    <field name="tipo_devolucion" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
+ 
+                                   </group>
+
+                            </div>
+                            <div class="col-xs-12 col-sm-6">
+                                <group > 
+                                     <field name="causa_sin_firma_reserva" attrs="{'invisible':[('tipo_devolucion', 'not in',('DEVOLUCION DE VALORES SIN FIRMAS','DEVOLUCION DE RESERVA') )]}"/>
+                                     <field name="causas_licitacion" attrs="{'invisible':[('tipo_devolucion', 'not in',('DEVOLUCION DE LICITACION') )]}"/>
+                                     <field name="causas_desistimiento" attrs="{'invisible':[('tipo_devolucion', 'not in',('DEVOLUCION POR DESISTIMIENTO DEL CONTRATO') )]}"/>
+                                     <field name="causas_calidad_venta" attrs="{'invisible':[('tipo_devolucion', 'not in',('DEVOLUCION POR CALIDAD DE VENTA') )]}"/>
+
+                                   </group>
+
+                            </div>
+                            
+                        </div>
+
+                                <div class="col-xs-12 col-sm-12" > 
+                                <field name="documentos_postventa" nolabel="1">
+                                    <tree create='0' delete='0' editable='top'>
+                                        <field name="documento_id" readonly='1'/>
+                                        <field name="archivo" />
+                                    </tree>
+                                </field>
+                            </div>
+                        </page>
+
+                        <page string="INFORME DE DEVOLUCIÓN ETAPA LEGAL">
+                        <separator class="text-center" string="DATOS GENERALES"/>
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="contrato_id" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
+                                     <field name="fecha_contrato" />
+                                     <field name="tipo_de_contrato" />
+                                     <field name="supervisor" />
+                                     <field name="fsolicitud" />
+                                   </group>
+
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="cliente" />
+                                    <field name="vatAdjudicado" />
+                                    <field name="monto" />
+                                    <field name="asesor" />
+                                    <field name="asesor_postventa" />
+                                    </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="celular" />
+                                    <field name="correo" />
+                                    <field name="grupo" />
+                                    <field name="valor_inscripcion" />
+                                    <field name="ciudad" />
+                                </group>
+
+                            </div>
+                        </div>
+               
+                            <separator/>
+                            <div class="row" style="border: 1px solid black;">
+                        <div class="col-xs-12 col-sm-12">
+                          <label for="alerta"/>
+                          <field name="alerta" widget="statusbar" options="{'clickable': '1'}" />
+                        </div>
+                        <div class="col-xs-12 col-sm-12">
+                          <label for="calidad_venta"/>
+                          <field name="calidad_venta" widget="statusbar" options="{'clickable': '1'}"/>
+                        </div>
+                        </div>
+                        <separator class="text-center" string="REPUESTA DEL CASO POR LEGAL"/>
+                                
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-6">
+                                <group > 
+                                    <field name="tipo_accion" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
+ 
+                                   </group>
+
+                            </div>
+                            </div>
+                             <separator class="text-center" string="RESUMEN DEL CASO POR POSTVENTA"/>
+                            <div class="row" style="border: 1px solid black;">
+                                <field name="observacion_legal"/>
+                            </div>
+                            <separator/>
+                            
+                        
+                                <div class="col-xs-12 col-sm-12" > 
+                                <field name="documentos_legal" nolabel="1">
+                                    <tree create='0' delete='0' editable='top'>
+                                        <field name="documento_id" readonly='1'/>
+                                        <field name="archivo" />
+                                    </tree>
+                                </field>
+                            </div>
+
+                        </page>
+
+                        <page string="INFORME DE DEVOLUCIÓN ETAPA ADJUDICACIONES">
+                        <separator class="text-center" string="DATOS GENERALES"/>
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="contrato_id" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
+                                     <field name="fecha_contrato" />
+                                     <field name="tipo_de_contrato" />
+                                     <field name="supervisor" />
+                                     <field name="fsolicitud" />
+                                   </group>
+
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="cliente" />
+                                    <field name="vatAdjudicado" />
+                                    <field name="monto" />
+                                    <field name="asesor" />
+                                    <field name="asesor_postventa" />
+                                    </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="celular" />
+                                    <field name="correo" />
+                                    <field name="grupo" />
+                                    <field name="valor_inscripcion" />
+                                    <field name="ciudad" />
+                                </group>
+
+                            </div>
+                        </div>
+
+               
+                       <separator/>
+                       <div class="row" style="border: 1px solid black;">
+                        <div class="col-xs-12 col-sm-12">
+                          <label for="alerta"/>
+                          <field name="alerta" widget="statusbar" options="{'clickable': '1'}" />
+                        </div>
+                        <div class="col-xs-12 col-sm-12">
+                          <label for="calidad_venta"/>
+                          <field name="calidad_venta" widget="statusbar" options="{'clickable': '1'}"/>
+                        </div>
+                        </div>
+                        <separator class="text-center" string="RESUMEN DEL CASO POR ADJUDICACIONES"/>
+                            <div class="row" style="border: 1px solid black;">
+                                <field name="resumen_adjudicaciones"/>
+                            </div>
+                            <separator/>
+                        <separator class="text-center" string="VERIFICACION DE VALORES EN EL SISTEMA"/>
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="valor_cancelado_sin_firma" />
+                                     <field name="valor_reserva" />
+                                     <field name="valor_licitacion" />
+                                     <field name="valor_desistimiento" />
+                                   </group>
+
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="capital_pagado_fecha" />
+                                    <field name="administrativo_pagado_fecha" />
+                                    <field name="iva_pagado" />
+                                    </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="observacion_adjudicaciones" />
+                                </group>
+
+                            </div>
+                        </div>
+                        <separator class="text-center" string="SIMULACION DE LOS FONDOS AFECTADOS"/>
+                            <div class="row" style="border: 1px solid black;">
+                                <field name="simulacion_fondos"/>
+                            </div>
+                            <separator/>
+
+                        </page>
+
+
+                        
+                        <page string="INFORME DE DEVOLUCIÓN CONTABILIDAD">
+                        <separator class="text-center" string="DATOS GENERALES"/>
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="contrato_id" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
+                                     <field name="fecha_contrato" />
+                                     <field name="tipo_de_contrato" />
+                                     <field name="supervisor" />
+                                     <field name="fsolicitud" />
+                                   </group>
+
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="cliente" />
+                                    <field name="vatAdjudicado" />
+                                    <field name="monto" />
+                                    <field name="asesor" />
+                                    <field name="asesor_postventa" />
+                                    </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="celular" />
+                                    <field name="correo" />
+                                    <field name="grupo" />
+                                    <field name="valor_inscripcion" />
+                                    <field name="ciudad" />
+                                </group>
+
+                            </div>
+                        </div>
+               
+                            <separator/>
+                            <div class="row" style="border: 1px solid black;">
+                        <div class="col-xs-12 col-sm-12">
+                          <label for="alerta"/>
+                          <field name="alerta" widget="statusbar" options="{'clickable': '1'}" />
+                        </div>
+                        <div class="col-xs-12 col-sm-12">
+                          <label for="calidad_venta"/>
+                          <field name="calidad_venta" widget="statusbar" options="{'clickable': '1'}"/>
+                        </div>
+                        </div>
+                         <separator class="text-center" string="VERIFICACION DE VALORES EN EL SISTEMA"/>
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="valor_cancelado_sin_firma" />
+                                     <field name="valor_reserva" />
+                                     <field name="valor_licitacion" />
+                                     <field name="valor_desistimiento" />
+                                   </group>
+
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="capital_pagado_fecha" />
+                                    <field name="administrativo_pagado_fecha" />
+                                    <field name="iva_pagado" />
+                                    </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="observacion_adjudicaciones" />
+                                </group>
+
+                            </div>
+                        </div>
+                        
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="valor_cancelado_sin_firma" />
+                                     <field name="valor_reserva" />
+                                     <field name="valor_licitacion" />
+                                     <field name="valor_desistimiento" />
+                                   </group>
+
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="valores_facturados" />
+                                    <field name="inscripcion" />
+                                    <field name="notas_credito" />
+                                    <field name="ingreso_caja" />
+                                    <field name="ingreso_banco" />
+                                    <field name="cuota_capital" />
+                                    </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="observacion_contabilidad" />
+                                </group>
+
+                            </div>
                         </div>
 
 
-                    <group>
+                        </page>
 
 
+                        <page string="INFORME DE DEVOLUCIÓN GERENCIA">
+                        <separator class="text-center" string="DATOS GENERALES"/>
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="contrato_id" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
+                                     <field name="fecha_contrato" />
+                                     <field name="tipo_de_contrato" />
+                                     <field name="supervisor" />
+                                     <field name="fsolicitud" />
+                                   </group>
 
-                        <field name="contrato_id"/>
-                        <field name="fsolicitud" string="Fecha Solicitud"/>
-                        <field name="monto" string="Monto"/>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="cliente" />
+                                    <field name="vatAdjudicado" />
+                                    <field name="monto" />
+                                    <field name="asesor" />
+                                    <field name="asesor_postventa" />
+                                    </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="celular" />
+                                    <field name="correo" />
+                                    <field name="grupo" />
+                                    <field name="valor_inscripcion" />
+                                    <field name="ciudad" />
+                                </group>
 
-                    </group>
+                            </div>
+                        </div>
+               
+                            <separator/>
+                            <div class="row" style="border: 1px solid black;">
+                        <div class="col-xs-12 col-sm-12">
+                          <label for="alerta"/>
+                          <field name="alerta" widget="statusbar" options="{'clickable': '1'}" />
+                        </div>
+                        <div class="col-xs-12 col-sm-12">
+                          <label for="calidad_venta"/>
+                          <field name="calidad_venta" widget="statusbar" options="{'clickable': '1'}"/>
+                        </div>
+                        </div>
+                        </page>
+
+
+                        </notebook>
+                        
                     </sheet>
                 <!-- Attachment preview -->
                 <div class="o_attachment_preview" />

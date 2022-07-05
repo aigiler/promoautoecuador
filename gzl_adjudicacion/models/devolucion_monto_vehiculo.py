@@ -24,7 +24,8 @@ class DevolucionMonto(models.Model):
     celular = fields.Char(related="cliente.phone", string='Celular',store=True, default=' ')
     correo = fields.Char(related="cliente.email", string='Correo',store=True, default=' ')
 
-    monto = fields.Float(string='Monto')
+    monto  = fields.Monetary(related="contrato_id.monto_financiamiento",
+        string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
     asesor = fields.Many2one('res.partner',related="contrato_id.asesor",string="Cerrador")
     asesor_postventa = fields.Many2one('res.partner',related="contrato_id.asesor",string="Cerrador")
 
@@ -194,14 +195,16 @@ class DevolucionMonto(models.Model):
         ('MALA VENTA', 'MALA VENTA'),
         ('NO ESTA DE ACUERDO CON EL PROCESO', 'NO ESTA DE ACUERDO CON EL PROCESO'),
         ('MUERTE', 'MUERTE'),
-        ('ENFERMEDAD', 'ENFERMEDAD')], string='Estado', track_visibility='onchange')
+        ('ENFERMEDAD', 'ENFERMEDAD')], string='Calidad de Venta', track_visibility='onchange')
 
     documentos_postventa = fields.One2many('devolucion.documentos.postventa','devolucion_id',track_visibility='onchange')
     observacion_contabilidad=fields.Text(string="Observaciones")
     observacion_legal=fields.Text(string="Observaciones")
     documentos_legal = fields.One2many('devolucion.documentos.legal','devolucion_id',track_visibility='onchange')
     observacion_adjudicaciones=fields.Text(string="Observaciones")
-
+    resumen_postventa=fields.Text(string="RESUMEN DEL CASO POR POSTVENTA")
+    resumen_adjudicaciones=fields.Text(string="RESUMEN DEL CASO POR ADJUDICACIONES")
+    simulacion_fondos=fields.Text(string="SIMULACION DE FONDOS")
 
     @api.onchange('tipo_accion')
     @api.depends('tipo_accion')
@@ -209,7 +212,7 @@ class DevolucionMonto(models.Model):
         obj_documentos_legal=self.env['documentos.legal'].search([('tipo_accion','=',self.tipo_accion)])  
         lista_ids=[]
         for doc in obj_documentos_legal:
-            id_registro=self.env['devolucion.documentos.postventa'].create({'documento_id':doc.id})
+            id_registro=self.env['devolucion.documentos.legal'].create({'documento_id':doc.id})
             lista_ids.append(int(id_registro))
         self.update({'documentos_legal':[(6,0,lista_ids)]})
        
