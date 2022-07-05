@@ -216,23 +216,3 @@ class AccountMoveReversal(models.TransientModel):
             #new_moves.action_post()
 
             moves_to_redirect |= new_moves
-
-
-        # Create action.
-        # action = {
-        #     'name': _('Reverse Moves'),
-        #     'type': 'ir.actiaccountons.act_window',
-        #     'res_model': '.move',
-        # }
-        # if len(moves_to_redirect) == 1:
-        #     action.update({
-        #         'view_mode': 'form',
-        #         'res_id': moves_to_redirect.id,
-        #     })
-        # else:
-        #     action.update({
-        #         'view_mode': 'tree,form',
-        #         'domain': [('id', 'in', moves_to_redirect.ids)],
-        #     })
-
-        #return action

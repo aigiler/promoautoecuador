@@ -104,7 +104,7 @@
 
             <xpath expr="//button[@name='action_reverse']" position="after">
                 <button name="procesoComprobanteElectronico" string="Facturación Electrónica" class="oe_highlight" type="object"  invisible="1"   />
-                <button name="corregir_cuotas" string="Cambiar Cuotas" class="oe_highlight" type="object"  invisible="0"   />
+                <button name="corregir_cuotas" string="Cambiar Cuotas" class="oe_highlight" type="object"  invisible="1"   />
             <!--    <button name="agregar_retencion" string="Agregar Retencion" class="oe_highlight" type="object"  attrs="{'invisible': ['|',('state','=','draft'),('type','!=','out_invoice')]}"   />
 
 -->

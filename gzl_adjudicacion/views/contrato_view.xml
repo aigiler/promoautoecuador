@@ -74,7 +74,7 @@
 
 
                     <button name="crear_adendum" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','!=','activo')]}" string="Crear Adendum" type="object" class="oe_highlight"/>
-                    <button name="modificar_tabla_contrato" attrs="{'invisible': [('is_group_cobranza', '=', True)]}" string="Bajada de Montos" type="object" class="oe_highlight"/>
+                    <button name="modificar_tabla_contrato" attrs="{'invisible': [('is_group_cobranza', '=', True)]}" string="Reajuste" type="object" class="oe_highlight"/>
 
 
                     <field name="state" widget="statusbar" statusbar_visible="pendiente,activo,congelar_contrato,adjudicar,adendum,desistir"/>
@@ -88,20 +88,6 @@
                         </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                         <div class="row">
                             <group string="Información del Contrato"/>
                             <div class="col-xs-12 col-sm-4">
@@ -110,7 +96,7 @@
                                     <field name="grupo" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="dia_corte" readonly="1"/>
                                     <field name="saldo_a_favor_de_capital_por_adendum" />
-                                    <field name="pago" />
+                                    <field name="pago" attrs="{'invisible': [('state', '!=','pendiente')]}"/>
                                     <field name="monto_financiamiento"/>
                                     <field name="tasa_administrativa" readonly="1"/>
                                     <field name="valor_inscripcion" />
