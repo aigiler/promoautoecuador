@@ -111,6 +111,7 @@ class HojaRuta(models.TransientModel):
             
             for campo in campos:
                 if campo.fila in [3,4,5,6,7]:
+                    raise ValidationError('{0},{1}'.format(campo.fila,campo.columna))
                     dct={}
                     resultado=self.devolucion_id.mapped(campo.name)
                     if len(resultado)>0:
