@@ -62,6 +62,7 @@ class HojaRuta(models.TransientModel):
             #####Campos de Cabecera
             campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
 
+            lista_campos=[]
             for l in self.devolucion_id:
                 if l.tipo_accion=='CLIENTE':
                     dct={}
@@ -107,7 +108,7 @@ class HojaRuta(models.TransientModel):
                     lista_campos.append(dct)
 
 
-            lista_campos=[]
+            
             for campo in campos:
                 if campo.fila in [3,4,5,6,7]:
                     dct={}
