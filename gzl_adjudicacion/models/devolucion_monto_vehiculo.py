@@ -209,7 +209,7 @@ class DevolucionMonto(models.Model):
     resolucion_gerencia=fields.Text(string="Resolución de Gerencia")
     pago_id=fields.Many2one("account.payment")
     journal_id = fields.Many2one('account.journal', string='Banco', tracking=True, domain="[('type', 'in', ('bank', 'cash')), ('company_id', '=', company_id)]")
-    company_id = fields.Many2one('res.company', related='journal_id.company_id', string='Company', readonly=True)
+    company_id = fields.Many2one('res.company', default=lambda self: self.env.company, string='Company', readonly=True)
 
     def generar_pago(self):
         for l in self:
