@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="tipo_contrato2" model="documentos.postventa">
+            <field name="nombre">CARTA ESCRITA POR TITULAR DEL CONTRATO</field>
+            <field name="tipo_devolucion">TODOS</field>
+        </record>     
+
+        <record id="tipo_contrato2" model="documentos.postventa">
+            <field name="nombre">COPIA DE CEDULA LEGIBLE</field>
+            <field name="tipo_devolucion">TODOS</field>
+        </record>
+        <record id="tipo_contrato2" model="documentos.postventa">
+            <field name="nombre">COPIA DE RECIBO DE INGRESO A CAJA/SOPORTE DE PAGO</field>
+            <field name="tipo_devolucion">DEVOLUCION DE VALORES SIN FIRMAS</field>
+        </record>
+        <record id="tipo_contrato2" model="documentos.postventa">
+            <field name="nombre">COPIA DE RECIBO DE INGRESO A CAJA/SOPORTE DE PAGO</field>
+            <field name="tipo_devolucion">DEVOLUCION DE RESERVA</field>
+        </record>
+        <record id="tipo_contrato2" model="documentos.postventa">
+            <field name="nombre">COPIA DE RECIBO DE INGRESO A CAJA/SOPORTE DE PAGO</field>
+            <field name="tipo_devolucion">DEVOLUCION POR CALIDAD DE VENTAODOS</field>
+        </record>
+        <record id="tipo_contrato2" model="documentos.postventa">
+            <field name="nombre">FORMULARIO CONOZCA A SU CLIENTE</field>
+            <field name="tipo_devolucion">DEVOLUCION DE RESERVA</field>
+        </record>
+        <record id="tipo_contrato2" model="documentos.postventa">
+            <field name="nombre">COPIA CONTRATO</field>
+            <field name="tipo_devolucion">DEVOLUCION POR DESISTIMIENTO DEL CONTRATO</field>
+        </record>
+        <record id="tipo_contrato2" model="documentos.postventa">
+            <field name="nombre">SOPORTES VALIDOS</field>
+            <field name="tipo_devolucion">DEVOLUCION POR DESISTIMIENTO DEL CONTRATO</field>
+        </record>
+        <record id="tipo_contrato2" model="documentos.postventa">
+            <field name="nombre">PODER NOTARIADO PARA ABOGADO (SI APLICA)</field>
+            <field name="tipo_devolucion">DEVOLUCION POR DESISTIMIENTO DEL CONTRATO</field>
+        </record>
+        <record id="tipo_contrato2" model="documentos.postventa">
+            <field name="nombre">COPIA DE OFICIO/NOTIFICACION  FISCALIA, DEFENSORIA, CONSEJO DE LA JUDICATURA (SI APLICA)</field>
+            <field name="tipo_devolucion">DEVOLUCION POR DESISTIMIENTO DEL CONTRATO</field>
+        </record>
+        <record id="tipo_contrato2" model="documentos.postventa">
+            <field name="nombre">COPIA DEL CONTRATO</field>
+            <field name="tipo_devolucion">DEVOLUCION POR CALIDAD DE VENTA</field>
+        </record>
+
+
+
+        <record id="tipo_contrato2" model="documentos.legal">
+            <field name="nombre">CARTA ESCRITA POR TITULAR DEL CONTRATO</field>
+            <field name="tipo_accion">CLIENTE</field>
+        </record>
+        <record id="tipo_contrato2" model="documentos.legal">
+            <field name="nombre">COPIA DE CÉDULA</field>
+            <field name="tipo_accion">CLIENTE</field>
+        </record>
+        <record id="tipo_contrato2" model="documentos.legal">
+            <field name="nombre">COPIA DEL CONTRATO</field>
+            <field name="tipo_accion">CLIENTE</field>
+        </record>
+        <record id="tipo_contrato2" model="documentos.legal">
+            <field name="nombre">ESCRITO DE AUTORIZACIÓN O PROCURACIÓN JUDICIAL</field>
+            <field name="tipo_accion">ABOGADO</field>
+        </record>
+        <record id="tipo_contrato2" model="documentos.legal">
+            <field name="nombre">COPIA DE CÉDULA</field>
+            <field name="tipo_accion">ABOGADO</field>
+        </record>
+        <record id="tipo_contrato2" model="documentos.legal">
+            <field name="nombre">COPIA DEL CERTIFICADO DE VOTACIÓN</field>
+            <field name="tipo_accion">ABOGADO</field>
+        </record>
+        <record id="tipo_contrato2" model="documentos.legal">
+            <field name="nombre">COPIA DE LA CREDENCIAL DEL ABOGADO VIGENTE</field>
+            <field name="tipo_accion">ABOGADO</field>
+        </record>
+        <record id="tipo_contrato2" model="documentos.legal">
+            <field name="nombre">CAPTURE DEL PROCESO EN PÁGINA DE LA FUNCION JUDICIAL</field>
+            <field name="tipo_accion">CONSEJO</field>
+        </record>
+        <record id="tipo_contrato2" model="documentos.legal">
+            <field name="nombre">COPIA DE OFICIO DE DENUNCIA</field>
+            <field name="tipo_accion">CONSEJO</field>
+        </record>
+        <record id="tipo_contrato2" model="documentos.legal">
+            <field name="nombre">COPIA DE OFICIO DE DENUNCIA</field>
+            <field name="tipo_accion">DEFENSORIA</field>
+        </record>
+        <record id="tipo_contrato2" model="documentos.legal">
+            <field name="nombre">CAPTURE DE LA PÁGINA CONSULTA DEL DELITO SI EXISTE</field>
+            <field name="tipo_accion">FISCALIA</field>
+        </record>
+        <record id="tipo_contrato2" model="documentos.legal">
+            <field name="nombre">COPIA DEL PROCESO DE LA FISCALIA</field>
+            <field name="tipo_accion">FISCALIA</field>
+        </record>
+        <record id="tipo_contrato2" model="documentos.legal">
+            <field name="nombre">SOLICITUD DE MEDIACIÓN</field>
+            <field name="tipo_accion">CAMARA DE COMERCIO</field>
+        </record>
+
+
+    </data>
+</odoo>

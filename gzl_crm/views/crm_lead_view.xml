@@ -32,7 +32,7 @@
                 <field name="grupo_adjudicado_id"></field>
                 <field name="fecha_ganada"></field>
                 <field name="contrato_id" readonly="1"></field>
-                <field name="cerrador" ></field>
+                <field name="cerrador" string="Asesor"></field>
                 <field name="porcent_asesor" ></field>
                     <field name="factura_inscripcion_id" string="Factura de Inscripción" placeholder="Ingrese la factura de inscripción" domain="[('state','=','posted'),('type','=','out_invoice'),('partner_id','=',partner_id),('amount_residual','=',0)]" />
 

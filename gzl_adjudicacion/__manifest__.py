@@ -20,6 +20,7 @@
                     'data/data_roles.xml',
                     'data/ir_cron.xml',
                     'data/data_mail_template.xml',
+                    'data/data_documentos.xml',
 
 
                     'security/ir.model.access.csv',

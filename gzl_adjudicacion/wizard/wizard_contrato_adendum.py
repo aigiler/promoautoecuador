@@ -42,7 +42,9 @@ class WizardContratoAdendum(models.Model):
             cuotas_pgadas=sum(pagos.mapped("cuota_capital"))
             pagos_pendiente=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago!='pagado' and l.factura_id)
             cuotas_pendientes_pago=sum(pagos_pendiente.mapped("cuota_capital"))
-            pago_capital=cuotas_pgadas+cuotas_pendientes_pago
+            abonos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago!='pagado' and l.monto_pagado>0)
+            cuotas_pendientes_abono=sum(abonos.mapped("cuota_capital"))
+            pago_capital=cuotas_pgadas+cuotas_pendientes_pago+cuotas_pendientes_abono
             #raise ValidationError('{0}'.format(pago_capital))
 
             nuevoMontoReeestructura=self.monto_financiamiento-pago_capital
@@ -61,7 +63,7 @@ class WizardContratoAdendum(models.Model):
 
             numeroCuotasTotal=diferenciaPlazoAdendum
 
-            intervalo_nuevo=self.plazo_meses.numero - numeroCuotasPagadaTotal + len(numcuotas_congeladas)-len(pagos_pendiente)
+            intervalo_nuevo=self.plazo_meses.numero - numeroCuotasPagadaTotal + len(numcuotas_congeladas)-len(pagos_pendiente)-len(abonos)
             #raise ValidationError('{0}'.format(intervalo_nuevo))
             #lleno lista con estado de cuenta anterior 
             estado_cuenta_anterior=[]
@@ -112,7 +114,7 @@ class WizardContratoAdendum(models.Model):
                     lista_cuotapagadas.append(dct)
 
 
-                obj_contrato_detalle=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','!=','pagado'),('factura_id','=',False)])
+                obj_contrato_detalle=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','!=','pagado'),('factura_id','=',False),('ids_pagos','=',False)])
                 obj_contrato_detalle.unlink()
 
                 

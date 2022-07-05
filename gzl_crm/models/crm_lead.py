@@ -447,11 +447,16 @@ class CrmLead(models.Model):
                                             'monto_financiamiento':self.planned_revenue,
                                             'tipo_de_contrato':self.tipo_contrato.id,
                                             'provincias':self.partner_id.state_id.id,
+                                            'ciudad':self.partner_id.city.id,
                                             'plazo_meses':self.numero_cuotas.id,
                                             'cuota_capital':self.cuota_capital,
                                             'iva_administrativo':self.iva,
                                             'factura_inscripcion':self.factura_inscripcion_id.id,
                                             'grupo':self.grupo_adjudicado_id.id,
+                                            'supervisor':self.team_id.user_id.id,
+                                            'asesor':self.cerrador.id,
+                                            'valor_inscripcion':self.valor_inscripcion
+
                                         })
                 self.contrato_id=contrato.id
 

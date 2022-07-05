@@ -148,6 +148,8 @@
                                     <field name="nota"/>
                                     <field name="aplicaGarante"/>
                                     <field name="garante" attrs="{'invisible': [('aplicaGarante', '=', False)]}"/>
+                                    <field name="supervisor"/>
+                                    <field name="asesor"/>
                                     
                                     <field name="archivo_adicional" filename="name"/>
                                     <field name="fecha_inicio_pago" readonly="0"/>

@@ -19,6 +19,10 @@ class Contrato(models.Model):
 
     entrega_vehiculo_id = fields.Many2one('entrega.vehiculo',string="Solicitud de entrega vehículo" ,track_visibility='onchange')
 
+    supervisor = fields.Many2one('res.users',string="Supervisor",track_visibility='onchange' )
+
+    asesor = fields.Many2one('res.partner',string="Asesor")
+
 
     porcentaje_programado = fields.Float(
         string='Porcentaje Programado')
