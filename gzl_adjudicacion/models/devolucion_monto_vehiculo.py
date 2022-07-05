@@ -219,7 +219,9 @@ class DevolucionMonto(models.Model):
                                                     'payment_type':'outbound','amount':l.valor_desistimiento,
                                                     'payment_method_id':pago_metodo.id,
                                                     'state':'draft',
-                                                    'tipo_transaccion':'Pago')
+                                                    'tipo_transaccion':'Pago',
+                                                    'company_id':self.env.company.id)
+                self.pago_id=pago_id.id
             else:
                 raise ValidationError("Seleccione el Banco con el cual desea realizar la devolución.")
             
