@@ -51,7 +51,7 @@ def ajustar_hoja(sheet, flag, celda, value):
 
 
 
-def generar_hoja_huta(ruta,lista_campos,lista_documentos_postventa, lista_documentos_legal,devolucion_id):
+def generar_hoja_huta(ruta,lista,lista_documentos_postventa, lista_documentos_legal,devolucion_id):
 
     workbook = openpyxl.load_workbook(ruta)
 
