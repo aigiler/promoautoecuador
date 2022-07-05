@@ -209,7 +209,7 @@ class DevolucionMonto(models.Model):
     @api.onchange('tipo_accion')
     @api.depends('tipo_accion')
     def llenar_tabla_legal(self):
-        obj_documentos_legal=self.env['documentos.legal'].search([('tipo_accion','=',self.tipo_accion)])  
+        obj_documentos_legal=self.env['documentos.legal'].search([('tipo_accion','in',(self.tipo_accion,'TODOS'))])  
         lista_ids=[]
         for doc in obj_documentos_legal:
             id_registro=self.env['devolucion.documentos.legal'].create({'documento_id':doc.id})
