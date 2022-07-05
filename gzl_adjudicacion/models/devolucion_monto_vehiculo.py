@@ -28,7 +28,7 @@ class DevolucionMonto(models.Model):
     asesor = fields.Many2one('res.partner',related="contrato_id.asesor",string="Cerrador")
     asesor_postventa = fields.Many2one('res.partner',related="contrato_id.asesor",string="Cerrador")
 
-    supervisor = fields.Many2one('res.user',related="contrato_id.supervisor",string="Cerrador")
+    supervisor = fields.Many2one('res.users',related="contrato_id.supervisor",string="Supervisor")
     grupo = fields.Many2one(
         'grupo.adjudicado', related="contrato_id.grupo",string="Grupo", track_visibility='onchange')
     
@@ -151,9 +151,9 @@ class DevolucionMonto(models.Model):
     def obtener_valores(self):
         for l in self:
             if l.contrato_id:
-                capital_pagado_fecha=sum(l.contrato_id.estado_cuenta_ids.mapped("cuota_capital"))-sum(l.contrato_id.estado_cuenta_ids.mapped("saldo_cuota_capital"))
-                administrativo_pagado_fecha=sum(l.contrato_id.estado_cuenta_ids.mapped("cuota_adm"))-sum(l.contrato_id.estado_cuenta_ids.mapped("saldo_cuota_administrativa"))
-                iva_pagado=sum(l.contrato_id.estado_cuenta_ids.mapped("iva_adm"))-sum(l.contrato_id.estado_cuenta_ids.mapped("saldo_iva"))
+                capital_pagado_fecha=sum(l.contrato_id.estado_de_cuenta_ids.mapped("cuota_capital"))-sum(l.contrato_id.estado_cuenta_ids.mapped("saldo_cuota_capital"))
+                administrativo_pagado_fecha=sum(l.contrato_id.estado_de_cuenta_ids.mapped("cuota_adm"))-sum(l.contrato_id.estado_cuenta_ids.mapped("saldo_cuota_administrativa"))
+                iva_pagado=sum(l.contrato_id.estado_de_cuenta_ids.mapped("iva_adm"))-sum(l.contrato_id.estado_cuenta_ids.mapped("saldo_iva"))
                 valor_desistimiento=capital_pagado_fecha*0.85
                 valores_facturados=0
                 notas_credito=0
