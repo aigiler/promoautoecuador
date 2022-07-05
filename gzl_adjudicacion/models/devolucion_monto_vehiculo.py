@@ -168,7 +168,7 @@ class DevolucionMonto(models.Model):
                     for y in notas_credito_obj:
                         notas_credito+=y.amount_total
                         lista_facturas.append(y.id)
-                valor_inscripcion=l.factura_inscripcion.amount_total
+                valor_inscripcion=l.contrato_id.factura_inscripcion.amount_total
                 pagos_obj=self.env['account.payment'].search([('partner_id','=',l.cliente.id),('payment_type','=','inbound'),('state','in',['reconciled','posted'])])
                 ingreso_caja=0
                 ingreso_banco=0
