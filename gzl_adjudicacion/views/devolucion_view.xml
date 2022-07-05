@@ -415,6 +415,94 @@
                         </div>
                         </page>
 
+                        <separator class="text-center" string="RESOLUCION POR PARTE DE GERENCIA"/>
+                            <div class="row" style="border: 1px solid black;">
+                                <field name="resolucion_gerencia"/>
+                            </div>
+                            <separator/>
+
+
+                        <page string="SALIDA DE DINERO">
+                        <separator class="text-center" string="DATOS GENERALES"/>
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="contrato_id" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
+                                     <field name="fecha_contrato" />
+                                     <field name="tipo_de_contrato" />
+                                     <field name="supervisor" />
+                                     <field name="fsolicitud" />
+                                   </group>
+
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="cliente" />
+                                    <field name="vatAdjudicado" />
+                                    <field name="monto" />
+                                    <field name="asesor" />
+                                    <field name="asesor_postventa" />
+                                    </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="celular" />
+                                    <field name="correo" />
+                                    <field name="grupo" />
+                                    <field name="valor_inscripcion" />
+                                    <field name="ciudad" />
+                                </group>
+
+                            </div>
+                        </div>
+
+               
+                       <separator/>
+                       <div class="row" style="border: 1px solid black;">
+                        <div class="col-xs-12 col-sm-12">
+                          <label for="alerta"/>
+                          <field name="alerta" widget="statusbar" options="{'clickable': '1'}" />
+                        </div>
+                        <div class="col-xs-12 col-sm-12">
+                          <label for="calidad_venta"/>
+                          <field name="calidad_venta" widget="statusbar" options="{'clickable': '1'}"/>
+                        </div>
+                        </div>
+                      
+                            <separator/>
+                        <separator class="text-center" string="VERIFICACION DE VALORES EN EL SISTEMA"/>
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="valor_cancelado_sin_firma" />
+                                     <field name="valor_reserva" />
+                                     <field name="valor_licitacion" />
+                                     <field name="valor_desistimiento" />
+                                   </group>
+
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="capital_pagado_fecha" />
+                                    <field name="administrativo_pagado_fecha" />
+                                    <field name="iva_pagado" />
+                                    </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="observacion_adjudicaciones" />
+                                </group>
+
+                            </div>
+                        </div>
+                        <separator class="text-center" string="SALIDA DE DINERO"/>
+                            <div class="row" style="border: 1px solid black;">
+                                <field name="pago_id"/>
+                            </div>
+                            <separator/>
+
+                        </page>
+
 
                         </notebook>
                         

@@ -206,7 +206,23 @@ class DevolucionMonto(models.Model):
     resumen_postventa=fields.Text(string="RESUMEN DEL CASO POR POSTVENTA")
     resumen_adjudicaciones=fields.Text(string="RESUMEN DEL CASO POR ADJUDICACIONES")
     simulacion_fondos=fields.Text(string="SIMULACION DE FONDOS")
+    resolucion_gerencia=fields.Text(string="Resolución de Gerencia")
+    pago_id=fields.Many2one("account.payment")
+    journal_id = fields.Many2one('account.journal', string='Banco', readonly=True, tracking=True, domain="[('type', 'in', ('bank', 'cash')), ('company_id', '=', company_id)]")
 
+    def generar_pago(self):
+        for l in self:
+            if self.journal_id:
+                pago_metodo=self.env.ref('gzl_facturacion_electronica.out_transfer')
+
+                pago_id=self.env['account.payment'].create("journal_id":l.journal_id.id,'partner_id':self.cliente.id,
+                                                    'payment_type':'outbound','amount':l.valor_desistimiento,
+                                                    'payment_method_id':pago_metodo.id,
+                                                    'state':'draft',
+                                                    'tipo_transaccion':'Pago')
+            else:
+                raise ValidationError("Seleccione el Banco con el cual desea realizar la devolución.")
+            
     @api.onchange('tipo_accion')
     @api.depends('tipo_accion')
     def llenar_tabla_legal(self):
