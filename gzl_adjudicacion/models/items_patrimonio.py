@@ -50,7 +50,7 @@ class ItemsDocumentosLegal(models.Model):
 
 
 class DocumentosPostventa(models.Model):
-    _name = 'devolucion.documentos.legal'
+    _name = 'devolucion.documentos.postventa'
     _description = 'Requisitos'
     
     archivo = fields.Binary('Archivo', required=True)
