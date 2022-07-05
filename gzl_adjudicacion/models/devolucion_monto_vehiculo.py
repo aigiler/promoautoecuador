@@ -22,7 +22,7 @@ class DevolucionMonto(models.Model):
     vatAdjudicado = fields.Char(related="cliente.vat", string='Cedula del Asociado',store=True, default=' ')
 
     celular = fields.Char(related="cliente.phone", string='Celular',store=True, default=' ')
-    correo = fields.Char(related="cliente.emain", string='Correo',store=True, default=' ')
+    correo = fields.Char(related="cliente.email", string='Correo',store=True, default=' ')
 
     monto = fields.Float(string='Monto')
     asesor = fields.Many2one('res.partner',related="contrato_id.asesor",string="Cerrador")
