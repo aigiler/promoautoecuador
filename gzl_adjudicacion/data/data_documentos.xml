@@ -20,7 +20,7 @@
         </record>
         <record id="documento_dev5" model="documentos.postventa">
             <field name="nombre">COPIA DE RECIBO DE INGRESO A CAJA/SOPORTE DE PAGO</field>
-            <field name="tipo_devolucion">DEVOLUCION POR CALIDAD DE VENTAODOS</field>
+            <field name="tipo_devolucion">DEVOLUCION POR CALIDAD DE VENTA</field>
         </record>
         <record id="documento_dev6" model="documentos.postventa">
             <field name="nombre">FORMULARIO CONOZCA A SU CLIENTE</field>
