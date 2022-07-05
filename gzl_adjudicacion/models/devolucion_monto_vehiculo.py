@@ -221,7 +221,8 @@ class DevolucionMonto(models.Model):
                                                                     'payment_method_id':pago_metodo.id,
                                                                     'state':'draft',
                                                                     'tipo_transaccion':'Pago',
-                                                                    'company_id':self.env.company.id})
+                                                                    'company_id':self.env.company.id,
+                                                                    'partner_type':"customer"})
                 self.pago_id=pago_id.id
             else:
                 raise ValidationError("Seleccione el Banco con el cual desea realizar la devolución.")
