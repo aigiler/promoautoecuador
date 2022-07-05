@@ -497,6 +497,34 @@
                         </div>
                         <separator/>
 
+                        <div class="row" style="border: 1px solid black;">
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="valor_cancelado_sin_firma" />
+                                     <field name="valor_reserva" />
+                                     <field name="valor_licitacion" />
+                                     <field name="valor_desistimiento" />
+                                   </group>
+
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="valores_facturados" />
+                                    <field name="inscripcion" />
+                                    <field name="notas_credito" />
+                                    <field name="ingreso_caja" />
+                                    <field name="ingreso_banco" />
+                                    <field name="cuota_capital" />
+                                    </group>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <group > 
+                                    <field name="observacion_contabilidad" />
+                                </group>
+
+                            </div>
+                        </div>
+
                         <separator class="text-center" string="SALIDA DE DINERO"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-sm-4">
@@ -511,6 +539,8 @@
                             
                             </div>
                             <separator/>
+
+
 
                         </page>
 

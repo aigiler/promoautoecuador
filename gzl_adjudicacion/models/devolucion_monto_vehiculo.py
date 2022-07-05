@@ -26,8 +26,8 @@ class DevolucionMonto(models.Model):
 
     monto  = fields.Monetary(related="contrato_id.monto_financiamiento",
         string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
-    asesor = fields.Many2one('res.partner',related="contrato_id.asesor",string="Cerrador")
-    asesor_postventa = fields.Many2one('res.partner',related="contrato_id.asesor",string="Cerrador")
+    asesor = fields.Many2one('res.partner',related="contrato_id.asesor",string="Asesor")
+    asesor_postventa = fields.Many2one('res.partner',string="Asesor Postventa")
 
     supervisor = fields.Many2one('res.users',related="contrato_id.supervisor",string="Supervisor")
     grupo = fields.Many2one(
