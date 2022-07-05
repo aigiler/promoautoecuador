@@ -167,17 +167,18 @@ class DevolucionMonto(models.Model):
                     notas_credito_obj=self.env['account.move'].search([('reversed_entry_id','=',x.id),('type','=','out_refund'),('state','=','posted')])
                     for y in notas_credito_obj:
                         notas_credito+=y.amount_total
-                        lista_facturas.append(y.id)
                 valor_inscripcion=l.contrato_id.factura_inscripcion.amount_total
                 pagos_obj=self.env['account.payment'].search([('partner_id','=',l.cliente.id),('payment_type','=','inbound'),('state','in',['reconciled','posted'])])
                 ingreso_caja=0
                 ingreso_banco=0
                 for pagos in pagos_obj:
-                    for pago in pagos.payment_line_ids:
-                        if pagos.journal_id.type=='cash':
-                            ingreso_caja+=pagos.amount
-                        elif pagos.journal_id.type=='bank':
-                            ingreso_banco+=pagos.amount
+                    for fac in pagos.invoice_ids:
+                        if fac.id in lista_facturas:
+                            if pagos.journal_id.type=='cash':
+                                ingreso_caja+=pagos.amount
+                            elif pagos.journal_id.type=='bank':
+                                ingreso_banco+=pagos.amount
+                            pass
 
                 l.capital_pagado_fecha=capital_pagado_fecha
                 l.administrativo_pagado_fecha=administrativo_pagado_fecha
