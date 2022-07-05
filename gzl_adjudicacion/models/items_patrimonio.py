@@ -52,7 +52,7 @@ class ItemsDocumentosLegal(models.Model):
 class DocumentosPostventa(models.Model):
     _name = 'devolucion.documentos.postventa'
     _description = 'Requisitos'
-    _rec_name= 'nombre'
+    _rec_name= 'documento_id'
     
     documento_id=fields.Many2one("documentos.postventa",string="Nombre")
     archivo = fields.Binary('Archivo', required=True)
@@ -62,7 +62,7 @@ class DocumentosPostventa(models.Model):
 class DocumentosLegal(models.Model):
     _name = 'devolucion.documentos.legal'
     _description = 'Requisitos'
-    _rec_name= 'nombre'
+    _rec_name= 'documento_id'
     
     documento_id=fields.Many2one("documentos.legal",string="Nombre")
     archivo = fields.Binary('Archivo', required=True)
