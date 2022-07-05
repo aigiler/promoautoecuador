@@ -161,7 +161,7 @@
 
                             </div>
                             </div>
-                             <separator class="text-center" string="RESUMEN DEL CASO POR POSTVENTA"/>
+                             <separator class="text-center" string="Observaciones"/>
                             <div class="row" style="border: 1px solid black;">
                                 <field name="observacion_legal"/>
                             </div>

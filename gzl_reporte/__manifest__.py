@@ -29,6 +29,7 @@
             'wizard/carta_finalizacion_wizard.xml',
             'wizard/pagare_wizard.xml',
             'wizard/reporte_grupos.xml',
+            'wizard/hoja_ruta_view.xml',
             'wizard/reporte_trazabilidad_pagos.xml',
 
 
