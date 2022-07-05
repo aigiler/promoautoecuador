@@ -142,7 +142,7 @@ class AccountMoveReversal(models.TransientModel):
                         pag.aplicar_anticipo=True
             for cuota_id in self.move_id.contrato_estado_cuenta_ids:
                 cuota_id.factura_id=False
-                pagos_cuotas=self.env['account.payment.cuotas'].search([('pago_id','in',lista_pagos)])
+                pagos_cuotas=self.env['account.payment.cuotas'].search([('pago_id','in',lista_pagos),('cuotas_id','=',cuota_id.id)])
                 pagos_cuotas.unlink()
                 monto_sobrante=0
                 for det in cuota_id.ids_pagos:

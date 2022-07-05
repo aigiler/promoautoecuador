@@ -116,7 +116,7 @@ def generar_hoja_huta(ruta,lista,lista_documentos_postventa, lista_documentos_le
         sheet['C24'].fill = PatternFill(fill_type="solid", fgColor='009ee5')
         sheet['C25'].fill = PatternFill(fill_type="solid", fgColor='009ee5')
         if devolucion_id.causas_licitacion=='NO DESEA NINGUN VEHICULO OFRECIDO':
-            sheet['E4'].fill = PatternFill(fill_type="solid", fgColor='009ee5')
+            sheet['E24'].fill = PatternFill(fill_type="solid", fgColor='009ee5')
         elif devolucion_id.causas_licitacion=='NO CUMPLE CON PERFIL DE CREDITO':
             sheet['E25'].fill = PatternFill(fill_type="solid", fgColor='009ee5')
         elif devolucion_id.causas_licitacion=='NO CUMPLE CON POLIZA DE SEGURO':

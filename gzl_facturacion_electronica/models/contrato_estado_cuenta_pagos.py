@@ -23,7 +23,7 @@ class ContratoEstadoCuentaPagos(models.Model):
     rastreo = fields.Monetary(string='Rastreo', currency_field='currency_id', readonly=True)
     otro = fields.Monetary(string='Otro', currency_field='currency_id', readonly=True)
     
-    programado = fields.Monetary('Cuota Programada')
+    programado = fields.Monetary('Cuota Programada', currency_field='currency_id', readonly=True)
     saldo = fields.Monetary(string='Saldo', currency_field='currency_id' , readonly=True)
     cuota_capital_pagar = fields.Monetary('Cuota Capital a Pagar')
     seguro_pagar = fields.Monetary('Seguro a Pagar')
