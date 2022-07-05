@@ -105,6 +105,7 @@
                                 </group>
                             </div>
 
+
                             <div class="col-xs-12 col-sm-4">
                                 <group>
                                     <field name="tipo_de_contrato" options="{'no_create': True, 'no_open': True}" />
