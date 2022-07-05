@@ -413,14 +413,14 @@
                           <field name="calidad_venta" widget="statusbar" options="{'clickable': '1'}"/>
                         </div>
                         </div>
-                        </page>
+                        
 
                         <separator class="text-center" string="RESOLUCION POR PARTE DE GERENCIA"/>
                             <div class="row" style="border: 1px solid black;">
                                 <field name="resolucion_gerencia"/>
                             </div>
                             <separator/>
-
+                        </page>
 
                         <page string="SALIDA DE DINERO">
                         <separator class="text-center" string="DATOS GENERALES"/>
@@ -495,10 +495,15 @@
 
                             </div>
                         </div>
+                        <separator/>
+
                         <separator class="text-center" string="SALIDA DE DINERO"/>
                             <div class="row" style="border: 1px solid black;">
+                                 <group> 
                                 <button type="object" class="btn btn-primary o_invoice_new" name="generar_pago"/>
+                                
                                 <field name="pago_id"/>
+                                 </group> 
                             </div>
                             <separator/>
 
