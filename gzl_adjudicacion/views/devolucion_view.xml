@@ -503,7 +503,7 @@
                                 <group > 
                                     <field name="journal_id" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}'/>
                                     <button type="object" string="Generar Pago" class="btn btn-primary o_invoice_new" name="generar_pago"/>
-
+                                     <field name="company_id" invisible="1" options='{"no_create": 1, "no_create_edit": 1}'/>
                                     <field name="pago_id" options='{"no_create": 1, "no_create_edit": 1}'/>
                                 </group>
 
