@@ -54,7 +54,7 @@ class WizardPayFortnight(models.TransientModel):
         if self.line_ids:
             line_ids = self.line_ids.split(',')
             for values in line_ids:
-                data.append(int(values))
+                data.append(int(values.id))
         input_ids = self.env['hr.input'].browse(data)
 
         for e in employee_ids:

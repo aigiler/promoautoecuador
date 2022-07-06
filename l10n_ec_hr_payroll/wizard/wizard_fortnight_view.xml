@@ -15,7 +15,7 @@
                         <field name="company_id" required="1" groups="base.group_multi_company"/>
                     </group> 
                     <group col="2" colspan="2" states="init">
-                        <field name="input_ids" widget="many2many_tags" options="{'no_create':True}" domain="[('date','&lt;=',date_from),('date','&gt;=',date_to)]"/>
+                        <field name="input_ids" widget="many2many_tags" options="{'no_create':True}" domain="[('date','&gt;=',date_from),('date','&lt;=',date_to)]"/>
                         <field name="line_ids" invisible="1"/>
                     </group>
                 </group>
