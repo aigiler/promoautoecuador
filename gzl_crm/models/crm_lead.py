@@ -159,6 +159,7 @@ class CrmLead(models.Model):
 
 
     @api.constrains("stage_id")
+    @api.onchange("stage_id")
     def guardar_fecha_como_ganada(self, ):
         hoy=date.today()
 
