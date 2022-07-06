@@ -1061,12 +1061,12 @@ class account_payment(models.Model):
                                         }
                                 transacciones.create(dct)
                         
-                        pago_fact_id=self.env['account.payment.cuotas.detalle'].search([('factura_id','=',fact.id),('pago_id','=',rec.id)],limit=1)
+                        pago_fact_id=self.env['account.payment.cuotas.detalle'].search([('factura_id','=',y.id),('pago_id','=',rec.id)],limit=1)
                        
                         if pago_fact_id:
                             pago_fact_id.valor_asociado+=monto_a_factura
                         else:
-                            pago_fact_id=self.env['account.payment.cuotas.detalle'].create({'factura_id':fact.id,'pago_id':rec.id,
+                            pago_fact_id=self.env['account.payment.cuotas.detalle'].create({'factura_id':y.id,'pago_id':rec.id,
                                                                                     'monto_pagado':rec.amount,'valor_asociado':monto_a_factura})
                             
 
