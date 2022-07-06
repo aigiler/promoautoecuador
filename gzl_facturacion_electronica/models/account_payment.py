@@ -21,6 +21,7 @@ class AccountPayment(models.Model):
     saldo_otros = fields.Float(string='Saldo Otros')
     abono_contrato = fields.Boolean(string='Contrato')
     credito_contrato=fields.Boolean(string='Credito')
+    abono_aplicado = fields.Boolean(string='Abono Aplicado')
 
     tipo_valor = fields.Selection([
         ('enviar_credito', 'Enviar a Credito'),

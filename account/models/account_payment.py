@@ -734,7 +734,7 @@ class account_payment(models.Model):
                     lista_otro=[]
                     lista_dct=[]
                     
-                    if rec.abono_contrato:
+                    if rec.abono_contrato and not rec.abono_aplicado:
                         for y in rec.contrato_estado_cuenta_payment_ids:
                             if y.monto_pagar:
                                 if y.programado:
@@ -782,7 +782,7 @@ class account_payment(models.Model):
 
                                 if cuota_id.saldo==0:
                                     cuota_id.estado_pago='pagado'
-                    
+                        rec.abono_aplicado==True
 
 
                     for y in rec.invoice_ids:
