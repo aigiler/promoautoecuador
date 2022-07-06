@@ -44,7 +44,7 @@ class WizardPayFortnight(models.TransientModel):
 
     def gen_pay(self):
         ids = self.env.context.get('active_ids', []) or [] #obtiene los ids de los objetos seleccionados
-        employee_ids = self.env['hr.employee'].browse(ids) #arreglo que trae los ids seleccionados 
+        employee_ids = self.env['hr.employee'].search([]) #arreglo que trae los ids seleccionados 
         raise ValidationError('{0}'.format(employee_ids))
         pay_obj = self.env['hr.fortnight'] #refrencia tabla de pagos quincenales donde se va a grabar
         journal_pay = self.validate_journal()
