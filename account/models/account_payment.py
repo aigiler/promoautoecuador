@@ -1061,7 +1061,7 @@ class account_payment(models.Model):
                                         }
                                 transacciones.create(dct)
                         
-                        pago_fact_id=self.env['account.payment.cuotas.detalle'].seacrh([('factura_id':,'=',fact.id),('pago_id':,'=',rec.id)],limit=1)
+                        pago_fact_id=self.env['account.payment.cuotas.detalle'].seacrh([('factura_id','=',fact.id),('pago_id','=',rec.id)],limit=1)
                        
                         if pago_fact_id:
                             pago_fact_id.valor_asociado+=monto_a_factura
@@ -1140,12 +1140,12 @@ class account_payment(models.Model):
                                             'state':cuota_id.contrato_id.state
                                             }
                                     transacciones.create(dct)
-                            pago_fact_id=self.env['account.payment.cuotas.detalle'].seacrh([('factura_id':,'=',fact.id),('pago_id':,'=',rec.id)],limit=1)
+                            pago_fact_id=self.env['account.payment.cuotas.detalle'].seacrh([('factura_id','=',fact.id),('pago_id','=',rec.id)],limit=1)
                        
                             if pago_fact_id:
                                 pago_fact_id.valor_asociado+=monto_a_factura
-                            
-                            pago_fact_id=self.env['account.payment.cuotas.detalle'].create({'factura_id':fact.id,'pago_id':rec.id,
+                            else:
+                                pago_fact_id=self.env['account.payment.cuotas.detalle'].create({'factura_id':fact.id,'pago_id':rec.id,
                                                                                     'monto_pagado':rec.amount,'valor_asociado':monto_a_factura})
                             
 
