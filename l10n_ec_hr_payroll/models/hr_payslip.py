@@ -363,7 +363,7 @@ class hrPayslipRun(models.Model):
                                 cont += 1
                             sheet.write(col,dtc[total[1]],abs(total[0]),number2)
                             cont += 1
-                    address = payslip.employee_id.work_location or ''
+                    address = payslip.employee_id.work_location
                     col += 1    
                     sheet.merge_range(col,0,col,3,address,bold)
                 no += 1
