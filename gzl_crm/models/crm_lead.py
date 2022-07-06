@@ -447,7 +447,7 @@ class CrmLead(models.Model):
                                             'monto_financiamiento':self.planned_revenue,
                                             'tipo_de_contrato':self.tipo_contrato.id,
                                             'provincias':self.partner_id.state_id.id,
-                                            'ciudad':self.partner_id.city.id,
+                                            'ciudad':self.ciudad_id.id,
                                             'plazo_meses':self.numero_cuotas.id,
                                             'cuota_capital':self.cuota_capital,
                                             'iva_administrativo':self.iva,
