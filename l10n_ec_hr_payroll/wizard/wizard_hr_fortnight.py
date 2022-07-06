@@ -31,10 +31,8 @@ class WizardPayFortnight(models.TransientModel):
     def onchange_inputs(self):
         data = ''
         if self.input_ids:
-            for line in self.input_ids._ids:
-                if data:
-                    data += ','
-                data += str(line)
+            for line in self.input_ids:
+                data += str(line.id)+","
             self.line_ids = data
 
     @api.onchange('date_from')
