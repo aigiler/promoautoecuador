@@ -28,6 +28,8 @@ class WizardContratoAct(models.Model):
 
     observacion = fields.Char(string='Observacion')
     def ejecutar_cambio(self):
+        if  self.contrato_id.ejecutado:
+            raise ValidationError("Este contrato ya tuvo modificaciones. Se realizó un adendum o ya se hizo un ajuste.")
         monto_programado_anterior=0
         nuevo_monto=0
         if self.contrato_id.tiene_cuota:

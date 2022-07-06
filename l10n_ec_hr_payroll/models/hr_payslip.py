@@ -346,7 +346,7 @@ class hrPayslipRun(models.Model):
         address = ''
         no = 0
         col -=1
-        lineas = sorted(self.slip_ids,key=lambda x: x.employee_id.work_location)
+        lineas = sorted(self.slip_ids,key=lambda x: x.employee_id.work_location or '')
         for payslip in lineas:
             if struct_id == False or payslip.struct_id == struct_id:
                 if address != payslip.employee_id.work_location:
