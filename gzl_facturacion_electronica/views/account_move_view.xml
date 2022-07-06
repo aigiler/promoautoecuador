@@ -42,6 +42,7 @@
                         <field name="saldo_seguro" readonly="1" class="oe_edit_only"/>
                         <field name="saldo_rastreo" readonly="1" class="oe_edit_only"/>
                         <field name="saldo_otros" readonly="1" class="oe_edit_only"/>
+                        <field name="Monto Pagado" sum="Monto Pagado" readonly="1"/>
                         <field name="saldo" sum="Saldo" readonly="1"/>
                     </tree>
                     <form string="Estado de Cuenta" >

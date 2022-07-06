@@ -143,7 +143,7 @@ class AccountMoveReversal(models.TransientModel):
             
             pagos_ids=self.env['account.payment'].search([('id','in',lista_pagos)])
             for pago in pagos_ids:
-                pago.payment_line_ids.filtered(lambda line: line.invoice_id == self.move_id.id).unlink()
+                pago.payment_line_ids.filtered(lambda line: line.invoice_id.id == self.move_id.id).unlink()
 
 
             for cuota_id in self.move_id.contrato_estado_cuenta_ids:
