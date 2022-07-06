@@ -735,7 +735,7 @@ class account_payment(models.Model):
                     lista_dct=[]
                     
                     if rec.abono_contrato and not rec.abono_aplicado:
-                        rec.abono_aplicado==True
+                        rec.write({'abono_aplicado': True})
                         for y in rec.contrato_estado_cuenta_payment_ids:
                             if y.monto_pagar:
                                 if y.programado:
