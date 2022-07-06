@@ -773,7 +773,11 @@ class account_payment(models.Model):
                                                 })
                                 cuota_id.saldo=cuota_id.saldo-y.monto_pagar
                                 if y.monto_pagar:
-                                    pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
+                                    pago_cuota_id=self.env['account.payment.cuotas'].search([('cuotas_id','=',cuota_id.id),('pago_id','=',rec.id)],limit=1)
+                                    if pago_cuota_id:
+                                        pago_cuota_id.valor_asociado+=y.monto_pagar
+                                    else:
+                                        pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
                                                                                                                 'monto_pagado':rec.amount,'valor_asociado':y.monto_pagar})
                                     monto_a_factura+=y.monto_pagar
 
@@ -1044,7 +1048,12 @@ class account_payment(models.Model):
 
                             #cuota_id.saldo=cuota_id.saldo-total_cuota
                             if total_cuota>0.00:
-                                pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
+                                
+                                pago_cuota_id=self.env['account.payment.cuotas'].search([('cuotas_id','=',cuota_id.id),('pago_id','=',rec.id)],limit=1)
+                                if pago_cuota_id:
+                                    pago_cuota_id.valor_asociado+=total_cuota
+                                else:
+                                    pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
                                                                                                                 'monto_pagado':rec.amount,'valor_asociado':total_cuota})
                         
                                 monto_a_factura+=total_cuota
@@ -1125,7 +1134,11 @@ class account_payment(models.Model):
                                         acumulado_cuota=0
                                 if total_cuota:
                                     monto_a_factura+=total_cuota
-                                    pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
+                                    pago_cuota_id=self.env['account.payment.cuotas'].search([('cuotas_id','=',cuota_id.id),('pago_id','=',rec.id)],limit=1)
+                                    if pago_cuota_id:
+                                        pago_cuota_id.valor_asociado+=total_cuota
+                                    else:
+                                        pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
                                                                                                                     'monto_pagado':rec.amount,'valor_asociado':total_cuota})
                             
                                 
