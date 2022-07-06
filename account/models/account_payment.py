@@ -774,6 +774,7 @@ class account_payment(models.Model):
                                                 })
                                 cuota_id.saldo=cuota_id.saldo-y.monto_pagar
                                 if y.monto_pagar:
+                                    cuota_id.fecha_pagada=rec.payment_date
                                     pago_cuota_id=self.env['account.payment.cuotas'].search([('cuotas_id','=',cuota_id.id),('pago_id','=',rec.id)],limit=1)
                                     if pago_cuota_id:
                                         pago_cuota_id.valor_asociado+=y.monto_pagar
@@ -1048,7 +1049,7 @@ class account_payment(models.Model):
 
                             #cuota_id.saldo=cuota_id.saldo-total_cuota
                             if total_cuota>0.00:
-                                
+                                cuota_id.fecha_pagada=rec.payment_date
                                 pago_cuota_id=self.env['account.payment.cuotas'].search([('cuotas_id','=',cuota_id.id),('pago_id','=',rec.id)],limit=1)
                                 if pago_cuota_id:
                                     pago_cuota_id.valor_asociado+=total_cuota
@@ -1134,6 +1135,7 @@ class account_payment(models.Model):
                                         acumulado_cuota=0
                                 if total_cuota:
                                     monto_a_factura+=total_cuota
+                                    cuota_id.fecha_pagada=rec.payment_date
                                     pago_cuota_id=self.env['account.payment.cuotas'].search([('cuotas_id','=',cuota_id.id),('pago_id','=',rec.id)],limit=1)
                                     if pago_cuota_id:
                                         pago_cuota_id.valor_asociado+=total_cuota

@@ -32,7 +32,7 @@ class ContratoEstadoCuentaPagos(models.Model):
     entrada_pagar = fields.Monetary('Programado a pagar')
 
     monto_pagar = fields.Monetary('Monto a Pagar', compute='_obtener_monto',store=True)
-
+    
     @api.onchange('cuota_capital_pagar')
     def validar_cuota_capital_pagar(self):
         for l in self:
