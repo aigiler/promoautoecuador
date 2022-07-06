@@ -321,6 +321,7 @@ class CrmLead(models.Model):
 
         rol=team.rol
 
+        raise ValidationError('{0},{1}'.format(rol,self.stage_id.rol))
         if rol != self.stage_id.rol:
             raise ValidationError("Usted no puede editar la oportunidad está asignado al rol {0}".format(self.stage_id.rol))
 
