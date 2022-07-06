@@ -68,10 +68,10 @@ class WizardPayFortnight(models.TransientModel):
                         else:
                             amount -= (line.amount * inputs.percent /100)
                         line.total_discount += (line.amount * inputs.percent /100)
-                        lines = self.generate_account_move_line(e, line, inputs, lines, 0)
+            #            lines = self.generate_account_move_line(e, line, inputs, lines, 0)
             salary = e.percent_wage * e.contract_id.wage / 100
-            if salary:
-                lines = self.generate_account_move_line(e, False, False, lines, salary)
+            #if salary:
+            #    lines = self.generate_account_move_line(e, False, False, lines, salary)
             amount += (e.percent_wage * e.contract_id.wage / 100)
             if amount < 0:
                 raise ValidationError(_("El empleado %s genera valores en negativo."))
@@ -80,7 +80,7 @@ class WizardPayFortnight(models.TransientModel):
                 pay_obj.sudo().create(payment)
                 self.create_payment(e, amount,journal_pay)
 
-        self.create_account_move(lines)
+        #self.create_account_move(lines)
         self.state='success'
 
         return {
