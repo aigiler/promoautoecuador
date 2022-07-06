@@ -363,7 +363,7 @@ class hrPayslipRun(models.Model):
                                 cont += 1
                             sheet.write(col,dtc[total[1]],abs(total[0]),number2)
                             cont += 1
-                    address = payslip.employee_id.work_location
+                    address = payslip.employee_id.work_location or ''
                     col += 1    
                     sheet.merge_range(col,0,col,3,address,bold)
                 no += 1
@@ -406,6 +406,7 @@ class hrPayslipRun(models.Model):
         col += 1
         self.env.cr.execute(query_totales + condition)
         totals = self.env.cr.fetchall()
+        
         sheet.write(col,colspan+4, 'TOTAL GENERAL',bold)
         cont = 8
         for total in totals:
