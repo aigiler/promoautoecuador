@@ -51,15 +51,15 @@ class WizardPayFortnight(models.TransientModel):
             raise ValidationError(_("Debe configurar un diario de pago de quincena en Configuraciones."))
         lines=[]
         data = []
-        #if self.line_ids:
-        #    line_ids = self.line_ids.split(',')
-            #for values in line_ids:
-            #    data.append(int(values))
+        if self.line_ids:
+            line_ids = self.line_ids.split(',')
+            for values in line_ids:
+                data.append(int(values))
         input_ids = self.env['hr.input'].browse(data)
 
         for e in employee_ids:
             amount = 0
-            for inputs in self.input_ids:
+            for inputs in input_ids:
                 for line in inputs.line_ids:
                     if line.employee_id == e:
                         if inputs.input_type_id.type == 'income':
@@ -92,17 +92,17 @@ class WizardPayFortnight(models.TransientModel):
              'target': 'new',
          }
 
-    def create_account_move(self, lines):
-        pass
+    #def create_account_move(self, lines):
+    #    pass
 
-    def generate_account_move_line(self,employee, line, inputs, lines, amount):
-        return lines
+    #def generate_account_move_line(self,employee, line, inputs, lines, amount):
+    #    return lines
 
-    def create_payment(self, employee, amount, journal_pay):
-        pass
+    #def create_payment(self, employee, amount, journal_pay):
+    #    pass
 
-    def validate_journal(self):
-        return True
+    #def validate_journal(self):
+    #    return True
     
     def payment_generate(self, employee, amount):
         return {
