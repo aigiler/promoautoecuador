@@ -66,4 +66,7 @@ class hrPayslipRun(models.Model):
             if not payslip.employee_id.bank_account_id and method.code == 'check_printing':
                 payment._onchange_amount()
         self.state = 'paid'
-        self.slip_ids[0].move_id.post()
+        if not self.slip_ids[0].move_id.line_ids:
+            self.slip_ids[0].move_id.unlink()
+        else:
+            self.slip_ids[0].move_id.post()

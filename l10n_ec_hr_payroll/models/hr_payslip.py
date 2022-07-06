@@ -373,7 +373,7 @@ class hrPayslipRun(models.Model):
                 else:
                     department = payslip.contract_id.department_id.name
                 sheet.write(col,colspan,no,border)
-                sheet.write(col,colspan+1,payslip.employee_id.work_location,border)
+                sheet.write(col,colspan+1,payslip.employee_id.work_location or '',border)
                 sheet.write(col,colspan+2, department,border)
                 sheet.write(col,colspan+3, payslip.contract_id.department_id.name,border)
                 sheet.write(col,colspan+4, payslip.contract_id.employee_id.name,border)
@@ -523,7 +523,7 @@ class hrPayslipRun(models.Model):
         address = ''
         no = 0
         #col -=1
-        lineas = sorted(self.slip_ids,key=lambda x: x.employee_id.work_location)
+        lineas = sorted(self.slip_ids,key=lambda x: x.employee_id.work_location or '')
         total = 0
         for payslip in lineas:
             if struct_id == False or payslip.struct_id == struct_id:
