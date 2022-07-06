@@ -41,6 +41,9 @@ class AccountMove(models.Model):
 
     contrato_estado_cuenta_ids = fields.Many2many('contrato.estado.cuenta', copy=False,string='Estado de Cuenta de Aportes',)
 
+    ids_pagos = fields.One2many(
+        'account.payment.cuotas.detalle', 'factura_id', track_visibility='onchange')
+
     
     is_group_cobranza = fields.Boolean(string='Es Cobranza',compute="_compute_is_group_cobranza")
 

@@ -174,6 +174,8 @@
             <xpath expr="//page[@name='other_info']" position="after">
 
 
+
+
                 <page string="Tributación" attrs="{'invisible': [('type','!=','in_invoice')]}">
                     <group>
                         <group>
@@ -343,6 +345,15 @@
                     </notebook>
                     </sheet>    
                 </page>
+                <page string="Depositos" attrs="{'invisible': [('type','!=','out_invoice')]}">
+                <field name="ids_pagos">
+                    <tree string="Detalle de Depositos Realizados" >
+                    <field name="pago_id" string="Pago" readonly="1"/>
+                    <field name="monto_pagado" string="Total Pago" readonly="1"/>
+                    <field name="valor_asociado" sum="Valor asociado a la factura" readonly="1"/>
+                    </tree>
+                </field>
+                 </page>
                     
                 
             </xpath>

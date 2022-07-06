@@ -176,6 +176,7 @@ class AccountMoveReversal(models.TransientModel):
                 else:
                     cuota_id.estado_pago='pendiente'
 
+            self.move_id.ids_pagos.unlink()
             for mov in movimientos_cuota:
 
                 movimiento_reverso_id=self.env['account.move.reversal'].create({'move_id':mov.id,'date':fields.Date.context_today(self),

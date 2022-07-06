@@ -733,6 +733,7 @@ class account_payment(models.Model):
                     lista_ras=[]
                     lista_otro=[]
                     lista_dct=[]
+                    
                     if rec.abono_contrato:
                         for y in rec.contrato_estado_cuenta_payment_ids:
                             if y.monto_pagar:
@@ -774,13 +775,15 @@ class account_payment(models.Model):
                                 if y.monto_pagar:
                                     pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
                                                                                                                 'monto_pagado':rec.amount,'valor_asociado':y.monto_pagar})
-                                
+                                    monto_a_factura+=y.monto_pagar
+
                                 if cuota_id.saldo==0:
                                     cuota_id.estado_pago='pagado'
                     
 
 
                     for y in rec.invoice_ids:
+                        monto_a_factura=0
                         for cuota_id in y.contrato_estado_cuenta_ids:                            
                             acumulado_cuota=0
                             if valor_pago_cliente:
@@ -1000,7 +1003,6 @@ class account_payment(models.Model):
 
                                                 lista.append(tupla)
 
-                      
 
                             total_cuota=0
                             if acumulado_cuota:
@@ -1045,7 +1047,7 @@ class account_payment(models.Model):
                                 pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
                                                                                                                 'monto_pagado':rec.amount,'valor_asociado':total_cuota})
                         
-
+                                monto_a_factura+=total_cuota
                             
                             if cuota_id.saldo==0:
                                 cuota_id.estado_pago='pagado'
@@ -1058,6 +1060,15 @@ class account_payment(models.Model):
                                         'state':cuota_id.contrato_id.state
                                         }
                                 transacciones.create(dct)
+                        
+                        pago_fact_id=self.env['account.payment.cuotas.detalle'].seacrh([('factura_id':,'=',fact.id),('pago_id':,'=',rec.id)],limit=1)
+                       
+                        if pago_fact_id:
+                            pago_fact_id.valor_asociado+=monto_a_factura
+                        else:
+                            pago_fact_id=self.env['account.payment.cuotas.detalle'].create({'factura_id':fact.id,'pago_id':rec.id,
+                                                                                    'monto_pagado':rec.amount,'valor_asociado':monto_a_factura})
+                            
 
                     
                     for x in rec.move_line_ids:
@@ -1068,6 +1079,7 @@ class account_payment(models.Model):
                     
                     if rec.invoice_ids:
                         for fact in rec.invoice_ids:
+                            monto_a_factura=0
                             valor_inicial_factura=fact.amount_residual
                             movimientos=(moves[0] + fact).line_ids.filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))
                             if movimientos:
@@ -1112,10 +1124,10 @@ class account_payment(models.Model):
                                         cuota_id.saldo_iva=cuota_id.saldo_iva-acumulado_cuota
                                         acumulado_cuota=0
                                 if total_cuota:
+                                    monto_a_factura+=total_cuota
                                     pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
                                                                                                                     'monto_pagado':rec.amount,'valor_asociado':total_cuota})
                             
-
                                 
                                 if cuota_id.saldo==0:
                                     cuota_id.estado_pago='pagado'
@@ -1128,7 +1140,15 @@ class account_payment(models.Model):
                                             'state':cuota_id.contrato_id.state
                                             }
                                     transacciones.create(dct)
-                    
+                            pago_fact_id=self.env['account.payment.cuotas.detalle'].seacrh([('factura_id':,'=',fact.id),('pago_id':,'=',rec.id)],limit=1)
+                       
+                            if pago_fact_id:
+                                pago_fact_id.valor_asociado+=monto_a_factura
+                            
+                            pago_fact_id=self.env['account.payment.cuotas.detalle'].create({'factura_id':fact.id,'pago_id':rec.id,
+                                                                                    'monto_pagado':rec.amount,'valor_asociado':monto_a_factura})
+                            
+
                     for lineas in rec.payment_line_ids:
                         monto_pendiente_pago=lineas.invoice_id.amount_residual
                         for x in lineas.invoice_id.contrato_estado_cuenta_ids:

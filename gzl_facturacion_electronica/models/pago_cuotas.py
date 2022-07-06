@@ -38,3 +38,15 @@ class CuotasPagadas(models.Model):
     pago_id = fields.Many2one('account.payment',string="Pago" ,track_visibility='onchange')
     monto_pagado = fields.Float(string="Total Pago" ,track_visibility='onchange')
     valor_asociado = fields.Float(string="Asignado a la cuota" ,track_visibility='onchange')
+
+
+
+class CuotasPagadasDetalle(models.Model):
+    _name = 'account.payment.cuotas.detalle'
+    _description = 'Pagos Asociados a la Factura'
+
+    factura_id = fields.Many2one('account.invoice',string="Factura" ,track_visibility='onchange')
+
+    pago_id = fields.Many2one('account.payment',string="Pago" ,track_visibility='onchange')
+    monto_pagado = fields.Float(string="Total Pago" ,track_visibility='onchange')
+    valor_asociado = fields.Float(string="Asignado a la cuota" ,track_visibility='onchange')

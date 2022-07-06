@@ -12,7 +12,7 @@
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
             <field name="invoice_line_ids" position="after">
-                    <field name="anticipos_ids" nolabel="1">
+                    <field name="anticipos_ids" nolabel="1" attrs="{'invisible': [('type','!=','out_invoice')]}">
                         <tree string="Anticipos Pendientes" create="0" editable="bottom" limit="10" delete="0">
                             <field name="linea_pago_id"  readonly="1"/>
                             <field name="payment_id"  readonly="1"/>
