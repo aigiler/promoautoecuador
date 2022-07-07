@@ -104,6 +104,9 @@ def informe_credito_cobranza(ruta,lista,lista_patrimonio, lista_paginas, lista_p
     if garante:
         listaSheet3 = list(filter(lambda x: (x['hoja']==5), lista)) 
     for campo in listaSheet3:
+        if campo['fila']==25 and campo['comumna']==5:
+            if campo['valor']!='':
+                campo['valor']=campo['valor']/100
         cell = sheet.cell(row=campo['fila'], column=campo['columna'])
         try:
             cell.value = campo['valor'] or ''
