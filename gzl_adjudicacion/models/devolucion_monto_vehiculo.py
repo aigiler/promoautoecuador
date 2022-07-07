@@ -269,7 +269,7 @@ class DevolucionMonto(models.Model):
         roles=self.env['adjudicaciones.team'].search([('id','=',self.rolAsignado.id)])
         for x in roles:
           if self.env.user in x.member_ids:
-            result = True
+            return True
           else:
             raise ValidationError("Debe estar asignado al rol %s"% self.rolAsignado.name)
             
