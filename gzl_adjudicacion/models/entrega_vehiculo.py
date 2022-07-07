@@ -708,9 +708,9 @@ class EntegaVehiculo(models.Model):
 
         hoy=date.today()
 
-        fin_busqueda= hoy-relativedelta(days=+30)
+        fin_busqueda= hoy+relativedelta(days=+30)
 
-        entregas_vehiculos=self.env['entrega.vehiculo'].search([('fecha_vencimiento_seguro','<',hoy),('fecha_vencimiento_seguro','>=',fin_busqueda)])
+        entregas_vehiculos=self.env['entrega.vehiculo'].search([('fecha_vencimiento_seguro','>=',hoy),('fecha_vencimiento_seguro','<',fin_busqueda)])
         entregas_vehiculos_rastreo=self.env['entrega.vehiculo'].search([('fecha_vencimiento_rastreo','<',hoy),('fecha_vencimiento_rastreo','>=',fin_busqueda)])
 
         for entregas in entregas_vehiculos:
