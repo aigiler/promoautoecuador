@@ -695,8 +695,27 @@ class EntegaVehiculo(models.Model):
     plazo_seguro = fields.Integer(string="Plazo", track_visibility="onchange")
     fecha_vencimiento_seguro = fields.Date(string="Fecha Vencimiento", track_visibility="onchange")
 
-
+    @api.depends("matriculacion")
+    def validar_plazo_matriculacion(self):
+        for l in self:
+            if l.matriculacion:
+                if l.plazo_matriculacion==0:
+                    raise ValidationError("El plazo de Matriculación debe ser mayor a cero.")
     
+
+    @api.depends("seguro")
+    def validar_plazo_seguro(self):
+        for l in self:
+            if l.seguro:
+                if l.plazo_seguro==0:
+                    raise ValidationError("El plazo de Seguro debe ser mayor a cero.")
+
+    @api.depends("rastreo")
+    def validar_plazo_rastreo(self):
+        for l in self:
+            if l.rastreo:
+                if l.plazo_rastreo==0:
+                    raise ValidationError("El plazo de Rastreo debe ser mayor a cero.")
 
     estado_anterior_requisitos = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
     estado_anterior_informe_credito = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
