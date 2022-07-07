@@ -213,7 +213,7 @@ class EntegaVehiculo(models.Model):
                 raise ValidationError("Ingrese el Concesionario..")
             if l.marcaVehiculo and l.modeloVehiculoSRI and l.colorVehiculo and l.anioVehiculo:
                 producto_creado=self.env['product.product'].create({'uom_id':1,
-                                                                    'name':str(l.marcaVehiculo)+str(l.modeloVehiculoSRI)+str(l.anioVehiculo)+str(l.colorVehiculo)})
+                                                                    'name':str(l.marcaVehiculo)+' '+str(l.modeloVehiculoSRI)+' '+str(l.anioVehiculo)+' '+str(l.colorVehiculo)})
                 self.products_id=producto_creado
             else:
                 raise ValidationError("Verifique que los datos del vehiculo esten ingresados.")
