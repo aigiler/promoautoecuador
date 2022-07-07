@@ -1194,18 +1194,87 @@
                         </page> 
 
 
-
+                        <separator class="text-center" string="OFRECIDOS POR LA EMPRESA"/>
                         <page string="Matriculacion, Rastreo, Seguro"  >
+                            <div class="col-xs-12 col-sm-9">
+                            <tbody>
+                                         <tr>
+                                            <td>
+                                                <text>Matriculación</text>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <field name="matriculacion"  />
+                                            </td>
+                                            <td>
+                                                <text>Plazo</text>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <field name="plazo_matriculacion"  />
+                                            </td>
+                                            <td>
+                                                <text>Fecha Vencimiento</text>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <field name="fecha_vencimiento_matriculacion"  />
+                                            </td>
+                                        </tr>
 
-                            <group>
-                                <group>
-                                    <field name="matriculacion" />
-                                    <field name="rastreo" />
-                                    <field name="seguro" />
-                                    
-                                    
-                                </group>
-                            </group>
+                                        <tr>
+                                            <td>
+                                                <text>Seguro</text>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <field name="seguro"  />
+                                            </td>
+                                            <td>
+                                                <text>Plazo</text>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <field name="plazo_seguro"  />
+                                            </td>
+                                            <td>
+                                                <text>Fecha Vencimiento</text>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <field name="fecha_vencimiento_seguro"  />
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <text>Rastreo</text>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <field name="rastreo"  />
+                                            </td>
+                                            <td>
+                                                <text>Plazo</text>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <field name="plazo_rastreo"  />
+                                            </td>
+                                            <td>
+                                                <text>Fecha Vencimiento</text>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <field name="fecha_vencimiento_rastreo"  />
+                                            </td>
+                                        </tr>
+                                       
+                                    </tbody>
+                                     </table>
+                                     </div>
+
+                          
                         </page>
                         
 
@@ -1214,7 +1283,7 @@
                        
                        
                        
-                        
+                         
                         <page string="Otros Campos"  invisible='1' >
 
                             <group>

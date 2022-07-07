@@ -684,9 +684,16 @@ class EntegaVehiculo(models.Model):
     edadInforme = fields.Integer()
 
     matriculacion = fields.Boolean(string="Matriculación", track_visibility="onchange")
-    rastreo = fields.Boolean(string="Rastreo",track_visibility="onchange")
-    seguro = fields.Boolean(string="Seguro",track_visibility="onchange")
+    plazo_matriculacion = fields.Integer(string="Plazo", track_visibility="onchange")
+    fecha_vencimiento_matriculacion = fields.Date(string="Fecha Vencimiento", track_visibility="onchange")
 
+    rastreo = fields.Boolean(string="Rastreo",track_visibility="onchange")
+    plazo_rastreo = fields.Integer(string="Plazo", track_visibility="onchange")
+    fecha_vencimiento_rastreo = fields.Date(string="Fecha Vencimiento", track_visibility="onchange")
+
+    seguro = fields.Boolean(string="Seguro",track_visibility="onchange")
+    plazo_seguro = fields.Integer(string="Plazo", track_visibility="onchange")
+    fecha_vencimiento_seguro = fields.Date(string="Fecha Vencimiento", track_visibility="onchange")
 
     def validacion_matriculacion_rastreo_seguro(self):
         if not (self.matriculacion and self.rastreo and self.seguro):
