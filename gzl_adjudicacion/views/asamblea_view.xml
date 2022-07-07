@@ -129,7 +129,8 @@
 
                                                 <field name="adjudicado_id" options="{'no_open': True, 'no_create': True}" domain="dominio" required="1" />
                                                 <field name="nro_cuota_licitar" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', 'in', ['evaluacion','programo'])],'required': [('parent.codigo_tipo_contrato', '=', 'ahorro')]}" required="1"/>
-                                                <field name="carta_licitacion" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', 'in', ['evaluacion','programo'])],'required': [('parent.codigo_tipo_contrato', '=', 'ahorro')]}"/>
+                                                <field name="carta_licitacion" invisible="1" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', 'in', ['evaluacion','programo'])],'required': [('parent.codigo_tipo_contrato', '=', 'ahorro')]}"/>
+                                                <field name="carta_doc" required="1" attrs="{'column_invisible': [('parent.codigo_tipo_contrato', 'in', ['evaluacion','programo'])],'required': [('parent.codigo_tipo_contrato', '=', 'ahorro')]}"/>
                                             </tree>
                                         </field>
 
