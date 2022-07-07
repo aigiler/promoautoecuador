@@ -1194,8 +1194,9 @@
                         </page> 
 
 
-                        <separator class="text-center" string="OFRECIDOS POR LA EMPRESA"/>
+                        
                         <page string="Matriculacion, Rastreo, Seguro"  >
+                            <separator class="text-center" string="OFRECIDOS POR LA EMPRESA"/>
                             <div class="col-xs-12 col-sm-9">
                                 <table style=" border-collapse: collapse;width:100%">
                                 <tbody>
