@@ -1166,7 +1166,7 @@
 
                                         <tr>
                                             <td>
-                                                <text>Documento</text>
+                                                <text>ORDEN DE COMPRA</text>
                                             </td>
                                             <td></td>
                                             <td>
@@ -1174,8 +1174,8 @@
                                                 <button type="object" string="Generar Orden Compra" name="create_purchase_order" attrs="{'invisible':[('purchase_order', '!=', False)]}" class="btn btn-primary o_invoice_new"/>
                                             </td>
 
-                                            <td>
-                                                <text>LIQUIDACIÓN DE COMPRA</text>
+                                            <td attrs="{'invisible':[('facturas', '=', False)]}">
+                                                <text>LIQUIDACIÓN DE COMPRA </text>
                                             </td>
                                             <td></td>
                                             <td>
