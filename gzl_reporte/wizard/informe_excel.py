@@ -129,6 +129,21 @@ def informe_credito_cobranza(ruta,lista,lista_patrimonio, lista_paginas, lista_p
         sheet = workbook['InformeGarante']
         listaSheet2g = list(filter(lambda x: (x['hoja']==2), lista)) 
 
+    sheet = workbook['OrdenSalida']
+    listaSheet4 = list(filter(lambda x: (x['hoja']==5), lista)) 
+    if garante:
+        listaSheet4 = list(filter(lambda x: (x['hoja']==7), lista)) 
+    for campo in listaSheet4:
+        cell = sheet.cell(row=campo['fila'], column=campo['columna'])
+        try:
+            cell.value = campo['valor'] or ''
+        except:
+            raise ValidationError("""El valor {0} en la fila {1} columna {2}  hoja {3} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna'],campo['hoja']))
+
+    if garante:
+        sheet = workbook['InformeGarante']
+        listaSheet2g = list(filter(lambda x: (x['hoja']==2), lista)) 
+
 
 
         for campo in listaSheet2g:

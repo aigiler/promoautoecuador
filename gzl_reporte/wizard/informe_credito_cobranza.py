@@ -78,6 +78,8 @@ class InformeCreditoCrobranza(models.TransientModel):
                         dct['hoja']=5
                     elif campo.hoja_excel==4:
                         dct['hoja']=6
+                    elif campo.hoja_excel==5:
+                        dct['hoja']=7
                     else:
                         dct['hoja']=campo.hoja_excel
                     lista_campos.append(dct)
