@@ -1152,6 +1152,8 @@
                         <page string ="Orden de Compra" attrs="{'readonly':[('estado', 'not in', ('orden_compra'))]}">
                             <separator class="text-center" string="ORDEN DE COMPRA"/>
                             <div class="row">
+                                <table style=" border-collapse: collapse;width:100%">
+                                    <tbody>
                                          <tr>
                                             <td>
                                                 <text>PRODUCTO</text>
@@ -1168,7 +1170,8 @@
                                             </td>
                                             <td></td>
                                             <td>
-                                                <field name="purchase_order"  />
+                                                <field name="purchase_order"/>
+                                                <button type="object" string="Generar Orden Compra" name="create_purchase_order" attrs="{'invisible':[('purchase_order', '!=', False)]}" class="btn btn-primary o_invoice_new"/>
                                             </td>
 
                                             <td>
@@ -1177,21 +1180,14 @@
                                             <td></td>
                                             <td>
                                                 <field name="facturas" attrs="{'invisible':[('facturas', '=', False)]}" />
+                                                <button type="object" string="Generar Factura" name="create_liq_compra" attrs="{'invisible':['|',('purchase_order', '=', False),('facturas', '!=', False)]}" class="btn btn-primary o_invoice_new"/>
                                             </td>
                                         </tr>
+                                    <tbody>
+                                    
+                                    
 
-                                    <button type="object" string="Generar Orden Compra" name="create_purchase_order" attrs="{'invisible':[('purchase_order', '!=', False)]}" class="btn btn-primary o_invoice_new"/>
-                                    <button type="object" string="Generar Factura" name="create_liq_compra" attrs="{'invisible':['|',('purchase_order', '=', False),('facturas', '!=', False)]}" class="btn btn-primary o_invoice_new"/>
 
-
-                                <div class="col-xs-12 col-sm-12">
-                                    <text class="text-center">
-                                        <strong>Observaciones:</strong>
-                                    </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-12">
-                                    <field name="observacionesLiquidacion" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </div>
                             </div>
                             <separator class="text-center" string="Información del Vehiculo"/>
                             <div class="col-xs-12 col-md-12">
