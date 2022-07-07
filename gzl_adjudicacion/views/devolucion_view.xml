@@ -20,12 +20,12 @@
                 
                     <sheet>
                         <notebook>
-                        <page string="INFORME DE DEVOLUCIÓN ETAPA POSVENTA">
+                        <page string="INFORME DE POSVENTA">
                         <separator class="text-center" string="DATOS GENERALES"/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group > 
-                                    <field name="contrato_id" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
+                                    <field name="contrato_id" required="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                      <field name="fecha_contrato" />
                                      <field name="tipo_de_contrato" />
                                      <field name="supervisor" />
@@ -105,12 +105,12 @@
                             </div>
                         </page>
 
-                        <page string="INFORME DE DEVOLUCIÓN ETAPA LEGAL">
+                        <page string="INFORME DE LEGAL">
                         <separator class="text-center" string="DATOS GENERALES"/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group > 
-                                    <field name="contrato_id" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
+                                    <field name="contrato_id" required="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                      <field name="fecha_contrato" />
                                      <field name="tipo_de_contrato" />
                                      <field name="supervisor" />
@@ -179,12 +179,12 @@
 
                         </page>
 
-                        <page string="INFORME DE DEVOLUCIÓN ETAPA ADJUDICACIONES">
+                        <page string="INFORME DE ADJUDICACIONES">
                         <separator class="text-center" string="DATOS GENERALES"/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group > 
-                                    <field name="contrato_id" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
+                                    <field name="contrato_id" required="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                      <field name="fecha_contrato" />
                                      <field name="tipo_de_contrato" />
                                      <field name="supervisor" />
@@ -265,12 +265,12 @@
 
 
                         
-                        <page string="INFORME DE DEVOLUCIÓN CONTABILIDAD">
+                        <page string="INFORME DE CONTABILIDAD">
                         <separator class="text-center" string="DATOS GENERALES"/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group > 
-                                    <field name="contrato_id" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
+                                    <field name="contrato_id" required="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                      <field name="fecha_contrato" />
                                      <field name="tipo_de_contrato" />
                                      <field name="supervisor" />
@@ -368,12 +368,12 @@
                         </page>
 
 
-                        <page string="INFORME DE DEVOLUCIÓN GERENCIA">
+                        <page string="INFORME DE GERENCIA">
                         <separator class="text-center" string="DATOS GENERALES"/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group > 
-                                    <field name="contrato_id" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
+                                    <field name="contrato_id" required="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                      <field name="fecha_contrato" />
                                      <field name="tipo_de_contrato" />
                                      <field name="supervisor" />
@@ -427,7 +427,7 @@
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group > 
-                                    <field name="contrato_id" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
+                                    <field name="contrato_id" required="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                      <field name="fecha_contrato" />
                                      <field name="tipo_de_contrato" />
                                      <field name="supervisor" />

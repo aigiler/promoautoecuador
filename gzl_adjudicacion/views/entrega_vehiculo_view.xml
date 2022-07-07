@@ -1126,27 +1126,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                          <!-- ORDEN DE COMPRA -->
 
                         <page string ="Orden de Compra" attrs="{'readonly':[('estado', 'not in', ('orden_compra'))]}">
