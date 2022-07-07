@@ -266,10 +266,10 @@ class DevolucionMonto(models.Model):
         return super(DevolucionMonto, self).create(vals)
 
     def validarrol(self):
-        roles=self.env['adjudicaciones.team'].search([('id','=',obj.rolAsignado.id)])
+        roles=self.env['adjudicaciones.team'].search([('id','=',self.rolAsignado.id)])
         for x in roles:
           if self.env.user.id in x.members_ids:
             result = True
           else:
-            raise ValidationError("Debe estar asignado al rol %s"% obj.rolAsignado.name)
+            raise ValidationError("Debe estar asignado al rol %s"% self.rolAsignado.name)
             
