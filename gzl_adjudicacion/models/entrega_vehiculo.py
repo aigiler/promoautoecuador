@@ -695,6 +695,35 @@ class EntegaVehiculo(models.Model):
     plazo_seguro = fields.Integer(string="Plazo", track_visibility="onchange")
     fecha_vencimiento_seguro = fields.Date(string="Fecha Vencimiento", track_visibility="onchange")
 
+
+
+
+
+
+
+
+
+    def job_notificar_vencimientos_rastreo(self):
+
+        hoy=date.today()
+
+        fin_busqueda= hoy-relativedelta(days=+30)
+
+        entregas_vehiculos=self.env['entrega.vehiculo'].search([('fecha_vencimiento_seguro','<',hoy),('fecha_vencimiento_seguro','>=',fin_busqueda)])
+        entregas_vehiculos_rastreo=self.env['entrega.vehiculo'].search([('fecha_vencimiento_rastreo','<',hoy),('fecha_vencimiento_rastreo','>=',fin_busqueda)])
+
+        for entregas in entregas_vehiculos:
+            obj_template=self.env['mail.template'].browse(65)
+            email_id=obj_template.send_mail(entregas.id)
+        for entregas in entregas_vehiculos_rastreo:
+            obj_template=self.env['mail.template'].browse(66)
+            email_id=obj_template.send_mail(entregas.id)
+
+
+
+
+
+
     @api.constrains("matriculacion")
     def validar_plazo_matriculacion(self):
         for l in self:
