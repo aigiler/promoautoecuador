@@ -1206,19 +1206,19 @@
                                             <td>
                                                 <field name="matriculacion"  />
                                             </td>
-                                            <td>
+                                            <td  attrs="{'invisible':[('matriculacion', '=', False)]}">
                                                 <text>Plazo</text>
-                                            </td>
+                                            </td >
                                             <td></td>
-                                            <td>
-                                                <field name="plazo_matriculacion"  />
+                                            <td  attrs="{'invisible':[('matriculacion', '=', False)]}">
+                                                <field name="plazo_matriculacion" attrs="{'required':[('matriculacion', '!=', False)]}"/>
                                             </td>
-                                            <td>
+                                            <td  attrs="{'invisible':[('matriculacion', '=', False)]}">
                                                 <text>Fecha Vencimiento</text>
                                             </td>
                                             <td></td>
-                                            <td>
-                                                <field name="fecha_vencimiento_matriculacion"  />
+                                            <td  attrs="{'invisible':[('matriculacion', '=', False)]}">
+                                                <field name="fecha_vencimiento_matriculacion" attrs="{'required':[('matriculacion', '!=', False)]}" />
                                             </td>
                                         </tr>
 
@@ -1230,19 +1230,19 @@
                                             <td>
                                                 <field name="seguro"  />
                                             </td>
-                                            <td>
+                                            <td  attrs="{'invisible':[('seguro', '=', False)]}">
                                                 <text>Plazo</text>
                                             </td>
                                             <td></td>
-                                            <td>
-                                                <field name="plazo_seguro"  />
+                                            <td  attrs="{'invisible':[('seguro', '=', False)]}">
+                                                <field name="plazo_seguro" attrs="{'required':[('seguro', '!=', False)]}"/>
                                             </td>
-                                            <td>
+                                            <td  attrs="{'invisible':[('seguro', '=', False)]}">
                                                 <text>Fecha Vencimiento</text>
                                             </td>
                                             <td></td>
-                                            <td>
-                                                <field name="fecha_vencimiento_seguro"  />
+                                            <td  attrs="{'invisible':[('seguro', '=', False)]}">
+                                                <field name="fecha_vencimiento_seguro"  attrs="{'required':[('seguro', '!=', False)]}"/>
                                             </td>
                                         </tr>
 
@@ -1254,19 +1254,19 @@
                                             <td>
                                                 <field name="rastreo"  />
                                             </td>
-                                            <td>
+                                            <td  attrs="{'invisible':[('rastreo', '=', False)]}">
                                                 <text>Plazo</text>
                                             </td>
                                             <td></td>
-                                            <td>
-                                                <field name="plazo_rastreo"  />
+                                            <td  attrs="{'invisible':[('rastreo', '=', False)]}">
+                                                <field name="plazo_rastreo"  attrs="{'required':[('rastreo', '!=', False)]}"/>
                                             </td>
-                                            <td>
+                                            <td  attrs="{'invisible':[('rastreo', '=', False)]}">
                                                 <text>Fecha Vencimiento</text>
                                             </td>
                                             <td></td>
-                                            <td>
-                                                <field name="fecha_vencimiento_rastreo"  />
+                                            <td  attrs="{'invisible':[('rastreo', '=', False)]}">
+                                                <field name="fecha_vencimiento_rastreo" attrs="{'required':[('rastreo', '!=', False)]}" />
                                             </td>
                                         </tr>
                                        

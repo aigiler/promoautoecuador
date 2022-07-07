@@ -695,9 +695,6 @@ class EntegaVehiculo(models.Model):
     plazo_seguro = fields.Integer(string="Plazo", track_visibility="onchange")
     fecha_vencimiento_seguro = fields.Date(string="Fecha Vencimiento", track_visibility="onchange")
 
-    def validacion_matriculacion_rastreo_seguro(self):
-        if not (self.matriculacion and self.rastreo and self.seguro):
-            raise ValidationError("Debe registrar la matriculación, rastreo y seguro para pasar al siguiente estado")
 
     
 
