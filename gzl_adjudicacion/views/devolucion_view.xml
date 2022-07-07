@@ -530,7 +530,7 @@
                                 <div class="col-xs-12 col-sm-4">
                                 <group > 
                                     <field name="journal_id" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}'/>
-                                    <button type="object" string="Generar Pago" class="btn btn-primary o_invoice_new" name="generar_pago"/>
+                                    <button type="object" string="Generar Pago" class="btn btn-primary o_invoice_new" name="generar_pago" attrs="{'invisible':[('pago_id', '!=',False)]}"/>
                                      <field name="company_id" invisible="1" options='{"no_create": 1, "no_create_edit": 1}'/>
                                     <field name="pago_id" options='{"no_create": 1, "no_create_edit": 1}'/>
                                 </group>
