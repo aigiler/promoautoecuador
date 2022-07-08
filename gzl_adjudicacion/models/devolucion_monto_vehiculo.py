@@ -284,7 +284,7 @@ class DevolucionMonto(models.Model):
                 tupla=[(0, 0, {
                             'name': "Devolucion de Valores",
                             'amount_currency':  0.0,
-                            'currency_id': self.currency_id.id,
+                            'currency_id': self.journal_id.currency_id.id,
                             'debit': 0.00 ,
                             'credit':  l.valor_desistimiento,
                             'date_maturity': self.fsolicitud,
@@ -294,7 +294,7 @@ class DevolucionMonto(models.Model):
                             (0, 0, {
                             'name': "Devolucion de Valores",
                             'amount_currency':  0.0,
-                            'currency_id': self.currency_id.id,
+                            'currency_id': self.journal_id.currency_id.id,
                             'debit': l.valor_desistimiento ,
                             'credit':  0.00,
                             'date_maturity': self.fsolicitud,
