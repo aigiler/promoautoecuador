@@ -233,23 +233,23 @@ class DevolucionMonto(models.Model):
     def calcular_desistimiento(self):
         for l in self:
             if l.tipo_devolucion=='DEVOLUCION DE VALORES SIN FIRMAS':
-                penalizacion=self.env['ir.config.parameter'].search([('key','=','desistimiento_sin_firma')],limit=1)
+                penalizacion=self.env['ir.config_parameter'].search([('key','=','desistimiento_sin_firma')],limit=1)
                 l.valor_desistimiento=l.valor_cancelado_sin_firma*((100-int(penalizacion.value))/100)
 
             elif l.tipo_devolucion=='DEVOLUCION DE RESERVA':
-                penalizacion=self.env['ir.config.parameter'].search([('key','=','desistimiento_reserva')],limit=1)
+                penalizacion=self.env['ir.config_parameter'].search([('key','=','desistimiento_reserva')],limit=1)
                 l.valor_desistimiento=l.valor_reserva*((100-int(penalizacion.value))/100)
 
             elif l.tipo_devolucion=='DEVOLUCION DE LICITACION':
-                penalizacion=self.env['ir.config.parameter'].search([('key','=','devolucion_licitacion')],limit=1)
+                penalizacion=self.env['ir.config_parameter'].search([('key','=','devolucion_licitacion')],limit=1)
                 l.valor_desistimiento=l.valor_licitacion*((100-int(penalizacion.value))/100)
 
             elif l.tipo_devolucion=='DEVOLUCION POR DESISTIMIENTO DEL CONTRATO':
-                penalizacion=self.env['ir.config.parameter'].search([('key','=','desistimiento_contrato')],limit=1)
+                penalizacion=self.env['ir.config_parameter'].search([('key','=','desistimiento_contrato')],limit=1)
                 l.valor_desistimiento=l.capital_pagado_fecha*((100-int(penalizacion.value))/100)
 
             elif l.tipo_devolucion=='DEVOLUCION POR CALIDAD DE VENTA':
-                penalizacion=self.env['ir.config.parameter'].search([('key','=','desistimiento_calidad')],limit=1)
+                penalizacion=self.env['ir.config_parameter'].search([('key','=','desistimiento_calidad')],limit=1)
                 l.valor_desistimiento=l.valor_cancelado_sin_firma*((100-int(penalizacion.value))/100)+l.valor_reserva*((100-int(penalizacion.value))/100)
 
 
