@@ -229,6 +229,30 @@ class DevolucionMonto(models.Model):
                 l.valor_desistimiento=valor_desistimiento
 
 
+    @api.onchange("tipo_devolucion")
+    def calcular_desistimiento(self):
+        for l in self:
+            if l.tipo_devolucion=='DEVOLUCION DE VALORES SIN FIRMAS':
+                penalizacion=self.env['ir.config.parameter'].search([('key','=','desistimiento_sin_firma')],limit=1)
+                l.valor_desistimiento=l.valor_cancelado_sin_firma*((100-int(penalizacion.value))/100)
+
+            elif l.tipo_devolucion=='DEVOLUCION DE RESERVA':
+                penalizacion=self.env['ir.config.parameter'].search([('key','=','desistimiento_reserva')],limit=1)
+                l.valor_desistimiento=l.valor_reserva*((100-int(penalizacion.value))/100)
+
+            elif l.tipo_devolucion=='DEVOLUCION DE LICITACION':
+                penalizacion=self.env['ir.config.parameter'].search([('key','=','devolucion_licitacion')],limit=1)
+                l.valor_desistimiento=l.valor_licitacion*((100-int(penalizacion.value))/100)
+
+            elif l.tipo_devolucion=='DEVOLUCION POR DESISTIMIENTO DEL CONTRATO':
+                penalizacion=self.env['ir.config.parameter'].search([('key','=','desistimiento_contrato')],limit=1)
+                l.valor_desistimiento=l.capital_pagado_fecha*((100-int(penalizacion.value))/100)
+
+            elif l.tipo_devolucion=='DEVOLUCION POR CALIDAD DE VENTA':
+                penalizacion=self.env['ir.config.parameter'].search([('key','=','desistimiento_calidad')],limit=1)
+                l.valor_desistimiento=l.valor_cancelado_sin_firma*((100-int(penalizacion.value))/100)+l.valor_reserva*((100-int(penalizacion.value))/100)
+
+
     calidad_venta = fields.Selection(selection=[
         ('MALA VENTA', 'MALA VENTA'),
         ('NO ESTA DE ACUERDO CON EL PROCESO', 'NO ESTA DE ACUERDO CON EL PROCESO'),
@@ -252,6 +276,43 @@ class DevolucionMonto(models.Model):
         for l in self:
             if self.journal_id:
                 pago_metodo=self.env.ref('gzl_facturacion_electronica.out_transfer')
+                if l.tipo_devolucion=='DEVOLUCION DE VALORES SIN FIRMAS' or l.tipo_devolucion=='DEVOLUCION DE RESERVA' or l.tipo_devolucion=='DEVOLUCION POR CALIDAD DE VENTA':
+                    cuenta_contrapartida=4613
+                else:
+                    cuenta_contrapartida=4590
+
+                tupla=[(0, 0, {
+                            'name': "Devolucion de Valores",
+                            'amount_currency':  0.0,
+                            'currency_id': self.currency_id.id,
+                            'debit': 0.00 ,
+                            'credit':  l.valor_desistimiento,
+                            'date_maturity': self.fsolicitud,
+                            'partner_id': self.cliente.id,
+                            'account_id':self.cliente.property_account_receivable_id.id,
+                            'analytic_account_id':False,}),
+                            (0, 0, {
+                            'name': "Devolucion de Valores",
+                            'amount_currency':  0.0,
+                            'currency_id': self.currency_id.id,
+                            'debit': l.valor_desistimiento ,
+                            'credit':  0.00,
+                            'date_maturity': self.fsolicitud,
+                            'partner_id': self.cliente.id,
+                            'account_id': cuenta_contrapartida,
+                            'analytic_account_id':False,})]
+
+                move_vals = {
+                    'date':  self.fsolicitud,
+                    'ref': "Devolucion de Valores",
+                    'journal_id': payment.journal_id.id,
+                    'currency_id': self.journal_id.currency_id.id,
+                    'partner_id':  self.cliente.id,
+                    'line_ids': tupla,
+                }
+                move_id=self.env['account.move'].create(move_vals).post()
+
+
 
                 pago_id=self.env['account.payment'].create({"journal_id":l.journal_id.id,'partner_id':self.cliente.id,
                                                                     'payment_type':'outbound','amount':l.valor_desistimiento,
