@@ -281,36 +281,28 @@ class DevolucionMonto(models.Model):
                 else:
                     cuenta_contrapartida=4590
 
-                tupla=[(0, 0, {
-                            'name': "Devolucion de Valores",
-                            'amount_currency':  0.0,
-                            'currency_id': self.env.company.currency_id.id,
-                            'debit': 0.00 ,
-                            'credit':  l.valor_desistimiento,
-                            'date_maturity': self.fsolicitud,
-                            'partner_id': self.cliente.id,
+                self.env['account.move'].create({
+                        'date':self.fsolicitud,
+                        'journal_id':3,
+                        'company_id':self.env.company.id,
+                        'type':'entry',
+                        'partner_id':self.cliente.id,
+                        'ref':self.name,
+                        'line_ids':[
+                            (0,0,{
+                            'account_id':cuenta_contrapartida,
+                            'partner_id':self.cliente.id,
+                            'credit':0,
+                            'debit':l.valor_desistimiento
+                            }),
+                            (0,0,{
                             'account_id':self.cliente.property_account_receivable_id.id,
-                            'analytic_account_id':False,}),
-                            (0, 0, {
-                            'name': "Devolucion de Valores",
-                            'amount_currency':  -0.0,
-                            'currency_id': self.env.company.currency_id.id,
-                            'debit': l.valor_desistimiento ,
-                            'credit':  0.00,
-                            'date_maturity': self.fsolicitud,
-                            'partner_id': self.cliente.id,
-                            'account_id': cuenta_contrapartida,
-                            'analytic_account_id':False,})]
-
-                move_vals = {
-                    'date':  self.fsolicitud,
-                    'ref': "Devolucion de Valores",
-                    'journal_id': 3,
-                    'currency_id': self.env.company.currency_id.id,
-                    'partner_id':  self.cliente.id,
-                    'line_ids': tupla,
-                }
-                move_id=self.env['account.move'].create(move_vals).post()
+                            'partner_id':self.cliente.id,
+                            'credit':l.valor_desistimiento,
+                            'debit':0
+                            })
+                        ]
+                    }).action_post()
 
                 pago_id=self.env['account.payment'].create({"journal_id":l.journal_id.id,'partner_id':self.cliente.id,
                                                                     'payment_type':'outbound','amount':l.valor_desistimiento,
