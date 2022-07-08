@@ -280,6 +280,15 @@ class DevolucionMonto(models.Model):
                     cuenta_contrapartida=4613
                 else:
                     cuenta_contrapartida=4590
+                    transacciones=self.env['transaccion.grupo.adjudicado']
+                    transacciones.create({
+                                            'grupo_id':self.contrato_id.grupo.id,
+                                            'debe':self.valor_desistimiento,
+                                            'adjudicado_id':self.contrato_id.cliente.id,
+                                            'contrato_id':self.contrato_id.id,
+                                            'state':cuota_id.contrato_id.state
+                                            })
+                    transacciones.create(dct)
 
                 self.env['account.move'].create({
                         'date':self.fsolicitud,

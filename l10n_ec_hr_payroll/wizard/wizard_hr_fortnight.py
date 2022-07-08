@@ -81,7 +81,7 @@ class WizardPayFortnight(models.TransientModel):
                 self.create_payment(e, amount,journal_pay)
 
         
-        self.create_account_move(lines)
+        #self.create_account_move(lines)
         
         self.state='success'
 

@@ -1055,21 +1055,21 @@ class account_payment(models.Model):
                                     pago_cuota_id.valor_asociado+=total_cuota
                                 else:
                                     pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
-                                                                                                                'monto_pagado':rec.amount,'valor_asociado':total_cuota})
+                                                                                            'monto_pagado':rec.amount,'valor_asociado':total_cuota})
                         
                                 monto_a_factura+=total_cuota
                             
                             if cuota_id.saldo==0:
                                 cuota_id.estado_pago='pagado'
-                                transacciones=self.env['transaccion.grupo.adjudicado']
-                                dct={
-                                        'grupo_id':cuota_id.contrato_id.grupo.id,
-                                        'haber':cuota_id.cuota_capital+cuota_id.seguro+cuota_id.otro+cuota_id.rastreo+cuota_id.iva_adm,
-                                        'adjudicado_id':cuota_id.contrato_id.cliente.id,
-                                        'contrato_id':cuota_id.contrato_id.id,
-                                        'state':cuota_id.contrato_id.state
-                                        }
-                                transacciones.create(dct)
+                            transacciones=self.env['transaccion.grupo.adjudicado']
+                            dct={
+                                    'grupo_id':cuota_id.contrato_id.grupo.id,
+                                    'haber':total_cuota,
+                                    'adjudicado_id':cuota_id.contrato_id.cliente.id,
+                                    'contrato_id':cuota_id.contrato_id.id,
+                                    'state':cuota_id.contrato_id.state
+                                    }
+                            transacciones.create(dct)
                         
                         pago_fact_id=self.env['account.payment.cuotas.detalle'].search([('factura_id','=',y.id),('pago_id','=',rec.id)],limit=1)
                        
@@ -1145,15 +1145,15 @@ class account_payment(models.Model):
                                 
                                 if cuota_id.saldo==0:
                                     cuota_id.estado_pago='pagado'
-                                    transacciones=self.env['transaccion.grupo.adjudicado']
-                                    dct={
-                                            'grupo_id':cuota_id.contrato_id.grupo.id,
-                                            'haber':cuota_id.cuota_capital+cuota_id.seguro+cuota_id.otro+cuota_id.rastreo+cuota_id.iva_adm,
-                                            'adjudicado_id':cuota_id.contrato_id.cliente.id,
-                                            'contrato_id':cuota_id.contrato_id.id,
-                                            'state':cuota_id.contrato_id.state
-                                            }
-                                    transacciones.create(dct)
+                                transacciones=self.env['transaccion.grupo.adjudicado']
+                                dct={
+                                        'grupo_id':cuota_id.contrato_id.grupo.id,
+                                        'haber':total_cuota,
+                                        'adjudicado_id':cuota_id.contrato_id.cliente.id,
+                                        'contrato_id':cuota_id.contrato_id.id,
+                                        'state':cuota_id.contrato_id.state
+                                        }
+                                transacciones.create(dct)
                             pago_fact_id=self.env['account.payment.cuotas.detalle'].search([('factura_id','=',fact.id),('pago_id','=',rec.id)],limit=1)
                        
                             if pago_fact_id:
