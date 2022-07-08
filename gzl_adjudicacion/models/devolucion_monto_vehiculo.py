@@ -10,11 +10,11 @@ class DevolucionMonto(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name= 'secuencia'
 
-    
-    secuencia = fields.Char(index=True)
     contrato_id = fields.Many2one('contrato')
     cliente = fields.Many2one(
-        'res.partner', string="Nombre de Asociado", related='contrato_id.cliente',track_visibility='onchange')
+        'res.partner', string="Nombre de Asociado",track_visibility='onchange')
+    
+    secuencia = fields.Char(index=True)
     fecha_contrato = fields.Date(
         string='Fecha Contrato',related="contrato_id.fecha_contrato", track_visibility='onchange')
     tipo_de_contrato = fields.Many2one(
@@ -148,6 +148,10 @@ class DevolucionMonto(models.Model):
     ingreso_banco = fields.Monetary(
         string='INGRESOS DE BANCOS', currency_field='currency_id')
 
+
+
+
+
     @api.onchange("contrato_id")
     def obtener_valores(self):
         for l in self:
@@ -273,4 +277,17 @@ class DevolucionMonto(models.Model):
           else:
             raise ValidationError("Debe estar asignado al rol %s"% self.rolAsignado.name)
         return True
-            
+
+
+    def validar_documentos_postventa(self):
+        for l in self:
+            for x in l.documentos_postventa:
+                if not x.archivo:
+                    raise ValidationError("Debe cargar los documentos solicitados para el tipo de devolución ingresado") 
+
+
+    def validar_documentos_legal(self):
+        for l in self:
+            for x in l.documentos_legal:
+                if not x.archivo:
+                    raise ValidationError("Debe cargar los documentos solicitados para el tipo de acción ingresado") 
