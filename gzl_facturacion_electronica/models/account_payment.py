@@ -15,6 +15,7 @@ class AccountPayment(models.Model):
     contrato_id = fields.Many2one('contrato', string='Contrato')
     valor_deuda_admin=fields.Float("Cuota Administrativa a Pagar",compute='_saldo_pagar', store=True)
 
+    cotizacion = fields.Many2one(string='Cotización')
     saldo_cuota_capital = fields.Float(string='Saldo Cuota Capital')
     saldo_seguro = fields.Float(string='Saldo_seguro')
     saldo_rastreo = fields.Float(string='Saldo Rastreo')
