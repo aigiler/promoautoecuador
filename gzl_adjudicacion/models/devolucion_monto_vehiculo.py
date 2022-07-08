@@ -194,6 +194,7 @@ class DevolucionMonto(models.Model):
                                     elif pago_reserva.journal_id.type=='bank':
                                         en_banco+=reserva.amount
 
+
                 else:
                     lista_facturas.append(l.contrato_id.factura_inscripcion.id)
 
@@ -217,8 +218,12 @@ class DevolucionMonto(models.Model):
                 l.valores_facturados=valores_facturados
                 l.inscripcion=valor_inscripcion
                 l.notas_credito=notas_credito
-                l.ingreso_caja=ingreso_caja-en_caja
-                l.ingreso_banco=ingreso_banco-en_banco
+                if l.contrato_id.factura_inscripcion:
+                    l.ingreso_caja=ingreso_caja
+                    l.ingreso_banco=ingreso_banco
+                else:
+                    l.ingreso_caja=ingreso_caja-en_caja
+                    l.ingreso_banco=ingreso_banco-en_banco
                 l.cuota_capital=ingreso_banco+ingreso_caja+notas_credito-valores_facturados
                 l.valor_desistimiento=valor_desistimiento
 
