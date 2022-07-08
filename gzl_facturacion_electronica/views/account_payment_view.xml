@@ -7,10 +7,10 @@
         <field name="inherit_id" ref="account.view_account_payment_form"/>
         <field name="arch" type="xml">
         <xpath expr="//field[@name='partner_id']" position="after">
-            <field name="deuda_total" attrs="{'invisible': [('payment_type','!=','inbound')]}" readonly="1"/>
-            <field name="pago_inscripcion" attrs="{'invisible': [('payment_type','!=','inbound')]}" readonly="1"/>
-            <field name="pago_reserva" attrs="{'invisible': [('payment_type','!=','inbound')]}" readonly="1"/>
-            <field name="cotizacion" attrs="{'invisible': [('payment_type','!=','inbound')],'required': ['|',('pago_inscripcion','=',True),('pago_reserva','=',True)]}" domain="[('state', 'not in',['cancel'] )]" readonly="1"/>
+            <field name="deuda_total" attrs="{'invisible': [('payment_type','!=','inbound')]}" />
+            <field name="pago_inscripcion" attrs="{'invisible': [('payment_type','!=','inbound')]}" />
+            <field name="pago_reserva" attrs="{'invisible': [('payment_type','!=','inbound')]}" />
+            <field name="cotizacion" attrs="{'invisible': [('payment_type','!=','inbound')],'required': ['|',('pago_inscripcion','=',True),('pago_reserva','=',True)]}" domain="[('state', 'not in',['cancel'] )]" />
         </xpath>
         <group position="after">
           <div class="row" groups="gzl_facturacion_electronica.grupo_cobranza" >        
