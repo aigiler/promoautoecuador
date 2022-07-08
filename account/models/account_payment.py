@@ -1142,7 +1142,6 @@ class account_payment(models.Model):
                                     else:
                                         pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':rec.id,
                                                                                                                     'monto_pagado':rec.amount,'valor_asociado':total_cuota})
-                            
                                 
                                 if cuota_id.saldo==0:
                                     cuota_id.estado_pago='pagado'
