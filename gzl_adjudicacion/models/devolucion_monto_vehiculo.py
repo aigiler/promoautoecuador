@@ -181,6 +181,7 @@ class DevolucionMonto(models.Model):
                     if crm_id:
                         sale_order=self.env['sale.order'].search([('oportunidad_id','=',crm_id.id),('state','!=','cancel')])
                         for line in sale_order:
+                            raise ValidationError('{0}'.format(line.id))
                             factura=self.env['account.move'].search([('invoice_origin','=',line.name),('state','!=','cancel')])
                             if not factura:
                                 pago_inscripcion=self.env['account.payment'].search([('pago_inscripcion','=',True),('cotizacion','=',line.id),('partner_id','=',l.cliente.id),('payment_type','=','inbound'),('state','in',['reconciled','posted'])])
@@ -193,8 +194,7 @@ class DevolucionMonto(models.Model):
                                         en_caja+=reserva.amount
                                     elif pago_reserva.type=='bank':
                                         en_banco+=reserva.amount
-                            else:
-                                total=0
+
                 else:
                     lista_facturas.append(l.contrato_id.factura_inscripcion.id)
 
