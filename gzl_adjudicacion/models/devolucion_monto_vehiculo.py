@@ -287,7 +287,7 @@ class DevolucionMonto(models.Model):
                         'company_id':self.env.company.id,
                         'type':'entry',
                         'partner_id':self.cliente.id,
-                        'ref':self.name,
+                        'ref':self.secuencia,
                         'line_ids':[
                             (0,0,{
                             'account_id':cuenta_contrapartida,
