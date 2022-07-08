@@ -189,9 +189,9 @@ class DevolucionMonto(models.Model):
                                 pago_reserva=self.env['account.payment'].search([('pago_reserva','=',True),('cotizacion','=',line.id),('partner_id','=',l.cliente.id),('payment_type','=','inbound'),('state','in',['reconciled','posted'])])
                                 for reserva in pago_reserva:
                                     valor_reserva+=reserva.amount
-                                    if pago_reserva.type=='cash':
+                                    if pago_reserva.journal_id.type=='cash':
                                         en_caja+=reserva.amount
-                                    elif pago_reserva.type=='bank':
+                                    elif pago_reserva.journal_id.type=='bank':
                                         en_banco+=reserva.amount
 
                 else:
