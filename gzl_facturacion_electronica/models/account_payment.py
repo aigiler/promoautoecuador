@@ -22,6 +22,8 @@ class AccountPayment(models.Model):
     abono_contrato = fields.Boolean(string='Contrato')
     credito_contrato=fields.Boolean(string='Credito')
     abono_aplicado = fields.Boolean(string='Abono Aplicado')
+    pago_inscripcion=fields.Boolean(string='Ingreso de Inscripción',default=False)
+    pago_reserva=fields.Boolean(string='Ingreso de Reserva',default=False)
 
     tipo_valor = fields.Selection([
         ('enviar_credito', 'Enviar a Credito'),

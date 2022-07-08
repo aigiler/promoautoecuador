@@ -164,7 +164,7 @@ class DevolucionMonto(models.Model):
                 notas_credito=0
                 lista_facturas=[]
                 facturas_obj=self.env['account.move'].search([('contrato_id','=',l.contrato_id.id),('type','=','out_invoice'),('state','=','posted')])    
-                
+
                 for x in facturas_obj:
                     lista_facturas.append(x.id)
                     valores_facturados+=x.amount_total
@@ -172,6 +172,33 @@ class DevolucionMonto(models.Model):
                     for y in notas_credito_obj:
                         notas_credito+=y.amount_total
                 valor_inscripcion=l.contrato_id.factura_inscripcion.amount_total
+                valor_cancelado_sin_firma=0
+                valor_reserva=0
+                en_caja=0
+                en_banco=0
+                if not l.contrato_id.factura_inscripcion:
+                    crm_id=self.env['crm.lead'].search([('contrato_id','=',l.contrato_id.id)],limit=1)
+                    if crm_id:
+                        sale_order=self.env['sale.order'].search([('oportunidad_id','=',crm_id.id),('state','!=','cancel')])
+                        for line in sale_order:
+                            factura=self.env['account.move'].search([('invoice_origin','=',line.name),('state','!=','cancel')])
+                            if not factura:
+                                pago_inscripcion=self.env['account.payment'].search([('pago_inscripcion','=',True),('cotizacion','=',line.id),('partner_id','=',l.cliente.id),('payment_type','=','inbound'),('state','in',['reconciled','posted'])])
+                                for inscripcion in pago_inscripcion:
+                                    valor_cancelado_sin_firma+=inscripcion.amount
+                                pago_reserva=self.env['account.payment'].search([('pago_reserva','=',True),('cotizacion','=',line.id),('partner_id','=',l.cliente.id),('payment_type','=','inbound'),('state','in',['reconciled','posted'])])
+                                for reserva in pago_reserva:
+                                    valor_reserva+=reserva.amount
+                                    if pago_reserva.type=='cash':
+                                        en_caja+=reserva.amount
+                                    elif pago_reserva.type=='bank':
+                                        en_banco+=reserva.amount
+                                #total+=line.amount_total
+                            else:
+                                total=0
+
+                l.valor_cancelado_sin_firma=valor_cancelado_sin_firma
+                l.valor_reserva=valor_reserva
                 pagos_obj=self.env['account.payment'].search([('partner_id','=',l.cliente.id),('payment_type','=','inbound'),('state','in',['reconciled','posted'])])
                 ingreso_caja=0
                 ingreso_banco=0

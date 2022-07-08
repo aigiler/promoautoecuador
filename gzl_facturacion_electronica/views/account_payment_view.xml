@@ -8,6 +8,8 @@
         <field name="arch" type="xml">
         <xpath expr="//field[@name='partner_id']" position="after">
             <field name="deuda_total" attrs="{'invisible': [('payment_type','!=','inbound')]}" readonly="1"/>
+            <field name="pago_inscripcion" attrs="{'invisible': [('payment_type','!=','inbound')]}" readonly="1"/>
+            <field name="pago_reserva" attrs="{'invisible': [('payment_type','!=','inbound')]}" readonly="1"/>
         </xpath>
         <group position="after">
           <div class="row" groups="gzl_facturacion_electronica.grupo_cobranza" >        
