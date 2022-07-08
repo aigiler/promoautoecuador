@@ -108,9 +108,9 @@
 
                         <page string="INFORME DE LEGAL">
                         <separator class="text-center" string="DATOS GENERALES"/>
-                        <div class="row" style="border: 1px solid black;" readonly="1">
+                        <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
-                                <group > 
+                                <group readonly="1"> 
                                     <field name="cliente" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                      <field name="fecha_contrato" />
                                      <field name="tipo_de_contrato" />
@@ -120,7 +120,7 @@
 
                             </div>
                             <div class="col-xs-12 col-sm-4">
-                                <group > 
+                                <group readonly="1"> 
                                     
                                     <field name="contrato_id"  domain="[('cliente', '=', cliente)]"  required="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                     <field name="vatAdjudicado" />
@@ -130,7 +130,7 @@
                                     </group>
                             </div>
                             <div class="col-xs-12 col-sm-4">
-                                <group > 
+                                <group readonly="1"> 
                                     <field name="celular" />
                                     <field name="correo" />
                                     <field name="grupo" />
@@ -184,9 +184,9 @@
 
                         <page string="INFORME DE ADJUDICACIONES">
                         <separator class="text-center" string="DATOS GENERALES"/>
-                        <div class="row" style="border: 1px solid black;" readonly="1">
+                        <div class="row" style="border: 1px solid black;" >
                             <div class="col-xs-12 col-sm-4">
-                                <group > 
+                                <group  readonly="1"> 
                                    <field name="cliente" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                      <field name="fecha_contrato" />
                                      <field name="tipo_de_contrato" />
@@ -196,7 +196,7 @@
 
                             </div>
                             <div class="col-xs-12 col-sm-4">
-                                <group > 
+                                <group  readonly="1"> 
                                     
                                      <field name="contrato_id"  domain="[('cliente', '=', cliente)]"  required="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                     <field name="vatAdjudicado" />
@@ -206,7 +206,7 @@
                                     </group>
                             </div>
                             <div class="col-xs-12 col-sm-4">
-                                <group > 
+                                <group  readonly="1"> 
                                     <field name="celular" />
                                     <field name="correo" />
                                     <field name="grupo" />
@@ -273,7 +273,7 @@
                         <separator class="text-center" string="DATOS GENERALES" readonly="1"/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
-                                <group > 
+                                <group  readonly="1"> 
                                    <field name="cliente" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                      <field name="fecha_contrato" />
                                      <field name="tipo_de_contrato" />
@@ -283,7 +283,7 @@
 
                             </div>
                             <div class="col-xs-12 col-sm-4">
-                                <group > 
+                                <group  readonly="1"> 
                                      <field name="contrato_id"  domain="[('cliente', '=', cliente)]"  required="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                     
                                     <field name="vatAdjudicado" />
@@ -293,7 +293,7 @@
                                     </group>
                             </div>
                             <div class="col-xs-12 col-sm-4">
-                                <group > 
+                                <group  readonly="1"> 
                                     <field name="celular" />
                                     <field name="correo" />
                                     <field name="grupo" />
@@ -377,7 +377,7 @@
                         <separator class="text-center" string="DATOS GENERALES" readonly="1"/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
-                                <group > 
+                                <group  readonly="1"> 
                                      <field name="cliente" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                      <field name="fecha_contrato" />
                                      <field name="tipo_de_contrato" />
@@ -387,7 +387,7 @@
 
                             </div>
                             <div class="col-xs-12 col-sm-4">
-                                <group > 
+                                <group  readonly="1"> 
                                    
                                     <field name="contrato_id"  domain="[('cliente', '=', cliente)]"  required="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                     <field name="vatAdjudicado" />
@@ -397,7 +397,7 @@
                                     </group>
                             </div>
                             <div class="col-xs-12 col-sm-4">
-                                <group > 
+                                <group  readonly="1"> 
                                     <field name="celular" />
                                     <field name="correo" />
                                     <field name="grupo" />
@@ -432,7 +432,7 @@
                         <separator class="text-center" string="DATOS GENERALES" readonly="1"/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
-                                <group > 
+                                <group  readonly="1"> 
                                     <field name="cliente" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                      <field name="fecha_contrato" />
                                      <field name="tipo_de_contrato" />
@@ -442,7 +442,7 @@
 
                             </div>
                             <div class="col-xs-12 col-sm-4">
-                                <group > 
+                                <group  readonly="1"> 
                                     
                                     <field name="contrato_id"  domain="[('cliente', '=', cliente)]"  required="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                     <field name="vatAdjudicado" />
@@ -452,7 +452,7 @@
                                     </group>
                             </div>
                             <div class="col-xs-12 col-sm-4">
-                                <group > 
+                                <group  readonly="1"> 
                                     <field name="celular" />
                                     <field name="correo" />
                                     <field name="grupo" />
