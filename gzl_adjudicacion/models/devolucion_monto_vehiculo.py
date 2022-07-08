@@ -293,7 +293,7 @@ class DevolucionMonto(models.Model):
                             'analytic_account_id':False,}),
                             (0, 0, {
                             'name': "Devolucion de Valores",
-                            'amount_currency':  0.0,
+                            'amount_currency':  -0.0,
                             'currency_id': self.env.company.currency_id.id,
                             'debit': l.valor_desistimiento ,
                             'credit':  0.00,
