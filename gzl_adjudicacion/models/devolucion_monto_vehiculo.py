@@ -193,7 +193,6 @@ class DevolucionMonto(models.Model):
                                         en_caja+=reserva.amount
                                     elif pago_reserva.type=='bank':
                                         en_banco+=reserva.amount
-                                #total+=line.amount_total
                             else:
                                 total=0
 
@@ -217,8 +216,8 @@ class DevolucionMonto(models.Model):
                 l.valores_facturados=valores_facturados
                 l.inscripcion=valor_inscripcion
                 l.notas_credito=notas_credito
-                l.ingreso_caja=ingreso_caja
-                l.ingreso_banco=ingreso_banco
+                l.ingreso_caja=ingreso_caja-en_caja
+                l.ingreso_banco=ingreso_banco-en_banco
                 l.cuota_capital=ingreso_banco+ingreso_caja+notas_credito-valores_facturados
                 l.valor_desistimiento=valor_desistimiento
 
