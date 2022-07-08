@@ -312,8 +312,6 @@ class DevolucionMonto(models.Model):
                 }
                 move_id=self.env['account.move'].create(move_vals).post()
 
-
-
                 pago_id=self.env['account.payment'].create({"journal_id":l.journal_id.id,'partner_id':self.cliente.id,
                                                                     'payment_type':'outbound','amount':l.valor_desistimiento,
                                                                     'payment_method_id':pago_metodo.id,
