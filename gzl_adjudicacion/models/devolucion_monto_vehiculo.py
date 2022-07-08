@@ -204,13 +204,14 @@ class DevolucionMonto(models.Model):
                 ingreso_caja=0
                 ingreso_banco=0
                 for pagos in pagos_obj:
+                    bandera=False
                     for fac in pagos.invoice_ids:
-                        if fac.id in lista_facturas:
+                        if fac.id in lista_facturas and not bandera:
                             if pagos.journal_id.type=='cash':
                                 ingreso_caja+=pagos.amount
                             elif pagos.journal_id.type=='bank':
                                 ingreso_banco+=pagos.amount
-                            pass
+                            bandera=True
 
                 l.capital_pagado_fecha=capital_pagado_fecha
                 l.administrativo_pagado_fecha=administrativo_pagado_fecha
