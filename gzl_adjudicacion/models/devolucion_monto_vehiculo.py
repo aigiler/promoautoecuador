@@ -305,7 +305,7 @@ class DevolucionMonto(models.Model):
                 move_vals = {
                     'date':  self.fsolicitud,
                     'ref': "Devolucion de Valores",
-                    'journal_id': payment.journal_id.id,
+                    'journal_id': 3,
                     'currency_id': self.journal_id.currency_id.id,
                     'partner_id':  self.cliente.id,
                     'line_ids': tupla,
