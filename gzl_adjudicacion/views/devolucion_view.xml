@@ -25,7 +25,8 @@
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group > 
-                                    <field name="contrato_id" required="1" domain="[('cliente', '=', cliente)]" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
+                                     <field name="cliente" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
+                                   
                                      <field name="fecha_contrato" />
                                      <field name="tipo_de_contrato" />
                                      <field name="supervisor" />
@@ -35,7 +36,7 @@
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group > 
-                                    <field name="cliente" />
+                                    <field name="contrato_id" required="1" domain="[('cliente', '=', cliente)]" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                     <field name="vatAdjudicado" />
                                     <field name="monto" />
                                     <field name="asesor" />
@@ -110,7 +111,7 @@
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group > 
-                                    <field name="contrato_id"  domain="[('cliente', '=', cliente)]"  required="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
+                                    <field name="cliente" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                      <field name="fecha_contrato" />
                                      <field name="tipo_de_contrato" />
                                      <field name="supervisor" />
@@ -120,7 +121,8 @@
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group > 
-                                    <field name="cliente" />
+                                    
+                                    <field name="contrato_id"  domain="[('cliente', '=', cliente)]"  required="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                     <field name="vatAdjudicado" />
                                     <field name="monto" />
                                     <field name="asesor" />
@@ -184,7 +186,7 @@
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group > 
-                                    <field name="contrato_id"  domain="[('cliente', '=', cliente)]"  required="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
+                                   <field name="cliente" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                      <field name="fecha_contrato" />
                                      <field name="tipo_de_contrato" />
                                      <field name="supervisor" />
@@ -194,7 +196,8 @@
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group > 
-                                    <field name="cliente" />
+                                    
+                                     <field name="contrato_id"  domain="[('cliente', '=', cliente)]"  required="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                     <field name="vatAdjudicado" />
                                     <field name="monto" />
                                     <field name="asesor" />
@@ -270,7 +273,7 @@
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group > 
-                                    <field name="contrato_id"  domain="[('cliente', '=', cliente)]"  required="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
+                                   <field name="cliente" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                      <field name="fecha_contrato" />
                                      <field name="tipo_de_contrato" />
                                      <field name="supervisor" />
@@ -280,7 +283,8 @@
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group > 
-                                    <field name="cliente" />
+                                     <field name="contrato_id"  domain="[('cliente', '=', cliente)]"  required="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
+                                    
                                     <field name="vatAdjudicado" />
                                     <field name="monto" />
                                     <field name="asesor" />
@@ -373,7 +377,7 @@
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group > 
-                                    <field name="contrato_id"  domain="[('cliente', '=', cliente)]"  required="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
+                                     <field name="cliente" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                      <field name="fecha_contrato" />
                                      <field name="tipo_de_contrato" />
                                      <field name="supervisor" />
@@ -383,7 +387,8 @@
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group > 
-                                    <field name="cliente" />
+                                   
+                                    <field name="contrato_id"  domain="[('cliente', '=', cliente)]"  required="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                     <field name="vatAdjudicado" />
                                     <field name="monto" />
                                     <field name="asesor" />
@@ -427,7 +432,7 @@
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group > 
-                                    <field name="contrato_id"  domain="[('cliente', '=', cliente)]"  required="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
+                                    <field name="cliente" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                      <field name="fecha_contrato" />
                                      <field name="tipo_de_contrato" />
                                      <field name="supervisor" />
@@ -437,7 +442,8 @@
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group > 
-                                    <field name="cliente" />
+                                    
+                                    <field name="contrato_id"  domain="[('cliente', '=', cliente)]"  required="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
                                     <field name="vatAdjudicado" />
                                     <field name="monto" />
                                     <field name="asesor" />
