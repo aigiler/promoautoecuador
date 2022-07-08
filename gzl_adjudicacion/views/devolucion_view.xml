@@ -157,6 +157,7 @@
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-6">
                                 <group > 
+                                      <field name="rolAsignado" invisible="1" />
                                     <field name="tipo_accion"  attrs="{'required':[('rolAsignado', '=',9)]}" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' />
  
                                    </group>
