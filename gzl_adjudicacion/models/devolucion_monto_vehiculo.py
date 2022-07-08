@@ -195,6 +195,8 @@ class DevolucionMonto(models.Model):
                                         en_banco+=reserva.amount
                             else:
                                 total=0
+                else:
+                    lista_facturas.append(l.contrato_id.factura_inscripcion.id)
 
                 l.valor_cancelado_sin_firma=valor_cancelado_sin_firma
                 l.valor_reserva=valor_reserva
