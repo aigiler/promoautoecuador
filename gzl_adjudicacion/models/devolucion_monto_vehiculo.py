@@ -179,8 +179,7 @@ class DevolucionMonto(models.Model):
                 if not l.contrato_id.factura_inscripcion:
                     crm_id=self.env['crm.lead'].search([('contrato_id','=',l.contrato_id.id)],limit=1)
                     if crm_id:
-                        sale_order=self.env['sale.order'].search([('oportunidad_id','=',crm_id.id),('state','!=','cancel')])
-                        raise ValidationError('{0}'.format(sale_order))
+                        sale_order=self.env['sale.order'].search([('opportunity_id','=',crm_id.id),('state','!=','cancel')])
                         for line in sale_order:
                             factura=self.env['account.move'].search([('invoice_origin','=',line.name),('state','!=','cancel')])
                             if not factura:
