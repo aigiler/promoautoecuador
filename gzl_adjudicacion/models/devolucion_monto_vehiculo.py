@@ -219,11 +219,11 @@ class DevolucionMonto(models.Model):
                 l.inscripcion=valor_inscripcion
                 l.notas_credito=notas_credito
                 if l.contrato_id.factura_inscripcion:
-                    l.ingreso_caja=ingreso_caja
-                    l.ingreso_banco=ingreso_banco
-                else:
                     l.ingreso_caja=ingreso_caja-en_caja
                     l.ingreso_banco=ingreso_banco-en_banco
+                else:
+                    l.ingreso_caja=ingreso_caja
+                    l.ingreso_banco=ingreso_banco
                 l.cuota_capital=ingreso_banco+ingreso_caja+notas_credito-valores_facturados
                 l.valor_desistimiento=valor_desistimiento
 
