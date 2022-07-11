@@ -42,10 +42,10 @@ class WizardContratoAdendum(models.Model):
             cuotas_pgadas=sum(pagos.mapped("cuota_capital"))
             pagos_pendiente=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago!='pagado' and l.factura_id)
             cuotas_pendientes_pago=sum(pagos_pendiente.mapped("cuota_capital"))
-            abonos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago!='pagado' and l.monto_pagado>0 and l.factura_id==False)
+            abonos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago!='pagado' and l.monto_pagado>0 and not l.factura_id)
             cuotas_pendientes_abono=sum(abonos.mapped("cuota_capital"))
             pago_capital=cuotas_pgadas+cuotas_pendientes_pago+cuotas_pendientes_abono
-            #raise ValidationError('{0}'.format(pago_capital))
+            raise ValidationError('{0},{1},{2}'.format(pagos,pagos_pendiente,abonos))
 
             nuevoMontoReeestructura=self.monto_financiamiento-pago_capital
 
