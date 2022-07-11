@@ -45,7 +45,6 @@ class WizardContratoAdendum(models.Model):
             abonos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago!='pagado' and l.monto_pagado>0 and not l.factura_id)
             cuotas_pendientes_abono=sum(abonos.mapped("cuota_capital"))
             pago_capital=cuotas_pgadas+cuotas_pendientes_pago+cuotas_pendientes_abono
-            raise ValidationError('{0},{1},{2}'.format(pagos,pagos_pendiente,abonos))
 
             nuevoMontoReeestructura=self.monto_financiamiento-pago_capital
 
@@ -58,6 +57,7 @@ class WizardContratoAdendum(models.Model):
 
             numeroCuotasPagadaTotal=len(cuotasAdelantadas) + len(cuotasPagadas)
 
+            raise ValidationError('{0},{1},{2}'.format(numeroCuotasPagadaTotal,pagos_pendiente,abonos))
 
             diferenciaPlazoAdendum= abs(self.contrato_id.plazo_meses.numero - self.plazo_meses.numero)
 
