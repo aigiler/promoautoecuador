@@ -42,7 +42,7 @@ class WizardContratoAdendum(models.Model):
             cuotas_pgadas=sum(pagos.mapped("cuota_capital"))
             pagos_pendiente=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago!='pagado' and l.factura_id)
             cuotas_pendientes_pago=sum(pagos_pendiente.mapped("cuota_capital"))
-            abonos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago!='pagado' and l.monto_pagado>0)
+            abonos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago!='pagado' and l.monto_pagado>0 and l.factura_id==False)
             cuotas_pendientes_abono=sum(abonos.mapped("cuota_capital"))
             pago_capital=cuotas_pgadas+cuotas_pendientes_pago+cuotas_pendientes_abono
             #raise ValidationError('{0}'.format(pago_capital))
@@ -113,6 +113,41 @@ class WizardContratoAdendum(models.Model):
                     dct['currency_id']= l.currency_id
                     lista_cuotapagadas.append(dct)
 
+                obj_contrato_facturados=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('factura_id','!=',False)])
+                monto_finan_contrato= 0.00
+                for l in obj_contrato_facturados:
+                    if l.programado!=0:
+                        entrada=True
+                    cont+=1
+                    dct ={}
+                    dct['numero_cuota'] = cont
+                    dct['fecha']= l.fecha
+                    dct['cuota_capital']= l.cuota_capital
+                    dct['cuota_adm']= l.cuota_adm
+                    dct['iva_adm']= l.iva_adm
+                    dct['saldo']= l.saldo
+                    dct['contrato_id']= self.contrato_id.id
+                    dct['estado_pago']= l.estado_pago
+                    dct['currency_id']= l.currency_id
+                    lista_cuotapagadas.append(dct)
+
+                obj_contrato_abonos=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('factura_id','=',False),('ids_pagos','!=',False)])
+                monto_finan_contrato= 0.00
+                for l in obj_contrato_abonos:
+                    if l.programado!=0:
+                        entrada=True
+                    cont+=1
+                    dct ={}
+                    dct['numero_cuota'] = cont
+                    dct['fecha']= l.fecha
+                    dct['cuota_capital']= l.cuota_capital
+                    dct['cuota_adm']= l.cuota_adm
+                    dct['iva_adm']= l.iva_adm
+                    dct['saldo']= l.saldo
+                    dct['contrato_id']= self.contrato_id.id
+                    dct['estado_pago']= l.estado_pago
+                    dct['currency_id']= l.currency_id
+                    lista_cuotapagadas.append(dct)
 
                 obj_contrato_detalle=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','!=','pagado'),('factura_id','=',False),('ids_pagos','=',False)])
                 obj_contrato_detalle.unlink()
