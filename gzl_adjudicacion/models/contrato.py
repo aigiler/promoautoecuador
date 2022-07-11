@@ -914,7 +914,7 @@ class ContratoEstadoCuenta(models.Model):
     saldo_tabla = fields.Monetary(
         string='Saldo Tabla ', currency_field='currency_id')
 
-    @api.depends("saldo_seguro","saldo_rastreo","saldo_otros","saldo_cuota_capital","saldo_cuota_administrativa","saldo_iva","ids_pagos")
+    @api.depends("saldo_seguro","saldo_rastreo","saldo_otros","saldo_cuota_capital","saldo_cuota_administrativa","saldo_iva")
     def calcular_monto_pagado(self):
         for l in self:
             monto=sum(l.ids_pagos.mapped("valor_asociado"))
