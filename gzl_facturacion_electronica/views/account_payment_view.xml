@@ -35,26 +35,11 @@
         </group>
         </field>
       </record>
-            <!-- <field name="communication" position="before">
-              <field name="abono_contrato" string="Abonar Contrato" groups="gzl_facturacion_electronica.grupo_cobranza" />
-                <field name="contrato_id" domain="[('cliente', '=', partner_id)]" attrs="{'invisible': ['|',('abono_contrato','=',False),('payment_type','!=','inbound')],'required': [('abono_contrato','=',True)]}" groups="gzl_facturacion_electronica.grupo_cobranza" />
-                <button  name="crear_detalles" string="Contrato" attrs="{'invisible': [('contrato_id','=',False)]}" type="object" class='btn-primary'></button>
-                <field name="contrato_valor"  attrs="{'invisible': [('contrato_valor','=',False)]}" groups="gzl_facturacion_electronica.grupo_cobranza" />
-                <field name="credito_contrato" groups="gzl_facturacion_electronica.grupo_cobranza" />
-                <field name="credito" attrs="{'invisible': [('credito_contrato','=',False)]}" groups="gzl_facturacion_electronica.grupo_cobranza" />
-                
-                
-                
-
-                
-                <field name="valor_deuda" string="Valor a Pagar de Facturas"/>
-                <field name="saldo_pago" /> 
+             <field name="communication" position="attributes">
+              <attribute name="required">1</attribute>
+             
 
             </field>
-          <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="deuda_total" attrs="{'invisible': [('payment_type','!=','inbound')]}" readonly="1"/>
-            </xpath>
-        </field> -->
     
 
   <record id="pago_cuota_form2" model="ir.ui.view">
