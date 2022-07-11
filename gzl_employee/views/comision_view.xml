@@ -38,13 +38,13 @@
                         <group >
                             <field name="factores_ids" >
                                 <tree editable="bottom">
-                                    <field name="nombre"/>
+                                    <field name="name"/>
                                     <field name="valor"/>
                                 </tree>
                                     <form>
                                         <group>
                                             <group>
-                                                <field name="nombre"/>
+                                                <field name="name"/>
                                                 <field name="valor"/>
                                             </group>                       
                                         </group>
