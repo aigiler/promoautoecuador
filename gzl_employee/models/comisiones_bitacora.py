@@ -52,5 +52,5 @@ class hrAppraisal(models.Model):
                 lista_ids=[]
                 for x in factores_ids:
                     registro=self.env['factores.evaluados'].create({'name':x.id})
-                    lista_ids.append(registro)
+                    lista_ids.append(int(registro))
                 self.update({'factores_ids':[(6,0,lista_ids)]})
