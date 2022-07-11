@@ -34,6 +34,7 @@ class FactoresEvaluados(models.Model):
     _name = 'factores.evaluados'
 
     name=fields.Many2one("factores.evaluar", string="Factor a Evaluar")
+    descripcion=fields.Text(related="name.name", string="Factor a Evaluar")
     valor=fields.Selection( [('Excelente', 'Excelente'), ('Bueno', 'Bueno'), ('Malo', 'Malo')],string="Calificación")
 
     evaluacion_id=fields.Many2one("hr.appraisal", string="Factor a Evaluar")
