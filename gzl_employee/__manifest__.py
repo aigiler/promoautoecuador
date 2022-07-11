@@ -10,12 +10,14 @@
             'data/data_groups.xml',
             'data/data_age.xml',
             'data/ir_cron.xml',
+            'data/data_factores_evaluar.xml',
 
             'views/hr_employee_view.xml',
             'views/hr_payslip_view.xml',
             'views/ir_attachment_view.xml',
             'views/res_bank_view.xml',
             'views/comision_view.xml',
+            'views/factores_evaluar_view.xml',
             'views/comision_bitacora_view.xml',
             
             'wizard/report_thirteenth_salary_view.xml',
