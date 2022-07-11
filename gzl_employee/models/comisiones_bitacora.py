@@ -24,5 +24,21 @@ class ComisionesBitacora(models.Model):
 
 
 
+class FactoresEvaluar(models.Model):
+    _name = 'factores.evaluar'
 
+    name=fields.Text(string="Factor a Evaluar")
+    considerado_evaluar=fields.Boolean(string="Considerar", default=False)
 
+class FactoresEvaluados(models.Model):
+    _name = 'factores.evaluados'
+
+    name=fields.Many2one("factores.evaluar", string="Factor a Evaluar")
+    valor=fields.Selection( [('Excelente', 'Excelente'), ('Bueno', 'Bueno'), ('Malo', 'Malo')],string="Calificación")
+
+    evaluacion_id=fields.Many2one("hr.appraisal", string="Factor a Evaluar")
+
+class hrAppraisal(models.Model):
+    _inherit = 'hr.appraisal'
+
+    factores_ids=fields.One2many("factores.evaluados", "evaluacion_id",string="Factores de Evaluación")

@@ -69,6 +69,25 @@ class HrEmployeeChildren(models.Model):
             ('femenino', 'Femenino'),
             ('masculino', 'Masculino')], string='Género', required=True)
     
+
+    parentezco = fields.Selection(selection=[
+            ('hijo', 'Hj@'),
+            ('conyuge', 'Conyuge')], string='Parentezco', required=True)
+
+    @api.depends('date_birth')
+    @api.onchange('date_birth')
+    def calcular_edad(self):
+        edad = 0
+        for rec in self:
+            today = date.today()
+            if rec.date_birth:
+                edad = today.year - rec.date_birth.year - \
+                    ((today.month, today.day) < (
+                        rec.date_birth.month, rec.date_birth.day))
+                rec.age = edad
+            else:
+                rec.age = 0
+
     def planned_action_age(self):
         res = self.env['hr.employee.children'].search([('date_birth','!=',False)])
         for l in res:

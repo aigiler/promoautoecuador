@@ -49,6 +49,7 @@ class WizardContratoAct(models.Model):
                     diferencia=monto_excedente-monto_restado
                     monto_restado+=diferencia
                     valor_cuota.cuota_capital=valor_cuota.cuota_capital-diferencia
+                    valor_cuota.saldo_cuota_capital=valor_cuota.saldo_cuota_capital-diferencia
                     valor_cuota.fecha_pagada=date.today()
                     pass
                 else:
@@ -56,6 +57,10 @@ class WizardContratoAct(models.Model):
                     valor_cuota.cuota_capital=0
                     valor_cuota.cuota_adm=0
                     valor_cuota.iva_adm=0
+                    valor_cuota.saldo_cuota_capital=0
+                    valor_cuota.saldo_cuota_administrativa=0
+                    valor_cuota.saldo_iva=0
+
                     valor_cuota.fecha_pagada=date.today()
                 cuota_ultima=cuota_ultima-1
         self.ejecutado=True

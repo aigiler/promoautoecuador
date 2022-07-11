@@ -39,6 +39,7 @@
                             <field name="name" required="1"/>
                             <field name="date_birth" required="1"/>
                             <field name="age" readonly="1"/>
+                            <field name="parentezco" required="1"/>
                             <field name="gender" />
                         </tree>
                     </field>
