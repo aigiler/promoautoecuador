@@ -29,7 +29,7 @@ Dynamic Workflow Builder
 * You can build dynamic workflow for any model.
 """,
     'data': [
-        'templates/webclient_templates.xml',
+        #'templates/webclient_templates.xml',
         'security/groups.xml',
         'security/ir.model.access.csv',
         'views/menu.xml',
