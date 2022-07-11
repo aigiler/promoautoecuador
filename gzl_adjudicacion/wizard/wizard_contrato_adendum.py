@@ -113,7 +113,7 @@ class WizardContratoAdendum(models.Model):
                     dct['currency_id']= l.currency_id
                     lista_cuotapagadas.append(dct)
 
-                obj_contrato_facturados=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('factura_id','!=',False)])
+                obj_contrato_facturados=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('factura_id','!=',False),('estado_pago','=','pendiente')])
                 monto_finan_contrato= 0.00
                 for l in obj_contrato_facturados:
                     if l.programado!=0:
@@ -131,7 +131,7 @@ class WizardContratoAdendum(models.Model):
                     dct['currency_id']= l.currency_id
                     lista_cuotapagadas.append(dct)
 
-                obj_contrato_abonos=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('factura_id','=',False),('ids_pagos','!=',False)])
+                obj_contrato_abonos=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('factura_id','=',False),('ids_pagos','!=',False),('estado_pago','=','pendiente')])
                 monto_finan_contrato= 0.00
                 for l in obj_contrato_abonos:
                     if l.programado!=0:
