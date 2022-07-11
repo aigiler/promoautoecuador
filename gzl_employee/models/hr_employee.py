@@ -79,7 +79,7 @@ class HrEmployeeChildren(models.Model):
     def calcular_edad(self):
         self.age = ''
         for rec in self:
-            now = date.today()
+            today = date.today()
             if rec.date_birth:
                 edad = today.year - rec.date_birth.year - \
                     ((today.month, today.day) < (
