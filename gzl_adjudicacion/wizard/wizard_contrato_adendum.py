@@ -177,7 +177,7 @@ class WizardContratoAdendum(models.Model):
                 cuota_capital_nueva =round(cuota_capital_nueva, 2)
                 #raise ValidationError(str(cuota_capital_nueva)+'-- cuota_capital_nueva')
                 contb=0
-                raise ValidationError('{0},{1}'.format(intervalo_nuevo,cont))
+                #raise ValidationError('{0},{1}'.format(intervalo_nuevo,cont))
                 for i in range(cont, int(intervalo_nuevo+cont)):
                     contb +=1
                     cuota_capital = (nuevoMontoReeestructura/int(intervalo_nuevo))
