@@ -42,3 +42,15 @@ class hrAppraisal(models.Model):
     _inherit = 'hr.appraisal'
 
     factores_ids=fields.One2many("factores.evaluados", "evaluacion_id",string="Factores de Evaluación")
+
+    @api.depends("employee_id")
+    @api.onchange("employee_id")
+    def obtener_factores(self):
+        for l in self:
+            if not l.factores_ids:
+                factores_ids=self.env['factores.evaluar'].search([('considerado_evaluar','=',True)])
+                lista_ids=[]
+                for x in factores_ids:
+                    registro=self.env['factores.evaluados'].create({'name':x.id})
+                    lista_ids.append(registro)
+                self.update({'factores_ids':[(6,0,lista_ids)]})
