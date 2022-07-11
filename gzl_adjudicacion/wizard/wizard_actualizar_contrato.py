@@ -43,7 +43,6 @@ class WizardContratoAct(models.Model):
         cuota_ultima=self.contrato_id.plazo_meses.numero
         while(monto_restado<monto_excedente):
             valor_cuota=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('numero_cuota','=',cuota_ultima),('cuota_capital','!=',0)])
-            raise ValidationError("{0},{1}".format(monto_restado,monto_excedente))
 
             if valor_cuota.cuota_capital:
                 if (monto_restado+valor_cuota.cuota_capital)>monto_excedente:
@@ -54,6 +53,7 @@ class WizardContratoAct(models.Model):
                     pass
                 else:
                     monto_restado+=valor_cuota.cuota_capital
+                    raise ValidationError("{0},{1}".format(monto_restado,monto_excedente))
                     valor_cuota.cuota_capital=0
                     valor_cuota.cuota_adm=0
                     valor_cuota.iva_adm=0
