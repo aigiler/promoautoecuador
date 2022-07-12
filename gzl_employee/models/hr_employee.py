@@ -111,6 +111,8 @@ class Contract(models.Model):
     _inherit = 'hr.contract'
 
     def imprimir_contrato(self):
+        if not self.contract_type_id.directorio or not self.contract_type_id.directorio_out:
+            raise ValidationError("Debe definir las plantillas de documento a usarse para el tipo de contrato")
         clave='contrato_indefinido'
         dct=self.crear_contrato()
         return dct
