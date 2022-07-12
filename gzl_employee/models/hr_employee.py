@@ -5,6 +5,8 @@ from odoo.exceptions import UserError, ValidationError
 from datetime import *
 from . import crear_contrato_doc
 import shutil
+import base64
+
 
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
