@@ -132,7 +132,7 @@ class Contract(models.Model):
                 "11":'Noviembre',
                 "12":'Diciembre'
             }
-            shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
+            shutil.copy2(self.contract_type_id.directorio,self.contract_type_id.directorio_out)
             campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
             lista_campos=[]
       
@@ -160,8 +160,8 @@ class Contract(models.Model):
             dct['identificar_docx']='txt_actual'
             dct['valor']=fechacontr
             lista_campos.append(dct)
-            crear_contrato_doc.crear_contrato_doc(obj_plantilla.directorio_out,lista_campos)
-            with open(obj_plantilla.directorio_out, "rb") as f:
+            crear_contrato_doc.crear_contrato_doc(self.contract_type_id.directorio_out,lista_campos)
+            with open(self.contract_type_id.directorio_out, "rb") as f:
                 data = f.read()
                 file=bytes(base64.b64encode(data))
         obj_attch=self.env['ir.attachment'].create({
@@ -178,3 +178,10 @@ class Contract(models.Model):
             "url": url,
             "target": "new",
         }
+
+
+class hrContractType(models.Model):
+    _inherit = 'hr.contract.type'
+
+    directorio = fields.Char(string='Directorio de Plantilla')  
+    directorio_out = fields.Char(string='Directorio de Salida de Informe')  
