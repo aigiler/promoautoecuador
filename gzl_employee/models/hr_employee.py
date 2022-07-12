@@ -108,7 +108,7 @@ class Contract(models.Model):
     _inherit = 'hr.contract'
 
     def imprimir_contrato(self):
-        clave='contrato_indefinido':
+        clave='contrato_indefinido'
         dct=self.crear_contrato()
         return dct
 
