@@ -3,7 +3,7 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from datetime import *
-from . import crear_contrato_docs
+from . import crear_contrato_doc
 
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
