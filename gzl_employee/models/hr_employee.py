@@ -182,7 +182,7 @@ class Contract(models.Model):
             entero = int(entero / 1000)
         numero_letras = numero_letras+" con " + str(decimal) +"/100"
 
-    return numero_letras
+        return numero_letras
 
     def imprimir_contrato(self):
         if not self.contract_type_id.directorio or not self.contract_type_id.directorio_out:
