@@ -4,10 +4,14 @@ import re
 from docx import Document
 from odoo.exceptions import AccessError, UserError, ValidationError
 
+
+
+
 def crear_contrato_doc(ruta,detalle):
     #Se abre el documento en la ruta
     doc = Document(ruta)
     contador=1
+    
     for campo in detalle:
         regex1 = re.compile(campo['identificar_docx'])
         docx_replace_regex_ram(doc,regex1,campo['valor'])
