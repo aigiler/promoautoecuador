@@ -7,6 +7,7 @@
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='address_home_id']" position="after">
+                <field name="ciudad_trabajo" />
                 <field name="lugar_residencia" />
                 <field name="direccion" />
                 <field name="correo" />

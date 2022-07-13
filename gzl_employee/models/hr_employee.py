@@ -13,6 +13,7 @@ class HrEmployee(models.Model):
 
     direccion = fields.Char('Dirección')
     lugar_residencia = fields.Char('Lugar de Residencia')
+    ciudad_trabajo = fields.Char('Ciudad de Trabajo')
     correo = fields.Char('Correo electrónico')
     res_bank_id = fields.Many2one('res.bank', string='Banco')
     account_type = fields.Selection(selection=[
