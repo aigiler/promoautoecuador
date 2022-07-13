@@ -12,6 +12,7 @@ class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
     direccion = fields.Char('Dirección')
+    lugar_residencia = fields.Char('Lugar de Residencia')
     correo = fields.Char('Correo electrónico')
     res_bank_id = fields.Many2one('res.bank', string='Banco')
     account_type = fields.Selection(selection=[
