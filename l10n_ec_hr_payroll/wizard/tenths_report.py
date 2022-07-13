@@ -128,6 +128,8 @@ class tenths_reports(models.TransientModel):
             else:
                 cont += days
                 if cont < 31:
+                    if date_from.month==2:
+                        cont=28
                     date_from = date(date_from.year,date_from.month,cont)
             if not name:
                 name = self.name
