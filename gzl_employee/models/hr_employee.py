@@ -229,9 +229,9 @@ class Contract(models.Model):
                         dct['valor']=''
                 dct['identificar_docx']=campo.identificar_docx
                 lista_campos.append(dct)
-            year = datetime.now().year
-            mes = datetime.now().month
-            dia = datetime.now().day
+            year = self.date_start.year
+            mes = self.date_start.month
+            dia = self.date_start.day
             fechacontr = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
             dct = {}
             dct['identificar_docx']='txt_actual'

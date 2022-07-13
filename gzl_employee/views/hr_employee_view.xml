@@ -38,7 +38,7 @@
                             <field name="employee_id" invisible="1"/>
                             <field name="name" required="1"/>
                             <field name="date_birth" required="1"/>
-                            <field name="age" readonly="1"/>
+                            <field name="age" readonly="0"/>
                             <field name="parentezco" required="1"/>
                             <field name="gender" />
                         </tree>
