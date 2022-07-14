@@ -1114,6 +1114,7 @@ class AccountPayment(models.Model):
         lista=[]
         self._saldo_pagar()
         for l in self:
+            
             if l.partner_id and not l.is_third_name: 
                 valor_asignado=0
                 credito=0
@@ -1224,6 +1225,19 @@ class AccountPayment(models.Model):
                     name='Pago a Cliente '+str(self.partner_id.name)
                     valor_credito=valor_asignado
                     sald_credito=l.amount-valor_asignado
+                if self.tipo_transaccion=="Anticipo":
+                    if self.payment_type=='outbound':
+                    credito=l.amount
+                    name='Anticipo a Proveedor '+str(self.partner_id.name)
+                    valor_debito=valor_asignado
+                    saldo_debito=l.amount-valor_asignado
+                    cuenta_partner=l.partner_id.property_account_payable_id.id
+                    elif self.payment_type=='inbound':
+                        debito=l.amount
+                        cuenta_partner=l.partner_id.property_account_receivable_id.id
+                        name='Aticipo a a Cliente '+str(self.partner_id.name)
+                        valor_credito=valor_asignado
+                        sald_credito=l.amount-valor_asignado
                 if l.amount:
                         tupla={
                                                         'partner_id':l.partner_id.id,
