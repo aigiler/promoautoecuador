@@ -59,7 +59,7 @@ class AccountMove(models.Model):
             if linea.payment_id.tipo_transaccion=="Anticipo":
                 for debit in linea.matched_debit_ids:
                     monto_conciliado=debit.amount
-            linea.amount_residual=linea.amount-monto_conciliado
+            linea.payment_id.amount_residual=linea.payment_id.amount-monto_conciliado
 
         return True
 
