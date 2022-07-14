@@ -1248,7 +1248,7 @@ class AccountPayment(models.Model):
                                                         'debit':debito,
                                                         'credit':credito}
                         lista.append(tupla)
-                if valor_asignado:
+                if valor_asignado or self.tipo_transaccion=="Anticipo":
                         tupla={
                                                         'partner_id':l.partner_id.id,
                                                         'cuenta':cuenta_partner,
