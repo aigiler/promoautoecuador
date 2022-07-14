@@ -1230,13 +1230,13 @@ class AccountPayment(models.Model):
                         credito=l.amount
                         name='Anticipo a Proveedor '+str(self.partner_id.name)
                         valor_debito=valor_asignado
-                        saldo_debito=l.amount-valor_asignado
+                        saldo_debito=self.amount
                         cuenta_partner=l.partner_id.property_account_payable_id.id
                     elif self.payment_type=='inbound':
                         debito=l.amount
                         cuenta_partner=l.partner_id.property_account_receivable_id.id
                         name='Aticipo a a Cliente '+str(self.partner_id.name)
-                        valor_credito=valor_asignado
+                        valor_credito=self.amount
                         sald_credito=l.amount-valor_asignado
                 if l.amount:
                         tupla={
