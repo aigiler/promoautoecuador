@@ -48,6 +48,21 @@ class AccountMove(models.Model):
     is_group_cobranza = fields.Boolean(string='Es Cobranza',compute="_compute_is_group_cobranza")
 
 
+    def js_assign_outstanding_line(self, line_id):
+        self.ensure_one()
+        lines = self.env['account.move.line'].browse(line_id)
+
+        lines += self.line_ids.filtered(lambda line: line.account_id == lines[0].account_id and not line.reconciled)
+        lines.reconcile()
+        for linea in lines:
+            monto_conciliado=0
+            if linea.tipo_transaccion=="Anticipo":
+                for debit in linea.matched_debit_ids:
+                    monto_conciliado=debit.amount
+            linea.amount_residual=linea.amount-monto_conciliado
+
+        return True
+
     # def js_assign_outstanding_line(self, line_id):
         
     #     self.ensure_one()

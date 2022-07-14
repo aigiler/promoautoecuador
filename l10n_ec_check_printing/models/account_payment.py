@@ -625,7 +625,7 @@ class AccountPayment(models.Model):
             
             if self.tipo_transaccion=='Anticipo':
                 self.estado_anticipo='posted'
-                self.aplicar_anticipo_pagos()
+                #self.aplicar_anticipo_pagos()
 
 
     def prueba(self):
