@@ -219,12 +219,12 @@ class FacturacionElectronica(models.Model):
         #    valor=obj_impuesto._compute_amount(round(baseImponible,2),0)
               
 
-            dctImpuesto['baseImponibleReembolso']=round(baseImponible,2)
-            dctImpuesto['codigo']=obj_impuesto.l10n_ec_code_base or ""
-            dctImpuesto['codigoPorcentaje']=obj_impuesto.l10n_ec_code_applied or ""
-            dctImpuesto['impuestoReembolso']=round(valor,2)
-            dctImpuesto['tarifa']=obj_impuesto.tarifa
-            listaImpuestoDct.append(dctImpuesto)
+        #    dctImpuesto['baseImponibleReembolso']=round(baseImponible,2)
+        #    dctImpuesto['codigo']=obj_impuesto.l10n_ec_code_base or ""
+        #    dctImpuesto['codigoPorcentaje']=obj_impuesto.l10n_ec_code_applied or ""
+        #    dctImpuesto['impuestoReembolso']=round(valor,2)
+        #    dctImpuesto['tarifa']=obj_impuesto.tarifa
+        #    listaImpuestoDct.append(dctImpuesto)
 
 
         #if len(listaImpuestoDct)==0:
