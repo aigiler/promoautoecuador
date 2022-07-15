@@ -1229,8 +1229,8 @@ class AccountPayment(models.Model):
                     if self.payment_type=='outbound':
                         credito=l.amount
                         name='Anticipo a Proveedor '+str(self.partner_id.name)
-                        valor_debito=valor_asignado
-                        saldo_debito=self.amount
+                        valor_debito=self.amount
+                        saldo_debito=l.amount-valor_asignado
                         cuenta_partner=l.partner_id.property_account_payable_id.id
                     elif self.payment_type=='inbound':
                         debito=l.amount
