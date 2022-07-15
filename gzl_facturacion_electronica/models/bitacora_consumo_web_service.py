@@ -182,7 +182,7 @@ class BitacoraConsumoServicios(models.Model):
 
 
             for factura in facturas:
-            raise ValidationError('{0}'.format(factura['estado']))                  
+                raise ValidationError('{0}'.format(factura['estado']))                  
                 if factura['estado']=='AUTORIZADO':
                     dias=datetime.now(pytz.timezone('America/Guayaquil'))
                     fecha = dias.strftime('%Y-%m-%d %H:%M:%S')
