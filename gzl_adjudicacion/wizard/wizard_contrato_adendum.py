@@ -182,7 +182,7 @@ class WizardContratoAdendum(models.Model):
                     contb +=1
                     cuota_capital = (nuevoMontoReeestructura/int(intervalo_nuevo))
                     cuota_capital =round(cuota_capital, 2)
-                    cuota_adm = nuevoMontoReeestructura * self.contrato_id.tasa_administrativa / 100 / 12
+                    cuota_adm = self.monto_financiamiento * self.contrato_id.tasa_administrativa / 100 / 12
                     iva = cuota_adm * 0.12
                     #monto_finan_contrato+= cuota_capital
                     cuota_asignada=i+1
