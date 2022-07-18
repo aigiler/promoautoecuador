@@ -116,8 +116,10 @@ class ReporteProveedorCliente(models.TransientModel):
 
             if len(lista_pagos)>0:
                 dct['numero_cuota']=len(lista_pagos)
-            delta = hoy - dct['fecha_vencimiento']
-            
+            if dct['fecha_vencimiento']:
+                delta = hoy - dct['fecha_vencimiento']
+            else:
+                delta = hoy - dct['fecha_emision']
             dias=delta.days
             if dias>0:  
                 dct['dias_vencidos']=dias
