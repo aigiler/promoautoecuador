@@ -319,10 +319,9 @@ class CrmLead(models.Model):
         for equipo in equipos:
             if usuario_logeado in equipo.miembros.ids :
                 team=equipo
+                rol.append(team.rol)
 
-        rol=team.rol
-
-        if rol != self.stage_id.rol:
+        if self.stage_id.rol not in rol:
             raise ValidationError("Usted no puede editar la oportunidad está asignado al rol {0}".format(self.stage_id.rol))
 
 
