@@ -89,6 +89,14 @@ class account_payment(models.Model):
     show_partner_bank_account = fields.Boolean(compute='_compute_show_partner_bank', help='Technical field used to know whether the field `partner_bank_account_id` needs to be displayed or not in the payments form views')
     require_partner_bank_account = fields.Boolean(compute='_compute_show_partner_bank', help='Technical field used to know whether the field `partner_bank_account_id` needs to be required or not in the payments form views')
 
+    @api.onchange("communication")
+    @api.constrains("communication")
+    def validar_referencia(self):
+        for l in self:
+            pagos_ids=self.env['account.payment'].search([('communication','=',l.communication)],limit=1)
+            if pagos_ids:
+                raise ValidationError("La referencia que intenta agregar ya se encuentra registrada en el pago {0}".format(pagos_ids.name))
+
     @api.model
     def default_get(self, default_fields):
         rec = super(account_payment, self).default_get(default_fields)
