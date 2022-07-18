@@ -166,12 +166,12 @@ class CrmLead(models.Model):
             hoy=date.today()
             self.fecha_ganada=hoy
            # raise ValidationError(self.user_id.id)
-            self.crear_comision_ganada(self.user_id.id)
+            self.crear_comision_ganada(self.user_id.id,self.cerrador.id)
 
 
 
 
-    def crear_comision_ganada(self,user_id ):
+    def crear_comision_ganada(self,user_id, asesor):
 
         hoy=date.today()
         comisiones=self.env['comision'].search([('active','=',True)])
@@ -187,7 +187,8 @@ class CrmLead(models.Model):
         #Comision de Asesor
         bono = 0.00
         porcentaje_comision = 0.00
-        empleado=self.env['hr.employee'].search([('user_id','=',user_id)])
+        #empleado=self.env['hr.employee'].search([('user_id','=',user_id)])
+        empleado=self.env['hr.employee'].search([('address_id','=',asesor)])
         monto_ganado= self.factura_inscripcion_id.amount_untaxed
         comision_tabla=self.env['comision'].search([('cargo_id','=',empleado.job_id.id),('valor_min','<=',monto_ganado),('valor_max','>=',monto_ganado)],limit=1)
         
