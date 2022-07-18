@@ -50,6 +50,12 @@ class CrmLead(models.Model):
 
 
 
+    @api.onchange("planned_revenue")
+    def calcular_inscripcion(self):
+        for l in self:
+            if l.planned_revenue:
+                l.valor_inscripcion=l.planned_revenue*0.05
+
 
     def action_new_quotation(self):
         action = self.env.ref("sale_crm.sale_action_quotations_new").read()[0]
