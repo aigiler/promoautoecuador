@@ -190,7 +190,7 @@ class AccountMove(models.Model):
             total=self.amount_total_signed
             total_cuotas=0
             for cc in cuotas_ids:
-                total_cuotas+=cc.cuota_capital+cc.cuota_adm+cc.iva_adm+cc.rastreo+cc.seguro+ss.otros
+                total_cuotas+=cc.cuota_capital+cc.cuota_adm+cc.iva_adm+cc.rastreo+cc.seguro+cc.otros
 
             for line in self.line_ids:
                 if line.account_id.id==self.partner_id.property_account_receivable_id.id:
