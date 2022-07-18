@@ -93,7 +93,7 @@ class account_payment(models.Model):
     @api.constrains("communication")
     def validar_referencia(self):
         for l in self:
-            pagos_ids=self.env['account.payment'].search([('communication','=',l.communication),('id','!=',self.id)],limit=1)
+            pagos_ids=self.env['account.payment'].search([('communication','=',l.communication),('state','!=','draft')],limit=1)
             if pagos_ids:
                 raise ValidationError("La referencia que intenta agregar ya se encuentra registrada en el pago {0}".format(pagos_ids.name))
 
