@@ -314,6 +314,7 @@ class CrmLead(models.Model):
         usuario_logeado=self.env.user.id
         equipos=self.env['crm.team'].search([])
 
+        rol=[]
         team=0
         for equipo in equipos:
             if usuario_logeado in equipo.miembros.ids :
