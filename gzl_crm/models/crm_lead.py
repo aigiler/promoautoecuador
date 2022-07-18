@@ -351,10 +351,10 @@ class CrmLead(models.Model):
 
         self._cr.execute(""" delete from tabla_amortizacion where oportunidad_id={0}""".format(self.id))
         dia_corte = datetime.now()
-        try:
-            dia_corte = ahora.replace(day = self.dia_pago)
-        except:
-            raise ValidationError('La fecha no existe, por favor ingrese otro día de pago.')
+        #try:
+        dia_corte = ahora.replace(day = self.dia_pago)
+        #except:
+        #    raise ValidationError('La fecha no existe, por favor ingrese otro día de pago.')
         
         tasa_administrativa =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa')
 
