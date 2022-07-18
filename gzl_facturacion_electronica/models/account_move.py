@@ -207,6 +207,10 @@ class AccountMove(models.Model):
                 total+=(x.credit-x.valor_sobrante)
                 lista_pagos.append(x.payment_id.id)
 
+            for pagos in cuotas_ids.ids_pagos:
+                if pagos.pago_id.id not in lista_pagos:
+                    lista_pagos.append(pagos.pago_id.id)
+
             total_actual=0
             for y in self.contrato_estado_cuenta_ids:
                 lista_actual.append(y.id)
