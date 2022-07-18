@@ -186,7 +186,12 @@ class AccountMove(models.Model):
             for mov in cuotas_ids:
                 lista_anterior.append(mov.id)
             movimientos_cuota=self.env['account.move'].search([('ref','=',self.name),('journal_id','in',lista_diarios)])
+            
             total=self.amount_total_signed
+            total_cuotas=0
+            for cc in cuotas_ids:
+                total_cuotas+=cc.cuota_capital+cc.cuota_adm+cc.iva_adm+cc.rastreo+cc.seguro+ss.otros
+
             for line in self.line_ids:
                 if line.account_id.id==self.partner_id.property_account_receivable_id.id:
                     for rec in line.matched_credit_ids:
@@ -219,9 +224,9 @@ class AccountMove(models.Model):
                 else:
                     total_actual+=cuotas_ids_nuevo.saldo
 
-            raise ValidationError('total actual: {0},total anterior: {1}'.format(total_actual,total))
+            #raise ValidationError('total actual: {0},total anterior: {1}'.format(total_actual,total))
             
-            if total_actual==total:
+            if total_actual==total_cuotas:
                 for i in lista_actual:
                     if i not in lista_anterior:
                         for j in lista_anterior:
