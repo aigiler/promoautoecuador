@@ -77,16 +77,6 @@ class CrmLead(models.Model):
 
         }
         return action
-
-
-
-
-
-
-
-
-
-
     
     @api.constrains("stage_id")
     def actualizar_equipo_asignado_por_estado(self, ):
