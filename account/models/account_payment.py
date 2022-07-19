@@ -733,7 +733,7 @@ class account_payment(models.Model):
                     for x in rec.move_line_ids:
                         #raise ValidationError('{0},{1}'.format(x.account_id.id))
                         if x.account_id.id==rec.partner_id.property_account_receivable_id.id and round(x.credit,2)==round(rec.valor_deuda,2):
-                            valor_pago_cliente+=x.credit
+                            valor_pago_cliente+=round(x.credit,2)
                             move_credito=x.id
                             for y in x.matched_debit_ids:
                                 lista_ids.append(y.debit_move_id.id)
@@ -801,7 +801,7 @@ class account_payment(models.Model):
                         monto_a_factura=0
                         for cuota_id in y.contrato_estado_cuenta_ids:                            
                             acumulado_cuota=0
-                            raise ValidationError('{0}'.format(valor_pago_cliente))
+                            #raise ValidationError('{0}'.format(valor_pago_cliente))
                             if valor_pago_cliente:
                                 if cuota_id.saldo_cuota_capital:
                                     movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',y.name)])
