@@ -89,6 +89,15 @@ class account_payment(models.Model):
     show_partner_bank_account = fields.Boolean(compute='_compute_show_partner_bank', help='Technical field used to know whether the field `partner_bank_account_id` needs to be displayed or not in the payments form views')
     require_partner_bank_account = fields.Boolean(compute='_compute_show_partner_bank', help='Technical field used to know whether the field `partner_bank_account_id` needs to be required or not in the payments form views')
 
+    @api.onchange("communication")
+    @api.constrains("communication")
+    def validar_referencia(self):
+        for l in self:
+            if l.communication:
+                pagos_ids=self.env['account.payment'].search([('communication','=',l.communication),('state','!=','draft')],limit=1)
+                if pagos_ids:
+                    raise ValidationError("La referencia que intenta agregar ya se encuentra registrada en el pago {0}".format(pagos_ids.name))
+
     @api.model
     def default_get(self, default_fields):
         rec = super(account_payment, self).default_get(default_fields)
@@ -722,8 +731,9 @@ class account_payment(models.Model):
                     lista_ids=[]
                     lista_movimientos=[]
                     for x in rec.move_line_ids:
-                        if x.account_id.id==rec.partner_id.property_account_receivable_id.id and x.credit==rec.valor_deuda:
-                            valor_pago_cliente+=x.credit
+                        #raise ValidationError('{0},{1}'.format(x.account_id.id))
+                        if x.account_id.id==rec.partner_id.property_account_receivable_id.id and round(x.credit,2)==round(rec.valor_deuda,2):
+                            valor_pago_cliente+=round(x.credit,2)
                             move_credito=x.id
                             for y in x.matched_debit_ids:
                                 lista_ids.append(y.debit_move_id.id)
@@ -791,6 +801,7 @@ class account_payment(models.Model):
                         monto_a_factura=0
                         for cuota_id in y.contrato_estado_cuenta_ids:                            
                             acumulado_cuota=0
+                            #raise ValidationError('{0}'.format(valor_pago_cliente))
                             if valor_pago_cliente:
                                 if cuota_id.saldo_cuota_capital:
                                     movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',y.name)])

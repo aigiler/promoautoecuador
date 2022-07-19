@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="punto_1" model="factores.evaluar">
+            <field name="name">INICIATIVA: Es la disposición del servidor para enfrentar las diferentes situaciones y proponer soluciones oportunas.</field>
+            <field name="considerado_evaluar">True</field>
+        </record>
+
+        <record id="punto_2" model="factores.evaluar">
+            <field name="name">TRABAJO EN EQUIPO: Es la capacidad de participar activamente en la consecución de una meta común, alineando los intereses personales a los objetivos del equipo.</field>
+            <field name="considerado_evaluar">True</field>
+        </record>
+
+        <record id="punto_3" model="factores.evaluar">
+            <field name="name">ENFOQUE AL SERVICIO: Demostrar sensibilidad por las necesidades o exigencias que un conjunto de clientes potenciales, externos o internos pueden requerir en el presente o en el futuro; entendiéndose como cliente a todo sujeto con el que nos interrelacionamos profesionalmente.</field>
+            <field name="considerado_evaluar">True</field>
+        </record>
+
+        <record id="punto_4" model="factores.evaluar">
+            <field name="name">CAPACIDAD DE ANALISIS: Capacidad para comprender una situación, identificar sus partes y organizarlas sistemáticamente, a fin de determinar sus interrelaciones y establecer prioridades para actuar.</field>
+            <field name="considerado_evaluar">True</field>
+        </record>
+
+        <record id="punto_5" model="factores.evaluar">
+            <field name="name">PLANIFICACÓN Y ORGANIZACIÓN: Es la preocupación continua por dar orden y un hilo conductor  al trabajo y la información que se maneja. Implica también una insistencia en que las responsabilidades y funciones estén claramente asignadas.</field>
+            <field name="considerado_evaluar">True</field>
+        </record>
+
+        <record id="punto_6" model="factores.evaluar">
+            <field name="name">MONITOREO Y CONTROL: Capacidad de administrar el proceso de ejecución y control de un proyecto, desde su comienzo hasta su conclusión, con el propósito de alcanzar un objetivo final en un plazo determinado, manteniendo los estándares de calidad de la organización.</field>
+            <field name="considerado_evaluar">True</field>
+        </record>
+
+        <record id="punto_7" model="factores.evaluar">
+            <field name="name">SOLUCIÓN DE PROBLEMAS: Es la capacidad de identificar, analizar y definir los elementos significativos que constituyen un problema para resolverlo con criterio y de forma efectiva.</field>
+            <field name="considerado_evaluar">True</field>
+        </record>
+
+        <record id="punto_8" model="factores.evaluar">
+            <field name="name">ORIENTACIÓN A RESULTADOS: Es la capacidad de direccionar asertivamente las actividades y recursos con el objetivo de cumplir con las metas establecidas, asegurando la rentabilidad y el crecimiento sostenido a lo largo del tiempo.</field>
+            <field name="considerado_evaluar">True</field>
+        </record>
+
+        <record id="punto_9" model="factores.evaluar">
+            <field name="name">PRESENTACIÓN PERSONAL: Es el orden, corrección y aseo en la vestimenta y persona del servidor, de acuerdo con las exigencias del puesto.</field>
+            <field name="considerado_evaluar">True</field>
+        </record>
+
+        <record id="punto_10" model="factores.evaluar">
+            <field name="name">DISCIPLINA: Es la observancia de las leyes, reglamentos, circulares y órdenes, así como la puntualidad y asiduidad del servidor.</field>
+            <field name="considerado_evaluar">True</field>
+        </record>
+
+        <record id="punto_11" model="factores.evaluar">
+            <field name="name">COMUNICACIÓN EFECTIVA: Es la capacidad de escuchar, hacer preguntas, expresar y exponer  conceptos e ideas de forma efectiva tanto de manera verbal como escrita. La habilidad de saber cuándo y a quién preguntar para llevar adelante un propósito. Incluyendo la capacidad de escuchar al otro y entenderlo.</field>
+            <field name="considerado_evaluar">True</field>
+        </record>
+
+
+    </data>
+</odoo>

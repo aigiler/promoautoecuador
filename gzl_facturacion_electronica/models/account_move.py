@@ -48,6 +48,24 @@ class AccountMove(models.Model):
     is_group_cobranza = fields.Boolean(string='Es Cobranza',compute="_compute_is_group_cobranza")
 
 
+    def js_assign_outstanding_line(self, line_id):
+        self.ensure_one()
+        lines = self.env['account.move.line'].browse(line_id)
+
+        lines += self.line_ids.filtered(lambda line: line.account_id == lines[0].account_id and not line.reconciled)
+        lines.reconcile()
+        for linea in lines:
+            monto_conciliado=0
+            if linea.payment_id.tipo_transaccion=="Anticipo" and linea.payment_id.payment_type=="inbound":
+                for debit in linea.matched_debit_ids:
+                    monto_conciliado=debit.amount
+            if linea.payment_id.tipo_transaccion=="Anticipo" and linea.payment_id.payment_type=="outbound":
+                for debit in linea.matched_credit_ids:
+                    monto_conciliado=debit.amount
+            linea.payment_id.amount_residual=linea.payment_id.amount-monto_conciliado
+
+        return True
+
     # def js_assign_outstanding_line(self, line_id):
         
     #     self.ensure_one()
@@ -168,7 +186,12 @@ class AccountMove(models.Model):
             for mov in cuotas_ids:
                 lista_anterior.append(mov.id)
             movimientos_cuota=self.env['account.move'].search([('ref','=',self.name),('journal_id','in',lista_diarios)])
+            
             total=self.amount_total_signed
+            #total_cuotas=0
+            #for cc in cuotas_ids:
+            #    total_cuotas+=cc.cuota_capital+cc.cuota_adm+cc.iva_adm+cc.rastreo+cc.seguro+cc.otro
+
             for line in self.line_ids:
                 if line.account_id.id==self.partner_id.property_account_receivable_id.id:
                     for rec in line.matched_credit_ids:
@@ -183,6 +206,10 @@ class AccountMove(models.Model):
             for x in self.anticipos_ids:
                 total+=(x.credit-x.valor_sobrante)
                 lista_pagos.append(x.payment_id.id)
+
+            #for pagos in cuotas_ids.ids_pagos:
+            #    if pagos.pago_id.id not in lista_pagos:
+            #        lista_pagos.append(pagos.pago_id.id)
 
             total_actual=0
             for y in self.contrato_estado_cuenta_ids:
@@ -202,6 +229,7 @@ class AccountMove(models.Model):
                     total_actual+=cuotas_ids_nuevo.saldo
 
             #raise ValidationError('total actual: {0},total anterior: {1}'.format(total_actual,total))
+            
             if total_actual==total:
                 for i in lista_actual:
                     if i not in lista_anterior:
@@ -257,7 +285,7 @@ class AccountMove(models.Model):
                                 
                                 lista_anterior.remove(j)
             else:
-                raise ValidationError("La(s) cuota(s) que está intentando asociar difiera del monto de la cuota_anterior.")
+                raise ValidationError("""La(s) cuota(s) que está intentando asociar difiera del monto considerado a pagar.""")
 
 
     @api.onchange('invoice_payment_term_id','method_payment','contrato_estado_cuenta_ids','name','anticipos_ids')

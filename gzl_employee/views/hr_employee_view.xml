@@ -7,6 +7,8 @@
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='address_home_id']" position="after">
+                <field name="ciudad_trabajo" />
+                <field name="lugar_residencia" />
                 <field name="direccion" />
                 <field name="correo" />
             </xpath>
@@ -38,7 +40,8 @@
                             <field name="employee_id" invisible="1"/>
                             <field name="name" required="1"/>
                             <field name="date_birth" required="1"/>
-                            <field name="age" readonly="1"/>
+                            <field name="age" readonly="0"/>
+                            <field name="parentezco" required="1"/>
                             <field name="gender" />
                         </tree>
                     </field>
@@ -46,5 +49,19 @@
             </xpath>
         </field>
     </record>
+
+
+    <record id="hr_contrato_doc" model="ir.ui.view">
+        <field name="name">hr.contrato.doc</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="after">
+                <button name="imprimir_contrato" string="Imprimir Contrato" type="object"/>
+            </xpath>
+         </field>
+    </record>
+
+
 
 </odoo>

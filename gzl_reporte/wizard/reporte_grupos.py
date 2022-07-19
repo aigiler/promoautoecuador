@@ -158,8 +158,8 @@ class ReportGrupos(models.TransientModel):
             crm_id = self.env['crm.lead'].search([('contrato_id','=',contrato.id)],limit=1)
             if crm_id:
                 dct['sucursal']=crm_id.surcursal_id.name
-                dct['asesor']=crm_id.team_id.user_id.name
-                dt['supervisor']=crm_id.cerrador.name
+                dct['asesor']=crm_id.cerrador.name
+                dct['supervisor']=crm_id.team_id.user_id.name
             if contrato.cliente:
                 for contacto in contrato.cliente.child_ids:
                     if not referenciauno:

@@ -42,10 +42,9 @@ class WizardContratoAdendum(models.Model):
             cuotas_pgadas=sum(pagos.mapped("cuota_capital"))
             pagos_pendiente=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago!='pagado' and l.factura_id)
             cuotas_pendientes_pago=sum(pagos_pendiente.mapped("cuota_capital"))
-            abonos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago!='pagado' and l.monto_pagado>0)
+            abonos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago!='pagado' and l.monto_pagado>0 and not l.factura_id)
             cuotas_pendientes_abono=sum(abonos.mapped("cuota_capital"))
             pago_capital=cuotas_pgadas+cuotas_pendientes_pago+cuotas_pendientes_abono
-            #raise ValidationError('{0}'.format(pago_capital))
 
             nuevoMontoReeestructura=self.monto_financiamiento-pago_capital
 
@@ -65,6 +64,7 @@ class WizardContratoAdendum(models.Model):
 
             intervalo_nuevo=self.plazo_meses.numero - numeroCuotasPagadaTotal + len(numcuotas_congeladas)-len(pagos_pendiente)-len(abonos)
             #raise ValidationError('{0}'.format(intervalo_nuevo))
+            #raise ValidationError('{0},{1},{2},{3}'.format(numeroCuotasPagadaTotal,len(abonos),intervalo_nuevo,self.plazo_meses.numero))
             #lleno lista con estado de cuenta anterior 
             estado_cuenta_anterior=[]
             for e in self.contrato_id.estado_de_cuenta_ids:
@@ -113,6 +113,41 @@ class WizardContratoAdendum(models.Model):
                     dct['currency_id']= l.currency_id
                     lista_cuotapagadas.append(dct)
 
+                obj_contrato_facturados=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('factura_id','!=',False),('estado_pago','=','pendiente')])
+                monto_finan_contrato= 0.00
+                for l in obj_contrato_facturados:
+                    if l.programado!=0:
+                        entrada=True
+                    cont+=1
+                    dct ={}
+                    dct['numero_cuota'] = cont
+                    dct['fecha']= l.fecha
+                    dct['cuota_capital']= l.cuota_capital
+                    dct['cuota_adm']= l.cuota_adm
+                    dct['iva_adm']= l.iva_adm
+                    dct['saldo']= l.saldo
+                    dct['contrato_id']= self.contrato_id.id
+                    dct['estado_pago']= l.estado_pago
+                    dct['currency_id']= l.currency_id
+                    lista_cuotapagadas.append(dct)
+
+                obj_contrato_abonos=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('factura_id','=',False),('ids_pagos','!=',False),('estado_pago','=','pendiente')])
+                monto_finan_contrato= 0.00
+                for l in obj_contrato_abonos:
+                    if l.programado!=0:
+                        entrada=True
+                    cont+=1
+                    dct ={}
+                    dct['numero_cuota'] = cont
+                    dct['fecha']= l.fecha
+                    dct['cuota_capital']= l.cuota_capital
+                    dct['cuota_adm']= l.cuota_adm
+                    dct['iva_adm']= l.iva_adm
+                    dct['saldo']= l.saldo
+                    dct['contrato_id']= self.contrato_id.id
+                    dct['estado_pago']= l.estado_pago
+                    dct['currency_id']= l.currency_id
+                    lista_cuotapagadas.append(dct)
 
                 obj_contrato_detalle=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','!=','pagado'),('factura_id','=',False),('ids_pagos','=',False)])
                 obj_contrato_detalle.unlink()
@@ -142,11 +177,12 @@ class WizardContratoAdendum(models.Model):
                 cuota_capital_nueva =round(cuota_capital_nueva, 2)
                 #raise ValidationError(str(cuota_capital_nueva)+'-- cuota_capital_nueva')
                 contb=0
+                #raise ValidationError('{0},{1}'.format(intervalo_nuevo,cont))
                 for i in range(cont, int(intervalo_nuevo+cont)):
                     contb +=1
                     cuota_capital = (nuevoMontoReeestructura/int(intervalo_nuevo))
                     cuota_capital =round(cuota_capital, 2)
-                    cuota_adm = nuevoMontoReeestructura * self.contrato_id.tasa_administrativa / 100 / 12
+                    cuota_adm = self.monto_financiamiento * self.contrato_id.tasa_administrativa / 100 / 12
                     iva = cuota_adm * 0.12
                     #monto_finan_contrato+= cuota_capital
                     cuota_asignada=i+1

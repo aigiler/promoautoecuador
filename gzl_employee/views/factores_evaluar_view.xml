@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="view_factores_evaluar_view" model= "ir.ui.view">
+        <field name="name">view.factores.view</field>
+        <field name="model">factores.evaluar</field>
+        <field name="arch" type="xml">
+            <tree string="Factores de Evaluación" editable="bottom">
+                
+                <field name="name" />
+                <field name="considerado_evaluar"/>
+
+
+                
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_factores_view" model="ir.actions.act_window">
+        <field name="name">Factores de Evaluación</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">factores.evaluar</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem id="menu_action_factores_view" action="action_factores_view" parent="hr_payroll.menu_hr_payroll_configuration" sequence="7" />
+</odoo>

@@ -50,6 +50,12 @@ class CrmLead(models.Model):
 
 
 
+    @api.onchange("planned_revenue")
+    def calcular_inscripcion(self):
+        for l in self:
+            if l.planned_revenue:
+                l.valor_inscripcion=l.planned_revenue*0.05
+
 
     def action_new_quotation(self):
         action = self.env.ref("sale_crm.sale_action_quotations_new").read()[0]
@@ -166,12 +172,12 @@ class CrmLead(models.Model):
             hoy=date.today()
             self.fecha_ganada=hoy
            # raise ValidationError(self.user_id.id)
-            self.crear_comision_ganada(self.user_id.id)
+            self.crear_comision_ganada(self.user_id.id,self.cerrador.id)
 
 
 
 
-    def crear_comision_ganada(self,user_id ):
+    def crear_comision_ganada(self,user_id, asesor):
 
         hoy=date.today()
         comisiones=self.env['comision'].search([('active','=',True)])
@@ -187,7 +193,8 @@ class CrmLead(models.Model):
         #Comision de Asesor
         bono = 0.00
         porcentaje_comision = 0.00
-        empleado=self.env['hr.employee'].search([('user_id','=',user_id)])
+        #empleado=self.env['hr.employee'].search([('user_id','=',user_id)])
+        empleado=self.env['hr.employee'].search([('address_id','=',asesor)])
         monto_ganado= self.factura_inscripcion_id.amount_untaxed
         comision_tabla=self.env['comision'].search([('cargo_id','=',empleado.job_id.id),('valor_min','<=',monto_ganado),('valor_max','>=',monto_ganado)],limit=1)
         
@@ -314,14 +321,14 @@ class CrmLead(models.Model):
         usuario_logeado=self.env.user.id
         equipos=self.env['crm.team'].search([])
 
+        rol=[]
         team=0
         for equipo in equipos:
             if usuario_logeado in equipo.miembros.ids :
                 team=equipo
+                rol.append(team.rol)
 
-        rol=team.rol
-
-        if rol != self.stage_id.rol:
+        if self.stage_id.rol not in rol:
             raise ValidationError("Usted no puede editar la oportunidad está asignado al rol {0}".format(self.stage_id.rol))
 
 
@@ -344,10 +351,10 @@ class CrmLead(models.Model):
 
         self._cr.execute(""" delete from tabla_amortizacion where oportunidad_id={0}""".format(self.id))
         dia_corte = datetime.now()
-        try:
-            dia_corte = ahora.replace(day = self.dia_pago)
-        except:
-            raise ValidationError('La fecha no existe, por favor ingrese otro día de pago.')
+        #try:
+        dia_corte = ahora.replace(day = self.dia_pago)
+        #except:
+        #    raise ValidationError('La fecha no existe, por favor ingrese otro día de pago.')
         
         tasa_administrativa =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa')
 

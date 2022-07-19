@@ -8,7 +8,12 @@
         <field name="arch" type="xml">
          <field name="communication" position="attributes">
               <attribute name="required">1</attribute>
+
+
+    
             </field>
+
+
         <xpath expr="//field[@name='partner_id']" position="after">
             <field name="deuda_total" attrs="{'invisible': [('payment_type','!=','inbound')]}" />
             <field name="pago_inscripcion" attrs="{'invisible': [('payment_type','!=','inbound')]}" />
