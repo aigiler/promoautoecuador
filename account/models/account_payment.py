@@ -800,6 +800,7 @@ class account_payment(models.Model):
                         monto_a_factura=0
                         for cuota_id in y.contrato_estado_cuenta_ids:                            
                             acumulado_cuota=0
+                            raise ValidationError('{0}'.format(valor_pago_cliente))
                             if valor_pago_cliente:
                                 if cuota_id.saldo_cuota_capital:
                                     movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',y.name)])
