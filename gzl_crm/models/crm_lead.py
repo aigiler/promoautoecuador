@@ -77,6 +77,16 @@ class CrmLead(models.Model):
 
         }
         return action
+
+
+
+
+
+
+
+
+
+
     
     @api.constrains("stage_id")
     def actualizar_equipo_asignado_por_estado(self, ):
@@ -224,11 +234,6 @@ class CrmLead(models.Model):
 
 
             comision_bitacora=self.env['comision.bitacora'].create(dct2)
-
-
-
-
-
 
 
     @api.onchange("team_id")
