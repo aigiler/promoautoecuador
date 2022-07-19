@@ -731,7 +731,8 @@ class account_payment(models.Model):
                     lista_ids=[]
                     lista_movimientos=[]
                     for x in rec.move_line_ids:
-                        if x.account_id.id==rec.partner_id.property_account_receivable_id.id and x.credit==rec.valor_deuda:
+                        #raise ValidationError('{0},{1}'.format(x.account_id.id))
+                        if x.account_id.id==rec.partner_id.property_account_receivable_id.id and round(x.credit,2)==round(rec.valor_deuda,2):
                             valor_pago_cliente+=x.credit
                             move_credito=x.id
                             for y in x.matched_debit_ids:
