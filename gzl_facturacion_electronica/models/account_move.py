@@ -188,9 +188,9 @@ class AccountMove(models.Model):
             movimientos_cuota=self.env['account.move'].search([('ref','=',self.name),('journal_id','in',lista_diarios)])
             
             total=self.amount_total_signed
-            total_cuotas=0
-            for cc in cuotas_ids:
-                total_cuotas+=cc.cuota_capital+cc.cuota_adm+cc.iva_adm+cc.rastreo+cc.seguro+cc.otro
+            #total_cuotas=0
+            #for cc in cuotas_ids:
+            #    total_cuotas+=cc.cuota_capital+cc.cuota_adm+cc.iva_adm+cc.rastreo+cc.seguro+cc.otro
 
             for line in self.line_ids:
                 if line.account_id.id==self.partner_id.property_account_receivable_id.id:
@@ -207,9 +207,9 @@ class AccountMove(models.Model):
                 total+=(x.credit-x.valor_sobrante)
                 lista_pagos.append(x.payment_id.id)
 
-            for pagos in cuotas_ids.ids_pagos:
-                if pagos.pago_id.id not in lista_pagos:
-                    lista_pagos.append(pagos.pago_id.id)
+            #for pagos in cuotas_ids.ids_pagos:
+            #    if pagos.pago_id.id not in lista_pagos:
+            #        lista_pagos.append(pagos.pago_id.id)
 
             total_actual=0
             for y in self.contrato_estado_cuenta_ids:
@@ -230,7 +230,7 @@ class AccountMove(models.Model):
 
             #raise ValidationError('total actual: {0},total anterior: {1}'.format(total_actual,total))
             
-            if total_actual==total_cuotas:
+            if total_actual==total:
                 for i in lista_actual:
                     if i not in lista_anterior:
                         for j in lista_anterior:
@@ -285,7 +285,7 @@ class AccountMove(models.Model):
                                 
                                 lista_anterior.remove(j)
             else:
-                raise ValidationError("La(s) cuota(s) que está intentando asociar difiera del monto de la cuota_anterior.")
+                raise ValidationError("""La(s) cuota(s) que está intentando asociar difiera del monto considerado a pagar.""")
 
 
     @api.onchange('invoice_payment_term_id','method_payment','contrato_estado_cuenta_ids','name','anticipos_ids')
