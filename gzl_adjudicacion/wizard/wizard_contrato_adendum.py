@@ -118,10 +118,14 @@ class WizardContratoAdendum(models.Model):
                     lista_cuotapagadas.append(dct)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                 obj_contrato_facturados=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('factura_id','!=',False),('estado_pago','=','pendiente')])
 =======
                 obj_contrato_facturados=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('factura_id','!=',False)])
 >>>>>>> f8dc7cd5 (validar documentos HDR)
+=======
+                obj_contrato_facturados=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('factura_id','!=',False),('estado_pago','=','pendiente')])
+>>>>>>> 13ca1a22 (validar documentos HDR)
                 monto_finan_contrato= 0.00
                 for l in obj_contrato_facturados:
                     if l.programado!=0:
@@ -140,10 +144,14 @@ class WizardContratoAdendum(models.Model):
                     lista_cuotapagadas.append(dct)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                 obj_contrato_abonos=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('factura_id','=',False),('ids_pagos','!=',False),('estado_pago','=','pendiente')])
 =======
                 obj_contrato_abonos=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('factura_id','=',False),('ids_pagos','!=',False)])
 >>>>>>> f8dc7cd5 (validar documentos HDR)
+=======
+                obj_contrato_abonos=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('factura_id','=',False),('ids_pagos','!=',False),('estado_pago','=','pendiente')])
+>>>>>>> 13ca1a22 (validar documentos HDR)
                 monto_finan_contrato= 0.00
                 for l in obj_contrato_abonos:
                     if l.programado!=0:
