@@ -36,7 +36,7 @@ class WizardContratoAdendum(models.Model):
         for l in self:
             cuotaAdministrativa=0
             if l.monto_financiamiento:
-                cuotaAdministrativa= (l.monto_financiamiento*((l.contrato_id.tasa_administrativa/100)/12))*l.plazo_meses
+                cuotaAdministrativa= (l.monto_financiamiento*((l.contrato_id.tasa_administrativa/100)/12))*l.plazo_meses.numero
                 
                 
             l.cuota_adm = cuotaAdministrativa
