@@ -109,7 +109,7 @@ class WizardContratoAdendum(models.Model):
             valor_mayor_porc = self.contrato_id.monto_financiamiento + valor_porcentaje
             # el monto de financiamiento nuevo debe ser menos o mas el 30% del monto de financiamiento q ya estaba
             if self.monto_financiamiento >= valor_menos_porc and self.monto_financiamiento <= valor_mayor_porc : 
-                #aqui se muestran las cuotas que han sido pagadas ya sean por adelanto o no 
+                #aqui se muestran las cuotas que han sido pagadas ya sean por adelanto o no
                 obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pagado')])
                 lista_cuotapagadas=[]
                 cont =0
