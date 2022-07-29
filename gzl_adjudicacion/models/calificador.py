@@ -22,7 +22,7 @@ class Partner(models.Model):
         hoy=date.today()
         proveedores_ids=self.env['res.partner'].search([('proveedor_recurrente','=',True)])
         for x in proveedores_ids:
-            factura_ids=self.env['account.move'].search([('partner_id','=',x.id)])
+            factura_ids=self.env['account.move'].search([('partner_id','=',x.id),('type','=','in_invoice')])
             factura_mes=factura_ids.filtered(lambda l: l.invoice_date.year == hoy.year and l.invoice_date.month == hoy.month)
             if len(factura_mes)==0:
                 self.envio_correos_plantilla('email_facturas_recurrentes',x.id)
