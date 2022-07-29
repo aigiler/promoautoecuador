@@ -61,7 +61,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
 
 
     def enviar_correo_estado_cuenta(self):
-        contratos_ids=self.env['contrato'].search([('contrato','=','activo')])
+        contratos_ids=self.env['contrato'].search([('state','=','activo')])
         lis=[]
         for l in contratos_ids:
             reporte_id=self.env['reporte.estado.de.cuenta'].create(l.cliente.id,l.id)
