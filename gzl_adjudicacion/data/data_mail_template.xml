@@ -138,7 +138,7 @@
 </div>
 <div style="padding:0px;width:600px;margin:auto;background: #FFFFFF repeat top /100%;color:#777777">
 <p>Estimado,
-    </p><p>Esta notificación es para indicarle que al colaborador ${object.employee_id.name} no tiene ingresado el pago de comisiones del mes en curso.
+    </p><p>Esta notificación es para indicarle que al colaborador ${object.name} no tiene ingresado el pago de comisiones del mes en curso.
 <p>
 </p>
 
