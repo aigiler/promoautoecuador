@@ -64,7 +64,8 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         contratos_ids=self.env['contrato'].search([('state','=','activo')])
         lis=[]
         for l in contratos_ids:
-            reporte_id=self.env['reporte.estado.de.cuenta'].create(l.cliente.id,l.id)
+            reporte_id=self.env['reporte.estado.de.cuenta'].create({'partner_id':l.cliente.id,
+                                                                    'contrato_id':l.id})
             print_report_xls=self.print_report_xls()
 
             reporte_id.update({'url_doc': print_report_xls['url']})
