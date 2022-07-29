@@ -24,7 +24,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
 
     partner_id = fields.Many2one('res.partner',string='Cliente')
     contrato_id = fields.Many2one('contrato',string='Contrato')
-    
+    url_doc = fields.Char('Url doc')    
     
     
 
@@ -59,6 +59,16 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             "target": "new",
         }
 
+
+    def enviar_correo_estado_cuenta(self):
+        contratos_ids=self.env['contrato'].search([('contrato','=','activo')])
+        lis=[]
+        for l in contratos_ids:
+            reporte_id=self.env['reporte.estado.de.cuenta'].create(l.cliente.id,l.id)
+            print_report_xls=self.print_report_xls()
+
+            reporte_id.update({'url_doc': print_report_xls['url']})
+            self.envio_correos_plantilla('email_estado_cuenta',reporte_id.id)
 
 
     def xslx_body(self, workbook, name):

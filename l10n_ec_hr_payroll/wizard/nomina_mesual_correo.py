@@ -46,6 +46,12 @@ class Nomina_mensual(models.TransientModel):
     url_doc = fields.Char('Url doc')
 
 
+
+
+
+
+    
+
     def actualizar_empleados_payroll(self):   
         self.employee_ids_correo=self._get_employees()
         self.ensure_one()
@@ -110,7 +116,6 @@ class Nomina_mensual(models.TransientModel):
             email_id=obj_template.send_mail(id_envio)  
 class NominaRolmensualModelo(models.Model):
     _inherit = 'hr.payslip'
-#    _name = 'correo.nomina.mensual.modelo'
 #    work_email = fields.Char('Work Email')
     url_doc = fields.Char('Url doc')
 #    employee_id = fields.One2many(

@@ -93,13 +93,6 @@ class HrEmployeePublic(models.Model):
 
 
 
-
-
-
-
-
-
-
 class HrEmployeeChildren(models.Model):
     _name = 'hr.employee.children'
     
