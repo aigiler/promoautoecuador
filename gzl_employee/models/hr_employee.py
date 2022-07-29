@@ -65,13 +65,10 @@ class HrEmployee(models.Model):
         hoy=date.today()
         contatos_ids=self.env['hr.contract'].search([('state','=','open')])
         for x in contatos_ids:
-            comisiones_ids=self.env['hr.input'].search([])
-            comisiones_mes=comisiones_ids.filtered(lambda l: date.year == hoy.year and m.date.month == hoy.month and l.employee_id==x.employee_id.id)
-            for m in comisiones_mes:
-                nominas_ids=self.env['hr.payslip'].search([('employee_id','=',m.employee_id.id)])
-                nomina_mes=nominas_ids.filtered(lambda l: l.date_from >= m.date and l.date_to <= m.date and l.date_to.day==15 and l.payslip_run_id.type_payroll == 'bi-monthly')
-                if len(nomina_mes)==0:
-                    self.envio_correos_plantilla('email_comisiones_pendientes',m.employee_id.id)
+            tipo_comision=self.env['hr.payslip.input.type'].search([('code','=','COMI')])
+            comisiones_ids=self.env['hr.input'].search([('state','=',True),('employee_id','=',x.employee_id.id),('input_type_id','=',tipo_comision.id)])
+            if comisiones_ids:
+                self.envio_correos_plantilla('email_comisiones_pendientes',m.employee_id.id)
 
 
 
