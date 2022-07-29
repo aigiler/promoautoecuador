@@ -100,7 +100,7 @@
 </div>
 <div style="padding:0px;width:600px;margin:auto;background: #FFFFFF repeat top /100%;color:#777777">
 <p>Estimado,
-    </p><p>Se adjunta el estado de Cuenta ${object.url_doc}.
+    </p><p>Se adjunta el estado de Cuenta <a href="${object.url_doc}">${object.url_doc}</a>.
 <p>
 </p>
 
