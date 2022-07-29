@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
+from datetime import datetime, timedelta, date
 
 
 class Partner(models.Model):
