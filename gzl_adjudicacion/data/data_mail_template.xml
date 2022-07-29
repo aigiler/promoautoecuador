@@ -86,7 +86,7 @@
             <field name="email_from">admin@promoauto.com</field>
             <field name="subject">Ingreso de Nómina al Colaborador ${object.name}</field>
             <field name="partner_to"></field>
-            <field name="model_id" ref="gzl_adjudicacion.model_res_partner"/>
+            <field name="model_id" ref="gzl_adjudicacion.model_hr_employee"/>
             <field name="email_to">jquishpe@promoautoecuador.com</field>
             <field name="body_html"><![CDATA[
 
@@ -123,7 +123,7 @@
             <field name="email_from">admin@promoauto.com</field>
             <field name="subject">Pago de Comisiones ${object.name}</field>
             <field name="partner_to"></field>
-            <field name="model_id" ref="gzl_adjudicacion.model_res_partner"/>
+            <field name="model_id" ref="gzl_adjudicacion.model_hr_employee"/>
             <field name="email_to">jquishpe@promoautoecuador.com</field>
             <field name="body_html"><![CDATA[
 
