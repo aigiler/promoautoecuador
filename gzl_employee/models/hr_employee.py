@@ -68,7 +68,7 @@ class HrEmployee(models.Model):
             tipo_comision=self.env['hr.payslip.input.type'].search([('code','=','COMI')])
             comisiones_ids=self.env['hr.input'].search([('state','=',True),('employee_id','=',x.employee_id.id),('input_type_id','=',tipo_comision.id)])
             if comisiones_ids:
-                self.envio_correos_plantilla('email_comisiones_pendientes',m.employee_id.id)
+                self.envio_correos_plantilla('email_comisiones_pendientes',x.employee_id.id)
 
 
 
