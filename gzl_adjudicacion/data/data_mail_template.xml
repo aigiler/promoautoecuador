@@ -85,7 +85,7 @@
             <field name="email_from">admin@promoauto.com</field>
             <field name="subject">Estado de Cuenta</field>
             <field name="partner_to"></field>
-            <field name="model_id" ref="gzl_adjudicacion.model_reporte_estado_de_cuenta"/>
+            <field name="model_id" ref="gzl_reporte.model_reporte_estado_de_cuenta"/>
             <field name="email_to">${object.cliente.email}</field>
             <field name="body_html"><![CDATA[
 
