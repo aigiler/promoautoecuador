@@ -9,7 +9,7 @@ class Partner(models.Model):
 
     calificaciones = fields.One2many('calificador.cliente', 'partner_id',track_visibility='onchange')
     calificacion = fields.Float( string="Calificacion",compute="calcular_calificacion",store=True)
-    proveedor_recurrente=fields.Boolean(string="Proveedor Recurrente", default=False)
+    #proveedor_recurrente=fields.Boolean(string="Proveedor Recurrente", default=False)
 
 
     @api.depends('calificaciones')
