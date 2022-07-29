@@ -72,6 +72,23 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             self.envio_correos_plantilla('email_estado_cuenta',reporte_id.id)
 
 
+
+    def envio_correos_plantilla(self, plantilla,id_envio):
+
+        try:
+            ir_model_data = self.env['ir.model.data']
+            template_id = ir_model_data.get_object_reference('gzl_adjudicacion', plantilla)[1]
+        except ValueError:
+            template_id = False
+#Si existe capturo el template
+        if template_id:
+            obj_template=self.env['mail.template'].browse(template_id)
+
+            email_id=obj_template.send_mail(id_envio)
+
+
+
+
     def xslx_body(self, workbook, name):
         bold = workbook.add_format({'bold':True,'border':1})
         bold.set_center_across()
