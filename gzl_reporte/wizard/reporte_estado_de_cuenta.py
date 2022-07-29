@@ -64,12 +64,13 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         contratos_ids=self.env['contrato'].search([('state','=','activo')])
         lis=[]
         for l in contratos_ids:
-            reporte_id=self.env['reporte.estado.de.cuenta'].create({'partner_id':l.cliente.id,
-                                                                    'contrato_id':l.id})
-            print_report_xls=reporte_id.print_report_xls()
+            if  l.cliente:   
+                reporte_id=self.env['reporte.estado.de.cuenta'].create({'partner_id':l.cliente.id,
+                                                                        'contrato_id':l.id})
+                print_report_xls=reporte_id.print_report_xls()
 
-            reporte_id.update({'url_doc': print_report_xls['url']})
-            self.envio_correos_plantilla('email_estado_cuenta',reporte_id.id)
+                reporte_id.update({'url_doc': print_report_xls['url']})
+                self.envio_correos_plantilla('email_estado_cuenta',reporte_id.id)
 
 
 
