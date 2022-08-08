@@ -80,7 +80,7 @@ class Nomina_mensual(models.TransientModel):
         for l in self.employee_ids_correo:
             
             #result = self.env['hr.payslip'].search([('employee_id', '=', l.id)])
-            payslip = self.env['hr.payslip'].search([('employee_id','=',l.id),('date_from','>=',self.fecha_inicio),('date_to','<=',self.fecha_fin)])
+            payslip = self.env['hr.payslip'].search([('employee_id','=',l.id),('date_from','=',self.fecha_inicio),('date_to','=',self.fecha_fin)])
             #url='/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in payslip.ids)}
             
             if len(payslip) > 0:
