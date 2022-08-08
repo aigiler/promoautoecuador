@@ -104,6 +104,7 @@ class hrPayslip(models.Model):
     def _get_inputs_line(self,contracts,date_from,date_to):
         self.input_line_ids = []
         res = []
+        raise ValidationError("{0},{1}".format(date_from,date_to))
         for contract in contracts:
             inputs_ids = self.env['hr.input'].search([('company_id','=',self.env.company.id),
                                     ('date','<=',date_to),('date','>=',date_from),
