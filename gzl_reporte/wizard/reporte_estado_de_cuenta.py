@@ -87,9 +87,6 @@ class ReporteEstadoDeCuenta(models.TransientModel):
 
             email_id=obj_template.send_mail(id_envio)
 
-
-
-
     def xslx_body(self, workbook, name):
         bold = workbook.add_format({'bold':True,'border':1})
         bold.set_center_across()

@@ -75,10 +75,10 @@ class WizardPayFortnight(models.TransientModel):
             amount += (e.percent_wage * e.contract_id.wage / 100)
             if amount < 0:
                 raise ValidationError(_("El empleado %s genera valores en negativo."))
-            if amount:
-                payment = self.payment_generate(e,amount)
-                pay_obj.sudo().create(payment)
-                self.create_payment(e, amount,journal_pay)
+            #if amount:
+            #    payment = self.payment_generate(e,amount)
+            #    pay_obj.sudo().create(payment)
+            #    self.create_payment(e, amount,journal_pay)
 
         
         #self.create_account_move(lines)
