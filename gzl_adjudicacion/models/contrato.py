@@ -648,16 +648,14 @@ class Contrato(models.Model):
             #        detalle.numero_cuota= str( int(tabla.numero_cuota) +contador)
             #        contador+=1
 
+            self.fecha_inicio_pago+=relativedelta(months=i)
             
             for detalle in tabla:
-                nuevo_detalle_estado_cuenta_pendiente=self.env['contrato.estado.cuenta'].browse([detalle.id])
-                if nuevo_detalle_estado_cuenta_pendiente.numero_cuota==1:
-                    nuevo_detalle_estado_cuenta_pendiente.fecha+=relativedelta(months=i)
+                detalle.fecha+=relativedelta(months=i)
 
                 #else:
                 #    detalle.fecha+=relativedelta(months=i)
             obj_fecha_congelamiento.pendiente=False
-            self.fecha_inicio_pago+=relativedelta(months=i)
             self.state='activo'
 
         else:
