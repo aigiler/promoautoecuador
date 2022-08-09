@@ -151,8 +151,11 @@ class DevolucionMonto(models.Model):
     fecha_cambio_estado = fields.Datetime()
     proceso_finalizado=fields.Boolean(default=False)
 
-    #def job_tiempo_repuesta(self):
-
+    def job_tiempo_repuesta(self):
+        for l in self:
+            if not l.proceso_finalizado:
+                resto_fechas=datetime.now()-l.fecha_cambio_estado
+                raise ValidationError('{0} '.format(resto_fechas))
 
     @api.onchange("contrato_id")
     def obtener_valores(self):
