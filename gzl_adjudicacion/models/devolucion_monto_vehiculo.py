@@ -148,9 +148,11 @@ class DevolucionMonto(models.Model):
     ingreso_banco = fields.Monetary(
         string='INGRESOS DE BANCOS', currency_field='currency_id')
 
+    fecha_cambio_estado = fields.Datetime()
+    proceso_finalizado=field.Boolean(default=False)
 
-
-
+    def job_tiempo_repuesta(self):
+        
 
     @api.onchange("contrato_id")
     def obtener_valores(self):
