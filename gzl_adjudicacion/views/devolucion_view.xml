@@ -11,6 +11,22 @@
             </tree>
         </field>
     </record>
+
+<record id="view_devolucion_search" model= "ir.ui.view">
+        <field name="name">view.devolucion.monto.search</field>
+        <field name="model">devolucion.monto</field>
+        <field name="arch" type="xml">
+        <search string="Búsqueda">
+            <filter invisible="0" string="Retrasado" name="activities_overdue" domain="[('activity_ids.date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]" help="Show all opportunities for which the next action date is before today"/>
+            <filter invisible="0" string="Hoy" name="activities_today" domain="[('activity_ids.date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
+            <filter invisible="0" string="Futuros" name="activities_upcoming_all" domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
+        </search>
+        </field>
+    </record>
+
+        
+
+
         <record id="view_devolucion_form" model="ir.ui.view">
             <field name="name">view.devolucion.form</field>
             <field name="model">devolucion.monto</field>
