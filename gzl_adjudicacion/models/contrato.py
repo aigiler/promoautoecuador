@@ -23,7 +23,7 @@ class Contrato(models.Model):
 
     asesor = fields.Many2one('res.partner',string="Asesor")
 
-    cesion=fields.Many2one("wizard.cesion.derecho", string="Cesion de Derecho")
+    cesion_id=fields.Many2one("wizard.cesion.derecho", string="Cesion de Derecho")
 
     porcentaje_programado = fields.Float(
         string='Porcentaje Programado')
