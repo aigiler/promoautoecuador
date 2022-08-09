@@ -306,7 +306,7 @@ class DevolucionMonto(models.Model):
                                             'contrato_id':self.contrato_id.id,
                                             'state':self.contrato_id.state
                                             })
-                    transacciones.create(dct)
+                    #transacciones.create(dct)
 
                 self.env['account.move'].create({
                         'date':self.fsolicitud,
