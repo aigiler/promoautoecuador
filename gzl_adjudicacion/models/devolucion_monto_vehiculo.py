@@ -391,7 +391,7 @@ class DevolucionMonto(models.Model):
                 'res_id': self.env.user.partner_id.id,
                 'res_model_id': self.id,
                 'activity_type_id': 4,
-                'summary': "Ha sido asignado al proceso de la Hoja de Ruta".format(self.secuencia),
+                'summary': "Ha sido asignado al proceso de la Hoja de Ruta",
                 'user_id': rol.user_id.id,
                 'date_deadline':datetime.now()+ relativedelta(days=2)
             })
