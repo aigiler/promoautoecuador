@@ -157,7 +157,7 @@ class DevolucionMonto(models.Model):
             if not l.proceso_finalizado:
                 if l.fecha_cambio_estado:
                     resto_fechas=datetime.now()-l.fecha_cambio_estado
-                    raise ValidationError('{0},{1} '.format(resto_fechas,l.name))
+                    raise ValidationError('{0},{1} '.format(resto_fechas,l.secuencia))
 
     @api.onchange("contrato_id")
     def obtener_valores(self):
