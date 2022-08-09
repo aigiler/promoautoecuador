@@ -304,7 +304,7 @@ class DevolucionMonto(models.Model):
                                             'debe':self.valor_desistimiento,
                                             'adjudicado_id':self.contrato_id.cliente.id,
                                             'contrato_id':self.contrato_id.id,
-                                            'state':cuota_id.contrato_id.state
+                                            'state':self.contrato_id.state
                                             })
                     transacciones.create(dct)
 
