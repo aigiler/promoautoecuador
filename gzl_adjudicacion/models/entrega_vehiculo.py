@@ -203,6 +203,13 @@ class EntegaVehiculo(models.Model):
     
 
 
+    @api.onchange('nombreConsesionario')
+    def actualizar_porcentaje_comision(self):
+        porcentaje=0
+        for l in self:
+            if l.nombreConsesionario:
+                porcentaje=l.nombreConsesionario.comisionFacturaConcesionario
+        l.comisionFacturaConcesionario=porcentaje
 
 
 

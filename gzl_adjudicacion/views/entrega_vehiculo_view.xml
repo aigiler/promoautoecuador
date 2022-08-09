@@ -1050,7 +1050,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <text>COMISION FACTURA A NOMBRE CONCESIONARIO</text>
+                                                <text>COMISION FACTURA A NOMBRE CONCESIONARIO/PATIOS</text>
                                             </td>
                                             <td style="width:25%">
                                                 <field name="comisionFacturaConcesionario" nolabel="1" options="{'no_create': True, 'no_open': True}"/>

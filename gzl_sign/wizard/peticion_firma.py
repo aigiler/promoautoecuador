@@ -7,6 +7,15 @@ class SignSendRequest(models.TransientModel):
     contrato = fields.Many2one('contrato', string='Contrato')
     grupo = fields.Many2one('grupo.adjudicado', string='Grupo')
 
+    @api.onchange("contrato")
+    def obtener_datos(self):
+        lista_ids=[]
+        for l in self:
+            if l.contrato:
+                grupo=l.grupo.id
+                lista_ids.append(l.cliente.id)
+    self.update({'signer_ids':[(6,0,lista_ids)],'grupo':grupo}) 
+
     def sign_directly_without_mail(self):
         grupo_contrato = self.grupo.codigo +" - "+ self.contrato.secuencia
         self.env.cr.execute("""update res_partner set contrato={0},grupo={1},grupo_contrato='{2}' where id={3}""".format(self.contrato.id,self.grupo.id,grupo_contrato,self.signer_ids.partner_id.id))
