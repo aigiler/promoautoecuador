@@ -3,6 +3,7 @@ from odoo import api, fields, models, SUPERUSER_ID, tools,  _
 from odoo.exceptions import AccessError, UserError, ValidationError
 from datetime import datetime,timedelta,date
 import re
+from dateutil.relativedelta import relativedelta
 
 
 class DevolucionMonto(models.Model):   
@@ -153,12 +154,18 @@ class DevolucionMonto(models.Model):
 
     def job_tiempo_repuesta(self):
         devoluciones=self.env['devolucion.monto'].search([('proceso_finalizado','!=',True)])
+        tiempo_permitido=self.env['ir.config_parameter'].search([('key',':','tiempo_respuesta_hdr')],limit=1)
+        if not tiempo_permitido:
+            pass
         for l in devoluciones:
             if not l.proceso_finalizado:
                 if l.fecha_cambio_estado:
                     resto_fechas=datetime.now()-l.fecha_cambio_estado
                     tiempo_horas=(resto_fechas.total_seconds()/3600)
-                    raise ValidationError('{0} '.format(tiempo_horas))
+                    if tiempo_horas>=int(tiempo_permitido.value):
+                    
+
+
 
     @api.onchange("contrato_id")
     def obtener_valores(self):
@@ -379,6 +386,16 @@ class DevolucionMonto(models.Model):
             raise ValidationError("Debe estar asignado al rol %s"% self.rolAsignado.name)
         return True
 
+
+    def crear_activity(self,rol):
+        self.env['mail.activity'].create({
+                'res_id': self.env.user.partner_id.id,
+                'res_model_id': self.id,
+                'activity_type_id': 4,
+                'summary': "Ha sido asignado al proceso de la Hoja de Ruta".format(self.secuencia),
+                'user_id': rol.user_id.id,
+                'date_deadline':datetime.now()+ relativedelta(days=2)
+            })
 
     def validar_documentos_postventa(self):
         for l in self:
