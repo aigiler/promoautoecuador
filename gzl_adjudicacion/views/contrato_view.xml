@@ -133,6 +133,7 @@
                                     
                                     <field name="observacion"/>
                                     <field name="nota"/>
+                                    <field name="cesion_id" readonly="1"/>
                                     <field name="aplicaGarante"/>
                                     <field name="garante" attrs="{'invisible': [('aplicaGarante', '=', False)]}"/>
                                     <field name="supervisor"/>

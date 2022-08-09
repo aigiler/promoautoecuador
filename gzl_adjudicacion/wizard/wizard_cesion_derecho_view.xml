@@ -15,13 +15,14 @@
                         <field name="contrato_a_ceder" invisible="1"/>
                         <field name="carta_adjunto" />
                         <field name="pago_id" required="1"/>
+                         <field name="ejecutado" invisible="1"/>
                         
 
                     </group>
                 </sheet>
                 <footer>
-                    <button string="Ejecutar Cesión" class="oe_highlight" type="object" name="pagar_cuotas_por_adelantado"/>
-                    <button string="Cancelar" special="cancel"/>
+                    <button string="Ejecutar Cesión" class="oe_highlight" attrs="{'invisible': [('ejecutado', '=', True)]}" type="object" name="pagar_cuotas_por_adelantado"/>
+                    <button string="Cancelar" special="cancel" attrs="{'invisible': [('ejecutado', '=', True)]}"/>
                 </footer>
             </form>
         </field>
