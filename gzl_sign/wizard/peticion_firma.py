@@ -13,8 +13,8 @@ class SignSendRequest(models.TransientModel):
         grupo=[]
         for l in self:
             if l.contrato:
-                grupo=l.grupo.id
-                lista_ids.append(l.cliente.id)
+                grupo=l.contrato.grupo.id
+                lista_ids.append(l.contrato.cliente.id)
         l.update({'signer_ids':[(6,0,lista_ids)],'grupo':grupo}) 
 
     def sign_directly_without_mail(self):
