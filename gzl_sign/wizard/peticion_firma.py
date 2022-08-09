@@ -10,6 +10,7 @@ class SignSendRequest(models.TransientModel):
     @api.onchange("contrato")
     def obtener_datos(self):
         lista_ids=[]
+        grupo=[]
         for l in self:
             if l.contrato:
                 grupo=l.grupo.id
