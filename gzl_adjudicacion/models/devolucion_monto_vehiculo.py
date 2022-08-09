@@ -151,8 +151,8 @@ class DevolucionMonto(models.Model):
     fecha_cambio_estado = fields.Datetime()
     proceso_finalizado=field.Boolean(default=False)
 
-    def job_tiempo_repuesta(self):
-        
+    #def job_tiempo_repuesta(self):
+
 
     @api.onchange("contrato_id")
     def obtener_valores(self):
