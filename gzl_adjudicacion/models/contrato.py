@@ -968,6 +968,7 @@ class PagoContratoEstadoCuenta(models.Model):
 
     pago_id = fields.Many2one('contrato.estado.cuenta', string="Detalle Estado de Cuenta")
     
+    actividad_id = fields.Many2one('mail.activity',string="Actividades")
 
 
     

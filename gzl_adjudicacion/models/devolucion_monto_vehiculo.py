@@ -343,8 +343,20 @@ class DevolucionMonto(models.Model):
                                                                     'company_id':self.env.company.id,
                                                                     'partner_type':"customer"})
                 self.pago_id=pago_id.id
+
+                self.crear_activity_pago(pago_id)
             else:
                 raise ValidationError("Seleccione el Banco con el cual desea realizar la devolución.")
+
+    def crear_activity_pago(self,pago):
+        actividad_id=self.env['mail.activity'].create({
+                'res_id': pago.id,
+                'res_model_id': self.env['ir.model']._get('account.payment').id,
+                'activity_type_id': 4,
+                'summary': "Se encuentra agendado un pago por Devolución de ".format(self.secuencia),
+                'user_id': rol.user_id.id,
+                'date_deadline':self.fecha_estimada_pagos})
+        self.pago_id.actividad_id=actividad_id.id
             
     @api.onchange('tipo_accion')
     @api.depends('tipo_accion')
@@ -421,3 +433,5 @@ class DevolucionMonto(models.Model):
             for x in l.documentos_legal:
                 if not x.archivo:
                     raise ValidationError("Debe cargar los documentos solicitados para el tipo de acción ingresado") 
+
+
