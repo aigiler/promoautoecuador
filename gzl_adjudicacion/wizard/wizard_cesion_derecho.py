@@ -16,7 +16,7 @@ class WizardAdelantarCuotas(models.Model):
     contrato_a_ceder= fields.Many2one('contrato',string="Contrato a Ceder")
     carta_adjunto = fields.Binary('Carta de Cesión', attachment=True)
     partner_id=fields.Many2one("res.partner", "Cliente a Ceder")
-    
+    pago_id=fields.Many2one("account.payment", "Pago Generado")
 
 
 
@@ -27,20 +27,4 @@ class WizardAdelantarCuotas(models.Model):
                 if l.partner_id:
                     l.contrato_id.nota=" "+str(self.contrato_id.cliente.name)+' Cede el contrato a la persona: '+str(self.partner_id.name)
                     l.contrato_id.cliente=self.partner_id.id
-
-        # view_id = self.env.ref('gzl_adjudicacion.wizard_adelantar_cuotas_readonly_form').id
-
-
-        # return {'type': 'ir.actions.act_window',
-        #         'name': 'Validar Pago',
-        #         'res_model': 'wizard.adelantar.cuotas',
-        #         'target': 'new',
-        #         'view_mode': 'form',
-        #         'views': [[view_id, 'form']],
-        #         'context': {
-        #             'default_contrato_id': self.contrato_a_ceder.id,
-        #             'default_monto_a_pagar':self.monto_a_ceder
-        #         }
-        # }
-
-
+                    l.contrato_id.cesion_id=self.id

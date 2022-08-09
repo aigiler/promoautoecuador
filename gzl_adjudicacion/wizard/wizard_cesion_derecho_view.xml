@@ -14,6 +14,7 @@
                         <field name="monto_a_ceder" invisible="1"/>
                         <field name="contrato_a_ceder" invisible="1"/>
                         <field name="carta_adjunto" />
+                        <field name="pago_id" required="1"/>
                         
 
                     </group>
