@@ -151,6 +151,8 @@ class DevolucionMonto(models.Model):
 
     fecha_cambio_estado = fields.Datetime()
     proceso_finalizado=fields.Boolean(default=False)
+    actividad_id = fields.Many2one('mail.activity',string="Actividades")
+
 
     def job_tiempo_repuesta(self):
         devoluciones=self.env['devolucion.monto'].search([('proceso_finalizado','!=',True)])
@@ -387,14 +389,19 @@ class DevolucionMonto(models.Model):
 
 
     def crear_activity(self,rol):
-        self.env['mail.activity'].create({
-                'res_id': self.id,
-                'res_model_id': self.env['ir.model']._get('devolucion.monto').id,
-                'activity_type_id': 4,
-                'summary': "Ha sido asignado al proceso de la Hoja de Ruta",
-                'user_id': rol.user_id.id,
-                'date_deadline':datetime.now()+ relativedelta(days=2)
-            })
+        if self.actividad_id:
+            self.actividad_id.action_done()
+        if not self.proceso_finalizado:
+
+            actividad_id=self.env['mail.activity'].create({
+                    'res_id': self.id,
+                    'res_model_id': self.env['ir.model']._get('devolucion.monto').id,
+                    'activity_type_id': 4,
+                    'summary': "Ha sido asignado al proceso de la Hoja de Ruta",
+                    'user_id': rol.user_id.id,
+                    'date_deadline':datetime.now()+ relativedelta(days=2)
+                })
+            self.actividad_id=actividad_id.id
 
     def validar_documentos_postventa(self):
         for l in self:
