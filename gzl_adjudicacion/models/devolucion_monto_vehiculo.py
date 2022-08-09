@@ -388,8 +388,8 @@ class DevolucionMonto(models.Model):
 
     def crear_activity(self,rol):
         self.env['mail.activity'].create({
-                'res_id': self.env.user.partner_id.id,
-                'res_model_id': self.id,
+                'res_id': self.id,
+                'res_model_id': self.env['ir.model']._get('devolucion.monto').id,
                 'activity_type_id': 4,
                 'summary': "Ha sido asignado al proceso de la Hoja de Ruta",
                 'user_id': rol.user_id.id,
