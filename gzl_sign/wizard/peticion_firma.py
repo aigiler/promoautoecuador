@@ -15,8 +15,8 @@ class SignSendRequest(models.TransientModel):
             if l.contrato:
                 grupo=l.contrato.grupo.id
                 lista_ids.append(l.contrato.cliente.id)
-        self.signer_ids=lista_ids
-        self.grupo=grupo 
+        #self.signer_ids=lista_ids
+            l.grupo=grupo 
 
     def sign_directly_without_mail(self):
         grupo_contrato = self.grupo.codigo +" - "+ self.contrato.secuencia
