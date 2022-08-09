@@ -651,8 +651,8 @@ class Contrato(models.Model):
             
             for detalle in tabla:
                 nuevo_detalle_estado_cuenta_pendiente=self.env['contrato.estado.cuenta'].browse([detalle.id])
-                if detalle.numero_cuota==1:
-                    detalle.fecha+=relativedelta(months=i)
+                if nuevo_detalle_estado_cuenta_pendiente.numero_cuota==1:
+                    nuevo_detalle_estado_cuenta_pendiente.fecha+=relativedelta(months=i)
 
                 #else:
                 #    detalle.fecha+=relativedelta(months=i)
