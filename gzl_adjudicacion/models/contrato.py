@@ -616,38 +616,48 @@ class Contrato(models.Model):
             detalle_estado_cuenta_pendiente=self.tabla_amortizacion.filtered(lambda l:  l.fecha>=obj_fecha_congelamiento.fecha  and l.fecha<fecha_reactivacion)
             
             
-            nuevo_detalle_estado_cuenta_pendiente=[]
+            #nuevo_detalle_estado_cuenta_pendiente=[]
+            #for detalle in detalle_estado_cuenta_pendiente:
+            #    obj_detalle=detalle.copy()
+            #    nuevo_detalle_estado_cuenta_pendiente.append(obj_detalle.id)
+            
+            #nuevo_detalle_estado_cuenta_pendiente=self.env['contrato.estado.cuenta'].browse(nuevo_detalle_estado_cuenta_pendiente)
+            
+            
+            i=0
             for detalle in detalle_estado_cuenta_pendiente:
-                obj_detalle=detalle.copy()
-                nuevo_detalle_estado_cuenta_pendiente.append(obj_detalle.id)
-            
-            nuevo_detalle_estado_cuenta_pendiente=self.env['contrato.estado.cuenta'].browse(nuevo_detalle_estado_cuenta_pendiente)
-            
-            
-            for detalle in detalle_estado_cuenta_pendiente:
 
-                detalle.cuota_capital=0
-                detalle.cuota_adm=0
-                detalle.seguro=0
-                detalle.rastreo=0
-                detalle.otro=0
-                detalle.monto_pagado=0
-                detalle.saldo=0
-                detalle.estado_pago='congelado'
-
-            tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.id)],order='fecha desc',limit=1)
+                #detalle.cuota_capital=0
+                #detalle.cuota_adm=0
+                #detalle.seguro=0
+                #detalle.rastreo=0
+                #detalle.otro=0
+                #detalle.monto_pagado=0
+                #detalle.saldo=0
+                #detalle.estado_pago='congelado'
+                i+=1
+            #tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.id)],order='fecha desc',limit=1)
+            tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.id)],order='fecha asc')
             
-            if len(tabla)==1:
+            #if len(tabla)==1:
 
-                contador=1
+            #    contador=1
                 
-                for detalle in nuevo_detalle_estado_cuenta_pendiente:
-                    detalle.fecha=tabla.fecha +relativedelta(months=contador)
-                    detalle.numero_cuota= str( int(tabla.numero_cuota) +contador)
-                    contador+=1
+            #    for detalle in nuevo_detalle_estado_cuenta_pendiente:
+            #        detalle.fecha=tabla.fecha +relativedelta(months=contador)
+            #        detalle.numero_cuota= str( int(tabla.numero_cuota) +contador)
+            #        contador+=1
 
-                obj_fecha_congelamiento.pendiente=False
+            
+            for detalle in tabla:
+                nuevo_detalle_estado_cuenta_pendiente=self.env['contrato.estado.cuenta'].browse([detalle.id])
+                if detalle.numero_cuota==1:
+                    detalle.fecha+=relativedelta(months=i)
 
+                #else:
+                #    detalle.fecha+=relativedelta(months=i)
+            obj_fecha_congelamiento.pendiente=False
+            self.fecha_inicio_pago+=relativedelta(months=i)
             self.state='activo'
 
         else:

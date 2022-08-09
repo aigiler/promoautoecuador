@@ -74,14 +74,7 @@ class hrPayslip(models.Model):
 
             if valor >30:
                 valor=30
-
-
             l.dias_trabajados= valor
-
-
-
-
-
 
     @api.onchange('struct_id')
     def onchange_quincena(self):
@@ -90,16 +83,6 @@ class hrPayslip(models.Model):
                 self.pago_quincena=True
             else:
                 self.pago_quincena=False
-
-
-
-
-
-
-
-
-
-
 
     def _get_inputs_line(self,contracts,date_from,date_to):
         self.input_line_ids = []
@@ -417,9 +400,6 @@ class hrPayslipRun(models.Model):
                 cont += 1
             sheet.write(col,dtc[total[1]],abs(total[0]),number2)
             cont += 1
-
-
-
 
     def print_xlsx_payroll_rubro(self):
         file_data =  BytesIO()
