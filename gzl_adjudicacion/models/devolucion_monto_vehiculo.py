@@ -162,7 +162,6 @@ class DevolucionMonto(models.Model):
                 if l.fecha_cambio_estado:
                     resto_fechas=datetime.now()-l.fecha_cambio_estado
                     tiempo_horas=(resto_fechas.total_seconds()/3600)
-                    if tiempo_horas>=int(tiempo_permitido.value):
                     
 
 
