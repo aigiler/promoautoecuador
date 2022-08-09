@@ -41,6 +41,8 @@ class DevolucionMonto(models.Model):
         'res.country.city', string='Ciudad', related="contrato_id.ciudad", track_visibility='onchange')
     
     fsolicitud  = fields.Date(string='Fecha de Ingreso de Solicitud')
+    fecha_estimada_pagos  = fields.Date(string='Fecha Estimada de Pago')
+
     state = fields.Selection(selection=[
         ('borrador', 'Borrador'),
         ('postventa', 'Analisis Postventa'),
@@ -329,10 +331,14 @@ class DevolucionMonto(models.Model):
                         ]
                     }).action_post()
 
+                if not self.fecha_estimada_pagos:
+                    raise ValidationError("Antes de Crear un pago debe indicar la fecha estimada de pago")
                 pago_id=self.env['account.payment'].create({"journal_id":l.journal_id.id,'partner_id':self.cliente.id,
                                                                     'payment_type':'outbound','amount':l.valor_desistimiento,
                                                                     'payment_method_id':pago_metodo.id,
+                                                                    'payment_date':self.fecha_estimada_pagos,
                                                                     'state':'draft',
+                                                                    'communication':self.secuencia,
                                                                     'tipo_transaccion':'Pago',
                                                                     'company_id':self.env.company.id,
                                                                     'partner_type':"customer"})
