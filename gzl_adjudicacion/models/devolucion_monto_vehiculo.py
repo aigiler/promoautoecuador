@@ -152,7 +152,7 @@ class DevolucionMonto(models.Model):
     proceso_finalizado=fields.Boolean(default=False)
 
     def job_tiempo_repuesta(self):
-        devoluciones=self.env.search([('proceso_finalizado','!=',True)])
+        devoluciones=self.env['devolucion.monto'].search([('proceso_finalizado','!=',True)])
         for l in devoluciones:
             if not l.proceso_finalizado:
                 if l.fecha_cambio_estado:
