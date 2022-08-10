@@ -13,18 +13,42 @@
                         <field name="contrato_id" invisible="1"/>
                         <field name="monto_a_ceder" invisible="1"/>
                         <field name="contrato_a_ceder" invisible="1"/>
-                        <field name="carta_adjunto" />
-                        <field name="pago_id" required="1"/>
+                        <field name="carta_adjunto" string="Documento_adjunto"/>
+                        <field name="pago_id" required="0"/>
                          <field name="ejecutado" invisible="1"/>
                         
 
                     </group>
                 </sheet>
                 <footer>
-                    <button string="Ejecutar Cesión" class="oe_highlight" attrs="{'invisible': [('ejecutado', '=', True)]}" type="object" name="pagar_cuotas_por_adelantado"/>
+                    <button string="Ejecutar Cesión" class="oe_highlight" attrs="{'invisible': [('ejecutado', '=', True)]}" type="object" name="ejecutar_cesion"/>
                     <button string="Cancelar" special="cancel" attrs="{'invisible': [('ejecutado', '=', True)]}"/>
                 </footer>
             </form>
         </field>
     </record>
+
+
+        <record id="view_cesion_derecho_tree" model= "ir.ui.view">
+        <field name="name">view.wizard.cesion.derecho.tree</field>
+        <field name="model">wizard.cesion.derecho</field>
+        <field name="arch" type="xml">
+            <tree string="Cesión de Derecho" editable="bottom">
+                <field name="motivo" />
+                <field name="calificacion"/>
+
+                
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_sesion_derecho" model="ir.actions.act_window">
+        <field name="name">Cesión de Derecho</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.cesion.derecho</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem id="menu_action_cesion_derecho" action="action_sesion_derecho" parent="menu_socio_proceso_adjudicacion" sequence="7" />
 </odoo>

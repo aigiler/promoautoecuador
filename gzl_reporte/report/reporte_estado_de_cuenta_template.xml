@@ -5,7 +5,7 @@
             <t t-foreach="docs" t-as="o">
                 <t t-call="web.external_layout">
                     <div class="page" style="font-size: 14px">
-                    <table>
+                    <table class="table table-condensed">
                         <tbody>
                             <tr>
                                 <td colspan="4"><span><center><h3 style = "font-weight: bold;">ESTADO DE CUENTA DE APORTES</h3></center></span></td>
