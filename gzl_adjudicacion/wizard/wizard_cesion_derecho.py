@@ -37,7 +37,7 @@ class WizardAdelantarCuotas(models.Model):
             if l.pago_id and l.carta_adjunto:
                 id_contrato=l.contrato_a_ceder.copy()
                 l.contrato_id=id_contrato.id
-                detalle_estado_cuenta_uno=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l:  l.numero_cuota == 1)
+                detalle_estado_cuenta_uno=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l:  l.numero_cuota == "1")
                 nuevo_detalle_estado_cuenta_uno=[]
                 for detalle in detalle_estado_cuenta_uno:
                     detalle_id=l.detalle.copy()
@@ -45,7 +45,7 @@ class WizardAdelantarCuotas(models.Model):
                     cuota_actual=self.env['contrato.estado.cuenta'].browse(detalle_id.id)
                     cuota_actual.contrato_id=id_contrato.id
                 i=2
-                detalle_estado_cuenta_pendiente=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l:  l.numero_cuota >= 2 and l.estado_pago=='pendiente')
+                detalle_estado_cuenta_pendiente=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l:  l.numero_cuota != "1" and l.estado_pago=='pendiente')
                 for detalle in detalle_estado_cuenta_pendiente:
                     detalle_id=l.detalle.copy()
                     nuevo_detalle_estado_cuenta_pendiente.append(detalle_id.id)
@@ -53,7 +53,7 @@ class WizardAdelantarCuotas(models.Model):
                     cuota_actual.contrato_id=id_contrato.id
                     cuota_actual.numero_cuota=i
                     i+=1
-                detalle_estado_cuenta_pendienta=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado')
+                detalle_estado_cuenta_pendienta=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado' and l.numero_cuota != "1")
                 for detalle in detalle_estado_cuenta_pendienta:
                     detalle_id=l.detalle.copy()
                     nuevo_detalle_estado_cuenta_pendiente.append(detalle_id.id)
