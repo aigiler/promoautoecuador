@@ -885,6 +885,7 @@ class ContratoEstadoCuenta(models.Model):
     estado_pago = fields.Selection([('pendiente', 'Pendiente'),
                                     ('pagado', 'Pagado'),
                                     ('congelado', 'Congelado')
+                                    ('varias', 'Varias')
                                     ], string='Estado de Pago', default='pendiente')
 
     programado=fields.Monetary(string="Cuota Programada", currency_field='currency_id')
