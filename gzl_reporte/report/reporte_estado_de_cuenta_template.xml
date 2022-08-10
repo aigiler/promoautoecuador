@@ -7,18 +7,18 @@
                     <div class="page" style="font-size: 14px">
                     <table>
                         <tbody>
-
                             <tr>
-                                <td colspan="2" style = "width:75% !important; text-align: left"><span t-esc="o.env.company.city" style="text-transform: uppercase;"/><span> - </span><span t-esc="o.env.company.country_id.name"/></td>
+                                <td colspan="4"><span><center><h3 style = "font-weight: bold;">ESTADO DE CUENTA DE APORTES</h3></center></span></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style = "width:50% !important; text-align: left"><span t-esc="o.env.company.city" style="text-transform: uppercase;"/><span> - </span><span t-esc="o.env.company.country_id.name"/></td>
                                 <td style = "text-align: left; width:25% !important; "><span t-esc="o.contrato_id.ciudad.nombre_ciudad"/><span> - </span><span t-esc="o.contrato_id.fecha_contrato.strftime('%d-%m-%Y')"/></td>
                             </tr>
                             <tr>
                                 <td colspan="2" style="text-align: left"><span t-esc="o.env.company.vat"/></td>
                                 <td style = "text-align: left; width:25% !important; font-weight: bold;"><span>No. </span><span t-esc="o.contrato_id.secuencia"/></td>
                             </tr>
-                            <tr>
-                                <td colspan="4"><span><center><h3 style = "font-weight: bold;">ESTADO DE CUENTA DE APORTES</h3></center></span></td>
-                            </tr>
+                            
                             <tr>
                                 <td colspan="2" style="text-align: left; width:75% !important;"><span>Cliente: </span> <span t-esc="o.contrato_id.cliente.name"/></td>
                                 <td style="text-align: left; width:25% !important;"><span>Ced/RUC: </span> <span t-esc="o.contrato_id.cliente.vat"/></td>

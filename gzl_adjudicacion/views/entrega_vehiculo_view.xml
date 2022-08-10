@@ -1079,22 +1079,6 @@
                                             </td>
                                         </tr>
 
-                                       
-
-                                        <!-- <tr>
-                                            <td>
-                                                <text>LIQUIDACIÓN DE COMPRA</text>
-                                            </td>
-                                            <td></td>
-                                            <td>
-                                                <field name="facturas"  />
-                                            </td>
-                                        </tr> -->
-
-
-
-
-
                                     </tbody>
                                 </table>
                             </div>
@@ -1107,6 +1091,28 @@
                                 </div>
                             </div>
                             <separator/>
+                            <separator class="text-center" string="Información del Vehiculo"/>
+                            <div class="col-xs-12 col-md-12">
+                                <group>
+                                    <field name="tipoVehiculo" placeholder="AUTO" />
+                                    <field name="claseVehiculo" placeholder="VEHICULO UTILITARIO"/>
+                                    <field name="marcaVehiculo" placeholder="MARCA.. SUZUKI" />
+                                    <field name="modeloVehiculoSRI" placeholder="MODELO REGISTRADO SRI" />
+
+                                    <field name="modeloHomologado" placeholder="MODELO HOMOLOGADO ANT" />
+                                    <field name="serieVehiculo" placeholder="SERIE"/>
+                                    <field name="motorVehiculo" placeholder="MOTOR"/>
+                                    <field name="colorVehiculo" placeholder="COLOR" />
+
+                                    <field name="anioVehiculo" />
+                                    <field name="paisOrigenVehiculo" placeholder="Ecuador" options="{'no_open': True, 'no_create': True}" />
+                                    <field name="conbustibleVehiculo" placeholder="GASOLINA"/>
+                                    <field name="numPasajeros" />
+
+                                    <field name="tonelajeVehiculo" placeholder="TONELAJE" />
+                                    <field name="numEjesVehiculo" />
+                            </group>
+                            </div>
                             <separator/>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12" style="border-bottom: 1px solid black;">
@@ -1120,10 +1126,6 @@
                             </div>
 
                         </page>
-
-
-
-
 
 
                          <!-- ORDEN DE COMPRA -->
@@ -1164,33 +1166,9 @@
                                         </tr>
                                     </tbody>
                                      </table>
-                                    
-                                    
-
 
                             </div>
-                            <separator class="text-center" string="Información del Vehiculo"/>
-                            <div class="col-xs-12 col-md-12">
-                                <group>
-                                    <field name="tipoVehiculo" placeholder="AUTO" />
-                                        <field name="claseVehiculo" placeholder="VEHICULO UTILITARIO"/>
-                                        <field name="marcaVehiculo" placeholder="MARCA.. SUZUKI" />
-                                        <field name="modeloVehiculoSRI" placeholder="MODELO REGISTRADO SRI" />
-
-                                        <field name="modeloHomologado" placeholder="MODELO HOMOLOGADO ANT" />
-                                        <field name="serieVehiculo" placeholder="SERIE"/>
-                                        <field name="motorVehiculo" placeholder="MOTOR"/>
-                                        <field name="colorVehiculo" placeholder="COLOR" />
-
-                                        <field name="anioVehiculo" />
-                                        <field name="paisOrigenVehiculo" placeholder="Ecuador" options="{'no_open': True, 'no_create': True}" />
-                                        <field name="conbustibleVehiculo" placeholder="GASOLINA"/>
-                                        <field name="numPasajeros" />
-
-                                        <field name="tonelajeVehiculo" placeholder="TONELAJE" />
-                                        <field name="numEjesVehiculo" />
-                                </group>
-                            </div>
+                            
                         </page> 
 
 
