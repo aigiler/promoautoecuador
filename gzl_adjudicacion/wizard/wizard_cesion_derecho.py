@@ -37,28 +37,45 @@ class WizardAdelantarCuotas(models.Model):
             if l.pago_id and l.carta_adjunto:
                 id_contrato=l.contrato_a_ceder.copy()
                 l.contrato_id=id_contrato.id
+                anio = str(datetime.today().year)
+                mes = str(datetime.today().month)
+                fechaPago =  anio+"-"+mes+"-{0}".format(id_contrato.dia_corte.zfill(2)) 
+                l.contrato_id.fecha_inicio_pago = parse(fechaPago).date().strftime('%Y-%m-%d')
                 detalle_estado_cuenta_uno=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l:  l.numero_cuota == "1")
                 nuevo_detalle_estado_cuenta_pendiente=[]
+                
                 for detalle in detalle_estado_cuenta_uno:
                     detalle_id=detalle.copy()
-                    nuevo_detalle_estado_cuenta_pendiente.append(detalle_id.id)
+                    #nuevo_detalle_estado_cuenta_pendiente.append(detalle_id.id)
                     cuota_actual=self.env['contrato.estado.cuenta'].browse(detalle_id.id)
                     cuota_actual.contrato_id=id_contrato.id
+                    cuota_actual.fecha=parse(fechaPago).date().strftime('%Y-%m-%d')
                 i=2
-                detalle_estado_cuenta_pendiente=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l:  l.numero_cuota != "1" and l.estado_pago=='pendiente')
+                detalle_estado_cuenta_pendiente=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l:  l.numero_cuota != "1" and l.estado_pago=='pendiente' and not l.programado)
                 for detalle in detalle_estado_cuenta_pendiente:
                     detalle_id=detalle.copy()
-                    nuevo_detalle_estado_cuenta_pendiente.append(detalle_id.id)
+                    ##nuevo_detalle_estado_cuenta_pendiente.append(detalle_id.id)
                     cuota_actual=self.env['contrato.estado.cuenta'].browse(detalle_id.id)
                     cuota_actual.contrato_id=id_contrato.id
                     cuota_actual.numero_cuota=i
+                    cuota_actual.fecha=parse(fechaPago).date().strftime('%Y-%m-%d') + relativedelta(months=i-1)
                     i+=1
-                detalle_estado_cuenta_pendienta=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado' and l.numero_cuota != "1")
+                detalle_estado_cuenta_pendienta=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado' and l.numero_cuota != "1" and not l.programado)
                 for detalle in detalle_estado_cuenta_pendienta:
                     detalle_id=detalle.copy()
-                    nuevo_detalle_estado_cuenta_pendiente.append(detalle_id.id)
+                    #nuevo_detalle_estado_cuenta_pendiente.append(detalle_id.id)
                     cuota_actual=self.env['contrato.estado.cuenta'].browse(detalle_id.id)
                     cuota_actual.contrato_id=id_contrato.id
                     cuota_actual.numero_cuota=i
                     cuota_actual.estado_pago="varias"
+                    cuota_actual.fecha=parse(fechaPago).date().strftime('%Y-%m-%d') + relativedelta(months=i-1)
+                    i+=1
+                programado=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l: l.programado>0.00)
+                for detalle in programado:
+                    detalle_id=detalle.copy()
+                    #nuevo_detalle_estado_cuenta_pendiente.append(detalle_id.id)
+                    cuota_actual=self.env['contrato.estado.cuenta'].browse(detalle_id.id)
+                    cuota_actual.contrato_id=id_contrato.id
+                    if detalle=='pagado':
+                        cuota_actual.estado_pago="varias"
                     i+=1
