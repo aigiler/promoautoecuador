@@ -884,7 +884,7 @@ class ContratoEstadoCuenta(models.Model):
     cuotaAdelantada = fields.Boolean(string='Cuota Adelantada')
     estado_pago = fields.Selection([('pendiente', 'Pendiente'),
                                     ('pagado', 'Pagado'),
-                                    ('congelado', 'Congelado')
+                                    ('congelado', 'Congelado'),
                                     ('varias', 'Varias')
                                     ], string='Estado de Pago', default='pendiente')
 
