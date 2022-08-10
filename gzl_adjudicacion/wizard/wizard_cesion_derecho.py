@@ -39,7 +39,7 @@ class WizardAdelantarCuotas(models.Model):
                 l.contrato_id=id_contrato.id
                 detalle_estado_cuenta_uno=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l:  l.numero_cuota == 1)
                 nuevo_detalle_estado_cuenta_uno=[]
-                for detalle in detalle_estado_cuenta_pendiente:
+                for detalle in detalle_estado_cuenta_uno:
                     detalle_id=l.detalle.copy()
                     nuevo_detalle_estado_cuenta_pendiente.append(detalle_id.id)
                     cuota_actual=self.env['contrato.estado.cuenta'].browse(detalle_id.id)
