@@ -41,7 +41,8 @@ class WizardAdelantarCuotas(models.Model):
                 anio = str(datetime.today().year)
                 mes = str(datetime.today().month)
                 fechaPago =  anio+"-"+mes+"-{0}".format(id_contrato.dia_corte.zfill(2)) 
-                l.contrato_id.fecha_inicio_pago = parse(fechaPago).date().strftime('%Y-%m-%d')
+                feha_pago=parse(fechaPago).date().strftime('%Y-%m-%d')
+                l.contrato_id.fecha_inicio_pago = feha_pago
                 detalle_estado_cuenta_uno=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l:  l.numero_cuota == "1")
                 nuevo_detalle_estado_cuenta_pendiente=[]
                 
@@ -50,7 +51,7 @@ class WizardAdelantarCuotas(models.Model):
                     #nuevo_detalle_estado_cuenta_pendiente.append(detalle_id.id)
                     cuota_actual=self.env['contrato.estado.cuenta'].browse(detalle_id.id)
                     cuota_actual.contrato_id=id_contrato.id
-                    cuota_actual.fecha=parse(fechaPago).date().strftime('%Y-%m-%d')
+                    cuota_actual.fecha=feha_pago
                 i=2
                 detalle_estado_cuenta_pendiente=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l:  l.numero_cuota != "1" and l.estado_pago=='pendiente' and not l.programado)
                 for detalle in detalle_estado_cuenta_pendiente:
@@ -59,7 +60,7 @@ class WizardAdelantarCuotas(models.Model):
                     cuota_actual=self.env['contrato.estado.cuenta'].browse(detalle_id.id)
                     cuota_actual.contrato_id=id_contrato.id
                     cuota_actual.numero_cuota=i
-                    cuota_actual.fecha=parse(fechaPago).date().strftime('%Y-%m-%d') + relativedelta(months=i-1)
+                    cuota_actual.fecha=feha_pago + relativedelta(months=i-1)
                     i+=1
                 detalle_estado_cuenta_pendienta=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado' and l.numero_cuota != "1" and not l.programado)
                 for detalle in detalle_estado_cuenta_pendienta:
@@ -69,7 +70,7 @@ class WizardAdelantarCuotas(models.Model):
                     cuota_actual.contrato_id=id_contrato.id
                     cuota_actual.numero_cuota=i
                     cuota_actual.estado_pago="varias"
-                    cuota_actual.fecha=parse(fechaPago).date().strftime('%Y-%m-%d') + relativedelta(months=i-1)
+                    cuota_actual.fecha=feha_pago+ relativedelta(months=i-1)
                     i+=1
                 programado=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l: l.programado>0.00)
                 for detalle in programado:
