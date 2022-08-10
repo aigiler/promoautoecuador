@@ -34,8 +34,8 @@
         <field name="model">wizard.cesion.derecho</field>
         <field name="arch" type="xml">
             <tree string="Cesión de Derecho" editable="bottom">
-                <field name="motivo" />
-                <field name="calificacion"/>
+                <field name="partner_id" />
+                <field name="contrato_a_ceder"/>
 
                 
             </tree>
