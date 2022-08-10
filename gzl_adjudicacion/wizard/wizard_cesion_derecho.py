@@ -7,6 +7,7 @@ from odoo.exceptions import ValidationError
 
 import numpy_financial as npf
 
+from dateutil.parser import parse
 
 class WizardAdelantarCuotas(models.Model):
     _name = 'wizard.cesion.derecho'
