@@ -33,7 +33,7 @@
         <field name="name">view.wizard.cesion.derecho.tree</field>
         <field name="model">wizard.cesion.derecho</field>
         <field name="arch" type="xml">
-            <tree string="Cesión de Derecho" editable="bottom">
+            <tree string="Cesión de Derecho" >
                 <field name="partner_id" />
                 <field name="contrato_a_ceder"/>
 
