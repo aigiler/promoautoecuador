@@ -51,7 +51,7 @@ class WizardAdelantarCuotas(models.Model):
                     #nuevo_detalle_estado_cuenta_pendiente.append(detalle_id.id)
                     cuota_actual=self.env['contrato.estado.cuenta'].browse(detalle_id.id)
                     cuota_actual.contrato_id=id_contrato.id
-                    cuota_actual.fecha=feha_pago
+                    cuota_actual.fecha=l.contrato_id.fecha_inicio_pago
                 i=2
                 j=1
                 detalle_estado_cuenta_pendiente=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l:  l.numero_cuota != "1" and l.estado_pago=='pendiente' and not l.programado)
@@ -61,7 +61,7 @@ class WizardAdelantarCuotas(models.Model):
                     cuota_actual=self.env['contrato.estado.cuenta'].browse(detalle_id.id)
                     cuota_actual.contrato_id=id_contrato.id
                     cuota_actual.numero_cuota=i
-                    cuota_actual.fecha=feha_pago + relativedelta(months=j)
+                    cuota_actual.fecha=l.contrato_id.fecha_inicio_pago + relativedelta(months=j)
                     i+=1
                     j+=1
                 detalle_estado_cuenta_pendienta=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado' and l.numero_cuota != "1" and not l.programado)
@@ -72,7 +72,7 @@ class WizardAdelantarCuotas(models.Model):
                     cuota_actual.contrato_id=id_contrato.id
                     cuota_actual.numero_cuota=i
                     cuota_actual.estado_pago="varias"
-                    cuota_actual.fecha=feha_pago+ relativedelta(months=j)
+                    cuota_actual.fecha=l.contrato_id.fecha_inicio_pago+ relativedelta(months=j)
                     i+=1
                     j+=1
                 programado=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l: l.programado>0.00)
