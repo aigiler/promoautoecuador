@@ -11,8 +11,8 @@ from dateutil.parser import parse
 
 class WizardAdelantarCuotas(models.Model):
     _name = 'wizard.cesion.derecho'
-    
     _rec_name = 'name'
+    _inherit = ['mail.thread', 'mail.activity.mixin']    
 
     contrato_id = fields.Many2one('contrato')
     name=fields.Char("Name")
@@ -22,7 +22,38 @@ class WizardAdelantarCuotas(models.Model):
     partner_id=fields.Many2one("res.partner", "Cliente a Ceder")
     pago_id=fields.Many2one("account.payment", "Pago Generado")
     ejecutado=fields.Boolean(default=False)
+    actividad_id = fields.Many2one('mail.activity',string="Actividades")
+    rolcontab = fields.Many2one('adjudicaciones.team', string="Rol contabilidad Financiera", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol7'))
+    rolpostventa = fields.Many2one('adjudicaciones.team', string="Rol Post venta", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol5'))
 
+    state = fields.Selection(selection=[
+            ('inicio', 'Ingreso de solicitud'),
+            ('en_curso', 'En Proceso de Pago'),
+            ('pre_cierre', 'Proceso de cierre'),
+            ('cerrado', 'Cerrado')
+            ], string='Estado', copy=True, tracking=True, default='inicio',track_visibility='onchange')
+
+    @api.contrains("contrato_a_ceder")
+    @api.onchange("contrato_a_ceder")
+    def obtener_nombre(self):
+        for l in self:
+            name=" "
+            if l.contrato_a_ceder:
+                name="Cesión de Derecho al Contrato "+l.contrato_a_ceder.secuencia
+            l.name=name
+    
+    def crear_activity(self,rol,mensaje):
+        if self.actividad_id:
+            self.actividad_id.action_done()
+        actividad_id=self.env['mail.activity'].create({
+                'res_id': self.id,
+                'res_model_id': self.env['ir.model']._get('devolucion.monto').id,
+                'activity_type_id': 4,
+                'summary': "Ha sido asignado al proceso de Cesión de Derecho. "+str(mensaje),
+                'user_id': rol.user_id.id,
+                'date_deadline':datetime.now()+ relativedelta(days=1)
+            })
+        self.actividad_id=actividad_id.id
     # def ejecutar_cesion(self):
     #     for l in self:
     #         if l.contrato_id:
@@ -109,3 +140,18 @@ class WizardAdelantarCuotas(models.Model):
                 detalle_contrato_original=l.contrato_a_ceder.tabla_amortizacion.filtered(lambda l: l.monto_pagado==0)
                 detalle_contrato_original.unlink()
                 l.contrato_id.cliente=l.partner_id.id
+                l.state="cerrado"
+                if l.actividad_id:
+                    l.actividad_id.action_done()
+    
+    def enviar_contabilidad(self):            
+        mensaje="Favor registrar el Pago de la Cesión de Derecho: "+self.name
+        self.crear_activity(self.rolcontab,mensaje)
+        self.state='en_curso'
+
+
+    def pago_procesado(self):
+        mensaje="El pago se encuentra asociado a la Cesión de Derecho. "+self.name+' Favor de ejecutarla'
+        self.crear_activity(self.rolpostventa,mensaje)
+        self.state='pre_cierre'
+        
