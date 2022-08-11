@@ -47,7 +47,7 @@ class WizardAdelantarCuotas(models.Model):
             self.actividad_id.action_done()
         actividad_id=self.env['mail.activity'].create({
                 'res_id': self.id,
-                'res_model_id': self.env['ir.model']._get('devolucion.monto').id,
+                'res_model_id': self.env['ir.model']._get('wizard.cesion.derecho').id,
                 'activity_type_id': 4,
                 'summary': "Ha sido asignado al proceso de Cesión de Derecho. "+str(mensaje),
                 'user_id': rol.user_id.id,
