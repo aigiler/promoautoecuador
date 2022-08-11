@@ -35,6 +35,7 @@ class WizardAdelantarCuotas(models.Model):
 
     def ejecutar_cesion(self):
         for l in self:
+            lista_final=[]
             if l.pago_id and l.carta_adjunto:
                 id_contrato=l.contrato_a_ceder.copy()
                 l.contrato_id=id_contrato.id
@@ -52,6 +53,10 @@ class WizardAdelantarCuotas(models.Model):
                     cuota_actual=self.env['contrato.estado.cuenta'].browse(detalle_id.id)
                     cuota_actual.contrato_id=id_contrato.id
                     cuota_actual.fecha=l.contrato_id.fecha_inicio_pago
+                    lista_final.append({'cuota':1,'fecha_pago':cuota_actual.fecha})
+                    cuota_actual.factura_id=False
+                    if detalle.estado_pago=='pagado':
+                        cuota_actual.estado_pago="varias"
                 i=2
                 j=1
                 detalle_estado_cuenta_pendiente=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l:  l.numero_cuota != "1" and l.estado_pago=='pendiente' and not l.programado)
@@ -62,6 +67,7 @@ class WizardAdelantarCuotas(models.Model):
                     cuota_actual.contrato_id=id_contrato.id
                     cuota_actual.numero_cuota=i
                     cuota_actual.fecha=l.contrato_id.fecha_inicio_pago + relativedelta(months=j)
+                    lista_final.append({'cuota':i,'fecha_pago':cuota_actual.fecha})
                     i+=1
                     j+=1
                 detalle_estado_cuenta_pendienta=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado' and l.numero_cuota != "1" and not l.programado)
@@ -71,8 +77,11 @@ class WizardAdelantarCuotas(models.Model):
                     cuota_actual=self.env['contrato.estado.cuenta'].browse(detalle_id.id)
                     cuota_actual.contrato_id=id_contrato.id
                     cuota_actual.numero_cuota=i
-                    cuota_actual.estado_pago="varias"
+                    if detalle.estado_pago=='pagado':
+                        cuota_actual.estado_pago="varias"
+                    cuota_actual.factura_id=False
                     cuota_actual.fecha=l.contrato_id.fecha_inicio_pago+ relativedelta(months=j)
+                    lista_final.append({'cuota':i,'fecha_pago':cuota_actual.fecha})
                     i+=1
                     j+=1
                 programado=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l: l.programado>0.00)
@@ -81,6 +90,12 @@ class WizardAdelantarCuotas(models.Model):
                     #nuevo_detalle_estado_cuenta_pendiente.append(detalle_id.id)
                     cuota_actual=self.env['contrato.estado.cuenta'].browse(detalle_id.id)
                     cuota_actual.contrato_id=id_contrato.id
-                    if detalle=='pagado':
+                    if detalle.estado_pago=='pagado':
                         cuota_actual.estado_pago="varias"
+                    for x in lista_final:
+                        if x['cuota']==int(cuota_actual.numero_cuota):
+                            cuota_actual.fecha=x['fecha_pago']
                     i+=1
+
+                l.contrato_a_ceder.nota="El cliente "+l.contrato_a_ceder.cliente.name+" le cedió el contrato a "+l.partner_id.name
+                l.contrato_a_ceder.cesion_id=l.id
