@@ -80,6 +80,13 @@ class WizardAdelantarCuotas(models.Model):
                     if detalle.estado_pago=='pagado':
                         cuota_actual.estado_pago="varias"
                     cuota_actual.factura_id=False
+                    cuota_actual.saldo_cuota_capital=detalle.cuota_capital
+                    cuota_actual.saldo_cuota_administrativa=detalle.cuota_adm
+                    cuota_actual.saldo_iva=detalle.iva_adm
+                    cuota_actual.saldo_seguro=detalle.seguro
+                    cuota_actual.saldo_rastreo=detalle.rastreo
+                    cuota_actual.saldo_programado=detalle.programado
+                    cuota_actual.saldo_otros=detalle.otro
                     cuota_actual.fecha=l.contrato_id.fecha_inicio_pago+ relativedelta(months=j)
                     lista_final.append({'cuota':i,'fecha_pago':cuota_actual.fecha})
                     i+=1
