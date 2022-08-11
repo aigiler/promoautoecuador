@@ -90,6 +90,7 @@ class Contrato(models.Model):
         ('cedido', 'Cesión de Derecho'),
         ('desistir', 'Desistido'),
     ], string='Estado', default='pendiente', track_visibility='onchange')
+    es_cesion=fields.Boolean(default=False)
 
 
     desistido = fields.Boolean(string='Desistido')
@@ -1031,7 +1032,6 @@ class ContratoEstadoCuentaHsitorico(models.Model):
     iva_adm = fields.Monetary(
         string='Iva Adm', currency_field='currency_id')
 
-    es_cesion=fields.Boolean(default=False)
     factura_id = fields.Many2one('account.move', string='Factura')
     # pago_ids = fields.Many2many('account.payment','contrato_estado_cuenta_payment_rel', 'estado_cuenta_id','payment_id', string='Pagos')
     seguro = fields.Monetary(string='Seguro', currency_field='currency_id')
