@@ -8,6 +8,7 @@
                 <header>
                     <button string="Enviar a Contabilidad" class="oe_highlight" attrs="{'invisible': [('state', '=', 'inicio')]}" type="object" name="enviar_contabilidad"/>
                     <button string="Enviar a Procesar" class="oe_highlight" attrs="{'invisible': [('state', '=', 'en_curso')]}" type="object" name="pago_procesado"/>
+                    <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <group string="Cesion de Derecho"> 
