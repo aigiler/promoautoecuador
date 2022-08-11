@@ -397,7 +397,8 @@ class Contrato(models.Model):
         grupo=self.env['grupo.adjudicado'].browse(vals['grupo'])
         obj_secuencia= grupo.secuencia_id
 
-        vals['secuencia'] = obj_secuencia.next_by_code(obj_secuencia.code)
+        if not vals['es_cesion']:
+            vals['secuencia'] = obj_secuencia.next_by_code(obj_secuencia.code)
         dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
         tasa_administrativa =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa')
 
@@ -885,7 +886,7 @@ class ContratoEstadoCuenta(models.Model):
     estado_pago = fields.Selection([('pendiente', 'Pendiente'),
                                     ('pagado', 'Pagado'),
                                     ('congelado', 'Congelado'),
-                                    ('varias', 'Varias')
+                                    ('varias', 'Varias(Cesión)')
                                     ], string='Estado de Pago', default='pendiente')
 
     programado=fields.Monetary(string="Cuota Programada", currency_field='currency_id')
@@ -1030,6 +1031,7 @@ class ContratoEstadoCuentaHsitorico(models.Model):
     iva_adm = fields.Monetary(
         string='Iva Adm', currency_field='currency_id')
 
+    es_cesion=fields.Boolean(default=False)
     factura_id = fields.Many2one('account.move', string='Factura')
     # pago_ids = fields.Many2many('account.payment','contrato_estado_cuenta_payment_rel', 'estado_cuenta_id','payment_id', string='Pagos')
     seguro = fields.Monetary(string='Seguro', currency_field='currency_id')
@@ -1043,7 +1045,7 @@ class ContratoEstadoCuentaHsitorico(models.Model):
     estado_pago = fields.Selection([('pendiente', 'Pendiente'),
                                     ('pagado', 'Pagado'),
                                     ('congelado', 'Congelado'),
-                                    ('varias', 'Varias')
+                                    ('varias', 'Varias(Cesión)')
                                     ], string='Estado de Pago', default='pendiente')
 
     pago_ids = fields.One2many(

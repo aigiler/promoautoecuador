@@ -68,6 +68,7 @@ class WizardAdelantarCuotas(models.Model):
         for l in self:
             lista_final=[]
             if l.pago_id and l.carta_adjunto:
+                l.contrato_a_ceder.es_cesion=True
                 id_contrato=l.contrato_a_ceder.copy()
                 l.contrato_id=id_contrato.id
                 anio = str(datetime.today().year)
