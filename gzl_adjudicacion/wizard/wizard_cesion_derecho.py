@@ -108,3 +108,4 @@ class WizardAdelantarCuotas(models.Model):
                 l.contrato_a_ceder.cesion_id=l.id
                 detalle_contrato_original=l.contrato_a_ceder.tabla_amortizacion.filtered(lambda l: l.monto_pagado==0)
                 detalle_contrato_original.unlink()
+                l.contrato_id.cliente=l.partner_id.id
