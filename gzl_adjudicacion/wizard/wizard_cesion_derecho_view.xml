@@ -6,8 +6,8 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button string="Enviar a Contabilidad" class="oe_highlight" attrs="{'invisible': [('state', '=', 'inicio')]}" type="object" name="enviar_contabilidad"/>
-                    <button string="Enviar a Procesar" class="oe_highlight" attrs="{'invisible': [('state', '=', 'en_curso')]}" type="object" name="pago_procesado"/>
+                    <button string="Enviar a Contabilidad" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'inicio')]}" type="object" name="enviar_contabilidad"/>
+                    <button string="Enviar a Procesar" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'en_curso')]}" type="object" name="pago_procesado"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -28,7 +28,7 @@
                     </group>
                 </sheet>
                 <footer>
-                    <button string="Ejecutar Cesión" class="oe_highlight" attrs="{'invisible': [('state', '=', 'pre_cierre')]}" type="object" name="ejecutar_cesion"/>
+                    <button string="Ejecutar Cesión" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'pre_cierre')]}" type="object" name="ejecutar_cesion"/>
                     <button string="Cancelar" special="cancel" attrs="{'invisible': [('ejecutado', '=', True)]}"/>
                 </footer>
             </form>
