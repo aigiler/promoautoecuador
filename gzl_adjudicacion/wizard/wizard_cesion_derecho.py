@@ -157,7 +157,7 @@ class WizardAdelantarCuotas(models.Model):
                     l.actividad_id.action_done()
 
 
-def validarrol(self,rol):
+    def validarrol(self,rol):
         roles=self.env['adjudicaciones.team'].search([('id','=',rol.id)])
         for x in roles:
           if self.env.user in x.member_ids:
