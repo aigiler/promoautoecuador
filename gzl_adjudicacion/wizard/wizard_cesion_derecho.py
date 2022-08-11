@@ -155,9 +155,21 @@ class WizardAdelantarCuotas(models.Model):
                 l.contrato_id.cesion_id=l.id
                 if l.actividad_id:
                     l.actividad_id.action_done()
+
+
+def validarrol(self,rol):
+        roles=self.env['adjudicaciones.team'].search([('id','=',rol.id)])
+        for x in roles:
+          if self.env.user in x.member_ids:
+            return True
+          else:
+            raise ValidationError("Debe estar asignado al rol %s"% rol.name)
+        return True
+
     
     def enviar_contabilidad(self):
-        if self.carta_adjunto:    
+        if self.carta_adjunto:
+            self.validarrol(self.rolpostventa)   
             mensaje="Favor registrar el Pago de la Cesión de Derecho: "+self.name
             self.crear_activity(self.rolcontab,mensaje)
             self.state='en_curso'
@@ -167,6 +179,7 @@ class WizardAdelantarCuotas(models.Model):
 
     def pago_procesado(self):
         if self.pago_id:
+            self.validarrol(self.rolcontab)  
             mensaje="El pago se encuentra asociado a la Cesión de Derecho. "+self.name+' Favor de ejecutarla'
             self.crear_activity(self.rolpostventa,mensaje)
             self.state='pre_cierre'
