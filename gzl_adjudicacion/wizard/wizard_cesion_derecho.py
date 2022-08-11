@@ -33,7 +33,7 @@ class WizardAdelantarCuotas(models.Model):
             ('cerrado', 'Cerrado')
             ], string='Estado', copy=True, tracking=True, default='inicio',track_visibility='onchange')
 
-    @api.contrains("contrato_a_ceder")
+    @api.constrains("contrato_a_ceder")
     @api.onchange("contrato_a_ceder")
     def obtener_nombre(self):
         for l in self:
@@ -144,14 +144,20 @@ class WizardAdelantarCuotas(models.Model):
                 if l.actividad_id:
                     l.actividad_id.action_done()
     
-    def enviar_contabilidad(self):            
-        mensaje="Favor registrar el Pago de la Cesión de Derecho: "+self.name
-        self.crear_activity(self.rolcontab,mensaje)
-        self.state='en_curso'
+    def enviar_contabilidad(self):
+        if self.carta_adjunto:    
+            mensaje="Favor registrar el Pago de la Cesión de Derecho: "+self.name
+            self.crear_activity(self.rolcontab,mensaje)
+            self.state='en_curso'
+        else:
+            raise ValidationError("Debe adjuntar el documento pertinente para continuar con el proceso.")
 
 
     def pago_procesado(self):
-        mensaje="El pago se encuentra asociado a la Cesión de Derecho. "+self.name+' Favor de ejecutarla'
-        self.crear_activity(self.rolpostventa,mensaje)
-        self.state='pre_cierre'
+        if self.pago_id:
+            mensaje="El pago se encuentra asociado a la Cesión de Derecho. "+self.name+' Favor de ejecutarla'
+            self.crear_activity(self.rolpostventa,mensaje)
+            self.state='pre_cierre'
+        else:
+            raise ValidationError("En caso de haber procesado el pago asocielo a esta cesión de derecho")
         
