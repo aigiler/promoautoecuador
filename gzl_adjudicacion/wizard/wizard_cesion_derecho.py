@@ -99,3 +99,5 @@ class WizardAdelantarCuotas(models.Model):
 
                 l.contrato_a_ceder.nota="El cliente "+l.contrato_a_ceder.cliente.name+" le cedió el contrato a "+l.partner_id.name
                 l.contrato_a_ceder.cesion_id=l.id
+                detalle_contrato_original=l.contrato_a_ceder.tabla_amortizacion.filtered(lambda l: l.monto_pagado==0)
+                detalle_contrato_original.unlink()
