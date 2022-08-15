@@ -31,6 +31,7 @@ class ParticipantesAsamblea(models.Model):
     seleccionado=fields.Boolean(string="Seleccionado", dafault=False)
 
     @api.onchange("contrato_id")
+    @api.constrains("contrato_id")
     def obtener_valor_cuota(self):
         cuota=0
         for l in self:
