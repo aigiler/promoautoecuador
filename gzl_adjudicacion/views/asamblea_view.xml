@@ -23,6 +23,7 @@
                 <header>
                     <button name="cambio_estado_boton_precierre" string="Pre cierre" type="object" states="inicio" class="oe_highlight"/>
                     <button name="cambio_estado_boton_cerrado" string="Cerrado" type="object" states="pre_cierre"   class="oe_highlight"/>
+                    <button name="obtener_integrantes" string="Integrantes" type="object"    class="oe_highlight"/>
 
 
                     <field name="state" widget="statusbar" statusbar_visible="inicio,pre_cierre,cerrado"/>
@@ -37,7 +38,7 @@
                         </div>
                         <group>
                             <group>
-                                <field name="tipo_asamblea"  required="1" options="{'no_open': True, 'no_create': True}"  attrs="{'readonly': [('state', '=', 'cerrado')]}" />
+
                                 <field name="descripcion"  attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
                                 <field name="fecha_inicio" required="1" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
                                 <field name="fecha_fin" required="1" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
@@ -51,8 +52,13 @@
                                 <field name="evaluacion" invisible="0"/>
                                 <field name="programo" invisible="0"/>
                                 <field name="licitaciones" invisible="0"/>
-                                
                                 <field name="saldo" invisible="0"/>
+
+                                <field name="grupo_cliente" invisible="0"/>
+
+
+                                
+
 
                                 
 
@@ -66,6 +72,57 @@
 
                             </group>
                         </group>
+
+
+
+
+
+
+                            <group>
+                                <field name="integrantes_licitacion_id" nolabel="1" attrs="{'readonly': [('state', '=', 'cerrado')]}">
+                                    <tree string="Licitación" editable="top">
+                                        <field name="grupo_cliente" invisible="0"/>
+                                        <field name="contrato_id" invisible="0"/>
+                                        <field name="tipo_asamblea" invisible="0"/>
+                                        <field name="adjudicado_id" invisible="0"/>
+                                        <field name="plazo_meses" invisible="0"/>
+                                        <field name="monto_financiamiento" invisible="0"/>
+                                        <field name="licitacion_valor" invisible="0"/>
+                                        <field name="cuotas_licitadas" invisible="0"/>
+                                        <field name="cuotas_pagadas" invisible="0"/>
+                                        <field name="total_cuotas" invisible="0"/>
+
+                                    </tree>
+                                </field>
+                            </group>
+
+
+
+                            <group>
+                                <field name="integrantes_evaluacion_id" nolabel="1" attrs="{'readonly': [('state', '=', 'cerrado')]}">
+                                    <tree string="Evaluación" editable="top">
+                                        <field name="grupo_cliente" invisible="0"/>
+                                        <field name="contrato_id" invisible="0"/>
+                                        <field name="adjudicado_id" invisible="0"/>
+                                        <field name="monto_financiamiento" invisible="0"/>
+                                        <field name="cuotas_pagadas" invisible="0"/>
+                                    
+
+                                    </tree>
+                                </field>
+                            </group>
+
+
+
+
+
+
+
+
+
+
+
+
 
                             <group attrs="{'readonly': [('state', '=', 'cerrado')],'invisible': [('state', 'not in', ['pre_cierre','cerrado'])]}">
                                 <field name="ganadores" nolabel="1" attrs="{'readonly': [('state', '=', 'cerrado')]}">

@@ -5,15 +5,109 @@ from datetime import date, timedelta
 import datetime
 
 
+class ParticipantesAsamblea(models.Model):
+    _name = 'participantes.asamblea.clientes'
+    _description = 'Participantes de la Asamblea'
+    
+    asamblea_id = fields.Many2one('asamblea')
+    grupo_cliente = fields.Many2one('grupo.adjudicado',related="asamblea_id.grupo_cliente")
+    contrato_id = fields.Many2one('contrato', string="Contrato")
+    tipo_asamblea = fields.Many2one('tipo.contrato.adjudicado', string='Tipo',track_visibility='onchange',related="contrato_id.tipo_de_contrato")
+    adjudicado_id = fields.Many2one('res.partner', related="contrato_id.cliente",string="Nombre")
+
+    plazo_meses = fields.Many2one('numero.meses',related="contrato_id.plazo_meses")
+    monto_financiamiento = fields.Monetary(related='contrato_id.monto_financiamiento',string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
+    cuota=fields.Float("Cuota",compute="obtener_valor_cuota",store=True)
+    licitacion_valor=fields.Float("Licitación")
+    cuotas_licitadas=fields.Integer("Cuotas Licitadas")
+    cuotas_pagadas=fields.Integer(related="contrato_id.numero_cuotas_pagadas","Cuotas Pagadas")
+    total_cuotas=fields.Integer("Total")
+    
+    @api.depends("contrato_id")
+    @api.onchange("contrato_id")
+    def obtener_valor_cuota(self):
+        cuota=0
+        for l in self:
+            if l.contrato_id:
+                cuota=l.contrato_id.cuota_adm+l.contrato_id.iva_adm+l.contrato_id.cuota_capital
+            self.cuota=cuota
+
+
+    @api.onchange("licitacion_valor")
+    def obtener_cuotas_licitadas(self):
+        cuotas_licitadas=0
+        for l in self:
+            if l.licitacion_valor and l.cuota:
+                cuotas_licitadas=l.licitacion_valor/l.cuota
+            l.cuotas_licitadas=cuotas_licitadas
+
+    @api.onchange("cuotas_licitadas","cuotas_pagadas")
+    @api.constrains("cuotas_licitadas","cuotas_pagadas")
+    def calcular_total(self):
+        for l in self:
+            total=l.cuotas_pagadas+l.cuotas_licitadas
+
+class ParticipantesEvaluaciónAsamblea(models.Model):
+    _name = 'participantes.evaluacion.asamblea.clientes'
+    _description = 'Participantes de la Asamblea Evaluación'
+    
+    asamblea_id = fields.Many2one('asamblea')
+    grupo_cliente = fields.Many2one('grupo.adjudicado',related="asamblea_id.grupo_cliente")
+    contrato_id = fields.Many2one('contrato', string="Contrato")
+    adjudicado_id = fields.Many2one('res.partner', string="Nombre",related="contrato_id.cliente")
+    monto_financiamiento = fields.Monetary(related='contrato_id.monto_financiamiento',string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
+    cuotas_pagadas=fields.Integer(related="contrato_id.numero_cuotas_pagadas","Cuotas Pagadas")
+
+
+
 class Asamblea(models.Model):
     _name = 'asamblea'
     _description = 'Proceso de Asamblea'
     _rec_name = 'secuencia'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    secuencia = fields.Char(index=True)
     descripcion = fields.Text('Descripcion',  required=True,track_visibility='onchange')
     active = fields.Boolean(default=True,track_visibility='onchange')
+    fecha_inicio = fields.Datetime(String='Fecha Inicio',track_visibility='onchange')
+    fecha_fin = fields.Datetime(String='Fecha Fin',track_visibility='onchange')
+    secuencia = fields.Char(index=True)
+    grupo_cliente = fields.Many2one('grupo.adjudicado')
+
+    integrantes_licitacion_id=fields.One2many('participantes.asamblea.clientes', 'asamblea_id',track_visibility='onchange')
+
+    integrantes_evaluacion_id=fields.One2many('participantes.evaluacion.asamblea.clientes', 'asamblea_id',track_visibility='onchange')
+
+
+    def obtener_integrantes(self):
+        for l in self:
+            lista_evaluacion=[]
+            lista_licitacion=[]
+            if l.grupo_cliente:
+                contratos_ids=self.env["contrato"].search([('en_mora','=',False),('state','=','activo'),('grupo','=',self.grupo_cliente.id)],order='numero_cuotas_pagadas desc')
+                for x in contratos_ids:
+                    tupla=(0, 0, {
+                           'contrato_id': x.id,
+                          })
+                    lista_licitacion.append(tupla)
+                    if x.tipo_de_contrato.name=='Evaluación':
+                        tupla=(0, 0, {
+                           'contrato_id': x.id,
+                          })
+                    lista_evaluacion.append(tupla)
+            lista_evaluacion_ids=[]
+            lista_licitacion_ids=[]
+            for prueba in lista_evaluacion:
+                id_registro=self.env['participantes.evaluacion.asamblea.clientes'].create(prueba) 
+                lista_evaluacion_ids.append(int(id_registro))
+                self.update({'integrantes_evaluacion_id':[(6,0,lista_evaluacion_ids)]}) 
+            for prueba in lista_licitacion:
+                id_registro=self.env['participantes.asamblea.clientes'].create(prueba) 
+                lista_licitacion_ids.append(int(id_registro))
+                self.update({'integrantes_evaluacion_id':[(6,0,lista_licitacion_ids)]}) 
+
+
+
+
     integrantes = fields.One2many(
         'integrante.grupo.adjudicado.asamblea', 'asamblea_id',track_visibility='onchange')
     # integrantes = fields.Many2many('integrante.grupo.adjudicado')
@@ -22,8 +116,6 @@ class Asamblea(models.Model):
     
     junta = fields.One2many('junta.grupo.asamblea', 'asamblea_id',track_visibility='onchange')
     ganadores = fields.One2many('gana.grupo.adjudicado.asamblea.clientes', 'grupo_id',track_visibility='onchange')
-    fecha_inicio = fields.Datetime(String='Fecha Inicio',track_visibility='onchange')
-    fecha_fin = fields.Datetime(String='Fecha Fin',track_visibility='onchange')
     tipo_asamblea = fields.Many2one(
         'tipo.contrato.adjudicado', string='Tipo de Asamblea',track_visibility='onchange')
     state = fields.Selection(selection=[
