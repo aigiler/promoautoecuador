@@ -186,7 +186,7 @@ class Asamblea(models.Model):
             l.asamblea_id.calcular_licitacion()
 
 
-    @api.constrain("grupo_cliente")
+    @api.constrains("grupo_cliente")
     @api.onchange("grupo_cliente")
     def obtener_valores(self):
         for l in self:
