@@ -90,13 +90,15 @@ class Asamblea(models.Model):
             if l.grupo_cliente:
                 contratos_ids=self.env["contrato"].search([('en_mora','=',False),('state','=','activo'),('grupo','=',self.grupo_cliente.id)],order='numero_cuotas_pagadas desc')
                 for x in contratos_ids:
+                    id_contrato=self.env['contrato'].browse(int(x))
+                    
                     tupla=(0, 0, {
-                           'contrato_id': x,
+                           'contrato_id': id_contrato.id,
                           })
                     lista_licitacion.append(tupla)
                     if x.tipo_de_contrato.name=='Evaluación':
                         tupla=(0, 0, {
-                           'contrato_id': x,
+                           'contrato_id': id_contrato.id,
                                                      })
                     lista_evaluacion.append(tupla)
             lista_evaluacion_ids=[]
