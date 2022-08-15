@@ -11,6 +11,7 @@ from dateutil.parser import parse
 
 class WizardAdelantarCuotas(models.Model):
     _name = 'wizard.cesion.derecho'
+    _description="Cesión de Derecho"
     _rec_name = 'name'
     _inherit = ['mail.thread', 'mail.activity.mixin']    
 
@@ -54,15 +55,6 @@ class WizardAdelantarCuotas(models.Model):
                 'date_deadline':datetime.now()+ relativedelta(days=1)
             })
         self.actividad_id=actividad_id.id
-    # def ejecutar_cesion(self):
-    #     for l in self:
-    #         if l.contrato_id:
-    #             if l.partner_id:
-    #                 l.name="Cesion al contrato "+str(l.contrato_id.secuencia)
-    #                 l.contrato_id.nota=" "+str(self.contrato_id.cliente.name)+' Cede el contrato a la persona: '+str(self.partner_id.name)
-    #                 l.contrato_id.cliente=self.partner_id.id
-    #                 l.contrato_id.cesion_id=self.id
-    #                 l.ejecutado=True
 
     def ejecutar_cesion(self):
         for l in self:
@@ -94,7 +86,6 @@ class WizardAdelantarCuotas(models.Model):
                 detalle_estado_cuenta_pendiente=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l:  l.numero_cuota != "1" and l.estado_pago=='pendiente' and not l.programado)
                 for detalle in detalle_estado_cuenta_pendiente:
                     detalle_id=detalle.copy()
-                    ##nuevo_detalle_estado_cuenta_pendiente.append(detalle_id.id)
                     cuota_actual=self.env['contrato.estado.cuenta'].browse(detalle_id.id)
                     cuota_actual.contrato_id=id_contrato.id
                     cuota_actual.numero_cuota=i
@@ -185,4 +176,3 @@ class WizardAdelantarCuotas(models.Model):
             self.state='pre_cierre'
         else:
             raise ValidationError("En caso de haber procesado el pago asocielo a esta cesión de derecho")
-        

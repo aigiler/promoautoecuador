@@ -398,7 +398,7 @@ class Contrato(models.Model):
         grupo=self.env['grupo.adjudicado'].browse(vals['grupo'])
         obj_secuencia= grupo.secuencia_id
 
-        if not vals['es_cesion']:
+        if vals.get('es_cesion')==False:
             vals['secuencia'] = obj_secuencia.next_by_code(obj_secuencia.code)
         dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
         tasa_administrativa =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa')
@@ -613,51 +613,16 @@ class Contrato(models.Model):
 
             fecha_reactivacion="%s-%s-%s" % (hoy.year, hoy.month,(calendar.monthrange(hoy.year, hoy.month)[1]))
             fecha_reactivacion = datetime.strptime(fecha_reactivacion, '%Y-%m-%d').date()
-            
-          #  raise ValidationError(type(fecha_reactivacion))
-
             detalle_estado_cuenta_pendiente=self.tabla_amortizacion.filtered(lambda l:  l.fecha>=obj_fecha_congelamiento.fecha  and l.fecha<fecha_reactivacion)
-            
-            
-            #nuevo_detalle_estado_cuenta_pendiente=[]
-            #for detalle in detalle_estado_cuenta_pendiente:
-            #    obj_detalle=detalle.copy()
-            #    nuevo_detalle_estado_cuenta_pendiente.append(obj_detalle.id)
-            
-            #nuevo_detalle_estado_cuenta_pendiente=self.env['contrato.estado.cuenta'].browse(nuevo_detalle_estado_cuenta_pendiente)
-            
-            
             i=0
             for detalle in detalle_estado_cuenta_pendiente:
-
-                #detalle.cuota_capital=0
-                #detalle.cuota_adm=0
-                #detalle.seguro=0
-                #detalle.rastreo=0
-                #detalle.otro=0
-                #detalle.monto_pagado=0
-                #detalle.saldo=0
-                #detalle.estado_pago='congelado'
                 i+=1
-            #tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.id)],order='fecha desc',limit=1)
             tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.id)],order='fecha asc')
-            
-            #if len(tabla)==1:
 
-            #    contador=1
-                
-            #    for detalle in nuevo_detalle_estado_cuenta_pendiente:
-            #        detalle.fecha=tabla.fecha +relativedelta(months=contador)
-            #        detalle.numero_cuota= str( int(tabla.numero_cuota) +contador)
-            #        contador+=1
-
-            self.fecha_inicio_pago+=relativedelta(months=i)
-            
+            self.fecha_inicio_pago+=relativedelta(months=i)            
             for detalle in tabla:
                 detalle.fecha+=relativedelta(months=i)
 
-                #else:
-                #    detalle.fecha+=relativedelta(months=i)
             obj_fecha_congelamiento.pendiente=False
             self.state='activo'
 
