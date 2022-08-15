@@ -30,7 +30,6 @@
                 </header>
 
                 <sheet>
-                    <div states="borrador,inicio,en_curso,pre_cierre,cerrado">
                         <div class="oe_title">
                             <h1>
                                 <field name="secuencia" class="oe_inline" readonly="1"/>
@@ -56,23 +55,22 @@
 
 
 
-                                
+                             
 
 
                                 
-
-
-
-
-
-
-
-
 
                             </group>
                         </group>
 
-
+<group string="Junta" >
+                                <field name="junta" nolabel="1" attrs="{'readonly': [('state', '=', 'cerrado')]}">
+                                    <tree string="Junta" editable="top">
+                                        <field name="asamblea_id" invisible="1"/>
+                                        <field name="empleado_id"/>
+                                    </tree>
+                                </field>
+                            </group>    
 
 
                          <notebook>
@@ -177,16 +175,7 @@
 
 
 
-                            <group string="Junta" >
-                                <field name="junta" nolabel="1" attrs="{'readonly': [('state', '=', 'cerrado')]}">
-                                    <tree string="Junta" editable="top">
-                                        <field name="asamblea_id" invisible="1"/>
-                                        <field name="empleado_id"/>
-                                    </tree>
-                                </field>
-                            </group>
-                        </group>
-                    </div>
+                           
                 </sheet>
                 <!-- Attachment preview -->
                 <div class="o_attachment_preview" />
