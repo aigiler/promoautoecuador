@@ -398,7 +398,7 @@ class Contrato(models.Model):
         grupo=self.env['grupo.adjudicado'].browse(vals['grupo'])
         obj_secuencia= grupo.secuencia_id
 
-        if vals.get('es_cesion')==False:
+        if not vals.get('es_cesion'):
             vals['secuencia'] = obj_secuencia.next_by_code(obj_secuencia.code)
         dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
         tasa_administrativa =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa')
