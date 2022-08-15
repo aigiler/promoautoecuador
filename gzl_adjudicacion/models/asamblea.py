@@ -29,7 +29,7 @@ class ParticipantesAsamblea(models.Model):
     cuota_capital=fields.Monetary("Cuota Capital", currency_field='currency_id',related="contrato_id.cuota_capital")
     total_or=fields.Float("O.R")
     seleccionado=fields.Boolean(string="Seleccionado", dafault=False)
-
+    nota=fields.Char(string="Nota")
     @api.onchange("contrato_id")
     @api.constrains("contrato_id")
     def obtener_valor_cuota(self):
@@ -127,13 +127,15 @@ class Asamblea(models.Model):
             parametros_evaluacion=self.env['tipo.asamblea'].search([('name','=','evaluacion')],limit=1)
             if parametros_licitacion:
                 numero_ganadores=int(parametros_licitacion.numero_ganadores)
-                ganadores=self.env['participantes.asamblea.clientes'].search([('cuotas_licitadas','>',0)],order='total_cuotas desc', limit=numero_ganadores)
+                ganadores=self.env['participantes.asamblea.clientes'].search([('cuotas_licitadas','>',0),('seleccionado','=',False)],order='total_cuotas desc', limit=numero_ganadores)
                 for x in ganadores:
-                    x.seleccionado=True
+                    ganadores.seleccionado=True
+                    ganadores.nota="GANADOR"
                 numero_suplentes=int(parametros_licitacion.numero_suplentes)
                 suplentes=self.env['participantes.asamblea.clientes'].search([('cuotas_licitadas','>',0),('seleccionado','=',False)],order='total_cuotas desc', limit=numero_suplentes)
-                for x in suplentes:
-                    x.seleccionado=True
+                for suplente in suplentes:
+                    suplente.seleccionado=True
+                    suplente.nota="SUPLENTE"
             if parametros_evaluacion:
                 numero_ganadores=int(parametros_evaluacion.numero_ganadores)
                 ganadores=self.env['participantes.evaluacion.asamblea.clientes'].search([('cuotas_pagadas','>',0)],order='cuotas_pagadas desc', limit=numero_ganadores)
