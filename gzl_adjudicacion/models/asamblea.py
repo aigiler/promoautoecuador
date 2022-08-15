@@ -176,6 +176,9 @@ class Asamblea(models.Model):
             self.update({'integrantes_licitacion_id':[(6,0,lista_licitacion_ids)]}) 
 
 
+    @api.onchange("integrantes_licitacion_id","integrantes_evaluacion_id")
+    def calcular_valores(self):
+        self.calcular_licitacion()
 
     def obtener_ganadores_suplentes(self):
         for l in self:
