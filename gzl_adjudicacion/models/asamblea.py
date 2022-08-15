@@ -97,7 +97,7 @@ class Asamblea(models.Model):
                     if x.tipo_de_contrato.name=='Evaluación':
                         tupla=(0, 0, {
                            'contrato_id': x,
-                          })
+                                                     })
                     lista_evaluacion.append(tupla)
             lista_evaluacion_ids=[]
             lista_licitacion_ids=[]
