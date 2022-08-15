@@ -123,8 +123,8 @@ class Asamblea(models.Model):
 
     def obtener_ganadores_suplentes(self):
         for l in self:
-            parametros_licitacion=self.env['tipo.asamblea'].search([('tipo','=','licitacion')],limit=1)
-            parametros_evaluacion=self.env['tipo.asamblea'].search([('tipo','=','evaluacion')],limit=1)
+            parametros_licitacion=self.env['tipo.asamblea'].search([('name','=','licitacion')],limit=1)
+            parametros_evaluacion=self.env['tipo.asamblea'].search([('name','=','evaluacion')],limit=1)
             if parametros_licitacion:
                 numero_ganadores=int(parametros_licitacion.numero_ganadores)
                 x = range(numero_ganadores)
