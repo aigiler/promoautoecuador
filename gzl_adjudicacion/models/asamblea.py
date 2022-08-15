@@ -61,7 +61,7 @@ class ParticipantesAsamblea(models.Model):
             if not l.entrega_vehiculo_id:
                 rol_asignado=self.env.ref('gzl_adjudicacion.tipo_rol3')
                 entrega=entrega_vehiculo.create({'asamblea_id':l.asamblea_id.id,
-                                        'nombreSocioAdjudicado':l.adjudicado_id,
+                                        'nombreSocioAdjudicado':l.adjudicado_id.id,
                                         'rolAsignado':rol_asignado.id ,
                                         'montoEnviadoAsamblea':l.monto_financiamiento})
                 l.contrato_id.entrega_vehiculo_id=entrega.id
