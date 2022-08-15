@@ -20,7 +20,7 @@ class ParticipantesAsamblea(models.Model):
     cuota=fields.Float("Cuota",compute="obtener_valor_cuota",store=True)
     licitacion_valor=fields.Float("Licitación")
     cuotas_licitadas=fields.Integer("Cuotas Licitadas")
-    cuotas_pagadas=fields.Integer(related="contrato_id.numero_cuotas_pagadas","Cuotas Pagadas")
+    cuotas_pagadas=fields.Integer(related="contrato_id.numero_cuotas_pagadas",string="Cuotas Pagadas")
     total_cuotas=fields.Integer("Total")
     
     @api.depends("contrato_id")
