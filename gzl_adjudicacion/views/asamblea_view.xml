@@ -87,6 +87,7 @@
                                         <field name="tipo_asamblea" invisible="0"/>
                                         <field name="adjudicado_id" invisible="0"/>
                                         <field name="plazo_meses" invisible="0"/>
+                                         <field name="cuota" invisible="0"/>
                                         <field name="monto_financiamiento" invisible="0"/>
                                         <field name="licitacion_valor" invisible="0"/>
                                         <field name="cuotas_licitadas" invisible="0"/>

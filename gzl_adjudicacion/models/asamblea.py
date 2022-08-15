@@ -30,14 +30,13 @@ class ParticipantesAsamblea(models.Model):
     total_or=fields.Float("O.R")
     seleccionado=fields.Boolean(string="Seleccionado", dafault=False)
 
-    @api.depends("contrato_id")
     @api.onchange("contrato_id")
     def obtener_valor_cuota(self):
         cuota=0
         for l in self:
             if l.contrato_id:
                 cuota=l.contrato_id.cuota_adm+l.contrato_id.iva_administrativo+l.contrato_id.cuota_capital
-            self.cuota=cuota
+            l.cuota=cuota
 
 
     @api.onchange("licitacion_valor")
