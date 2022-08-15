@@ -9,8 +9,6 @@
             <tree string="Tipo de Contrato" editable="top">
                 <field name="name" />
                 <field name="descripcion" />
-                <field name="numero_ganadores" />
-                <field name="numero_suplentes" />
                 <field name="code" />
 
 

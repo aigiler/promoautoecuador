@@ -5,6 +5,7 @@ from datetime import date, timedelta
 import datetime
 
 
+
 class ParticipantesAsamblea(models.Model):
     _name = 'participantes.asamblea.clientes'
     _description = 'Participantes de la Asamblea'
@@ -25,7 +26,10 @@ class ParticipantesAsamblea(models.Model):
     cuotas_licitadas=fields.Integer("Cuotas Licitadas")
     cuotas_pagadas=fields.Integer(related="contrato_id.numero_cuotas_pagadas",string="Cuotas Pagadas")
     total_cuotas=fields.Integer("Total")
-    
+    cuota_capital=fields.Monetary("Cuota Capital", currency_field='currency_id',related="contrato_id.cuota_capital")
+    total_or=fields.Float("O.R",compute="calcular_cuotas")
+    seleccionado=fields.Boolean(string="Seleccionado", dafault=False)
+
     @api.depends("contrato_id")
     @api.onchange("contrato_id")
     def obtener_valor_cuota(self):
@@ -50,7 +54,7 @@ class ParticipantesAsamblea(models.Model):
         total=0
         for l in self:
             total=l.cuotas_pagadas+l.cuotas_licitadas
-        self.total=total
+        self.total_cuotas=total
 
 class ParticipantesEvaluaciónAsamblea(models.Model):
     _name = 'participantes.evaluacion.asamblea.clientes'
@@ -64,6 +68,7 @@ class ParticipantesEvaluaciónAsamblea(models.Model):
     adjudicado_id = fields.Many2one('res.partner', string="Nombre",related="contrato_id.cliente")
     monto_financiamiento = fields.Monetary(related='contrato_id.monto_financiamiento',string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
     cuotas_pagadas=fields.Integer(related="contrato_id.numero_cuotas_pagadas",string="Cuotas Pagadas")
+    seleccionado=fields.Boolean(string="Seleccionado", dafault=False)
 
 
 
@@ -85,12 +90,13 @@ class Asamblea(models.Model):
     integrantes_evaluacion_id=fields.One2many('participantes.evaluacion.asamblea.clientes', 'asamblea_id',track_visibility='onchange')
 
 
+
     def obtener_integrantes(self):
         for l in self:
             lista_evaluacion=[]
             lista_licitacion=[]
             if l.grupo_cliente:
-                contratos_ids=self.env["contrato"].search([('en_mora','=',False),('state','=','activo'),('grupo','=',self.grupo_cliente.id)],order='numero_cuotas_pagadas desc')
+                contratos_ids=self.env["contrato"].search([('numero_cuotas_pagadas','>',0),('en_mora','=',False),('state','=','activo'),('grupo','=',self.grupo_cliente.id)],order='numero_cuotas_pagadas desc')
                 for x in contratos_ids:
                     
                     tupla={
@@ -114,6 +120,29 @@ class Asamblea(models.Model):
 
 
 
+    def obtener_ganadores_suplentes(self):
+        for l in self:
+            parametros_licitacion=self.env['tipo.asamblea'].search([('tipo','=','licitacion')],limit=1)
+            parametros_evaluacion=self.env['tipo.asamblea'].search([('tipo','=','evaluacion')],limit=1)
+            if parametros_licitacion:
+                numero_ganadores=int(parametros_licitacion.numero_ganadores)
+                x = range(numero_ganadores)
+                ganadores=self.env['participantes.asamblea.clientes'].search([('cuotas_licitadas','>',0)],order='total_cuotas desc', limit=numero_ganadores)
+                for x in ganadores:
+                    ganadores.seleccionado=True
+                numero_suplentes=int(parametros_licitacion.numero_suplentes)
+                suplentes=self.env['participantes.asamblea.clientes'].search([('cuotas_licitadas','>',0),('seleccionado','=',False)],order='total_cuotas desc', limit=numero_suplentes)
+            if parametros_evaluacion:
+                numero_ganadores=int(parametros_evaluacion.numero_ganadores)
+                x = range(numero_ganadores)
+                ganadores=self.env['participantes.evaluacion.asamblea.clientes'].search([('cuotas_pagadas','>',0)],order='total_cuotas desc', limit=numero_ganadores)
+                for x in ganadores:
+                    ganadores.seleccionado=True
+                numero_suplentes=int(parametros_evaluacion.numero_suplentes)
+                suplentes=self.env['participantes.evaluacion.asamblea.clientes'].search([('cuotas_pagadas','>',0),('seleccionado','=',False)],order='total_cuotas desc', limit=numero_suplentes)
+            
+
+
 
     integrantes = fields.One2many(
         'integrante.grupo.adjudicado.asamblea', 'asamblea_id',track_visibility='onchange')
@@ -122,7 +151,6 @@ class Asamblea(models.Model):
     #fecha_asamblea = fields.Date(String='Fecha de Asamblea')
     
     junta = fields.One2many('junta.grupo.asamblea', 'asamblea_id',track_visibility='onchange')
-    ganadores = fields.One2many('gana.grupo.adjudicado.asamblea.clientes', 'grupo_id',track_visibility='onchange')
     tipo_asamblea = fields.Many2one(
         'tipo.contrato.adjudicado', string='Tipo de Asamblea',track_visibility='onchange')
     state = fields.Selection(selection=[
