@@ -189,6 +189,7 @@ class Asamblea(models.Model):
     @api.constrains("grupo_cliente")
     @api.onchange("grupo_cliente")
     def obtener_valores(self):
+        self.obtener_integrantes()
         for l in self:
             fondos_mes=0
             recuperacionCartera=0

@@ -22,7 +22,8 @@
                 <header>
                     <button name="cambio_estado_boton_precierre" string="Pre cierre" type="object" states="inicio" class="oe_highlight"/>
                     <button name="cambio_estado_boton_cerrado" string="Cerrado" type="object" states="pre_cierre"   class="oe_highlight"/>
-                    <button name="obtener_integrantes" string="Integrantes" type="object"    class="oe_highlight"/>
+                    <button name="obtener_integrantes" string="Integrantes" type="object" class="oe_highlight"/>
+                    <button name="obtener_ganadores_suplentes" string="Integrantes" type="object" class="oe_highlight"/>
 
 
                     <field name="state" widget="statusbar" statusbar_visible="inicio,pre_cierre,cerrado"/>
