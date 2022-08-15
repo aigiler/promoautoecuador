@@ -21,9 +21,8 @@
             <form string="Asamblea">
                 <header>
                     <button name="cambio_estado_boton_precierre" string="Pre cierre" type="object" states="inicio" class="oe_highlight"/>
-                    <button name="cambio_estado_boton_cerrado" string="Cerrado" type="object" states="pre_cierre"   class="oe_highlight"/>
-                    <button name="obtener_integrantes" string="Integrantes" type="object" class="oe_highlight"/>
-                    <button name="obtener_ganadores_suplentes" string="Integrantes" type="object" class="oe_highlight"/>
+                    <button name="cambio_estado_boton_cerrado" string="Cerrado" attrs="{'invisible': [('ejecutado', '=', False)]}" type="object" states="pre_cierre" class="oe_highlight"/>
+                    <button name="obtener_ganadores_suplentes" attrs="{'invisible': [('ejecutado', '=', True)]}" string="Ganadores/Suplentes" states="pre_cierre" type="object" class="oe_highlight"/>
 
 
                     <field name="state" widget="statusbar" statusbar_visible="inicio,pre_cierre,cerrado"/>
@@ -38,54 +37,48 @@
                         <group>
                             <group>
                                 <field name="grupo_cliente" invisible="0"/>
+                                <field name="ejecutado" invisible="0"/>
 
                                 <field name="descripcion"  attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
                                 <field name="fecha_inicio" required="1" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
                                 <field name="fecha_fin" required="1" attrs="{'readonly': [('state', '=', 'cerrado')]}"/>
                                 <field name="active" invisible="1 "/>
-                                <field name="recuperacionCartera" invisible="0"/>
-                                <field name="adjudicados" invisible="0"/>
-                                <field name="fondos_mes" invisible="0"/>
+                                <field name="recuperacionCartera" readonly="1"/>
+                                <field name="adjudicados" readonly="1"/>
+                                <field name="fondos_mes" readonly="1"/>
                                 
-                                <field name="invertir_licitacion" invisible="0"/>
-                                <field name="evaluacion" invisible="0"/>
-                                <field name="programo" invisible="0"/>
-                                <field name="licitaciones" invisible="0"/>
-                                <field name="saldo" invisible="0"/>
-
-
-
-                             
-
-
-                                
+                                <field name="invertir_licitacion" readonly="1"/>
+                                <field name="evaluacion" readonly="1"/>
+                                <field name="programo" readonly="1"/>
+                                <field name="licitaciones" readonly="1"/>
+                                <field name="saldo" readonly="1"/>
 
                             </group>
+                            <h4 color="red" attrs="{'invisible': [('saldo', '&gt;=', 0)]}">
+                              <strong>  NOTA:"SALDO EN NEGATIVO."</strong> 
+                            </h4>
                         </group>
-
-
-
                          <notebook>
                         <page string="LICITACIÓN" >
                         <separator class="text-center" string="LICITACIÓN"/>
                             <group>
                                 <field name="integrantes_licitacion_id" nolabel="1" attrs="{'readonly': [('state', '=', 'cerrado')]}">
                                     <tree string="Licitación" editable="top">
-                                        <field name="grupo_cliente" invisible="0"/>
-                                        <field name="contrato_id" invisible="0"/>
-                                        <field name="tipo_asamblea" invisible="0"/>
-                                        <field name="adjudicado_id" invisible="0"/>
-                                        <field name="plazo_meses" invisible="0"/>
-                                         <field name="cuota" invisible="0"/>
-                                        <field name="monto_financiamiento" invisible="0"/>
-                                        <field name="licitacion_valor" invisible="0"/>
-                                        <field name="cuotas_licitadas" invisible="0"/>
-                                        <field name="cuotas_pagadas" invisible="0"/>
-                                        <field name="total_cuotas" invisible="0"/>
-                                        <field name="cuota_capital" invisible="0"/>
-                                        <field name="total_or" invisible="0"/>
-                                        <field name="seleccionado" invisible="0"/>
-                                        <field name="nota" invisible="0"/>
+                                        <field name="grupo_cliente" readonly="1"/>
+                                        <field name="contrato_id" readonly="1"/>
+                                        <field name="tipo_asamblea" readonly="1"/>
+                                        <field name="adjudicado_id" readonly="1"/>
+                                        <field name="plazo_meses" readonly="1"/>
+                                         <field name="cuota" readonly="1"/>
+                                        <field name="monto_financiamiento" readonly="1"/>
+                                        <field name="licitacion_valor" readonly="0"/>
+                                        <field name="cuotas_licitadas" readonly="0"/>
+                                        <field name="cuotas_pagadas" readonly="1"/>
+                                        <field name="total_cuotas" readonly="1"/>
+                                        <field name="cuota_capital" readonly="1"/>
+                                        <field name="total_or" readonly="1"/>
+                                        <field name="seleccionado" readonly="0"/>
+                                        <field name="nota" readonly="0"/>
 
                                     </tree>
                                 </field>
@@ -98,13 +91,13 @@
                             <group>
                                 <field name="integrantes_evaluacion_id" nolabel="1" attrs="{'readonly': [('state', '=', 'cerrado')]}">
                                     <tree string="Evaluación" editable="top">
-                                        <field name="grupo_cliente" invisible="0"/>
-                                        <field name="contrato_id" invisible="0"/>
-                                        <field name="adjudicado_id" invisible="0"/>
-                                        <field name="monto_financiamiento" invisible="0"/>
-                                        <field name="cuotas_pagadas" invisible="0"/>
-                                        <field name="seleccionado" invisible="0"/>
-                                        <field name="nota" invisible="0"/>
+                                        <field name="grupo_cliente" readonly="1"/>
+                                        <field name="contrato_id" readonly="1"/>
+                                        <field name="adjudicado_id" readonly="1"/>
+                                        <field name="monto_financiamiento" readonly="1"/>
+                                        <field name="cuotas_pagadas" readonly="1"/>
+                                        <field name="seleccionado" readonly="0"/>
+                                        <field name="nota" readonly="0"/>
 
                                     
 

@@ -33,7 +33,7 @@ class ParticipantesAsamblea(models.Model):
         ('GANADOR', 'GANADOR'),
         ('SUPLENTE', 'SUPLENTE')]
         )
-
+    ejecutado=fields.Boolean(default=False)
     @api.onchange("seleccionado")
     def validar_asignación(self):
         for l in self:
@@ -212,6 +212,7 @@ class Asamblea(models.Model):
                 for suplente_eva in suplentes_eva:
                     suplente_eva.seleccionado=True
                     suplente_eva.nota="SUPLENTE"
+            ejecutado=True
             l.calcular_licitacion()
 
 
