@@ -56,7 +56,7 @@ class ParticipantesEvaluaciónAsamblea(models.Model):
     contrato_id = fields.Many2one('contrato', string="Contrato")
     adjudicado_id = fields.Many2one('res.partner', string="Nombre",related="contrato_id.cliente")
     monto_financiamiento = fields.Monetary(related='contrato_id.monto_financiamiento',string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
-    cuotas_pagadas=fields.Integer(related="contrato_id.numero_cuotas_pagadas","Cuotas Pagadas")
+    cuotas_pagadas=fields.Integer(related="contrato_id.numero_cuotas_pagadas",string="Cuotas Pagadas")
 
 
 
