@@ -65,11 +65,10 @@ class ParticipantesAsamblea(models.Model):
             l.total_or=cuotas_licitadas*l.cuota_capital
 
     @api.onchange("cuotas_licitadas","cuotas_pagadas")
-    @api.constrains("cuotas_licitadas","cuotas_pagadas")
+    @api.constrains("cuotas_licitadas","cuotas_pagadas","contrato_id")
     def calcular_total(self):
         total=0
-        for l in self:
-            total=l.cuotas_pagadas+l.cuotas_licitadas
+        total=self.cuotas_pagadas+self.cuotas_licitadas
         self.total_cuotas=total
 
 class ParticipantesEvaluaciónAsamblea(models.Model):

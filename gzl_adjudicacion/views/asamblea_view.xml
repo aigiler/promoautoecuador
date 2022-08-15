@@ -76,7 +76,7 @@
                                         <field name="cuotas_pagadas" readonly="1"/>
                                         <field name="total_cuotas" readonly="1"/>
                                         <field name="cuota_capital" readonly="1"/>
-                                        <field name="total_or" readonly="1"/>
+                                        <field name="total_or" readonly="0"/>
                                         <field name="seleccionado" readonly="0"/>
                                         <field name="nota" readonly="0"/>
 
