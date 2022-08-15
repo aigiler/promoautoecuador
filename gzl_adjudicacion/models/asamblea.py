@@ -30,6 +30,7 @@ class ParticipantesAsamblea(models.Model):
     total_or=fields.Float("O.R")
     seleccionado=fields.Boolean(string="Seleccionado", dafault=False)
     nota=fields.Char(string="Nota")
+
     @api.onchange("contrato_id")
     @api.constrains("contrato_id")
     def obtener_valor_cuota(self):
@@ -70,7 +71,7 @@ class ParticipantesEvaluaciónAsamblea(models.Model):
     monto_financiamiento = fields.Monetary(related='contrato_id.monto_financiamiento',string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
     cuotas_pagadas=fields.Integer(related="contrato_id.numero_cuotas_pagadas",string="Cuotas Pagadas")
     seleccionado=fields.Boolean(string="Seleccionado", dafault=False)
-
+    nota=fields.Char(string="Nota")
 
 
 class Asamblea(models.Model):
@@ -90,8 +91,43 @@ class Asamblea(models.Model):
 
     integrantes_evaluacion_id=fields.One2many('participantes.evaluacion.asamblea.clientes', 'asamblea_id',track_visibility='onchange')
 
+    state = fields.Selection(selection=[
+            ('borrador', 'Borrador'),
+            ('inicio', 'Ingreso de Socios'),
+            ('en_curso', 'En Curso'),
+            ('pre_cierre', 'Pre cierre'),
+            ('cerrado', 'Cerrado')
+            ], string='Estado', copy=False, tracking=True, default='inicio',track_visibility='onchange')
 
 
+    currency_id = fields.Many2one(
+        'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
+
+    licitaciones=fields.Monetary(string='Licitaciones', currency_field='currency_id', track_visibility='onchange')
+    evaluacion=fields.Monetary(string='Evaluación', currency_field='currency_id', track_visibility='onchange')
+    fondos_mes=fields.Monetary(string='Fondos del Mes', currency_field='currency_id', track_visibility='onchange')
+    adjudicados = fields.Monetary(string='Adjudicados', currency_field='currency_id', track_visibility='onchange')
+    recuperacionCartera = fields.Monetary(string='Recuperación de Cartera', currency_field='currency_id', track_visibility='onchange')
+    
+
+    invertir_licitacion=fields.Monetary(string='Invertir-Licitacion', currency_field='currency_id', track_visibility='onchange')
+    saldo=fields.Monetary(string='Saldo', compute="obtener_saldo",currency_field='currency_id', track_visibility='onchange')
+
+    programo=fields.Monetary(string='Plan Programo', currency_field='currency_id', track_visibility='onchange')
+    
+    monto_financiamiento=fields.Monetary(string='Monto', currency_field='currency_id', track_visibility='onchange')
+    
+
+    @api.model
+    def create(self, vals):
+        vals['secuencia'] = self.env['ir.sequence'].next_by_code('asamblea')
+        res = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc")
+        return super(Asamblea, self).create(vals)
+
+    @api.constrains('secuencia')
+    def constrains_valor_por_defecto(self): 
+        res = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc")
+    
     def obtener_integrantes(self):
         for l in self:
             lista_evaluacion=[]
@@ -128,9 +164,9 @@ class Asamblea(models.Model):
             if parametros_licitacion:
                 numero_ganadores=int(parametros_licitacion.numero_ganadores)
                 ganadores=self.env['participantes.asamblea.clientes'].search([('cuotas_licitadas','>',0),('seleccionado','=',False)],order='total_cuotas desc', limit=numero_ganadores)
-                for x in ganadores:
-                    ganadores.seleccionado=True
-                    ganadores.nota="GANADOR"
+                for ganador in ganadores:
+                    ganador.seleccionado=True
+                    ganador.nota="GANADOR"
                 numero_suplentes=int(parametros_licitacion.numero_suplentes)
                 suplentes=self.env['participantes.asamblea.clientes'].search([('cuotas_licitadas','>',0),('seleccionado','=',False)],order='total_cuotas desc', limit=numero_suplentes)
                 for suplente in suplentes:
@@ -138,66 +174,65 @@ class Asamblea(models.Model):
                     suplente.nota="SUPLENTE"
             if parametros_evaluacion:
                 numero_ganadores=int(parametros_evaluacion.numero_ganadores)
-                ganadores=self.env['participantes.evaluacion.asamblea.clientes'].search([('cuotas_pagadas','>',0)],order='cuotas_pagadas desc', limit=numero_ganadores)
-                for x in ganadores:
-                    x.seleccionado=True
+                ganadores=self.env['participantes.evaluacion.asamblea.clientes'].search([('cuotas_pagadas','>',0),('seleccionado','=',False)],order='cuotas_pagadas desc', limit=numero_ganadores)
+                for ganador in ganadores:
+                    ganador.seleccionado=True
+                    ganador.nota="GANADOR"
                 numero_suplentes=int(parametros_evaluacion.numero_suplentes)
                 suplentes=self.env['participantes.evaluacion.asamblea.clientes'].search([('cuotas_pagadas','>',0),('seleccionado','=',False)],order='cuotas_pagadas desc', limit=numero_suplentes)
-            
+                for suplente in suplentes:
+                    suplente.seleccionado=True
+                    suplente.nota="SUPLENTE"
+            l.asamblea_id.calcular_licitacion()
 
 
-    integrantes = fields.One2many(
-        'integrante.grupo.adjudicado.asamblea', 'asamblea_id',track_visibility='onchange')
-    # integrantes = fields.Many2many('integrante.grupo.adjudicado')
-    codigo_tipo_contrato = fields.Char(related="tipo_asamblea.code", string='Tipo de Asamblea' )
-    #fecha_asamblea = fields.Date(String='Fecha de Asamblea')
-    
-    junta = fields.One2many('junta.grupo.asamblea', 'asamblea_id',track_visibility='onchange')
-    tipo_asamblea = fields.Many2one(
-        'tipo.contrato.adjudicado', string='Tipo de Asamblea',track_visibility='onchange')
-    state = fields.Selection(selection=[
-            ('borrador', 'Borrador'),
-            ('inicio', 'Ingreso de Socios'),
-            ('en_curso', 'En Curso'),
-            ('pre_cierre', 'Pre cierre'),
-            ('cerrado', 'Cerrado')
-            ], string='Estado', copy=False, tracking=True, default='inicio',track_visibility='onchange')
-
-
-    currency_id = fields.Many2one(
-        'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
-    licitaciones=fields.Monetary(string='Licitaciones', currency_field='currency_id', track_visibility='onchange')
-    evaluacion=fields.Monetary(string='Evaluación', currency_field='currency_id', track_visibility='onchange')
-    programo=fields.Monetary(string='Plan Programo', currency_field='currency_id', track_visibility='onchange')
-    monto_financiamiento=fields.Monetary(string='Monto', currency_field='currency_id', track_visibility='onchange')
-
-    recuperacionCartera = fields.Monetary(string='Recuperación de Cartera', currency_field='currency_id', track_visibility='onchange')
-    adjudicados = fields.Monetary(string='Adjudicados', currency_field='currency_id', track_visibility='onchange')
-    fondos_mes=fields.Monetary(string='Fondos del Mes', currency_field='currency_id', track_visibility='onchange')
-    invertir_licitacion=fields.Monetary(string='Invertir-Licitacion', currency_field='currency_id', track_visibility='onchange')
-    saldo=fields.Monetary(string='Saldo', compute="obtener_saldo",currency_field='currency_id', track_visibility='onchange')
-
-    @api.depends('fondos_mes','invertir_licitacion','programo','evaluacion')
-    def obtener_saldo(self):
-        for l in self:
-            l.saldo=l.fondos_mes-l.invertir_licitacion-l.programo-l.evaluacion
-
-
-    @api.constrains('integrantes')
-    @api.onchange('integrantes')
-    @api.depends('integrantes')
+    @api.constrain("grupo_cliente")
+    @api.onchange("grupo_cliente")
     def obtener_valores(self):
         for l in self:
             fondos_mes=0
             recuperacionCartera=0
             adjudicados=0
-            for x in l.integrantes:
-                fondos_mes+=x.fondos_mes
-                recuperacionCartera+=x.recuperacionCartera
-                adjudicados+=x.adjudicados
-            l.fondos_mes=fondos_mes
-            l.recuperacionCartera=recuperacionCartera
-            l.adjudicados=adjudicados
+            hoy=date.today()
+            grupoParticipante=l.grupo_cliente.transacciones_ids.filtered(lambda l: l.create_date.month==hoy.month and l.create_date.year==hoy.year)
+            l.recuperacionCartera= sum(grupoParticipante.mapped('haber'))
+            l.adjudicados= sum(grupoParticipante.mapped('debe'))
+            l.fondos_mes=l.recuperacionCartera-l.adjudicados
+
+
+    @api.depends('fondos_mes','invertir_licitacion','programo','evaluacion')
+    @api.onchange('fondos_mes','invertir_licitacion','programo','evaluacion')
+    @api.constrains('fondos_mes','invertir_licitacion','programo','evaluacion')
+    def obtener_saldo(self):
+        for l in self:
+            l.saldo=l.fondos_mes-l.invertir_licitacion-l.programo-l.evaluacion
+
+    def calcular_licitacion(self):
+        total=0
+        for l in self.integrantes_licitacion_id:
+            if l.seleccionado:
+                total+=l.total_or
+                monto_financiamiento+=l.monto_financiamiento
+        self.licitaciones=total
+        self.invertir_licitacion=monto_financiamiento-total
+        total_eva=0
+        for x in self.integrantes_evaluacion_id:
+            if l.seleccionado:
+                total_eva+=l.monto_financiamiento
+        self.evaluacion=total_eva
+
+
+    #integrantes = fields.One2many(
+    #    'integrante.grupo.adjudicado.asamblea', 'asamblea_id',track_visibility='onchange')
+    # integrantes = fields.Many2many('integrante.grupo.adjudicado')
+    #codigo_tipo_contrato = fields.Char(related="tipo_asamblea.code", string='Tipo de Asamblea' )
+    #fecha_asamblea = fields.Date(String='Fecha de Asamblea')
+    
+    #junta = fields.One2many('junta.grupo.asamblea', 'asamblea_id',track_visibility='onchange')
+    #tipo_asamblea = fields.Many2one(
+    #    'tipo.contrato.adjudicado', string='Tipo de Asamblea',track_visibility='onchange')
+
+
 
 
     # @api.constrains('ganadores')
@@ -227,102 +262,95 @@ class Asamblea(models.Model):
 
 
 
-    @api.model
-    def create(self, vals):
-        vals['secuencia'] = self.env['ir.sequence'].next_by_code('asamblea')
-        res = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc")
-        return super(Asamblea, self).create(vals)
-
-    @api.constrains('secuencia')
-    def constrains_valor_por_defecto(self): 
-        res = self.env['res.config.settings'].sudo(1).search([], limit=1, order="id desc")
 
 
 
 
-    def cambio_estado_boton_precierre(self):
-        self.write({"state": "pre_cierre"})
-        if self.tipo_asamblea.code in ['ahorro']:
-            listaGanadores=[]
-            for grupo in self.integrantes:
-                for integrante in grupo.integrantes_g:
-                    dct={}
-
-                    contrato = self.env['contrato'].search(
-                        [('cliente', '=', integrante.adjudicado_id.id)], limit=1)
-                    dct['contrato_id']=contrato.id
-                    dct['adjudicado_id']=integrante.adjudicado_id.id
-                    dct['grupo_adjudicado_id']=contrato.grupo.id
-                    dct['puntos']=integrante.nro_cuota_licitar
-                    listaGanadores.append(dct)
 
 
-            # This changes the list a
+    # def cambio_estado_boton_precierre(self):
+    #     self.write({"state": "pre_cierre"})
+    #     if self.tipo_asamblea.code in ['ahorro']:
+    #         listaGanadores=[]
+    #         for grupo in self.integrantes:
+    #             for integrante in grupo.integrantes_g:
+    #                 dct={}
 
-            # This returns a new list (a is not modified)
-            #raise ValidationError(str(listaGanadores))
+    #                 contrato = self.env['contrato'].search(
+    #                     [('cliente', '=', integrante.adjudicado_id.id)], limit=1)
+    #                 dct['contrato_id']=contrato.id
+    #                 dct['adjudicado_id']=integrante.adjudicado_id.id
+    #                 dct['grupo_adjudicado_id']=contrato.grupo.id
+    #                 dct['puntos']=integrante.nro_cuota_licitar
+    #                 listaGanadores.append(dct)
+
+
+    #         # This changes the list a
+
+    #         # This returns a new list (a is not modified)
+    #         #raise ValidationError(str(listaGanadores))
             
-            listaGanadores=sorted(listaGanadores, key=lambda k : k['puntos'],reverse=True) 
+    #         listaGanadores=sorted(listaGanadores, key=lambda k : k['puntos'],reverse=True) 
 
 
-            numero_ganadores=self.tipo_asamblea.numero_ganadores*2
-            for ganador in listaGanadores[:numero_ganadores]:
-                ganador['grupo_id']=self.id
-                self.env['gana.grupo.adjudicado.asamblea.clientes'].create(ganador)
+    #         numero_ganadores=self.tipo_asamblea.numero_ganadores*2
+    #         for ganador in listaGanadores[:numero_ganadores]:
+    #             ganador['grupo_id']=self.id
+    #             self.env['gana.grupo.adjudicado.asamblea.clientes'].create(ganador)
 
             
-        elif self.tipo_asamblea.code in ['evaluacion']:
-            listaGanadores=[]
-            for grupo in self.integrantes:
-                for integrante in grupo.integrantes_g:
-                    dct={}
+    #     elif self.tipo_asamblea.code in ['evaluacion']:
+    #         listaGanadores=[]
+    #         for grupo in self.integrantes:
+    #             for integrante in grupo.integrantes_g:
+    #                 dct={}
 
-                    contrato = self.env['contrato'].search(
-                        [('cliente', '=', integrante.adjudicado_id.id)], limit=1)
-                    dct['contrato_id']=contrato.id
-                    dct['adjudicado_id']=integrante.adjudicado_id.id
-                    dct['grupo_adjudicado_id']=contrato.grupo.id
-                    listaGanadores.append(dct)
+    #                 contrato = self.env['contrato'].search(
+    #                     [('cliente', '=', integrante.adjudicado_id.id)], limit=1)
+    #                 dct['contrato_id']=contrato.id
+    #                 dct['adjudicado_id']=integrante.adjudicado_id.id
+    #                 dct['grupo_adjudicado_id']=contrato.grupo.id
+    #                 listaGanadores.append(dct)
 
 
-            # This changes the list a
+    #         # This changes the list a
 
-            # This returns a new list (a is not modified)
-            #raise ValidationError(str(listaGanadores))
+    #         # This returns a new list (a is not modified)
+    #         #raise ValidationError(str(listaGanadores))
             
-            #listaGanadores=sorted(listaGanadores, key=lambda k : k['grupo_adjudicado_id'],reverse=True) 
+    #         #listaGanadores=sorted(listaGanadores, key=lambda k : k['grupo_adjudicado_id'],reverse=True) 
 
-            numero_ganadores=self.tipo_asamblea.numero_ganadores*2
-            for ganador in listaGanadores[:numero_ganadores]:
-                ganador['grupo_id']=self.id
-                self.env['gana.grupo.adjudicado.asamblea.clientes'].create(ganador)
+    #         numero_ganadores=self.tipo_asamblea.numero_ganadores*2
+    #         for ganador in listaGanadores[:numero_ganadores]:
+    #             ganador['grupo_id']=self.id
+    #             self.env['gana.grupo.adjudicado.asamblea.clientes'].create(ganador)
       
             
-        elif self.tipo_asamblea.code in ['programo']:
-            listaGanadores=[]
-            for grupo in self.integrantes:
-                for integrante in grupo.integrantes_g:
-                    dct={}
+    #     elif self.tipo_asamblea.code in ['programo']:
+    #         listaGanadores=[]
+    #         for grupo in self.integrantes:
+    #             for integrante in grupo.integrantes_g:
+    #                 dct={}
 
-                    contrato = self.env['contrato'].search(
-                        [('cliente', '=', integrante.adjudicado_id.id)], limit=1)
+    #                 contrato = self.env['contrato'].search(
+    #                     [('cliente', '=', integrante.adjudicado_id.id)], limit=1)
 
-                    dct['adjudicado_id']=integrante.adjudicado_id.id
-                    dct['grupo_adjudicado_id']=contrato.grupo.id
-                    dct['contrato_id']=contrato.id
-                    listaGanadores.append(dct)
-
-
-            # This changes the list a
-
-            # This returns a new list (a is not modified)
-            #listaGanadores=sorted(listaGanadores, key=lambda k : k['grupo_adjudicado_id'],reverse=True)            
-            numero_ganadores=self.tipo_asamblea.numero_ganadores*2
+    #                 dct['adjudicado_id']=integrante.adjudicado_id.id
+    #                 dct['grupo_adjudicado_id']=contrato.grupo.id
+    #                 dct['contrato_id']=contrato.id
+    #                 listaGanadores.append(dct)
 
 
-            for ganador in listaGanadores[:numero_ganadores]:
-                ganador['grupo_id']=self.id
-                self.env['gana.grupo.adjudicado.asamblea.clientes'].create(ganador)
+    #         # This changes the list a
+
+    #         # This returns a new list (a is not modified)
+    #         #listaGanadores=sorted(listaGanadores, key=lambda k : k['grupo_adjudicado_id'],reverse=True)            
+    #         numero_ganadores=self.tipo_asamblea.numero_ganadores*2
+
+
+    #         for ganador in listaGanadores[:numero_ganadores]:
+    #             ganador['grupo_id']=self.id
+    #             self.env['gana.grupo.adjudicado.asamblea.clientes'].create(ganador)
 
             
 
@@ -370,129 +398,129 @@ class Asamblea(models.Model):
 
 
 
-class GrupoAsamblea(models.Model):
-    _name = 'integrante.grupo.adjudicado.asamblea'
-    _description = 'Grupo Participante en asamblea'
+# class GrupoAsamblea(models.Model):
+#     _name = 'integrante.grupo.adjudicado.asamblea'
+#     _description = 'Grupo Participante en asamblea'
 
-    asamblea_id = fields.Many2one('asamblea')
-    grupo_adjudicado_id = fields.Many2one('grupo.adjudicado')
-    tipo_contrato = fields.Many2one(
-        'tipo.contrato.adjudicado', string='Tipo de Asamblea',track_visibility='onchange')
+#     asamblea_id = fields.Many2one('asamblea')
+#     grupo_adjudicado_id = fields.Many2one('grupo.adjudicado')
+#     tipo_contrato = fields.Many2one(
+#         'tipo.contrato.adjudicado', string='Tipo de Asamblea',track_visibility='onchange')
 
-    codigo_tipo_contrato = fields.Char(related="tipo_contrato.code", string='Tipo de Asamblea' )
-
-
-    integrantes_g = fields.One2many('integrante.grupo.adjudicado.asamblea.clientes','grupo_id')
-    currency_id = fields.Many2one(
-        'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
+#     codigo_tipo_contrato = fields.Char(related="tipo_contrato.code", string='Tipo de Asamblea' )
 
 
-    recuperacionCartera = fields.Monetary(compute='calculo_recuperacion_cartera',string='Recuperación de Cartera', currency_field='currency_id', track_visibility='onchange')
-    adjudicados = fields.Monetary(compute='calculo_recuperacion_cartera',string='Adjudicados', currency_field='currency_id', track_visibility='onchange')
-    fondos_mes=fields.Monetary(compute='calculo_recuperacion_cartera',string='Fondos del Mes', currency_field='currency_id', track_visibility='onchange')
+#     integrantes_g = fields.One2many('integrante.grupo.adjudicado.asamblea.clientes','grupo_id')
+#     currency_id = fields.Many2one(
+#         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
 
 
-    @api.depends('grupo_adjudicado_id')
-    def calculo_recuperacion_cartera(self):
-        for l in self:
-            hoy=date.today()
-            grupoParticipante=l.grupo_adjudicado_id.transacciones_ids.filtered(lambda l: l.create_date.month==hoy.month and l.create_date.year==hoy.year)
-            l.recuperacionCartera= sum(grupoParticipante.mapped('haber'))
-            l.adjudicados= sum(grupoParticipante.mapped('debe'))
-            l.fondos_mes=l.recuperacionCartera-l.adjudicados
+#     recuperacionCartera = fields.Monetary(compute='calculo_recuperacion_cartera',string='Recuperación de Cartera', currency_field='currency_id', track_visibility='onchange')
+#     adjudicados = fields.Monetary(compute='calculo_recuperacion_cartera',string='Adjudicados', currency_field='currency_id', track_visibility='onchange')
+#     fondos_mes=fields.Monetary(compute='calculo_recuperacion_cartera',string='Fondos del Mes', currency_field='currency_id', track_visibility='onchange')
+
+
+#     @api.depends('grupo_adjudicado_id')
+#     def calculo_recuperacion_cartera(self):
+#         for l in self:
+#             hoy=date.today()
+#             grupoParticipante=l.grupo_adjudicado_id.transacciones_ids.filtered(lambda l: l.create_date.month==hoy.month and l.create_date.year==hoy.year)
+#             l.recuperacionCartera= sum(grupoParticipante.mapped('haber'))
+#             l.adjudicados= sum(grupoParticipante.mapped('debe'))
+#             l.fondos_mes=l.recuperacionCartera-l.adjudicados
             
 
 
 
 
-    @api.onchange('grupo_adjudicado_id')
-    def onchange_grupo_adjudicado_id(self):
-        self.integrantes_g=()
+#     @api.onchange('grupo_adjudicado_id')
+#     def onchange_grupo_adjudicado_id(self):
+#         self.integrantes_g=()
 
 
-class IntegrantesGrupoAsamblea(models.Model):
-    _name = 'integrante.grupo.adjudicado.asamblea.clientes'
-    _description = 'Integrantes de Grupo Participante en asamblea'
+# class IntegrantesGrupoAsamblea(models.Model):
+#     _name = 'integrante.grupo.adjudicado.asamblea.clientes'
+#     _description = 'Integrantes de Grupo Participante en asamblea'
   
 
 
-    adjudicado_id = fields.Many2one('res.partner', string="Nombre")
-    descripcion=fields.Char('Descripcion',  )
-    grupo_id = fields.Many2one('integrante.grupo.adjudicado.asamblea')
-    grupo_cliente = fields.Many2one('grupo.adjudicado')
-    nro_cuota_licitar = fields.Integer(string='Nro de Cuotas a Licitar',default=1)
-    carta_licitacion = fields.Selection([('si', 'Si'), ('no', 'No')], default="si", string='Carta Licitación')
-    carta_doc = fields.Binary(string='Carta Licitación')
+#     adjudicado_id = fields.Many2one('res.partner', string="Nombre")
+#     descripcion=fields.Char('Descripcion',  )
+#     grupo_id = fields.Many2one('integrante.grupo.adjudicado.asamblea')
+#     grupo_cliente = fields.Many2one('grupo.adjudicado')
+#     nro_cuota_licitar = fields.Integer(string='Nro de Cuotas a Licitar',default=1)
+#     carta_licitacion = fields.Selection([('si', 'Si'), ('no', 'No')], default="si", string='Carta Licitación')
+#     carta_doc = fields.Binary(string='Carta Licitación')
 
 
 
 
-    dominio  = fields.Char(store=False, compute="_filtro_partner",readonly=True)
+#     dominio  = fields.Char(store=False, compute="_filtro_partner",readonly=True)
 
-    #@api.onchange('nro_cuota_licitar')
-    def ingresar_cuota(self):
-        if self.nro_cuota_licitar==0:
-            raise ValidationError("Por favor Ingrese el número de Cuotas.")
-
-
-
-    @api.depends('grupo_cliente')
-    def _filtro_partner(self):
-        numero_cuotas_pagadas_limite =  int(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.numero_cuotas_pagadas'))
-        for rec in self:
-
-            integrantes=rec.grupo_id.grupo_adjudicado_id.integrantes.filtered(lambda l: l.contrato_id.tipo_de_contrato.id==rec.grupo_id.tipo_contrato.id and l.contrato_id.numero_cuotas_pagadas>=numero_cuotas_pagadas_limite and l.contrato_id.state=='activo').mapped('adjudicado_id').ids
-            integrantes_res=rec.grupo_id.integrantes_g.mapped("adjudicado_id").ids
-            if len(integrantes)>0:
-                rec.dominio=json.dumps( [('id','in',integrantes),('id','not in',integrantes_res)] )
-            else:
-                rec.dominio=json.dumps([])
+#     #@api.onchange('nro_cuota_licitar')
+#     def ingresar_cuota(self):
+#         if self.nro_cuota_licitar==0:
+#             raise ValidationError("Por favor Ingrese el número de Cuotas.")
 
 
 
+#     @api.depends('grupo_cliente')
+#     def _filtro_partner(self):
+#         numero_cuotas_pagadas_limite =  int(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.numero_cuotas_pagadas'))
+#         for rec in self:
 
-class GanadoresAsamblea(models.Model):
-    _name = 'gana.grupo.adjudicado.asamblea.clientes'
-    _description = 'Ganadores de la Asamblea'
+#             integrantes=rec.grupo_id.grupo_adjudicado_id.integrantes.filtered(lambda l: l.contrato_id.tipo_de_contrato.id==rec.grupo_id.tipo_contrato.id and l.contrato_id.numero_cuotas_pagadas>=numero_cuotas_pagadas_limite and l.contrato_id.state=='activo').mapped('adjudicado_id').ids
+#             integrantes_res=rec.grupo_id.integrantes_g.mapped("adjudicado_id").ids
+#             if len(integrantes)>0:
+#                 rec.dominio=json.dumps( [('id','in',integrantes),('id','not in',integrantes_res)] )
+#             else:
+#                 rec.dominio=json.dumps([])
 
 
-    grupo_id = fields.Many2one('asamblea')
-    adjudicado_id = fields.Many2one('res.partner', string="Nombre")
-    contrato_id = fields.Many2one('contrato', string="Nombre")
-    fecha_antiguedad = fields.Datetime(related='contrato_id.create_date', string="Fecha de Antiguedad")
-    currency_id = fields.Many2one(
-        'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
 
-    monto_financiamiento = fields.Monetary(related='contrato_id.monto_financiamiento',string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
-    monto_adjudicar = fields.Float( string="Monto a Adjudicar")
-    grupo_adjudicado_id = fields.Many2one('grupo.adjudicado',string="Grupo")
-    puntos = fields.Integer(string='Nro de Cuotas a Licitar')
-    calificacion = fields.Integer(related='puntos',string='Calificación')
-    plazo_meses = fields.Many2one('numero.meses',related="contrato_id.plazo_meses")
-    cuota=fields.Float("Cuota")
-    cuota_capital=fields.Monetary("Cuota Capital", currency_field='currency_id',related="contrato_id.cuota_capital")
-    total_or=fields.Float("O.R",compute="calcular_cuotas")
-    nro_cuotas_adelantadas = fields.Integer(string='Cuotas Pagadas', related="contrato_id.numero_cuotas_pagadas")
-    total_cuotas = fields.Integer(string='Total de Cuotas',compute="calcular_cuotas")
-    currency_id = fields.Many2one(
-        'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
-    cuota_pago = fields.Integer( related="contrato_id.cuota_pago")
-    monto_programado = fields.Monetary(
-        string='Entrada', related="contrato_id.monto_programado", currency_field='currency_id')
 
-    @api.constrains('contrato_id')
-    def actualizar_monto_financiamiento(self):
-        self.cuota=self.contrato_id.cuota_adm+self.contrato_id.cuota_capital+self.contrato_id.iva_administrativo
-        self.cuota_adm=self.contrato_id.cuota_capital
-        self.monto_adjudicar=self.cuota*self.puntos
-        self.grupo_id.obtener_valores_contrato()
+# class GanadoresAsamblea(models.Model):
+#     _name = 'gana.grupo.adjudicado.asamblea.clientes'
+#     _description = 'Ganadores de la Asamblea'
 
-    @api.depends('contrato_id')
-    def calcular_cuotas(self):
-        for l in self:
-            l.total_cuotas=l.nro_cuotas_adelantadas+ l.puntos
-            l.total_or=l.cuota_capital*l.puntos
-            l.grupo_id.obtener_valores_contrato()
+
+#     grupo_id = fields.Many2one('asamblea')
+#     adjudicado_id = fields.Many2one('res.partner', string="Nombre")
+#     contrato_id = fields.Many2one('contrato', string="Nombre")
+#     fecha_antiguedad = fields.Datetime(related='contrato_id.create_date', string="Fecha de Antiguedad")
+#     currency_id = fields.Many2one(
+#         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
+
+#     monto_financiamiento = fields.Monetary(related='contrato_id.monto_financiamiento',string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
+#     monto_adjudicar = fields.Float( string="Monto a Adjudicar")
+#     grupo_adjudicado_id = fields.Many2one('grupo.adjudicado',string="Grupo")
+#     puntos = fields.Integer(string='Nro de Cuotas a Licitar')
+#     calificacion = fields.Integer(related='puntos',string='Calificación')
+#     plazo_meses = fields.Many2one('numero.meses',related="contrato_id.plazo_meses")
+#     cuota=fields.Float("Cuota")
+#     cuota_capital=fields.Monetary("Cuota Capital", currency_field='currency_id',related="contrato_id.cuota_capital")
+#     total_or=fields.Float("O.R",compute="calcular_cuotas")
+#     nro_cuotas_adelantadas = fields.Integer(string='Cuotas Pagadas', related="contrato_id.numero_cuotas_pagadas")
+#     total_cuotas = fields.Integer(string='Total de Cuotas',compute="calcular_cuotas")
+#     currency_id = fields.Many2one(
+#         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
+#     cuota_pago = fields.Integer( related="contrato_id.cuota_pago")
+#     monto_programado = fields.Monetary(
+#         string='Entrada', related="contrato_id.monto_programado", currency_field='currency_id')
+
+#     @api.constrains('contrato_id')
+#     def actualizar_monto_financiamiento(self):
+#         self.cuota=self.contrato_id.cuota_adm+self.contrato_id.cuota_capital+self.contrato_id.iva_administrativo
+#         self.cuota_adm=self.contrato_id.cuota_capital
+#         self.monto_adjudicar=self.cuota*self.puntos
+#         self.grupo_id.obtener_valores_contrato()
+
+#     @api.depends('contrato_id')
+#     def calcular_cuotas(self):
+#         for l in self:
+#             l.total_cuotas=l.nro_cuotas_adelantadas+ l.puntos
+#             l.total_or=l.cuota_capital*l.puntos
+#             l.grupo_id.obtener_valores_contrato()
 
 class JuntaGrupoAsamblea(models.Model):
     _name = 'junta.grupo.asamblea'
