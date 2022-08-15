@@ -55,6 +55,7 @@ class ParticipantesAsamblea(models.Model):
 
 
     @api.onchange("licitacion_valor")
+    @api.constrains("licitacion_valor")
     def obtener_cuotas_licitadas(self):
         cuotas_licitadas=0
         for l in self:
