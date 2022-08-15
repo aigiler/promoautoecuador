@@ -33,7 +33,7 @@ class ParticipantesAsamblea(models.Model):
         ('GANADOR', 'GANADOR'),
         ('SUPLENTE', 'SUPLENTE')]
         )
-    ejecutado=fields.Boolean(default=False)
+
     @api.onchange("seleccionado")
     def validar_asignación(self):
         for l in self:
@@ -110,7 +110,7 @@ class Asamblea(models.Model):
     fecha_fin = fields.Datetime(String='Fecha Fin',track_visibility='onchange')
     secuencia = fields.Char(index=True)
     grupo_cliente = fields.Many2one('grupo.adjudicado')
-
+    ejecutado=fields.Boolean(default=False)
     integrantes_licitacion_id=fields.One2many('participantes.asamblea.clientes', 'asamblea_id',track_visibility='onchange')
 
     integrantes_evaluacion_id=fields.One2many('participantes.evaluacion.asamblea.clientes', 'asamblea_id',track_visibility='onchange')
