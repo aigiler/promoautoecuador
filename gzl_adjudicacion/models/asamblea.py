@@ -212,7 +212,7 @@ class Asamblea(models.Model):
                 for suplente_eva in suplentes_eva:
                     suplente_eva.seleccionado=True
                     suplente_eva.nota="SUPLENTE"
-            ejecutado=True
+            l.ejecutado=True
             l.calcular_licitacion()
 
 
