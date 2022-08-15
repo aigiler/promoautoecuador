@@ -210,6 +210,7 @@ class Asamblea(models.Model):
 
     def calcular_licitacion(self):
         total=0
+        monto_financiamiento=0
         for l in self.integrantes_licitacion_id:
             if l.seleccionado:
                 total+=l.total_or
