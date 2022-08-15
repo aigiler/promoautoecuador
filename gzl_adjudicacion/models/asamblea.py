@@ -33,6 +33,7 @@ class ParticipantesAsamblea(models.Model):
         ('GANADOR', 'GANADOR'),
         ('SUPLENTE', 'SUPLENTE')]
         )
+    entrega_vehiculo_id = fields.Many2one('entrega.vehiculo',string="Solicitud de entrega vehículo" ,track_visibility='onchange')
 
     @api.onchange("seleccionado")
     def validar_asignación(self):
@@ -52,6 +53,19 @@ class ParticipantesAsamblea(models.Model):
                 cuota=l.contrato_id.cuota_adm+l.contrato_id.iva_administrativo+l.contrato_id.cuota_capital
             l.cuota=cuota
 
+
+
+    def iniciar_proceso(self):
+        entrega_vehiculo=self.env['entrega.vehiculo']
+        for l in self:
+            if not l.entrega_vehiculo_id:
+                rol_asignado=self.env.ref('gzl_adjudicacion.tipo_rol3')
+                entrega=entrega_vehiculo.create({'asamblea_id':l.asamblea_id.id,
+                                        'nombreSocioAdjudicado':l.adjudicado_id,
+                                        'rolAsignado':rol_asignado.id ,
+                                        'montoEnviadoAsamblea':l.monto_financiamiento})
+                l.contrato_id.entrega_vehiculo_id=entrega.id
+                l.entrega_vehiculo_id=entrega.id
 
 
     @api.onchange("licitacion_valor")
@@ -88,6 +102,20 @@ class ParticipantesEvaluaciónAsamblea(models.Model):
         ('GANADOR', 'GANADOR'),
         ('SUPLENTE', 'SUPLENTE')]
         )
+    entrega_vehiculo_id = fields.Many2one('entrega.vehiculo',string="Solicitud de entrega vehículo" ,track_visibility='onchange')
+
+
+    def iniciar_proceso(self):
+        entrega_vehiculo=self.env['entrega.vehiculo']
+        for l in self:
+            if not l.entrega_vehiculo_id:
+                rol_asignado=self.env.ref('gzl_adjudicacion.tipo_rol3')
+                entrega=entrega_vehiculo.create({'asamblea_id':l.asamblea_id.id,
+                                        'nombreSocioAdjudicado':l.adjudicado_id,
+                                        'rolAsignado':rol_asignado.id ,
+                                        'montoEnviadoAsamblea':l.monto_financiamiento})
+                l.contrato_id.entrega_vehiculo_id=entrega.id
+                l.entrega_vehiculo_id=entrega.id
 
     @api.onchange("seleccionado")
     def validar_asignación(self):
