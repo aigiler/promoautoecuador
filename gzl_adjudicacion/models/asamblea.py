@@ -31,6 +31,15 @@ class ParticipantesAsamblea(models.Model):
     seleccionado=fields.Boolean(string="Seleccionado", dafault=False)
     nota=fields.Char(string="Nota")
 
+    @api.onchange("seleccionado")
+    def validar_asignación(self):
+        for l in self:
+            if l.seleccionado:
+                pass
+            else:
+                l.nota=""
+        l.asamblea_id.calcular_licitacion()
+
     @api.onchange("contrato_id")
     @api.constrains("contrato_id")
     def obtener_valor_cuota(self):
@@ -39,6 +48,7 @@ class ParticipantesAsamblea(models.Model):
             if l.contrato_id:
                 cuota=l.contrato_id.cuota_adm+l.contrato_id.iva_administrativo+l.contrato_id.cuota_capital
             l.cuota=cuota
+
 
 
     @api.onchange("licitacion_valor")
@@ -73,7 +83,15 @@ class ParticipantesEvaluaciónAsamblea(models.Model):
     seleccionado=fields.Boolean(string="Seleccionado", dafault=False)
     nota=fields.Char(string="Nota")
 
-
+    @api.onchange("seleccionado")
+    def validar_asignación(self):
+        for l in self:
+            if l.seleccionado:
+                pass
+            else:
+                l.nota=""
+        l.asamblea_id.calcular_licitacion()
+        
 class Asamblea(models.Model):
     _name = 'asamblea'
     _description = 'Proceso de Asamblea'
@@ -98,6 +116,8 @@ class Asamblea(models.Model):
             ('pre_cierre', 'Pre cierre'),
             ('cerrado', 'Cerrado')
             ], string='Estado', copy=False, tracking=True, default='inicio',track_visibility='onchange')
+
+
 
 
     currency_id = fields.Many2one(
