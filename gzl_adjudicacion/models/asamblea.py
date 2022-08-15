@@ -29,7 +29,7 @@ class ParticipantesAsamblea(models.Model):
     cuota_capital=fields.Monetary("Cuota Capital", currency_field='currency_id',related="contrato_id.cuota_capital")
     total_or=fields.Float("O.R")
     seleccionado=fields.Boolean(string="Seleccionado", dafault=False)
-    nota=fields.Char(string="Nota",selection=[
+    nota=fields.Selection(string="Nota",selection=[
         ('GANADOR', 'GANADOR'),
         ('SUPLENTE', 'SUPLENTE')]
         )
@@ -84,7 +84,10 @@ class ParticipantesEvaluaciónAsamblea(models.Model):
     monto_financiamiento = fields.Monetary(related='contrato_id.monto_financiamiento',string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
     cuotas_pagadas=fields.Integer(related="contrato_id.numero_cuotas_pagadas",string="Cuotas Pagadas")
     seleccionado=fields.Boolean(string="Seleccionado", dafault=False)
-    nota=fields.Char(string="Nota")
+    nota=fields.Selection(string="Nota",selection=[
+        ('GANADOR', 'GANADOR'),
+        ('SUPLENTE', 'SUPLENTE')]
+        )
 
     @api.onchange("seleccionado")
     def validar_asignación(self):
@@ -245,7 +248,7 @@ class Asamblea(models.Model):
         self.invertir_licitacion=monto_financiamiento-total
         total_eva=0
         for x in self.integrantes_evaluacion_id:
-            if l.seleccionado:
+            if l.seleccionado and l.nota=='GANADOR':
                 total_eva+=l.monto_financiamiento
         self.evaluacion=total_eva
 
