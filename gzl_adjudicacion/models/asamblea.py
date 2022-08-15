@@ -269,9 +269,9 @@ class Asamblea(models.Model):
 
 
 
-    # def cambio_estado_boton_precierre(self):
-    #     self.write({"state": "pre_cierre"})
-    #     if self.tipo_asamblea.code in ['ahorro']:
+    def cambio_estado_boton_precierre(self):
+        self.write({"state": "pre_cierre"})
+    #    if self.tipo_asamblea.code in ['ahorro']:
     #         listaGanadores=[]
     #         for grupo in self.integrantes:
     #             for integrante in grupo.integrantes_g:
