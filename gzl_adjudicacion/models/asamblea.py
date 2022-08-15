@@ -9,6 +9,9 @@ class ParticipantesAsamblea(models.Model):
     _name = 'participantes.asamblea.clientes'
     _description = 'Participantes de la Asamblea'
     
+
+    currency_id = fields.Many2one(
+        'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)    
     asamblea_id = fields.Many2one('asamblea')
     grupo_cliente = fields.Many2one('grupo.adjudicado',related="asamblea_id.grupo_cliente")
     contrato_id = fields.Many2one('contrato', string="Contrato")
