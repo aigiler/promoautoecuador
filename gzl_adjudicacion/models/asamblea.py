@@ -438,13 +438,13 @@ class Asamblea(models.Model):
 #         self.integrantes_g=()
 
 
-# class IntegrantesGrupoAsamblea(models.Model):
-#     _name = 'integrante.grupo.adjudicado.asamblea.clientes'
-#     _description = 'Integrantes de Grupo Participante en asamblea'
+class IntegrantesGrupoAsamblea(models.Model):
+    _name = 'integrante.grupo.adjudicado.asamblea.clientes'
+    _description = 'Integrantes de Grupo Participante en asamblea'
   
 
 
-#     adjudicado_id = fields.Many2one('res.partner', string="Nombre")
+    adjudicado_id = fields.Many2one('res.partner', string="Nombre")
 #     descripcion=fields.Char('Descripcion',  )
 #     grupo_id = fields.Many2one('integrante.grupo.adjudicado.asamblea')
 #     grupo_cliente = fields.Many2one('grupo.adjudicado')
