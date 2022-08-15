@@ -132,6 +132,8 @@ class Asamblea(models.Model):
                     ganadores.seleccionado=True
                 numero_suplentes=int(parametros_licitacion.numero_suplentes)
                 suplentes=self.env['participantes.asamblea.clientes'].search([('cuotas_licitadas','>',0),('seleccionado','=',False)],order='total_cuotas desc', limit=numero_suplentes)
+                for x in suplentes:
+                    suplentes.seleccionado=True
             if parametros_evaluacion:
                 numero_ganadores=int(parametros_evaluacion.numero_ganadores)
                 ganadores=self.env['participantes.evaluacion.asamblea.clientes'].search([('cuotas_pagadas','>',0)],order='cuotas_pagadas desc', limit=numero_ganadores)
