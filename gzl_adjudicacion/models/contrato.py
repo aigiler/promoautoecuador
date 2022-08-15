@@ -608,12 +608,15 @@ class Contrato(models.Model):
     def reactivar_contrato_congelado(self):
         obj_fecha_congelamiento=self.env['contrato.congelamiento'].search([('contrato_id','=',self.id),('pendiente','=',True)],limit=1)
 
+
         if obj_fecha_congelamiento:
             hoy=date.today()
 
             fecha_reactivacion="%s-%s-%s" % (hoy.year, hoy.month,(calendar.monthrange(hoy.year, hoy.month)[1]))
             fecha_reactivacion = datetime.strptime(fecha_reactivacion, '%Y-%m-%d').date()
+
             detalle_estado_cuenta_pendiente=self.tabla_amortizacion.filtered(lambda l:  l.fecha>=obj_fecha_congelamiento.fecha  and l.fecha<fecha_reactivacion)
+
             i=0
             for detalle in detalle_estado_cuenta_pendiente:
                 i+=1
