@@ -35,5 +35,37 @@
         parent="menu_configuracion_adjudicaciones" sequence="5"  />
 
 
+    <record id="view_tipo_asamblea_tree" model= "ir.ui.view">
+        <field name="name">view.tipo.asamblea.tree</field>
+        <field name="model">tipo.asamblea</field>
+        <field name="arch" type="xml">
+            <tree string="Tipo de Asamblea" editable="top">
+                <field name="name" />
+                <field name="numero_ganadores" />
+                <field name="numero_suplentes" />
+
+
+                
+
+                <field name="active" />
+            </tree>
+        </field>
+    </record>
+
+    
+
+    <record id="action_tipo_asamblea" model="ir.actions.act_window">
+        <field name="name">Tipo de Asamblea</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">tipo.asamblea</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{}</field>
+    </record>
+
+
+
+     <menuitem id="menu_tipo_asamblea" action="action_tipo_asamblea" 
+        parent="menu_configuracion_adjudicaciones" sequence="5"  />
+
 
 </odoo>
