@@ -81,7 +81,7 @@
                                         <field name="seleccionado" readonly="0"/>
                                         <field name="nota" readonly="0"/>
                                         <field name="entrega_vehiculo_id" readonly="1"/>
-                                        <button name="iniciar_proceso" string="Iniciar Proceso" attrs="{'invisible': [('entrega_vehiculo_id', '!=', False)]}" type="object" class="oe_highlight"/>
+                                        <button name="iniciar_proceso" string="Iniciar Proceso" attrs="{'invisible': ['|',('entrega_vehiculo_id', '!=', False),('seleccionado','=',False)]}" type="object" class="oe_highlight"/>
                                         
 
                                     </tree>
@@ -103,7 +103,7 @@
                                         <field name="seleccionado" readonly="0"/>
                                         <field name="nota" readonly="0"/>
                                         <field name="entrega_vehiculo_id" readonly="1"/>
-                                        <button name="iniciar_proceso" string="Iniciar Proceso" attrs="{'invisible': [('entrega_vehiculo_id', '!=', False)]}" type="object" class="oe_highlight"/>
+                                        <button name="iniciar_proceso" string="Iniciar Proceso" attrs="{'invisible': ['|',('entrega_vehiculo_id', '!=', False),('seleccionado','=',False)]}" type="object" class="oe_highlight"/>
 
                                     
 
