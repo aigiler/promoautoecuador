@@ -92,6 +92,9 @@
                                         <field name="cuotas_licitadas" invisible="0"/>
                                         <field name="cuotas_pagadas" invisible="0"/>
                                         <field name="total_cuotas" invisible="0"/>
+                                        <field name="cuota_capital" invisible="0"/>
+                                        <field name="total_or" invisible="0"/>
+                                        <field name="seleccionado" invisible="0"/>
 
                                     </tree>
                                 </field>
@@ -109,6 +112,8 @@
                                         <field name="adjudicado_id" invisible="0"/>
                                         <field name="monto_financiamiento" invisible="0"/>
                                         <field name="cuotas_pagadas" invisible="0"/>
+                                        <field name="seleccionado" invisible="0"/>
+
                                     
 
                                     </tree>
@@ -117,23 +122,7 @@
                             </page>
 
 
-                            <page string="ASAMBLEA" >
-                        <separator class="text-center" string="EVALUACIÓN"/>
-
-                            <group>
-                                <field name="integrantes_evaluacion_id" nolabel="1" attrs="{'readonly': [('state', '=', 'cerrado')]}">
-                                    <tree string="Evaluación" editable="top">
-                                        <field name="grupo_cliente" invisible="0"/>
-                                        <field name="contrato_id" invisible="0"/>
-                                        <field name="adjudicado_id" invisible="0"/>
-                                        <field name="monto_financiamiento" invisible="0"/>
-                                        <field name="cuotas_pagadas" invisible="0"/>
-                                    
-
-                                    </tree>
-                                </field>
-                            </group>
-                            </page>
+    
 
 
 
@@ -148,7 +137,7 @@
 
 
 
-
+<!-- 
                             <group attrs="{'readonly': [('state', '=', 'cerrado')],'invisible': [('state', 'not in', ['pre_cierre','cerrado'])]}">
                                 <field name="ganadores" nolabel="1" attrs="{'readonly': [('state', '=', 'cerrado')]}">
                                     <tree string="Ganadores" editable="top">
@@ -181,7 +170,7 @@
                                 </field>
                             </group>
 
-
+ -->
 
 
                         <group  >

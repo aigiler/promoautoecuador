@@ -47,6 +47,7 @@ class ParticipantesAsamblea(models.Model):
             if l.licitacion_valor and l.cuota:
                 cuotas_licitadas=l.licitacion_valor/l.cuota
             l.cuotas_licitadas=cuotas_licitadas
+            l.total_or=cuotas_licitadas*l.cuota_capital
 
     @api.onchange("cuotas_licitadas","cuotas_pagadas")
     @api.constrains("cuotas_licitadas","cuotas_pagadas")
@@ -135,11 +136,11 @@ class Asamblea(models.Model):
             if parametros_evaluacion:
                 numero_ganadores=int(parametros_evaluacion.numero_ganadores)
                 x = range(numero_ganadores)
-                ganadores=self.env['participantes.evaluacion.asamblea.clientes'].search([('cuotas_pagadas','>',0)],order='total_cuotas desc', limit=numero_ganadores)
+                ganadores=self.env['participantes.evaluacion.asamblea.clientes'].search([('cuotas_pagadas','>',0)],order='cuotas_pagadas desc', limit=numero_ganadores)
                 for x in ganadores:
                     ganadores.seleccionado=True
                 numero_suplentes=int(parametros_evaluacion.numero_suplentes)
-                suplentes=self.env['participantes.evaluacion.asamblea.clientes'].search([('cuotas_pagadas','>',0),('seleccionado','=',False)],order='total_cuotas desc', limit=numero_suplentes)
+                suplentes=self.env['participantes.evaluacion.asamblea.clientes'].search([('cuotas_pagadas','>',0),('seleccionado','=',False)],order='cuotas_pagadas desc', limit=numero_suplentes)
             
 
 
@@ -198,30 +199,30 @@ class Asamblea(models.Model):
             l.adjudicados=adjudicados
 
 
-    @api.constrains('ganadores')
-    @api.onchange('ganadores')
-    @api.depends('ganadores')
-    def obtener_valores_contrato(self):
-        for l in self:
-            monto_financiamiento=0
-            licitaciones=0
-            invertir_licitacion=0
-            evaluacion=0
-            programo=0
-            for x in l.ganadores:
-                if l.codigo_tipo_contrato=='ahorro':
-                    monto_financiamiento+=x.monto_financiamiento
-                    licitaciones+=x.total_or
-                    invertir_licitacion=monto_financiamiento-licitaciones
-                elif l.codigo_tipo_contrato=='evaluacion':
-                    evaluacion+=x.monto_financiamiento
-                elif l.codigo_tipo_contrato=='programo':
-                    programo+=(x.monto_financiamiento-x.monto_programado)
-            l.monto_financiamiento=monto_financiamiento
-            l.licitaciones=licitaciones
-            l.invertir_licitacion=invertir_licitacion
-            l.evaluacion=evaluacion
-            l.programo=programo
+    # @api.constrains('ganadores')
+    # @api.onchange('ganadores')
+    # @api.depends('ganadores')
+    # def obtener_valores_contrato(self):
+    #     for l in self:
+    #         monto_financiamiento=0
+    #         licitaciones=0
+    #         invertir_licitacion=0
+    #         evaluacion=0
+    #         programo=0
+    #         for x in l.ganadores:
+    #             if l.codigo_tipo_contrato=='ahorro':
+    #                 monto_financiamiento+=x.monto_financiamiento
+    #                 licitaciones+=x.total_or
+    #                 invertir_licitacion=monto_financiamiento-licitaciones
+    #             elif l.codigo_tipo_contrato=='evaluacion':
+    #                 evaluacion+=x.monto_financiamiento
+    #             elif l.codigo_tipo_contrato=='programo':
+    #                 programo+=(x.monto_financiamiento-x.monto_programado)
+    #         l.monto_financiamiento=monto_financiamiento
+    #         l.licitaciones=licitaciones
+    #         l.invertir_licitacion=invertir_licitacion
+    #         l.evaluacion=evaluacion
+    #         l.programo=programo
 
 
 
@@ -326,44 +327,44 @@ class Asamblea(models.Model):
 
 
 
-    def cambio_estado_boton_cerrado(self):
-        entrega_vehiculo=self.env['entrega.vehiculo']
-        listaGanadores=[]
+    # def cambio_estado_boton_cerrado(self):
+    #     entrega_vehiculo=self.env['entrega.vehiculo']
+    #     listaGanadores=[]
 
 
-        for l in self.ganadores:
-            dct={}
-            dct['adjudicado_id']=l.adjudicado_id.id
-            dct['puntos']=l.puntos
-            dct['contrato_id']=l.contrato_id.id
-            dct['monto']=l.monto_adjudicar
-            listaGanadores.append(dct)
+    #     for l in self.ganadores:
+    #         dct={}
+    #         dct['adjudicado_id']=l.adjudicado_id.id
+    #         dct['puntos']=l.puntos
+    #         dct['contrato_id']=l.contrato_id.id
+    #         dct['monto']=l.monto_adjudicar
+    #         listaGanadores.append(dct)
 
-        listaGanadores=sorted(listaGanadores, key=lambda k : k['puntos'],reverse=True) 
-        numero_ganadores=self.tipo_asamblea.numero_ganadores
+    #     listaGanadores=sorted(listaGanadores, key=lambda k : k['puntos'],reverse=True) 
+    #     numero_ganadores=self.tipo_asamblea.numero_ganadores
 
-        for l in  listaGanadores[:numero_ganadores]:
-            rol_asignado=self.env.ref('gzl_adjudicacion.tipo_rol3')
-            entrega=entrega_vehiculo.create({'asamblea_id':self.id,'nombreSocioAdjudicado':l['adjudicado_id'],'rolAsignado':rol_asignado.id ,'montoEnviadoAsamblea':l['monto']  })
+    #     for l in  listaGanadores[:numero_ganadores]:
+    #         rol_asignado=self.env.ref('gzl_adjudicacion.tipo_rol3')
+    #         entrega=entrega_vehiculo.create({'asamblea_id':self.id,'nombreSocioAdjudicado':l['adjudicado_id'],'rolAsignado':rol_asignado.id ,'montoEnviadoAsamblea':l['monto']  })
 
-            transacciones=self.env['transaccion.grupo.adjudicado']
-            contrato_id=self.env['contrato'].browse(l['contrato_id'])
+    #         transacciones=self.env['transaccion.grupo.adjudicado']
+    #         contrato_id=self.env['contrato'].browse(l['contrato_id'])
 
-            contrato_id.entrega_vehiculo=entrega.id
+    #         contrato_id.entrega_vehiculo=entrega.id
 
-            dct={
-            'grupo_id':contrato_id.grupo.id,
-            'debe':l['monto'],
-            'adjudicado_id':l['adjudicado_id'],
-            'contrato_id':l['contrato_id'],
-            'state':contrato_id.state
-            }
-
-
-            transacciones.create(dct)
+    #         dct={
+    #         'grupo_id':contrato_id.grupo.id,
+    #         'debe':l['monto'],
+    #         'adjudicado_id':l['adjudicado_id'],
+    #         'contrato_id':l['contrato_id'],
+    #         'state':contrato_id.state
+    #         }
 
 
-        self.write({"state": "cerrado"})
+    #         transacciones.create(dct)
+
+
+    #     self.write({"state": "cerrado"})
 
 
 
