@@ -7,7 +7,6 @@
         <field name="arch" type="xml">
             <tree string="Asamblea">
                 <field name="secuencia" />
-                <field name="tipo_asamblea"/>
                 <field name="descripcion" />
                 <field name="state" />
                 <field name="active"/>
