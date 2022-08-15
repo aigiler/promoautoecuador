@@ -98,7 +98,7 @@ class Asamblea(models.Model):
                     if x.tipo_de_contrato.name=='Evaluación':
                         tupla={
                            'contrato_id': x.id,}
-                    lista_evaluacion.append(tupla)
+                        lista_evaluacion.append(tupla)
             lista_evaluacion_ids=[]
             lista_licitacion_ids=[]
             for prueba in lista_evaluacion:
