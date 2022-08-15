@@ -103,11 +103,11 @@ class Asamblea(models.Model):
             lista_licitacion_ids=[]
             for prueba in lista_evaluacion:
                 id_registro=self.env['participantes.evaluacion.asamblea.clientes'].create(prueba) 
-                lista_evaluacion_ids.append(id_registro)
+                lista_evaluacion_ids.append(id_registro.id)
                 self.update({'integrantes_evaluacion_id':[(6,0,lista_evaluacion_ids)]}) 
             for prueba in lista_licitacion:
                 id_registro=self.env['participantes.asamblea.clientes'].create(prueba) 
-                lista_licitacion_ids.append(id_registro)
+                lista_licitacion_ids.append(id_registro.id)
                 self.update({'integrantes_evaluacion_id':[(6,0,lista_licitacion_ids)]}) 
 
 
