@@ -192,23 +192,23 @@ class Asamblea(models.Model):
             parametros_evaluacion=self.env['tipo.asamblea'].search([('name','=','evaluacion')],limit=1)
             if parametros_licitacion:
                 numero_ganadores=int(parametros_licitacion.numero_ganadores)
-                ganadores=self.env['participantes.asamblea.clientes'].search([('cuotas_licitadas','>',0),('seleccionado','=',False)],order='total_cuotas desc', limit=numero_ganadores)
+                ganadores=self.env['participantes.asamblea.clientes'].search([('asamblea_id','=',self.id),('cuotas_licitadas','>',0),('seleccionado','=',False)],order='total_cuotas desc', limit=numero_ganadores)
                 for ganador in ganadores:
                     ganador.seleccionado=True
                     ganador.nota="GANADOR"
                 numero_suplentes=int(parametros_licitacion.numero_suplentes)
-                suplentes=self.env['participantes.asamblea.clientes'].search([('cuotas_licitadas','>',0),('seleccionado','=',False)],order='total_cuotas desc', limit=numero_suplentes)
+                suplentes=self.env['participantes.asamblea.clientes'].search([('asamblea_id','=',self.id),('cuotas_licitadas','>',0),('seleccionado','=',False)],order='total_cuotas desc', limit=numero_suplentes)
                 for suplente in suplentes:
                     suplente.seleccionado=True
                     suplente.nota="SUPLENTE"
             if parametros_evaluacion:
                 numero_ganadores_eva=int(parametros_evaluacion.numero_ganadores)
-                ganadores_eva=self.env['participantes.evaluacion.asamblea.clientes'].search([('cuotas_pagadas','>',0),('seleccionado','=',False)],order='cuotas_pagadas desc', limit=numero_ganadores_eva)
+                ganadores_eva=self.env['participantes.evaluacion.asamblea.clientes'].search([('asamblea_id','=',self.id),('cuotas_pagadas','>',0),('seleccionado','=',False)],order='cuotas_pagadas desc', limit=numero_ganadores_eva)
                 for ganador_eva in ganadores_eva:
                     ganador_eva.seleccionado=True
                     ganador_eva.nota="GANADOR"
                 numero_suplentes_eva=int(parametros_evaluacion.numero_suplentes)
-                suplentes_eva=self.env['participantes.evaluacion.asamblea.clientes'].search([('cuotas_pagadas','>',0),('seleccionado','=',False)],order='cuotas_pagadas desc', limit=numero_suplentes_eva)
+                suplentes_eva=self.env['participantes.evaluacion.asamblea.clientes'].search([('asamblea_id','=',self.id),('cuotas_pagadas','>',0),('seleccionado','=',False)],order='cuotas_pagadas desc', limit=numero_suplentes_eva)
                 for suplente_eva in suplentes_eva:
                     suplente_eva.seleccionado=True
                     suplente_eva.nota="SUPLENTE"
