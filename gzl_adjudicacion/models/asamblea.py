@@ -183,7 +183,7 @@ class Asamblea(models.Model):
                 for suplente in suplentes:
                     suplente.seleccionado=True
                     suplente.nota="SUPLENTE"
-            l.asamblea_id.calcular_licitacion()
+            l.calcular_licitacion()
 
 
     @api.constrains("grupo_cliente")
