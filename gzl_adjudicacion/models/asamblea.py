@@ -27,7 +27,7 @@ class ParticipantesAsamblea(models.Model):
     cuotas_pagadas=fields.Integer(related="contrato_id.numero_cuotas_pagadas",string="Cuotas Pagadas")
     total_cuotas=fields.Integer("Total")
     cuota_capital=fields.Monetary("Cuota Capital", currency_field='currency_id',related="contrato_id.cuota_capital")
-    total_or=fields.Float("O.R",compute="calcular_cuotas")
+    total_or=fields.Float("O.R")
     seleccionado=fields.Boolean(string="Seleccionado", dafault=False)
 
     @api.depends("contrato_id")
