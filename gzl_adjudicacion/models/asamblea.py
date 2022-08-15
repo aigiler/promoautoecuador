@@ -29,7 +29,10 @@ class ParticipantesAsamblea(models.Model):
     cuota_capital=fields.Monetary("Cuota Capital", currency_field='currency_id',related="contrato_id.cuota_capital")
     total_or=fields.Float("O.R")
     seleccionado=fields.Boolean(string="Seleccionado", dafault=False)
-    nota=fields.Char(string="Nota")
+    nota=fields.Char(string="Nota",selection=[
+        ('GANADOR', 'GANADOR'),
+        ('SUPLENTE', 'SUPLENTE')]
+        )
 
     @api.onchange("seleccionado")
     def validar_asignación(self):
@@ -235,7 +238,7 @@ class Asamblea(models.Model):
         total=0
         monto_financiamiento=0
         for l in self.integrantes_licitacion_id:
-            if l.seleccionado:
+            if l.seleccionado and l.nota=='GANADOR':
                 total+=l.total_or
                 monto_financiamiento+=l.monto_financiamiento
         self.licitaciones=total
