@@ -91,7 +91,7 @@ class ParticipantesEvaluaciónAsamblea(models.Model):
             else:
                 l.nota=""
         l.asamblea_id.calcular_licitacion()
-        
+
 class Asamblea(models.Model):
     _name = 'asamblea'
     _description = 'Proceso de Asamblea'
@@ -193,16 +193,16 @@ class Asamblea(models.Model):
                     suplente.seleccionado=True
                     suplente.nota="SUPLENTE"
             if parametros_evaluacion:
-                numero_ganadores=int(parametros_evaluacion.numero_ganadores)
-                ganadores=self.env['participantes.evaluacion.asamblea.clientes'].search([('cuotas_pagadas','>',0),('seleccionado','=',False)],order='cuotas_pagadas desc', limit=numero_ganadores)
-                for ganador in ganadores:
-                    ganador.seleccionado=True
-                    ganador.nota="GANADOR"
-                numero_suplentes=int(parametros_evaluacion.numero_suplentes)
-                suplentes=self.env['participantes.evaluacion.asamblea.clientes'].search([('cuotas_pagadas','>',0),('seleccionado','=',False)],order='cuotas_pagadas desc', limit=numero_suplentes)
-                for suplente in suplentes:
-                    suplente.seleccionado=True
-                    suplente.nota="SUPLENTE"
+                numero_ganadores_eva=int(parametros_evaluacion.numero_ganadores)
+                ganadores_eva=self.env['participantes.evaluacion.asamblea.clientes'].search([('cuotas_pagadas','>',0),('seleccionado','=',False)],order='cuotas_pagadas desc', limit=numero_ganadores_eva)
+                for ganador_eva in ganadores_eva:
+                    ganador_eva.seleccionado=True
+                    ganador_eva.nota="GANADOR"
+                numero_suplentes_eva=int(parametros_evaluacion.numero_suplentes)
+                suplentes_eva=self.env['participantes.evaluacion.asamblea.clientes'].search([('cuotas_pagadas','>',0),('seleccionado','=',False)],order='cuotas_pagadas desc', limit=numero_suplentes_eva)
+                for suplente_eva in suplentes_eva:
+                    suplente_eva.seleccionado=True
+                    suplente_eva.nota="SUPLENTE"
             l.calcular_licitacion()
 
 
