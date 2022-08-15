@@ -388,9 +388,9 @@ class Asamblea(models.Model):
 
 
 
-    # def cambio_estado_boton_cerrado(self):
-    #     entrega_vehiculo=self.env['entrega.vehiculo']
-    #     listaGanadores=[]
+    def cambio_estado_boton_cerrado(self):
+    #    entrega_vehiculo=self.env['entrega.vehiculo']
+    #    listaGanadores=[]
 
 
     #     for l in self.ganadores:
@@ -425,7 +425,7 @@ class Asamblea(models.Model):
     #         transacciones.create(dct)
 
 
-    #     self.write({"state": "cerrado"})
+        self.write({"state": "cerrado"})
 
 
 

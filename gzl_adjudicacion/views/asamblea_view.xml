@@ -22,7 +22,7 @@
                 <header>
                     <button name="cambio_estado_boton_precierre" string="Pre cierre" type="object" states="inicio" class="oe_highlight"/>
                     <button name="cambio_estado_boton_cerrado" string="Cerrado" attrs="{'invisible': [('ejecutado', '=', False)]}" type="object" states="pre_cierre" class="oe_highlight"/>
-                    <button name="obtener_ganadores_suplentes" attrs="{'invisible': [('ejecutado', '=', True)]}" string="Ganadores/Suplentes" states="pre_cierre" type="object" class="oe_highlight"/>
+                    <button name="obtener_ganadores_suplentes" attrs="{'invisible': ['|',('ejecutado', '=', True),('state','!=','pre_cierre')]}" string="Ganadores/Suplentes" type="object" class="oe_highlight"/>
 
 
                     <field name="state" widget="statusbar" statusbar_visible="inicio,pre_cierre,cerrado"/>
