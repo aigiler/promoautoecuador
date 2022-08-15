@@ -144,7 +144,6 @@ class Asamblea(models.Model):
             
 
 
-
     integrantes = fields.One2many(
         'integrante.grupo.adjudicado.asamblea', 'asamblea_id',track_visibility='onchange')
     # integrantes = fields.Many2many('integrante.grupo.adjudicado')
