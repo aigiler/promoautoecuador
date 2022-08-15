@@ -127,7 +127,6 @@ class Asamblea(models.Model):
             parametros_evaluacion=self.env['tipo.asamblea'].search([('name','=','evaluacion')],limit=1)
             if parametros_licitacion:
                 numero_ganadores=int(parametros_licitacion.numero_ganadores)
-                x = range(numero_ganadores)
                 ganadores=self.env['participantes.asamblea.clientes'].search([('cuotas_licitadas','>',0)],order='total_cuotas desc', limit=numero_ganadores)
                 for x in ganadores:
                     ganadores.seleccionado=True
@@ -135,7 +134,6 @@ class Asamblea(models.Model):
                 suplentes=self.env['participantes.asamblea.clientes'].search([('cuotas_licitadas','>',0),('seleccionado','=',False)],order='total_cuotas desc', limit=numero_suplentes)
             if parametros_evaluacion:
                 numero_ganadores=int(parametros_evaluacion.numero_ganadores)
-                x = range(numero_ganadores)
                 ganadores=self.env['participantes.evaluacion.asamblea.clientes'].search([('cuotas_pagadas','>',0)],order='cuotas_pagadas desc', limit=numero_ganadores)
                 for x in ganadores:
                     ganadores.seleccionado=True
