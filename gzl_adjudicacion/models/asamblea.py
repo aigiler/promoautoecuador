@@ -90,26 +90,24 @@ class Asamblea(models.Model):
             if l.grupo_cliente:
                 contratos_ids=self.env["contrato"].search([('en_mora','=',False),('state','=','activo'),('grupo','=',self.grupo_cliente.id)],order='numero_cuotas_pagadas desc')
                 for x in contratos_ids:
-                    id_contrato=self.env['contrato'].browse(int(x))
                     
-                    tupla=(0, 0, {
-                           'contrato_id': id_contrato.id,
-                          })
+                    tupla={
+                           'contrato_id': x.id,
+                          }
                     lista_licitacion.append(tupla)
                     if x.tipo_de_contrato.name=='Evaluación':
-                        tupla=(0, 0, {
-                           'contrato_id': id_contrato.id,
-                                                     })
+                        tupla={
+                           'contrato_id': x.id,}
                     lista_evaluacion.append(tupla)
             lista_evaluacion_ids=[]
             lista_licitacion_ids=[]
             for prueba in lista_evaluacion:
                 id_registro=self.env['participantes.evaluacion.asamblea.clientes'].create(prueba) 
-                lista_evaluacion_ids.append(int(id_registro))
+                lista_evaluacion_ids.append(id_registro)
                 self.update({'integrantes_evaluacion_id':[(6,0,lista_evaluacion_ids)]}) 
             for prueba in lista_licitacion:
                 id_registro=self.env['participantes.asamblea.clientes'].create(prueba) 
-                lista_licitacion_ids.append(int(id_registro))
+                lista_licitacion_ids.append(id_registro)
                 self.update({'integrantes_evaluacion_id':[(6,0,lista_licitacion_ids)]}) 
 
 
