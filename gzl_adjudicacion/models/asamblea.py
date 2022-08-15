@@ -32,7 +32,7 @@ class ParticipantesAsamblea(models.Model):
         cuota=0
         for l in self:
             if l.contrato_id:
-                cuota=l.contrato_id.cuota_adm+l.contrato_id.iva_adm+l.contrato_id.cuota_capital
+                cuota=l.contrato_id.cuota_adm+l.contrato_id.iva_administrativo+l.contrato_id.cuota_capital
             self.cuota=cuota
 
 
