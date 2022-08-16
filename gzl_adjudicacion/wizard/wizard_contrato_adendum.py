@@ -224,7 +224,7 @@ class WizardContratoAdendum(models.Model):
                                                         #'saldo_cuota_capital':cuota_capital,
                                                         #'saldo_cuota_administrativa':cuota_adm,
                                                         #'saldo_iva':iva,
-                                                        'procesado': False  
+                                                        'procesado': False,
                                                         'adendum_id':self.id,                                      
                                                             })
                    

@@ -34,6 +34,7 @@
                     </group>
                 </sheet>
                 <footer>
+                    <button string="Ver Tabla" class="oe_highlight" type="object" name="validar_tabla"/>
                     <button string="Ejecutar Cambio" class="oe_highlight" type="object" name="ejecutar_cambio"/><!-- attrs="{'invisible': [('ejecutado', '=', True)]}"/-->
                     <button string="Cancelar" special="cancel"/>
                 </footer>
