@@ -32,6 +32,11 @@
                                             <label string="Porcentaje permitido" for="numero_cuotas_pagadas" class="col-lg-3 o_light_label"/>
                                             <field name="porcentaje_perm_adendum" />
                                         </div>
+
+                                        <div class="row">
+                                            <label string="Porcentaje permitido" for="numero_cuotas_pagadas" class="col-lg-3 o_light_label"/>
+                                            <field name="porcentaje_perm_adendum_postventa" />
+                                        </div>
                                         
                                         <div class="row">
                                             <label string="Configurar Texto informativo" for="configuracion_adicional" class="col-lg-3 o_light_label"/>

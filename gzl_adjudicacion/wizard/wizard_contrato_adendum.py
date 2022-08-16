@@ -62,6 +62,16 @@ class WizardContratoAdendum(models.Model):
 
     tabla_adendum_id=fields.One2many("tabla.adendum","adendum_id", track_visibility='onchange')
 
+    rolAdjudicacion = fields.Many2one('adjudicaciones.team', string="Rol Adjudicacion", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol2'))
+    rolpostventa = fields.Many2one('adjudicaciones.team', string="Rol Post venta", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol5'))
+
+    state = fields.Selection(selection=[
+            ('inicio', 'Ingreso de Solicitud'),
+            ('aprobacion', 'En Proceso de Aprobación'),
+            ('procesado', 'Procesado')
+            ], string='Estado', copy=False, tracking=True, default='inicio',track_visibility='onchange')
+
+
     @api.depends('monto_financiamiento')
     def calcular_cuota(self):
         for l in self:
@@ -74,6 +84,7 @@ class WizardContratoAdendum(models.Model):
 
 
     def validar_tabla(self,):
+
 
         if self.monto_financiamiento and self.plazo_meses:
             pagos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado')
@@ -108,7 +119,11 @@ class WizardContratoAdendum(models.Model):
 
 
             entrada=False
+            #if self.env.user.id == self.rolpostventa.user_id.id:
             porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
+            #if self.env.user.id == self.rolAdjudicacion.user_id.id:
+            #    porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
+
             valor_porcentaje = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum)/100
             valor_menos_porc = self.contrato_id.monto_financiamiento - valor_porcentaje
             valor_mayor_porc = self.contrato_id.monto_financiamiento + valor_porcentaje
@@ -481,6 +496,13 @@ class WizardContratoAdendum(models.Model):
 
 
     def ejecutar_cambio(self,):
+        if self.env.user.id == self.rolpostventa.user_id.id:
+            porcentaje_perm_adendum_postventa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
+            valor_porcentaje_post = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum)/100
+            valor_menos_porc_post = self.contrato_id.monto_financiamiento - valor_porcentaje_post
+            if self.monto_financiamiento < valor_menos_porc_post:
+                self.state="aprobacion"
+                return True
 
         if   self.contrato_id.ejecutado:
             raise ValidationError("El contrato solo puede realizar un adendum")
@@ -542,7 +564,12 @@ class WizardContratoAdendum(models.Model):
 
 
             entrada=False
-            porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
+            if self.env.user.id == self.rolpostventa.user_id.id:
+                porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
+            if self.env.user.id == self.rolAdjudicacion.user_id.id:
+                porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
+
+            #porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
             valor_porcentaje = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum)/100
             valor_menos_porc = self.contrato_id.monto_financiamiento - valor_porcentaje
             valor_mayor_porc = self.contrato_id.monto_financiamiento + valor_porcentaje
