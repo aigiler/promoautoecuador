@@ -568,10 +568,11 @@ class WizardContratoAdendum(models.Model):
 
 
             entrada=False
+            rolAdjudicacion
             if self.env.user.id == self.rolpostventa.user_id.id:
-                porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
-            if self.env.user.id == self.rolAdjudicacion.user_id.id:
                 porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
+            if self.env.user.id == self.rolAdjudicacion.user_id.id:
+                porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
 
             #porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
             valor_porcentaje = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum)/100
