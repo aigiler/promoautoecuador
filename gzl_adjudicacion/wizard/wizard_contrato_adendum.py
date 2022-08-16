@@ -95,16 +95,8 @@ class WizardContratoAdendum(models.Model):
     def validar_tabla(self,):
 
 
-        monto_minimo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_minimo'))
 
-        monto_maximo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_maximo'))
-        if self.monto_financiamiento <monto_minimo or self.monto_financiamiento>monto_maximo:
-            if self.env.user.id == self.rolpostventa.user_id.id or self.env.user.id == self.rolAdjudicacion.user_id.id:
-                self.nota="El valor del nuevo financiamiento el valor minimo o maximo permitido"
-
-            elif self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
-                raise ValidationError("No tiene permiso para realizar esta acción")
-
+        
         lista_tabla=[]
         if self.monto_financiamiento and self.plazo_meses:
             pagos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado')
@@ -151,7 +143,7 @@ class WizardContratoAdendum(models.Model):
 
             # el monto de financiamiento nuevo debe ser menos o mas el 30% del monto de financiamiento q ya estaba
             if self.monto_financiamiento >= valor_menos_porc and self.monto_financiamiento <= valor_mayor_porc : 
-                self.nota=""
+                self.nota=False
                 pass
             else:
                 porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
@@ -162,7 +154,17 @@ class WizardContratoAdendum(models.Model):
                     pass
                 else:
                     raise ValidationError("No tienes permiso para ejecutar esta acción")
+            monto_minimo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_minimo'))
 
+            monto_maximo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_maximo'))
+            if self.monto_financiamiento <monto_minimo or self.monto_financiamiento>monto_maximo:
+                if self.env.user.id == self.rolpostventa.user_id.id or self.env.user.id == self.rolAdjudicacion.user_id.id:
+                    self.nota="El valor del nuevo financiamiento el valor minimo o maximo permitido"
+
+                elif self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
+                    raise ValidationError("No tiene permiso para realizar esta acción")
+                else:
+                    self.nota=False
 
 
             #aqui se muestran las cuotas que han sido pagadas ya sean por adelanto o no
@@ -529,19 +531,7 @@ class WizardContratoAdendum(models.Model):
 
 
     def ejecutar_cambio(self,):
-        monto_minimo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_minimo'))
 
-        monto_maximo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_maximo'))
-        if self.monto_financiamiento <monto_minimo or self.monto_financiamiento>monto_maximo:
-            if self.env.user.id == self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
-                self.nota="El valor del nuevo financiamiento el valor minimo o maximo permitido"
-                self.state="aprobacion"
-                return True
-            elif  self.env.user.id == self.rolAdjudicacion.user_id.id:
-                pass
-
-            elif self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
-                raise ValidationError("No tiene permiso para realizar esta acción")
 
         if self.env.user.id == self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
             porcentaje_perm_adendum_postventa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
@@ -628,6 +618,7 @@ class WizardContratoAdendum(models.Model):
             valor_mayor_porc = self.contrato_id.monto_financiamiento + valor_porcentaje
             # el monto de financiamiento nuevo debe ser menos o mas el 30% del monto de financiamiento q ya estaba
             if self.monto_financiamiento >= valor_menos_porc and self.monto_financiamiento <= valor_mayor_porc : 
+                self.nota=False
                 pass
             else:
                 porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
@@ -639,6 +630,23 @@ class WizardContratoAdendum(models.Model):
                     return True
                 else:
                     raise ValidationError("No tienes permiso para ejecutar esta acción")
+
+            monto_minimo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_minimo'))
+
+            monto_maximo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_maximo'))
+            if self.monto_financiamiento <monto_minimo or self.monto_financiamiento>monto_maximo:
+                if self.env.user.id == self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
+                    self.nota="El valor del nuevo financiamiento el valor minimo o maximo permitido"
+                    self.state="aprobacion"
+                    return True
+                elif  self.env.user.id == self.rolAdjudicacion.user_id.id:
+                    pass
+
+                elif self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
+                    raise ValidationError("No tiene permiso para realizar esta acción")
+            else:
+                self.nota=False
+
 
                 #aqui se muestran las cuotas que han sido pagadas ya sean por adelanto o no
             obj_contrato=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('estado_pago','=','pagado')])
