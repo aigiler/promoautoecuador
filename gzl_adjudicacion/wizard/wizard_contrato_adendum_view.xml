@@ -15,6 +15,22 @@
                         <field name="plazo_meses" invisible="0"/>
                         <field name="observacion" invisible="0"/>
 
+                        <field name="tabla_adendum_id" nolabel="1" >
+                                    <tree string="Nuevo Estado de Cuneta" editable="top">
+                                        <field name="numero_cuota" readonly="1"/>
+                                        <field name="fecha" readonly="1"/>
+                                        <field name="cuota_capital" readonly="1"/>
+                                        <field name="cuota_adm" readonly="1"/>
+                                        <field name="iva_adm" readonly="1"/>
+                                        <field name="saldo" readonly="1"/>
+                                        <field name="estado_pago" readonly="1"/>
+                               
+
+                                    
+
+                                    </tree>
+                                    </field>
+
                     </group>
                 </sheet>
                 <footer>
