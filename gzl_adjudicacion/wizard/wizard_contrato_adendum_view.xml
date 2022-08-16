@@ -19,6 +19,7 @@
                         <field name="monto_financiamiento" required="1"/>
                         <field name="plazo_meses" invisible="0"/>
                         <field name="observacion" invisible="0"/>
+                        <field name="nota" attrs="{'invisible': [('nota', '!=', False)]}" invisible="0"/>
 
 
                         <field name="tabla_adendum_id" nolabel="1" >
