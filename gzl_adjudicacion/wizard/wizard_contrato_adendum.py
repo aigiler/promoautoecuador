@@ -11,6 +11,9 @@ import math
 class TablaAdendum(models.Model):
     _name="tabla.adendum"
 
+    currency_id = fields.Many2one(
+        'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
+
     numero_cuota = fields.Char(String='Número de Cuota')
 
     fecha = fields.Date(String='Fecha Pago')
