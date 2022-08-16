@@ -588,7 +588,7 @@ class WizardContratoAdendum(models.Model):
                 self.nota="El valor del nuevo financiamiento excede o disminuye el monto máximo permitido configurado.".format(porcentaje_perm_adendum)
                 if self.env.user.id == self.rolAdjudicacion.user_id.id:
                     pass
-                elif self.env.user.id == self.rolpostventa.user_id.id::
+                elif self.env.user.id == self.rolpostventa.user_id.id:
                     self.state="aprobacion"
                     return True
                 else:
