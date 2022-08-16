@@ -147,7 +147,7 @@ class WizardContratoAdendum(models.Model):
                 if self.env.user.id == self.rolAdjudicacion.user_id.id:
                     pass
                 elif self.env.user.id == self.rolpostventa.user_id.id:
-                    self.state="aprobacion"
+                    pass
                 else:
                     raise ValidationError("No tienes permiso para ejecutar esta acción")
 
@@ -517,6 +517,20 @@ class WizardContratoAdendum(models.Model):
 
 
     def ejecutar_cambio(self,):
+        monto_minimo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_minimo'))
+
+        monto_maximo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_maximo'))
+        if self.monto_financiamiento <monto_minimo or self.monto_financiamiento>monto_maximo:
+            if self.env.user.id == self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
+                self.nota="El valor del nuevo financiamiento el valor minimo o maximo permitido"
+                self.state="aprobacion"
+                return True
+            elif  self.env.user.id == self.rolAdjudicacion.user_id.id:
+                pass
+
+            elif self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
+                raise ValidationError("No tiene permiso para realizar esta acción")
+
         if self.env.user.id == self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
             porcentaje_perm_adendum_postventa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
             valor_porcentaje_post = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum_postventa)/100
@@ -528,6 +542,7 @@ class WizardContratoAdendum(models.Model):
             if self.monto_financiamiento < valor_menos_porc_post or self.monto_financiamiento<valor_menor_porc_pperm:
                 self.state="aprobacion"
                 return True
+        
         elif self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
             raise ValidationError("No tiene permiso para realizar esta acción")
         if  self.contrato_id.ejecutado:

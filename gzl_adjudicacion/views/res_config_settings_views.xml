@@ -39,6 +39,18 @@
                                         </div>
                                         
                                         <div class="row">
+                                            <label string="Monto Minimo para Adendum" for="numero_cuotas_pagadas" class="col-lg-3 o_light_label"/>
+                                            <field name="monto_minimo" />
+                                        </div>
+                                        
+
+                                        <div class="row">
+                                            <label string="Monto Máximo para Adendum" for="numero_cuotas_pagadas" class="col-lg-3 o_light_label"/>
+                                            <field name="monto_maximo" />
+                                        </div>
+                                        
+
+                                        <div class="row">
                                             <label string="Configurar Texto informativo" for="configuracion_adicional" class="col-lg-3 o_light_label"/>
                                             <field name="configuracion_adicional" readonly="1"/>
                                         </div>
