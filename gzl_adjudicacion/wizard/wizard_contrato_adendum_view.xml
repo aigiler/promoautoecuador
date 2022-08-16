@@ -5,6 +5,11 @@
         <field name="model">wizard.contrato.adendum</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button string="Ver Tabla" class="oe_highlight" type="object" name="validar_tabla"/>
+                    <button string="Ejecutar Cambio" class="oe_highlight" type="object" name="ejecutar_cambio"/>
+                <field name="state" widget="statusbar" statusbar_visible="inicio,pre_cierre,cerrado"/>
+            </header>
                 <sheet>
                     <group string="Ingrese la modificación del contrato"> 
 
@@ -14,6 +19,7 @@
                         <field name="monto_financiamiento" required="1"/>
                         <field name="plazo_meses" invisible="0"/>
                         <field name="observacion" invisible="0"/>
+
 
                         <field name="tabla_adendum_id" nolabel="1" >
                                     <tree string="Nuevo Estado de Cuneta" editable="top">
@@ -33,11 +39,7 @@
 
                     </group>
                 </sheet>
-                <footer>
-                    <button string="Ver Tabla" class="oe_highlight" type="object" name="validar_tabla"/>
-                    <button string="Ejecutar Cambio" class="oe_highlight" type="object" name="ejecutar_cambio"/><!-- attrs="{'invisible': [('ejecutado', '=', True)]}"/-->
-                    <button string="Cancelar" special="cancel"/>
-                </footer>
+
             </form>
         </field>
     </record>
