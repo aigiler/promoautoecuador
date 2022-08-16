@@ -82,6 +82,14 @@ class WizardContratoAdendum(models.Model):
                 
             l.cuota_adm = cuotaAdministrativa
 
+    @api.onchange("contrato_id")
+    @api.constrains("contrato_id")
+    def validar_datos(self):
+        for l in self:
+            if l.contrato_id:
+                l.cuota_anterior=l.contrato_id.cuota_adm+l.contrato_id.iva_administrativo+l.contrato_id.cuota_capital
+                l.monto_financiamiento_anterior=l.contrato_id.monto_financiamiento
+                l.plazo_meses_anterior=l.contrato_id.plazo_meses.id
 
     def validar_tabla(self,):
 
