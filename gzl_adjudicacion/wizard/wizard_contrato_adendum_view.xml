@@ -24,7 +24,7 @@
 
                         <field name="observacion" invisible="0" attrs="{'readonly': [('state', '=', 'procesado')], 'required': [('nota', '!=', False)]}" />
                         <field name="nota" attrs="{'invisible': [('nota', '=', False)]}" invisible="0"/>
-
+                        <field name="pago_id" required="1"/>
 
                         <field name="tabla_adendum_id" nolabel="1" limit="72">
                                     <tree string="Nuevo Estado de Cuneta" editable="top">
@@ -35,6 +35,7 @@
                                         <field name="iva_adm" readonly="1"/>
                                         <field name="saldo"  readonly="1"/>
                                         <field name="estado_pago" readonly="1"/>
+
                                
 
                                     
@@ -55,9 +56,11 @@
         <field name="name">view.wizard.contrato.adendum.tree</field>
         <field name="model">wizard.contrato.adendum</field>
         <field name="arch" type="xml">
-            <tree string="Cesión de Derecho" >
+            <tree string="Adendum" >
+                <field name="name" />
                 <field name="contrato_id" />
-                <field name="ejecutado"/>
+                <field name="monto_financiamiento"/>
+                <field name="state"/>
 
                 
             </tree>

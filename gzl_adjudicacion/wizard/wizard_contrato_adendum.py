@@ -63,6 +63,9 @@ class WizardContratoAdendum(models.Model):
     valor_inscripcion = fields.Monetary(
         string='Valor Inscripción', currency_field='currency_id', track_visibility='onchange')
 
+
+    pago_id=fields.Many2one("account.payment", "Pago Generado")
+
     tabla_adendum_id=fields.One2many("tabla.adendum","adendum_id", track_visibility='onchange')
 
     rolAdjudicacion = fields.Many2one('adjudicaciones.team', string="Rol Adjudicacion", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol2'))
@@ -531,7 +534,8 @@ class WizardContratoAdendum(models.Model):
 
 
     def ejecutar_cambio(self,):
-
+        if not self.pago_id:
+            raise ValidationError("Debe generarse el pago y asociarse a este proceso")
 
         if self.env.user.id == self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
             porcentaje_perm_adendum_postventa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
