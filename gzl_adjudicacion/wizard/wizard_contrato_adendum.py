@@ -255,14 +255,14 @@ class WizardContratoAdendum(models.Model):
                     #raise ValidationError('aaaaaaaaaaaaa{0}'.format(obj_contrato))
                     for c in obj_contrato:
                         if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
-                            if c.programado == 0.00 or c.programado == 0 or c.programado == 0.0:
-                                c.update({
-                                    'cuota_adm': c.cuota_adm - valor_a_restar,
-                                    'adendum_id':self.id,
-                                })
-                                vls_adm.append(valor_sobrante)
-                                valor_sobrante = valor_sobrante -valor_a_restar
-                                valor_sobrante = round(valor_sobrante,2)
+                            #if c.programado == 0.00 or c.programado == 0 or c.programado == 0.0:
+                            c.update({
+                                'cuota_adm': c.cuota_adm - valor_a_restar,
+                                'adendum_id':self.id,
+                            })
+                            vls_adm.append(valor_sobrante)
+                            valor_sobrante = valor_sobrante -valor_a_restar
+                            valor_sobrante = round(valor_sobrante,2)
                             
                             
                 if  monto_adm_contrato  < cuota_admin_contrato:
@@ -280,15 +280,15 @@ class WizardContratoAdendum(models.Model):
 
                     for c in obj_contrato:
                         if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
-                            if c.programado == 0.00 or c.programado == 0 or c.programado == 0.0:
+                            #if c.programado == 0.00 or c.programado == 0 or c.programado == 0.0:
                             #raise ValidationError(str(valor_sobrante)+'--'+str(parte_decimal)+'----'+str(valor_a_restar))
-                                c.update({
-                                    'cuota_adm': c.cuota_adm + valor_a_restar,
-                                    'adendum_id':self.id,
-                                })  
-                                vls_adm.append(valor_sobrante)
-                                valor_sobrante = valor_sobrante -valor_a_restar
-                                valor_sobrante = round(valor_sobrante,2)
+                            c.update({
+                                'cuota_adm': c.cuota_adm + valor_a_restar,
+                                'adendum_id':self.id,
+                            })  
+                            vls_adm.append(valor_sobrante)
+                            valor_sobrante = valor_sobrante -valor_a_restar
+                            valor_sobrante = round(valor_sobrante,2)
 
                 valor_sobrante=0
                 valor_a_restar=0
@@ -317,15 +317,15 @@ class WizardContratoAdendum(models.Model):
                     #raise ValidationError('aaaaaaaaaaaaa{0}'.format(obj_contrato))
                     for c in obj_contrato:
                         if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
-                            if c.programado == 0.00 or c.programado == 0 or c.programado == 0.0:
-                                c.update({
-                                    'cuota_capital': c.cuota_capital - valor_a_restar,
-                                    'adendum_id':self.id,
-                                })
-                                vls.append(valor_sobrante)
-                                valor_sobrante = valor_sobrante -valor_a_restar
-                                valor_sobrante = round(valor_sobrante,2)
-                            
+                            #if c.programado == 0.00 or c.programado == 0 or c.programado == 0.0:
+                            c.update({
+                                'cuota_capital': c.cuota_capital - valor_a_restar,
+                                'adendum_id':self.id,
+                            })
+                            vls.append(valor_sobrante)
+                            valor_sobrante = valor_sobrante -valor_a_restar
+                            valor_sobrante = round(valor_sobrante,2)
+                        
                             
                 if  monto_finan_contrato  < monto_financiamiento_contrato:
                     valor_sobrante = monto_financiamiento_contrato  - monto_finan_contrato 
@@ -342,15 +342,15 @@ class WizardContratoAdendum(models.Model):
 
                     for c in obj_contrato:
                         if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
-                            if c.programado == 0.00 or c.programado == 0 or c.programado == 0.0:
+                            #if c.programado == 0.00 or c.programado == 0 or c.programado == 0.0:
                             #raise ValidationError(str(valor_sobrante)+'--'+str(parte_decimal)+'----'+str(valor_a_restar))
-                                c.update({
-                                    'cuota_capital': c.cuota_capital + valor_a_restar,
-                                    'adendum_id':self.id,
-                                })  
-                                vls.append(valor_sobrante)
-                                valor_sobrante = valor_sobrante -valor_a_restar
-                                valor_sobrante = round(valor_sobrante,2)
+                            c.update({
+                                'cuota_capital': c.cuota_capital + valor_a_restar,
+                                'adendum_id':self.id,
+                            })  
+                            vls.append(valor_sobrante)
+                            valor_sobrante = valor_sobrante -valor_a_restar
+                            valor_sobrante = round(valor_sobrante,2)
                 ##si esta ejecutado se ocultara el boton de validar                  
                 #self.ejecutado =True
                 #asignar nuevos valores 
