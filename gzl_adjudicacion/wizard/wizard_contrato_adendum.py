@@ -389,6 +389,8 @@ class WizardContratoAdendum(models.Model):
                 #            })  
 
             else:
+                porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
+
                 self.nota="El valor del nuevo financiamiento excede o disminuye el monto máximo permitido configurado.".format(porcentaje_perm_adendum)
 
                 self.state="aprobacion"
