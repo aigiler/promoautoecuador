@@ -387,8 +387,8 @@ class WizardContratoAdendum(models.Model):
                 #                #'currency_id':self.contrato_id.id,
                 #            })  
 
-            #else:
-            #    raise ValidationError("El monto de financiamiento no esta en el rango permitido")
+            else:
+                raise ValidationError("El monto de financiamiento no esta en el rango permitido")
 
 
 
