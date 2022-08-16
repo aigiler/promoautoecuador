@@ -11,6 +11,8 @@ import math
 class TablaAdendum(models.Model):
     _name="tabla.adendum"
 
+
+
     currency_id = fields.Many2one(
         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
 
@@ -40,6 +42,7 @@ class WizardContratoAdendum(models.Model):
     _description = 'Contrato Adendum'
 
 
+    name=fields.Char(string="Nombre")
     contrato_id = fields.Many2one('contrato',string="Contrato")
     socio_id = fields.Many2one('res.partner',string="Socio")
     ejecutado = fields.Boolean(string="Ejecutado", default = False)
@@ -91,12 +94,9 @@ class WizardContratoAdendum(models.Model):
                 l.monto_financiamiento_anterior=l.contrato_id.monto_financiamiento
                 l.plazo_meses_anterior=l.contrato_id.plazo_meses.id
                 l.plazo_meses=l.contrato_id.plazo_meses.id
-
+                l.name="Adendum {}".format(l.contrato_id.secuencia)
+                l.socio_id=l.contrato_id.cliente.id
     def validar_tabla(self,):
-
-
-
-        
         lista_tabla=[]
         if self.monto_financiamiento and self.plazo_meses:
             pagos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado')
