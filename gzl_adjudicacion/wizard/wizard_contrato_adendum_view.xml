@@ -18,7 +18,7 @@
                         <field name="socio_id" readonly="1" />
                         <field name="monto_financiamiento_anterior" string="Financiamiento Actual" readonly="1"/>
                         <field name="plazo_meses_anterior" string="Plazo Actual" readonly="1"/>
-                        <field name="cuota_actual" readonly="1"/>
+                        <field name="cuota_anterior" string="Cuota Actual" readonly="1"/>
                         <field name="monto_financiamiento" required="1"  attrs="{'readonly': [('state', '=', 'procesado')]}" />
                         <field name="plazo_meses" invisible="0" attrs="{'readonly': [('state', '=', 'procesado')]}" />
 
