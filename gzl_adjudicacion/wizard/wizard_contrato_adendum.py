@@ -94,6 +94,17 @@ class WizardContratoAdendum(models.Model):
 
     def validar_tabla(self,):
 
+
+        monto_minimo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_minimo'))
+
+        monto_maximo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_maximo'))
+        if self.monto_financiamiento <monto_minimo or self.monto_financiamiento>monto_maximo:
+            if self.env.user.id == self.rolpostventa.user_id.id or self.env.user.id == self.rolAdjudicacion.user_id.id:
+                self.nota="El valor del nuevo financiamiento el valor minimo o maximo permitido"
+
+            elif self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
+                raise ValidationError("No tiene permiso para realizar esta acción")
+
         lista_tabla=[]
         if self.monto_financiamiento and self.plazo_meses:
             pagos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado')
@@ -140,6 +151,7 @@ class WizardContratoAdendum(models.Model):
 
             # el monto de financiamiento nuevo debe ser menos o mas el 30% del monto de financiamiento q ya estaba
             if self.monto_financiamiento >= valor_menos_porc and self.monto_financiamiento <= valor_mayor_porc : 
+                self.nota=""
                 pass
             else:
                 porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
