@@ -142,7 +142,7 @@ class WizardContratoAdendum(models.Model):
                 pass
             else:
                 porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
-                self.nota="El valor del nuevo financiamiento excede o disminuye el monto máximo permitido configurado.".format(porcentaje_perm_adendum)
+                self.nota="El valor del nuevo financiamiento excede o disminuye el monto máximo permitido configurado {0}%.".format(porcentaje_perm_adendum)
                 if self.env.user.id == self.rolAdjudicacion.user_id.id:
                     pass
                 elif self.env.user.id == self.rolpostventa.user_id.id:
@@ -603,7 +603,7 @@ class WizardContratoAdendum(models.Model):
                 pass
             else:
                 porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
-                self.nota="El valor del nuevo financiamiento excede o disminuye el monto máximo permitido configurado.".format(porcentaje_perm_adendum)
+                self.nota="El valor del nuevo financiamiento excede o disminuye el monto máximo permitido configurado {0}%.".format(porcentaje_perm_adendum)
                 if self.env.user.id == self.rolAdjudicacion.user_id.id:
                     pass
                 elif self.env.user.id == self.rolpostventa.user_id.id:
