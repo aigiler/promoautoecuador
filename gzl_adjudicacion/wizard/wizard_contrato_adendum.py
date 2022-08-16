@@ -85,7 +85,7 @@ class WizardContratoAdendum(models.Model):
 
     def validar_tabla(self,):
 
-
+        lista_tabla=[]
         if self.monto_financiamiento and self.plazo_meses:
             pagos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado')
             cuotas_pgadas=sum(pagos.mapped("cuota_capital"))
@@ -216,17 +216,17 @@ class WizardContratoAdendum(models.Model):
 
             ####crear cuotas pagadas para listar segun el nuevo plazo o monto
             for a in lista_cuotapagadas:
-                self.env['tabla.adendum'].create({
-                                                    'numero_cuota':a['numero_cuota'],
-                                                    'fecha':a['fecha'],
-                                                    'cuota_capital':a['cuota_capital'],
-                                                    'cuota_adm':a['cuota_adm'],
-                                                    'iva_adm':a['iva_adm'],
-                                                    'saldo':a['saldo'],
-                                                    'adendum_id':self.id,
-                                                    'estado_pago':a['estado_pago'], 
-                                                    'procesado': True                                              
-                                                        })
+                dct_tabla={ 'numero_cuota':a['numero_cuota'],
+                        'fecha':a['fecha'],
+                        'cuota_capital':a['cuota_capital'],
+                        'cuota_adm':a['cuota_adm'],
+                        'iva_adm':a['iva_adm'],
+                        'saldo':a['saldo'],
+                        'estado_pago':a['estado_pago'], 
+                        'procesado': True                                              
+                            }
+                #self.env['tabla.adendum'].create(dct_tabla)
+                lista_tabla.append(dct_tabla)
             #crear el nuevo estado de cuenta 
 
             cuota_adm_nueva=(nuevoCuotaAdm/int(intervalo_nuevo))
@@ -247,7 +247,7 @@ class WizardContratoAdendum(models.Model):
                 cuota_asignada=i+1
                 cuota_administrativa_neto= cuota_adm + iva
                 saldo = cuota_capital+cuota_adm_nueva+iva
-                self.env['tabla.adendum'].create({
+                dct_tabla={
                                                     'numero_cuota':i+1, 
                                                     'fecha':self.contrato_id.fecha_inicio_pago + relativedelta(months=i),
                                                     'cuota_capital':cuota_capital_nueva,
@@ -258,9 +258,13 @@ class WizardContratoAdendum(models.Model):
                                                     #'saldo_cuota_administrativa':cuota_adm,
                                                     #'saldo_iva':iva,
                                                     'procesado': False,
-                                                    'adendum_id':self.id,                                      
-                                                        })
-               
+                                                        }
+                lista_tabla.append(dct_tabla)               
+            lista_ids=[]
+            for prueba in lista_tabla:
+                id_registro=self.env['tabla.adendum'].create(prueba) 
+                lista_ids.append(id_registro.id)
+            self.update({'tabla_adendum_id':[(6,0,lista_ids)]}) 
 
 
             ##########################################validar que la cuota capital este bien ####################################################

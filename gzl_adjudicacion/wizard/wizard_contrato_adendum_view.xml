@@ -15,21 +15,25 @@
 
 
                         <field name="contrato_id" required="1"/>
-                        <field name="socio_id" invisible="1"/>
+                        <field name="socio_id" invisible="0"/>
+                        <field name="monto_financiamiento_anterior" string="Financiamiento Actual" readonly="1"/>
+                        <field name="plazo_meses_anterior" string="Plazo Actual" readonly="1"/>
+                        <field name="cuota_actual" readonly="1"/>
                         <field name="monto_financiamiento" required="1"/>
                         <field name="plazo_meses" invisible="0"/>
+
                         <field name="observacion" invisible="0"/>
                         <field name="nota" attrs="{'invisible': [('nota', '!=', False)]}" invisible="0"/>
 
 
-                        <field name="tabla_adendum_id" nolabel="1" >
+                        <field name="tabla_adendum_id" nolabel="1" limit="72">
                                     <tree string="Nuevo Estado de Cuneta" editable="top">
                                         <field name="numero_cuota" readonly="1"/>
                                         <field name="fecha" readonly="1"/>
                                         <field name="cuota_capital" readonly="1"/>
                                         <field name="cuota_adm" readonly="1"/>
                                         <field name="iva_adm" readonly="1"/>
-                                        <field name="saldo" readonly="1"/>
+                                        <field name="saldo"  readonly="1"/>
                                         <field name="estado_pago" readonly="1"/>
                                
 
