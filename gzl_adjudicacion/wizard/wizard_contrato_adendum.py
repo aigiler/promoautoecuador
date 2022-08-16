@@ -8,7 +8,7 @@ import numpy_financial as npf
 import math
 
 
-class TablaAdendum(models.Models):
+class TablaAdendum(models.Model):
     _name="tabla.adendum"
 
     numero_cuota = fields.Char(String='Número de Cuota')
