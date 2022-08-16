@@ -6,23 +6,23 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button string="Ver Tabla" class="oe_highlight" type="object" name="validar_tabla"/>
-                    <button string="Ejecutar Cambio" class="oe_highlight" type="object" name="ejecutar_cambio"/>
-                <field name="state" widget="statusbar" statusbar_visible="inicio,pre_cierre,cerrado"/>
+                    <button string="Ver Tabla"  attrs="{'invisible': [('state', '!=', 'procesado')]}" class="oe_highlight" type="object" name="validar_tabla"/>
+                    <button string="Ejecutar Cambio" attrs="{'invisible': [('state', '!=', 'procesado')]}"  class="oe_highlight" type="object" name="ejecutar_cambio"/>
+                <field name="state" widget="statusbar" />
             </header>
                 <sheet>
                     <group string="Ingrese la modificación del contrato"> 
 
 
-                        <field name="contrato_id" required="1"/>
-                        <field name="socio_id" invisible="0"/>
+                        <field name="contrato_id" required="1" attrs="{'readonly': [('state', '=', 'procesado')]}" />
+                        <field name="socio_id" readonly="1" />
                         <field name="monto_financiamiento_anterior" string="Financiamiento Actual" readonly="1"/>
                         <field name="plazo_meses_anterior" string="Plazo Actual" readonly="1"/>
                         <field name="cuota_actual" readonly="1"/>
-                        <field name="monto_financiamiento" required="1"/>
-                        <field name="plazo_meses" invisible="0"/>
+                        <field name="monto_financiamiento" required="1"  attrs="{'readonly': [('state', '=', 'procesado')]}" />
+                        <field name="plazo_meses" invisible="0" attrs="{'readonly': [('state', '=', 'procesado')]}" />
 
-                        <field name="observacion" invisible="0"/>
+                        <field name="observacion" invisible="0" attrs="{'readonly': [('state', '=', 'procesado')], 'required': [('nota', '!=', False)]}" />
                         <field name="nota" attrs="{'invisible': [('nota', '!=', False)]}" invisible="0"/>
 
 
