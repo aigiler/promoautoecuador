@@ -509,7 +509,7 @@ class WizardContratoAdendum(models.Model):
             if self.monto_financiamiento < valor_menos_porc_post or self.monto_financiamiento<valor_menor_porc_pperm:
                 self.state="aprobacion"
                 return True
-            elif self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id 
+            elif self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
                 raise ValidationError("No tiene permiso para realizar esta acción")
         if  self.contrato_id.ejecutado:
             raise ValidationError("El contrato solo puede realizar un adendum")
