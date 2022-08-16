@@ -34,7 +34,7 @@
                                         </div>
 
                                         <div class="row">
-                                            <label string="Porcentaje permitido" for="numero_cuotas_pagadas" class="col-lg-3 o_light_label"/>
+                                            <label string="Porcentaje permitido para Postventa" for="numero_cuotas_pagadas" class="col-lg-3 o_light_label"/>
                                             <field name="porcentaje_perm_adendum_postventa" />
                                         </div>
                                         
