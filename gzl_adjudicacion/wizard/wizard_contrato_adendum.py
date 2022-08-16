@@ -496,7 +496,7 @@ class WizardContratoAdendum(models.Model):
 
 
     def ejecutar_cambio(self,):
-        if self.env.user.id == self.rolpostventa.user_id.id:
+        if self.env.user.id == self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
             porcentaje_perm_adendum_postventa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
             valor_porcentaje_post = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum_postventa)/100
             valor_menos_porc_post = self.contrato_id.monto_financiamiento - valor_porcentaje_post
