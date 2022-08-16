@@ -41,4 +41,28 @@
             </form>
         </field>
     </record>
+
+
+
+<record id="view_adendum_tree" model= "ir.ui.view">
+        <field name="name">view.wizard.contrato.adendum.tree</field>
+        <field name="model">wizard.contrato.adendum</field>
+        <field name="arch" type="xml">
+            <tree string="Cesión de Derecho" >
+                <field name="contrato_id" />
+                <field name="ejecutado"/>
+
+                
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_adendum" model="ir.actions.act_window">
+        <field name="name">Adendum</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.contrato.adendum</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_action_adendum" action="action_adendum" parent="menu_socio_proceso_adjudicacion" sequence="7" />
 </odoo>
