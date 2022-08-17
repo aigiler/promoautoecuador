@@ -163,7 +163,7 @@ class AccountMoveReversal(models.TransientModel):
                 pagado_iva=cuota_id.iva_adm-cuota_id.saldo_iva
                 #if cuota_id.estado_pago=='pagado':
                 transacciones=self.env['transaccion.grupo.adjudicado']
-                ids_transacciones=transacciones.search([('adjudicado_id','=',cuota_id.contrato_id.cliente.id),('contrato_id','=','state':cuota_id.contrato_id.id),('haber',' >',0)],limit=1)
+                ids_transacciones=transacciones.search([('adjudicado_id','=',cuota_id.contrato_id.cliente.id),('contrato_id','=',cuota_id.contrato_id.id),('haber',' >',0)],limit=1)
                 if pagado_capital:
                     if ids_transacciones:
                         for trx in ids_transacciones:

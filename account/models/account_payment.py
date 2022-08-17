@@ -758,7 +758,7 @@ class account_payment(models.Model):
                                 if y.cuota_capital_pagar:
                                     cuota_id.saldo_cuota_capital=cuota_id.saldo_cuota_capital-y.cuota_capital_pagar
                                     transacciones=self.env['transaccion.grupo.adjudicado']
-                                    ids_transacciones=transacciones.search([('adjudicado_id','=',cuota_id.contrato_id.cliente.id),('contrato_id','=','state':cuota_id.contrato_id.id),('debe',' >',0)],limit=1)
+                                    ids_transacciones=transacciones.search([('adjudicado_id','=',cuota_id.contrato_id.cliente.id),('contrato_id','=',cuota_id.contrato_id.id),('debe','>',0)],limit=1)
                                     if ids_transacciones:
                                         for trx in ids_transacciones:
                                             trx.update({
@@ -783,7 +783,7 @@ class account_payment(models.Model):
                                 if y.entrada_pagar:
                                     cuota_id.saldo_programado=cuota_id.saldo_programado-y.entrada_pagar
                                     transacciones=self.env['transaccion.grupo.adjudicado']
-                                    ids_transacciones=transacciones.search([('adjudicado_id','=',cuota_id.contrato_id.cliente.id),('contrato_id','=','state':cuota_id.contrato_id.id),('debe',' >',0)],limit=1)
+                                    ids_transacciones=transacciones.search([('adjudicado_id','=',cuota_id.contrato_id.cliente.id),('contrato_id','=',cuota_id.contrato_id.id),('debe',' >',0)],limit=1)
                                     if ids_transacciones:
                                         for trx in ids_transacciones:
                                             trx.update({'debe':trx.debe+y.entrada_pagar,
@@ -1093,7 +1093,7 @@ class account_payment(models.Model):
                                 cuota_id.estado_pago='pagado'
                             transacciones=self.env['transaccion.grupo.adjudicado']
                             if capital_pagado:
-                                ids_transacciones=transacciones.search([('adjudicado_id','=',cuota_id.contrato_id.cliente.id),('contrato_id','=','state':cuota_id.contrato_id.id),,('debe',' >',0)],limit=1)
+                                ids_transacciones=transacciones.search([('adjudicado_id','=',cuota_id.contrato_id.cliente.id),('contrato_id','=',cuota_id.contrato_id.id),('debe',' >',0)],limit=1)
                                 if ids_transacciones:
                                     for trx in ids_transacciones:
                                         trx.update({
