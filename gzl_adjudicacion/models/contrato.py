@@ -82,14 +82,20 @@ class Contrato(models.Model):
     state = fields.Selection(selection=[
         ('pendiente', 'Pendiente'),
         ('activo', 'Activo'),
-        ('inactivo', 'Inactivo'),
         ('congelar_contrato', 'Congelado'),
+        ('inactivo', 'Desactivado'),
         ('adjudicar', 'Adjudicado'),
-        ('adendum', 'Realizar Adendum'),
+        ('cancelado', 'Cancelado'),
+        ('cancelado_siniestro', 'Cancelación por Siniestro'),
+        ('cancelado_compra', 'Cancelación con compra'),
+        ('embargado', 'Embargado'),
+        ('legal', 'Legal'),
         ('finalizado', 'Finalizado'),
+        ('adendum', 'Realizar Adendum'),
         ('cedido', 'Cesión de Derecho'),
         ('desistir', 'Desistido'),
     ], string='Estado', default='pendiente', track_visibility='onchange')
+
     es_cesion=fields.Boolean(default=False)
 
 
@@ -425,49 +431,23 @@ class Contrato(models.Model):
 
 
     def cambio_estado_boton_borrador(self):
-
         self.detalle_tabla_amortizacion()
         self.write({"state": "activo"})
 
-
-
-    def cambio_estado_boton_adendum(self):
-        return self.write({"state": "adendum"})
+    def cambio_estado_boton_inactivar(self):
+        return self.write({"state": "inactivo"})
 
     def cambio_estado_boton_adjudicar(self):
         return self.write({"state": "adjudicar"})
 
 
+    def cambio_estado_boton_adendum(self):
+        return self.write({"state": "adendum"})
+
     def cambio_estado_boton_desistir(self):
-
-
-
-        # transacciones=self.env['transaccion.grupo.adjudicado']
-        # contrato_id=self.env['contrato'].browse(self.id)
-
-
-        # pago=sum(pagos.mapped("cuota_capital"))+sum(pagos.mapped("cuota_adm"))+sum(pagos.mapped("cuota_adm"))+sum(pagos.mapped("iva_adm"))+sum(pagos.mapped("seguro"))+sum(pagos.mapped("rastreo"))+sum(pagos.mapped("otro"))
-
-
-        # dct={
-        #     'grupo_id':contrato_id.grupo.id,
-        #     'debe':pago,
-        #     'adjudicado_id':self.cliente.id,
-        #     'contrato_id':contrato_id.id,
-        #     'state':contrato_id.state
-
-
-        # }
-
-
-        # transacciones.create(dct)
-
-
         return self.write({"state": "desistir"})
 
 
-    def cambio_estado_boton_inactivar(self):
-        return self.write({"state": "inactivo"})
 
 
 
@@ -514,6 +494,28 @@ class Contrato(models.Model):
                     contrato.en_mora=False
                 else:
                     contrato.en_mora=True
+
+###  Job para inactivar acorde a cuotas vencidas en el contrato
+
+    def job_para_inactivar_contrato(self, ):
+
+        hoy=date.today()
+        dateMonthStart="%s-%s-%s" %(hoy.year, hoy.month,(calendar.monthrange(hoy.year, hoy.month)[1]))
+
+        dateMonthStart=datetime.strptime(dateMonthStart, '%Y-%m-%d').date()
+
+        numeroCuotasMaximo =  int(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.maximo_cuotas_vencidas'))
+
+        contratos=self.env['contrato'].search([('state','in',['activo'])])
+
+        for contrato in contratos:
+                 
+            lineas_pendientes=contrato.tabla_amortizacion.filtered(lambda l: l.fecha<dateMonthStart and l.estado_pago=='pendiente')
+            if len(lineas_pendientes)>=numeroCuotasMaximo:
+                contrato.state='inactivo'
+
+
+
 #Job para registrar calificacion de contratos en mora de acuerdo al job job_colocar_contratos_en_mora se ejecuta el 6 de cada mes
 
     def job_registrar_calificacion_contratos_en_mora(self, ):
@@ -549,33 +551,6 @@ class Contrato(models.Model):
 
 
 
-###  Job para inactivar acorde a cuotas vencidas en el contrato
-
-    def job_para_inactivar_contrato(self, ):
-
-        hoy=date.today()
-        dateMonthStart="%s-%s-%s" %(hoy.year, hoy.month,(calendar.monthrange(hoy.year, hoy.month)[1]))
-
-        dateMonthStart=datetime.strptime(dateMonthStart, '%Y-%m-%d').date()
-
-        numeroCuotasMaximo =  int(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.maximo_cuotas_vencidas'))
-
-        contratos=self.env['contrato'].search([('state','in',['activo'])])
-
-        for contrato in contratos:
-                 
-            lineas_pendientes=contrato.tabla_amortizacion.filtered(lambda l: l.fecha<dateMonthStart and l.estado_pago=='pendiente')
-            if len(lineas_pendientes)>=numeroCuotasMaximo:
-                contrato.state='inactivo'
-
-
-
-
-
-
-
-####Jo para enviar correo contrato pago por vencer
-
 
 
     def job_enviar_correos_contratos_pago_por_vencer(self, ):
@@ -587,6 +562,14 @@ class Contrato(models.Model):
             mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month)
             if len(mes_estado_cuenta)>0:
                 self.envio_correos_plantilla('email_contrato_notificacion_de_pago',contrato.id)
+
+
+
+
+
+####Jo para enviar correo contrato pago por vencer
+
+
 
 
 
@@ -663,6 +646,77 @@ class Contrato(models.Model):
         }
 
 
+
+    # def crear_adendum(self):
+    #     if len(self.adendums_contrato_ids)>1:
+    #         raise ValidationError("El contrato solo puede realizar un adendum")
+    #     elif self.state !='activo':
+    #         raise ValidationError("El contrato solo puede realizar un adendum en estado activo")
+
+    #     view_id = self.env.ref('gzl_adjudicacion.wizard_crear_adendum_form').id
+
+
+    #     return {'type': 'ir.actions.act_window',
+    #             'name': 'Crear Adendum',
+    #             'res_model': 'wizard.contrato.adendum',
+    #             'target': 'new',
+    #             'view_mode': 'form',
+    #             'views': [[view_id, 'form']],
+    #             'context': {
+    #                 'default_contrato_id': self.id,
+    #                 'default_socio_id': self.cliente.id,
+    #                 'default_monto_financiamiento': self.monto_financiamiento,
+    #                 'default_plazo_meses': self.plazo_meses.id,
+    #             }
+    #     }
+
+
+
+    # def cesion_derecho(self):
+    #     view_id = self.env.ref('gzl_adjudicacion.wizard_cesion_derecho_form').id
+    #     pagos=self.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado')
+    #     pago=sum(pagos.mapped("cuota_capital"))
+
+    #     return {'type': 'ir.actions.act_window',
+    #             'name': 'Crear Cesión de Derecho',
+    #             'res_model': 'wizard.cesion.derecho',
+    #             'target': 'new',
+    #             'view_mode': 'form',
+    #             'views': [[view_id, 'form']],
+    #             'context': {
+    #                 'default_contrato_id': self.id,
+    #                 'default_monto_a_ceder': pago,
+    #             }
+    #     }
+
+
+    def obtener_contrato(self):
+        for l in self:
+            contrato_documento=self.env['sign.request.item'].search([('partner_id','=',l.cliente.id)], limit=1)
+            if contrato_documento:
+                contrato_documento.ensure_one()
+                return {
+                'name': 'Signed Document',
+                'type': 'ir.actions.act_url',
+                'url': '/sign/document/%(request_id)s/%(access_token)s' % {'request_id': contrato_documento.sign_request_id.id, 'access_token': contrato_documento.access_token},
+                }
+
+    def actualizar_rubros_por_adelantado(self):
+        view_id = self.env.ref('gzl_adjudicacion.wizard_actualizar_rubro_form').id
+
+
+        return {'type': 'ir.actions.act_window',
+                'name': 'Actualizar Rubro',
+                'res_model': 'wizard.actualizar.rubro',
+                'target': 'new',
+                'view_mode': 'form',
+                'views': [[view_id, 'form']],
+                'context': {
+                    'default_contrato_id': self.id,
+                }
+        }
+
+
     def modificar_tabla_contrato(self):
         #if len(self.actualizacion_ids)>1:
             #raise ValidationError("El contrato ya sufrio modificacion con anterioridad")
@@ -684,86 +738,6 @@ class Contrato(models.Model):
         }
 
 
-    def crear_adendum(self):
-        if len(self.adendums_contrato_ids)>1:
-            raise ValidationError("El contrato solo puede realizar un adendum")
-        elif self.state !='activo':
-            raise ValidationError("El contrato solo puede realizar un adendum en estado activo")
-
-        view_id = self.env.ref('gzl_adjudicacion.wizard_crear_adendum_form').id
-
-
-        return {'type': 'ir.actions.act_window',
-                'name': 'Crear Adendum',
-                'res_model': 'wizard.contrato.adendum',
-                'target': 'new',
-                'view_mode': 'form',
-                'views': [[view_id, 'form']],
-                'context': {
-                    'default_contrato_id': self.id,
-                    'default_socio_id': self.cliente.id,
-                    'default_monto_financiamiento': self.monto_financiamiento,
-                    'default_plazo_meses': self.plazo_meses.id,
-                }
-        }
-
-
-
-    def obtener_contrato(self):
-        for l in self:
-
-            contrato_documento=self.env['sign.request.item'].search([('partner_id','=',l.cliente.id)], limit=1)
-            if contrato_documento:
-                contrato_documento.ensure_one()
-                
-
-                return {
-                'name': 'Signed Document',
-                'type': 'ir.actions.act_url',
-                'url': '/sign/document/%(request_id)s/%(access_token)s' % {'request_id': contrato_documento.sign_request_id.id, 'access_token': contrato_documento.access_token},
-                }
-
-
-    def cesion_derecho(self):
-
-
-        view_id = self.env.ref('gzl_adjudicacion.wizard_cesion_derecho_form').id
-
-        pagos=self.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado')
-        pago=sum(pagos.mapped("cuota_capital"))
-
-
-
-
-        return {'type': 'ir.actions.act_window',
-                'name': 'Crear Cesión de Derecho',
-                'res_model': 'wizard.cesion.derecho',
-                'target': 'new',
-                'view_mode': 'form',
-                'views': [[view_id, 'form']],
-                'context': {
-                    'default_contrato_id': self.id,
-                    'default_monto_a_ceder': pago,
-                }
-        }
-
-    def actualizar_rubros_por_adelantado(self):
-        view_id = self.env.ref('gzl_adjudicacion.wizard_actualizar_rubro_form').id
-
-
-        return {'type': 'ir.actions.act_window',
-                'name': 'Actualizar Rubro',
-                'res_model': 'wizard.actualizar.rubro',
-                'target': 'new',
-                'view_mode': 'form',
-                'views': [[view_id, 'form']],
-                'context': {
-                    'default_contrato_id': self.id,
-                }
-        }
-
-
-
 
 
     def enviar_correos_contrato(self,):
@@ -783,23 +757,6 @@ class Contrato(models.Model):
         crm = super(Contrato, self).write(vals)
         return crm
 
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 class ContratoCongelamiento(models.Model):
     _name = 'contrato.congelamiento'
     _description = 'Bitacora de Congelamiento'
@@ -809,22 +766,12 @@ class ContratoCongelamiento(models.Model):
     pendiente = fields.Boolean(String='Pendiente de Activación',default=True)
 
 
-
-
-
-
 class ContratoEstadoCuenta(models.Model):
     _name = 'contrato.estado.cuenta'
     _description = 'Contrato - Tabla de estado de cuenta de Aporte'
     _rec_name = 'numero_cuota'
 
-
     idContrato = fields.Char("ID de Contrato en base")
-
-
-
-
-
 
     contrato_id = fields.Many2one('contrato')
     numero_cuota = fields.Char(String='Número de Cuota')
@@ -904,35 +851,29 @@ class ContratoEstadoCuenta(models.Model):
             l.saldo=l.cuota_capital+l.cuota_adm+l.iva_adm + l.seguro+ l.rastreo + l.otro + l.programado - l.monto_pagado
 
 
+    # def pagar_cuota(self):
+    #     view_id = self.env.ref('gzl_adjudicacion.wizard_pago_cuota_amortizaciones_contrato').id
+
+    #     hoy= date.today()
+
+    #     pagos_pendientes=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pendiente' and l.fecha<self.fecha)
+    #     if len(pagos_pendientes)>0 :
+    #         raise ValidationError('Tengo pagos pendientes a la fecha, por favor realizar los pagos pendientes.')
+
+    #     return {'type': 'ir.actions.act_window',
+    #             'name': 'Pagar Cuota',
+    #             'res_model': 'wizard.pago.cuota.amortizacion.contrato',
+    #             'target': 'new',
+    #             'view_mode': 'form',
+    #             'views': [[view_id, 'form']],
+    #             'context': {
+    #                 'default_tabla_amortizacion_id': self.id,
+    #                 'default_amount': self.saldo,
+    #                 'default_payment_method_id': 2,
 
 
-
-    def pagar_cuota(self):
-        view_id = self.env.ref('gzl_adjudicacion.wizard_pago_cuota_amortizaciones_contrato').id
-
-        hoy= date.today()
-
-        pagos_pendientes=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pendiente' and l.fecha<self.fecha)
-        if len(pagos_pendientes)>0 :
-            raise ValidationError('Tengo pagos pendientes a la fecha, por favor realizar los pagos pendientes.')
-
-
-
-
-        return {'type': 'ir.actions.act_window',
-                'name': 'Pagar Cuota',
-                'res_model': 'wizard.pago.cuota.amortizacion.contrato',
-                'target': 'new',
-                'view_mode': 'form',
-                'views': [[view_id, 'form']],
-                'context': {
-                    'default_tabla_amortizacion_id': self.id,
-                    'default_amount': self.saldo,
-                    'default_payment_method_id': 2,
-
-
-                }
-        }
+    #             }
+    #     }
 
 class PagoContratoEstadoCuenta(models.Model):
     _inherit = 'account.payment'

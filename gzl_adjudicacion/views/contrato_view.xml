@@ -65,7 +65,7 @@
 
 
 
-                    <button name="cesion_derecho" string="Cesión de Derecho" attrs="{'invisible':['|',('state','not in',['inactivo','desistir','congelar']),'|',('desistido','=',True),('is_group_cobranza', '=', True)]}" type="object" class="oe_highlight"/>
+                    <!-- <button name="cesion_derecho" string="Cesión de Derecho" attrs="{'invisible':['|',('state','not in',['inactivo','desistir','congelar']),'|',('desistido','=',True),('is_group_cobranza', '=', True)]}" type="object" class="oe_highlight"/> -->
 
 
 
@@ -73,7 +73,7 @@
 
 
 
-                    <button name="crear_adendum" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','!=','activo')]}" string="Crear Adendum" type="object" class="oe_highlight"/>
+                    <!-- <button name="crear_adendum" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','!=','activo')]}" string="Crear Adendum" type="object" class="oe_highlight"/> -->
                     <button name="modificar_tabla_contrato" attrs="{'invisible': [('is_group_cobranza', '=', True)]}" string="Reajuste" type="object" class="oe_highlight"/>
 
 
@@ -170,7 +170,6 @@
                                 <field name="monto_pagado" sum="monto_pagado" readonly="1"/>
                                 <field name="saldo" sum="saldo" readonly="1"/>
                                 <field name="estado_pago"   readonly="1"/>
-                                <button name="pagar_cuota" invisible="1"  type="object" string="Pagar"/>
                             </tree>
                             <form string="Estado de Cuenta" >
                                 <header>

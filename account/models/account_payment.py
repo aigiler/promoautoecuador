@@ -758,9 +758,17 @@ class account_payment(models.Model):
                                 if y.cuota_capital_pagar:
                                     cuota_id.saldo_cuota_capital=cuota_id.saldo_cuota_capital-y.cuota_capital_pagar
                                     transacciones=self.env['transaccion.grupo.adjudicado']
-                                    transacciones.create({
+                                    ids_transacciones=transacciones.search([('adjudicado_id','=',cuota_id.contrato_id.cliente.id),('contrato_id','=','state':cuota_id.contrato_id.id),('debe',' >',0)],limit=1)
+                                    if ids_transacciones:
+                                        for trx in ids_transacciones:
+                                            trx.update({
+                                            'debe':trx.debe+y.cuota_capital_pagar,
+                                            'state':cuota_id.contrato_id.state
+                                            })
+                                    else:
+                                        transacciones.create({
                                             'grupo_id':cuota_id.contrato_id.grupo.id,
-                                            'haber':y.cuota_capital_pagar,
+                                            'debe':y.cuota_capital_pagar,
                                             'adjudicado_id':cuota_id.contrato_id.cliente.id,
                                             'contrato_id':cuota_id.contrato_id.id,
                                             'state':cuota_id.contrato_id.state
@@ -775,9 +783,15 @@ class account_payment(models.Model):
                                 if y.entrada_pagar:
                                     cuota_id.saldo_programado=cuota_id.saldo_programado-y.entrada_pagar
                                     transacciones=self.env['transaccion.grupo.adjudicado']
-                                    transacciones.create({
+                                    ids_transacciones=transacciones.search([('adjudicado_id','=',cuota_id.contrato_id.cliente.id),('contrato_id','=','state':cuota_id.contrato_id.id),('debe',' >',0)],limit=1)
+                                    if ids_transacciones:
+                                        for trx in ids_transacciones:
+                                            trx.update({'debe':trx.debe+y.entrada_pagar,
+                                                    'state':cuota_id.contrato_id.state,})
+                                    else:
+                                        transacciones.create({
                                                 'grupo_id':cuota_id.contrato_id.grupo.id,
-                                                'haber':y.entrada_pagar,
+                                                'debe':y.entrada_pagar,
                                                 'adjudicado_id':cuota_id.contrato_id.cliente.id,
                                                 'contrato_id':cuota_id.contrato_id.id,
                                                 'state':cuota_id.contrato_id.state
@@ -1021,15 +1035,20 @@ class account_payment(models.Model):
 
 
                             total_cuota=0
+                            capital_pagado=0
                             if acumulado_cuota:
                                 if acumulado_cuota>=cuota_id.saldo_cuota_capital:
+                                    capital_pagado+=cuota_id.saldo_cuota_capital
                                     total_cuota+=cuota_id.saldo_cuota_capital
                                     acumulado_cuota=acumulado_cuota-cuota_id.saldo_cuota_capital
                                     cuota_id.saldo_cuota_capital=0
+
                                 else:
+                                    capital_pagado+=acumulado_cuota
                                     total_cuota+=acumulado_cuota
                                     cuota_id.saldo_cuota_capital=cuota_id.saldo_cuota_capital-acumulado_cuota
                                     acumulado_cuota=0
+
                             if acumulado_cuota:
                                 if acumulado_cuota>=cuota_id.saldo_seguro:
                                     total_cuota+=cuota_id.saldo_seguro
@@ -1073,14 +1092,22 @@ class account_payment(models.Model):
                             if cuota_id.saldo==0:
                                 cuota_id.estado_pago='pagado'
                             transacciones=self.env['transaccion.grupo.adjudicado']
-                            dct={
+                            if capital_pagado:
+                                ids_transacciones=transacciones.search([('adjudicado_id','=',cuota_id.contrato_id.cliente.id),('contrato_id','=','state':cuota_id.contrato_id.id),,('debe',' >',0)],limit=1)
+                                if ids_transacciones:
+                                    for trx in ids_transacciones:
+                                        trx.update({
+                                                'debe':trx.debe+capital_pagado,
+                                                'state':cuota_id.contrato_id.state
+                                                })
+                                else:
+                                    transacciones.create({
                                     'grupo_id':cuota_id.contrato_id.grupo.id,
-                                    'haber':total_cuota,
+                                    'debe':capital_pagado,
                                     'adjudicado_id':cuota_id.contrato_id.cliente.id,
                                     'contrato_id':cuota_id.contrato_id.id,
                                     'state':cuota_id.contrato_id.state
-                                    }
-                            transacciones.create(dct)
+                                    })
                         
                         pago_fact_id=self.env['account.payment.cuotas.detalle'].search([('factura_id','=',y.id),('pago_id','=',rec.id)],limit=1)
                        
@@ -1156,15 +1183,15 @@ class account_payment(models.Model):
                                 
                                 if cuota_id.saldo==0:
                                     cuota_id.estado_pago='pagado'
-                                transacciones=self.env['transaccion.grupo.adjudicado']
-                                dct={
-                                        'grupo_id':cuota_id.contrato_id.grupo.id,
-                                        'haber':total_cuota,
-                                        'adjudicado_id':cuota_id.contrato_id.cliente.id,
-                                        'contrato_id':cuota_id.contrato_id.id,
-                                        'state':cuota_id.contrato_id.state
-                                        }
-                                transacciones.create(dct)
+                                #transacciones=self.env['transaccion.grupo.adjudicado']
+                                #dct={
+                                #        'grupo_id':cuota_id.contrato_id.grupo.id,
+                                #        'debe':total_cuota,
+                                #        'adjudicado_id':cuota_id.contrato_id.cliente.id,
+                                #        'contrato_id':cuota_id.contrato_id.id,
+                                #        'state':cuota_id.contrato_id.state
+                                #        }
+                                #transacciones.create(dct)
                             pago_fact_id=self.env['account.payment.cuotas.detalle'].search([('factura_id','=',fact.id),('pago_id','=',rec.id)],limit=1)
                        
                             if pago_fact_id:
