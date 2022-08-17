@@ -171,7 +171,7 @@ class AccountMoveReversal(models.TransientModel):
                     else:
                         transacciones.create({
                             'grupo_id':cuota_id.contrato_id.grupo.id,
-                            'haber':pagado_capital
+                            'haber':pagado_capital,
                             'adjudicado_id':cuota_id.contrato_id.cliente.id,
                             'contrato_id':cuota_id.contrato_id.id,
                             'state':cuota_id.contrato_id.state
