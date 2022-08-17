@@ -534,9 +534,6 @@ class WizardContratoAdendum(models.Model):
 
 
     def ejecutar_cambio(self,):
-        if not self.pago_id:
-            raise ValidationError("Debe generarse el pago y asociarse a este proceso")
-
         if self.env.user.id == self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
             porcentaje_perm_adendum_postventa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
             valor_porcentaje_post = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum_postventa)/100
@@ -556,6 +553,10 @@ class WizardContratoAdendum(models.Model):
         elif self.contrato_id.state !='activo':
             raise ValidationError("El contrato solo puede realizar un adendum en estado activo")
         else:
+            if not self.pago_id:
+
+            raise ValidationError("Debe generarse el pago y asociarse a este proceso")
+
 
             obj=self.contrato_id
 
