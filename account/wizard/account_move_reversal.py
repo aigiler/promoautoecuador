@@ -167,7 +167,7 @@ class AccountMoveReversal(models.TransientModel):
                 if pagado_capital:
                     if ids_transacciones:
                         for trx in ids_transacciones:
-                            trx.update('haber':trx.haber+pagado_capital)
+                            trx.update({'haber':trx.haber+pagado_capital})
                     else:
                         transacciones.create({
                             'grupo_id':cuota_id.contrato_id.grupo.id,
