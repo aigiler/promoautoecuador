@@ -637,8 +637,8 @@ class WizardContratoAdendum(models.Model):
 
             monto_maximo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_maximo'))
             if self.monto_financiamiento <monto_minimo or self.monto_financiamiento>monto_maximo:
+                self.nota="El valor del nuevo financiamiento el valor minimo o maximo permitido"
                 if self.env.user.id == self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
-                    self.nota="El valor del nuevo financiamiento el valor minimo o maximo permitido"
                     self.state="aprobacion"
                     return True
                 elif  self.env.user.id == self.rolAdjudicacion.user_id.id:
