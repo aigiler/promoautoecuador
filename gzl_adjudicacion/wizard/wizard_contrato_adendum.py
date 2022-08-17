@@ -554,10 +554,7 @@ class WizardContratoAdendum(models.Model):
             raise ValidationError("El contrato solo puede realizar un adendum en estado activo")
         else:
             if not self.pago_id:
-
-            raise ValidationError("Debe generarse el pago y asociarse a este proceso")
-
-
+                raise ValidationError("Debe generarse el pago y asociarse a este proceso")
             obj=self.contrato_id
 
             pagos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado')
