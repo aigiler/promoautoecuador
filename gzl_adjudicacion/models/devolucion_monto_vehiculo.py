@@ -354,7 +354,7 @@ class DevolucionMonto(models.Model):
                 'res_model_id': self.env['ir.model']._get('account.payment').id,
                 'activity_type_id': 4,
                 'summary': "Se encuentra agendado un pago por Devolución de ".format(self.secuencia),
-                'user_id': rolcontab.user_id.id,
+                'user_id': self.rolcontab.user_id.id,
                 'date_deadline':self.fecha_estimada_pagos})
         self.pago_id.actividad_id=actividad_id.id
             

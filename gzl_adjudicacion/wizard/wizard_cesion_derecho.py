@@ -57,7 +57,8 @@ class WizardAdelantarCuotas(models.Model):
         self.actividad_id=actividad_id.id
 
     def ejecutar_cesion(self):
-        self.validarrol(self.rolpostventa)   
+        self.validarrol(self.rolpostventa)  
+         
         for l in self:
             lista_final=[]
             if l.pago_id and l.carta_adjunto:
