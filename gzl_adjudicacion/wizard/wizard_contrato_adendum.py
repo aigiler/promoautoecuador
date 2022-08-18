@@ -107,7 +107,7 @@ class WizardContratoAdendum(models.Model):
             self.actividad_id.action_done()
         actividad_id=self.env['mail.activity'].create({
                 'res_id': self.id,
-                'res_model_id': self.env['ir.model']._get('wizard.cesion.derecho').id,
+                'res_model_id': self.env['ir.model']._get('wizard.contrato.adendum').id,
                 'activity_type_id': 4,
                 'summary': "Ha sido asignado al proceso de Adendum. "+str(mensaje),
                 'user_id': rol.user_id.id,
