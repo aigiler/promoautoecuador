@@ -666,7 +666,7 @@ class WizardContratoAdendum(models.Model):
                 if self.env.user.id == self.rolAdjudicacion.user_id.id:
                     pass
                 elif self.env.user.id == self.rolpostventa.user_id.id:
-                    mensaje="El pago se encuentra asociado a la Cesión de Derecho. "+self.name+' Favor de ejecutarla'
+                    mensaje="Debe revisar el Adendum y a su vez asociar un pago "+self.name+' Favor de ejecutarlo'
                     self.crear_activity(self.rolAdjudicacion,mensaje)
                     self.state="aprobacion"
                     return True
@@ -680,7 +680,7 @@ class WizardContratoAdendum(models.Model):
                 self.nota="El valor del nuevo financiamiento el valor minimo o maximo permitido"
                 if self.env.user.id == self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
                     self.state="aprobacion"
-                    mensaje="El pago se encuentra asociado a la Cesión de Derecho. "+self.name+' Favor de ejecutarla'
+                    mensaje="Debe revisar el Adendum y a su vez asociar un pago "+self.name+' Favor de ejecutarlo'
                     self.crear_activity(self.rolAdjudicacion,mensaje)
                     return True
                 elif  self.env.user.id == self.rolAdjudicacion.user_id.id:
