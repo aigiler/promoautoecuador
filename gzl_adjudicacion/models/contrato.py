@@ -542,11 +542,8 @@ class Contrato(models.Model):
 ###Job que envia correos segun bandera en mora
 
     def job_enviar_correos_contratos_en_mora(self, ):
-
         contratos=self.env['contrato'].search([('en_mora','=',True)])
-
-        for contrato in contratos:
-                 
+        for contrato in contratos:  
             self.envio_correos_plantilla('email_contrato_en_mora',contrato.id)
 
 

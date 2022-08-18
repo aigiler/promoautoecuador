@@ -63,6 +63,7 @@ class WizardContratoAdendum(models.Model):
     valor_inscripcion = fields.Monetary(
         string='Valor Inscripción', currency_field='currency_id', track_visibility='onchange')
 
+    actividad_id = fields.Many2one('mail.activity',string="Actividades")
 
     pago_id=fields.Many2one("account.payment", "Pago Generado")
 
@@ -99,6 +100,21 @@ class WizardContratoAdendum(models.Model):
                 l.plazo_meses=l.contrato_id.plazo_meses.id
                 l.name="Adendum {}".format(l.contrato_id.secuencia)
                 l.socio_id=l.contrato_id.cliente.id
+
+    
+    def crear_activity(self,rol,mensaje):
+        if self.actividad_id:
+            self.actividad_id.action_done()
+        actividad_id=self.env['mail.activity'].create({
+                'res_id': self.id,
+                'res_model_id': self.env['ir.model']._get('wizard.cesion.derecho').id,
+                'activity_type_id': 4,
+                'summary': "Ha sido asignado al proceso de Adendum. "+str(mensaje),
+                'user_id': rol.user_id.id,
+                'date_deadline':datetime.now()+ relativedelta(days=1)
+            })
+        self.actividad_id=actividad_id.id
+
     def validar_tabla(self,):
         lista_tabla=[]
         if self.monto_financiamiento and self.plazo_meses:
@@ -136,6 +152,8 @@ class WizardContratoAdendum(models.Model):
             entrada=False
             #if self.env.user.id == self.rolpostventa.user_id.id:
             porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
+            porcentaje_perm_adendum_postventa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
+
             #if self.env.user.id == self.rolAdjudicacion.user_id.id:
             #    porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
 
@@ -145,12 +163,13 @@ class WizardContratoAdendum(models.Model):
             # el monto de financiamiento nuevo debe ser menos o mas el 30% del monto de financiamiento q ya estaba
 
             # el monto de financiamiento nuevo debe ser menos o mas el 30% del monto de financiamiento q ya estaba
-            if self.monto_financiamiento >= valor_menos_porc and self.monto_financiamiento <= valor_mayor_porc : 
-                self.nota=False
+            if self.monto_financiamiento >= valor_menos_porc and self.monto_financiamiento <= valor_mayor_porc: 
+                if self.nota == "El valor del nuevo financiamiento excede o disminuye el porcentaje máximo permitido configurado {0}%. Para el rol de postventa se tiene perminito un porcentaje de {1}".format(porcentaje_perm_adendum,porcentaje_perm_adendum_postventa): 
+                    self.nota=False
                 pass
             else:
                 porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
-                self.nota="El valor del nuevo financiamiento excede o disminuye el monto máximo permitido configurado {0}%.".format(porcentaje_perm_adendum)
+                self.nota="El valor del nuevo financiamiento excede o disminuye el porcentaje máximo permitido configurado {0}%. Para el rol de postventa se tiene perminito un porcentaje de {1}".format(porcentaje_perm_adendum,porcentaje_perm_adendum_postventa)
                 if self.env.user.id == self.rolAdjudicacion.user_id.id:
                     pass
                 elif self.env.user.id == self.rolpostventa.user_id.id:
@@ -162,12 +181,13 @@ class WizardContratoAdendum(models.Model):
             monto_maximo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_maximo'))
             if self.monto_financiamiento <monto_minimo or self.monto_financiamiento>monto_maximo:
                 if self.env.user.id == self.rolpostventa.user_id.id or self.env.user.id == self.rolAdjudicacion.user_id.id:
-                    self.nota="El valor del nuevo financiamiento el valor minimo o maximo permitido"
+                    self.nota="El valor del nuevo financiamiento excede o disminuye del valor minimo {} o maximo permitido {}.".format(monto_minimo,monto_maximo)
 
                 elif self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
                     raise ValidationError("No tiene permiso para realizar esta acción")
                 else:
-                    self.nota=False
+                    if self.nota=="El valor del nuevo financiamiento excede o disminuye del valor minimo {} o maximo permitido {}.".format(monto_minimo,monto_maximo):
+                        self.nota=False
 
 
             #aqui se muestran las cuotas que han sido pagadas ya sean por adelanto o no
@@ -544,6 +564,8 @@ class WizardContratoAdendum(models.Model):
 
             if self.monto_financiamiento < valor_menos_porc_post or self.monto_financiamiento<valor_menor_porc_pperm:
                 self.state="aprobacion"
+                mensaje="El pago se encuentra asociado a la Cesión de Derecho. "+self.name+' Favor de ejecutarla'
+                self.crear_activity(self.rolAdjudicacion,mensaje)
                 return True
         
         elif self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
@@ -628,6 +650,8 @@ class WizardContratoAdendum(models.Model):
                 if self.env.user.id == self.rolAdjudicacion.user_id.id:
                     pass
                 elif self.env.user.id == self.rolpostventa.user_id.id:
+                    mensaje="El pago se encuentra asociado a la Cesión de Derecho. "+self.name+' Favor de ejecutarla'
+                    self.crear_activity(self.rolAdjudicacion,mensaje)
                     self.state="aprobacion"
                     return True
                 else:
@@ -640,6 +664,8 @@ class WizardContratoAdendum(models.Model):
                 self.nota="El valor del nuevo financiamiento el valor minimo o maximo permitido"
                 if self.env.user.id == self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
                     self.state="aprobacion"
+                    mensaje="El pago se encuentra asociado a la Cesión de Derecho. "+self.name+' Favor de ejecutarla'
+                    self.crear_activity(self.rolAdjudicacion,mensaje)
                     return True
                 elif  self.env.user.id == self.rolAdjudicacion.user_id.id:
                     pass
