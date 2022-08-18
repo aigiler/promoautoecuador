@@ -181,12 +181,12 @@ class WizardContratoAdendum(models.Model):
             monto_maximo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_maximo'))
             if self.monto_financiamiento <monto_minimo or self.monto_financiamiento>monto_maximo:
                 if self.env.user.id == self.rolpostventa.user_id.id or self.env.user.id == self.rolAdjudicacion.user_id.id:
-                    self.nota="El valor del nuevo financiamiento excede o disminuye del valor minimo {} o maximo permitido {}.".format(monto_minimo,monto_maximo)
+                    self.nota="El valor del nuevo financiamiento excede o disminuye del valor minimo {0} o maximo permitido {1}.".format(monto_minimo,monto_maximo)
 
                 elif self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
                     raise ValidationError("No tiene permiso para realizar esta acción")
                 else:
-                    if self.nota=="El valor del nuevo financiamiento excede o disminuye del valor minimo {} o maximo permitido {}.".format(monto_minimo,monto_maximo):
+                    if self.nota=="El valor del nuevo financiamiento excede o disminuye del valor minimo {0} o maximo permitido {1}.".format(monto_minimo,monto_maximo):
                         self.nota=False
 
 
