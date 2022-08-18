@@ -68,7 +68,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
                 reporte_id=self.env['reporte.estado.de.cuenta'].create({'partner_id':l.cliente.id,
                                                                         'contrato_id':l.id})
                 
-                print_report_xls=reporte_id.print_report_pdf()
+                reporte_id.print_report_pdf()
                 attachment = self.env['ir.attachment'].search([('res_id','=',reporte_id.id),('res_model','=','reporte.estado.de.cuenta'),('mimetype','=','application/pdf')])
                 url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
                 url += "/web/content/%s?download=true" %(attachment.id)
