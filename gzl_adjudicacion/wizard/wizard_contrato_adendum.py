@@ -172,10 +172,10 @@ class WizardContratoAdendum(models.Model):
             
             if self.env.user.id ==self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
                 if self.monto_financiamiento >= valor_menos_porc_post and self.monto_financiamiento <= valor_mayor_porc_post: 
-                    if self.nota == "El valor del nuevo financiamiento excede o disminuye el porcentaje máximo permitido configurado {0}%. Para el rol de postventa se tiene perminito un porcentaje de {1}".format(porcentaje_perm_adendum,porcentaje_perm_adendum_postventa): 
+                    if self.nota == "El valor del nuevo financiamiento excede o disminuye el porcentaje máximo permitido configurado {0}%. Para el rol de postventa se tiene perminito un porcentaje de {1}.En caso de excederse necesita enviar a aprobación de adjudicaciones".format(porcentaje_perm_adendum,porcentaje_perm_adendum_postventa): 
                         self.nota=False     
                 else:
-                    self.nota="El valor del nuevo financiamiento excede o disminuye el porcentaje máximo permitido configurado {0}%. Para el rol de postventa se tiene perminito un porcentaje de {1}".format(porcentaje_perm_adendum,porcentaje_perm_adendum_postventa)
+                    self.nota="El valor del nuevo financiamiento excede o disminuye el porcentaje máximo permitido configurado {0}%. Para el rol de postventa se tiene perminito un porcentaje de {1}.En caso de excederse necesita enviar a aprobación de adjudicaciones".format(porcentaje_perm_adendum,porcentaje_perm_adendum_postventa)
                 
 
             if self.monto_financiamiento >= valor_menos_porc and self.monto_financiamiento <= valor_mayor_porc: 
