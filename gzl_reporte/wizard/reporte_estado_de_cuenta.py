@@ -59,7 +59,6 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             "target": "new",
         }
 
-
     def enviar_correo_estado_cuenta(self):
         contratos_ids=self.env['contrato'].search([('state','=','activo')])
         lis=[]
@@ -68,16 +67,13 @@ class ReporteEstadoDeCuenta(models.TransientModel):
                 reporte_id=self.env['reporte.estado.de.cuenta'].create({'partner_id':l.cliente.id,
                                                                         'contrato_id':l.id})
                 
-                #reporte_id.print_report_pdf()
-                reporte_id.env.ref('gzl_reporte.reporte_estado_de_cuenta_pdf_id').report_action(self)
+                reporte_id.print_report_pdf()
                 attachment = self.env['ir.attachment'].search([('res_id','=',reporte_id.id),('res_model','=','reporte.estado.de.cuenta'),('mimetype','=','application/pdf')])
                 url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
                 url += "/web/content/%s?download=true" %(attachment.id)
 
                 reporte_id.update({'url_doc': url})
                 self.envio_correos_plantilla('email_estado_cuenta',reporte_id.id)
-
-
 
     def envio_correos_plantilla(self, plantilla,id_envio):
 
