@@ -67,7 +67,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             if  l.cliente:   
                 reporte_id=self.env['reporte.estado.de.cuenta'].create({'partner_id':l.cliente.id,
                                                                         'contrato_id':l.id})
-                raise ValidationError(self.env.ref('gzl_reporte.reporte_estado_de_cuenta_pdf_id')['file'])# .report_action(self))
+                raise ValidationError(self.env.ref('gzl_reporte.reporte_estado_de_cuenta_pdf_id'))# .report_action(self))
                 print_report_xls=reporte_id.print_report_pdf()
 
                 reporte_id.update({'url_doc': print_report_xls['url']})
