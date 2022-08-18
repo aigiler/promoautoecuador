@@ -40,6 +40,7 @@ class TablaAdendum(models.Model):
 class WizardContratoAdendum(models.Model):
     _name = 'wizard.contrato.adendum'
     _description = 'Contrato Adendum'
+    _inherit = ['mail.thread', 'mail.activity.mixin']    
 
 
     name=fields.Char(string="Nombre")
