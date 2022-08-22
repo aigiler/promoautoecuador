@@ -24,7 +24,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
 
     partner_id = fields.Many2one('res.partner',string='Cliente')
     contrato_id = fields.Many2one('contrato',string='Contrato')
-    
+    url_doc = fields.Char('Url doc')    
     
     
 
@@ -59,7 +59,34 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             "target": "new",
         }
 
+    def enviar_correo_estado_cuenta(self):
+        contratos_ids=self.env['contrato'].search([('state','=','activo')])
+        lis=[]
+        for l in contratos_ids:
+            if  l.cliente:   
+                reporte_id=self.env['reporte.estado.de.cuenta'].create({'partner_id':l.cliente.id,
+                                                                        'contrato_id':l.id})
+                
+                reporte_id.print_report_pdf()
+                attachment = self.env['ir.attachment'].search([('res_id','=',reporte_id.id),('res_model','=','reporte.estado.de.cuenta'),('mimetype','=','application/pdf')])
+                url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+                url += "/web/content/%s?download=true" %(attachment.id)
 
+                reporte_id.update({'url_doc': url})
+                self.envio_correos_plantilla('email_estado_cuenta',reporte_id.id)
+
+    def envio_correos_plantilla(self, plantilla,id_envio):
+
+        try:
+            ir_model_data = self.env['ir.model.data']
+            template_id = ir_model_data.get_object_reference('gzl_adjudicacion', plantilla)[1]
+        except ValueError:
+            template_id = False
+#Si existe capturo el template
+        if template_id:
+            obj_template=self.env['mail.template'].browse(template_id)
+
+            email_id=obj_template.send_mail(id_envio)
 
     def xslx_body(self, workbook, name):
         bold = workbook.add_format({'bold':True,'border':1})
@@ -95,7 +122,8 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.merge_range('A7:C7', self.env.company.vat, format_datos)
         #         sheet.merge_range('H6:I6', self.contrato_id.ciudad.nombre_ciudad +', ' + self.create_date.strftime('%Y-%m-%d'), format_datos)
 
-        sheet.merge_range('H6:J6', self.env.company.city.upper() +', ' + self.create_date.strftime('%Y-%m-%d'), format_datos)
+        if self.create_date:
+            sheet.merge_range('H6:J6', self.env.company.city.upper() +', ' + self.create_date.strftime('%Y-%m-%d'), format_datos)
         sheet.merge_range('A8:J8', 'ESTADO DE CUENTA DE APORTES', format_subtitle)
         #
         sheet.merge_range('A9:C9', 'Cliente: '+ self.contrato_id.cliente.name, format_datos)
@@ -105,7 +133,8 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         else:
             sheet.merge_range('A10:C10', 'Dirección: ', format_datos)
 
-        sheet.merge_range('A11:C11', 'Grupo: '+'['+ self.contrato_id.grupo.codigo+'] '+ self.contrato_id.grupo.name, format_datos)
+        if self.contrato_id.grupo: 
+            sheet.merge_range('A11:C11', 'Grupo: '+'['+ self.contrato_id.grupo.codigo+'] '+ self.contrato_id.grupo.name, format_datos)
         if self.contrato_id.state == 'adjudicar':
             fecha_adjudicado_text=""
             if self.contrato_id.fecha_adjudicado:
@@ -126,7 +155,8 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             sheet.write('H10', 'Telefonos: '+' - ', format_datos)
 
 
-        sheet.write('H11', 'Tipo de contrato: '+ self.contrato_id.tipo_de_contrato.name.upper(), format_datos)
+        if self.contrato_id.tipo_de_contrato:
+            sheet.write('H11', 'Tipo de contrato: '+ self.contrato_id.tipo_de_contrato.name.upper(), format_datos)
         sheet.write('G12', 'Monto financiamiento: $'+ str(self.contrato_id.monto_financiamiento), format_datos)
         sheet.write('I12', 'Plazo: '+ str(self.contrato_id.plazo_meses.numero)+ ' Meses' , format_datos)
         #

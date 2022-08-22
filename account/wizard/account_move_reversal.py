@@ -161,16 +161,21 @@ class AccountMoveReversal(models.TransientModel):
                 pagado_otros=cuota_id.otro-cuota_id.saldo_otros
                 pagado_administrativo=cuota_id.cuota_adm-cuota_id.saldo_cuota_administrativa
                 pagado_iva=cuota_id.iva_adm-cuota_id.saldo_iva
-                if cuota_id.estado_pago=='pagado':
-                    transacciones=self.env['transaccion.grupo.adjudicado']
-                    dct={
+                #if cuota_id.estado_pago=='pagado':
+                transacciones=self.env['transaccion.grupo.adjudicado']
+                ids_transacciones=transacciones.search([('adjudicado_id','=',cuota_id.contrato_id.cliente.id),('contrato_id','=',cuota_id.contrato_id.id),('haber',' >',0)],limit=1)
+                if pagado_capital:
+                    if ids_transacciones:
+                        for trx in ids_transacciones:
+                            trx.update({'haber':trx.haber+pagado_capital})
+                    else:
+                        transacciones.create({
                             'grupo_id':cuota_id.contrato_id.grupo.id,
-                            'debe':cuota_id.cuota_capital+cuota_id.seguro+cuota_id.rastreo+cuota_id.otro+cuota_id.cuota_adm+cuota_id.iva_adm,
+                            'haber':pagado_capital,
                             'adjudicado_id':cuota_id.contrato_id.cliente.id,
                             'contrato_id':cuota_id.contrato_id.id,
                             'state':cuota_id.contrato_id.state
-                            }
-                    transacciones.create(dct)
+                            })
 
                 cuota_id.saldo_cuota_capital+=pagado_capital
                 cuota_id.saldo_seguro+=pagado_seguro

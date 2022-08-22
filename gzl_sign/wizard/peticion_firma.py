@@ -1,11 +1,22 @@
 # -*- coding: utf-8 -*-
-from odoo import fields, models,  _
+from odoo import fields, models,api,  _
 
 class SignSendRequest(models.TransientModel):
     _inherit = 'sign.send.request'
 
     contrato = fields.Many2one('contrato', string='Contrato')
     grupo = fields.Many2one('grupo.adjudicado', string='Grupo')
+
+    @api.onchange("contrato")
+    def obtener_datos(self):
+        lista_ids=[]
+        grupo=[]
+        for l in self:
+            if l.contrato:
+                grupo=l.contrato.grupo.id
+                lista_ids.append(l.contrato.cliente.id)
+            #self.update({'signer_ids':[(6,0,lista_ids)]}) 
+            l.grupo=grupo 
 
     def sign_directly_without_mail(self):
         grupo_contrato = self.grupo.codigo +" - "+ self.contrato.secuencia

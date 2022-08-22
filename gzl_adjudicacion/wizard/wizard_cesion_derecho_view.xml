@@ -5,24 +5,67 @@
         <field name="model">wizard.cesion.derecho</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button string="Enviar a Contabilidad" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'inicio')]}" type="object" name="enviar_contabilidad"/>
+                    <button string="Enviar a Procesar" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'en_curso')]}" type="object" name="pago_procesado"/>
+                    <button string="Ejecutar Cesión" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'pre_cierre')]}" type="object" name="ejecutar_cesion"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
                 <sheet>
                     <group string="Cesion de Derecho"> 
 
 
-                        <field name="partner_id" required="1"/>
-                        <field name="contrato_id" invisible="1"/>
+                        
+                        
                         <field name="monto_a_ceder" invisible="1"/>
-                        <field name="contrato_a_ceder" invisible="1"/>
-                        <field name="carta_adjunto" />
+                        <field name="partner_id" required="1"/>
+                        <field name="contrato_a_ceder" required="1"/>
+                        <field name="carta_adjunto" string="Documento_adjunto"/>
+                        <field name="pago_id" required="0"/>
+                        <field name="contrato_id" string="Contrato Generado"/>
+                         <field name="ejecutado" invisible="1"/>
                         
 
                     </group>
                 </sheet>
                 <footer>
-                    <button string="Ejecutar Cesión" class="oe_highlight" type="object" name="pagar_cuotas_por_adelantado"/>
-                    <button string="Cancelar" special="cancel"/>
+                    
                 </footer>
             </form>
         </field>
     </record>
+
+<record id="view_cesion_derecho_search" model= "ir.ui.view">
+        <field name="name">view.cesion.derecho.search</field>
+        <field name="model">wizard.cesion.derecho</field>
+        <field name="arch" type="xml">
+        <search string="Búsqueda">
+            <filter invisible="0" string="Retrasado" name="activities_overdue" domain="[('activity_ids.date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]" help="Show all opportunities for which the next action date is before today"/>
+            <filter invisible="0" string="Hoy" name="activities_today" domain="[('activity_ids.date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
+            <filter invisible="0" string="Futuros" name="activities_upcoming_all" domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
+        </search>
+        </field>
+    </record>
+        <record id="view_cesion_derecho_tree" model= "ir.ui.view">
+        <field name="name">view.wizard.cesion.derecho.tree</field>
+        <field name="model">wizard.cesion.derecho</field>
+        <field name="arch" type="xml">
+            <tree string="Cesión de Derecho" >
+                <field name="partner_id" />
+                <field name="contrato_a_ceder"/>
+
+                
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_sesion_derecho" model="ir.actions.act_window">
+        <field name="name">Cesión de Derecho</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.cesion.derecho</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem id="menu_action_cesion_derecho" action="action_sesion_derecho" parent="menu_socio_proceso_adjudicacion" sequence="7" />
 </odoo>

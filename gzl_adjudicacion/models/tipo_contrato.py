@@ -15,3 +15,18 @@ class TipoContratoAdjudicado(models.Model):
     numero_suplentes=fields.Integer('Número Suplentes')
     active=fields.Boolean( default=True)
  
+
+class TipoAsamblea(models.Model):
+    
+    _name = 'tipo.asamblea'
+    _description = 'Tipos de Asamblea'
+  
+    name=fields.Selection(selection=[
+        ('licitacion', 'Licitación'),
+        ('evaluacion', 'Evaluación'),
+    ], string='Tipo', default='licitación', track_visibility='onchange')
+
+    numero_ganadores=fields.Integer('Número Ganadores')
+    numero_suplentes=fields.Integer('Número Suplentes')
+    active=fields.Boolean( default=True)
+ 

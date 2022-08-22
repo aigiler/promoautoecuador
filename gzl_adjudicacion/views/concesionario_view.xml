@@ -27,6 +27,7 @@
                         <field name="phone" widget="phone"/>
                         <field name="mobile" widget="phone"/>
                         <field name="tipo" />
+                        <field name="comisionFacturaConcesionario" required="1"/>
 
 
                     </group>

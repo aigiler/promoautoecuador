@@ -17,3 +17,7 @@ class ResConfigSettings(models.TransientModel):
 
     porcentaje_perm_adendum = fields.Float(string='Porcentaje permitido' , config_parameter="gzl_adjudicacion.porcentaje_perm_adendum")
 
+    porcentaje_perm_adendum_postventa = fields.Float(string='Porcentaje permitido' , config_parameter="gzl_adjudicacion.porcentaje_perm_adendum_postventa")
+
+    monto_minimo = fields.Float(string='Monto Mínimo' , config_parameter="gzl_adjudicacion.monto_minimo")
+    monto_maximo = fields.Float(string='Monto Mínimo' , config_parameter="gzl_adjudicacion.monto_maximo")

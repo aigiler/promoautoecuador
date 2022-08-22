@@ -78,7 +78,7 @@ class WizardPayFortnight(models.TransientModel):
             if amount:
                 payment = self.payment_generate(e,amount)
                 pay_obj.sudo().create(payment)
-                self.create_payment(e, amount,journal_pay)
+            #    self.create_payment(e, amount,journal_pay)
 
         
         #self.create_account_move(lines)

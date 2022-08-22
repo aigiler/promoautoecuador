@@ -37,6 +37,41 @@ class HrEmployee(models.Model):
         return 0
 
 
+    def job_ingreso_nomina(self):
+        hoy=date.today()
+        contatos_ids=self.env['hr.contract'].search([('state','=','open')])
+        for x in contatos_ids:
+            nominas_ids=self.env['hr.payslip'].search([('employee_id','=',x.employee_id.id)])
+            nomina_mes=nominas_ids.filtered(lambda l: l.date_from.year == hoy.year and l.date_from.month == hoy.month and l.payslip_run_id.type_payroll == 'monthly')
+            if len(nomina_mes)==0:
+                self.envio_correos_plantilla('email_nomina_pendiente',x.employee_id.id)
+
+
+    def envio_correos_plantilla(self, plantilla,id_envio):
+
+        try:
+            ir_model_data = self.env['ir.model.data']
+            template_id = ir_model_data.get_object_reference('gzl_adjudicacion', plantilla)[1]
+        except ValueError:
+            template_id = False
+#Si existe capturo el template
+        if template_id:
+            obj_template=self.env['mail.template'].browse(template_id)
+
+            email_id=obj_template.send_mail(id_envio)
+
+
+    def job_ingreso_comisiones(self):
+        hoy=date.today()
+        contatos_ids=self.env['hr.contract'].search([('state','=','open')])
+        for x in contatos_ids:
+            tipo_comision=self.env['hr.payslip.input.type'].search([('code','=','COMI')])
+            comisiones_ids=self.env['hr.input'].search([('state','=',True),('employee_id','=',x.employee_id.id),('input_type_id','=',tipo_comision.id)])
+            if comisiones_ids:
+                self.envio_correos_plantilla('email_comisiones_pendientes',x.employee_id.id)
+
+
+
 
 class HrEmployeePublic(models.Model):
     _inherit = 'hr.employee.public'
@@ -52,13 +87,6 @@ class HrEmployeePublic(models.Model):
     number_bank = fields.Char('Número de Cta')
     children_id = fields.One2many('hr.employee.children','employee_id', string='Id hijos')
     observation = fields.Text(string='Observaciones')
-
-
-
-
-
-
-
 
 
 

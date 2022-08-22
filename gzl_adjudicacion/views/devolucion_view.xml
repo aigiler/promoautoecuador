@@ -11,6 +11,22 @@
             </tree>
         </field>
     </record>
+
+<record id="view_devolucion_search" model= "ir.ui.view">
+        <field name="name">view.devolucion.monto.search</field>
+        <field name="model">devolucion.monto</field>
+        <field name="arch" type="xml">
+        <search string="Búsqueda">
+            <filter invisible="0" string="Retrasado" name="activities_overdue" domain="[('activity_ids.date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]" help="Show all opportunities for which the next action date is before today"/>
+            <filter invisible="0" string="Hoy" name="activities_today" domain="[('activity_ids.date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
+            <filter invisible="0" string="Futuros" name="activities_upcoming_all" domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
+        </search>
+        </field>
+    </record>
+
+        
+
+
         <record id="view_devolucion_form" model="ir.ui.view">
             <field name="name">view.devolucion.form</field>
             <field name="model">devolucion.monto</field>
@@ -537,6 +553,8 @@
                                 <div class="col-xs-12 col-sm-4">
                                 <group > 
                                     <field name="journal_id" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}'/>
+                                    <field name="fecha_estimada_pagos"/>
+
                                     <button type="object" string="Generar Pago" class="btn btn-primary o_invoice_new" name="generar_pago" attrs="{'invisible':[('pago_id', '!=',False)]}"/>
                                      <field name="company_id" invisible="1" options='{"no_create": 1, "no_create_edit": 1}'/>
                                     <field name="pago_id" options='{"no_create": 1, "no_create_edit": 1}'/>

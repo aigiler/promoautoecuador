@@ -32,7 +32,24 @@
                                             <label string="Porcentaje permitido" for="numero_cuotas_pagadas" class="col-lg-3 o_light_label"/>
                                             <field name="porcentaje_perm_adendum" />
                                         </div>
+
+                                        <div class="row">
+                                            <label string="Porcentaje permitido para Postventa" for="numero_cuotas_pagadas" class="col-lg-3 o_light_label"/>
+                                            <field name="porcentaje_perm_adendum_postventa" />
+                                        </div>
                                         
+                                        <div class="row">
+                                            <label string="Monto Minimo para Adendum" for="numero_cuotas_pagadas" class="col-lg-3 o_light_label"/>
+                                            <field name="monto_minimo" />
+                                        </div>
+                                        
+
+                                        <div class="row">
+                                            <label string="Monto Máximo para Adendum" for="numero_cuotas_pagadas" class="col-lg-3 o_light_label"/>
+                                            <field name="monto_maximo" />
+                                        </div>
+                                        
+
                                         <div class="row">
                                             <label string="Configurar Texto informativo" for="configuracion_adicional" class="col-lg-3 o_light_label"/>
                                             <field name="configuracion_adicional" readonly="1"/>

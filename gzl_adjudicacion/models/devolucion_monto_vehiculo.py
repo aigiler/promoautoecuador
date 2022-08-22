@@ -3,6 +3,7 @@ from odoo import api, fields, models, SUPERUSER_ID, tools,  _
 from odoo.exceptions import AccessError, UserError, ValidationError
 from datetime import datetime,timedelta,date
 import re
+from dateutil.relativedelta import relativedelta
 
 
 class DevolucionMonto(models.Model):   
@@ -40,6 +41,8 @@ class DevolucionMonto(models.Model):
         'res.country.city', string='Ciudad', related="contrato_id.ciudad", track_visibility='onchange')
     
     fsolicitud  = fields.Date(string='Fecha de Ingreso de Solicitud')
+    fecha_estimada_pagos  = fields.Date(string='Fecha Estimada de Pago')
+
     state = fields.Selection(selection=[
         ('borrador', 'Borrador'),
         ('postventa', 'Analisis Postventa'),
@@ -148,7 +151,22 @@ class DevolucionMonto(models.Model):
     ingreso_banco = fields.Monetary(
         string='INGRESOS DE BANCOS', currency_field='currency_id')
 
+    fecha_cambio_estado = fields.Datetime()
+    proceso_finalizado=fields.Boolean(default=False)
+    actividad_id = fields.Many2one('mail.activity',string="Actividades")
 
+
+    def job_tiempo_repuesta(self):
+        devoluciones=self.env['devolucion.monto'].search([('proceso_finalizado','!=',True)])
+        tiempo_permitido=self.env['ir.config_parameter'].search([('key',':','tiempo_respuesta_hdr')],limit=1)
+        if not tiempo_permitido:
+            pass
+        for l in devoluciones:
+            if not l.proceso_finalizado:
+                if l.fecha_cambio_estado:
+                    resto_fechas=datetime.now()-l.fecha_cambio_estado
+                    tiempo_horas=(resto_fechas.total_seconds()/3600)
+                    
 
 
 
@@ -286,9 +304,9 @@ class DevolucionMonto(models.Model):
                                             'debe':self.valor_desistimiento,
                                             'adjudicado_id':self.contrato_id.cliente.id,
                                             'contrato_id':self.contrato_id.id,
-                                            'state':cuota_id.contrato_id.state
+                                            'state':self.contrato_id.state
                                             })
-                    transacciones.create(dct)
+                    #transacciones.create(dct)
 
                 self.env['account.move'].create({
                         'date':self.fsolicitud,
@@ -313,16 +331,32 @@ class DevolucionMonto(models.Model):
                         ]
                     }).action_post()
 
+                if not self.fecha_estimada_pagos:
+                    raise ValidationError("Antes de Crear un pago debe indicar la fecha estimada de pago")
                 pago_id=self.env['account.payment'].create({"journal_id":l.journal_id.id,'partner_id':self.cliente.id,
                                                                     'payment_type':'outbound','amount':l.valor_desistimiento,
                                                                     'payment_method_id':pago_metodo.id,
+                                                                    'payment_date':self.fecha_estimada_pagos,
                                                                     'state':'draft',
+                                                                    'communication':self.secuencia,
                                                                     'tipo_transaccion':'Pago',
                                                                     'company_id':self.env.company.id,
                                                                     'partner_type':"customer"})
                 self.pago_id=pago_id.id
+
+                self.crear_activity_pago(pago_id)
             else:
                 raise ValidationError("Seleccione el Banco con el cual desea realizar la devolución.")
+
+    def crear_activity_pago(self,pago):
+        actividad_id=self.env['mail.activity'].create({
+                'res_id': pago.id,
+                'res_model_id': self.env['ir.model']._get('account.payment').id,
+                'activity_type_id': 4,
+                'summary': "Se encuentra agendado un pago por Devolución de ".format(self.secuencia),
+                'user_id': self.rolcontab.user_id.id,
+                'date_deadline':self.fecha_estimada_pagos})
+        self.pago_id.actividad_id=actividad_id.id
             
     @api.onchange('tipo_accion')
     @api.depends('tipo_accion')
@@ -372,6 +406,21 @@ class DevolucionMonto(models.Model):
         return True
 
 
+    def crear_activity(self,rol):
+        if self.actividad_id:
+            self.actividad_id.action_done()
+        if not self.proceso_finalizado:
+
+            actividad_id=self.env['mail.activity'].create({
+                    'res_id': self.id,
+                    'res_model_id': self.env['ir.model']._get('devolucion.monto').id,
+                    'activity_type_id': 4,
+                    'summary': "Ha sido asignado al proceso de la Hoja de Ruta",
+                    'user_id': rol.user_id.id,
+                    'date_deadline':datetime.now()+ relativedelta(days=2)
+                })
+            self.actividad_id=actividad_id.id
+
     def validar_documentos_postventa(self):
         for l in self:
             for x in l.documentos_postventa:
@@ -384,3 +433,5 @@ class DevolucionMonto(models.Model):
             for x in l.documentos_legal:
                 if not x.archivo:
                     raise ValidationError("Debe cargar los documentos solicitados para el tipo de acción ingresado") 
+
+

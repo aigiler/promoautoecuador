@@ -38,7 +38,7 @@
 
 
         <menuitem 
-        id = "menu_carta_finalizacion_report_reporte_form"
+        id = "menu_pagare_reporte_form"
         name = "Pagare a la Orden"  
         parent="menu_reporte" 
         sequence="1" 

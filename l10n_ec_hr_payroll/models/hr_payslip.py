@@ -74,14 +74,7 @@ class hrPayslip(models.Model):
 
             if valor >30:
                 valor=30
-
-
             l.dias_trabajados= valor
-
-
-
-
-
 
     @api.onchange('struct_id')
     def onchange_quincena(self):
@@ -91,23 +84,15 @@ class hrPayslip(models.Model):
             else:
                 self.pago_quincena=False
 
-
-
-
-
-
-
-
-
-
-
     def _get_inputs_line(self,contracts,date_from,date_to):
         self.input_line_ids = []
         res = []
+        #raise ValidationError("{0},{1}".format(date_from,date_to))
         for contract in contracts:
             inputs_ids = self.env['hr.input'].search([('company_id','=',self.env.company.id),
                                     ('date','<=',date_to),('date','>=',date_from),
-                                    ('employee_id','=',contract.employee_id.id),('state','=',True),('input_type_id.code','!=','COMI')])
+                                    ('employee_id','=',contract.employee_id.id),('state','=',True)])
+                                    #('employee_id','=',contract.employee_id.id),('state','=',True),('input_type_id.code','!=','COMI')])
             for inputs in inputs_ids:
                 input_data = {
                     'name': inputs.input_type_id.name,
@@ -124,19 +109,19 @@ class hrPayslip(models.Model):
             date_later_to=date_from+relativedelta(days=-1)
 
 
-            inputs_ids = self.env['hr.input'].search([('company_id','=',self.env.company.id), ('date','<=',date_later_to),('date','>=',date_later_from),  ('employee_id','=',contract.employee_id.id),('state','=',True),('input_type_id.code','=','COMI')])
+            #inputs_ids = self.env['hr.input'].search([('company_id','=',self.env.company.id), ('date','<=',date_later_to),('date','>=',date_later_from),  ('employee_id','=',contract.employee_id.id),('state','=',True),('input_type_id.code','=','COMI')])
 
-            for inputs in inputs_ids:
-                 input_data = {
-                     'name': inputs.input_type_id.name,
-                     'input_type_id': inputs.input_type_id.id,
-                     'code': inputs.input_type_id.code,
-                     'contract_id': contract.id,
-                     'amount': inputs.amount,
-                     'input_id': inputs.id,
-                     'payslip_id':self.id,
-                 }
-                 res.append(input_data)
+            #for inputs in inputs_ids:
+            #     input_data = {
+            #         'name': inputs.input_type_id.name,
+            #         'input_type_id': inputs.input_type_id.id,
+            #         'code': inputs.input_type_id.code,
+            #         'contract_id': contract.id,
+            #         'amount': inputs.amount,
+            #         'input_id': inputs.id,
+            #         'payslip_id':self.id,
+            #     }
+            #     res.append(input_data)
 
         return res
 
@@ -415,9 +400,6 @@ class hrPayslipRun(models.Model):
                 cont += 1
             sheet.write(col,dtc[total[1]],abs(total[0]),number2)
             cont += 1
-
-
-
 
     def print_xlsx_payroll_rubro(self):
         file_data =  BytesIO()
