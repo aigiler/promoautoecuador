@@ -643,7 +643,6 @@ class EntegaVehiculo(models.Model):
 
 
 
-
     observacionesCalificador = fields.Text(string="Observaciones", default=' ')
     observacionesCalificadorGarante = fields.Text(string="Observaciones", default=' ')
 
