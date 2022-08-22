@@ -455,119 +455,6 @@ class WizardContratoAdendum(models.Model):
             nuevo_valor_inscripcion=self.monto_financiamiento*0.05
             if nuevo_valor_inscripcion>cuota_inscripcion_anterior:
                 self.valor_inscripcion=self.monto_financiamiento*0.05
-            ##crear_nueva factura
-            #self.contrato_id.plazo_meses =self.plazo_meses.id
-            #self.contrato_id.cuota_capital=cuota_capital_nueva
-            #self.contrato_id.ejecutado = True
-            #self.env['contrato.adendum'].create({
-            #                'contrato_id': self.contrato_id.id,
-            #                'socio_id':self.socio_id.id,
-            #                'monto_financiamiento':self.monto_financiamiento,
-            #                'plazo_meses':self.plazo_meses.id,
-            #                'observacion':self.observacion,
-            #                #'currency_id':self.contrato_id.id,
-            #            })  
-
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     def ejecutar_cambio(self,):
         if self.env.user.id == self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
@@ -586,10 +473,10 @@ class WizardContratoAdendum(models.Model):
         
         elif self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
             raise ValidationError("No tiene permiso para realizar esta acción")
-        if  self.contrato_id.ejecutado:
-            raise ValidationError("El contrato solo puede realizar un adendum")
-        elif self.contrato_id.state !='activo':
-            raise ValidationError("El contrato solo puede realizar un adendum en estado activo")
+        #if  self.contrato_id.ejecutado:
+        #    raise ValidationError("El contrato solo puede realizar un adendum")
+        #elif self.contrato_id.state !='activo':
+        #    raise ValidationError("El contrato solo puede realizar un adendum en estado activo")
         else:
             if not self.pago_id:
                 raise ValidationError("Debe generarse el pago y asociarse a este proceso")
