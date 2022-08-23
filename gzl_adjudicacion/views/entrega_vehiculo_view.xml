@@ -142,7 +142,7 @@
                         </page>
 
 
-                        <page string="Informe de Credito y Cobranza Garante" attrs="{'invisible':[('garante', '=', False)],'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}">
+                        <page string="Informe de Credito y Cobranza Garante" attrs="{'invisible':[('aplicaGarante', '=', 'SI')],'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}">
                             <separator class="text-center" string="ANTECEDENTES DEL Garante"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
@@ -253,15 +253,6 @@
                             <separator/>
 
                         </page>
-
-
-
-
-
-
-
-
-
 
 
                                                 <!-- CALIFICADOR DE COMPRA -->
@@ -552,340 +543,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        <!-- CALIFICADOR DE COMPRA -->
-                        <page string="Calificador de Compra Garante" attrs="{'invisible':[('garante', '=', False)],'readonly':[('estado', 'not in', ('calificador_compra'))]}">
-                            <separator class="text-center" string="CALIFICADOR PARA COMPRA DEL BIEN"/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-md-12">
-                                    <group>
-                                        <field name="nombreGarante" readonly="1" force_save="1" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))], 'invisible':[('garante', '=', False)]}"/>
-                                    </group>
-                                </div>
-                                
-                                <div class="col-xs-12 col-sm-4" attrs="{'invisible':[('garante', '=', False)]}"> 
-                                    <group>
-                                        <field name="vatGarante" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                                <div class="col-xs-4">
-                                    <group>
-                                        <field name="codigoGarante" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-md-12">
-                                    <table style=" border-collapse: collapse; width:100%">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <label for="montoAdjudicado"/>
-                                                </td>
-                                                <td>
-                                                    <field name="montoAdjudicado" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <label for="plazoMeses"/>
-                                                </td>
-                                                <td>
-                                                    <label for="tipoAdj"/>
-                                                </td>
-                                                <td>
-                                                    <label for="fechaAdj"/>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label for="valorCuota"/>
-                                                </td>
-                                                <td>
-                                                    <field name="valorCuota" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="plazoMeses" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="tipoAdj" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="fechaAdj" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-4 col-sm-9">
-                                    <table style=" border-collapse: collapse;width:100%">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <label for="valorTotalPlan"/>
-                                                </td>
-                                                <td>
-                                                    <field name="valorTotalPlan" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="plazoMeses" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
- Cuotas</td>
-                                                <td>
-                                                    <field name="porcentajeTotal" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-%</td>
-                                            </tr>
-                                            <tr class="font-weight-bold">
-                                                <td>
-                                                    <label for="montoCuotasCanceladas" />
-                                                </td>
-                                                <td>
-                                                    <field name="montoCuotasCanceladas" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="cuotasCanceladas" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
- Cuotas</td>
-                                                <td>
-                                                    <field name="porcentajeCancelado" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-%</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label for="montoCuotasPendientes" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="montoCuotasPendientes" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="cuotasPendientes" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
- Cuotas</td>
-                                                <td>
-                                                    <field name="porcentajePendiente" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-%</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <group>
-                                        <field name="puntosPorcentajeCanceladoGarante" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-9">
-                                    <table style=" border-collapse: collapse; width:90%">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <label for="valorDelBien"/>
-                                                </td>
-                                                <td>
-                                                    <field name="valorDelBien" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td style="width:10%"></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr class="font-weight-bold">
-                                                <td>
-                                                    <label for="saldoPlan"/>
-                                                </td>
-                                                <td>
-                                                    <field name="saldoPlan" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td style="width:10%"></td>
-                                                <td>
-                                                    <field name="porcentajeSaldoPlan" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-%</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <group>
-                                        <field name="puntosPorcentajSaldos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-9">
-                                    <table style=" border-collapse: collapse; width:100%">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <label for="ingresosFamiliaresGarante" string="Ingresos familiares"/>
-                                                </td>
-                                                <td>
-                                                    <field name="ingresosFamiliaresGarante" string="Ingresos familiares"/>
-                                                </td>
-                                                <td>
-                                                    <field name="porcentajeIngresosGarante" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}" /><text>%</text>
-                                                </td>
-                                                <td>
-                                                    <text>Comprometido</text>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label for="gastosFamiliaresGarante" string="Gastos familiares"/>
-                                                </td>
-                                                <td>
-                                                    <field name="gastosFamiliaresGarante" string ="Gastos familiares" readonly="1" readoptions="{'no_create': True, 'no_open': True}" />
-                                                </td>
-                                                <td>
-                                                    <field name="porcentajeGastosGarante" nolabel="1" options="{'no_create': True, 'no_open': True}"/><text>%</text>
-                                                </td>
-                                                <td>
-                                                    <text>Cuota Plan</text>
-                                                </td>
-                                            </tr>
-                                            <tr class="font-weight-bold">
-                                                <td>
-                                                    <label for="disponibilidadGarante" string="Disponibilidad" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td style="border-top: 0.5px solid">
-                                                    <field name="disponibilidadGarante" string="Disponibilidad" options="{'no_create': True, 'no_open': True}" />
-                                                </td>
-                                                <td>
-                                                    <field name="porcentajeDisponibilidadGarante" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="porcentajeCuotaPlanGarante" nolabel="1" options="{'no_create': True, 'no_open': True}"/>%
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <group>
-                                        <field name="puntosCuotaIngresosGarante" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-4">
-                                    <text class="align-baseline">
-                                        <strong>Score de Credito Mayor a 800 puntos</strong>
-                                    </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-5">
-                                    <field name="scoreCreditoGarante" nolabel="1" string="Score de Credito Mayor a 800 puntos " />
-                                </div>
-                                <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <field name="puntosScoreCreditoGarante" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-4">
-                                    <text class="align-baseline">
-                                        <strong>Antigüedad Laboral o Comercial Mayor a 2 años</strong>
-                                    </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-5">
-                                    <field name="antiguedadLaboralGarante" nolabel="1" string="Antigüedad Laboral o Comercial Mayor a 2 años "/>
-                                    <text> Años</text>
-                                </div>
-                                <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <field name="puntosAntiguedadLaboralGarante" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-8" >
-                                    <field name="tablaPuntosBienesGarante" nolabel="1">
-                                        <tree create='0' delete='0' editable='top'>
-                                            <field name="bien_id" readonly='1'/>
-                                            <field name="poseeBien"/>
-                                            <field name="puntosBien" readonly='1'/>
-                                        </tree>
-                                    </field>
-                                </div>
-                                
-                                <div class="col-xs-12 col-sm-4" style="border: 0.05px solid black;">
-                                    <field name="totalPuntosBienesGarante" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-9">
-                                    <text class="text-center">
-                                        <strong>TOTAL PUNTOS</strong>
-                                    </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-3">
-                                    <field name="totalPuntosCalificadorGarante" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12">
-                                    <field class="font-weight-bold" name="aplicaGarante" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-                                </div>
-
-                            </div>
-                            <separator/>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12" style="border-bottom: 1px solid black;">
-                                    <text class="text-center">
-                                        <strong>Observaciones:</strong>
-                                    </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-12">
-                                    <field name="observacionesCalificadorGarante" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </div>
-                            </div>
-
-                        </page>
                          <page string="Liquidación Orden de Compra" attrs="{'readonly':[('estado', 'not in', ('liquidacion_orden_compra'))]}">
                             <separator class="text-center" string="LIQUIDACION DE COMPRA"/>
                             <div style="border: 1px solid black;">
@@ -1091,29 +748,7 @@
                                 </div>
                             </div>
                             <separator/>
-                            <separator class="text-center" string="Información del Vehiculo"/>
-                            <div class="col-xs-12 col-md-12">
-                                <group>
-                                    <field name="tipoVehiculo" placeholder="AUTO" />
-                                    <field name="claseVehiculo" placeholder="VEHICULO UTILITARIO"/>
-                                    <field name="marcaVehiculo" placeholder="MARCA.. SUZUKI" />
-                                    <field name="modeloVehiculoSRI" placeholder="MODELO REGISTRADO SRI" />
-
-                                    <field name="modeloHomologado" placeholder="MODELO HOMOLOGADO ANT" />
-                                    <field name="serieVehiculo" placeholder="SERIE"/>
-                                    <field name="motorVehiculo" placeholder="MOTOR"/>
-                                    <field name="colorVehiculo" placeholder="COLOR" />
-
-                                    <field name="anioVehiculo" />
-                                    <field name="paisOrigenVehiculo" placeholder="Ecuador" options="{'no_open': True, 'no_create': True}" />
-                                    <field name="conbustibleVehiculo" placeholder="GASOLINA"/>
-                                    <field name="numPasajeros" />
-
-                                    <field name="tonelajeVehiculo" placeholder="TONELAJE" />
-                                    <field name="numEjesVehiculo" />
-                            </group>
-                            </div>
-                            <separator/>
+                            
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12" style="border-bottom: 1px solid black;">
                                     <text class="text-center">
@@ -1172,6 +807,33 @@
                         </page> 
 
 
+
+                        <page string ="Información de Vehículo" attrs="{'readonly':[('estado', 'not in', ('orden_compra'))]}">
+                            <separator class="text-center" string="INFORMACIÓN DE VEHICULO"/>
+                            <div class="col-xs-12 col-md-12">
+                                <group>
+                                    <field name="tipoVehiculo" placeholder="AUTO" />
+                                    <field name="claseVehiculo" placeholder="VEHICULO UTILITARIO"/>
+                                    <field name="marcaVehiculo" placeholder="MARCA.. SUZUKI" />
+                                    <field name="modeloVehiculoSRI" placeholder="MODELO REGISTRADO SRI" />
+
+                                    <field name="modeloHomologado" placeholder="MODELO HOMOLOGADO ANT" />
+                                    <field name="serieVehiculo" placeholder="SERIE"/>
+                                    <field name="motorVehiculo" placeholder="MOTOR"/>
+                                    <field name="colorVehiculo" placeholder="COLOR" />
+
+                                    <field name="anioVehiculo" />
+                                    <field name="paisOrigenVehiculo" placeholder="Ecuador" options="{'no_open': True, 'no_create': True}" />
+                                    <field name="conbustibleVehiculo" placeholder="GASOLINA"/>
+                                    <field name="numPasajeros" />
+
+                                    <field name="tonelajeVehiculo" placeholder="TONELAJE" />
+                                    <field name="numEjesVehiculo" />
+                            </group>
+                            </div>
+                            
+                        </page> 
+
                         
                         <page string="Matriculacion, Rastreo, Seguro"  >
                             <separator class="text-center" string="OFRECIDOS POR LA EMPRESA"/>
@@ -1217,6 +879,15 @@
                                             <td  attrs="{'invisible':[('seguro', '=', False)]}">
                                                 <field name="plazo_seguro" attrs="{'required':[('seguro', '!=', False)]}"/>
                                             </td>
+                                            
+                                            <td  attrs="{'invisible':[('seguro', '=', False)]}">
+                                                <text>Fecha Inicio</text>
+                                            </td>
+                                            <td></td>
+                                            <td  attrs="{'invisible':[('seguro', '=', False)]}">
+                                                <field name="fecha_inicio_seguro"  attrs="{'required':[('seguro', '!=', False)]}"/>
+                                            </td>
+
                                             <td  attrs="{'invisible':[('seguro', '=', False)]}">
                                                 <text>Fecha Vencimiento</text>
                                             </td>
@@ -1240,6 +911,13 @@
                                             <td></td>
                                             <td  attrs="{'invisible':[('rastreo', '=', False)]}">
                                                 <field name="plazo_rastreo"  attrs="{'required':[('rastreo', '!=', False)]}"/>
+                                            </td>
+                                            <td  attrs="{'invisible':[('rastreo', '=', False)]}">
+                                                <text>Fecha Inicio</text>
+                                            </td>
+                                            <td></td>
+                                            <td  attrs="{'invisible':[('rastreo', '=', False)]}">
+                                                <field name="fecha_inicio_rastreo" attrs="{'required':[('rastreo', '!=', False)]}" />
                                             </td>
                                             <td  attrs="{'invisible':[('rastreo', '=', False)]}">
                                                 <text>Fecha Vencimiento</text>

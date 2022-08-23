@@ -459,7 +459,7 @@ class ChequeWizard(models.TransientModel):
                     'ref' : account_cheque.sequence + '- ' + account_cheque.cheque_number + '- ' + 'Cashed',
                     'account_cheque_id' : account_cheque.id
         }
-        account_move = account_move_obj.create(vals)
+        #account_move = account_move_obj.create(vals)
         debit_vals = {
                     'partner_id' : account_cheque.payee_user_id.id or False,
                     'account_id' : account_cheque.debit_account_id.id, 
@@ -480,7 +480,7 @@ class ChequeWizard(models.TransientModel):
                     'company_id' : account_cheque.company_id.id,
         }
         move_lines.append((0, 0, credit_vals))
-        account_move.write({'line_ids' : move_lines})
+        #account_move.write({'line_ids' : move_lines})
         account_cheque.status = 'cashed'
         return account_move
 

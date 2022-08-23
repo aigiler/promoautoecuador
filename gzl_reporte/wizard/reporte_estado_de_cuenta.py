@@ -82,7 +82,6 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             template_id = ir_model_data.get_object_reference('gzl_adjudicacion', plantilla)[1]
         except ValueError:
             template_id = False
-#Si existe capturo el template
         if template_id:
             obj_template=self.env['mail.template'].browse(template_id)
 

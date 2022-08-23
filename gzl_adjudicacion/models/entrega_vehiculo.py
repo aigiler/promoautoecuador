@@ -36,7 +36,6 @@ class EntegaVehiculo(models.Model):
         referencia=self.env.ref('gzl_adjudicacion.configuracion_adicional1')
         return referencia.requisitosPoliticasCredito
 
-        
     documentos = fields.Many2many('ir.attachment', string='Carga Documentos', track_visibility='onchange')
     active = fields.Boolean(string='Activo', default=True)
     estado = fields.Selection(selection=[
@@ -65,8 +64,8 @@ class EntegaVehiculo(models.Model):
     vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía',store=True, default=' ')
     vatGarante = fields.Char(related="nombreGarante.vat", string='Cedula de Ciudadanía',store=True)    
     
-    fechaNacimientoGarante = fields.Date(String='Fecha de Nacimiento')
-    fechaNacimientoAdj = fields.Date(string='Fecha de Nacimiento',compute = 'setea_valores_informe', store=True)
+    fechaNacimientoGarante = fields.Date(related="nombreGarante.fecha_nacimiento",String='Fecha de Nacimiento')
+    fechaNacimientoAdj = fields.Date(related="nombreSocioAdjudicado.fecha_nacimiento", string='Fecha de Nacimiento',compute = 'setea_valores_informe', store=True)
     
     estadoCivilGarante = fields.Selection(related="nombreGarante.estado_civil" ,store=True)    
     estadoCivilAdj = fields.Selection(related="nombreSocioAdjudicado.estado_civil" ,store=True)
@@ -77,17 +76,17 @@ class EntegaVehiculo(models.Model):
     edadAdjudicado = fields.Integer(compute='calcular_edad', string="Edad", readonly=True, store=True, default = 0)
     edadGarante = fields.Integer(compute='calcular_edad_Garante', string="Edad", readonly=True, store=True, default = 0)
 
-    cargasFamiliares = fields.Integer(string="Cargas Fam." , default = 0)
-    cargasFamiliaresGarante = fields.Integer(string="Cargas Fam." , default = 0)
+    cargasFamiliares = fields.Integer(string="Cargas Fam." , related="nombreSocioAdjudicado.num_cargas_familiares", store=True, default = 0)
+    cargasFamiliaresGarante = fields.Integer(string="Cargas Fam." , related="nombreGarante.num_cargas_familiares", store=True, ,default = 0)
 
-    nombreConyuge = fields.Char(string="Nombre del Conyuge", default = 'N/A')
-    nombreConyugeGarante = fields.Char(string="Nombre del Conyuge", default = 'N/A')
+    nombreConyuge = fields.Char(related="nombreSocioAdjudicado.conyuge", string="Nombre del Conyuge", default = 'N/A')
+    nombreConyugeGarante = fields.Char(related="nombreGarante.conyuge", string="Nombre del Conyuge", default = 'N/A')
 
-    fechaNacimientoConyuge = fields.Date(string='Fecha de Nacimiento')
-    fechaNacimientoConyugeGarante = fields.Date(string='Fecha de Nacimiento')
+    fechaNacimientoConyuge = fields.Date(related="nombreSocioAdjudicado.fechaNacimientoConyuge", string='Fecha de Nacimiento')
+    fechaNacimientoConyugeGarante = fields.Date(related="nombreGarante.fechaNacimientoConyuge", string='Fecha de Nacimiento')
 
-    vatConyuge = fields.Char(string='Cedula de Ciudadanía', default = 'N/A')
-    vatConyugeGarante = fields.Char(string='Cedula de Ciudadanía', default = 'N/A')
+    vatConyuge = fields.Char(related="nombreSocioAdjudicado.vatConyuge", string='Cedula de Ciudadanía', default = 'N/A')
+    vatConyugeGarante = fields.Char(related="nombreGarante.vatConyuge", string='Cedula de Ciudadanía', default = 'N/A')
 
     telefonosAdj = fields.Char(string='Celular')
 
@@ -97,7 +96,7 @@ class EntegaVehiculo(models.Model):
         ('casado', 'Casado/a'),
         ('divorciado', 'Divorciado/a'),
         ('viudo', 'Viudo/a')
-    ], string='Estado Civil', default='soltero')
+    ], string='Estado Civil', default='soltero',related="nombreSocioAdjudicado.estado_civil" )
 
     estadoCivilConyugeGarante = fields.Selection(selection=[
         ('soltero', 'Soltero/a'),
@@ -105,14 +104,14 @@ class EntegaVehiculo(models.Model):
         ('casado', 'Casado/a'),
         ('divorciado', 'Divorciado/a'),
         ('viudo', 'Viudo/a')
-    ], string='Estado Civil', default='soltero')
+    ], string='Estado Civil', default='soltero',related="nombreGarante.estado_civil" )
     
     edadConyugeGarante = fields.Integer(compute='calcular_edad_conyuge', string="Edad", default = 0)
     edadConyuge = fields.Integer(compute='calcular_edad_conyuge', string="Edad", default = 0)
 
     # datos domiciliarios
-    referenciaDomiciliaria = fields.Text(string='Referencias indican:', default=' ')
-    referenciaDomiciliariaGarante = fields.Text(string='Referencias indican:', default=' ')
+    referenciaDomiciliaria = fields.Text( string='Referencias indican:', default=' ')
+    referenciaDomiciliariaGarante = fields.Text( string='Referencias indican:', default=' ')
 
     # datos laborales
     referenciasLaborales = fields.Text(string='Referencias indican:', default=' ')
@@ -121,8 +120,8 @@ class EntegaVehiculo(models.Model):
     institucionFinanciera = fields.Many2one('res.bank',string='Institución')
     institucionFinancieraGarante = fields.Many2one('res.bank',string='Institución')
     
-    direccion = fields.Char(string='Direccion de Casa' , default=' ')
-    direccionGarante = fields.Char(string='Direccion de Casa' , default=' ')
+    direccion = fields.Char(string='Direccion de Casa' , default=' ',related="nombreSocioAdjudicado.street")
+    direccionGarante = fields.Char(string='Direccion de Casa' , default=' ',related="nombreGarante.street")
     
     scoreBuroCredito = fields.Integer(string='Buró de Crédito')
     scoreBuroCreditoGarante = fields.Integer(string='Buró de Crédito')
@@ -182,7 +181,6 @@ class EntegaVehiculo(models.Model):
             self.pagcontrol_garante=True
 
     tablaPuntosBienes = fields.One2many('puntos.bienes.entrega.vehiculo','entrega_id', domain=[('garante','=',False)],track_visibility='onchange')
-    tablaPuntosBienesGarante = fields.One2many('puntos.bienes.entrega.vehiculo','entrega_id',  domain=[('garante','=',True)],track_visibility='onchange')
     puentes_bienes=fields.Boolean(default=False)
 
     def llenar_tabla_puntos_bienes(self):
@@ -193,13 +191,7 @@ class EntegaVehiculo(models.Model):
                 id_registro=self.env['puntos.bienes.entrega.vehiculo'].create({'bien_id':bienes.id,'entrega_id':self.id,'garante':False})
                 lista_ids.append(int(id_registro))
             self.update({'tablaPuntosBienes':[(6,0,lista_ids)]})
-        if not self.puentes_bienes and self.garante:
-            lista_ids=[]
-            for bienes in obj_puntos_bienes:
-                id_registro=self.env['puntos.bienes.entrega.vehiculo'].create({'bien_id':bienes.id,'entrega_id':self.id,'garante':True})
-                lista_ids.append(int(id_registro))
-            self.update({'tablaPuntosBienesGarante':[(6,0,lista_ids)]})
-            self.puentes_bienes=True
+ 
     
 
 
@@ -272,14 +264,11 @@ class EntegaVehiculo(models.Model):
             rec.totalActivosAdj=sum(rec.montoAhorroInversiones.mapped('valor'))
     
     totalPuntosBienesAdj = fields.Integer(compute='calcular_puntos_bienes',store=True)
-    totalPuntosBienesGarante = fields.Integer(compute='calcular_puntos_bienes',store=True)
 
-    @api.depends('tablaPuntosBienes','tablaPuntosBienesGarante')
+    @api.depends('tablaPuntosBienes')
     def calcular_puntos_bienes(self):
         for rec in self:
             rec.totalPuntosBienesAdj = sum(rec.tablaPuntosBienes.mapped('puntosBien'))
-            if rec.garante:
-                rec.totalPuntosBienesGarante = sum(rec.tablaPuntosBienesGarante.mapped('puntosBien'))
 
     # observaciones
     observaciones = fields.Text(string='Observaciones', default=' ')
@@ -339,13 +328,11 @@ class EntegaVehiculo(models.Model):
 
     #puntos valor cancelado del plan
     puntosPorcentajeCancelado = fields.Integer(string = 'puntos', compute='calcular_puntos_porcentaje_cancelado')
-    puntosPorcentajeCanceladoGarante = fields.Integer(string = 'puntos', compute='calcular_puntos_porcentaje_cancelado')
 
 
     @api.depends('porcentajeCancelado')
     def calcular_puntos_porcentaje_cancelado(self):
         for rec in self:
-            rec.puntosPorcentajeCanceladoGarante = 0
             if rec.porcentajeCancelado >= 0.00 and rec.porcentajeCancelado <= 25.00:
                 rec.puntosPorcentajeCancelado = 0
             elif rec.porcentajeCancelado >= 26.00 and rec.porcentajeCancelado <= 30.00:
@@ -354,17 +341,6 @@ class EntegaVehiculo(models.Model):
                 rec.puntosPorcentajeCancelado = 200
             else:
                 rec.puntosPorcentajeCancelado = 0
-            
-            if rec.garante:
-                if rec.porcentajeCancelado >= 0.00 and rec.porcentajeCancelado <= 25.00:
-                    rec.puntosPorcentajeCanceladoGarante = 0
-                elif rec.porcentajeCancelado >= 26.00 and rec.porcentajeCancelado <= 30.00:
-                    rec.puntosPorcentajeCanceladoGarante = 100
-                elif rec.porcentajeCancelado >= 31.00:
-                    rec.puntosPorcentajeCanceladoGarante = 200
-                else:
-                    rec.puntosPorcentajeCanceladoGarante = 0
-
 
 
 
@@ -415,82 +391,52 @@ class EntegaVehiculo(models.Model):
 
 
     ingresosFamiliares = fields.Monetary(string='Ingresos familiares')
-    ingresosFamiliaresGarante = fields.Monetary(string='Ingresos familiares')
 
     porcentajeIngresos = fields.Float(default=100.00)
-    porcentajeIngresosGarante = fields.Float(default=100.00)
 
     gastosFamiliares = fields.Monetary(string='Gastos familiares', compute='calcular_valor_gastos_familiares')
-    gastosFamiliaresGarante = fields.Monetary(string='Gastos familiares', compute='calcular_valor_gastos_familiares')
 
-    @api.depends('ingresosFamiliares','ingresosFamiliaresGarante')
+    @api.depends('ingresosFamiliares')
     def calcular_valor_gastos_familiares(self):
         for rec in self:
-            rec.gastosFamiliaresGarante=0.00
             rec.porcentajeIngresos = 100.00
             rec.gastosFamiliares = rec.ingresosFamiliares * 0.7
-            if rec.garante:
-                rec.porcentajeIngresosGarante = 100.00
-                rec.gastosFamiliaresGarante = rec.ingresosFamiliaresGarante * 0.7
 
 
     porcentajeGastos = fields.Float( digits=(6, 2), compute='calcular_porcentaje_gastos_familiares')
-    porcentajeGastosGarante = fields.Float( digits=(6, 2), compute='calcular_porcentaje_gastos_familiares')
 
-    @api.depends('gastosFamiliares', 'ingresosFamiliares','gastosFamiliaresGarante', 'ingresosFamiliaresGarante')
+    @api.depends('gastosFamiliares', 'ingresosFamiliares')
     def calcular_porcentaje_gastos_familiares(self):
         for rec in self:
-            rec.gastosFamiliaresGarante=0.00
             rec.porcentajeGastos = (
                 rec.gastosFamiliares / rec.ingresosFamiliares) * 100
-            if rec.garante:
-                rec.porcentajeGastosGarante = (
-                    rec.gastosFamiliaresGarante / rec.ingresosFamiliaresGarante) * 100
 
-
-    @api.depends('ingresosFamiliares', 'gastosFamiliares','gastosFamiliaresGarante', 'ingresosFamiliaresGarante')
+    @api.depends('ingresosFamiliares', 'gastosFamiliares')
     def calcular_porcentaje_gastos_familiares(self):
         for rec in self:
-            rec.porcentajeGastosGarante=0
             if rec.gastosFamiliares:
                 rec.porcentajeGastos = (
                     rec.gastosFamiliares / rec.ingresosFamiliares) * 100
             else:
                 rec.porcentajeGastos = 0
-            if rec.garante:
-                if rec.gastosFamiliaresGarante:
-                    rec.porcentajeGastosGarante = (
-                        rec.gastosFamiliaresGarante / rec.ingresosFamiliaresGarante) * 100
-                else:
-                    rec.porcentajeGastosGarante = 0
+
+
     porcentajeCuotaPlan = fields.Float(digits=(6, 2), default=0.0, compute='calcular_porcentaje_cuota_plan')
-    porcentajeCuotaPlanGarante = fields.Float(digits=(6, 2), default=0.0, compute='calcular_porcentaje_cuota_plan')
 
 
-    @api.depends('valorCuota', 'ingresosFamiliares','ingresosFamiliaresGarante')
+    @api.depends('valorCuota', 'ingresosFamiliares')
     def calcular_porcentaje_cuota_plan(self):
         for rec in self:
-            rec.porcentajeCuotaPlanGarante=0
             if rec.ingresosFamiliares:
                 rec.porcentajeCuotaPlan = round(((rec.valorCuota/rec.ingresosFamiliares) * 100), 0) 
             else:
                 rec.porcentajeCuotaPlan = 0.0
-            if rec.garante:
-                if rec.ingresosFamiliaresGarante:
-                    rec.porcentajeCuotaPlanGarante = round(((rec.valorCuota/rec.ingresosFamiliaresGarante) * 100), 0) 
-                else:
-                    rec.porcentajeCuotaPlanGarante = 0.0
-
-
 
     puntosCuotaIngresos = fields.Integer(compute='calcular_puntos_ingresos')
-    puntosCuotaIngresosGarante = fields.Integer(compute='calcular_puntos_ingresos')
  
-    @api.depends('porcentajeCuotaPlan','porcentajeCuotaPlanGarante')
+    @api.depends('porcentajeCuotaPlan')
     def calcular_puntos_ingresos(self):
         for rec in self:
-            rec.puntosPorcentajeCanceladoGarante = 0
-            rec.puntosCuotaIngresosGarante = 0
             if rec.porcentajeCuotaPlan >= 0.00 and rec.porcentajeCuotaPlan <= 30.00:
                 rec.puntosCuotaIngresos = 200
             elif rec.porcentajeCuotaPlan >= 31.00 and rec.porcentajeCuotaPlan <= 40.00:
@@ -499,26 +445,14 @@ class EntegaVehiculo(models.Model):
                 rec.puntosCuotaIngresos = 0
             else:
                 rec.puntosPorcentajeCancelado = 0
-            if rec.garante:
-                if rec.porcentajeCuotaPlanGarante >= 0.00 and rec.porcentajeCuotaPlanGarante <= 30.00:
-                    rec.puntosCuotaIngresosGarante = 200
-                elif rec.porcentajeCuotaPlanGarante >= 31.00 and rec.porcentajeCuotaPlanGarante <= 40.00:
-                    rec.puntosCuotaIngresosGarante = 100
-                elif rec.porcentajeCuotaPlanGarante >= 41.00:
-                    rec.puntosCuotaIngresosGarante = 0
-                else:
-                    rec.puntosPorcentajeCanceladoGarante = 0
-
-
 
 
 
     puntosSaldosPlan = fields.Float(digits=(6, 2), compute='calcular_puntos_saldos_plan')
 
-    @api.depends('porcentajeCuotaPlan','porcentajeCuotaPlanGarante')
+    @api.depends('porcentajeCuotaPlan')
     def calcular_puntos_saldos_plan(self):
         for rec in self:
-            rec.puntosPorcentajeCanceladoGarante = 0
             if rec.porcentajeCuotaPlan >= 0.00 and rec.porcentajeCuotaPlan <= 25.00:
                 rec.puntosPorcentajeCancelado = 0
             elif rec.porcentajeCuotaPlan >= 26.00 and rec.porcentajeCuotaPlan <= 30.00:
@@ -527,107 +461,62 @@ class EntegaVehiculo(models.Model):
                 rec.puntosPorcentajeCancelado = 200
             else:
                 rec.puntosPorcentajeCancelado = 0
-            if rec.garante:
-                if rec.porcentajeCuotaPlanGarante >= 0.00 and rec.porcentajeCuotaPlanGarante <= 25.00:
-                    rec.puntosPorcentajeCanceladoGarante = 0
-                elif rec.porcentajeCuotaPlanGarante >= 26.00 and rec.porcentajeCuotaPlanGarante <= 30.00:
-                    rec.puntosPorcentajeCanceladoGarante = 100
-                elif rec.porcentajeCuotaPlanGarante >= 31.00:
-                    rec.puntosPorcentajeCanceladoGarante = 200
-                else:
-                    rec.puntosPorcentajeCanceladoGarante = 0
-
-
 
 
     porcentajeDisponibilidad = fields.Float(digits=(6, 2), compute='calcular_porcentaje_disponibilidad')
-    porcentajeDisponibilidadGarante = fields.Float(digits=(6, 2), compute='calcular_porcentaje_disponibilidad')
 
-    @api.depends('porcentajeGastos', 'porcentajeIngresos','porcentajeGastosGarante', 'porcentajeIngresosGarante')
+    @api.depends('porcentajeGastos', 'porcentajeIngresos')
     def calcular_porcentaje_disponibilidad(self):
         for rec in self:
-            rec.porcentajeDisponibilidadGarante=0
             rec.porcentajeDisponibilidad = rec.porcentajeIngresos - rec.porcentajeGastos
-            if rec.garante:
-                rec.porcentajeDisponibilidadGarante = rec.porcentajeIngresosGarante - rec.porcentajeGastosGarante
 
 
     disponibilidad = fields.Monetary(string='Disponibilidad', compute='calcular_valor_disponibilidad')
-    disponibilidadGarante = fields.Monetary(string='Disponibilidad', compute='calcular_valor_disponibilidad')
 
-    @api.depends('ingresosFamiliares', 'gastosFamiliares','ingresosFamiliaresGarante', 'gastosFamiliaresGarante')
+    @api.depends('ingresosFamiliares', 'gastosFamiliares')
     def calcular_valor_disponibilidad(self):
         for rec in self:
-            rec.disponibilidadGarante=0
             rec.disponibilidad = rec.ingresosFamiliares - rec.gastosFamiliares
-            if rec.garante:
-                rec.disponibilidadGarante = rec.ingresosFamiliaresGarante - rec.gastosFamiliaresGarante
-
 
 
     scoreCredito = fields.Integer(string="Score de Credito Mayor a 800 puntos")
-    scoreCreditoGarante = fields.Integer(string="Score de Credito Mayor a 800 puntos")
 
 
-    @api.onchange('scoreBuroCredito','scoreBuroCreditoGarante')
+    @api.onchange('scoreBuroCredito')
     def calculo_scoreCredito(self):
-        self.scoreCreditoGarante=0
         self.scoreCredito= self.scoreBuroCredito 
-        if self.garante:
-            self.scoreCreditoGarante= self.scoreBuroCreditoGarante    
-
 
     puntosScoreCredito = fields.Integer(compute='calcular_punto_score_credito')
-    puntosScoreCreditoGarante = fields.Integer(compute='calcular_punto_score_credito')
 
-    @api.depends('scoreCredito','scoreCreditoGarante')
+    @api.depends('scoreCredito')
     def calcular_punto_score_credito(self):
         for rec in self:
-            rec.puntosScoreCreditoGarante = 0
             if rec.scoreCredito >= 500 and rec.scoreCredito <= 799:
                 rec.puntosScoreCredito = 100
             elif rec.scoreCredito >= 800:
                 rec.puntosScoreCredito = 200
             else:
                 rec.puntosScoreCredito = 0
-            if rec.garante:
-                if rec.scoreCreditoGarante >= 500 and rec.scoreCreditoGarante <= 799:
-                    rec.puntosScoreCreditoGarante = 100
-                elif rec.scoreCreditoGarante >= 800:
-                    rec.puntosScoreCreditoGarante = 200
-                else:
-                    rec.puntosScoreCreditoGarante = 0
 
 
     antiguedadLaboral = fields.Integer(string="Antigüedad Laboral o Comercial Mayor a 2 años")
-    antiguedadLaboralGarante = fields.Integer(string="Antigüedad Laboral o Comercial Mayor a 2 años")
     
     puntosAntiguedadLaboral = fields.Integer(compute='calcular_puntos_antiguedad_laboral')
-    puntosAntiguedadLaboralGarante = fields.Integer(compute='calcular_puntos_antiguedad_laboral')
 
 
-    @api.depends('antiguedadLaboral','antiguedadLaboralGarante')
+    @api.depends('antiguedadLaboral')
     def calcular_puntos_antiguedad_laboral(self):
         for rec in self:
-            rec.puntosAntiguedadLaboralGarante = 0
             if rec.antiguedadLaboral >= 2:
                 rec.puntosAntiguedadLaboral = 200
             elif rec.antiguedadLaboral >= 1:
                 rec.puntosAntiguedadLaboral = 100
             else:
                 rec.puntosAntiguedadLaboral = 0
-            if rec.garante:
-                if rec.antiguedadLaboralGarante >= 2:
-                    rec.puntosAntiguedadLaboralGarante = 200
-                elif rec.antiguedadLaboralGarante >= 1:
-                    rec.puntosAntiguedadLaboralGarante = 100
-                else:
-                    rec.puntosAntiguedadLaboralGarante = 0
 
 
 
     totalPuntosCalificador = fields.Integer(compute='calcular_total_puntos')
-    totalPuntosCalificadorGarante = fields.Integer(compute='calcular_total_puntos_garante')
 
     @api.depends('puntosPorcentajeCancelado', 'puntosPorcentajSaldos', 'puntosCuotaIngresos', 'puntosScoreCredito', 'puntosAntiguedadLaboral', 'totalPuntosBienesAdj')
     def calcular_total_puntos(self):
@@ -635,16 +524,7 @@ class EntegaVehiculo(models.Model):
             rec.totalPuntosCalificador = rec.puntosPorcentajeCancelado + rec.puntosPorcentajSaldos +  rec.puntosCuotaIngresos + rec.puntosScoreCredito +  rec.puntosAntiguedadLaboral + rec.totalPuntosBienesAdj
 
 
-
-    @api.depends('puntosPorcentajeCanceladoGarante', 'puntosPorcentajSaldos', 'puntosCuotaIngresosGarante', 'puntosScoreCreditoGarante', 'puntosAntiguedadLaboralGarante', 'totalPuntosBienesGarante')
-    def calcular_total_puntos_garante(self):
-        for rec in self:
-            rec.totalPuntosCalificadorGarante = rec.puntosPorcentajeCanceladoGarante + rec.puntosPorcentajSaldos +  rec.puntosCuotaIngresosGarante + rec.puntosScoreCreditoGarante +  rec.puntosAntiguedadLaboralGarante + rec.totalPuntosBienesGarante
-
-
-
     observacionesCalificador = fields.Text(string="Observaciones", default=' ')
-    observacionesCalificadorGarante = fields.Text(string="Observaciones", default=' ')
 
     titularConyugePuntos = fields.Char(
         string="Titular, Conyugue y Depositario")
@@ -675,7 +555,7 @@ class EntegaVehiculo(models.Model):
     nombreInforme = fields.Char(compute='setea_informe_garante')
     
     aplicaGarante = fields.Selection(selection=[
-        ('NO', 'Titular, Conyugue y DepositarioTitular, Conyugue y Depositario'),
+        ('NO', 'Titular, Conyugue y Depositario'),
         ('SI', 'Titular, Conyugue y Garante Solidario')
     ], compute='set_aplica_garante')
     
@@ -696,10 +576,12 @@ class EntegaVehiculo(models.Model):
 
     rastreo = fields.Boolean(string="Rastreo",track_visibility="onchange")
     plazo_rastreo = fields.Integer(string="Plazo", track_visibility="onchange")
+    fecha_inicio_rastreo = fields.Date(string="Fecha Inicio", track_visibility="onchange")
     fecha_vencimiento_rastreo = fields.Date(string="Fecha Vencimiento", track_visibility="onchange")
 
     seguro = fields.Boolean(string="Seguro",track_visibility="onchange")
     plazo_seguro = fields.Integer(string="Plazo", track_visibility="onchange")
+    fecha_inicio_seguro = fields.Date(string="Fecha Inicio", track_visibility="onchange")
     fecha_vencimiento_seguro = fields.Date(string="Fecha Vencimiento", track_visibility="onchange")
 
 
@@ -720,14 +602,21 @@ class EntegaVehiculo(models.Model):
         entregas_vehiculos_rastreo=self.env['entrega.vehiculo'].search([('fecha_vencimiento_rastreo','<',hoy),('fecha_vencimiento_rastreo','>=',fin_busqueda)])
 
         for entregas in entregas_vehiculos:
-            obj_template=self.env['mail.template'].browse(65)
-            email_id=obj_template.send_mail(entregas.id)
+            self.envio_correos_plantilla('email_vencimiento_seguro',entregas.id)
         for entregas in entregas_vehiculos_rastreo:
-            obj_template=self.env['mail.template'].browse(66)
-            email_id=obj_template.send_mail(entregas.id)
+            self.envio_correos_plantilla('email_vencimiento_rastreo',entregas.id)
 
+    def envio_correos_plantilla(self, plantilla,id_envio):
 
+        try:
+            ir_model_data = self.env['ir.model.data']
+            template_id = ir_model_data.get_object_reference('gzl_adjudicacion', plantilla)[1]
+        except ValueError:
+            template_id = False
+        if template_id:
+            obj_template=self.env['mail.template'].browse(template_id)
 
+            email_id=obj_template.send_mail(id_envio)
 
 
 
@@ -972,29 +861,6 @@ class EntegaVehiculo(models.Model):
                     rec.valorCuota / rec.ingresosFamiliares) * 100
             else:
                 rec.porcentajeCuotaPlan = 0
-            if rec.garante:
-                if rec.ingresosFamiliares:
-                    rec.porcentajeCuotaPlan = (
-                        rec.valorCuota / rec.ingresosFamiliaresGarante) * 100
-                else:
-                    rec.porcentajeCuotaPlanGarante = 0
-
-
-
-
-
-
-   
-    #################################################
-
-
-
-
-
-
-
-
-
 
 
 

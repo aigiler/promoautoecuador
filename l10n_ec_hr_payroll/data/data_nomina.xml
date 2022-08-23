@@ -5,7 +5,7 @@
         <record id="email_rol_nomina" model="mail.template">
             <field name="name">Plantilla Envio de Rol</field>
             <field name="email_from">admin@promoauto.com</field>
-            <field name="subject">Rol de Pago  </field>
+            <field name="subject">Rol de Pago  ${object.employee_id.name}</field>
             <field name="partner_to"></field>
             <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
             <field name="email_to">${object.employee_id.work_email}</field>

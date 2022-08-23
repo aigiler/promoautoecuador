@@ -27,3 +27,8 @@ class Partner(models.Model):
                     ], string='Estado Civil', default='soltero')
     num_cargas_familiares = fields.Integer(string='Cargas Familiares')
     comisionFacturaConcesionario = fields.Float(string="COMISION FACTURA A NOMBRE CONCESIONARIO")
+
+    conyuge=fields.Char(string='Nombre del Conyuge')
+
+    fechaNacimientoConyuge = fields.Date(string='Fecha de Nacimiento Conyuge')
+    vatConyuge = fields.Char(string='Cedula de Ciudadanía Conyuge', default = 'N/A')
