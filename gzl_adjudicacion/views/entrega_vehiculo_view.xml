@@ -834,6 +834,17 @@
                             
                         </page> 
 
+                        <page string ="Revisiones Generales" attrs="{'readonly':[('estado', 'not in', ('orden_compra'))]}">
+                            <separator class="text-center" string="INFORMACIÓN DE VEHICULO"/>
+                            <div class="col-xs-12 col-md-12">
+                                <group>
+                                    <field name="revisiones_generales"/>
+                                    
+                            </group>
+                            </div>
+                            
+                        </page> 
+
                         
                         <page string="Matriculacion, Rastreo, Seguro"  >
                             <separator class="text-center" string="OFRECIDOS POR LA EMPRESA"/>

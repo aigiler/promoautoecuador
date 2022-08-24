@@ -77,7 +77,7 @@ class EntegaVehiculo(models.Model):
     edadGarante = fields.Integer(compute='calcular_edad_Garante', string="Edad", readonly=True, store=True, default = 0)
 
     cargasFamiliares = fields.Integer(string="Cargas Fam." , related="nombreSocioAdjudicado.num_cargas_familiares", store=True, default = 0)
-    cargasFamiliaresGarante = fields.Integer(string="Cargas Fam." , related="nombreGarante.num_cargas_familiares", store=True, ,default = 0)
+    cargasFamiliaresGarante = fields.Integer(string="Cargas Fam." , related="nombreGarante.num_cargas_familiares", store=True,default = 0)
 
     nombreConyuge = fields.Char(related="nombreSocioAdjudicado.conyuge", string="Nombre del Conyuge", default = 'N/A')
     nombreConyugeGarante = fields.Char(related="nombreGarante.conyuge", string="Nombre del Conyuge", default = 'N/A')
@@ -584,7 +584,7 @@ class EntegaVehiculo(models.Model):
     fecha_inicio_seguro = fields.Date(string="Fecha Inicio", track_visibility="onchange")
     fecha_vencimiento_seguro = fields.Date(string="Fecha Vencimiento", track_visibility="onchange")
 
-
+    revisiones_generales=fields.Boolean(string="Revisiones estéticas y demás",default=False)
 
 
 
