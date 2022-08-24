@@ -197,7 +197,7 @@
             <field name="email_from">admin@promoauto.com</field>
             <field name="subject">Fechas de Vencimiento de Seguro para : ${object.secuencia}</field>
             <field name="partner_to"></field>
-            <field name="model_id" ref="gzl_reporte.model_entrega_vehiculo"/>
+            <field name="model_id" ref="gzl_adjudicacion.model_entrega_vehiculo"/>
             <field name="email_to"> ${object.rolAsignado.correos}</field>
             <field name="body_html"><![CDATA[
 
@@ -283,7 +283,7 @@
             <field name="email_from">admin@promoauto.com</field>
             <field name="subject">Fechas de Vencimiento de Rastreo para : ${object.secuencia}</field>
             <field name="partner_to"></field>
-            <field name="model_id" ref="gzl_reporte.model_entrega_vehiculo"/>
+            <field name="model_id" ref="gzl_adjudicacion.model_entrega_vehiculo"/>
             <field name="email_to"> ${object.rolAsignado.correos}</field>
             <field name="body_html"><![CDATA[
 
