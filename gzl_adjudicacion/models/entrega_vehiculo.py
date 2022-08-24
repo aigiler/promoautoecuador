@@ -85,8 +85,8 @@ class EntegaVehiculo(models.Model):
     #fechaNacimientoConyuge = fields.Date(related="nombreSocioAdjudicado.fechaNacimientoConyuge", string='Fecha de Nacimiento')
     #fechaNacimientoConyugeGarante = fields.Date(related="nombreGarante.fechaNacimientoConyuge", string='Fecha de Nacimiento')
 
-    vatConyuge = fields.Char(related="nombreSocioAdjudicado.vatConyuge", string='Cedula de Ciudadanía', default = 'N/A')
-    vatConyugeGarante = fields.Char(related="nombreGarante.vatConyuge", string='Cedula de Ciudadanía', default = 'N/A')
+    #vatConyuge = fields.Char(related="nombreSocioAdjudicado.vatConyuge", string='Cedula de Ciudadanía', default = 'N/A')
+    #vatConyugeGarante = fields.Char(related="nombreGarante.vatConyuge", string='Cedula de Ciudadanía', default = 'N/A')
 
     telefonosAdj = fields.Char(string='Celular')
 
