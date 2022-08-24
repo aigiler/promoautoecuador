@@ -524,7 +524,7 @@ class WizardAts(models.TransientModel):
             aut = auth.is_electronic and inv.auth_number or auth.name
             detalleanulados = {
                 'tipoComprobante': auth.type_id.code or '00',
-                'establecimiento': auth.serie_entidad,
+                'establecimiento': auth.serie_establecimiento,
                 'ptoEmision': auth.serie_emision,
                 'secuencialInicio': ret.name[6:9],
                 'secuencialFin': ret.name[6:9],
