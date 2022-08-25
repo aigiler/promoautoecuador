@@ -55,12 +55,20 @@ class EntegaVehiculo(models.Model):
         ('entrega_vehiculo', 'Entrega de Vehículo'),
 
 
-
     ], string='Estado', default='borrador', track_visibility='onchange')
     # datos del socio adjudicado
     nombreSocioAdjudicado = fields.Many2one('res.partner', string="Nombre del Socio Adj.", track_visibility='onchange')
     nombreGarante = fields.Many2one('res.partner', string="Nombre del Garante", track_visibility='onchange')
-    
+    factura_id = fields.Many2one('account.move', string='Factura')
+    archivo = fields.Binary(string='Adjuntar Documento')
+
+    documentos_pagos = fields.Binary(string='Adjuntar Documento')
+
+    pago_seguro_id=fields.Many2one("account.payment", string="Pago de Seguro")
+    pago_rastreo_id=fields.Many2one("account.payment", string="Pago de Rastreo")
+    pago_factura=fields.Many2one("account.payment", string="Pago de Factura")
+    pago_matriculacion_id=fields.Many2one("account.payment", string="Pago de Matriculación")
+
     vatAdjudicado = fields.Char(related="nombreSocioAdjudicado.vat", string='Cedula de Ciudadanía',store=True, default=' ')
     vatGarante = fields.Char(related="nombreGarante.vat", string='Cedula de Ciudadanía',store=True)    
     
