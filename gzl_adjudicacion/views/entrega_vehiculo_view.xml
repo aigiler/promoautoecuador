@@ -37,7 +37,25 @@
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-md-12">
                                 <group>  
-                                    <field name="nombreSocioAdjudicado" required="1" options="{'no_open': True, 'no_create': True}" />
+                                    <field name="nombreSocioAdjudicado" required="1" options="{'no_open': True, 'no_create': True}" >
+                                        <form>
+                                            <group > 
+                                            <field name="name" />
+                                            <field name="vat" string='Cedula de Ciudadanía'/>
+                                            <field name="fecha_nacimiento" string='Fecha de Nacimiento'/>
+                                            <field name="estado_civil"/>
+                                            <field name="street" string='Direccion de Casa'/>
+                                            <field name="codigo_cliente" string='Código'/>
+                                            <field name="num_cargas_familiares" string="Cargas Fam."/>
+                                            <separator class="text-center fw-bold" string="DATOS DEL CONYUGE"/>
+                                            <field name="conyuge" string="Nombre del Conyuge"/>
+                                            <field name="fechaNacimientoConyuge" string='Fecha de Nacimiento'/>
+                                            <field name="vatConyuge" string='Cedula de Ciudadanía'/>
+                                            </group>
+
+
+                                        </form>
+                                    </field>
                                     <field name="garante" invisible="1"/>
                                 </group>
                             </div>
