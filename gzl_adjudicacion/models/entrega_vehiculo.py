@@ -79,14 +79,14 @@ class EntegaVehiculo(models.Model):
     cargasFamiliares = fields.Integer(string="Cargas Fam." , related="nombreSocioAdjudicado.num_cargas_familiares", store=True, default = 0)
     cargasFamiliaresGarante = fields.Integer(string="Cargas Fam." , related="nombreGarante.num_cargas_familiares", store=True,default = 0)
 
-    nombreConyuge = fields.Char(related="nombreSocioAdjudicado.conyuge", string="Nombre del Conyuge", default = 'N/A')
-    nombreConyugeGarante = fields.Char(related="nombreGarante.conyuge", string="Nombre del Conyuge", default = 'N/A')
+    nombreConyuge = fields.Char(related="nombreSocioAdjudicado.conyuge", string="Nombre del Conyuge", default = 'N/A',store=True)
+    nombreConyugeGarante = fields.Char(related="nombreGarante.conyuge", string="Nombre del Conyuge", default = 'N/A',store=True)
 
-    fechaNacimientoConyuge = fields.Date(related="nombreSocioAdjudicado.fechaNacimientoConyuge", string='Fecha de Nacimiento')
-    fechaNacimientoConyugeGarante = fields.Date(related="nombreGarante.fechaNacimientoConyuge", string='Fecha de Nacimiento')
+    fechaNacimientoConyuge = fields.Date(related="nombreSocioAdjudicado.fechaNacimientoConyuge", string='Fecha de Nacimiento',store=True)
+    fechaNacimientoConyugeGarante = fields.Date(related="nombreGarante.fechaNacimientoConyuge", string='Fecha de Nacimiento',store=True)
 
-    vatConyuge = fields.Char(related="nombreSocioAdjudicado.vatConyuge", string='Cedula de Ciudadanía', default = 'N/A')
-    vatConyugeGarante = fields.Char(related="nombreGarante.vatConyuge", string='Cedula de Ciudadanía', default = 'N/A')
+    vatConyuge = fields.Char(related="nombreSocioAdjudicado.vatConyuge", string='Cedula de Ciudadanía', default = 'N/A',store=True)
+    vatConyugeGarante = fields.Char(related="nombreGarante.vatConyuge", string='Cedula de Ciudadanía', default = 'N/A',store=True)
 
     telefonosAdj = fields.Char(string='Celular')
 
@@ -96,7 +96,7 @@ class EntegaVehiculo(models.Model):
         ('casado', 'Casado/a'),
         ('divorciado', 'Divorciado/a'),
         ('viudo', 'Viudo/a')
-    ], string='Estado Civil', default='soltero',related="nombreSocioAdjudicado.estado_civil" )
+    ], string='Estado Civil', default='soltero',related="nombreSocioAdjudicado.estado_civil",,store=True)
 
     estadoCivilConyugeGarante = fields.Selection(selection=[
         ('soltero', 'Soltero/a'),
