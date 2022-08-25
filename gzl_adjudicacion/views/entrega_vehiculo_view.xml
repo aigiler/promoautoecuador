@@ -160,7 +160,7 @@
                         </page>
 
 
-                        <page string="Informe de Credito y Cobranza Garante" attrs="{'invisible':[('aplicaGarante', '=', 'SI')],'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}">
+                        <page string="Informe de Credito y Cobranza Garante" attrs="{'invisible':[('aplicaGarante', 'in',['sí','SI'])],'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}">
                             <separator class="text-center" string="ANTECEDENTES DEL Garante"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
