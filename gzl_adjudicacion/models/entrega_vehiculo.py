@@ -96,7 +96,7 @@ class EntegaVehiculo(models.Model):
         ('casado', 'Casado/a'),
         ('divorciado', 'Divorciado/a'),
         ('viudo', 'Viudo/a')
-    ], string='Estado Civil', default='soltero',related="nombreSocioAdjudicado.estado_civil",,store=True)
+    ], string='Estado Civil', default='soltero',related="nombreSocioAdjudicado.estado_civil",store=True)
 
     estadoCivilConyugeGarante = fields.Selection(selection=[
         ('soltero', 'Soltero/a'),
@@ -110,12 +110,12 @@ class EntegaVehiculo(models.Model):
     edadConyuge = fields.Integer(compute='calcular_edad_conyuge', string="Edad", default = 0)
 
     # datos domiciliarios
-    referenciaDomiciliaria = fields.Text( string='Referencias indican:', default=' ')
-    referenciaDomiciliariaGarante = fields.Text( string='Referencias indican:', default=' ')
+    referenciaDomiciliaria = fields.Text( string='Referencias indican:', default=' ',store=True)
+    referenciaDomiciliariaGarante = fields.Text( string='Referencias indican:', default=' ',store=True)
 
     # datos laborales
-    referenciasLaborales = fields.Text(string='Referencias indican:', default=' ')
-    referenciasLaboralesGarante = fields.Text(string='Referencias indican:', default=' ')
+    referenciasLaborales = fields.Text(string='Referencias indican:', default=' ',store=True)
+    referenciasLaboralesGarante = fields.Text(string='Referencias indican:', default=' ',store=True)
 
     institucionFinanciera = fields.Many2one('res.bank',string='Institución')
     institucionFinancieraGarante = fields.Many2one('res.bank',string='Institución')
