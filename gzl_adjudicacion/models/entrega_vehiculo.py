@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
 from datetime import date, timedelta
-import datetime
 from email.policy import default
 from logging import StringTemplateStyle
 import logging
@@ -166,7 +165,7 @@ class EntegaVehiculo(models.Model):
                     'activity_type_id': 4,
                     'summary': "Ha sido asignado al proceso de Entrega de Vehículo para su revisón/Aprobación",
                     'user_id': rol.user_id.id,
-                    'date_deadline':datetime.now()+ relativedelta(days=2)
+                    'date_deadline':datetime.now()+ relativedelta(days=1)
                 })
             self.actividad_id=actividad_id.id
 
@@ -701,7 +700,8 @@ class EntegaVehiculo(models.Model):
                 'views': [[view_id, 'form']],
                 'context': {
                     'default_contrato_id': self.contrato_id.id,
-                    'default_partner_id':self.nombreSocioAdjudicado.id
+                    'default_partner_id':self.nombreSocioAdjudicado.id,
+                    'default_entrega_id':self.id,
                 }
         }
 

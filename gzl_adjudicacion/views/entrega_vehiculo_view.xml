@@ -799,21 +799,9 @@
                            <div class="col-xs-12 col-sm-9">
                                 <table style=" border-collapse: collapse;width:100%">
                                     <tbody>
-                                         <tr>
-                                            <td>
-                                                <text>PRODUCTO</text>
-                                            </td>
-                                            <td></td>
-                                            <td>
-                                                <field name="products_id"  />
-                                            </td>
-                                        </tr>
-
+                            
                                         <tr>
-                                            <td>
-                                                <text>ORDEN DE COMPRA</text>
-                                            </td>
-                                            <td></td>
+                                            
                                             <td>
                                                 <field name="purchase_order" invisible="1"/>
                                                 <button type="object" string="Generar Orden Compra" name="create_purchase_order" attrs="{'invisible':[('purchase_order', '!=', False)]}" class="btn btn-primary o_invoice_new"/>
