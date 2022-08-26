@@ -75,12 +75,13 @@ DEVOLUCION DE VALORES SIN FIRMA DE CONTRATO, DE RESERVA, DE LICITACIONES, CALIDA
 •         DEVOLUCION POR DESISTIMIENTO DEL CONTRATO INGRESADO CON Judicatura, Ministerio de Producción, Defensoría: 12/6/3 meses
 •         DEVOLUCION POR DESISTIMIENTO DEL CONTRATO INGRESADO CON FICSCALIA: 12/6/3 meses
 
+    @api.onchange("tipo_devolucion","alerta")
     def calcular_tiempo_dev(self):
         for l in self:
             if l.tipo_devolucion!='DEVOLUCION POR DESISTIMIENTO DEL CONTRATO':
                 l.plazo_estimado_pago=15
                 l.asignacion="DIAS"
-            elif l.tipo_devolucion=="DEVOLUCION POR DESISTIMIENTO DEL CONTRATO" and alerta in ("CLIENTE","ABOGADO"):
+            elif l.tipo_devolucion=="DEVOLUCION POR DESISTIMIENTO DEL CONTRATO" and l.alerta in ("CLIENTE","ABOGADO"):
                 l.plazo_estimado_pago=72
                 l.asignacion="MESES"
             elif l.tipo_devolucion=="DEVOLUCION POR DESISTIMIENTO DEL CONTRATO" and l.alerta in ("CONSEJO","DEFENSORIA","FISCALIA",'CAMARA DE COMERCIO'):

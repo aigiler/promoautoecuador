@@ -442,7 +442,7 @@
                                 <field name="resolucion_gerencia"/>
                             </div>
                             <separator string="Plazo de Devolución"/>
-                            <field name="plazo_estimado_pago"/>
+                            <field name="plazo_estimado_pago"/><field name="asignacion"/>
                         </page>
 
                         <page string="SALIDA DE DINERO">
