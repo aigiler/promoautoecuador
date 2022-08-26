@@ -659,13 +659,8 @@ class EntegaVehiculo(models.Model):
     estado_anterior_requisitos = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
     estado_anterior_orden_compra = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
 
-    # informacion de vehiculo
-
-    
-    def generar_contrato _reserva(self):
+    def generar_contrato_reserva(self):
         view_id = self.env.ref('gzl_reporte.contrato_reserva_form').id
-
-
         return {'type': 'ir.actions.act_window',
                 'name': 'Contrato de Reserva',
                 'res_model': 'contrato.reserva',
@@ -677,7 +672,6 @@ class EntegaVehiculo(models.Model):
                     'default_partner_id':self.nombreSocioAdjudicado
                 }
         }
-
 
     @api.model
     def year_selection(self):
