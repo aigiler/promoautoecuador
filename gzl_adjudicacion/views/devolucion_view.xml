@@ -301,7 +301,7 @@
                             <separator/>
                             <button name="calcular_fondos" string="Fondos del grupo"/>
                             <field name="fondos_mes" />
-                            <field name="valor_afectado" />
+                            <field name="valor_Afectado" />
 
 
                         </page>
