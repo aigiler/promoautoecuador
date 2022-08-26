@@ -313,15 +313,15 @@ class DevolucionMonto(models.Model):
     valor_Afectado=fields.Monetary(string='Valores afectados', currency_field='currency_id', track_visibility='onchange')
 
 
-    # def calcular_fondos(self):
-    #     for l in self:
-    #         fondos_mes=0
-    #         hoy=date.today()
-    #         grupoParticipante=l.contrato_id.grupo.transacciones_ids.filtered(lambda l: l.id != False)
-    #         recuperacionCartera= sum(grupoParticipante.mapped('haber'))
-    #         adjudicados= sum(grupoParticipante.mapped('debe'))
-    #         l.fondos_mes=recuperacionCartera-adjudicados
-    #         l.valor_Afectado=l.fondos_mes-l.valor_desistimiento
+    def calcular_fondos(self):
+        for l in self:
+            fondos_mes=0
+            hoy=date.today()
+            grupoParticipante=l.contrato_id.grupo.transacciones_ids.filtered(lambda l: l.id != False)
+            recuperacionCartera= sum(grupoParticipante.mapped('haber'))
+            adjudicados= sum(grupoParticipante.mapped('debe'))
+            l.fondos_mes=recuperacionCartera-adjudicados
+            l.valor_Afectado=l.fondos_mes-l.valor_desistimiento
 
     def generar_pago(self):
         for l in self:
