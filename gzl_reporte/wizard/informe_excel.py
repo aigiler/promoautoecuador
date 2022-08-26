@@ -82,42 +82,40 @@ def informe_credito_cobranza(ruta,lista,lista_patrimonio, lista_paginas, lista_p
 
 
 
-    sheet = workbook['Aprobacion']
-    listaSheet2 = list(filter(lambda x: (x['hoja']==2), lista)) 
-    if garante:
-        listaSheet2 = list(filter(lambda x: (x['hoja']==3), lista)) 
-    ###########Llenar segundo sheet
-    for campo in listaSheet2:
-        cell = sheet.cell(row=campo['fila'], column=campo['columna'])
-        try:
-            cell.value = campo['valor'] or ''
-        except:
-            raise ValidationError("""El valor {0} en la fila {1} columna {2}  hoja {3} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna'],campo['hoja']))
+    # sheet = workbook['Aprobacion']
+    # listaSheet2 = list(filter(lambda x: (x['hoja']==2), lista)) 
+    # if garante:
+    #     listaSheet2 = list(filter(lambda x: (x['hoja']==3), lista)) 
+    # ###########Llenar segundo sheet
+    # for campo in listaSheet2:
+    #     cell = sheet.cell(row=campo['fila'], column=campo['columna'])
+    #     try:
+    #         cell.value = campo['valor'] or ''
+    #     except:
+    #         raise ValidationError("""El valor {0} en la fila {1} columna {2}  hoja {3} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna'],campo['hoja']))
 
-    llenar_tabla_excel(lista_puntos_bienes,sheet,32,36,2)
+    # llenar_tabla_excel(lista_puntos_bienes,sheet,32,36,2)
     
 
 
 
-    sheet = workbook['Liquidacion']
-    listaSheet3 = list(filter(lambda x: (x['hoja']==3), lista)) 
-    if garante:
-        listaSheet3 = list(filter(lambda x: (x['hoja']==5), lista)) 
-    for campo in listaSheet3:
-        if campo['fila']==25 and campo['columna']==5:
-            if campo['valor']!='':
-                campo['valor']=campo['valor']/100
-        cell = sheet.cell(row=campo['fila'], column=campo['columna'])
-        try:
-            cell.value = campo['valor'] or ''
-        except:
-            raise ValidationError("""El valor {0} en la fila {1} columna {2}  hoja {3} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna'],campo['hoja']))
+    # sheet = workbook['Liquidacion']
+    # listaSheet3 = list(filter(lambda x: (x['hoja']==3), lista)) 
+    # if garante:
+    #     listaSheet3 = list(filter(lambda x: (x['hoja']==5), lista)) 
+    # for campo in listaSheet3:
+    #     if campo['fila']==25 and campo['columna']==5:
+    #         if campo['valor']!='':
+    #             campo['valor']=campo['valor']/100
+    #     cell = sheet.cell(row=campo['fila'], column=campo['columna'])
+    #     try:
+    #         cell.value = campo['valor'] or ''
+    #     except:
+    #         raise ValidationError("""El valor {0} en la fila {1} columna {2}  hoja {3} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna'],campo['hoja']))
 
 
     sheet = workbook['Orden Compra']
-    listaSheet4 = list(filter(lambda x: (x['hoja']==4), lista)) 
-    if garante:
-        listaSheet4 = list(filter(lambda x: (x['hoja']==6), lista)) 
+    listaSheet4 = list(filter(lambda x: (x['hoja']==1), lista)) 
     for campo in listaSheet4:
         cell = sheet.cell(row=campo['fila'], column=campo['columna'])
         try:
@@ -125,14 +123,12 @@ def informe_credito_cobranza(ruta,lista,lista_patrimonio, lista_paginas, lista_p
         except:
             raise ValidationError("""El valor {0} en la fila {1} columna {2}  hoja {3} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna'],campo['hoja']))
 
-    if garante:
-        sheet = workbook['InformeGarante']
-        listaSheet2g = list(filter(lambda x: (x['hoja']==2), lista)) 
+    # if garante:
+    #     sheet = workbook['InformeGarante']
+    #     listaSheet2g = list(filter(lambda x: (x['hoja']==2), lista)) 
 
     sheet = workbook['OrdenSalida']
-    listaSheet4 = list(filter(lambda x: (x['hoja']==5), lista)) 
-    if garante:
-        listaSheet4 = list(filter(lambda x: (x['hoja']==7), lista)) 
+    listaSheet4 = list(filter(lambda x: (x['hoja']==2), lista)) 
     for campo in listaSheet4:
         cell = sheet.cell(row=campo['fila'], column=campo['columna'])
         try:
@@ -140,41 +136,41 @@ def informe_credito_cobranza(ruta,lista,lista_patrimonio, lista_paginas, lista_p
         except:
             raise ValidationError("""El valor {0} en la fila {1} columna {2}  hoja {3} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna'],campo['hoja']))
 
-    if garante:
-        sheet = workbook['InformeGarante']
-        listaSheet2g = list(filter(lambda x: (x['hoja']==2), lista)) 
+    # if garante:
+    #     sheet = workbook['InformeGarante']
+    #     listaSheet2g = list(filter(lambda x: (x['hoja']==2), lista)) 
 
 
 
-        for campo in listaSheet2g:
+    #     for campo in listaSheet2g:
 
-           # fila=capturar_fila_de_valor_a_buscar_en_hoja_calculo(sheet,5,8,3,campo['valor'])
-
-
-            cell = sheet.cell(row=campo['fila'], column=campo['columna'])
-            try:
-                cell.value = campo['valor'] or ''
-            except:
-                raise ValidationError("""El valor {0} en la fila {1} columna {2} hoja {3} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna'],sheet))
+    #        # fila=capturar_fila_de_valor_a_buscar_en_hoja_calculo(sheet,5,8,3,campo['valor'])
 
 
-
-        llenar_tabla_excel(lista_patrimonio_garante,sheet,36,41,2)
-        llenar_tabla_excel(lista_paginas_garante,sheet,45,48,2)
+    #         cell = sheet.cell(row=campo['fila'], column=campo['columna'])
+    #         try:
+    #             cell.value = campo['valor'] or ''
+    #         except:
+    #             raise ValidationError("""El valor {0} en la fila {1} columna {2} hoja {3} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna'],sheet))
 
 
 
-        sheet = workbook['AprobacionGarante']
-        listaSheet3g = list(filter(lambda x: (x['hoja']==4), lista)) 
-        ###########Llenar segundo sheet
-        for campo in listaSheet3g:
-            cell = sheet.cell(row=campo['fila'], column=campo['columna'])
-            try:
-                cell.value = campo['valor'] or ''
-            except:
-                raise ValidationError("""El valor {0} en la fila {1} columna {2} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna']))
+    #     llenar_tabla_excel(lista_patrimonio_garante,sheet,36,41,2)
+    #     llenar_tabla_excel(lista_paginas_garante,sheet,45,48,2)
 
-        llenar_tabla_excel(lista_puntos_bienes_garante,sheet,32,36,2)
+
+
+    #     sheet = workbook['AprobacionGarante']
+    #     listaSheet3g = list(filter(lambda x: (x['hoja']==4), lista)) 
+    #     ###########Llenar segundo sheet
+    #     for campo in listaSheet3g:
+    #         cell = sheet.cell(row=campo['fila'], column=campo['columna'])
+    #         try:
+    #             cell.value = campo['valor'] or ''
+    #         except:
+    #             raise ValidationError("""El valor {0} en la fila {1} columna {2} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna']))
+
+    #     llenar_tabla_excel(lista_puntos_bienes_garante,sheet,32,36,2)
         
 
 

@@ -150,6 +150,26 @@ class EntegaVehiculo(models.Model):
     montoAhorroInversionesGarante = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',domain=[('garante','=',True)], track_visibility='onchange')
     ahorro_garante=fields.Boolean(default=False)
 
+
+    proceso_finalizado=fields.Boolean(default=False)
+    actividad_id = fields.Many2one('mail.activity',string="Actividades")
+
+
+    def crear_activity(self,rol):
+        if self.actividad_id:
+            self.actividad_id.action_done()
+        if not self.proceso_finalizado:
+
+            actividad_id=self.env['mail.activity'].create({
+                    'res_id': self.id,
+                    'res_model_id': self.env['ir.model']._get('entrega.vehiculo').id,
+                    'activity_type_id': 4,
+                    'summary': "Ha sido asignado al proceso de Entrega de Vehículo para su revisón/Aprobación",
+                    'user_id': rol.user_id.id,
+                    'date_deadline':datetime.now()+ relativedelta(days=2)
+                })
+            self.actividad_id=actividad_id.id
+
     def llenar_tabla(self):
         obj_patrimonio=self.env['items.patrimonio'].search([])  
         

@@ -72,16 +72,16 @@ class InformeCreditoCrobranza(models.TransientModel):
 
                     dct['fila']=campo.fila
                     dct['columna']=campo.columna
-                    if campo.hoja_excel==2:
-                        dct['hoja']=3
-                    elif campo.hoja_excel==3:
-                        dct['hoja']=5
-                    elif campo.hoja_excel==4:
-                        dct['hoja']=6
-                    elif campo.hoja_excel==5:
-                        dct['hoja']=7
-                    else:
-                        dct['hoja']=campo.hoja_excel
+                    #if campo.hoja_excel==2:
+                    #    dct['hoja']=3
+                    #elif campo.hoja_excel==3:
+                    #    dct['hoja']=5
+                    #elif campo.hoja_excel==4:
+                    #    dct['hoja']=6
+                    #elif campo.hoja_excel==5:
+                    #    dct['hoja']=7
+                    #else:
+                    #    dct['hoja']=campo.hoja_excel
                     lista_campos.append(dct)
 
                 campos_garante=obj_plantilla_garante.campos_ids.filtered(lambda l: len(l.child_ids)==0)
