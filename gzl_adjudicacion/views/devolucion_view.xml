@@ -299,7 +299,7 @@
       
                         </div>
                             <separator/>
-                            <button name="calcular_fondos" string="Fondos del grupo"/>
+                            <button name="calcular_fondos" type="object" string="Fondos del grupo"/>
                             <field name="fondos_mes" />
                             <field name="valor_Afectado" />
 

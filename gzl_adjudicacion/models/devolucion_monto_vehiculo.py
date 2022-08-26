@@ -320,7 +320,7 @@ class DevolucionMonto(models.Model):
             grupoParticipante=l.contrato_id.grupo.transacciones_ids.filtered(lambda l: l.id != False)
             recuperacionCartera= sum(grupoParticipante.mapped('haber'))
             adjudicados= sum(grupoParticipante.mapped('debe'))
-            l.fondos_mes=l.recuperacionCartera-l.adjudicados
+            l.fondos_mes=recuperacionCartera-adjudicados
             l.valor_Afectado=l.fondos_mes-l.valor_desistimiento
 
     def generar_pago(self):
