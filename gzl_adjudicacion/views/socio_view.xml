@@ -35,6 +35,7 @@
                         <field name="phone" widget="phone"/>
                         <field name="mobile" widget="phone"/>
                         <field name="country_id" string='País'/>
+    
                         <field name="state_id" string='Provincia'/>
                         <field name="city" string='Ciudad'/>
                         <field name="codigo_cliente" string='Código'/>
