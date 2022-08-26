@@ -441,7 +441,8 @@
                             <div class="row" style="border: 1px solid black;">
                                 <field name="resolucion_gerencia"/>
                             </div>
-                            <separator/>
+                            <separator string="Plazo de Devolución"/>
+                            <field name="plazo_estimado_pago"/>
                         </page>
 
                         <page string="SALIDA DE DINERO">

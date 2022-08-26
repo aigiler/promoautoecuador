@@ -42,6 +42,11 @@ class DevolucionMonto(models.Model):
     
     fsolicitud  = fields.Date(string='Fecha de Ingreso de Solicitud')
     fecha_estimada_pagos  = fields.Date(string='Fecha Estimada de Pago')
+    plazo_estimado_pago  = fields.Integer(string='Plazo de Pago')
+    asignacion  = fields.Selection(selection=['DIAS','DIAS',
+                                            'MESES','MESES'])
+
+
 
     state = fields.Selection(selection=[
         ('borrador', 'Borrador'),
@@ -62,6 +67,25 @@ class DevolucionMonto(models.Model):
         ('DEVOLUCION POR DESISTIMIENTO DEL CONTRATO', 'DEVOLUCION POR DESISTIMIENTO DEL CONTRATO'),
         ('DEVOLUCION POR CALIDAD DE VENTA', 'DEVOLUCION POR CALIDAD DE VENTA')], string='Tipo', track_visibility='onchange')
 
+
+
+DEVOLUCION DE VALORES SIN FIRMA DE CONTRATO, DE RESERVA, DE LICITACIONES, CALIDA DE VENTA:  15 días
+•         DEVOLUCION POR DESISTIMIENTO DEL CONTRATO INGRESADO SOLO CON CLIENTE:  72 meses
+•         DEVOLUCION POR DESISTIMIENTO DEL CONTRATO INGRESADO CON ABOGADO APODERADO: 72 meses
+•         DEVOLUCION POR DESISTIMIENTO DEL CONTRATO INGRESADO CON Judicatura, Ministerio de Producción, Defensoría: 12/6/3 meses
+•         DEVOLUCION POR DESISTIMIENTO DEL CONTRATO INGRESADO CON FICSCALIA: 12/6/3 meses
+
+    def calcular_tiempo_dev(self):
+        for l in self:
+            if l.tipo_devolucion!='DEVOLUCION POR DESISTIMIENTO DEL CONTRATO':
+                l.plazo_estimado_pago=15
+                l.asignacion="DIAS"
+            elif l.tipo_devolucion=="DEVOLUCION POR DESISTIMIENTO DEL CONTRATO" and alerta in ("CLIENTE","ABOGADO"):
+                l.plazo_estimado_pago=72
+                l.asignacion="MESES"
+            elif l.tipo_devolucion=="DEVOLUCION POR DESISTIMIENTO DEL CONTRATO" and l.alerta in ("CONSEJO","DEFENSORIA","FISCALIA",'CAMARA DE COMERCIO'):
+                l.plazo_estimado_pago=12
+                l.asignacion="MESES"
 
     tipo_accion = fields.Selection(selection=[
         ('CLIENTE', 'CLIENTE'),
