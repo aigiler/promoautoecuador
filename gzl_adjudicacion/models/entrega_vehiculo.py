@@ -669,7 +669,7 @@ class EntegaVehiculo(models.Model):
                 'views': [[view_id, 'form']],
                 'context': {
                     'default_contrato_id': self.contrato_id.id,
-                    'default_partner_id':self.nombreSocioAdjudicado
+                    'default_partner_id':self.nombreSocioAdjudicado.id
                 }
         }
 
