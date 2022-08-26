@@ -69,12 +69,6 @@ class DevolucionMonto(models.Model):
 
 
 
-DEVOLUCION DE VALORES SIN FIRMA DE CONTRATO, DE RESERVA, DE LICITACIONES, CALIDA DE VENTA:  15 días
-•         DEVOLUCION POR DESISTIMIENTO DEL CONTRATO INGRESADO SOLO CON CLIENTE:  72 meses
-•         DEVOLUCION POR DESISTIMIENTO DEL CONTRATO INGRESADO CON ABOGADO APODERADO: 72 meses
-•         DEVOLUCION POR DESISTIMIENTO DEL CONTRATO INGRESADO CON Judicatura, Ministerio de Producción, Defensoría: 12/6/3 meses
-•         DEVOLUCION POR DESISTIMIENTO DEL CONTRATO INGRESADO CON FICSCALIA: 12/6/3 meses
-
     @api.onchange("tipo_devolucion","alerta")
     def calcular_tiempo_dev(self):
         for l in self:
