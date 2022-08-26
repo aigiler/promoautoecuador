@@ -312,7 +312,7 @@ class DevolucionMonto(models.Model):
 
     valor_Afectado=fields.Monetary(string='Valores afectados', currency_field='currency_id', track_visibility='onchange')
 
-    def obtener_valores(self):
+    def calcular_fondos(self):
         for l in self:
             fondos_mes=0
             hoy=date.today()
