@@ -30,8 +30,16 @@
                         <field name="email" widget="email" context="{'gravatar_image': True}" required="context.get('force_email', False)" attrs="{'required': [('user_ids','!=', [])]}"/>
                         <field name="phone" widget="phone"/>
                         <field name="mobile" widget="phone"/>
+                        <field name="state_id" string='Provincia'/>
+                        <field name="city" string='Ciudad'/>
+                        <field name="codigo_cliente" string='Código'/>
                         <field name="direccion" string="Dirección"/>
                         <field name="tipo" invisible="1" />
+                         <field name="num_cargas_familiares" string="Cargas Fam."/>
+                        <separator class="text-center fw-bold" string="DATOS DEL CONYUGE"/>
+                        <field name="conyuge" string="Nombre del Conyuge"/>
+                        <field name="fechaNacimientoConyuge" string='Fecha de Nacimiento'/>
+                        <field name="vatConyuge" string='Cedula de Ciudadanía'/>
 
                     </group>
                 </form>
@@ -72,6 +80,6 @@
             <field name="act_window_id" ref="action_socio_proceso_adjudicacion"/>
         </record>
 
-    <menuitem id="crear_socio_procesdo_adjudicado_menu" name="Socio" sequence="10"
+    <menuitem id="crear_socio_procesdo_adjudicado_menu" name="Socio" sequence="1"
               action="action_socio_proceso_adjudicacion" parent="menu_socio_proceso_adjudicacion"/>
 </odoo>
