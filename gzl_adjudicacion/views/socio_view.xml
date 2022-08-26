@@ -33,7 +33,7 @@
                         <field name="state_id" string='Provincia'/>
                         <field name="city" string='Ciudad'/>
                         <field name="codigo_cliente" string='Código'/>
-                        <field name="direccion" string="Dirección"/>
+                        <field name="street" string="Dirección"/>
                         <field name="tipo" invisible="1" />
                          <field name="num_cargas_familiares" string="Cargas Fam."/>
                         <separator class="text-center fw-bold" string="DATOS DEL CONYUGE"/>

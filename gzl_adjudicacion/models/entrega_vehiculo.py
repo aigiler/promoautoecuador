@@ -128,8 +128,8 @@ class EntegaVehiculo(models.Model):
     institucionFinanciera = fields.Many2one('res.bank',string='Institución')
     institucionFinancieraGarante = fields.Many2one('res.bank',string='Institución')
     
-    direccion = fields.Char(string='Direccion de Casa' , default=' ',related="nombreSocioAdjudicado.direccion")
-    direccionGarante = fields.Char(string='Direccion de Casa' , default=' ',related="nombreGarante.direccion")
+    direccion = fields.Char(string='Direccion de Casa' , default=' ',related="nombreSocioAdjudicado.street")
+    direccionGarante = fields.Char(string='Direccion de Casa' , default=' ',related="nombreGarante.street")
     
     scoreBuroCredito = fields.Integer(string='Buró de Crédito')
     scoreBuroCreditoGarante = fields.Integer(string='Buró de Crédito')
