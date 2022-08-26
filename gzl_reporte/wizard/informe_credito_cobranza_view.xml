@@ -4,7 +4,7 @@
             <field name="name">informe.credito.cobranza.form</field>
             <field name="model">informe.credito.cobranza</field>
             <field name="arch" type="xml">
-                <form string="Informe Credito y Cobranza">
+                <form string="ORDEN DE COMPRA">
                     <group>
                         <group col="2">
                             <field name="entrega_vehiculo_id" required="1" options="{'no_open': True, 'no_create': True}" />

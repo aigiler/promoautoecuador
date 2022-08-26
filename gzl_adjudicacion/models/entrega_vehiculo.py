@@ -238,8 +238,8 @@ class EntegaVehiculo(models.Model):
     def create_purchase_order(self):
         view_id = self.env.ref('gzl_reporte.informe_credito_cobranza_form').id
         return {'type': 'ir.actions.act_window',
-                'name': 'Contrato de Reserva',
-                'res_model': 'contrato.reserva',
+                'name': 'ORDEN DE COMPRA',
+                'res_model': 'informe.credito.cobranza',
                 'target': 'new',
                 'view_mode': 'form',
                 'views': [[view_id, 'form']],
