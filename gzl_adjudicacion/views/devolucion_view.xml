@@ -277,9 +277,32 @@
                         </div>
                         <separator class="text-center" string="SIMULACION DE LOS FONDOS AFECTADOS"/>
                             <div class="row" style="border: 1px solid black;">
-                                <field name="simulacion_fondos"/>
+                            <div class="col-xs-12 col-sm-6">
+                                <group > 
+                                    <field name="valor_cancelado_sin_firma" />
+                                     <field name="valor_reserva" />
+                                     <field name="valor_licitacion" />
+                                     <field name="valor_desistimiento" />
+                                   </group>
+
                             </div>
+                            <div class="col-xs-12 col-sm-6">
+                                <group > 
+                                    <field name="valores_facturados" />
+                                    <field name="inscripcion" />
+                                    <field name="notas_credito" />
+                                    <field name="ingreso_caja" />
+                                    <field name="ingreso_banco" />
+                                    <field name="cuota_capital" />
+                                    </group>
+                            </div>
+      
+                        </div>
                             <separator/>
+                            <button name="obtener_valores" string="Fondos del grupo"/>
+                            <field name="fondos_mes" />
+                            <field name="valor_afectado" />
+
 
                         </page>
 

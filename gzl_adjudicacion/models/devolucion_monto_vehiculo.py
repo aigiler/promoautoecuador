@@ -314,6 +314,19 @@ DEVOLUCION DE VALORES SIN FIRMA DE CONTRATO, DE RESERVA, DE LICITACIONES, CALIDA
     pago_id=fields.Many2one("account.payment")
     journal_id = fields.Many2one('account.journal', string='Banco', tracking=True, domain="[('type', 'in', ('bank', 'cash')), ('company_id', '=', company_id)]")
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company, string='Company', readonly=True)
+    fondos_mes=fields.Monetary(string='Fondos del Mes', currency_field='currency_id', track_visibility='onchange')
+
+    valor_Afectado=fields.Monetary(string='Valores afectados', currency_field='currency_id', track_visibility='onchange')
+
+    def obtener_valores(self):
+        for l in self:
+            fondos_mes=0
+            hoy=date.today()
+            grupoParticipante=l.grupo_cliente.transacciones_ids.filtered(lambda l: l.id != False)
+            recuperacionCartera= sum(grupoParticipante.mapped('haber'))
+            adjudicados= sum(grupoParticipante.mapped('debe'))
+            l.fondos_mes=l.recuperacionCartera-l.adjudicados
+            l.valor_Afectado=l.fondos_mes-l.valor_desistimiento
 
     def generar_pago(self):
         for l in self:
