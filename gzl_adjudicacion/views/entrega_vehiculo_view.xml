@@ -815,18 +815,11 @@
                                             </td>
                                             <td></td>
                                             <td>
-                                                <field name="purchase_order"/>
+                                                <field name="purchase_order" invisible="1"/>
                                                 <button type="object" string="Generar Orden Compra" name="create_purchase_order" attrs="{'invisible':[('purchase_order', '!=', False)]}" class="btn btn-primary o_invoice_new"/>
                                             </td>
 
-                                            <td attrs="{'invisible':[('facturas', '=', False)]}">
-                                                <text>LIQUIDACIÓN DE COMPRA </text>
-                                            </td>
-                                            <td></td>
-                                            <td>
-                                                <field name="facturas" attrs="{'invisible':[('facturas', '=', False)]}" />
-                                                <button type="object" string="Generar Factura" name="create_liq_compra" attrs="{'invisible':['|',('purchase_order', '=', False),('facturas', '!=', False)]}" class="btn btn-primary o_invoice_new"/>
-                                            </td>
+                                            
                                         </tr>
                                     </tbody>
                                      </table>

@@ -236,31 +236,43 @@ class EntegaVehiculo(models.Model):
 
 #####Funcion para crear purchase order
     def create_purchase_order(self):
-        for l in self:
-            if not l.nombreConsesionario:
-                raise ValidationError("Ingrese el Concesionario..")
-            if l.marcaVehiculo and l.modeloVehiculoSRI and l.colorVehiculo and l.anioVehiculo:
-                producto_creado=self.env['product.product'].create({'uom_id':1,
-                                                                    'name':str(l.marcaVehiculo)+' '+str(l.modeloVehiculoSRI)+' '+str(l.anioVehiculo)+' '+str(l.colorVehiculo)})
-                self.products_id=producto_creado
-            else:
-                raise ValidationError("Verifique que los datos del vehiculo esten ingresados.")
-            purchase_creado= self.env['purchase.order'].create({
-            'partner_id': self.nombreConsesionario.id,
-            'date_order': datetime.datetime.now(),
-            #'currency_id': eur_currency.id,
-            'order_line': [
-                (0, 0, {
-                    'name': self.products_id.name,
-                    'product_id': self.products_id.id,
-                    'product_qty': 1.0,
-                    'product_uom': self.products_id.uom_id.id,
-                    'price_unit': self.montoVehiculo,
-                    'date_planned': datetime.datetime.now(),
-                }),
-            ],
-            })
-            self.purchase_order = purchase_creado
+        view_id = self.env.ref('gzl_reporte.informe_credito_cobranza_form').id
+        return {'type': 'ir.actions.act_window',
+                'name': 'Contrato de Reserva',
+                'res_model': 'contrato.reserva',
+                'target': 'new',
+                'view_mode': 'form',
+                'views': [[view_id, 'form']],
+                'context': {
+                    'default_entrega_vehiculo_id': self.id,
+                }
+        }
+
+        # for l in self:
+        #     if not l.nombreConsesionario:
+        #         raise ValidationError("Ingrese el Concesionario..")
+        #     if l.marcaVehiculo and l.modeloVehiculoSRI and l.colorVehiculo and l.anioVehiculo:
+        #         producto_creado=self.env['product.product'].create({'uom_id':1,
+        #                                                             'name':str(l.marcaVehiculo)+' '+str(l.modeloVehiculoSRI)+' '+str(l.anioVehiculo)+' '+str(l.colorVehiculo)})
+        #         self.products_id=producto_creado
+        #     else:
+        #         raise ValidationError("Verifique que los datos del vehiculo esten ingresados.")
+        #     purchase_creado= self.env['purchase.order'].create({
+        #     'partner_id': self.nombreConsesionario.id,
+        #     'date_order': datetime.datetime.now(),
+        #     #'currency_id': eur_currency.id,
+        #     'order_line': [
+        #         (0, 0, {
+        #             'name': self.products_id.name,
+        #             'product_id': self.products_id.id,
+        #             'product_qty': 1.0,
+        #             'product_uom': self.products_id.uom_id.id,
+        #             'price_unit': self.montoVehiculo,
+        #             'date_planned': datetime.datetime.now(),
+        #         }),
+        #     ],
+        #     })
+        #     self.purchase_order = purchase_creado
     
 #####Funcion para crear liquidacion de compra
     def create_liq_compra(self):  
