@@ -14,6 +14,33 @@
         </field>
     </record>
 
+
+    <record id="view_res_partner_form" model= "ir.ui.view">
+        <field name="name">view.res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <form string="Clientes/Proveedores">
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="vat" string='Cedula de Ciudadanía'/>
+                        <field name="fecha_nacimiento" string='Fecha de Nacimiento'/>
+                        <field name="estado_civil"/>
+                        <field name="street" string='Direccion de Casa'/>
+                        <field name="codigo_cliente" string='Código'/>
+                        <field name="num_cargas_familiares" string="Cargas Fam."/>
+                        <separator class="text-center fw-bold" string="DATOS DEL CONYUGE"/>
+                        <field name="conyuge" string="Nombre del Conyuge"/>
+                        <field name="fechaNacimientoConyuge" string='Fecha de Nacimiento'/>
+                        <field name="vatConyuge" string='Cedula de Ciudadanía'/>
+                    </group>
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+
     <record id="view_entrega_vehiculo_form" model="ir.ui.view">
         <field name="name">view.entrega.vehiculo.form</field>
         <field name="model">entrega.vehiculo</field>
