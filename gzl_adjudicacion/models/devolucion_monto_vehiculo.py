@@ -43,8 +43,8 @@ class DevolucionMonto(models.Model):
     fsolicitud  = fields.Date(string='Fecha de Ingreso de Solicitud')
     fecha_estimada_pagos  = fields.Date(string='Fecha Estimada de Pago')
     plazo_estimado_pago  = fields.Integer(string='Plazo de Pago')
-    asignacion  = fields.Selection(selection=['DIAS','DIAS',
-                                            'MESES','MESES'])
+    asignacion  = fields.Selection(selection=[('DIAS','DIAS'),
+                                            ('MESES','MESES')])
 
 
 
