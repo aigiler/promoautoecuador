@@ -26,10 +26,7 @@
                         <field name="vat" string='Cedula de Ciudadanía'/>
                         <field name="fecha_nacimiento" string='Fecha de Nacimiento'/>
                         <field name="estado_civil"/>
-                        <field name="state_id" string='Provincia'/>
-                        <field name="city" string='Ciudad'/>
                         <field name="codigo_cliente" string='Código'/>
-
                         <field name="street" string='Direccion de Casa'/>
                         <field name="codigo_cliente" string='Código'/>
                         <field name="num_cargas_familiares" string="Cargas Fam."/>
