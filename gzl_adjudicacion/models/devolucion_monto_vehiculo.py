@@ -312,11 +312,12 @@ class DevolucionMonto(models.Model):
 
     valor_Afectado=fields.Monetary(string='Valores afectados', currency_field='currency_id', track_visibility='onchange')
 
+
     def calcular_fondos(self):
         for l in self:
             fondos_mes=0
             hoy=date.today()
-            grupoParticipante=l.grupo_cliente.transacciones_ids.filtered(lambda l: l.id != False)
+            grupoParticipante=l.contrato_id.grupo_id.transacciones_ids.filtered(lambda l: l.id != False)
             recuperacionCartera= sum(grupoParticipante.mapped('haber'))
             adjudicados= sum(grupoParticipante.mapped('debe'))
             l.fondos_mes=l.recuperacionCartera-l.adjudicados
