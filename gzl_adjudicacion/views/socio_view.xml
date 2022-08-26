@@ -20,8 +20,8 @@
                             domain="[('is_company', '=', True)]" context="{'default_is_company': True, 'show_vat': True}"
                             attrs="{'invisible': [('is_company','=', True)]}" options="{'no_open': True, 'no_create': True}"/>
                     </div>
-                    <group>
-                        <separator class="text-center fw-bold" string="DATOS PERSONALES"/>
+<group>
+                        <group>
                         <field name="codigo_cliente"/>
                         <field name="l10n_latam_identification_type_id"/>
                         
@@ -31,28 +31,32 @@
                         <field name="estado_civil" string="Estado Civil"/>
                         <field name="function" placeholder="e.g. Sales Director" attrs="{'invisible': [('is_company','=', True)]}"/>
                         <field name="user_ids" invisible="1"/>
+                        
                         <field name="email" widget="email" context="{'gravatar_image': True}" required="context.get('force_email', False)" attrs="{'required': [('user_ids','!=', [])]}"/>
                         <field name="phone" widget="phone"/>
+                        </group>
+                        <group>
                         <field name="mobile" widget="phone"/>
-                        <field name="country_id" string='País'/>
+                        <field name="country_id" string="País"/>
     
-                        <field name="state_id" string='Provincia'/>
-                        <field name="city" string='Ciudad'/>
-                        <field name="codigo_cliente" string='Código'/>
+                        <field name="state_id" string="Provincia"/>
+                        <field name="city" string="Ciudad"/>
+                        <field name="codigo_cliente" string="Código"/>
                         <field name="street" string="Dirección"/>
-                        <field name="tipo" invisible="1" />
+                        <field name="tipo" invisible="1"/>
                          <field name="num_cargas_familiares" string="Cargas Fam."/>
+                        </group>
                         <group>
                         <separator class="text-center fw-bold" string="DATOS DEL CONYUGE"/>
                         <field name="conyuge" string="Nombre del Conyuge"/>
-                        <field name="fechaNacimientoConyuge" string='Fecha de Nacimiento'/>
-                        <field name="vatConyuge" string='Cedula de Ciudadanía'/>
-                        <field name="proveedor_recurrente" string='Proveedor Recurrente'/>
+                        <field name="fechaNacimientoConyuge" string="Fecha de Nacimiento"/>
+                        <field name="vatConyuge" string="Cedula de Ciudadanía"/>
+                        <field name="proveedor_recurrente" string="Proveedor Recurrente"/>
                         </group>
                         <group>
                         <separator class="text-center fw-bold" string="INFORMACIÓN CONTABLE"/>
-                        <field name="proveedor_recurrente" string='Proveedor Recurrente'/>
-                        <field name="proveedor_recurrente" string='Proveedor Recurrente'/>
+                        <field name="property_account_receivable_id" string="Proveedor Recurrente"/>
+                        <field name="property_account_payable_id" string="Proveedor Recurrente"/>
                         </group>
                     </group>
                 </form>

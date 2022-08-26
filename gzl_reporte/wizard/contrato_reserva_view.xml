@@ -4,7 +4,7 @@
             <field name="name">contrato.reserva.form</field>
             <field name="model">contrato.reserva</field>
             <field name="arch" type="xml">
-                <form string="Informe Credito y Cobranza">
+                <form string="Contrato de Reserva">
                     <group>
                          <group col="2">
 

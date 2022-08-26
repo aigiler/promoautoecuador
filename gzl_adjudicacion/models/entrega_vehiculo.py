@@ -593,7 +593,7 @@ class EntegaVehiculo(models.Model):
     fecha_vencimiento_seguro = fields.Date(string="Fecha Vencimiento", track_visibility="onchange")
 
     revisiones_generales=fields.Boolean(string="Revisiones estéticas y demás",default=False)
-
+    contrato_id=fields.Many2one("contrato", string="Contrato")
 
 
 
@@ -660,6 +660,24 @@ class EntegaVehiculo(models.Model):
     estado_anterior_orden_compra = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
 
     # informacion de vehiculo
+
+    
+    def generar_contrato _reserva(self):
+        view_id = self.env.ref('gzl_reporte.contrato_reserva_form').id
+
+
+        return {'type': 'ir.actions.act_window',
+                'name': 'Contrato de Reserva',
+                'res_model': 'contrato.reserva',
+                'target': 'new',
+                'view_mode': 'form',
+                'views': [[view_id, 'form']],
+                'context': {
+                    'default_contrato_id': self.contrato_id.id,
+                    'default_partner_id':self.nombreSocioAdjudicado
+                }
+        }
+
 
     @api.model
     def year_selection(self):
@@ -854,11 +872,6 @@ class EntegaVehiculo(models.Model):
             else:
                 rec.valorAdjParaCompra = rec.montoVehiculo
 
-    
-
-
-
-
 
 
     @api.depends('montoAdjudicado', 'montoPendiente')
@@ -869,11 +882,6 @@ class EntegaVehiculo(models.Model):
                     rec.valorCuota / rec.ingresosFamiliares) * 100
             else:
                 rec.porcentajeCuotaPlan = 0
-
-
-
-
-
 
 
     @api.depends('valorCuota', 'cuotasCanceladas')
@@ -890,7 +898,7 @@ class EntegaVehiculo(models.Model):
 
     def setear_fecha_adjudicado(self):
         contrato = self.env['contrato'].search(
-            [('cliente', '=', self.nombreSocioAdjudicado.id)], limit=1)
+            [('cliente', '=', self.nombreSocioAdjudicado.id),('id','=',self.contrato_id.id)], limit=1)
         now=date.today()
         contrato.fecha_adjudicado=now
         contrato.estado='adjudicar'
