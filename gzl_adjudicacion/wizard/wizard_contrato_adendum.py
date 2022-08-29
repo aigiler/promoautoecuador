@@ -895,6 +895,7 @@ class WizardContratoAdendum(models.Model):
                             #'currency_id':self.contrato_id.id,
                         })  
             self.state="procesado"
+            self.actividad_id.action_done()
 
                 
                 #raise ValidationError("El monto de financiamiento no esta en el rango permitido")
