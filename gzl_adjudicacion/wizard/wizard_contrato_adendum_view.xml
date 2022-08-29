@@ -24,7 +24,7 @@
 
                         <field name="observacion" invisible="0" attrs="{'readonly': [('state', '=', 'procesado')], 'required': [('nota', '!=', False)]}" />
                         <field name="nota" attrs="{'invisible': [('nota', '=', False)]}" invisible="0"/>
-                        <field name="pago_id" required="1"/>
+                        <field name="pago_id"/>
 
                         <field name="tabla_adendum_id" nolabel="1" limit="72">
                                     <tree string="Nuevo Estado de Cuneta" editable="top">
