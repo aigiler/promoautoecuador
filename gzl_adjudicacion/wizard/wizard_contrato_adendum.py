@@ -79,6 +79,14 @@ class WizardContratoAdendum(models.Model):
             ('procesado', 'Procesado')
             ], string='Estado', copy=False, tracking=True, default='inicio',track_visibility='onchange')
 
+    @api.model
+    def create(self, vals):
+        maximo_adendum =  self.env['ir.config_parameter'].sudo().get_param('numero_maximo_adendum')
+        if vals.get('contrato_id'):
+        adendum_realizados=self.env['wizard.contrato.adendum'].sudo().search([('contrato_id','=',int(vals.get('contrato_id'))),('state','=','procesado')])
+        if len(adendum_realizados)>=maximo_adendum:
+            raise ValidationError("Solo se permiten realizar {0} adendum por contrato.".format(maximo_adendum))
+        return super(WizardContratoAdendum, self).create(vals)
 
     @api.depends('monto_financiamiento')
     def calcular_cuota(self):
@@ -86,8 +94,6 @@ class WizardContratoAdendum(models.Model):
             cuotaAdministrativa=0
             if l.monto_financiamiento:
                 cuotaAdministrativa= (l.monto_financiamiento*((l.contrato_id.tasa_administrativa/100)/12))*l.plazo_meses.numero
-                
-                
             l.cuota_adm = cuotaAdministrativa
 
     @api.onchange("contrato_id")
@@ -102,7 +108,7 @@ class WizardContratoAdendum(models.Model):
                 l.name="Adendum {}".format(l.contrato_id.secuencia)
                 l.socio_id=l.contrato_id.cliente.id
 
-    
+
     def crear_activity(self,rol,mensaje):
         if self.actividad_id:
             self.actividad_id.action_done()

@@ -14,5 +14,6 @@ class RubrosContratos(models.Model):
     name = fields.Selection([('cuota_capital','Cuota Capital'),
                                         ('seguro','Seguro'),
                                         ('otros','Otros'),
+                                        ('devolucion_hoja_ruta','Hoja de Ruta'),
                                         ('rastreo','Rastreo')
                                         ],string='Rubros')

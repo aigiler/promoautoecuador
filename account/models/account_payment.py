@@ -758,21 +758,13 @@ class account_payment(models.Model):
                                 if y.cuota_capital_pagar:
                                     cuota_id.saldo_cuota_capital=cuota_id.saldo_cuota_capital-y.cuota_capital_pagar
                                     transacciones=self.env['transaccion.grupo.adjudicado']
-                                    ids_transacciones=transacciones.search([('adjudicado_id','=',cuota_id.contrato_id.cliente.id),('contrato_id','=',cuota_id.contrato_id.id),('debe','>',0)],limit=1)
-                                    if ids_transacciones:
-                                        for trx in ids_transacciones:
-                                            trx.update({
-                                            'debe':trx.debe+y.cuota_capital_pagar,
-                                            'state':cuota_id.contrato_id.state
-                                            })
-                                    else:
-                                        transacciones.create({
-                                            'grupo_id':cuota_id.contrato_id.grupo.id,
-                                            'debe':y.cuota_capital_pagar,
-                                            'adjudicado_id':cuota_id.contrato_id.cliente.id,
-                                            'contrato_id':cuota_id.contrato_id.id,
-                                            'state':cuota_id.contrato_id.state
-                                            })
+                                    transacciones.create({
+                                        'grupo_id':cuota_id.contrato_id.grupo.id,
+                                        'debe':y.cuota_capital_pagar,
+                                        'adjudicado_id':cuota_id.contrato_id.cliente.id,
+                                        'contrato_id':cuota_id.contrato_id.id,
+                                        'state':cuota_id.contrato_id.state
+                                        })
                                 if y.rastreo_pagar:
                                     cuota_id.saldo_rastreo=cuota_id.saldo_rastreo-y.rastreo_pagar
 
@@ -783,19 +775,13 @@ class account_payment(models.Model):
                                 if y.entrada_pagar:
                                     cuota_id.saldo_programado=cuota_id.saldo_programado-y.entrada_pagar
                                     transacciones=self.env['transaccion.grupo.adjudicado']
-                                    ids_transacciones=transacciones.search([('adjudicado_id','=',cuota_id.contrato_id.cliente.id),('contrato_id','=',cuota_id.contrato_id.id),('debe','>',0)],limit=1)
-                                    if ids_transacciones:
-                                        for trx in ids_transacciones:
-                                            trx.update({'debe':trx.debe+y.entrada_pagar,
-                                                    'state':cuota_id.contrato_id.state,})
-                                    else:
-                                        transacciones.create({
-                                                'grupo_id':cuota_id.contrato_id.grupo.id,
-                                                'debe':y.entrada_pagar,
-                                                'adjudicado_id':cuota_id.contrato_id.cliente.id,
-                                                'contrato_id':cuota_id.contrato_id.id,
-                                                'state':cuota_id.contrato_id.state
-                                                })
+                                    transacciones.create({
+                                            'grupo_id':cuota_id.contrato_id.grupo.id,
+                                            'debe':y.entrada_pagar,
+                                            'adjudicado_id':cuota_id.contrato_id.cliente.id,
+                                            'contrato_id':cuota_id.contrato_id.id,
+                                            'state':cuota_id.contrato_id.state
+                                            })
                                 cuota_id.saldo=cuota_id.saldo-y.monto_pagar
                                 if y.monto_pagar:
                                     cuota_id.fecha_pagada=rec.payment_date
@@ -1032,8 +1018,6 @@ class account_payment(models.Model):
                                                     })
 
                                                 lista.append(tupla)
-
-
                             total_cuota=0
                             capital_pagado=0
                             if acumulado_cuota:
@@ -1093,21 +1077,13 @@ class account_payment(models.Model):
                                 cuota_id.estado_pago='pagado'
                             transacciones=self.env['transaccion.grupo.adjudicado']
                             if capital_pagado:
-                                ids_transacciones=transacciones.search([('adjudicado_id','=',cuota_id.contrato_id.cliente.id),('contrato_id','=',cuota_id.contrato_id.id),('debe','>',0)],limit=1)
-                                if ids_transacciones:
-                                    for trx in ids_transacciones:
-                                        trx.update({
-                                                'debe':trx.debe+capital_pagado,
-                                                'state':cuota_id.contrato_id.state
-                                                })
-                                else:
-                                    transacciones.create({
-                                    'grupo_id':cuota_id.contrato_id.grupo.id,
-                                    'debe':capital_pagado,
-                                    'adjudicado_id':cuota_id.contrato_id.cliente.id,
-                                    'contrato_id':cuota_id.contrato_id.id,
-                                    'state':cuota_id.contrato_id.state
-                                    })
+                                transacciones.create({
+                                'grupo_id':cuota_id.contrato_id.grupo.id,
+                                'debe':capital_pagado,
+                                'adjudicado_id':cuota_id.contrato_id.cliente.id,
+                                'contrato_id':cuota_id.contrato_id.id,
+                                'state':cuota_id.contrato_id.state
+                                })
                         
                         pago_fact_id=self.env['account.payment.cuotas.detalle'].search([('factura_id','=',y.id),('pago_id','=',rec.id)],limit=1)
                        
@@ -1183,15 +1159,6 @@ class account_payment(models.Model):
                                 
                                 if cuota_id.saldo==0:
                                     cuota_id.estado_pago='pagado'
-                                #transacciones=self.env['transaccion.grupo.adjudicado']
-                                #dct={
-                                #        'grupo_id':cuota_id.contrato_id.grupo.id,
-                                #        'debe':total_cuota,
-                                #        'adjudicado_id':cuota_id.contrato_id.cliente.id,
-                                #        'contrato_id':cuota_id.contrato_id.id,
-                                #        'state':cuota_id.contrato_id.state
-                                #        }
-                                #transacciones.create(dct)
                             pago_fact_id=self.env['account.payment.cuotas.detalle'].search([('factura_id','=',fact.id),('pago_id','=',rec.id)],limit=1)
                        
                             if pago_fact_id:
@@ -1200,14 +1167,11 @@ class account_payment(models.Model):
                                 pago_fact_id=self.env['account.payment.cuotas.detalle'].create({'factura_id':fact.id,'pago_id':rec.id,
                                                                                     'monto_pagado':rec.amount,'valor_asociado':monto_a_factura})
                             
-
                     for lineas in rec.payment_line_ids:
                         monto_pendiente_pago=lineas.invoice_id.amount_residual
                         for x in lineas.invoice_id.contrato_estado_cuenta_ids:
                             monto_pendiente_pago+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
                         lineas.monto_pendiente_pago=monto_pendiente_pago
-
-                        
                 if rec.payment_type=='outbound':
                     if rec.invoice_ids:
                         (moves[0] + rec.invoice_ids).line_ids \

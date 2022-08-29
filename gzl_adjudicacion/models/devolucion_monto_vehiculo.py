@@ -6,6 +6,13 @@ import re
 from dateutil.relativedelta import relativedelta
 
 
+
+class account_payment(models.Model):
+    _name = "account.payment"
+
+
+    proceso_hoja_ruta=fields.Many2one("devolucion.monto",string="Hoja de Ruta",track_visibility='onchange')
+
 class DevolucionMonto(models.Model):   
     _name = 'devolucion.monto'   
     _inherit = ['mail.thread', 'mail.activity.mixin']
@@ -328,19 +335,17 @@ class DevolucionMonto(models.Model):
             if self.journal_id:
                 pago_metodo=self.env.ref('gzl_facturacion_electronica.out_transfer')
                 if l.tipo_devolucion=='DEVOLUCION DE VALORES SIN FIRMAS' or l.tipo_devolucion=='DEVOLUCION DE RESERVA' or l.tipo_devolucion=='DEVOLUCION POR CALIDAD DE VENTA':
-                    cuenta_contrapartida=4613
+                    cuenta_id=self.env['rubros.contratos'].search([('name','=','devolucion_hoja_ruta')],limit=1)
                 else:
-                    cuenta_contrapartida=4590
+                    cuenta_id=self.env['rubros.contratos'].search([('name','=','cuota_capital')],limit=1)
                     transacciones=self.env['transaccion.grupo.adjudicado']
                     transacciones.create({
                                             'grupo_id':self.contrato_id.grupo.id,
-                                            'debe':self.valor_desistimiento,
+                                            'haber':self.valor_desistimiento,
                                             'adjudicado_id':self.contrato_id.cliente.id,
                                             'contrato_id':self.contrato_id.id,
                                             'state':self.contrato_id.state
                                             })
-                    #transacciones.create(dct)
-
                 self.env['account.move'].create({
                         'date':self.fsolicitud,
                         'journal_id':3,
@@ -350,7 +355,7 @@ class DevolucionMonto(models.Model):
                         'ref':self.secuencia,
                         'line_ids':[
                             (0,0,{
-                            'account_id':cuenta_contrapartida,
+                            'account_id':cuenta_id.cuenta_id,
                             'partner_id':self.cliente.id,
                             'credit':0,
                             'debit':l.valor_desistimiento
@@ -365,7 +370,7 @@ class DevolucionMonto(models.Model):
                     }).action_post()
 
                 if not self.fecha_estimada_pagos:
-                    raise ValidationError("Antes de Crear un pago debe indicar la fecha estimada de pago")
+                    raise ValidationError("Antes de Crear un pago debe indicar la fecha estimada de pago.")
                 pago_id=self.env['account.payment'].create({"journal_id":l.journal_id.id,'partner_id':self.cliente.id,
                                                                     'payment_type':'outbound','amount':l.valor_desistimiento,
                                                                     'payment_method_id':pago_metodo.id,
@@ -374,7 +379,8 @@ class DevolucionMonto(models.Model):
                                                                     'communication':self.secuencia,
                                                                     'tipo_transaccion':'Pago',
                                                                     'company_id':self.env.company.id,
-                                                                    'partner_type':"customer"})
+                                                                    'partner_type':"customer",
+                                                                    'proceso_hoja_ruta':self.id})
                 self.pago_id=pago_id.id
 
                 self.crear_activity_pago(pago_id)
