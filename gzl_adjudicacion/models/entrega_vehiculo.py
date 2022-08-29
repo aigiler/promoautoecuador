@@ -24,6 +24,8 @@ class EntegaVehiculo(models.Model):
     rolAdjudicacion = fields.Many2one('adjudicaciones.team', string="Rol Adjudicacion", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol2'))
     asamblea = fields.Many2one('asamblea','Asamblea del Adjudicado')
 
+    rolcontab = fields.Many2one('adjudicaciones.team', string="Rol contabilidad Financiera", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol7'))
+
     fecha_reserva = fields.Date(string='Fecha de Reserva')
     fecha_inscripcion = fields.Date(string='Fecha de Inscripción')
     num_inscripcion = fields.Date(string='Numero de Inscripción')

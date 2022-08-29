@@ -428,7 +428,6 @@ class DevolucionMonto(models.Model):
         self.update({'documentos_postventa':[(6,0,lista_ids)]})
 ###REQUISITOS
 
-
     rolAsignado = fields.Many2one('adjudicaciones.team', string="Rol Asignado", track_visibility='onchange')
     
     rolGerenciaFin = fields.Many2one('adjudicaciones.team', string="Rol Gerencia Financiera", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol4'))
