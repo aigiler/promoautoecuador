@@ -32,4 +32,4 @@ class TransaccionesGrupoSocio(models.Model):
     @api.depends('debe','haber')
     def calculo_saldo(self):
         for l in self:
-            l.saldo=l.debe - l.haber
+            l.saldo=l.haber - l.debe

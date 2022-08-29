@@ -351,7 +351,7 @@ class DevolucionMonto(models.Model):
                     transacciones=self.env['transaccion.grupo.adjudicado']
                     transacciones.create({
                                             'grupo_id':self.contrato_id.grupo.id,
-                                            'haber':self.valor_desistimiento,
+                                            'debe':self.valor_desistimiento,
                                             'adjudicado_id':self.contrato_id.cliente.id,
                                             'contrato_id':self.contrato_id.id,
                                             'state':self.contrato_id.state

@@ -50,7 +50,7 @@ class GrupoSocios(models.Model):
         for l in self:
             hoy=date.today()
             grupoParticipante=l.transacciones_ids.filtered(lambda l: l.create_date.month==hoy.month and l.create_date.year==hoy.year)
-            l.recuperacionCartera=sum(grupoParticipante.mapped('debe'))
+            l.recuperacionCartera=sum(grupoParticipante.mapped('haber'))
 
 
 
@@ -102,7 +102,7 @@ class GrupoSocios(models.Model):
     @api.depends("integrantes.contrato_id.state","integrantes")
     def calcular_monto_pagado(self,):
         for l in self:
-            monto=sum(l.transacciones_ids.mapped('debe'))-sum(l.transacciones_ids.mapped('haber'))
+            monto=sum(l.transacciones_ids.mapped('haber'))-sum(l.transacciones_ids.mapped('debe'))
             l.monto_grupo=monto
 
 
