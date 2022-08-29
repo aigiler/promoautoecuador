@@ -467,13 +467,15 @@ class WizardContratoAdendum(models.Model):
             porcentaje_perm_adendum_postventa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
             valor_porcentaje_post = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum_postventa)/100
             valor_menos_porc_post = self.contrato_id.monto_financiamiento - valor_porcentaje_post
+            valor_mayor_porc_post = self.contrato_id.monto_financiamiento + valor_porcentaje_post
             porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
             valor_porcentaje_perm = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum)/100
             valor_menor_porc_pperm = self.contrato_id.monto_financiamiento - valor_porcentaje_perm
+            valor_mayor_porc_pperm = self.contrato_id.monto_financiamiento + valor_porcentaje_perm
+            if self.monto_financiamiento >= valor_menos_porc_post and self.monto_financiamiento <= valor_mayor_porc_post : 
 
-            if self.monto_financiamiento < valor_menos_porc_post or self.monto_financiamiento<valor_menor_porc_pperm:
                 self.state="aprobacion"
-                mensaje="El pago se encuentra asociado a la Cesión de Derecho. "+self.name+' Favor de ejecutarla'
+                mensaje="El pago se encuentra asociado al Adendum. "+self.name+' Favor de ejecutarla'
                 self.crear_activity(self.rolAdjudicacion,mensaje)
                 return True
         
