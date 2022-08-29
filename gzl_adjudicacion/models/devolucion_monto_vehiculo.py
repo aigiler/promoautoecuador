@@ -325,9 +325,7 @@ class DevolucionMonto(models.Model):
     journal_id = fields.Many2one('account.journal', string='Banco', tracking=True, domain="[('type', 'in', ('bank', 'cash')), ('company_id', '=', company_id)]")
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company, string='Company', readonly=True)
     fondos_mes=fields.Monetary(string='Fondos del Mes', currency_field='currency_id', track_visibility='onchange')
-
     valor_Afectado=fields.Monetary(string='Valores afectados', currency_field='currency_id', track_visibility='onchange')
-
 
     def calcular_fondos(self):
         for l in self:

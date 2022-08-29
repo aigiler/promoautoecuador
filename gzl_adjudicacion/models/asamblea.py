@@ -247,8 +247,9 @@ class Asamblea(models.Model):
             adjudicados=0
             hoy=date.today()
             grupoParticipante=l.grupo_cliente.transacciones_ids.filtered(lambda l: l.create_date.month==hoy.month and l.create_date.year==hoy.year)
-            l.recuperacionCartera= sum(grupoParticipante.mapped('haber'))
-            l.adjudicados= sum(grupoParticipante.mapped('debe'))
+            l.recuperacionCartera= sum(grupoParticipante.mapped('debe'))
+            grupo_adjudicado=l.grupo_cliente.transacciones_ids.filtered(lambda l: l.create_date.month==hoy.month and l.create_date.year==hoy.year and l.estate=='adjudicar')
+            l.adjudicados= sum(grupo_adjudicado.mapped('haber'))
             l.fondos_mes=l.recuperacionCartera-l.adjudicados
 
 
