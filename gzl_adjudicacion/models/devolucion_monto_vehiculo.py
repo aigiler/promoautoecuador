@@ -8,7 +8,7 @@ from dateutil.relativedelta import relativedelta
 
 
 class account_payment(models.Model):
-    _name = "account.payment"
+    _inherit = "account.payment"
 
 
     proceso_hoja_ruta=fields.Many2one("devolucion.monto",string="Hoja de Ruta",track_visibility='onchange')
