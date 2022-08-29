@@ -30,5 +30,5 @@ class Partner(models.Model):
 
     #conyuge=fields.Char(string='Nombre del Conyuge')
 
-    fechaNacimientoConyuge = fields.Date(string='Fecha de Nacimiento Conyuge')
-    vatConyuge = fields.Char(string='Cedula de Ciudadanía Conyuge')
+    #fechaNacimientoConyuge = fields.Date(string='Fecha de Nacimiento Conyuge')
+    #vatConyuge = fields.Char(string='Cedula de Ciudadanía Conyuge')
