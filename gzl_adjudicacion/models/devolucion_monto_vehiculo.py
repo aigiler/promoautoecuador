@@ -90,7 +90,7 @@ class DevolucionMonto(models.Model):
                 l.asignacion="MESES"
 
 
-    @api.contrains("plazo_estimado_pago","asignacion")
+    @api.constrains("plazo_estimado_pago","asignacion")
     @api.onchange("plazo_estimado_pago","asignacion")
     def obtener_fecha(self):
         for l in self:
