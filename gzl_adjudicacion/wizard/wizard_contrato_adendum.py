@@ -472,7 +472,7 @@ class WizardContratoAdendum(models.Model):
             valor_porcentaje_perm = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum)/100
             valor_menor_porc_pperm = self.contrato_id.monto_financiamiento - valor_porcentaje_perm
             valor_mayor_porc_pperm = self.contrato_id.monto_financiamiento + valor_porcentaje_perm
-            if self.monto_financiamiento >= valor_menos_porc_post and self.monto_financiamiento <= valor_mayor_porc_post : 
+            if self.monto_financiamiento >= valor_mayor_porc_post and self.monto_financiamiento <= valor_menos_porc_post: 
 
                 self.state="aprobacion"
                 mensaje="El pago se encuentra asociado al Adendum. "+self.name+' Favor de ejecutarla'
