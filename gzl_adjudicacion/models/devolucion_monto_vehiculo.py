@@ -41,6 +41,7 @@ class DevolucionMonto(models.Model):
     grupo = fields.Many2one(
         'grupo.adjudicado', related="contrato_id.grupo",string="Grupo", track_visibility='onchange')
     
+
     valor_inscripcion = fields.Monetary(
         string='Valor Inscripción',related="contrato_id.valor_inscripcion", currency_field='currency_id', track_visibility='onchange')
 
