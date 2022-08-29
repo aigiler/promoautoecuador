@@ -89,6 +89,17 @@ class DevolucionMonto(models.Model):
                 l.plazo_estimado_pago=12
                 l.asignacion="MESES"
 
+
+    @api.contrains("plazo_estimado_pago","asignacion")
+    @api.onchange("plazo_estimado_pago","asignacion")
+    def obtener_fecha(self):
+        for l in self:
+            if l.plazo_estimado_pago:
+                if l.asignacion=='MESES':
+                    self.fecha_estimada_pagos=datetime.today() + relativedelta(months=l.plazo_estimado_pago)
+                elif l.asignacion=='DIAS':
+                    self.fecha_estimada_pagos=datetime.today() + relativedelta(days=l.plazo_estimado_pago)
+
     tipo_accion = fields.Selection(selection=[
         ('CLIENTE', 'CLIENTE'),
         ('ABOGADO', 'ABOGADO'),
@@ -328,7 +339,10 @@ class DevolucionMonto(models.Model):
             recuperacionCartera= sum(grupoParticipante.mapped('haber'))
             adjudicados= sum(grupoParticipante.mapped('debe'))
             l.fondos_mes=recuperacionCartera-adjudicados
-            l.valor_Afectado=l.fondos_mes-l.valor_desistimiento
+            if self.tipo_devolucion=='DEVOLUCION DE LICITACION' or self.tipo_devolucion=='DEVOLUCION POR DESISTIMIENTO DEL CONTRATO':
+                l.valor_Afectado=l.fondos_mes-l.valor_desistimiento
+            else:
+                l.valor_Afectado=l.fondos_mes
 
     def generar_pago(self):
         for l in self:

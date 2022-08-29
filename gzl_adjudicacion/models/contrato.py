@@ -270,8 +270,8 @@ class Contrato(models.Model):
                     anioSgte=str(fechaMesSeguiente.year)
                     fechaPago = anioSgte+"-"+mesSgte+"-{0}".format(rec.dia_corte.zfill(2)) 
                     rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%Y-%m-%d')
-                else:
-                    rec.fecha_inicio_pago =False
+                #else:
+                #    rec.fecha_inicio_pago =False
     
     @api.depends('plazo_meses', 'monto_financiamiento','monto_programado')
     def calcular_valores_contrato(self):

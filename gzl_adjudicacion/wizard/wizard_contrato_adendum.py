@@ -83,9 +83,9 @@ class WizardContratoAdendum(models.Model):
     def create(self, vals):
         maximo_adendum =  self.env['ir.config_parameter'].sudo().get_param('numero_maximo_adendum')
         if vals.get('contrato_id'):
-        adendum_realizados=self.env['wizard.contrato.adendum'].sudo().search([('contrato_id','=',int(vals.get('contrato_id'))),('state','=','procesado')])
-        if len(adendum_realizados)>=maximo_adendum:
-            raise ValidationError("Solo se permiten realizar {0} adendum por contrato.".format(maximo_adendum))
+            adendum_realizados=self.env['wizard.contrato.adendum'].sudo().search([('contrato_id','=',int(vals.get('contrato_id'))),('state','=','procesado')])
+            if len(adendum_realizados)>=maximo_adendum:
+                raise ValidationError("Solo se permiten realizar {0} adendum por contrato.".format(maximo_adendum))
         return super(WizardContratoAdendum, self).create(vals)
 
     @api.depends('monto_financiamiento')
