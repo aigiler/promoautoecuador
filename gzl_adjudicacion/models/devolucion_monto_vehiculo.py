@@ -205,9 +205,6 @@ class DevolucionMonto(models.Model):
                     resto_fechas=datetime.now()-l.fecha_cambio_estado
                     tiempo_horas=(resto_fechas.total_seconds()/3600)
                     
-
-
-
     @api.onchange("contrato_id")
     def obtener_valores(self):
         for l in self:
@@ -370,7 +367,7 @@ class DevolucionMonto(models.Model):
                         'ref':self.secuencia,
                         'line_ids':[
                             (0,0,{
-                            'account_id':cuenta_id.cuenta_id,
+                            'account_id':cuenta_id.cuenta_id.id,
                             'partner_id':self.cliente.id,
                             'credit':0,
                             'debit':l.valor_desistimiento
