@@ -468,6 +468,8 @@ class DevolucionMonto(models.Model):
                     'date_deadline':datetime.now()+ relativedelta(days=2)
                 })
             self.actividad_id=actividad_id.id
+        else:
+            self.contrato_id.state='finalizado'
 
     def validar_documentos_postventa(self):
         for l in self:

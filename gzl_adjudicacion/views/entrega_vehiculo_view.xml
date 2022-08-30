@@ -727,7 +727,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <text>ANTICIPO AL CONCESIONARIO</text>
+                                                <text>ANTICIPO AL CONCESIONARIO/PATIOS</text>
                                             </td>
                                             <td></td>
                                             <td>
@@ -757,7 +757,7 @@
                                         <separator/>
                                         <tr>
                                             <td>
-                                                <text>CHEQUE AL CONCESIONARIO</text>
+                                                <text>CHEQUE AL CONCESIONARIO/PATIOS</text>
                                             </td>
                                             <td></td>
                                             <td>
@@ -772,7 +772,7 @@
                             <div style="border: 1px solid black;">
                                 <div class="col-xs-12 col-sm-12">
                                     <group>
-                                        <field name="nombreConsesionario" domain = "[('tipo', '=', 'concesionario')]" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="nombreConsesionario" string="Nombre del Concesionario/PATIOS" domain = "[('tipo', '=', 'concesionario')]" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
                                 </div>
                             </div>
