@@ -66,7 +66,7 @@
                             <div class="col-xs-12 col-md-12">
                                 <group>  
                                     <field name="nombreSocioAdjudicado" required="1" options="{'no_open': True, 'no_create': True}" />
-                                    <field name="contrato_id" required="1" options="{'no_open': True, 'no_create': True}" />
+                                    <field name="contrato_id"  domain="[('cliente', '=', nombreSocioAdjudicado),('state','=','activo')]" required="1" options="{'no_open': True, 'no_create': True}" />
                                     <field name="garante" invisible="1"/>
                                 </group>
                             </div>

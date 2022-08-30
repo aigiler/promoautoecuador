@@ -170,6 +170,8 @@ class EntegaVehiculo(models.Model):
                     'date_deadline':datetime.now()+ relativedelta(days=1)
                 })
             self.actividad_id=actividad_id.id
+        else:
+            self.contrato_id.state='adjudicar'
 
     def llenar_tabla(self):
         obj_patrimonio=self.env['items.patrimonio'].search([])  
@@ -629,9 +631,7 @@ class EntegaVehiculo(models.Model):
     contrato_id=fields.Many2one("contrato", string="Contrato")
 
 
-
-
-
+                
 
     def job_notificar_vencimientos_rastreo(self):
 
