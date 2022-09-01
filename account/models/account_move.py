@@ -1271,7 +1271,7 @@ class AccountMove(models.Model):
             #           ('reconciled', '=', False), '|', ('amount_residual', '!=', 0.0),
             #           ('amount_residual_currency', '!=', 0.0)]
 
-             domain = [('account_id', 'in', pay_term_line_ids.mapped('account_id').ids),
+            domain = [('account_id', 'in', pay_term_line_ids.mapped('account_id').ids),
                       '|', ('move_id.state', '=', 'posted'), '&', ('move_id.state', '=', 'draft'), ('journal_id.post_at', '=', 'bank_rec'),
                         ('reconciled', '=', False), '|', ('amount_residual', '!=', 0.0),
                       ('amount_residual_currency', '!=', 0.0)]
