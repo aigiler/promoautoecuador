@@ -1069,7 +1069,7 @@ class AccountPayment(models.Model):
                     cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
                     tupla={
                                                         'partner_id':l.partner_id.id,
-                                                        'cuenta':cuota_capital_obj.cuenta_id.id,
+                                                        'cuenta':l.partner_id.property_account_receivable_id.id,
                                                         'name': 'Anticipo de '+l.partner_id.name,
                                                         'cuenta_analitica':'',
                                                         'analytic_tag_ids':[],
