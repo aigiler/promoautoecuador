@@ -288,7 +288,7 @@ class AccountPayment(models.Model):
                         })
                     capital_total+=capital_pagado
                 pago_fact_id=self.env['account.payment.cuotas.detalle'].create({'factura_id':l.id,'pago_id':self.id,
-                                                                                    'monto_pagado':self.amount,'valor_asociado':capital_pagado})            
+                                                                                    'monto_pagado':self.amount,'valor_asociado':total_cuota})            
         if lista:
             for mov in self.move_line_ids:
                 if mov.account_id.id==self.partner_id.property_account_receivable_id.id and round(mov.credit,2)==round(self.credito,2):
