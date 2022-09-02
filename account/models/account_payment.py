@@ -1103,12 +1103,17 @@ class account_payment(models.Model):
                     
                     if rec.invoice_ids:
                         for fact in rec.invoice_ids:
+                            lista_final=[]
                             monto_a_factura=0
                             valor_inicial_factura=fact.amount_residual
                             lineas_asientos=moves.line_ids.filtered(lambda line: line.credit==self.valor_deuda)
+                            for x in lineas_asientos:
+                                lista_final.append(x.id)
                             lineas_factura=moves.line_ids
-                            lista_final=[lineas_factura,lineas_asientos]
-                            movimientos=lista_final.filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))
+                            for y in lineas_factura:
+                                lista_final.append(y.id)
+                            lineas_ids=self.env['account.move.line'].search([('id','in',lista_final)])
+                            movimientos=lineas_ids.filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))
                             if movimientos:
                                 movimientos.reconcile()
                             valor_final_factura=fact.amount_residual
