@@ -323,20 +323,22 @@ class AccountMove(models.Model):
                         if pag.anticipo_pendiente:
                             valor_restar=valor_restar-rec.saldo_cuota_capital
                             
+        texto_anticipo=" "
         for ant in self.anticipos_ids:
             if ant.anticipo_pendiente:
                 
                 ant.valor_sobrante=valor_restar
                 
                 saldo+=ant.credit-valor_restar
+                texto_anticipo=" con un anticipo de: "+str(round(saldo,2))
         if self.invoice_payment_term_id:
             lista_dic.append({
                             'nombre': 'CRÉDITO',
-                            'valor':str(round(saldo_credito-saldo,2))+' a '+self.invoice_payment_term_id.name})
+                            'valor':"La factura emitida es por: "+str(round(saldo_credito,2))+texto_anticipo+ " El total a pagar es: " +str(round(saldo_credito-saldo,2))+' a '+self.invoice_payment_term_id.name})
         else:
             lista_dic.append({
                             'nombre': 'CRÉDITO',
-                            'valor':str(round(saldo_credito-saldo,2))+' a '+str(self.invoice_date_due)})
+                            'valor':"La factura emitida es por: "+str(round(saldo_credito,2))+texto_anticipo+ " El total a pagar es: " +str(round(saldo_credito-saldo,2))+' a '+str(self.invoice_date_due)})
         if self.method_payment:
             lista_dic.append({'nombre':'Desde','valor':str(self.invoice_date)}) 
             lista_dic.append({'nombre':'F/pago','valor':self.method_payment.name}) 
