@@ -206,6 +206,7 @@ class AccountPayment(models.Model):
             if x.pagar:
                 for l in x.invoice_id:
                     for cuota_id in l.contrato_estado_cuenta_ids:
+                        acumulado_cuota=0
                         if valor_pago_cliente:
                             if cuota_id.saldo_cuota_capital:
                                 movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',l.name)])
