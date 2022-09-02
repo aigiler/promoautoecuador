@@ -203,9 +203,9 @@ class AccountMove(models.Model):
                         for rec in m.matched_credit_ids:
                             lista_pagos.append(rec.credit_move_id.payment_id.id)
 
-            for x in self.anticipos_ids:
-                total+=(x.credit-x.valor_sobrante)
-                lista_pagos.append(x.payment_id.id)
+            #for x in self.anticipos_ids:
+            #    total+=(x.credit-x.valor_sobrante)
+            #    lista_pagos.append(x.payment_id.id)
 
             #for pagos in cuotas_ids.ids_pagos:
             #    if pagos.pago_id.id not in lista_pagos:
@@ -775,10 +775,10 @@ class AccountMove(models.Model):
                 obj_am = self.env['account.move']
                 valor_credito=0
 
-                if self.anticipos_ids:
-                    for m in self.anticipos_ids:
-                        if m.anticipo_pendiente:
-                            valor_credito+=m.credit
+                #if self.anticipos_ids:
+                #    for m in self.anticipos_ids:
+                #        if m.anticipo_pendiente:
+                #            valor_credito+=m.credit
 
                 valor_restar=valor_credito
                 for rec in self.contrato_id.estado_de_cuenta_ids.search([('id','in',self.contrato_estado_cuenta_ids.ids)]):
@@ -787,20 +787,20 @@ class AccountMove(models.Model):
                         if valor_restar<=rec.saldo_cuota_capital:
                             rec.saldo_cuota_capital=rec.saldo_cuota_capital-valor_restar
                             
-                            for pag in self.anticipos_ids:
-                                if pag.anticipo_pendiente:
-                                    pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':rec.id,'pago_id':pag.payment_id.id,
-                                                                                               'monto_pagado':pag.payment_id.amount,'valor_asociado':valor_restar})
-                                    valor_restar=0
-                                    pass
+                            #for pag in self.anticipos_ids:
+                            #    if pag.anticipo_pendiente:
+                            #        pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':rec.id,'pago_id':pag.payment_id.id,
+                            #                                                                   'monto_pagado':pag.payment_id.amount,'valor_asociado':valor_restar})
+                            #        valor_restar=0
+                            #        pass
                         else:
                             
-                            for pag in self.anticipos_ids:
-                                if pag.anticipo_pendiente:
+                            #for pag in self.anticipos_ids:
+                            #    if pag.anticipo_pendiente:
 
-                                    pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':rec.id,'pago_id':pag.payment_id.id,
-                                                                                                    'monto_pagado':pag.payment_id.amount,'valor_asociado':rec.saldo_cuota_capital})
-                                    valor_restar=valor_restar-rec.saldo_cuota_capital
+                        #            pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':rec.id,'pago_id':pag.payment_id.id,
+                        #                                                                            'monto_pagado':pag.payment_id.amount,'valor_asociado':rec.saldo_cuota_capital})
+                        #            valor_restar=valor_restar-rec.saldo_cuota_capital
 
                             rec.saldo_cuota_capital=0
                     cuota_capital += rec.saldo_cuota_capital
@@ -832,11 +832,11 @@ class AccountMove(models.Model):
                         ]
                     }).action_post()
                 obj_anticipo=self.env['anticipos.pendientes'].search([('factura_id','=',self.id),('anticipo_pendiente','=',False)])
-                for ant in self.anticipos_ids:
-                    ant.linea_pago_id.saldo_pendiente=valor_restar
+                #for ant in self.anticipos_ids:
+                #    ant.linea_pago_id.saldo_pendiente=valor_restar
                 #    ant.valor_sobrante=valor_restar
-                    if not ant.linea_pago_id.saldo_pendiente:
-                        ant.linea_pago_id.aplicar_anticipo=False
+                #    if not ant.linea_pago_id.saldo_pendiente:
+                #        ant.linea_pago_id.aplicar_anticipo=False
                 obj_anticipo.unlink()
                 if seguro>0:
                     if not seguro_obj:
