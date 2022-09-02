@@ -406,7 +406,7 @@ class account_payment(models.Model):
         for record in self:
             reconciled_moves = record.move_line_ids.mapped('matched_debit_ids.debit_move_id.move_id')\
                                + record.move_line_ids.mapped('matched_credit_ids.credit_move_id.move_id')
-            record.reconciled_invoice_ids = reconciled_moves#.filtered(lambda move: move.is_invoice())
+            record.reconciled_invoice_ids = reconciled_moves.filtered(lambda move: move.is_invoice())
             record.has_invoices = bool(record.reconciled_invoice_ids)
             record.reconciled_invoices_count = len(record.reconciled_invoice_ids)
 

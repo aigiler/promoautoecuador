@@ -34,6 +34,8 @@
                   <br/>
                   <label for="credito_contrato"/><field name="credito_contrato" groups="gzl_facturacion_electronica.grupo_cobranza" />
                   <field name="credito" attrs="{'invisible': [('credito_contrato','=',False)]}" groups="gzl_facturacion_electronica.grupo_cobranza" />
+                   <button  name="obtener_facturas" string="Facturas" attrs="{'invisible': [('credito_contrato','=',False)]}" type="object" class='btn-primary' groups="gzl_facturacion_electronica.grupo_cobranza"></button>
+                  
                 </div>
             </div>
             <group position="after">    

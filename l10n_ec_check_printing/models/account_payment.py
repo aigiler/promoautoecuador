@@ -52,6 +52,8 @@ class AccountPayment(models.Model):
     check_type = fields.Selection([('posfechado','Posfechado'),
                                     ('dia','Al dia')], string="Tipo" , default='dia')
     payment_line_ids = fields.One2many('account.payment.line', 'payment_id')
+    payment_line_new_ids = fields.One2many('account.payment.line', 'payment_id')
+
     invoice_id = fields.Many2one('account.move','Factura')
     has_payment_line = fields.Boolean(string="Tiene lineas de pagos", store=True)
     selected_inv_total = fields.Float(compute='_compute_amounts', store=True, string='Monto Asignado')
@@ -160,6 +162,143 @@ class AccountPayment(models.Model):
 
 
 
+
+    def obtener_facturas(self):
+        Invoice = self.env['account.move']
+        invoices = Invoice.search([
+            ('partner_id', 'in', self.partner_id.id),
+            ('state', '=', 'posted'), ('type', 'in', 'out_invoice'),('invoice_payment_state','!=','paid')
+        ], order="invoice_date asc")
+        list_ids=[]
+        for invoice in invoices:
+            line_id = PaymentLineNew.create([{
+                        'invoice_id': invoice.id,
+                        'amount_total': invoice.amount_total,
+                        'actual_amount':invoice.amount_residual,
+                        'residual': amount,
+                        'amount': 0.0,
+                        'date_due': invoice.invoice_date+timedelta(days=l.days),
+                        'document_number':invoice.l10n_latam_document_number
+                    }])
+            list_ids.append(line_id.id)
+        self.payment_line_new_ids = [(6, 0, list_ids)]
+
+    def procesar_pago(self):
+        valor_pago_cliente=0
+        lista_ids=[]
+        lista_movimientos=[]
+        capital_total=0
+        for x in self.move_line_ids:
+                        #raise ValidationError('{0},{1}'.format(x.account_id.id))
+            if x.account_id.id==self.partner_id.property_account_receivable_id.id and round(x.credit,2)==round(self.credito,2):
+                valor_pago_cliente+=round(x.credit,2)
+                move_credito=x.id
+                for y in x.matched_debit_ids:
+                    lista_ids.append(y.debit_move_id.id)
+                    lista_movimientos.append({'debit_move_id':y.debit_move_id.id,'amount':y.amount})
+
+        cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
+        lista=[]
+        for x in self.payment_line_new_ids:
+            if x.pagar:
+                for l in x.invoice_id:
+                    for cuota_id in l.contrato_estado_cuenta_ids:
+                        if valor_pago_cliente:
+                            if cuota_id.saldo_cuota_capital:
+                                movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',l.name)])
+                                for x in movimientos_cuota.invoice_line_ids:
+                                    if x.account_id.id==self.partner_id.property_account_receivable_id.id:
+                                        if x.id in lista_ids:
+                                            i=0
+                                            for mov in lista_movimientos:
+                                                if x.id==mov['debit_move_id']:
+                                                    if valor_pago_cliente>=cuota_id.saldo_cuota_capital:
+                                                        mov['amount']+=cuota_id.saldo_cuota_capital
+                                                        acumulado_cuota+=cuota_id.saldo_cuota_capital
+                                                        valor_pago_cliente=valor_pago_cliente-cuota_id.saldo_cuota_capital
+                                                    else:
+                                                        mov['amount']+=valor_pago_cliente
+                                                        acumulado_cuota+=valor_pago_cliente
+                                                        valor_pago_cliente=0
+                                                    monto_cruzado=mov['amount']
+                                                    if lista:
+                                                        for z in lista:
+                                                            if z[2]['debit_move_id']==x.id:
+                                                                z[2]['amount']=mov['amount']
+                                                    else:
+                                                        tupla=(0, 0, {
+                                                                'debit_move_id': x.id,
+                                                                'credit_move_id':  move_credito,
+                                                                'amount': monto_cruzado,
+                                                                'amount_currency': '',
+                                                                'currency_id':  '',
+                                                                'company_currency_id': 2,
+                                                                'company_id': 1,
+                                                                })
+                                                        lista.append(tupla) 
+                                        
+                                        else:
+                                            if valor_pago_cliente>=cuota_id.saldo_cuota_capital:
+                                                monto_cruzado=cuota_id.saldo_cuota_capital
+                                            else:
+                                                monto_cruzado=valor_pago_cliente
+                                            acumulado_cuota+=monto_cruzado
+                                            valor_pago_cliente=valor_pago_cliente-monto_cruzado
+                                            lista_ids.append(x.id)
+                                            lista_movimientos.append({'debit_move_id':x.id,'amount':monto_cruzado})
+                                            tupla=(0, 0, {
+                                                'debit_move_id': x.id,
+                                                'credit_move_id':  move_credito,
+                                                'amount': monto_cruzado,
+                                                'amount_currency': '',
+                                                'currency_id':  '',
+                                                'company_currency_id': 2,
+                                                'company_id': 1,
+                                                })
+
+                                            lista.append(tupla)
+                        capital_pagado=0
+                        total_cuota=0
+                        if acumulado_cuota:
+                            if acumulado_cuota>=cuota_id.saldo_cuota_capital:
+                                capital_pagado+=cuota_id.saldo_cuota_capital
+                                total_cuota+=cuota_id.saldo_cuota_capital
+                                acumulado_cuota=acumulado_cuota-cuota_id.saldo_cuota_capital
+                                cuota_id.saldo_cuota_capital=0
+
+                            else:
+                                capital_pagado+=acumulado_cuota
+                                total_cuota+=acumulado_cuota
+                                cuota_id.saldo_cuota_capital=cuota_id.saldo_cuota_capital-acumulado_cuota
+                                acumulado_cuota=0
+
+                        pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':self.id,
+                                                                                                'monto_pagado':self.amount,'valor_asociado':total_cuota})
+                        transacciones=self.env['transaccion.grupo.adjudicado']
+                        if capital_pagado:
+                            transacciones.create({
+                            'grupo_id':cuota_id.contrato_id.grupo.id,
+                            'haber':capital_pagado,
+                            'adjudicado_id':cuota_id.contrato_id.cliente.id,
+                            'contrato_id':cuota_id.contrato_id.id,
+                            'state':cuota_id.contrato_id.state
+                            })
+                        capital_total+=capital_pagado
+                    pago_fact_id=self.env['account.payment.cuotas.detalle'].create({'factura_id':y.id,'pago_id':self.id,
+                                                                                        'monto_pagado':self.amount,'valor_asociado':capital_pagado})            
+                    if capital_total<=self.credito:
+                        self.credito=self.credito-capital_total
+                    else:
+                        self.credito=0.00
+                    if self.credito==0.00:
+                        self.credito_contrato=False
+        if lista:
+            for x in self.move_line_ids:
+                if x.account_id.id==self.partner_id.property_account_receivable_id.id and round(x.credit,2)==round(self.credito,2):
+                    x.update({'matched_debit_ids':lista})
+                    pass
+
+                     
 
 
     ############################################################ Pay multiple bills ############################################################
@@ -1137,6 +1276,65 @@ class AccountPayment(models.Model):
 
 class AccountPaymentLine(models.Model):
     _name = 'account.payment.line'
+    _descripcion = 'Lineas de Pago'
+    
+    payment_id = fields.Many2one('account.payment', 'Pago')
+    #partner_id = fields.Many2one(related='payment_id.partner_id', string='Proveedor')
+    pagar=fields.Boolean(string="Seleccione para Pagar")
+    date_due = fields.Date(string='Fecha de Vencimiento')
+    amount = fields.Monetary('Valor a Pagar')
+    currency_id = fields.Many2one(related='invoice_id.currency_id', string="Moneda")
+    invoice_id = fields.Many2one('account.move', 'Factura')
+    actual_amount = fields.Float(string='Monto actual adeudado')
+    amount_total = fields.Monetary('Monto Total')
+    residual = fields.Monetary('Cuotas')
+    document_number = fields.Char(string="Número de Documento")
+    monto_pendiente_pago = fields.Float(string='Saldo Pendiente')
+
+
+    @api.constrains('invoice_id')
+    def obtener_monto(self):
+        for l in self:
+            monto_pendiente_pago=0
+            saldo_cap=0
+            saldo_seg=0
+            saldo_ras=0
+            saldo_otros=0
+            if l.invoice_id:
+                monto_pendiente_pago=l.invoice_id.amount_residual
+                if l.invoice_id.contrato_estado_cuenta_ids:
+                    obj_contrato_estado_cuenta = self.env['contrato.estado.cuenta'].search([('id','in',l.invoice_id.contrato_estado_cuenta_ids.ids)])
+                    for x in obj_contrato_estado_cuenta:
+                        #raise ValidationError(l.invoice_id)
+                        saldo_cap+=x.saldo_cuota_capital
+                        saldo_seg+=x.saldo_seguro
+                        saldo_ras+=x.saldo_rastreo
+                        saldo_otros+=x.saldo_otros
+                        monto_pendiente_pago+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
+            
+            l.saldo_cuota_capital=saldo_cap
+            l.saldo_seguro=saldo_seg
+            l.saldo_rastreo=saldo_ras
+            l.saldo_otros=saldo_otros
+            l.monto_pendiente_pago=monto_pendiente_pago
+            
+                #l.deuda_total=self.payment_id.obtener_deudas_facturas()
+
+    @api.onchange('pagar')
+    def actualizar_totales(self):
+        for l in self:
+            l.amount=l.monto_pendiente_pago
+    #        l.amount=l.actual_amount+l.monto_pendiente_pago
+            #l.payment_id.amount=monto_inicial 
+
+    @api.onchange('amount')
+    def actualizar_saldo(self):
+        for l in self:
+            l.payment_id._saldo_pagar()
+
+
+class AccountPaymentLineNew(models.Model):
+    _name = 'account.payment.line.new'
     _descripcion = 'Lineas de Pago'
     
     payment_id = fields.Many2one('account.payment', 'Pago')
