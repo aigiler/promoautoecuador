@@ -171,17 +171,31 @@ class AccountPayment(models.Model):
         ], order="invoice_date asc")
         list_ids=[]
         PaymentLineNew = self.env['account.payment.line.new']
+        
+
         for invoice in invoices:
-            line_id = PaymentLineNew.create([{
-                        'invoice_id': invoice.id,
-                        'amount_total': invoice.amount_total,
-                        'actual_amount':invoice.amount_residual,
-                        'residual': amount,
-                        'amount': 0.0,
-                        'date_due': invoice.invoice_date+timedelta(days=l.days),
-                        'document_number':invoice.l10n_latam_document_number
-                    }])
-            list_ids.append(line_id.id)
+            payment_term_line = self.env['account.payment.term.line'].search([('payment_id','=',invoice.invoice_payment_term_id.id)])
+            amount_balance = 0
+            if len(payment_term_line) >0:
+                for l in payment_term_line:
+                    if l.value_amount>0:
+                        amount = round(invoice.amount_total*(l.value_amount/100),2)
+                        amount_balance += amount
+                    else:
+                        if len(payment_term_line)==1:
+                            amount = invoice.amount_total
+                        else:
+                            amount = invoice.amount_total-amount_balance 
+                    line_id = PaymentLineNew.create([{
+                                'invoice_id': invoice.id,
+                                'amount_total': invoice.amount_total,
+                                'actual_amount':invoice.amount_residual,
+                                'residual': amount,
+                                'amount': 0.0,
+                                'date_due': invoice.invoice_date+timedelta(days=l.days),
+                                'document_number':invoice.l10n_latam_document_number
+                            }])
+                    list_ids.append(line_id.id)
         self.payment_line_new_ids = [(6, 0, list_ids)]
 
     def procesar_pago(self):
