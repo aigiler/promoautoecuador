@@ -180,7 +180,7 @@ class AccountPayment(models.Model):
                         'amount_total': invoice.amount_total,
                         'actual_amount':invoice.amount_residual,
                         'amount': 0.0,
-                        'date_due': invoice.invoice_date+timedelta(days=l.days),
+                        'date_due': invoice.invoice_date,
                         'document_number':invoice.l10n_latam_document_number
                     }])
             list_ids.append(line_id.id)
