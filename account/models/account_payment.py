@@ -1109,7 +1109,7 @@ class account_payment(models.Model):
                             lineas_asientos=moves.line_ids.filtered(lambda line: round(line.credit,2)==round(self.valor_deuda,2))
                             for x in lineas_asientos:
                                 lista_final.append(x.id)
-                            lineas_factura=moves.line_ids
+                            lineas_factura=fact.line_ids
                             for y in lineas_factura:
                                 lista_final.append(y.id)
                             lineas_ids=self.env['account.move.line'].search([('id','in',lista_final)])
