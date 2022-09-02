@@ -1106,7 +1106,7 @@ class account_payment(models.Model):
                             lista_final=[]
                             monto_a_factura=0
                             valor_inicial_factura=fact.amount_residual
-                            lineas_asientos=moves.line_ids.filtered(lambda line: line.credit==self.valor_deuda)
+                            lineas_asientos=moves.line_ids.filtered(lambda line: round(line.credit,2)==round(self.valor_deuda,2))
                             for x in lineas_asientos:
                                 lista_final.append(x.id)
                             lineas_factura=moves.line_ids
