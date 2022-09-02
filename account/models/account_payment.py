@@ -1105,8 +1105,8 @@ class account_payment(models.Model):
                         for fact in rec.invoice_ids:
                             monto_a_factura=0
                             valor_inicial_factura=fact.amount_residual
-                            moves.filtered(lambda move: move.credit== self.valor_deuda)
-                            movimientos=(moves[0] + fact).line_ids.filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))
+                            movimiento_ids=moves.move_line_ids.filtered(lambda move: move.credit== self.valor_deuda)
+                            movimientos=(movimiento_ids + fact).line_ids.filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))
                             if movimientos:
                                 movimientos.reconcile()
                             valor_final_factura=fact.amount_residual
