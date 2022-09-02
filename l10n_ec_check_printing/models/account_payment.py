@@ -166,7 +166,7 @@ class AccountPayment(models.Model):
     def obtener_facturas(self):
         Invoice = self.env['account.move']
         invoices = Invoice.search([
-            ('partner_id', 'in', self.partner_id.id),
+            ('partner_id', '=', self.partner_id.id),
             ('state', '=', 'posted'), ('type', '=', 'out_invoice'),('invoice_payment_state','!=','paid')
         ], order="invoice_date asc")
         list_ids=[]
