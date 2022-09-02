@@ -52,7 +52,7 @@ class AccountPayment(models.Model):
     check_type = fields.Selection([('posfechado','Posfechado'),
                                     ('dia','Al dia')], string="Tipo" , default='dia')
     payment_line_ids = fields.One2many('account.payment.line', 'payment_id')
-    payment_line_new_ids = fields.One2many('account.payment.line', 'payment_id')
+    payment_line_new_ids = fields.One2many('account.payment.line.new', 'payment_id')
 
     invoice_id = fields.Many2one('account.move','Factura')
     has_payment_line = fields.Boolean(string="Tiene lineas de pagos", store=True)
@@ -167,7 +167,7 @@ class AccountPayment(models.Model):
         Invoice = self.env['account.move']
         invoices = Invoice.search([
             ('partner_id', 'in', self.partner_id.id),
-            ('state', '=', 'posted'), ('type', 'in', 'out_invoice'),('invoice_payment_state','!=','paid')
+            ('state', '=', 'posted'), ('type', '=', 'out_invoice'),('invoice_payment_state','!=','paid')
         ], order="invoice_date asc")
         list_ids=[]
         for invoice in invoices:
