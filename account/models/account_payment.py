@@ -1113,6 +1113,7 @@ class account_payment(models.Model):
                             for y in lineas_factura:
                                 lista_final.append(y.id)
                             lineas_ids=self.env['account.move.line'].search([('id','in',lista_final)])
+                            raise ValidationError(' **********{0},********{1},***********{2} '.format(lineas_asientos,lineas_factura,lineas_ids))
                             movimientos=lineas_ids.filtered(lambda line: not line.reconciled and line.account_id == rec.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))
                             if movimientos:
                                 movimientos.reconcile()
