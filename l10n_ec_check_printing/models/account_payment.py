@@ -170,6 +170,7 @@ class AccountPayment(models.Model):
             ('state', '=', 'posted'), ('type', '=', 'out_invoice'),('invoice_payment_state','!=','paid')
         ], order="invoice_date asc")
         list_ids=[]
+        PaymentLineNew = self.env['account.payment.line.new']
         for invoice in invoices:
             line_id = PaymentLineNew.create([{
                         'invoice_id': invoice.id,
