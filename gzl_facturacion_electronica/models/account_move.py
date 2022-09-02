@@ -203,9 +203,12 @@ class AccountMove(models.Model):
                         for rec in m.matched_credit_ids:
                             lista_pagos.append(rec.credit_move_id.payment_id.id)
 
-            #for x in self.anticipos_ids:
-            #    total+=(x.credit-x.valor_sobrante)
-            #    lista_pagos.append(x.payment_id.id)
+            for x in self.anticipos_ids:
+                if x.payment_id:
+                    x.payment_id.obtener_facturas()
+                    x.payment_id.procesar_pago()
+                #total+=(x.credit-x.valor_sobrante)
+                #lista_pagos.append(x.payment_id.id)
 
             #for pagos in cuotas_ids.ids_pagos:
             #    if pagos.pago_id.id not in lista_pagos:
