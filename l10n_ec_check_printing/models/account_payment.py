@@ -202,8 +202,8 @@ class AccountPayment(models.Model):
 
         cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
         lista=[]
-        for x in self.payment_line_new_ids:
-            for l in x.invoice_id:
+        for reg in self.payment_line_new_ids:
+            for l in reg.invoice_id:
                 for cuota_id in l.contrato_estado_cuenta_ids:
                     acumulado_cuota=0
                     if valor_pago_cliente:
@@ -296,9 +296,9 @@ class AccountPayment(models.Model):
                 if self.credito==0.00:
                     self.credito_contrato=False
         if lista:
-            for x in self.move_line_ids:
-                if x.account_id.id==self.partner_id.property_account_receivable_id.id and round(x.credit,2)==round(self.credito,2):
-                    x.update({'matched_debit_ids':lista})
+            for mov in self.move_line_ids:
+                if mov.account_id.id==self.partner_id.property_account_receivable_id.id and round(mov.credit,2)==round(self.credito,2):
+                    mov.update({'matched_debit_ids':lista})
                     pass
 
                      
