@@ -67,12 +67,13 @@ class ReporteEstadoDeCuenta(models.TransientModel):
                 reporte_id=self.env['reporte.estado.de.cuenta'].create({'partner_id':l.cliente.id,
                                                                         'contrato_id':l.id})
                 
-                reporte_id.print_report_pdf()
-                attachment = self.env['ir.attachment'].search([('res_id','=',reporte_id.id),('res_model','=','reporte.estado.de.cuenta'),('mimetype','=','application/pdf')])
-                url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-                url += "/web/content/%s?download=true" %(attachment.id)
+                url_object=reporte_id.print_report_xls()
+                #reporte_id.print_report_pdf()
+                #attachment = self.env['ir.attachment'].search([('res_id','=',reporte_id.id),('res_model','=','reporte.estado.de.cuenta'),('mimetype','=','application/pdf')])
+                #url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+                #url += "/web/content/%s?download=true" %(url_object)
 
-                reporte_id.update({'url_doc': url})
+                reporte_id.update({'url_doc': url_object['url']})
                 self.envio_correos_plantilla('email_estado_cuenta',reporte_id.id)
 
     def envio_correos_plantilla(self, plantilla,id_envio):
