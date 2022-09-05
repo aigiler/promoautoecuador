@@ -57,11 +57,13 @@ class WizardContratoAdendum(models.Model):
     @api.onchange("monto_financiamiento")
     def validar_monto(self):
         for l in self:
+
             if l.monto_financiamiento:
-                if (l.monto_financiamiento/5000)==3 or (l.monto_financiamiento/5000)==4 or (l.monto_financiamiento/5000)==5 (l.monto_financiamiento/5000)==6:
-                    pass
-                else:
-                    raise ValidationError("Los montos permitidos son: 15.000 ; 20.000 ; 25.000 ; 30.000")
+                if l.monto_financiamiento > l.monto_financiamiento_anterior:
+                    if (l.monto_financiamiento/5000)==3 or (l.monto_financiamiento/5000)==4 or (l.monto_financiamiento/5000)==5 (l.monto_financiamiento/5000)==6:
+                        pass
+                    else:
+                        raise ValidationError("Los montos permitidos son: 15.000 ; 20.000 ; 25.000 ; 30.000")
 
     def subir_monto(self):
         for l in self:
