@@ -151,12 +151,13 @@ class WizardContratoAdendum(models.Model):
     @api.onchange("monto_financiamiento")
     def validar_monto(self):
         for l in self:
-            porcentaje_perm_adendum_postventa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
+            porcentaje_perm_adendum_postventa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
+            
             if self.env.user.id == self.rolpostventa.user_id.id or self.env.user.id == self.rolAdjudicacion.user_id.id:
                 monto_maximo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_maximo'))
                 valor_porcentaje_post = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum_postventa)/100
                 valor_menor_porcentaje = self.contrato_id.monto_financiamiento - valor_porcentaje_post
-                monto_minimo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_minimo'))
+                monto_minimo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_minimo'))#10000
                 
                 if l.monto_financiamiento:
                     self.nota=False
@@ -164,7 +165,7 @@ class WizardContratoAdendum(models.Model):
                         if l.monto_financiamiento>monto_maximo:
                             self.nota="El monto máximo permitido es {0}, si desea que se procese tal acción se enviará al aprobador de Adjudicaciones".format(monto_maximo)
                     elif l.monto_financiamiento<l.monto_financiamiento_anterior:
-                        if l.monto_financiamiento<monto_minimo:
+                        if l.monto_financiamiento<monto_minimo:#10000
                             self.nota="El monto mínimo para elaborar Adendum es de {0}".format(monto_minimo)
                         elif l.monto_financiamiento<valor_menor_porcentaje:
                             self.nota="El monto mínimo permitido es {0},  si desea que se procese tal acción se enviará al aprobador de Adjudicaciones".format(valor_menor_porcentaje)
