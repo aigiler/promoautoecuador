@@ -67,7 +67,8 @@ class WizardContratoAdendum(models.Model):
 
                 #        pass
                 #    else:
-                        raise ValidationError("El monto m+aximo permitido es {0}".format(monto_maximo))
+                        self.nota="El monto máximo permitido es  {0}, si desea que se procese tal acción se enviará al aprobador de Adjudicaciones"
+                        #raise ValidationError("El monto máximo permitido es {0}".format(monto_maximo))
 
     def subir_monto(self):
         for l in self:
@@ -510,7 +511,7 @@ class WizardContratoAdendum(models.Model):
             valor_porcentaje_perm = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum)/100
             valor_menor_porc_pperm = self.contrato_id.monto_financiamiento - valor_porcentaje_perm
             valor_mayor_porc_pperm = self.contrato_id.monto_financiamiento + valor_porcentaje_perm
-            if self.monto_financiamiento >= valor_mayor_porc_post or self.monto_financiamiento <= valor_menos_porc_post: 
+            if self.monto_financiamiento > valor_mayor_porc_post or self.monto_financiamiento < valor_menos_porc_post: 
                 self.state="aprobacion"
                 mensaje="El pago se encuentra asociado al Adendum. "+self.name+' Favor de ejecutarla'
                 self.crear_activity(self.rolAdjudicacion,mensaje)
