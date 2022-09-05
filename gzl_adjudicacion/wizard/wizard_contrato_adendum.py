@@ -159,14 +159,16 @@ class WizardContratoAdendum(models.Model):
                 monto_minimo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_minimo'))
                 
                 if l.monto_financiamiento:
+                    self.nota=False
                     if l.monto_financiamiento>l.monto_financiamiento_anterior:
                         if l.monto_financiamiento>monto_maximo:
                             self.nota="El monto máximo permitido es {0}, si desea que se procese tal acción se enviará al aprobador de Adjudicaciones".format(monto_maximo)
                     elif l.monto_financiamiento<l.monto_financiamiento_anterior:
                         if l.monto_financiamiento<monto_minimo:
                             self.nota="El monto mínimo para elaborar Adendum es de {0}".format(monto_minimo)
-                        if l.monto_financiamiento<valor_menor_porcentaje:
+                        elif l.monto_financiamiento<valor_menor_porcentaje:
                             self.nota="El monto mínimo permitido es {0},  si desea que se procese tal acción se enviará al aprobador de Adjudicaciones".format(valor_menor_porcentaje)
+
             else:
                 raise ValidationError("No tiene permiso para realizar está acción.")                     
 
