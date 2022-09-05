@@ -57,15 +57,17 @@ class WizardContratoAdendum(models.Model):
     @api.onchange("monto_financiamiento")
     def validar_monto(self):
         for l in self:
-
+            monto_maximo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_maximo'))
             if l.monto_financiamiento:
                 if l.monto_financiamiento > l.monto_financiamiento_anterior:
-                    division=l.monto_financiamiento/5000
-                    if division==3 or division==4 or division==5 or division==6:
-                
-                        pass
-                    else:
-                        raise ValidationError("Los montos permitidos son: 15.000 ; 20.000 ; 25.000 ; 30.000")
+                    if l.monto_financiamiento>monto_maximo:
+                #if l.monto_financiamiento > l.monto_financiamiento_anterior:
+                #    division=l.monto_financiamiento/5000
+                #    if division==3 or division==4 or division==5 or division==6:
+
+                #        pass
+                #    else:
+                            raise ValidationError("El monto m+aximo permitido es {0}".format(monto_maximo))
 
     def subir_monto(self):
         for l in self:
