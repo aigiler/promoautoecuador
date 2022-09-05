@@ -67,7 +67,7 @@ class WizardContratoAdendum(models.Model):
 
                 #        pass
                 #    else:
-                            raise ValidationError("El monto m+aximo permitido es {0}".format(monto_maximo))
+                        raise ValidationError("El monto m+aximo permitido es {0}".format(monto_maximo))
 
     def subir_monto(self):
         for l in self:
