@@ -301,6 +301,13 @@ class AccountPayment(models.Model):
             self.credito=0.00
         if self.credito==0.00:
             self.credito_contrato=False
+            for registro in self.account_payment_account_ids:
+                registro.aplicar_anticipo=False
+                registro.saldo_pendiente=0.00
+        else:
+            for registro in self.account_payment_account_ids:
+                if registro.aplicar_anticipo:
+                    registro.saldo_pendiente=self.credito
                      
 
 

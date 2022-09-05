@@ -43,6 +43,25 @@ class WizardContratoAdendum(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']    
 
 
+    def bajar_monto(self):
+        for l in self:
+            valor_menos_porc_post=0
+            valor_porcentaje_post=0
+            if l.contrato_id:
+                valor_porcentaje_post = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum_postventa)/100
+                valor_menos_porc_post = self.contrato_id.monto_financiamiento - valor_porcentaje_post
+            l.monto_financiamiento=valor_menos_porc_post
+
+    def subir_montos(self):
+        for l in self:
+            valor_menos_porc_post=0
+            valor_porcentaje_post=0
+            if l.contrato_id:
+                valor_porcentaje_post = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum_postventa)/100
+                valor_mayor_porc_post = self.contrato_id.monto_financiamiento + valor_porcentaje_post
+            l.monto_financiamiento=valor_mayor_porc_post
+
+
     name=fields.Char(string="Nombre")
     contrato_id = fields.Many2one('contrato',string="Contrato")
     socio_id = fields.Many2one('res.partner',string="Socio")

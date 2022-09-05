@@ -136,7 +136,7 @@ class AccountMoveReversal(models.TransientModel):
                             lista_pagos.append(y.credit_move_id.payment_id.id)
             for linea in self.move_id:
                 for ant in linea.anticipos_ids:
-                    lista_pagos.append(ant.payment_id.id)
+                    #lista_pagos.append(ant.payment_id.id)
                     for pag in ant.linea_pago_id:
                         pag.saldo_pendiente+=(ant.credit-ant.valor_sobrante)
                         pag.aplicar_anticipo=True
