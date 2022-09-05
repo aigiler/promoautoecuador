@@ -151,6 +151,7 @@ class WizardContratoAdendum(models.Model):
     @api.onchange("monto_financiamiento")
     def validar_monto(self):
         for l in self:
+            porcentaje_perm_adendum_postventa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
             if self.env.user.id == self.rolpostventa.user_id.id or self.env.user.id == self.rolAdjudicacion.user_id.id:
                 monto_maximo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_maximo'))
                 valor_porcentaje_post = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum_postventa)/100
