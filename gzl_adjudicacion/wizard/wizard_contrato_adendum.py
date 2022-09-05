@@ -175,8 +175,8 @@ class WizardContratoAdendum(models.Model):
 
     def validar_tabla(self,):
         lista_tabla=[]
+        self.validar_monto()
         if self.monto_financiamiento and self.plazo_meses:
-            self.validar_tabla()
             pagos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado')
             cuotas_pgadas=sum(pagos.mapped("cuota_capital"))
             adm_pgadas=sum(pagos.mapped("cuota_adm"))
