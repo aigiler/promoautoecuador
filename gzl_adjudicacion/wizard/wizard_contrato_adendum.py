@@ -54,11 +54,21 @@ class WizardContratoAdendum(models.Model):
                 valor_menos_porc_post = self.contrato_id.monto_financiamiento - valor_porcentaje_post
             l.monto_financiamiento=valor_menos_porc_post
 
+    @api.onchange("monto_financiamiento")
+    def validar_monto(self):
+        for l in self:
+            if l.monto_financiamiento:
+                if (l.monto_financiamiento/5000)==3 or (l.monto_financiamiento/5000)==4 or (l.monto_financiamiento/5000)==5 (l.monto_financiamiento/5000)==6:
+                    pass
+                else:
+                    raise ValidationError("Los montos permitidos son: 15.000 ; 20.000 ; 25.000 ; 30.000")
+
     def subir_monto(self):
         for l in self:
             valor_menos_porc_post=0
             valor_porcentaje_post=0
             if l.contrato_id:
+
                 porcentaje_perm_adendum_postventa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
                 valor_porcentaje_post = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum_postventa)/100
                 valor_mayor_porc_post = self.contrato_id.monto_financiamiento + valor_porcentaje_post
