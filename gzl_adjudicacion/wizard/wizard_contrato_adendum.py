@@ -59,8 +59,7 @@ class WizardContratoAdendum(models.Model):
             valor_menos_porc_post=0
             valor_porcentaje_post=0
             if l.contrato_id:
-                porcentaje_perm_adendum_postventa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
-
+                porcentaje_perm_adendum_postventa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
                 valor_porcentaje_post = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum_postventa)/100
                 valor_mayor_porc_post = self.contrato_id.monto_financiamiento + valor_porcentaje_post
             l.monto_financiamiento=valor_mayor_porc_post
