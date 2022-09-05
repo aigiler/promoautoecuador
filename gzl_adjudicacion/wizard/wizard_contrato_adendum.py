@@ -60,7 +60,9 @@ class WizardContratoAdendum(models.Model):
 
             if l.monto_financiamiento:
                 if l.monto_financiamiento > l.monto_financiamiento_anterior:
-                    if (l.monto_financiamiento/5000)==3 or (l.monto_financiamiento/5000)==4 or (l.monto_financiamiento/5000)==5 (l.monto_financiamiento/5000)==6:
+                    division=l.monto_financiamiento/5000
+                    if division==3 or division==4 or division==5 or division==6:
+                
                         pass
                     else:
                         raise ValidationError("Los montos permitidos son: 15.000 ; 20.000 ; 25.000 ; 30.000")
