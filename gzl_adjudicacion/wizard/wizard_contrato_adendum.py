@@ -54,22 +54,6 @@ class WizardContratoAdendum(models.Model):
                 valor_menos_porc_post = self.contrato_id.monto_financiamiento - valor_porcentaje_post
             l.monto_financiamiento=valor_menos_porc_post
 
-    @api.onchange("monto_financiamiento")
-    def validar_monto(self):
-        for l in self:
-            monto_maximo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_maximo'))
-            if l.monto_financiamiento:
-                if l.monto_financiamiento > l.monto_financiamiento_anterior:
-                    if l.monto_financiamiento>monto_maximo:
-                #if l.monto_financiamiento > l.monto_financiamiento_anterior:
-                #    division=l.monto_financiamiento/5000
-                #    if division==3 or division==4 or division==5 or division==6:
-
-                #        pass
-                #    else:
-                        self.nota="El monto máximo permitido es  {0}, si desea que se procese tal acción se enviará al aprobador de Adjudicaciones"
-                        #raise ValidationError("El monto máximo permitido es {0}".format(monto_maximo))
-
     def subir_monto(self):
         for l in self:
             valor_menos_porc_post=0
@@ -115,7 +99,8 @@ class WizardContratoAdendum(models.Model):
     state = fields.Selection(selection=[
             ('inicio', 'Ingreso de Solicitud'),
             ('aprobacion', 'En Proceso de Aprobación'),
-            ('procesado', 'Procesado')
+            ('procesado', 'Procesado'),
+            ('cancelado','Cancelado')
             ], string='Estado', copy=False, tracking=True, default='inicio',track_visibility='onchange')
 
     @api.model
@@ -144,7 +129,7 @@ class WizardContratoAdendum(models.Model):
                 l.monto_financiamiento_anterior=l.contrato_id.monto_financiamiento
                 l.plazo_meses_anterior=l.contrato_id.plazo_meses.id
                 l.plazo_meses=l.contrato_id.plazo_meses.id
-                l.name="Adendum {}".format(l.contrato_id.secuencia)
+                l.name="Adendum {0}".format(l.contrato_id.secuencia)
                 l.socio_id=l.contrato_id.cliente.id
 
 
@@ -161,9 +146,33 @@ class WizardContratoAdendum(models.Model):
             })
         self.actividad_id=actividad_id.id
 
+
+    @api.constrains("monto_financiamiento")
+    @api.onchange("monto_financiamiento")
+    def validar_monto(self):
+        for l in self:
+            if self.env.user.id == self.rolpostventa.user_id.id or self.env.user.id == self.rolAdjudicacion.user_id.id:
+                monto_maximo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_maximo'))
+                valor_porcentaje_post = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum_postventa)/100
+                valor_menor_porcentaje = self.contrato_id.monto_financiamiento - valor_porcentaje_post
+                monto_minimo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_minimo'))
+                
+                if l.monto_financiamiento:
+                    if l.monto_financiamiento>l.monto_financiamiento_anterior:
+                        if l.monto_financiamiento>monto_maximo:
+                            self.nota="El monto máximo permitido es {0}, si desea que se procese tal acción se enviará al aprobador de Adjudicaciones".format(monto_maximo)
+                    elif l.monto_financiamiento<l.monto_financiamiento_anterior:
+                        if l.monto_financiamiento<monto_minimo:
+                            self.nota="El monto mínimo para elaborar Adendum es de {0}".format(monto_minimo)
+                        if l.monto_financiamiento<valor_menor_porcentaje:
+                            self.nota="El monto mínimo permitido es {0},  si desea que se procese tal acción se enviará al aprobador de Adjudicaciones".format(valor_menor_porcentaje)
+            else:
+                raise ValidationError("No tiene permiso para realizar está acción.")                     
+
     def validar_tabla(self,):
         lista_tabla=[]
         if self.monto_financiamiento and self.plazo_meses:
+            self.validar_tabla()
             pagos=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado')
             cuotas_pgadas=sum(pagos.mapped("cuota_capital"))
             adm_pgadas=sum(pagos.mapped("cuota_adm"))
@@ -197,58 +206,58 @@ class WizardContratoAdendum(models.Model):
 
             entrada=False
             #if self.env.user.id == self.rolpostventa.user_id.id:
-            porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
-            porcentaje_perm_adendum_postventa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
+            #porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
+            #porcentaje_perm_adendum_postventa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
 
             #if self.env.user.id == self.rolAdjudicacion.user_id.id:
             #    porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
 
-            valor_porcentaje = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum)/100
-            valor_menos_porc = self.contrato_id.monto_financiamiento - valor_porcentaje
-            valor_mayor_porc = self.contrato_id.monto_financiamiento + valor_porcentaje
+            #valor_porcentaje = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum)/100
+            #valor_menos_porc = self.contrato_id.monto_financiamiento - valor_porcentaje
+            #valor_mayor_porc = self.contrato_id.monto_financiamiento + valor_porcentaje
+            #monto_minimo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_minimo'))
+            #monto_maximo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_maximo'))
             
 
-            valor_porcentaje_post = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum_postventa)/100
-            valor_menos_porc_post = self.contrato_id.monto_financiamiento - valor_porcentaje_post
-            valor_mayor_porc_post = self.contrato_id.monto_financiamiento + valor_porcentaje_post
+            #valor_porcentaje_post = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum_postventa)/100
+            #valor_menos_porc_post = self.contrato_id.monto_financiamiento - valor_porcentaje_post
+            #valor_mayor_porc_post = self.contrato_id.monto_financiamiento + valor_porcentaje_post
 
             # el monto de financiamiento nuevo debe ser menos o mas el 30% del monto de financiamiento q ya estaba
 
             # el monto de financiamiento nuevo debe ser menos o mas el 30% del monto de financiamiento q ya estaba
             
-            if self.env.user.id ==self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
-                if self.monto_financiamiento >= valor_menos_porc_post and self.monto_financiamiento <= valor_mayor_porc_post: 
-                    if self.nota == "El valor del nuevo financiamiento excede o disminuye el porcentaje máximo permitido configurado {0}%. Para el rol de postventa se tiene perminito un porcentaje de {1}.En caso de excederse necesita enviar a aprobación de adjudicaciones".format(porcentaje_perm_adendum,porcentaje_perm_adendum_postventa): 
-                        self.nota=False     
-                else:
-                    self.nota="El valor del nuevo financiamiento excede o disminuye el porcentaje máximo permitido configurado {0}%. Para el rol de postventa se tiene perminito un porcentaje de {1}.En caso de excederse necesita enviar a aprobación de adjudicaciones".format(porcentaje_perm_adendum,porcentaje_perm_adendum_postventa)
+            # if self.env.user.id ==self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
+            #     if self.monto_financiamiento >= valor_menos_porc_post and self.monto_financiamiento <= valor_mayor_porc_post: 
+            #         if self.nota == "El valor del nuevo financiamiento excede o disminuye el porcentaje máximo permitido configurado {0}%. Para el rol de postventa se tiene perminito un porcentaje de {1}.En caso de excederse necesita enviar a aprobación de adjudicaciones".format(porcentaje_perm_adendum,porcentaje_perm_adendum_postventa): 
+            #             self.nota=False     
+            #     else:
+            #         self.nota="El valor del nuevo financiamiento excede o disminuye el porcentaje máximo permitido configurado {0}%. Para el rol de postventa se tiene perminito un porcentaje de {1}.En caso de excederse necesita enviar a aprobación de adjudicaciones".format(porcentaje_perm_adendum,porcentaje_perm_adendum_postventa)
                 
 
-            if self.monto_financiamiento >= valor_menos_porc and self.monto_financiamiento <= valor_mayor_porc: 
-                if self.nota == "El valor del nuevo financiamiento excede o disminuye el porcentaje máximo permitido configurado {0}%. Para el rol de postventa se tiene perminito un porcentaje de {1}".format(porcentaje_perm_adendum,porcentaje_perm_adendum_postventa): 
-                    self.nota=False
-                pass
-            else:
-                porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
-                self.nota="El valor del nuevo financiamiento excede o disminuye el porcentaje máximo permitido configurado {0}%. Para el rol de postventa se tiene perminito un porcentaje de {1}".format(porcentaje_perm_adendum,porcentaje_perm_adendum_postventa)
-                if self.env.user.id == self.rolAdjudicacion.user_id.id:
-                    pass
-                elif self.env.user.id == self.rolpostventa.user_id.id:
-                    pass
-                else:
-                    raise ValidationError("No tienes permiso para ejecutar esta acción")
-            monto_minimo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_minimo'))
+            # if self.monto_financiamiento >= valor_menos_porc and self.monto_financiamiento <= valor_mayor_porc: 
+            #     if self.nota == "El valor del nuevo financiamiento excede o disminuye el porcentaje máximo permitido configurado {0}%. Para el rol de postventa se tiene perminito un porcentaje de {1}".format(porcentaje_perm_adendum,porcentaje_perm_adendum_postventa): 
+            #         self.nota=False
+            #     pass
+            # else:
+            #     porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
+            #     self.nota="El valor del nuevo financiamiento excede o disminuye el porcentaje máximo permitido configurado {0}%. Para el rol de postventa se tiene perminito un porcentaje de {1}".format(porcentaje_perm_adendum,porcentaje_perm_adendum_postventa)
+            #     if self.env.user.id == self.rolAdjudicacion.user_id.id:
+            #         pass
+            #     elif self.env.user.id == self.rolpostventa.user_id.id:
+            #         pass
+            #     else:
+            #         raise ValidationError("No tienes permiso para ejecutar esta acción")
 
-            monto_maximo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_maximo'))
-            if self.monto_financiamiento <monto_minimo or self.monto_financiamiento>monto_maximo:
-                if self.env.user.id == self.rolpostventa.user_id.id or self.env.user.id == self.rolAdjudicacion.user_id.id:
-                    self.nota="El valor del nuevo financiamiento excede o disminuye del valor minimo {0} o maximo permitido {1}.".format(monto_minimo,monto_maximo)
+            # if self.monto_financiamiento <monto_minimo or self.monto_financiamiento>monto_maximo:
+            #     if self.env.user.id == self.rolpostventa.user_id.id or self.env.user.id == self.rolAdjudicacion.user_id.id:
+            #         self.nota="El valor del nuevo financiamiento excede o disminuye del valor minimo {0} o maximo permitido {1}.".format(monto_minimo,monto_maximo)
 
-                elif self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
-                    raise ValidationError("No tiene permiso para realizar esta acción")
-                else:
-                    if self.nota=="El valor del nuevo financiamiento excede o disminuye del valor minimo {0} o maximo permitido {1}.".format(monto_minimo,monto_maximo):
-                        self.nota=False
+            #     elif self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
+            #         raise ValidationError("No tiene permiso para realizar esta acción")
+            #     else:
+            #         if self.nota=="El valor del nuevo financiamiento excede o disminuye del valor minimo {0} o maximo permitido {1}.".format(monto_minimo,monto_maximo):
+            #             self.nota=False
 
 
             #aqui se muestran las cuotas que han sido pagadas ya sean por adelanto o no
@@ -506,27 +515,39 @@ class WizardContratoAdendum(models.Model):
         for l in self:
             if l.nota:
                 l.state='aprobacion'
+                mensaje="Se ha asignado un Adendum para Aprobación. "+self.name+' Favor de ejecutarla'
+                self.crear_activity(self.rolAdjudicacion,mensaje)
 
+
+    def cancelar(self):
+        for l in self:
+            l.state="cancelado"
 
 
     def ejecutar_cambio(self,):
-        if self.env.user.id == self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
-            porcentaje_perm_adendum_postventa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
-            valor_porcentaje_post = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum_postventa)/100
-            valor_menos_porc_post = self.contrato_id.monto_financiamiento - valor_porcentaje_post
-            valor_mayor_porc_post = self.contrato_id.monto_financiamiento + valor_porcentaje_post
-            porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
-            valor_porcentaje_perm = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum)/100
-            valor_menor_porc_pperm = self.contrato_id.monto_financiamiento - valor_porcentaje_perm
-            valor_mayor_porc_pperm = self.contrato_id.monto_financiamiento + valor_porcentaje_perm
-            if self.monto_financiamiento >= valor_mayor_porc_post or self.monto_financiamiento < valor_menos_porc_post: 
-                self.state="aprobacion"
-                mensaje="El pago se encuentra asociado al Adendum. "+self.name+' Favor de ejecutarla'
-                self.crear_activity(self.rolAdjudicacion,mensaje)
-                return True
+        if self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
+             raise ValidationError("No tiene permiso para realizar esta acción")
+        if self.nota:
+            if self.env.user.id == self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
+                raise ValidationError("Si desea continuar con el proceso debe enviarlo al Aprobador de Adjudicaciones.")
+             
+        #if self.env.user.id == self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
+        #    porcentaje_perm_adendum_postventa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
+        #    valor_porcentaje_post = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum_postventa)/100
+        #    valor_menos_porc_post = self.contrato_id.monto_financiamiento - valor_porcentaje_post
+        #    valor_mayor_porc_post = self.contrato_id.monto_financiamiento + valor_porcentaje_post
+        #    porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
+        #    valor_porcentaje_perm = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum)/100
+        #    valor_menor_porc_pperm = self.contrato_id.monto_financiamiento - valor_porcentaje_perm
+        #    valor_mayor_porc_pperm = self.contrato_id.monto_financiamiento + valor_porcentaje_perm
+        #    if self.monto_financiamiento >= valor_mayor_porc_post or self.monto_financiamiento < valor_menos_porc_post: 
+        #        self.state="aprobacion"
+        #        mensaje="El pago se encuentra asociado al Adendum. "+self.name+' Favor de ejecutarla'
+        #        self.crear_activity(self.rolAdjudicacion,mensaje)
+        #        return True
         
-        elif self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
-            raise ValidationError("No tiene permiso para realizar esta acción")
+        #elif self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
+        #    raise ValidationError("No tiene permiso para realizar esta acción")
         #if  self.contrato_id.ejecutado:
         #    raise ValidationError("El contrato solo puede realizar un adendum")
         #elif self.contrato_id.state !='activo':
@@ -587,49 +608,49 @@ class WizardContratoAdendum(models.Model):
 
 
         entrada=False
-        if self.env.user.id == self.rolpostventa.user_id.id:
-            porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
-        if self.env.user.id == self.rolAdjudicacion.user_id.id:
-            porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
+        #if self.env.user.id == self.rolpostventa.user_id.id:
+        #    porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
+        #if self.env.user.id == self.rolAdjudicacion.user_id.id:
+        #    porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
 
         #porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
-        valor_porcentaje = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum)/100
-        valor_menos_porc = self.contrato_id.monto_financiamiento - valor_porcentaje
-        valor_mayor_porc = self.contrato_id.monto_financiamiento + valor_porcentaje
+        #valor_porcentaje = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum)/100
+        #valor_menos_porc = self.contrato_id.monto_financiamiento - valor_porcentaje
+        #valor_mayor_porc = self.contrato_id.monto_financiamiento + valor_porcentaje
         # el monto de financiamiento nuevo debe ser menos o mas el 30% del monto de financiamiento q ya estaba
-        if self.monto_financiamiento >= valor_menos_porc and self.monto_financiamiento <= 30000: 
-            self.nota=False
-            pass
-        else:
-            porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
-            self.nota="El valor del nuevo financiamiento excede o disminuye el monto máximo permitido configurado {0}%.".format(porcentaje_perm_adendum)
-            if self.env.user.id == self.rolAdjudicacion.user_id.id:
-                pass
-            elif self.env.user.id == self.rolpostventa.user_id.id:
-                mensaje="Debe revisar el Adendum y a su vez asociar un pago "+self.name+' Favor de ejecutarlo'
-                self.crear_activity(self.rolAdjudicacion,mensaje)
-                self.state="aprobacion"
-                return True
-            else:
-                raise ValidationError("No tienes permiso para ejecutar esta acción")
+        #if self.monto_financiamiento >= valor_menos_porc and self.monto_financiamiento <= 30000: 
+        #    self.nota=False
+        #    pass
+        #else:
+        #    porcentaje_perm_adendum =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum'))
+        #    self.nota="El valor del nuevo financiamiento excede o disminuye el monto máximo permitido configurado {0}%.".format(porcentaje_perm_adendum)
+        #    if self.env.user.id == self.rolAdjudicacion.user_id.id:
+        #        pass
+        #    elif self.env.user.id == self.rolpostventa.user_id.id:
+        #        mensaje="Debe revisar el Adendum y a su vez asociar un pago "+self.name+' Favor de ejecutarlo'
+        #        self.crear_activity(self.rolAdjudicacion,mensaje)
+        #        self.state="aprobacion"
+        #        return True
+        #    else:
+        #        raise ValidationError("No tienes permiso para ejecutar esta acción")
 
-        monto_minimo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_minimo'))
+        #monto_minimo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_minimo'))
 
-        monto_maximo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_maximo'))
-        if self.monto_financiamiento<monto_minimo or self.monto_financiamiento>monto_maximo:
-            self.nota="El valor del nuevo financiamiento el valor minimo o maximo permitido"
-            if self.env.user.id == self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
-                self.state="aprobacion"
-                mensaje="Debe revisar el Adendum y a su vez asociar un pago "+self.name+' Favor de ejecutarlo'
-                self.crear_activity(self.rolAdjudicacion,mensaje)
-                return True
-            elif  self.env.user.id == self.rolAdjudicacion.user_id.id:
-                pass
+        #monto_maximo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_maximo'))
+        #if self.monto_financiamiento<monto_minimo or self.monto_financiamiento>monto_maximo:
+        #    self.nota="El valor del nuevo financiamiento el valor minimo o maximo permitido"
+        #    if self.env.user.id == self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
+        #        self.state="aprobacion"
+        #        mensaje="Debe revisar el Adendum y a su vez asociar un pago "+self.name+' Favor de ejecutarlo'
+        #        self.crear_activity(self.rolAdjudicacion,mensaje)
+        #        return True
+        #    elif  self.env.user.id == self.rolAdjudicacion.user_id.id:
+        #        pass
 
-            elif self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
-                raise ValidationError("No tiene permiso para realizar esta acción")
-        else:
-            self.nota=False
+        #    elif self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
+        #        raise ValidationError("No tiene permiso para realizar esta acción")
+        #else:
+        #    self.nota=False
 
 
            #aqui se muestran las cuotas que han sido pagadas ya sean por adelanto o no
