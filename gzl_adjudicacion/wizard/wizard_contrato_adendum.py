@@ -501,6 +501,14 @@ class WizardContratoAdendum(models.Model):
             if nuevo_valor_inscripcion>cuota_inscripcion_anterior:
                 self.valor_inscripcion=self.monto_financiamiento*0.05
 
+
+    def enviar_aprobacion(self):
+        for l in self:
+            if l.nota:
+                l.state='aprobacion'
+
+
+
     def ejecutar_cambio(self,):
         if self.env.user.id == self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
             porcentaje_perm_adendum_postventa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
@@ -511,7 +519,7 @@ class WizardContratoAdendum(models.Model):
             valor_porcentaje_perm = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum)/100
             valor_menor_porc_pperm = self.contrato_id.monto_financiamiento - valor_porcentaje_perm
             valor_mayor_porc_pperm = self.contrato_id.monto_financiamiento + valor_porcentaje_perm
-            if self.monto_financiamiento > valor_mayor_porc_post or self.monto_financiamiento < valor_menos_porc_post: 
+            if self.monto_financiamiento >= valor_mayor_porc_post or self.monto_financiamiento < valor_menos_porc_post: 
                 self.state="aprobacion"
                 mensaje="El pago se encuentra asociado al Adendum. "+self.name+' Favor de ejecutarla'
                 self.crear_activity(self.rolAdjudicacion,mensaje)
@@ -590,7 +598,7 @@ class WizardContratoAdendum(models.Model):
             valor_menos_porc = self.contrato_id.monto_financiamiento - valor_porcentaje
             valor_mayor_porc = self.contrato_id.monto_financiamiento + valor_porcentaje
             # el monto de financiamiento nuevo debe ser menos o mas el 30% del monto de financiamiento q ya estaba
-            if self.monto_financiamiento >= valor_menos_porc and self.monto_financiamiento <= valor_mayor_porc : 
+            if self.monto_financiamiento >= valor_menos_porc and self.monto_financiamiento <= 30000: 
                 self.nota=False
                 pass
             else:
