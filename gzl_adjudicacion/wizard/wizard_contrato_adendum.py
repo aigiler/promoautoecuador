@@ -407,7 +407,7 @@ class WizardContratoAdendum(models.Model):
     @api.onchange("contrato_id")
     def validarAsignación(self):
         for l in self:
-             if self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
+            if self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
                 raise ValidationError("No tiene permiso para realizar esta acción")
             elif self.env.user.id == self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
                 l.asignado=True
