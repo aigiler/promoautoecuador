@@ -182,8 +182,8 @@ class WizardAdelantarCuotas(models.Model):
         else:
             raise ValidationError("Debe indicar la forma de Pago.")
         self.state='en_curso'
-        else:
-            raise ValidationError("Debe adjuntar el documento pertinente para continuar con el proceso.")
+        #else:
+        #    raise ValidationError("Debe adjuntar el documento pertinente para continuar con el proceso.")
 
 
     def pago_procesado(self):
