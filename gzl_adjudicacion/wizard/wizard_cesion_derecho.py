@@ -26,6 +26,12 @@ class WizardAdelantarCuotas(models.Model):
     actividad_id = fields.Many2one('mail.activity',string="Actividades")
     rolcontab = fields.Many2one('adjudicaciones.team', string="Rol contabilidad Financiera", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol7'))
     rolpostventa = fields.Many2one('adjudicaciones.team', string="Rol Post venta", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol5'))
+    rolDelegado = fields.Many2one('adjudicaciones.team', string="Rol Delegado", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol8'))
+
+    forma_pago = fields.Selection(selection=[
+            ('caja', 'Caja'),
+            ('banco', 'Banco'),
+            ], string='Estado', copy=True, tracking=True,track_visibility='onchange')    
 
     state = fields.Selection(selection=[
             ('inicio', 'Ingreso de solicitud'),
@@ -151,6 +157,10 @@ class WizardAdelantarCuotas(models.Model):
                     l.actividad_id.action_done()
 
 
+    def descargar(self):
+        #Descargar formato de Cesion 
+        return True
+
     def validarrol(self,rol):
         roles=self.env['adjudicaciones.team'].search([('id','=',rol.id)])
         for x in roles:
@@ -165,7 +175,12 @@ class WizardAdelantarCuotas(models.Model):
         if self.carta_adjunto:
             self.validarrol(self.rolpostventa)   
             mensaje="Favor registrar el Pago de la Cesión de Derecho: "+self.name
-            self.crear_activity(self.rolcontab,mensaje)
+            if self.forma_pago=='caja':
+                self.crear_activity(self.rolDelegado,mensaje)
+            elif self.forma_pago=='banco':
+                self.crear_activity(self.rolcontab,mensaje)
+            else:
+                raise ValidationError("Debe indicar la forma de Pago.")
             self.state='en_curso'
         else:
             raise ValidationError("Debe adjuntar el documento pertinente para continuar con el proceso.")
