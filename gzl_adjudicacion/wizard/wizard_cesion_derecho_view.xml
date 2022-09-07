@@ -22,7 +22,10 @@
                         <field name="contrato_a_ceder" required="1"/>
                         <button string="Exportar" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'inicio')]}" type="object" name="descargar"/>
                          <field name="forma_pago" required="0"/>
-                        <field name="carta_adjunto" string="Documento_adjunto"/>
+                        <field name="carta_adjunto" string="Cesión Notarizada"/>
+                        <field name="comprobante_pago" string="Comprobante de Pago"/>
+                        <field name="otro_documento" string="Documento Adicional"/>
+                        
                         <field name="pago_id" required="0"/>
                         <field name="contrato_id" string="Contrato Generado"/>
                          <field name="ejecutado" invisible="1"/>

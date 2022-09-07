@@ -29,7 +29,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2" style="text-align: left"><span>Grupo: </span><text>[</text><span t-esc="o.contrato_id.grupo.codigo"/><text>] </text><span t-esc="o.contrato_id.grupo.name"/></td>
-                                <td><span>Tipo de contrato: </span> <span style="text-transform: uppercase;" t-esc="o.contrato_id.tipo_de_contrato.name"/></td>
+                                <td><span>Plan de Compra Programada: </span> <span style="text-transform: uppercase;" t-esc="o.contrato_id.tipo_de_contrato.name"/></td>
                             </tr>
                             <tr>
                                 <td colspan="2" t-if="o.contrato_id.state != 'adjudicar' " style="text-align: left"><span>Estado: </span><span style="text-transform: uppercase;" t-esc="o.contrato_id.state"/></td>
