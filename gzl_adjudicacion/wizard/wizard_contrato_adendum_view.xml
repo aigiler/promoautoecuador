@@ -6,44 +6,57 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button string="Ver Tabla"  attrs="{'invisible': [('state', '=', 'procesado')]}" class="oe_highlight" type="object" name="validar_tabla"/>
-                    <button string="Ejecutar Cambio" attrs="{'invisible': [('state', '=', 'procesado')]}"  class="oe_highlight" type="object" name="ejecutar_cambio"/>
-                <field name="state" widget="statusbar" />
-            </header>
+                    <button string="Simulación Tabla" attrs="{'invisible': [('state', '=', 'procesado')]}" class="oe_highlight" type="object" name="validar_tabla"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
                 <sheet>
                     <group string="Ingrese la modificación del contrato"> 
 
-
-                        <field name="contrato_id" required="1" attrs="{'readonly': [('state', '=', 'procesado')]}" />
-                        <field name="socio_id" readonly="1" />
+                        <field name="contrato_id" required="1" attrs="{'readonly': [('state', '=', 'procesado')]}"/>
+                        <field name="socio_id" readonly="1"/>
+                        <field name="asignado" invisible="0"/>
                         <field name="monto_financiamiento_anterior" string="Financiamiento Actual" readonly="1"/>
+
                         <field name="plazo_meses_anterior" string="Plazo Actual" readonly="1"/>
                         <field name="cuota_anterior" string="Cuota Actual" readonly="1"/>
-                        <field name="monto_financiamiento" required="1"  attrs="{'readonly': [('state', '=', 'procesado')]}" />
-                        <field name="plazo_meses" invisible="0" attrs="{'readonly': [('state', '=', 'procesado')]}" />
+                        <button string="Bajar Monto" attrs="{'invisible': [('state', '!=', 'inicio')]}" class="oe_highlight" type="object" name="bajar_monto"/>
 
-                        <field name="observacion" invisible="0" attrs="{'readonly': [('state', '=', 'procesado')], 'required': [('nota', '!=', False)]}" />
+                        <field name="monto_financiamiento" required="1" attrs="{'readonly': ['|',('state', '=', 'procesado'),('monto_financiamiento','&lt;','monto_financiamiento_anterior')]}"/>
+                        <field name="plazo_meses" invisible="0" attrs="{'readonly': [('state', '=', 'procesado')]}"/>
+
+                        <field name="observacion" invisible="0" attrs="{'readonly': [('state', '=', 'procesado')], 'required': [('nota', '!=', False)]}"/>
                         <field name="nota" attrs="{'invisible': [('nota', '=', False)]}" invisible="0"/>
                         <field name="pago_id"/>
-
-                        <field name="tabla_adendum_id" nolabel="1" limit="72">
-                                    <tree string="Nuevo Estado de Cuneta" editable="top">
-                                        <field name="numero_cuota" readonly="1"/>
-                                        <field name="fecha" readonly="1"/>
-                                        <field name="cuota_capital" readonly="1"/>
-                                        <field name="cuota_adm" readonly="1"/>
-                                        <field name="iva_adm" readonly="1"/>
-                                        <field name="saldo"  readonly="1"/>
-                                        <field name="estado_pago" readonly="1"/>
-
-                               
-
-                                    
-
-                                    </tree>
-                                    </field>
-
+                        </group>
+                    <group>
+                    <button string="Aceptar" attrs="{'invisible': [('state', '=', 'procesado')]}" class="oe_highlight" type="object" name="ejecutar_cambio"/>
                     </group>
+                     <group>
+                    <button string="Cancelar" attrs="{'invisible': [('state', '=', 'procesado')]}" class="oe_highlight" type="object" name="cancelar"/>
+                    </group>
+                     <group>
+                       
+                       
+                    <button string="Enviar a Aprobación" attrs="{'invisible': ['|',('nota', '=', False),('state', '!=', 'inicio')]}" class="oe_highlight" type="object" name="enviar_aprobacion"/>
+                    </group>
+                        <field name="tabla_adendum_id" nolabel="1" limit="72">
+                            <tree string="Nuevo Estado de Cuneta" editable="top">
+                                <field name="numero_cuota" readonly="1"/>
+                                <field name="fecha" readonly="1"/>
+                                <field name="cuota_capital" readonly="1"/>
+                                <field name="cuota_adm" readonly="1"/>
+                                <field name="iva_adm" readonly="1"/>
+                                <field name="saldo" readonly="1"/>
+                                <field name="estado_pago" readonly="1"/>
+
+                       
+
+                            
+
+                            </tree>
+                        </field>
+
+                    
                 </sheet>
 
             </form>

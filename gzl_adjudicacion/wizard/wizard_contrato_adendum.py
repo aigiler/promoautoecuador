@@ -398,10 +398,12 @@ class WizardContratoAdendum(models.Model):
 
     def enviar_aprobacion(self):
         for l in self:
-            if l.nota and l.asignado:
+            if l.nota and l.observacion:
                 l.state='aprobacion'
                 mensaje="Se ha asignado un Adendum para Aprobación. "+self.name+' Favor de ejecutarla'
                 self.crear_activity(self.rolAdjudicacion,mensaje)
+            elif l.nota and not l.observacion:
+                raise ValidationError("En el campo observación indique el mótivo por el cual esta solicitud debe ser procesada fuera de los rangos establecidos.")
 
     @api.constrains("contrato_id")
     @api.onchange("contrato_id")
@@ -417,6 +419,9 @@ class WizardContratoAdendum(models.Model):
             l.state="cancelado"
 
     def ejecutar_cambio(self,):
+        if self.nota and not self.observacion:
+            raise ValidationError("En el campo observación se debe indicar el motivo por el cual se está dejando pasar esta acción")
+
         if not self.tabla_adendum_id:
             raise ValidationError("Debe generar la simulación de la tabla para que pueda validar el ajuste a su nueva tabla.")
         if self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
