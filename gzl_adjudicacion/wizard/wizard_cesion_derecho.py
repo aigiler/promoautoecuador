@@ -172,25 +172,25 @@ class WizardAdelantarCuotas(models.Model):
 
     
     def enviar_contabilidad(self):
-        if self.carta_adjunto:
-            self.validarrol(self.rolpostventa)   
-            mensaje="Favor registrar el Pago de la Cesión de Derecho: "+self.name
-            if self.forma_pago=='caja':
-                self.crear_activity(self.rolDelegado,mensaje)
-            elif self.forma_pago=='banco':
-                self.crear_activity(self.rolcontab,mensaje)
-            else:
-                raise ValidationError("Debe indicar la forma de Pago.")
-            self.state='en_curso'
+        #if self.carta_adjunto:
+        self.validarrol(self.rolpostventa)   
+        mensaje="Favor registrar el Pago de la Cesión de Derecho: "+self.name
+        if self.forma_pago=='caja':
+            self.crear_activity(self.rolDelegado,mensaje)
+        elif self.forma_pago=='banco':
+            self.crear_activity(self.rolcontab,mensaje)
+        else:
+            raise ValidationError("Debe indicar la forma de Pago.")
+        self.state='en_curso'
         else:
             raise ValidationError("Debe adjuntar el documento pertinente para continuar con el proceso.")
 
 
     def pago_procesado(self):
-        if self.pago_id:
+        if self.pago_id and self.carta_adjunto:
             self.validarrol(self.rolcontab)  
             mensaje="El pago se encuentra asociado a la Cesión de Derecho. "+self.name+' Favor de ejecutarla'
             self.crear_activity(self.rolpostventa,mensaje)
             self.state='pre_cierre'
         else:
-            raise ValidationError("En caso de haber procesado el pago asocielo a esta cesión de derecho")
+            raise ValidationError("En caso de haber procesado el pago asocielo a esta cesión de derecho o verifique que el documento se encuentre adjunto")

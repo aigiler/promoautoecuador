@@ -55,8 +55,8 @@
                         </group>
                         <group>
                         <separator class="text-center fw-bold" string="INFORMACIÓN CONTABLE"/>
-                        <field name="property_account_receivable_id" string="Proveedor Recurrente"/>
-                        <field name="property_account_payable_id" string="Proveedor Recurrente"/>
+                        <field name="property_account_receivable_id" string="Cuenta por Cobrar"/>
+                        <field name="property_account_payable_id" string="Cuenta por Pagar"/>
                         </group>
                     </group>
                 </form>
