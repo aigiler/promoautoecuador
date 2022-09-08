@@ -12,7 +12,7 @@
                             <field name="fecha_inicio" />
                             <field name="fecha_fin" />
                             <button name="actualizar_empleados_payroll"
-                                string="Consultar"
+                                string="Aceptar"
                                 type="object"
                                 class="oe_highlight" />
                         </group>
@@ -26,12 +26,12 @@
                     </group>
                     <footer>
                         <button name="send_mail_payrol"
-                                string="Enviar Correo"
+                                string="Aceptar"
                                 type="object"
                                 class="oe_highlight" />
 
                         <button special="cancel"
-                                string="_Cancel"
+                                string="Cancelar"
                                 class="oe_link" />
                     </footer>
                 </form>

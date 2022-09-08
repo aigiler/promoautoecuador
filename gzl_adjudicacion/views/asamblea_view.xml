@@ -20,8 +20,8 @@
         <field name="arch" type="xml">
             <form string="Asamblea">
                 <header>
-                    <button name="cambio_estado_boton_precierre" string="Pre cierre" type="object" states="inicio" class="oe_highlight"/>
-                    <button name="cambio_estado_boton_cerrado" string="Cerrado" attrs="{'invisible': ['|',('ejecutado', '=',False),('state','!=','pre_cierre')]}" type="object" class="oe_highlight"/>
+                    <button name="cambio_estado_boton_precierre" string="Aceptar" type="object" states="inicio" class="oe_highlight"/>
+                    <button name="cambio_estado_boton_cerrado" string="Finalizar" attrs="{'invisible': ['|',('ejecutado', '=',False),('state','!=','pre_cierre')]}" type="object" class="oe_highlight"/>
                     <button name="obtener_ganadores_suplentes" attrs="{'invisible': ['|',('ejecutado', '=', True),('state','!=','pre_cierre')]}" string="Ganadores/Suplentes" type="object" class="oe_highlight"/>
 
 

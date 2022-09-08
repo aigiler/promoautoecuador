@@ -77,14 +77,9 @@
                             <field name="cuenta_analitica" domain="['|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]"   optional="show"/>
 
                             <field name="analytic_tag_ids" domain="['|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]"  optional="show" widget="many2many_tags"/>
-
-
-                            <field name="debit"   />
+                            <field name="debit" />
                             <field name="credit" />
-
                         </tree>
-
-
                     </field>
 
                     <separator string="Pagos de Varias Facturas" attrs="{'invisible': ['|',('partner_id', '=', False),('payment_difference', '&lt;',0)],'readonly':[('state','in',['done','reconciled'])]}"/>
@@ -104,7 +99,7 @@
                         </tree>
                     </field>
 
-                    <button  name="procesar_pago" string="Facturas" attrs="{'invisible': [('credito_contrato','=',False)]}" type="object" class='btn-primary' groups="gzl_facturacion_electronica.grupo_cobranza"></button>
+                    <button  name="procesar_pago" string="Acreditar" attrs="{'invisible': [('credito_contrato','=',False)]}" type="object" class='btn-primary' groups="gzl_facturacion_electronica.grupo_cobranza"></button>
 
                     <field name="payment_line_new_ids" nolabel="1" attrs="{'invisible': [('credito_contrato','=',False)],'readonly':[('state','in',['done','reconciled'])]}">
                         <tree string="Pagos" editable="bottom" create="0" delete="0" >
