@@ -131,7 +131,7 @@
 
             <xpath expr="//field[@name='ref']" position="after">
                 <field string="Número de factura" name="debit_origin_id" attrs="{'invisible': [('type', 'not in', ('in_debit','out_debit'))],'readonly': [('state', '!=', 'draft')],'required':[('type','=','out_debit'),('is_electronic','=',True)]}" domain="[('partner_id','=',partner_id),('type','=',tipo_referencia),('state','=','posted')]"/>
-                <field string="Documento de reembolso" name="documento_reembolso_id" attrs="{'invisible': [('type', 'not in', ('liq_purchase'))],'readonly': [('state', '!=', 'draft')], 'required': [('type','=','liq_purchase')]}" domain="[('type','=','in_invoice')]"/>
+                <field string="Documento de reembolso" name="documento_reembolso_id" invisible="1" domain="[('type','=','in_invoice')]"/>
 
 
             </xpath>

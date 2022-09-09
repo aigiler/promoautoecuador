@@ -113,8 +113,6 @@ class FacturacionElectronica(models.Model):
                 dctImpuesto['valor']=round(detalle.price_subtotal*impuesto.amount/100,2)
 
                 listaImpuesto.append(dctImpuesto)
-
-
             if len(listaImpuesto)==0:
                 dctListaImpuesto={
                 "baseImponible":self.amount_untaxed,
@@ -124,8 +122,6 @@ class FacturacionElectronica(models.Model):
                 "valor":0.0
                 }
                 listaImpuesto.append(dctListaImpuesto)
-
-
             dctDetalle['impuestos']=listaImpuesto
             dctDetalle['precioSinSubsidio']=round(detalle.price_subtotal,2)
             dctDetalle['precioTotalSinImpuesto']=round(detalle.price_subtotal,2)
