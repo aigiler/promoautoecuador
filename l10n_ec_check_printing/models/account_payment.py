@@ -461,26 +461,26 @@ class AccountPayment(models.Model):
 
                     if acumulado_cuota:
 
-                        if acumulado_cuota>=cuota_id.saldo_seguro:
-                            total_cuota+=cuota_id.saldo_seguro
-                            acumulado_cuota=acumulado_cuota-cuota_id.saldo_seguro
-                            cuota_id.saldo_seguro=0
+                        if acumulado_cuota>=cuota_id.saldo_rastreo:
+                            total_cuota+=cuota_id.saldo_rastreo
+                            acumulado_cuota=acumulado_cuota-cuota_id.saldo_rastreo
+                            cuota_id.saldo_rastreo=0
 
                         else:
                             total_cuota+=acumulado_cuota
-                            cuota_id.saldo_seguro=cuota_id.saldo_seguro-acumulado_cuota
+                            cuota_id.saldo_rastreo=cuota_id.saldo_rastreo-acumulado_cuota
                             acumulado_cuota=0
 
                     if acumulado_cuota:
 
-                        if acumulado_cuota>=cuota_id.saldo_seguro:
-                            total_cuota+=cuota_id.saldo_seguro
-                            acumulado_cuota=acumulado_cuota-cuota_id.saldo_seguro
-                            cuota_id.saldo_seguro=0
+                        if acumulado_cuota>=cuota_id.saldo_otros:
+                            total_cuota+=cuota_id.saldo_otros
+                            acumulado_cuota=acumulado_cuota-cuota_id.saldo_otros
+                            cuota_id.saldo_otros=0
 
                         else:
                             total_cuota+=acumulado_cuota
-                            cuota_id.saldo_seguro=cuota_id.saldo_seguro-acumulado_cuota
+                            cuota_id.saldo_otros=cuota_id.saldo_otros-acumulado_cuota
                             acumulado_cuota=0
                     
                     if total_cuota>0.00:
