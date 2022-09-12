@@ -313,7 +313,7 @@ class AccountMove(models.Model):
         
         for rec in self.contrato_estado_cuenta_ids:
             if valor_restar:
-                if valor_restar<=rec.saldo_cuota_capital:
+                if valor_restar<=rec.saldo:
                     for pag in self.anticipos_ids:
                         if pag.anticipo_pendiente:
                             valor_restar=0
@@ -321,7 +321,7 @@ class AccountMove(models.Model):
                 else:
                     for pag in self.anticipos_ids:
                         if pag.anticipo_pendiente:
-                            valor_restar=valor_restar-rec.saldo_cuota_capital
+                            valor_restar=valor_restar-rec.saldo
                             
         texto_anticipo=" "
         for ant in self.anticipos_ids:
@@ -789,7 +789,7 @@ class AccountMove(models.Model):
                 for rec in self.contrato_id.estado_de_cuenta_ids.search([('id','in',self.contrato_estado_cuenta_ids.ids)]):
                     rec.factura_id = self.id
                     if valor_restar:
-                        if valor_restar<=rec.saldo_cuota_capital:
+                        if valor_restar<=rec.saldo:
                             #rec.saldo_cuota_capital=rec.saldo_cuota_capital-valor_restar
                             
                             for pag in self.anticipos_ids:
@@ -805,7 +805,7 @@ class AccountMove(models.Model):
 
                         #            pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':rec.id,'pago_id':pag.payment_id.id,
                         #                                                                            'monto_pagado':pag.payment_id.amount,'valor_asociado':rec.saldo_cuota_capital})
-                                    valor_restar=valor_restar-rec.saldo_cuota_capital
+                                    valor_restar=valor_restar-rec.saldo
 
                         #    rec.saldo_cuota_capital=0
                     cuota_capital += rec.saldo_cuota_capital
