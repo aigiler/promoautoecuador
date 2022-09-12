@@ -498,7 +498,7 @@ class AccountPayment(models.Model):
 
 
                     #pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':self.id,
-                                                                                            'monto_pagado':self.amount,'valor_asociado':total_cuota})
+                    #                                                                        'monto_pagado':self.amount,'valor_asociado':total_cuota})
                     transacciones=self.env['transaccion.grupo.adjudicado']
                     if capital_pagado:
                         transacciones.create({
