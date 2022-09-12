@@ -529,7 +529,7 @@ class AccountPayment(models.Model):
                 lineas_factura=l.line_ids
                 for y in lineas_factura:
                     lista_final.append(y.id)
-                raise ValidationError(lista_final)
+                #raise ValidationError(lista_final)
                 lineas_ids=self.env['account.move.line'].search([('id','in',lista_final)])
                 #raise ValidationError(' **********{0},********{1},***********{2} '.format(lineas_asientos,lineas_factura,lineas_ids))
                 movimientos=lineas_ids.filtered(lambda line: not line.reconciled and line.account_id == self.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))
