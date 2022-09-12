@@ -484,7 +484,7 @@ class AccountPayment(models.Model):
                     
                     if total_cuota>0.00:
                         cuota_id.fecha_pagada=self.payment_date
-                        pago_cuota_id=self.env['account.payment.cuotas'].search([('cuotas_id','=',cuota_id.id),('pago_id','=',rec.id)],limit=1)
+                        pago_cuota_id=self.env['account.payment.cuotas'].search([('cuotas_id','=',cuota_id.id),('pago_id','=',self.id)],limit=1)
                         if pago_cuota_id:
                             pago_cuota_id.valor_asociado+=total_cuota
                         else:
