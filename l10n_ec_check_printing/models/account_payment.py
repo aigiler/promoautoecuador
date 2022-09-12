@@ -187,6 +187,7 @@ class AccountPayment(models.Model):
         self.payment_line_new_ids = [(6, 0, list_ids)]
 
     def procesar_pago(self):
+        movimientos=[]
         valor_pago_cliente=0
         lista_ids=[]
         lista_movimientos=[]
@@ -521,21 +522,20 @@ class AccountPayment(models.Model):
                 #    for fact in rec.invoice_ids:
                 lista_final=[]
                 monto_a_factura=0
-                valor_inicial_factura=fact.amount_residual
+                valor_inicial_factura=l.amount_residual
                 lineas_asientos=moves.line_ids.filtered(lambda line: round(line.credit,2)==round(self.credito,2))
                 for x in lineas_asientos:
                     lista_final.append(x.id)
-                lineas_factura=fact.line_ids
+                lineas_factura=l.line_ids
                 for y in lineas_factura:
                     lista_final.append(y.id)
                 lineas_ids=self.env['account.move.line'].search([('id','in',lista_final)])
                 #raise ValidationError(' **********{0},********{1},***********{2} '.format(lineas_asientos,lineas_factura,lineas_ids))
                 movimientos=lineas_ids.filtered(lambda line: not line.reconciled and line.account_id == self.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))
-                if movimientos:
-                    movimientos.reconcile()
-                valor_final_factura=fact.amount_residual
+                
+                valor_final_factura=l.amount_residual
                 valor_pagado=valor_inicial_factura-valor_final_factura
-                for cuota_id in fact.contrato_estado_cuenta_ids:
+                for cuota_id in l.contrato_estado_cuenta_ids:
                     if valor_pagado:
                         if cuota_id.saldo_cuota_administrativa:
                             if valor_pagado>=cuota_id.saldo_cuota_administrativa:
@@ -584,12 +584,12 @@ class AccountPayment(models.Model):
                     
                     if cuota_id.saldo==0:
                         cuota_id.estado_pago='pagado'
-                pago_fact_id=self.env['account.payment.cuotas.detalle'].search([('factura_id','=',fact.id),('pago_id','=',self.id)],limit=1)
+                pago_fact_id=self.env['account.payment.cuotas.detalle'].search([('factura_id','=',l.id),('pago_id','=',self.id)],limit=1)
            
                 if pago_fact_id:
                     pago_fact_id.valor_asociado+=monto_a_factura
                 else:
-                    pago_fact_id=self.env['account.payment.cuotas.detalle'].create({'factura_id':fact.id,'pago_id':self.id,
+                    pago_fact_id=self.env['account.payment.cuotas.detalle'].create({'factura_id':l.id,'pago_id':self.id,
                                                                         'monto_pagado':self.amount,'valor_asociado':monto_a_factura})
                         
         
@@ -599,7 +599,8 @@ class AccountPayment(models.Model):
                 if mov.account_id.id==self.partner_id.property_account_receivable_id.id and round(mov.credit,2)==round(self.credito,2):
                     mov.update({'matched_debit_ids':lista})
                     pass
-
+        if movimientos:
+            movimientos.reconcile()
 
         if capital_total<=self.credito:
             self.credito=self.credito-capital_total
