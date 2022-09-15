@@ -213,7 +213,9 @@ class AccountPayment(models.Model):
             lista=[]
             for l in reg.invoice_id:
                 monto_a_factura=0
+                raise ValidationError("Pasa por aqui")
                 for cuota_id in l.contrato_estado_cuenta_ids:
+
                     acumulado_cuota=0
                     if valor_pago_cliente:
                         if cuota_id.saldo_cuota_capital:
