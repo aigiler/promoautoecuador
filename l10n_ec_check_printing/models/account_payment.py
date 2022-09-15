@@ -620,7 +620,7 @@ class AccountPayment(models.Model):
                     pago_fact_id=self.env['account.payment.cuotas.detalle'].create({'factura_id':l.id,'pago_id':self.id,
                                                                         'monto_pagado':self.amount,'valor_asociado':monto_a_factura})
                 pago_deuda+=monto_a_factura
-                raise ValidationError(pago_deuda)
+                #raise ValidationError(pago_deuda)
         
         #raise ValidationError("Este es el valor de pago deuda {0} este de aca es el credito {1}, valor factura {2}  ".format(pago_deuda,self.credito,monto_a_factura))
 
