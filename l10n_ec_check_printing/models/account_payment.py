@@ -606,8 +606,9 @@ class AccountPayment(models.Model):
                 pago_deuda+=monto_a_factura
                 
         if pago_deuda<=self.credito:
-            self.credito=self.credito-pago_deuda
-            raise ValidationError("asdfghjkjhgfdsdfghjuikjhgfdsasdfghj {0},{1}".format(pago_deuda, self.credito))           
+            credito_actual=self.credito-pago_deuda
+            self.write({'credito':credito_actual})
+            #raise ValidationError("asdfghjkjhgfdsdfghjuikjhgfdsasdfghj {0},{1}".format(pago_deuda, self.credito))           
         else:
             raise ValidationError("Comuniquese con el administrador del Sistema")
         if self.credito==0.00:
