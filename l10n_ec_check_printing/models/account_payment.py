@@ -443,7 +443,7 @@ class AccountPayment(models.Model):
 
                                         lista.append(tupla)
                     
-                    raise ValidationError(acumulado_cuota)
+                    
                     capital_pagado=0
                     total_cuota=0
                     if acumulado_cuota:
@@ -508,7 +508,7 @@ class AccountPayment(models.Model):
                     
                     if cuota_id.saldo==0:
                         cuota_id.estado_pago='pagado'
-
+                    raise ValidationError(acumulado_cuota)
 
                     #pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':self.id,
                     #                                                                        'monto_pagado':self.amount,'valor_asociado':total_cuota})
