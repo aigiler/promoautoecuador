@@ -211,7 +211,7 @@ class AccountPayment(models.Model):
                     lista_ids.append(y.debit_move_id.id)
                     lista_movimientos.append({'debit_move_id':y.debit_move_id.id,'amount':y.amount})
 
-
+        raise ValidationError(valor_pago_cliente)
         cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
         seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
         otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
