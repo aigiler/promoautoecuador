@@ -201,6 +201,7 @@ class AccountPayment(models.Model):
             if asiento_inicial.aplicar_anticipo:
                 anticipo_completo=asiento_inicial.credit
                 saldo_anticipo=asiento_inicial.saldo_pendiente
+                continue
         for x in self.move_line_ids:
                         #raise ValidationError('{0},{1}'.format(x.account_id.id))
             if x.account_id.id==self.partner_id.property_account_receivable_id.id and round(x.credit,2)==round(anticipo_completo,2):
