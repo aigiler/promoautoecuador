@@ -377,7 +377,6 @@ class AccountPayment(models.Model):
 
                                         lista.append(tupla)
                     
-
                     if valor_pago_cliente:
                         if cuota_id.saldo_otros:
                             movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',l.name)])
