@@ -61,7 +61,7 @@ class AccountPayment(models.Model):
     
     amount_residual = fields.Float( string='Saldo Anticipo',readonly="1",compute="_calculate_amount_residual",store=True)
     fecha_aplicacion_anticipo = fields.Date('Fecha de Aplicación de Anticipo',default=_get_default_invoice_date)
-
+    aplicar_credito=self.Boolean(default=False)
 
     es_nota_credito = fields.Boolean('Es N/C')
 
@@ -187,6 +187,7 @@ class AccountPayment(models.Model):
         self.payment_line_new_ids = [(6, 0, list_ids)]
 
     def procesar_pago(self):
+        self.aplicar_credito=True
         credito_actual=self.credito
         movimientos=[]
         valor_pago_cliente=0
@@ -612,7 +613,6 @@ class AccountPayment(models.Model):
         if round(pago_deuda,2)<=round(self.credito,2):
             #=self.credito-pago_deuda
             self.update({'credito':credito_actual-pago_deuda})
-            self.credito_contrato=False
             #raise ValidationError("asdfghjkjhgfdsdfghjuikjhgfdsasdfghj {0},{1}".format(pago_deuda, self.credito))           
         #elif pago_deuda==self.credito:
         #    self.credito=0
@@ -620,16 +620,17 @@ class AccountPayment(models.Model):
         else:
             raise ValidationError("Comuniquese con el administrador del Sistema")
         if self.credito==0.00:
+            self.credito_contrato=False
             for registro in self.account_payment_account_ids:
                 registro.aplicar_anticipo=False
                 registro.saldo_pendiente=0.00
         else:
-            self.credito_contrato=True
             self.credito=credito_actual-pago_deuda   
 
             for registro in self.account_payment_account_ids:
                 if registro.aplicar_anticipo:
                     registro.saldo_pendiente=self.credito
+                    self.credito=registro.saldo_pendiente
     ############################################################ Pay multiple bills ############################################################
     @api.onchange('partner_id','payment_type')
     def onchange_partner_id(self):
