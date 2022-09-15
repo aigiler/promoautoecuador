@@ -520,6 +520,15 @@ class AccountPayment(models.Model):
                 
                 #if l.invoice_ids:
                 #    for fact in rec.invoice_ids:
+                        
+        
+
+                if lista:
+                    for mov in self.move_line_ids:
+                        if mov.account_id.id==self.partner_id.property_account_receivable_id.id and round(mov.credit,2)==round(self.credito,2):
+                            mov.update({'matched_debit_ids':lista})
+                            pass
+                
                 lista_final=[]
                 monto_a_factura=0
                 valor_inicial_factura=l.amount_residual
@@ -533,7 +542,8 @@ class AccountPayment(models.Model):
                 lineas_ids=self.env['account.move.line'].search([('id','in',lista_final)])
                 #raise ValidationError(' **********{0},********{1},***********{2} '.format(lineas_asientos,lineas_factura,lineas_ids))
                 movimientos=lineas_ids.filtered(lambda line: not line.reconciled and line.account_id == self.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))
-                
+                movimientos.reconcile()
+
                 valor_final_factura=l.amount_residual
                 valor_pagado=valor_inicial_factura-valor_final_factura
                 for cuota_id in l.contrato_estado_cuenta_ids:
@@ -592,17 +602,8 @@ class AccountPayment(models.Model):
                 else:
                     pago_fact_id=self.env['account.payment.cuotas.detalle'].create({'factura_id':l.id,'pago_id':self.id,
                                                                         'monto_pagado':self.amount,'valor_asociado':monto_a_factura})
-                        
-        
-
-                if lista:
-                    for mov in self.move_line_ids:
-                        if mov.account_id.id==self.partner_id.property_account_receivable_id.id and round(mov.credit,2)==round(self.credito,2):
-                            mov.update({'matched_debit_ids':lista})
-                            pass
-                if movimientos:
-                    movimientos.reconcile()
-
+                
+                    
         if capital_total<=self.credito:
             self.credito=self.credito-capital_total
         else:
