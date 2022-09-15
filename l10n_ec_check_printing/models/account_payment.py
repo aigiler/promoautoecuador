@@ -607,7 +607,7 @@ class AccountPayment(models.Model):
                 
                     
         if pago_deuda<=self.credito:
-            self.credito=self.credito-capital_total
+            self.credito=self.credito-pago_deuda
         else:
             raise ValidationError("Comuniquese con el administrador del Sistema")
         if self.credito==0.00:
@@ -620,8 +620,6 @@ class AccountPayment(models.Model):
                 if registro.aplicar_anticipo:
                     registro.saldo_pendiente=self.credito
                      
-
-
     ############################################################ Pay multiple bills ############################################################
     @api.onchange('partner_id','payment_type')
     def onchange_partner_id(self):
