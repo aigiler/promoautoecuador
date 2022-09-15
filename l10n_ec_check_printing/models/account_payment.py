@@ -188,7 +188,7 @@ class AccountPayment(models.Model):
 
     def procesar_pago(self):
         self.aplicar_credito=True
-        credito_actual=self.credito
+        #credito_actual=self.credito
         movimientos=[]
         valor_pago_cliente=0
         lista_ids=[]
@@ -611,8 +611,9 @@ class AccountPayment(models.Model):
         #raise ValidationError("Este es el valor de pago deuda {0} este de aca es el credito {1}, valor factura {2}  ".format(pago_deuda,self.credito,monto_a_factura))
 
         if round(pago_deuda,2)<=round(self.credito,2):
-            #=self.credito-pago_deuda
-            self.update({'credito':credito_actual-pago_deuda})
+            self.credito=self.credito-pago_deuda
+            
+            #self.update({'credito':credito_actual-pago_deuda})
             #raise ValidationError("asdfghjkjhgfdsdfghjuikjhgfdsasdfghj {0},{1}".format(pago_deuda, self.credito))           
         #elif pago_deuda==self.credito:
         #    self.credito=0
