@@ -192,6 +192,7 @@ class AccountPayment(models.Model):
         lista_ids=[]
         lista_movimientos=[]
         capital_total=0
+        pago_deuda=0
         for x in self.move_line_ids:
                         #raise ValidationError('{0},{1}'.format(x.account_id.id))
             if x.account_id.id==self.partner_id.property_account_receivable_id.id and round(x.credit,2)==round(self.credito,2):
@@ -517,6 +518,7 @@ class AccountPayment(models.Model):
                 pago_fact_id=self.env['account.payment.cuotas.detalle'].create({'factura_id':l.id,'pago_id':self.id,
                                                                                     'monto_pagado':self.amount,'valor_asociado':monto_a_factura})            
                 
+                pago_deuda+=monto_a_factura
                 #if l.invoice_ids:
                 #    for fact in rec.invoice_ids:
                         
@@ -601,12 +603,13 @@ class AccountPayment(models.Model):
                 else:
                     pago_fact_id=self.env['account.payment.cuotas.detalle'].create({'factura_id':l.id,'pago_id':self.id,
                                                                         'monto_pagado':self.amount,'valor_asociado':monto_a_factura})
+                pago_deuda+=monto_a_factura
                 
                     
-        if capital_total<=self.credito:
+        if pago_deuda<=self.credito:
             self.credito=self.credito-capital_total
         else:
-            self.credito=0.00
+            raise ValidationError("Comuniquese con el administrador del Sistema")
         if self.credito==0.00:
             self.credito_contrato=False
             for registro in self.account_payment_account_ids:
