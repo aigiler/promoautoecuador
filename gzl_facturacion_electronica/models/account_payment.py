@@ -147,8 +147,9 @@ class AccountPayment(models.Model):
                         contrato_valor+=y.monto_pagar
             if l.credito_contrato and not l.aplicar_credito:
                 credito_contrato=l.amount-valor_asignado-contrato_valor
+            if not l.aplicar_credito:
+                l.credito=credito_contrato
             l.contrato_valor=contrato_valor
-            l.credito=credito_contrato
             l.valor_deuda=valor_asignado
             l.saldo_pago=l.amount-valor_asignado-contrato_valor-credito_contrato
             if round(valor_asignado+contrato_valor+credito_contrato,2)==round(l.amount,2):
