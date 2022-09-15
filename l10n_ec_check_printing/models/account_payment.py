@@ -61,7 +61,7 @@ class AccountPayment(models.Model):
     
     amount_residual = fields.Float( string='Saldo Anticipo',readonly="1",compute="_calculate_amount_residual",store=True)
     fecha_aplicacion_anticipo = fields.Date('Fecha de Aplicación de Anticipo',default=_get_default_invoice_date)
-    aplicar_credito=self.Boolean(default=False)
+    aplicar_credito=fields.Boolean(default=False)
 
     es_nota_credito = fields.Boolean('Es N/C')
 
