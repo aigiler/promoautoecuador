@@ -606,7 +606,7 @@ class AccountPayment(models.Model):
                 pago_deuda+=monto_a_factura
         
         
-        raise ValidationError("Este es el valor de pago deuda {0} este de aca es el credito {1} ".format(pago_deuda,self.credito))
+        #raise ValidationError("Este es el valor de pago deuda {0} este de aca es el credito {1} ".format(pago_deuda,self.credito))
 
         if pago_deuda<self.credito:
             credito_actual=self.credito-pago_deuda
