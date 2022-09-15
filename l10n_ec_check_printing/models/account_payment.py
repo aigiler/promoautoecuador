@@ -508,7 +508,7 @@ class AccountPayment(models.Model):
                     
                     if cuota_id.saldo==0:
                         cuota_id.estado_pago='pagado'
-                    raise ValidationError(acumulado_cuota)
+
 
                     #pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,'pago_id':self.id,
                     #                                                                        'monto_pagado':self.amount,'valor_asociado':total_cuota})
@@ -559,8 +559,10 @@ class AccountPayment(models.Model):
                 movimientos=lineas_ids.filtered(lambda line: not line.reconciled and line.account_id == self.destination_account_id and not (line.account_id == line.payment_id.writeoff_account_id and line.name == line.payment_id.writeoff_label))
                 movimientos.reconcile()
 
+                
                 valor_final_factura=l.amount_residual
                 valor_pagado=valor_inicial_factura-valor_final_factura
+                raise ValidationError(acumulado_cuota)
                 for cuota_id in l.contrato_estado_cuenta_ids:
                     if valor_pagado:
                         if cuota_id.saldo_cuota_administrativa:
