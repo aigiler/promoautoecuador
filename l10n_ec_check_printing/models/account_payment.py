@@ -206,8 +206,8 @@ class AccountPayment(models.Model):
         seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
         otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
         rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
-        lista=[]
         for reg in self.payment_line_new_ids:
+            lista=[]
             for l in reg.invoice_id:
                 monto_a_factura=0
                 for cuota_id in l.contrato_estado_cuenta_ids:
@@ -595,13 +595,13 @@ class AccountPayment(models.Model):
                         
         
 
-        if lista:
-            for mov in self.move_line_ids:
-                if mov.account_id.id==self.partner_id.property_account_receivable_id.id and round(mov.credit,2)==round(self.credito,2):
-                    mov.update({'matched_debit_ids':lista})
-                    pass
-        if movimientos:
-            movimientos.reconcile()
+                if lista:
+                    for mov in self.move_line_ids:
+                        if mov.account_id.id==self.partner_id.property_account_receivable_id.id and round(mov.credit,2)==round(self.credito,2):
+                            mov.update({'matched_debit_ids':lista})
+                            pass
+                if movimientos:
+                    movimientos.reconcile()
 
         if capital_total<=self.credito:
             self.credito=self.credito-capital_total
