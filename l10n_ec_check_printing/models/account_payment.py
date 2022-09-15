@@ -612,6 +612,7 @@ class AccountPayment(models.Model):
         if round(pago_deuda,2)<=round(self.credito,2):
             #=self.credito-pago_deuda
             self.update({'credito':credito_actual-pago_deuda})
+            self.credito_contrato=False
             #raise ValidationError("asdfghjkjhgfdsdfghjuikjhgfdsasdfghj {0},{1}".format(pago_deuda, self.credito))           
         #elif pago_deuda==self.credito:
         #    self.credito=0
@@ -619,11 +620,11 @@ class AccountPayment(models.Model):
         else:
             raise ValidationError("Comuniquese con el administrador del Sistema")
         if self.credito==0.00:
-            self.credito_contrato=False
             for registro in self.account_payment_account_ids:
                 registro.aplicar_anticipo=False
                 registro.saldo_pendiente=0.00
         else:
+            self.credito_contrato=True
             for registro in self.account_payment_account_ids:
                 if registro.aplicar_anticipo:
                     registro.saldo_pendiente=self.credito
