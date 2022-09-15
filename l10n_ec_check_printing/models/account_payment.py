@@ -625,10 +625,11 @@ class AccountPayment(models.Model):
                 registro.saldo_pendiente=0.00
         else:
             self.credito_contrato=True
+            self.credito=credito_actual-pago_deuda   
+
             for registro in self.account_payment_account_ids:
                 if registro.aplicar_anticipo:
                     registro.saldo_pendiente=self.credito
-        self.credito=self.credito           
     ############################################################ Pay multiple bills ############################################################
     @api.onchange('partner_id','payment_type')
     def onchange_partner_id(self):
