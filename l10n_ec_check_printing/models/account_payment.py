@@ -211,7 +211,6 @@ class AccountPayment(models.Model):
                     lista_ids.append(y.debit_move_id.id)
                     lista_movimientos.append({'debit_move_id':y.debit_move_id.id,'amount':y.amount})
 
-        raise ValidationError(valor_pago_cliente)
         cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
         seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
         otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
@@ -530,6 +529,9 @@ class AccountPayment(models.Model):
                                                                                     'monto_pagado':self.amount,'valor_asociado':monto_a_factura})            
                 
                 pago_deuda+=monto_a_factura
+
+                raise ValidationError(pago_deuda)
+
                 #if l.invoice_ids:
                 #    for fact in rec.invoice_ids:
                         
