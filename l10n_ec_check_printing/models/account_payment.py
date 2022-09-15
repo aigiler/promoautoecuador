@@ -196,13 +196,15 @@ class AccountPayment(models.Model):
         capital_total=0
         pago_deuda=0
         anticipo_completo=0
+        saldo_anticipo=0
         for asiento_inicial in self.account_payment_account_ids:
             if asiento_inicial.aplicar_anticipo:
                 anticipo_completo=asiento_inicial.credit
+                saldo_anticipo=asiento_inicial.saldo_pendiente
         for x in self.move_line_ids:
                         #raise ValidationError('{0},{1}'.format(x.account_id.id))
             if x.account_id.id==self.partner_id.property_account_receivable_id.id and round(x.credit,2)==round(anticipo_completo,2):
-                valor_pago_cliente+=round(anticipo_completo,2)
+                valor_pago_cliente+=round(saldo_anticipo,2)
                 move_credito=x.id
                 for y in x.matched_debit_ids:
                     lista_ids.append(y.debit_move_id.id)
@@ -541,7 +543,7 @@ class AccountPayment(models.Model):
                 lista_final=[]
                 monto_a_factura=0
                 valor_inicial_factura=l.amount_residual
-                lineas_asientos=self.move_line_ids.filtered(lambda line: round(line.credit,2)==round(self.credito,2))
+                lineas_asientos=self.move_line_ids.filtered(lambda line: round(line.credit,2)==round(anticipo_completo,2))
                 for x in lineas_asientos:
                     lista_final.append(x.id)
                 lineas_factura=l.line_ids
