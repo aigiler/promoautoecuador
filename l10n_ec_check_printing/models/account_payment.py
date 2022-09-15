@@ -627,7 +627,7 @@ class AccountPayment(models.Model):
         #    self.credito=0
 
         else:
-            raise ValidationError("Comuniquese con el administrador del Sistema")
+            raise ValidationError("Comuniquese con el administrador del Sistema{0} ".format(pago_deuda))
         if self.credito==0.00:
             self.credito_contrato=False
             for registro in self.account_payment_account_ids:
