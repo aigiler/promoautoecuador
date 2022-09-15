@@ -608,10 +608,13 @@ class AccountPayment(models.Model):
         
         raise ValidationError("Este es el valor de pago deuda {0} este de aca es el credito {1} ".format(pago_deuda,self.credito))
 
-        if pago_deuda<=self.credito:
+        if pago_deuda<self.credito:
             credito_actual=self.credito-pago_deuda
             self.update({'credito':credito_actual})
             #raise ValidationError("asdfghjkjhgfdsdfghjuikjhgfdsasdfghj {0},{1}".format(pago_deuda, self.credito))           
+        elif pago_deuda==self.credito:
+            self.credito=0
+
         else:
             raise ValidationError("Comuniquese con el administrador del Sistema")
         if self.credito==0.00:
