@@ -195,10 +195,14 @@ class AccountPayment(models.Model):
         lista_movimientos=[]
         capital_total=0
         pago_deuda=0
+        anticipo_completo=0
+        for asiento_inicial in self.account_payment_account_ids:
+            if asiento_inicial.aplicar_credito:
+                anticipo_completo=asiento_inicial.credit
         for x in self.move_line_ids:
                         #raise ValidationError('{0},{1}'.format(x.account_id.id))
-            if x.account_id.id==self.partner_id.property_account_receivable_id.id and round(x.credit,2)==round(self.credito,2):
-                valor_pago_cliente+=round(x.credit,2)
+            if x.account_id.id==self.partner_id.property_account_receivable_id.id and round(x.credit,2)==round(anticipo_completo,2):
+                valor_pago_cliente+=round(anticipo_completo,2)
                 move_credito=x.id
                 for y in x.matched_debit_ids:
                     lista_ids.append(y.debit_move_id.id)
