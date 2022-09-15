@@ -443,6 +443,7 @@ class AccountPayment(models.Model):
 
                                         lista.append(tupla)
                     
+                    raise ValidationError(acumulado_cuota)
                     capital_pagado=0
                     total_cuota=0
                     if acumulado_cuota:
