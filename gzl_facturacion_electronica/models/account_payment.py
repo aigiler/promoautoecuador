@@ -145,7 +145,7 @@ class AccountPayment(models.Model):
                 for y in l.contrato_estado_cuenta_payment_ids:
                     if y.monto_pagar:
                         contrato_valor+=y.monto_pagar
-            if l.credito_contrato and l.aplicar_credito:
+            if l.credito_contrato and not l.aplicar_credito:
                 credito_contrato=l.amount-valor_asignado-contrato_valor
             l.contrato_valor=contrato_valor
             l.credito=credito_contrato
