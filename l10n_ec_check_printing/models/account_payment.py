@@ -197,7 +197,7 @@ class AccountPayment(models.Model):
         pago_deuda=0
         anticipo_completo=0
         for asiento_inicial in self.account_payment_account_ids:
-            if asiento_inicial.aplicar_credito:
+            if asiento_inicial.aplicar_anticipo:
                 anticipo_completo=asiento_inicial.credit
         for x in self.move_line_ids:
                         #raise ValidationError('{0},{1}'.format(x.account_id.id))
