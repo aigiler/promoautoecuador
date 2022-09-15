@@ -837,11 +837,11 @@ class AccountMove(models.Model):
                         ]
                     }).action_post()
                 obj_anticipo=self.env['anticipos.pendientes'].search([('factura_id','=',self.id),('anticipo_pendiente','=',False)])
-                for ant in self.anticipos_ids:
-                    ant.linea_pago_id.saldo_pendiente=valor_restar
-                    ant.valor_sobrante=valor_restar
-                    if not ant.linea_pago_id.saldo_pendiente:
-                        ant.linea_pago_id.aplicar_anticipo=False
+                #for ant in self.anticipos_ids:
+                #    ant.linea_pago_id.saldo_pendiente=valor_restar
+                #    ant.valor_sobrante=valor_restar
+                #    if not ant.linea_pago_id.saldo_pendiente:
+                #        ant.linea_pago_id.aplicar_anticipo=False
                 obj_anticipo.unlink()
                 if seguro>0:
                     if not seguro_obj:
