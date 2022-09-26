@@ -364,6 +364,41 @@
 
 
 
+        <record id="email_contrato_notificacion_de_congelamiento" model="mail.template">
+            <field name="name">Email Envio de Correo de contratos Congelados</field>
+            <field name="email_from">admin@promoauto.com</field>
+            <field name="subject">Contrato congelado del Socio ${object.cliente.name}</field>
+            <field name="partner_to"></field>
+            <field name="model_id" ref="gzl_adjudicacion.model_contrato"/>
+            <field name="email_to">msalas@promoautoecuador.com</field>
+            <field name="body_html"><![CDATA[
+
+<div style="padding:0px;width:600px;margin:auto;background: #FFFFFF repeat top /100%;color:#777777">
+    <table style="width:600px;background:inherit;color:inherit" cellspacing="0" cellpadding="0">
+        <tbody><tr>
+            <td style="padding:10px 10px 10px 5px;font-size: 12px" width="200" valign="center">
+                <img src="/logo.png" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${user.company_id.name}">
+            </td>
+        </tr></tbody>
+    </table>
+</div>
+<div style="padding:0px;width:600px;margin:auto;background: #FFFFFF repeat top /100%;color:#777777">
+<p>Estimado ${object.cliente.name},
+    </p><p>Esta notificación es para indicarle que el contrato {object.cliente.name} ha cumplido 60 días congelado.
+<p>
+</p>
+
+
+    <p>
+    Saludos,
+    
+    </p>
+
+    <br><br>Administrador del Sistema.<br><br><strong>Nota: Este correo ha sido generado de manera automática por favor no responder.</strong></div>
+]]></field>
+        </record>
+    </data>
+</odoo>
 
 
 

@@ -619,19 +619,9 @@ class AccountPayment(models.Model):
                 else:
                     pago_fact_id=self.env['account.payment.cuotas.detalle'].create({'factura_id':l.id,'pago_id':self.id,
                                                                         'monto_pagado':self.amount,'valor_asociado':monto_a_factura})
-                pago_deuda+=monto_a_factura
-                #raise ValidationError(pago_deuda)
-        
-        #raise ValidationError("Este es el valor de pago deuda {0} este de aca es el credito {1}, valor factura {2}  ".format(pago_deuda,self.credito,monto_a_factura))
-
+                pago_deuda+=monto_a_factura        
         if round(pago_deuda,2)<=round(self.credito,2):
             self.credito=self.credito-pago_deuda
-            
-            #self.update({'credito':credito_actual-pago_deuda})
-            #raise ValidationError("asdfghjkjhgfdsdfghjuikjhgfdsasdfghj {0},{1}".format(pago_deuda, self.credito))           
-        #elif pago_deuda==self.credito:
-        #    self.credito=0
-
         else:
             raise ValidationError("Comuniquese con el administrador del Sistema{0} ".format(pago_deuda))
         if self.credito==0.00:

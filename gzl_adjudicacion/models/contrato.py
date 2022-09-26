@@ -515,6 +515,40 @@ class Contrato(models.Model):
                 contrato.state='inactivo'
 
 
+###  Job para inactivar acorde a cuotas vencidas en el contrato
+
+    def job_para_inactivar_contratos_congelados(self, ):
+
+        hoy=date.today()
+        dateMonthStart="%s-%s-%s" %(hoy.year, hoy.month,(calendar.monthrange(hoy.year, hoy.month)[1]))
+
+        dateMonthStart=datetime.strptime(dateMonthStart, '%Y-%m-%d').date()
+
+        numeroCuotasMaximo =  int(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.maximo_cuotas_congeladas'))
+
+        contratos=self.env['contrato'].search([('state','in',['congelar_contrato'])])
+
+        for contrato in contratos:
+                 
+            lineas_pendientes=contrato.tabla_amortizacion.filtered(lambda l: l.fecha<dateMonthStart and l.estado_pago=='pendiente')
+            if len(lineas_pendientes)>=numeroCuotasMaximo:
+                contrato.state='inactivo'
+
+
+    def job_enviar_correos_contratos_congelados_por_vencer(self, ):
+
+        hoy=date.today()
+        dateMonthStart="%s-%s-%s" %(hoy.year, hoy.month,(calendar.monthrange(hoy.year, hoy.month)[1]))
+
+        dateMonthStart=datetime.strptime(dateMonthStart, '%Y-%m-%d').date()
+
+        contratos=self.env['contrato'].search([('state','in',['congelar_contrato'])])
+        for contrato in contratos:
+            congelamiento=self.env['contrato.congelamiento'].search([('contrato_id','=',contrato.id)])
+            if congelamiento:
+                diferencia=((dateMonthStart-congelamiento.fecha).total_seconds())/86400
+                if difernecia>=60:
+                    self.envio_correos_plantilla('email_contrato_notificacion_de_congelamiento',contrato.id)
 
 #Job para registrar calificacion de contratos en mora de acuerdo al job job_colocar_contratos_en_mora se ejecuta el 6 de cada mes
 
@@ -546,10 +580,6 @@ class Contrato(models.Model):
         for contrato in contratos:  
             self.envio_correos_plantilla('email_contrato_en_mora',contrato.id)
 
-
-
-
-
     def job_enviar_correos_contratos_pago_por_vencer(self, ):
 
         hoy=date.today()
@@ -575,6 +605,9 @@ class Contrato(models.Model):
 
     def cambio_estado_congelar_contrato(self):
         #Cambio de estado
+        congelamientos_ids=self.env['contrato.congelamiento'].search([('contrato_id','=',self.id)])
+        if congelamientos_ids:
+            raise ValidationError("Solo puede aplicar Congelamiento una vez al contrato.")
         self.state='congelar_contrato'
         #Se obtiene el listado de cuotas pendientes ordenadas de forma ascedente en la fecha de pago.
         tabla=self.env['contrato.estado.cuenta'].search([('estado_pago','=','pendiente'),('contrato_id','=',self.id)],order='fecha asc')
