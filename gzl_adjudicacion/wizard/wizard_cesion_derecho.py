@@ -190,7 +190,10 @@ class WizardAdelantarCuotas(models.Model):
 
     def pago_procesado(self):
         if self.pago_id and self.carta_adjunto:
-            self.validarrol(self.rolcontab)  
+            if self.forma_pago=="caja":
+                self.validarrol(self.rolpostventa) 
+            else:
+                self.validarrol(self.rolcontab)  
             mensaje="El pago se encuentra asociado a la Cesión de Derecho. "+self.name+' Favor de ejecutarla'
             self.crear_activity(self.rolpostventa,mensaje)
             self.state='pre_cierre'
