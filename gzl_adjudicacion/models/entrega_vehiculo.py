@@ -62,6 +62,8 @@ class EntegaVehiculo(models.Model):
     nombreGarante = fields.Many2one('res.partner', string="Nombre del Garante", track_visibility='onchange')
     factura_id = fields.Many2one('account.move', string='Factura')
     archivo = fields.Binary(string='Adjuntar Documento')
+    archivo_garante = fields.Binary(string='Adjuntar Documento Garante')
+
 
     documentos_pagos = fields.Binary(string='Adjuntar Documento')
 
