@@ -119,7 +119,7 @@ class Contrato(models.Model):
 
     direccion = fields.Char(string='Dirección',
                               track_visibility='onchange')
-    descripcion_adjudicaciones = fields.Char(string='Descripción de Adjudicaciones',
+    descripcion_adjudicaciones = fields.Char(string='Jefe de Zona',
                               track_visibility='onchange')
     nota = fields.Char(string='Cesión de Derecho')
 

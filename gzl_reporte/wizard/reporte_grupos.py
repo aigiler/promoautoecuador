@@ -20,7 +20,12 @@ class ReportGrupos(models.TransientModel):
     grupo=fields.Many2one('grupo.adjudicado',string="Grupo")
     date_start = fields.Date('Fecha Inicio', required=False)
     date_end = fields.Date('Fecha Corte', required=False, default = date.today())
-
+    fecha_contrato=fields.Date("Fecha de Contrato")
+    estado_deuda=fields.Selection(selection=[('todos', 'Todos'),
+                                            ('al_dia', 'Al día'),
+                                            ('en_mora', 'En Mora')],required=True)
+    supervisor=fields.Many2one('res.users',string="Supervisor",track_visibility='onchange' )
+    tipo_de_contrato = fields.Many2one('tipo.contrato.adjudicado', string='Tipo de Contrato', track_visibility='onchange')
 
     def print_report_xls(self):
         today = date.today()
@@ -69,7 +74,27 @@ class ReportGrupos(models.TransientModel):
         
         sheet.merge_range('B1:BC1', ' ', bold)
         sheet.merge_range('A2:BC2', 'REPORTE DE GRUPOS', bold)
-        contrato_ids = self.env['contrato'].search([('grupo','=',self.grupo.id)])
+        contrato_object= self.env['contrato']
+
+        query="SELECT * FROM contrato"
+        if self.estado_deuda=='al_dia':
+            query+=" WHERE en_mora=False "
+        elif self.estado_deuda=='en_mora':
+            query+=" WHERE en_mora=True "
+        else:
+            query+=" WHERE en_mora in (True,False) "
+        if self.fecha_contrato:
+            query+=" and fecha_contrato={0} ".format(self.fecha_contrato)
+        if self.tipo_de_contrato:
+            query+=" and tipo_de_contrato={0} ".format(self.tipo_de_contrato.id)
+        if self.grupo:
+            query+=" and grupo={0} ".format(self.grupo.id)
+        if self.supervisor:
+            query+=" and supervisor={0} ".format(self.supervisor.id)
+
+
+        self.env.cr.execute(query)
+        contrato_ids=self.env.cr.dictfetchall()
         lista_final=[]
         for contrato in contrato_ids:
             dct={'codigo_grupo':contrato.grupo.name or '',
@@ -116,7 +141,8 @@ class ReportGrupos(models.TransientModel):
                     'email':contrato.cliente.email or '',
                     'direccion':contrato.cliente.street or '',
                     'asesor':'',
-                    'supervisor':'',}
+                    'supervisor':'',
+                    'jefe_zona':contrato.descripcion_adjudicaciones,}
             dct['cuota_mensual']=contrato.iva_administrativo+contrato.cuota_capital+contrato.cuota_adm
             dct['capital_pagado'] =round(sum(contrato.estado_de_cuenta_ids.mapped("cuota_capital"),2))-round(sum(contrato.estado_de_cuenta_ids.mapped("saldo_cuota_capital"),2))
             dct['cuotas_consecutivas']=len(contrato.estado_de_cuenta_ids.filtered(lambda l: l.estado_pago=='pagado' and l.cuotaAdelantada==False))
@@ -218,6 +244,7 @@ class ReportGrupos(models.TransientModel):
         sheet.set_column('AQ:AQ', 20)
         sheet.set_column('AR:AR', 25)
         sheet.set_column('AS:AS', 25)
+        sheet.set_column('AT:AT', 25)
 
 
 
@@ -235,7 +262,7 @@ class ReportGrupos(models.TransientModel):
         sheet.write(4, 11, 'FECHA DE NACIMIENTO', bold2)
         sheet.write(4, 12, 'CIUDAD RESIDENCIA', bold2)
         sheet.write(4, 13, 'AGENCIA', bold2)
-        sheet.write(4, 14, 'Fecha', bold2)
+        sheet.write(4, 14, 'fECHA DE iNSCRIPCIÓN', bold2)
         sheet.write(4, 15, 'Inicio Pago', bold2)
         sheet.write(4, 16, 'Plazo', bold2)
         sheet.write(4, 17, 'Monto', bold2)
@@ -266,6 +293,7 @@ class ReportGrupos(models.TransientModel):
         sheet.write(4, 42, 'Dirección', bold2)
         sheet.write(4, 43, 'ASESOR', bold2)
         sheet.write(4, 44, 'SUPERVISOR', bold2)
+        sheet.write(4, 45, 'Jefe de Zona', bold2)
 
         row=5
 
@@ -319,6 +347,7 @@ class ReportGrupos(models.TransientModel):
             sheet.write(row, 42, line['direccion'], registros_tabla)
             sheet.write(row, 43, line['asesor'], registros_tabla)
             sheet.write(row, 44, line['supervisor'], registros_tabla)
+            sheet.write(row, 45, line['jefe_zona'], registros_tabla)
 
 
             row+=1
