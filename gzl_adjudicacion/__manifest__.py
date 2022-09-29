@@ -30,7 +30,7 @@
                     'views/tipo_contrato_view.xml',
                     'views/concesionario_view.xml',
                     'views/grupo_adjudicado_view.xml',
-                    'views/entrega_vehiculo_view.xml',
+                    #'views/entrega_vehiculo_view.xml',
                     'views/asamblea_view.xml',
                     'views/contrato_view.xml',
                     'views/res_config_settings_views.xml',
