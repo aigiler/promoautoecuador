@@ -121,7 +121,7 @@ class ReportGrupos(models.TransientModel):
         contrato_ids=self.env.cr.dictfetchall()
         lista_final=[]
         for contrato_id in contrato_ids:
-            contrato=self.env['contrato'].search([('contrato_id','=',contrato_id['id'])])
+            contrato=self.env['contrato'].search([('id','=',contrato_id['id'])])
             dct={'codigo_grupo':contrato.grupo.name or '',
                     'contrato':contrato.secuencia  or '',
                     'tipo_contrato':contrato.tipo_de_contrato.name  or '',
