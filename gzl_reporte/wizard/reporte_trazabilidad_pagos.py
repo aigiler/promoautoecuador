@@ -187,7 +187,7 @@ class ReportTrazabilidad(models.TransientModel):
         sheet.write(4, 2, 'Contrato', bold2)
         sheet.write(4, 3, 'Cliente.', bold2)
         sheet.write(4, 4, 'Estado', bold2)
-        sheet.write(4, 5, 'Etado de Deuda', bold2)
+        sheet.write(4, 5, 'Estado de Deuda', bold2)
         row=5   
         lista_asesores=[]
         
