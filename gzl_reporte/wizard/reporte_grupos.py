@@ -21,9 +21,28 @@ class ReportGrupos(models.TransientModel):
     date_start = fields.Date('Fecha Inicio', required=False)
     date_end = fields.Date('Fecha Corte', required=False, default = date.today())
     fecha_contrato=fields.Date("Fecha de Contrato")
+    state = fields.Selection(selection=[
+        ('pendiente', 'Pendiente'),
+        ('activo', 'Activo'),
+        ('congelar_contrato', 'Congelado'),
+        ('inactivo', 'Desactivado'),
+        ('adjudicar', 'Adjudicado'),
+        ('cancelado', 'Cancelado'),
+        ('cancelado_siniestro', 'Cancelación por Siniestro'),
+        ('cancelado_compra', 'Cancelación con compra'),
+        ('embargado', 'Embargado'),
+        ('legal', 'Legal'),
+        ('finalizado', 'Finalizado'),
+        ('adendum', 'Realizar Adendum'),
+        ('cedido', 'Cesión de Derecho'),
+        ('desistir', 'Desistido'),
+    ], string='Estado de Contrato', track_visibility='onchange')
     estado_deuda=fields.Selection(selection=[('todos', 'Todos'),
                                             ('al_dia', 'Al día'),
                                             ('en_mora', 'En Mora')],required=True)
+    jefe_zona=fields.Selection(selection=[('j_uno', 'JEFE DE ZONA 1'),
+                                            ('j_dos', 'JEFE DE ZONA 2'),
+                                            ('j_tres', 'JEFE DE ZONA 3')],required=True)
     supervisor=fields.Many2one('res.users',string="Supervisor",track_visibility='onchange' )
     tipo_de_contrato = fields.Many2one('tipo.contrato.adjudicado', string='Tipo de Contrato', track_visibility='onchange')
 
@@ -91,6 +110,11 @@ class ReportGrupos(models.TransientModel):
             query+=" and grupo={0} ".format(self.grupo.id)
         if self.supervisor:
             query+=" and supervisor={0} ".format(self.supervisor.id)
+        if self.state:
+            query+=" and state={0} ".format(self.state)
+        if self.jefe_zona:
+            query+=" and descripcion_adjudicaciones={0} ".format(self.jefe_zona)
+
 
 
         self.env.cr.execute(query)
@@ -149,6 +173,18 @@ class ReportGrupos(models.TransientModel):
             dct['cuotas_consecutivas']=len(contrato.estado_de_cuenta_ids.filtered(lambda l: l.estado_pago=='pagado' and l.cuotaAdelantada==False))
             dct['cuotasAdelantadas']=len(contrato.estado_de_cuenta_ids.filtered(lambda l: l.estado_pago=='pagado' and l.cuotaAdelantada==True))
             dct['cuotas_pagadas']=dct['cuotas_consecutivas']+dct['cuotasAdelantadas']
+            dct['capital_por_cobrar']=contrato.monto_financiamiento-dct['capital_pagado']
+            dct['sum_adm_iva']=contrato.cuota_adm+contrato.iva_administrativo
+
+            dct['administrativo_pagado']=round(sum(contrato.estado_de_cuenta_ids.mapped("cuota_adm"),2))-round(sum(contrato.estado_de_cuenta_ids.mapped("saldo_cuota_administrativa"),2))
+            dct['administrativo_total']=round(sum(contrato.estado_de_cuenta_ids.mapped("cuota_adm"),2))
+            dct['administrativo_por_cobrar']=dct['administrativo_total']-dct['administrativo_pagado']
+
+            dct['iva_pagado']=round(sum(contrato.estado_de_cuenta_ids.mapped("iva_adm"),2))-round(sum(contrato.estado_de_cuenta_ids.mapped("saldo_iva"),2))
+            dct['iva_total']=round(sum(contrato.estado_de_cuenta_ids.mapped("iva_adm"),2))
+            dct['iva_por_cobrar']=dct['iva_total']-dct['iva_pagado']
+            dct['sum_adm_iva_total']=dct['iva_total']+dct['administrativo_total']
+
             seguro_id = self.env['wizard.actualizar.rubro'].search([('contrato_id','=',contrato.id),('rubro','=','seguro')],limit=1)
             rastreo_id = self.env['wizard.actualizar.rubro'].search([('contrato_id','=',contrato.id),('rubro','=','rastreo')],limit=1)
             otros_id = self.env['wizard.actualizar.rubro'].search([('contrato_id','=',contrato.id),('rubro','=','otro')],limit=1)
@@ -246,6 +282,12 @@ class ReportGrupos(models.TransientModel):
         sheet.set_column('AR:AR', 25)
         sheet.set_column('AS:AS', 25)
         sheet.set_column('AT:AT', 25)
+        sheet.set_column('AU:AU', 25)
+        sheet.set_column('AV:AV', 25)
+        sheet.set_column('AW:AW', 25)
+        sheet.set_column('AX:AX', 25)
+        sheet.set_column('AY:AY', 25)
+        sheet.set_column('AZ:AZ', 25)
 
 
 
@@ -295,7 +337,15 @@ class ReportGrupos(models.TransientModel):
         sheet.write(4, 43, 'ASESOR', bold2)
         sheet.write(4, 44, 'SUPERVISOR', bold2)
         sheet.write(4, 45, 'Jefe de Zona', bold2)
-
+        sheet.write(4, 46, 'cAPITAL POR COBRAR', bold2)
+        sheet.write(4, 47, 'CUOTA ADM + IVA ADM', bold2)
+        sheet.write(4, 48, 'ADMINISTRATIVO PAGADO', bold2)
+        sheet.write(4, 49, 'ADMINISTRATIVO PLAZO TOTAL', bold2)
+        sheet.write(4, 50, 'ADMINISTRATIVO POR COBRAR', bold2)
+        sheet.write(4, 51, 'IVA PAGADO', bold2)
+        sheet.write(4, 52, 'IVA PLAZO TOTAL', bold2)
+        sheet.write(4, 53, 'IVA POR COBRAR', bold2)
+        sheet.write(4, 54, 'CUOTA ADM + IVA ADM TOTAL', bold2)
         row=5
 
         
@@ -349,6 +399,15 @@ class ReportGrupos(models.TransientModel):
             sheet.write(row, 43, line['asesor'], registros_tabla)
             sheet.write(row, 44, line['supervisor'], registros_tabla)
             sheet.write(row, 45, line['jefe_zona'], registros_tabla)
+            sheet.write(row, 46, line['capital_por_cobrar'], registros_tabla)
+            sheet.write(row, 47, line['sum_adm_iva'], registros_tabla)
+            sheet.write(row, 48, line['administrativo_pagado'], registros_tabla)
+            sheet.write(row, 49, line['administrativo_total'], registros_tabla)
+            sheet.write(row, 50, line['administrativo_por_cobrar'], registros_tabla)
+            sheet.write(row, 51, line['iva_pagado'], registros_tabla)
+            sheet.write(row, 52, line['iva_total'], registros_tabla)
+            sheet.write(row, 53, line['iva_por_cobrar'], registros_tabla)
+            sheet.write(row, 54, line['sum_adm_iva_total'], registros_tabla)
 
 
             row+=1

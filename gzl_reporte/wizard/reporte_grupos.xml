@@ -12,6 +12,8 @@
                             <field name="estado_deuda"/>
                             <field name="supervisor"/>
                             <field name="tipo_de_contrato"/>
+                            <field name="state"/>
+                            <field name="jefe_zona"/>
                         </group>                    
                     </group>                        
                     <footer>
