@@ -72,7 +72,7 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
                                     <group > 
-                                        <field name="vatAdjudicado" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}" force_save="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
+                                        <field name="vatAdjudicado" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}" force_save="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}'/>
                                         <field name="fechaNacimientoAdj" force_save="1" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}"/>
                                         <field name="estadoCivilAdj" force_save="1" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
