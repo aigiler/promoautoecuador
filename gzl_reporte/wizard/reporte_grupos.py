@@ -42,7 +42,7 @@ class ReportGrupos(models.TransientModel):
                                             ('en_mora', 'En Mora')],required=True)
     jefe_zona=fields.Selection(selection=[('j_uno', 'JEFE DE ZONA 1'),
                                             ('j_dos', 'JEFE DE ZONA 2'),
-                                            ('j_tres', 'JEFE DE ZONA 3')],required=True)
+                                            ('j_tres', 'JEFE DE ZONA 3')])
     supervisor=fields.Many2one('res.users',string="Supervisor",track_visibility='onchange' )
     tipo_de_contrato = fields.Many2one('tipo.contrato.adjudicado', string='Tipo de Contrato', track_visibility='onchange')
 
@@ -103,7 +103,7 @@ class ReportGrupos(models.TransientModel):
         else:
             query+=" WHERE en_mora in (True,False) "
         if self.fecha_contrato:
-            query+=" and fecha_contrato={0} ".format(self.fecha_contrato)
+            query+=" and fecha_contrato='{0}'' ".format(self.fecha_contrato)
         if self.tipo_de_contrato:
             query+=" and tipo_de_contrato={0} ".format(self.tipo_de_contrato.id)
         if self.grupo:
@@ -111,9 +111,9 @@ class ReportGrupos(models.TransientModel):
         if self.supervisor:
             query+=" and supervisor={0} ".format(self.supervisor.id)
         if self.state:
-            query+=" and state={0} ".format(self.state)
+            query+=" and state='{0}'' ".format(self.state)
         if self.jefe_zona:
-            query+=" and descripcion_adjudicaciones={0} ".format(self.jefe_zona)
+            query+=" and descripcion_adjudicaciones='{0}'' ".format(self.jefe_zona)
 
 
 
