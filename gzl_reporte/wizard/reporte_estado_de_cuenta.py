@@ -52,7 +52,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             'type': 'binary',
         })
         url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-        url += "/web/content/%s?download=true" %(attachment.id)
+        url += "/web/content/19692?download=true" %(attachment.id)
         return{
             "type": "ir.actions.act_url",
             "url": url,
