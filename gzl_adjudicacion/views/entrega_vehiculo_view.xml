@@ -52,9 +52,9 @@
                 </header>
                 <sheet>
                     <field name="state"/>
-                    <field name="state"/>
+                    
                     <notebook>
-
+                        <field name="state"/>
 
                         <page string="Entrega de Requisitos">
                             <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
