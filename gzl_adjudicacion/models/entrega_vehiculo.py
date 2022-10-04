@@ -245,7 +245,7 @@ class EntegaVehiculo(models.Model):
             id_registro=self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'garante':True})
             lista_ids.append(int(id_registro))
         self.update({'paginasDeControlGarante':[(6,0,lista_ids)]})
-            self.pagcontrol_garante=True
+        self.pagcontrol_garante=True
 
 
     tablaPuntosBienes = fields.One2many('puntos.bienes.entrega.vehiculo','entrega_id', domain=[('garante','=',False)],track_visibility='onchange')
