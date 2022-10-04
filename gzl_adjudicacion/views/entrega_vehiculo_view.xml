@@ -51,6 +51,8 @@
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
+                    <field name="estado"/>
+                    <field name="state"/>
                     <notebook>
 
 
