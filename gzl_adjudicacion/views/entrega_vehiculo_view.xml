@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <tree string="Entrega Vehiculo">
                 <field name="secuencia" />
-                <field name="estado" />
+                <field name="state" />
                 <field name="nombreSocioAdjudicado" />
                 <field name="active"/>
             </tree>
@@ -51,7 +51,7 @@
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
-                    <field name="estado"/>
+                    <field name="state"/>
                     <field name="state"/>
                     <notebook>
 
@@ -67,24 +67,24 @@
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <group>  
-                                        <field name="nombreSocioAdjudicado" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}" required="1" options="{'no_open': True, 'no_create': True}" />
-                                        <field name="contrato_id"  attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}" domain="[('cliente', '=', nombreSocioAdjudicado),('state','=','activo')]" required="1" options="{'no_open': True, 'no_create': True}" />
+                                        <field name="nombreSocioAdjudicado" attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}" required="1" options="{'no_open': True, 'no_create': True}" />
+                                        <field name="contrato_id"  attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}" domain="[('cliente', '=', nombreSocioAdjudicado),('state','=','activo')]" required="1" options="{'no_open': True, 'no_create': True}" />
                                         <field name="garante" invisible="1"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
                                     <group > 
-                                        <field name="vatAdjudicado" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}" force_save="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}'/>
-                                        <field name="fechaNacimientoAdj" force_save="1" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}"/>
-                                        <field name="estadoCivilAdj" force_save="1" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="vatAdjudicado" attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}" force_save="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}'/>
+                                        <field name="fechaNacimientoAdj" force_save="1" attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}"/>
+                                        <field name="estadoCivilAdj" force_save="1" attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
 
                                 </div>
                                 <div class="col-xs-4" >
                                     <group > 
-                                        <field name="codigoAdjudicado" force_save="1" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}" options="{'no_create': True, 'no_open': True}"/>
-                                        <field name="edadAdjudicado" force_save="1" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}" string="Edad"/>
-                                        <field name="cargasFamiliares"  attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}" force_save="1" />
+                                        <field name="codigoAdjudicado" force_save="1" attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="edadAdjudicado" force_save="1" attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}" string="Edad"/>
+                                        <field name="cargasFamiliares"  attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}" force_save="1" />
                                     </group>
                                 </div>
                             </div>
@@ -92,35 +92,35 @@
                             <div class="row" style="border: 1px solid black;">
                                     <div class="col-xs-12 col-md-12">
                                         <group>
-                                            <field name="nombreConyuge" force_save="1" string="Nombre del Cónyuge" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}"/>
+                                            <field name="nombreConyuge" force_save="1" string="Nombre del Cónyuge" attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}"/>
                                         </group>
                                     </div>
                                     <div class="col-xs-12 col-sm-4">
                                         <group> 
-                                            <field name="vatConyuge" force_save="1" string="Cedula de Ciudadanía" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}"/>
-                                            <field name="estadoCivilConyuge" string="Estado Civil" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}"/>
+                                            <field name="vatConyuge" force_save="1" string="Cedula de Ciudadanía" attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}"/>
+                                            <field name="estadoCivilConyuge" string="Estado Civil" attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}"/>
                                         </group>
                                     </div>
                                     <div class="col-xs-4">
                                         <group> 
-                                            <field name="fechaNacimientoConyuge" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}" force_save="1" string="Fecha de Nacimiento"/>
-                                            <field name="edadConyuge" force_save="1" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}" options="{'no_create': True, 'no_open': True}"/>
+                                            <field name="fechaNacimientoConyuge" attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}" force_save="1" string="Fecha de Nacimiento"/>
+                                            <field name="edadConyuge" force_save="1" attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}" options="{'no_create': True, 'no_open': True}"/>
                                         </group>
                                     </div>
                             </div>
                             <separator class="text-center fw-bold" string="DATOS DOMICILIARIOS"/>
                             <div class="row" style="border: 1px solid black;">
-                                <field name="referenciaDomiciliaria" widget="pad" force_save="1" string='Referencias indican:' attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}"/>
+                                <field name="referenciaDomiciliaria" widget="pad" force_save="1" string='Referencias indican:' attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}"/>
                             </div>
                             <separator class="text-center fw-bold" string="DATOS LABORALES"/>
                             <div class="row" style="border: 1px solid black;">
-                                <field name="referenciasLaborales" force_save="1" widget="pad" string='Referencias indican:' attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}"/>
+                                <field name="referenciasLaborales" force_save="1" widget="pad" string='Referencias indican:' attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}"/>
                             </div>
                             <separator class="text-center" string="PATRIMONIO"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-sm-8"> 
-                                    <field name="montoAhorroInversiones" force_save="1" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}" nolabel="1">
-                                        <tree create='0' delete='0' editable='top' attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}">
+                                    <field name="montoAhorroInversiones" force_save="1" attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}" nolabel="1">
+                                        <tree create='0' delete='0' editable='top' attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}">
                                             <field name="patrimonio_id" readonly='1'/>
                                             <field name="garante" invisible='1'/>
                                             <field name="valor" sum="valor" />
@@ -129,9 +129,9 @@
                                 </div>
                                 <div class="col-xs-4">
                                     <group> 
-                                        <field name="institucionFinanciera" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}" force_save="1" />
-                                        <field name="direccion" force_save="1" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}"/>
-                                        <field name="direccion1" force_save="1" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}"/>
+                                        <field name="institucionFinanciera" attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}" force_save="1" />
+                                        <field name="direccion" force_save="1" attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}"/>
+                                        <field name="direccion1" force_save="1" attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}"/>
                                         <field name="placa"/>
                                     </group>
                                 </div>
@@ -147,13 +147,13 @@
                                             <text>Score</text>
                                         </td>
                                         <td class="col-xs-12 col-sm-3"> 
-                                            <field name="scoreBuroCredito" nolabel="1" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}"/>
+                                            <field name="scoreBuroCredito" nolabel="1" attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}"/>
                                         </td>
                                     </tr>
                                 </tbody>
                             </div>
                             <div class="col-xs-12 col-sm-12" > 
-                                <field name="paginasDeControl" nolabel="1" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}">
+                                <field name="paginasDeControl" nolabel="1" attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}">
                                     <tree create='0' delete='0' editable='top'>
                                         <field name="pagina_id" readonly='1'/>
                                          <field name="garante" invisible='1'/>
@@ -164,7 +164,7 @@
                             </div>
                             <separator/>
                             <separator class="text-center" string="OBSERVACIONES"/>
-                            <div class="row"><field name="observaciones" attrs="{'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}"/>
+                            <div class="row"><field name="observaciones" attrs="{'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}"/>
                             </div>
                             <separator/>
 
@@ -172,12 +172,12 @@
 
 
                                                 <!-- CALIFICADOR DE COMPRA -->
-                        <page string="Calificador de Compra" attrs="{'readonly':[('estado', 'not in', ('calificador_compra'))]}">
+                        <page string="Calificador de Compra" attrs="{'readonly':[('state', 'not in', ('calificador_compra'))]}">
                             <separator class="text-center" string="CALIFICADOR PARA COMPRA DEL BIEN"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <group>
-                                        <field name="nombreSocioAdjudicado" readonly="1" force_save="1" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
+                                        <field name="nombreSocioAdjudicado" readonly="1" force_save="1" attrs="{'readonly':[('state', 'in', ('informe_credito_cobranza'))]}"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-12 col-sm-4" > 
@@ -459,7 +459,7 @@
 
 
 
-                        <page string="Informe de Credito y Cobranza Garante" attrs="{'invisible':[('aplicaGarante', 'not in',['sí','SI'])],'readonly':[('estado', 'not in', ('informe_de_créditos_y_cobranzas'))]}">
+                        <page string="Informe de Credito y Cobranza Garante" attrs="{'invisible':[('aplicaGarante', 'not in',['sí','SI'])],'readonly':[('state', 'not in', ('informe_de_créditos_y_cobranzas'))]}">
                             <separator class="text-center" string="ANTECEDENTES DEL Garante"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
@@ -470,7 +470,7 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
                                     <group> 
-                                        <field force_save="1" name="vatGarante" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
+                                        <field force_save="1" name="vatGarante" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}' attrs="{'readonly':[('state', 'in', ('informe_credito_cobranza'))]}"/>
                                         <field force_save="1"  name="fechaNacimientoGarante" string="Fecha de Nacimiento" readonly="0"/>
                                         <field force_save="1" name="estadoCivilGarante" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
@@ -489,13 +489,13 @@
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <group>
-                                        <field force_save="1" name="nombreConyugeGarante" string="Nombre del Cónyuge" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
+                                        <field force_save="1" name="nombreConyugeGarante" string="Nombre del Cónyuge" attrs="{'readonly':[('state', 'in', ('informe_credito_cobranza'))]}"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
                                     <group> 
-                                        <field force_save="1" name="vatConyugeGarante" string="Cedula de Ciudadanía" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
-                                        <field force_save="1" name="estadoCivilConyugeGarante" string="Estado Civil" attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
+                                        <field force_save="1" name="vatConyugeGarante" string="Cedula de Ciudadanía" attrs="{'readonly':[('state', 'in', ('informe_credito_cobranza'))]}"/>
+                                        <field force_save="1" name="estadoCivilConyugeGarante" string="Estado Civil" attrs="{'readonly':[('state', 'in', ('informe_credito_cobranza'))]}"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-4">
@@ -507,11 +507,11 @@
                             </div>
                             <separator class="text-center fw-bold" string="DATOS DOMICILIARIOS"/>
                             <div class="row" style="border: 1px solid black;">
-                                <field force_save="1" name="referenciaDomiciliariaGarante" widget="pad" string='Referencias indican:' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
+                                <field force_save="1" name="referenciaDomiciliariaGarante" widget="pad" string='Referencias indican:' attrs="{'readonly':[('state', 'in', ('informe_credito_cobranza'))]}"/>
                             </div>
                             <separator class="text-center fw-bold" string="DATOS LABORALES"/>
                             <div class="row" style="border: 1px solid black;">
-                                <field name="referenciasLaboralesGarante" force_save="1" widget="pad" string='Referencias indican:' attrs="{'readonly':[('estado', 'in', ('informe_credito_cobranza'))]}"/>
+                                <field name="referenciasLaboralesGarante" force_save="1" widget="pad" string='Referencias indican:' attrs="{'readonly':[('state', 'in', ('informe_credito_cobranza'))]}"/>
                             </div>
                             <separator class="text-center" string="PATRIMONIO"/>
                             <div class="row" style="border: 1px solid black;">
@@ -568,7 +568,7 @@
 
                         </page>
 
-                        <page string="Liquidación Orden de Compra" attrs="{'readonly':[('estado', 'not in', ('liquidacion_orden_compra'))]}">
+                        <page string="Liquidación Orden de Compra" attrs="{'readonly':[('state', 'not in', ('liquidacion_orden_compra'))]}">
                             <separator class="text-center" string="LIQUIDACION DE COMPRA"/>
                             <div style="border: 1px solid black;">
                                 <div class="row">
@@ -790,7 +790,7 @@
 
                              <!-- ORDEN DE COMPRA -->
 
-                        <page string ="Orden de Compra" attrs="{'readonly':[('estado', 'not in', ('orden_compra'))]}">
+                        <page string ="Orden de Compra" attrs="{'readonly':[('state', 'not in', ('orden_compra'))]}">
                             <separator class="text-center" string="ORDEN DE COMPRA"/>
                            <div class="col-xs-12 col-sm-9">
                                 <table style=" border-collapse: collapse;width:100%">
@@ -816,7 +816,7 @@
 
 
 
-                        <page string ="Información de Vehículo" attrs="{'readonly':[('estado', 'not in', ('orden_compra'))]}">
+                        <page string ="Información de Vehículo" attrs="{'readonly':[('state', 'not in', ('orden_compra'))]}">
                             <separator class="text-center" string="INFORMACIÓN DE VEHICULO"/>
                             <div class="col-xs-12 col-md-12">
                                 <group>
@@ -843,7 +843,7 @@
                         </page> 
 
                             
-                        <page string ="Facturación y Documentos" attrs="{'readonly':[('estado', 'not in', ('orden_compra'))]}">
+                        <page string ="Facturación y Documentos" attrs="{'readonly':[('state', 'not in', ('orden_compra'))]}">
                             <separator class="text-center" string="Facturación"/>
 
                             <div class="col-xs-12 col-md-12">
@@ -955,7 +955,7 @@
 
                         </page>
 
-                        <page string ="Pago de Matric. Seguro y Rastreo" attrs="{'readonly':[('estado', 'not in', ('orden_compra'))]}">
+                        <page string ="Pago de Matric. Seguro y Rastreo" attrs="{'readonly':[('state', 'not in', ('orden_compra'))]}">
                             <separator class="text-center" string="PAGO DE MATRIC. SEGURO Y RASTREO"/>
                             <div class="col-xs-12 col-md-12">
                                 <group>
@@ -968,7 +968,7 @@
                             
                         </page> 
 
-                        <page string ="Solicitud de Pago" attrs="{'readonly':[('estado', 'not in', ('orden_compra'))]}">
+                        <page string ="Solicitud de Pago" attrs="{'readonly':[('state', 'not in', ('orden_compra'))]}">
                             <separator class="text-center" string="SOLICITUD DE PAGO"/>
                             <div class="col-xs-12 col-md-12">
                                 <group>
@@ -979,7 +979,7 @@
                             
                         </page> 
 
-                        <page string ="Pago de Vehículo" attrs="{'readonly':[('estado', 'not in', ('orden_compra'))]}">
+                        <page string ="Pago de Vehículo" attrs="{'readonly':[('state', 'not in', ('orden_compra'))]}">
                             <separator class="text-center" string="PAGO DE VEHÍCULO"/>
                             <div class="col-xs-12 col-md-12">
                                 <group>
@@ -992,7 +992,7 @@
 
 
 
-                        <page string ="Revisiones Generales" attrs="{'readonly':[('estado', 'not in', ('orden_compra'))]}">
+                        <page string ="Revisiones Generales" attrs="{'readonly':[('state', 'not in', ('orden_compra'))]}">
                             <separator class="text-center" string="REVISIONES GENERALES"/>
                             <div class="col-xs-12 col-md-12">
                                 <group>
@@ -1008,7 +1008,7 @@
                             <group>
                                 <group>
 
-                                    <field name="estado"  />
+                                    <field name="state"  />
                                 </group>
                             </group>
                         </page>
