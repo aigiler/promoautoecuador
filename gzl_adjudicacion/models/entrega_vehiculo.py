@@ -184,6 +184,23 @@ class EntegaVehiculo(models.Model):
                 id_registro=self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'garante':False})
                 lista_ids.append(int(id_registro))
             self.update({'montoAhorroInversiones':[(6,0,lista_ids)]})
+        # if self.garante and not self.ahorro_garante:
+        #     lista_ids=[]
+        #     for patrimonio in obj_patrimonio:
+        #         id_registro=self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'garante':True})
+        #         lista_ids.append(int(id_registro))
+        #     self.update({'montoAhorroInversionesGarante':[(6,0,lista_ids)]})
+        #     self.ahorro_garante=True
+
+    def llenar_tabla_garante(self):
+        obj_patrimonio=self.env['items.patrimonio'].search([])  
+        
+        # if not self.montoAhorroInversiones:
+        #     lista_ids=[]
+        #     for patrimonio in obj_patrimonio:
+        #         id_registro=self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'garante':False})
+        #         lista_ids.append(int(id_registro))
+        #     self.update({'montoAhorroInversiones':[(6,0,lista_ids)]})
         if self.garante and not self.ahorro_garante:
             lista_ids=[]
             for patrimonio in obj_patrimonio:
@@ -205,6 +222,23 @@ class EntegaVehiculo(models.Model):
                 id_registro=self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'garante':False})
                 lista_ids.append(int(id_registro))
             self.update({'paginasDeControl':[(6,0,lista_ids)]})
+        # if not self.pagcontrol_garante and self.garante:
+        #     lista_ids=[]
+        #     for paginas in obj_paginas_de_control:
+        #         id_registro=self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'garante':True})
+        #         lista_ids.append(int(id_registro))
+        #     self.update({'paginasDeControlGarante':[(6,0,lista_ids)]})
+        #     self.pagcontrol_garante=True
+
+
+    def llenar_tabla_paginas_garante(self):
+        obj_paginas_de_control=self.env['paginas.de.control'].search([])
+        # if not self.paginasDeControl:
+        #     lista_ids=[]
+        #     for paginas in obj_paginas_de_control:
+        #         id_registro=self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'garante':False})
+        #         lista_ids.append(int(id_registro))
+        #     self.update({'paginasDeControl':[(6,0,lista_ids)]})
         if not self.pagcontrol_garante and self.garante:
             lista_ids=[]
             for paginas in obj_paginas_de_control:
@@ -212,6 +246,7 @@ class EntegaVehiculo(models.Model):
                 lista_ids.append(int(id_registro))
             self.update({'paginasDeControlGarante':[(6,0,lista_ids)]})
             self.pagcontrol_garante=True
+
 
     tablaPuntosBienes = fields.One2many('puntos.bienes.entrega.vehiculo','entrega_id', domain=[('garante','=',False)],track_visibility='onchange')
     puentes_bienes=fields.Boolean(default=False)
@@ -953,6 +988,13 @@ class EntegaVehiculo(models.Model):
 
         transacciones.create(dct)
 
+
+    @api.onchange("nombreGarante")
+    @api.constrains("nombreGarante")
+    @api.depends("nombreGarante")
+    def llenar_datos(self):
+        self.llenar_tabla_garante()
+        self.llenar_tabla_paginas_garante()
 
 
 
