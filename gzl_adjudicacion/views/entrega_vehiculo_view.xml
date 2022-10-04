@@ -51,10 +51,9 @@
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
-                    <field name="state"/>
                     
+
                     <notebook>
-                        <field name="state"/>
 
                         <page string="Entrega de Requisitos">
                             <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
@@ -63,6 +62,8 @@
 
                     
                         <page string="Informe de Credito y Cobranza" >
+                            <field name="state" invisible="1"/>
+                            <field name="state" invisible="1"/>
                             <separator class="text-center" string="ANTECEDENTES DEL ASOCIADO"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
