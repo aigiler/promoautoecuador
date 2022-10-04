@@ -201,13 +201,13 @@ class EntegaVehiculo(models.Model):
         #         id_registro=self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'garante':False})
         #         lista_ids.append(int(id_registro))
         #     self.update({'montoAhorroInversiones':[(6,0,lista_ids)]})
-        if self.garante and not self.ahorro_garante:
-            lista_ids=[]
-            for patrimonio in obj_patrimonio:
-                id_registro=self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'garante':True})
-                lista_ids.append(int(id_registro))
-            self.update({'montoAhorroInversionesGarante':[(6,0,lista_ids)]})
-            self.ahorro_garante=True
+        #if self.garante and not self.ahorro_garante:
+        lista_ids=[]
+        for patrimonio in obj_patrimonio:
+            id_registro=self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'garante':True})
+            lista_ids.append(int(id_registro))
+        self.update({'montoAhorroInversionesGarante':[(6,0,lista_ids)]})
+        #    self.ahorro_garante=True
 
     # REVISION EN PAGINAS DE CONTROL
     paginasDeControl = fields.One2many('paginas.de.control.entrega.vehiculo','entrega_id',domain=[('garante','=',False)],  track_visibility='onchange')
@@ -239,12 +239,12 @@ class EntegaVehiculo(models.Model):
         #         id_registro=self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'garante':False})
         #         lista_ids.append(int(id_registro))
         #     self.update({'paginasDeControl':[(6,0,lista_ids)]})
-        if not self.pagcontrol_garante and self.garante:
-            lista_ids=[]
-            for paginas in obj_paginas_de_control:
-                id_registro=self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'garante':True})
-                lista_ids.append(int(id_registro))
-            self.update({'paginasDeControlGarante':[(6,0,lista_ids)]})
+        #if not self.pagcontrol_garante and self.garante:
+        lista_ids=[]
+        for paginas in obj_paginas_de_control:
+            id_registro=self.env['paginas.de.control.entrega.vehiculo'].create({'pagina_id':paginas.id,'garante':True})
+            lista_ids.append(int(id_registro))
+        self.update({'paginasDeControlGarante':[(6,0,lista_ids)]})
             self.pagcontrol_garante=True
 
 
