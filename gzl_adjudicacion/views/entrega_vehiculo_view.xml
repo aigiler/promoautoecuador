@@ -796,7 +796,7 @@
                             <div style="border: 1px solid black;">
                                 <div class="col-xs-12 col-sm-12">
                                     <group>
-                                        <field name="nombreConsesionario" string="Nombre del Concesionario/PATIOS" attrs="{'readonly':[('estado', 'not in',['liquidacion_orden_compra'])]}"  domain="[('tipo', '=', 'concesionario')]" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="nombreConsesionario" string="Nombre del Concesionario/PATIOS" attrs="{'readonly':[('estado', 'not in',['liquidacion_orden_compra'])]}"  domain="[('tipo', 'in', ['concesionario','patio','tercero'])]" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
                                 </div>
                             </div>
