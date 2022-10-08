@@ -910,7 +910,7 @@
                                                 <field name="compras_terceros" invisible="0"/>
                                             </td>
                                             <td attrs="{'invisible':[('compras_terceros', '=',False)],'required':[('compras_terceros','=',True)]}">
-                                                <text>Documentos del Garante</text>
+                                                <text>Documentos Habilitantes</text>
                                             </td>
                                             <td attrs="{'invisible':[('compras_terceros', '=',False)]}">
                                                 <field name="archivo_habilitantes" invisible="0"/>
@@ -926,17 +926,17 @@
                                                 <button type="object" string="Generar OC" name="create_purchase_order" class="btn btn-primary o_invoice_new"/>
                                             </td>
 
-                                            <td>
+                                            <td  attrs="{'invisible':[('correo_id', '=',False)]}">
                                                 <text>Documento OC</text>
                                             </td>
-                                            <td>
-                                                <field name="correo_id" invisible="0"/>
+                                            <td attrs="{'invisible':[('correo_id', '=',False)]}">
+                                                <field name="correo_id" invisible="0" />
                                                 
                                             </td>
 
 
                                             <td>
-                                                <button type="object" string="Enviar Correo" name="enviar_corre" class="btn btn-primary o_invoice_new"/>
+                                                <button type="object" string="Enviar Correo" name="enviar_correo" class="btn btn-primary o_invoice_new"/>
                                             </td>
 
                                             
@@ -986,13 +986,14 @@
                             <div class="col-xs-12 col-md-12">
                                 <group>
                                     <field name="factura_id" attrs="{'readonly':[('estado', 'not in',['firma'])]}"/>
+                                    <field name="reserva_id" attrs="{'readonly':[('estado', 'not in',['firma'])],'invisible':['reserva_id','=',False]}"/>
+
                                     <button name="generar_contrato_reserva" string="Generar Contrato Reserva" type="object"/>
-                                    
                             </group>
                             </div>
                             
                         </page> 
-                        <page string="Matriculacion, Rastreo, Seguro"  attrs="{'invisible':[('estado', 'in',['borrador','liquidacion_orden_compra','orden_compra','factura','firma'])]}">
+                        <page string="Rastreo, Seguro"  attrs="{'invisible':[('estado', 'in',['borrador','liquidacion_orden_compra','orden_compra','factura','firma'])]}">
                             <separator class="text-center" string="OFRECIDOS POR LA EMPRESA"/>
                             <div class="col-xs-12 col-sm-9">
                                 <table style=" border-collapse: collapse;width:100%">
@@ -1052,6 +1053,13 @@
                                             <td attrs="{'invisible':[('seguro', '=', False)]}">
                                                 <field name="fecha_vencimiento_seguro" attrs="{'required':[('seguro', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
                                             </td>
+                                            <td attrs="{'invisible':[('seguro', '=', False)]}">
+                                                <text>Proveedor Seguro</text>
+                                            </td>
+                                            <td/>
+                                            <td attrs="{'invisible':[('seguro', '=', False)]}">
+                                                <field name="proveedor_seguro" attrs="{'required':[('seguro', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
+                                            </td>
                                         </tr>
 
                                         <tr>
@@ -1083,6 +1091,13 @@
                                             <td attrs="{'invisible':[('rastreo', '=', False)]}">
                                                 <field name="fecha_vencimiento_rastreo" attrs="{'required':[('rastreo', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
                                             </td>
+                                            <td attrs="{'invisible':[('rastreo', '=', False)]}">
+                                                <text>Proveedor</text>
+                                            </td>
+                                            <td/>
+                                            <td attrs="{'invisible':[('rastreo', '=', False)]}">
+                                                <field name="proveedor_rastreo" attrs="{'required':[('rastreo', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
+                                            </td>
 
                                         </tr>
                                        
@@ -1110,6 +1125,8 @@
                                 <group>
                                     <field name="documentos_pagos"  attrs="{'readonly':[('estado', 'not in',['orden_salida'])]}"/>
                                     
+                                    create_orden_Salida
+
                             </group>
                             </div>
                             

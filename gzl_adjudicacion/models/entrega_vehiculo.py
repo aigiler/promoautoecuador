@@ -114,6 +114,7 @@ class EntegaVehiculo(models.Model):
 
     nombreSocioAdjudicado = fields.Many2one('res.partner', string="Nombre del Socio Adj.", track_visibility='onchange')
     correo_id=fields.Many2one("ir.attachment")
+    reserva_id=fields.Many2one("ir.attachment",string="Contrato de Reserva")
 
     @api.onchange("nombreSocioAdjudicado")
     @api.constrains("nombreSocioAdjudicado")
@@ -1041,12 +1042,12 @@ class EntegaVehiculo(models.Model):
     plazo_rastreo = fields.Integer(string="Plazo", track_visibility="onchange")
     fecha_inicio_rastreo = fields.Date(string="Fecha Inicio", track_visibility="onchange")
     fecha_vencimiento_rastreo = fields.Date(string="Fecha Vencimiento", track_visibility="onchange")
-
+    proveedor_rastreo=fields.Many2one("res.partner")
     seguro = fields.Boolean(string="Seguro",track_visibility="onchange")
     plazo_seguro = fields.Integer(string="Plazo", track_visibility="onchange")
     fecha_inicio_seguro = fields.Date(string="Fecha Inicio", track_visibility="onchange")
     fecha_vencimiento_seguro = fields.Date(string="Fecha Vencimiento", track_visibility="onchange")
-
+    proveedor_seguro=fields.Many2one("res.partner")
     revisiones_generales=fields.Boolean(string="Revisiones estéticas y demás",default=False)
     contrato_id=fields.Many2one("contrato", string="Contrato")
 
@@ -1114,19 +1115,11 @@ class EntegaVehiculo(models.Model):
 
     url_doc = fields.Char('Url doc') 
     def generar_contrato_reserva(self):
-        view_id = self.env.ref('gzl_reporte.contrato_reserva_form').id
-        return {'type': 'ir.actions.act_window',
-                'name': 'Contrato de Reserva',
-                'res_model': 'contrato.reserva',
-                'target': 'new',
-                'view_mode': 'form',
-                'views': [[view_id, 'form']],
-                'context': {
-                    'default_contrato_id': self.contrato_id.id,
-                    'default_partner_id':self.nombreSocioAdjudicado.id,
-                    'default_entrega_id':self.id,
-                }
-        }
+        reserva_id=self.env['contrato.reserva'].create({'contrato_id':self.contrato_id.id,'partner_id':self.nombreSocioAdjudicado.id,
+                                            'entrega_id':self.id})
+        dct=reserva_id.print_report_xls()
+        self.reserva_id=dct["documento"]["id"]
+       
 
     @api.model
     def year_selection(self):
