@@ -646,7 +646,7 @@ class EntegaVehiculo(models.Model):
 
 #####Funcion para crear purchase order
     def create_purchase_order(self):
-        plantilla_id=self.env['informe.credito.cobranza'].create({'clave':"ordencompra",
+        plantilla_id=self.env['informe.credito.cobranza'].create({'clave':"orden_compra",
                                                     'entrega_vehiculo_id':self.id})
         dct=plantilla_id.print_report_xls()
         self.url_doc=dct["url"]
