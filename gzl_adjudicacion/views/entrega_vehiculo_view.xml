@@ -812,9 +812,9 @@
                                     <field name="observacionesLiquidacion" attrs="{'readonly':[('estado', 'not in',['liquidacion_orden_compra'])]}"  nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                 </div>
                             </div>
-
                         </page>
-                          <page string="Revisiones Generales"  attrs="{'invisible':[('estado', 'in',['borrador'])]}">
+                        
+                        <page string="Revisiones Generales"  attrs="{'invisible':[('estado', 'in',['borrador'])]}">
                             <separator class="text-center" string="REVISIONES GENERALES"/>
                             <div class="col-xs-12 col-sm-9">
                                 <table style=" border-collapse: collapse;width:100%">
@@ -872,12 +872,7 @@
                                     </tbody>
                                      </table>
                                      </div>
-
-                         
                         </page> 
-
-
-                             <!-- ORDEN DE COMPRA -->
 
                         <page string="Orden de Compra"  attrs="{'invisible':[('estado', 'not in',['orden_compra'])]}">
                             <separator class="text-center" string="ORDEN DE COMPRA"/>
@@ -975,8 +970,7 @@
                                     <field name="tonelajeVehiculo" placeholder="TONELAJE" attrs="{'readonly':[('estado', 'not in',['factura'])]}"/>
                                     <field name="numEjesVehiculo" attrs="{'readonly':[('estado', 'not in',['factura'])]}"/>
                             </group>
-                            </div>
-                            
+                            </div>            
                         </page> 
 
                             
@@ -998,30 +992,6 @@
                             <div class="col-xs-12 col-sm-9">
                                 <table style=" border-collapse: collapse;width:100%">
                                 <tbody>
-                                         <!--  <tr>
-                                            <td>
-                                                <text>Matriculación</text>
-                                            </td>
-                                            <td/>
-                                            <td>
-                                                <field name="matriculacion" attrs="{'readonly':[('estado', 'not in',['matriculacion'])]}"/>
-                                            </td>
-                                            <td attrs="{'invisible':[('matriculacion', '=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}">
-                                                <text>Plazo</text>
-                                            </td>
-                                            <td/>
-                                            <td attrs="{'invisible':[('matriculacion', '=', False)]}">
-                                                <field name="plazo_matriculacion" attrs="{'required':[('matriculacion', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
-                                            </td>
-                                            <td attrs="{'invisible':[('matriculacion', '=', False)]}">
-                                                <text>Fecha Vencimiento</text>
-                                            </td>
-                                            <td/>
-                                            <td attrs="{'invisible':[('matriculacion', '=', False)]}">
-                                                <field name="fecha_vencimiento_matriculacion" attrs="{'required':[('matriculacion', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
-                                            </td>
-                                        </tr>-->
-
                                         <tr>
                                             <td>
                                                 <text>Seguro</text>
@@ -1124,8 +1094,9 @@
                             <div class="col-xs-12 col-md-12">
                                 <group>
                                     <field name="documentos_pagos"  attrs="{'readonly':[('estado', 'not in',['orden_salida'])]}"/>
+                                    <field name="salida_id"  attrs="{'readonly':[('estado', 'not in',['orden_salida'])],'invisible':[('salida_id', '=',False)]}"/>
                                     
-                                    create_orden_Salida
+                                    <button type="object" string="Generar Orden de Salida" name="create_orden_Salida" class="btn btn-primary o_invoice_new"/>
 
                             </group>
                             </div>

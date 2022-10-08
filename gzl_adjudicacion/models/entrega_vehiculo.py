@@ -115,6 +115,8 @@ class EntegaVehiculo(models.Model):
     nombreSocioAdjudicado = fields.Many2one('res.partner', string="Nombre del Socio Adj.", track_visibility='onchange')
     correo_id=fields.Many2one("ir.attachment")
     reserva_id=fields.Many2one("ir.attachment",string="Contrato de Reserva")
+    salida_id=fields.Many2one("ir.attachment")
+
 
     @api.onchange("nombreSocioAdjudicado")
     @api.constrains("nombreSocioAdjudicado")
@@ -643,6 +645,15 @@ class EntegaVehiculo(models.Model):
             if l.nombreConsesionario:
                 porcentaje=l.nombreConsesionario.comisionFacturaConcesionario
         l.comisionFacturaConcesionario=porcentaje
+
+
+
+    def create_orden_Salida(self):
+        plantilla_id=self.env['informe.credito.cobranza'].create({'clave':"orden_salida",
+                                                    'entrega_vehiculo_id':self.id})
+        dct=plantilla_id.print_report_xls()
+        self.salida_id=dct["documento"]["id"]
+
 
 
 
