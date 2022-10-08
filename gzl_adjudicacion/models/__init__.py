@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from . import socio
 from . import tipo_contrato
 from . import grupo_adjudicado
 from . import transacciones_grupos
@@ -15,3 +14,4 @@ from . import items_patrimonio
 from . import puntos_bienes
 from . import paginas_de_control
 from . import devolucion_monto_vehiculo
+from . import socio
