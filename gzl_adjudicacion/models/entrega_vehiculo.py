@@ -653,6 +653,7 @@ class EntegaVehiculo(models.Model):
 
         self.ensure_one()
         self.correo_id=dct["documento"]["id"]
+        ir_model_data = self.env['ir.model.data']
         template_id =  template_id = ir_model_data.get_object_reference('gzl_adjudicacion', "email_orden_compra")[1]
         lang = self.env.context.get('lang')
         template = self.env['mail.template'].browse(template_id)
