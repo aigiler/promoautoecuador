@@ -67,7 +67,7 @@ class DevolucionMonto(models.Model):
         ('notificacion', 'Notificacion Cliente'),
         ('liquidacion', 'Liquidacion de vendedor'),
         ('rechazado', 'Rechazado')
-    ], string='Estado', default='borrador', track_visibility='onchange')
+    ], string='Estado', default='postventa', track_visibility='onchange')
 
     tipo_devolucion = fields.Selection(selection=[
         ('DEVOLUCION DE VALORES SIN FIRMAS', 'DEVOLUCION DE VALORES SIN FIRMAS'),

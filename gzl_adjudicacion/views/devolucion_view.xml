@@ -123,7 +123,7 @@
                             </div>
                         </page>
 
-                        <page string="INFORME DE LEGAL" >
+                        <!-- <page string="INFORME DE LEGAL" >
                         <separator class="text-center" string="DATOS GENERALES"/>
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
@@ -198,7 +198,7 @@
                             </div>
 
                         </page>
-
+ -->
                         <page string="INFORME DE ADJUDICACIONES"  attrs="{'invisible':[('estado', 'in',['postventa'])]}">
                         <separator class="text-center" string="DATOS GENERALES"/>
                         <div class="row" style="border: 1px solid black;">
