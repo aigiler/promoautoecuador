@@ -99,9 +99,11 @@ class EntegaVehiculo(models.Model):
     # datos del socio adjudicado
     nombreGarante = fields.Many2one('res.partner', string="Nombre del Garante", track_visibility='onchange')
     factura_id = fields.Many2one('account.move', string='Factura')
-    archivo = fields.Binary(string='Adjuntar Documento')
+    archivo = fields.Binary(string='Adjuntar Documentos Adjudicado')
     archivo_garante = fields.Binary(string='Adjuntar Documento Garante')
+    archivo_habilitantes = fields.Binary(string='Adjuntar Documento Habilitantes')
 
+    compras_terceros=fields.Boolean(string="Compra a terceros")
 
     documentos_pagos = fields.Binary(string='Adjuntar Documento')
 

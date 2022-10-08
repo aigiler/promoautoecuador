@@ -370,7 +370,7 @@
             <field name="subject">Orden de Compra ${object.name}</field>
             <field name="partner_to"></field>
             <field name="model_id" ref="gzl_adjudicacion.model_entrega_vehiculo"/>
-            <field name="email_to">${object.nombreConcesionario.emailFinanciero},${object.nombreConcesionario.emailContabilidad},${object.nombreConcesionario.emailComercial}</field>
+            <field name="email_to">${object.nombreConsesionario.emailFinanciero},${object.nombreConsesionario.emailContabilidad},${object.nombreConsesionario.emailComercial}</field>
             <field name="body_html"><![CDATA[
 
 <div style="padding:0px;width:600px;margin:auto;background: #FFFFFF repeat top /100%;color:#777777">
