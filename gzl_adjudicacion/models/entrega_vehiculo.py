@@ -670,7 +670,7 @@ class EntegaVehiculo(models.Model):
             'custom_layout': "mail.mail_notification_paynow",
             'proforma': self.env.context.get('proforma', False),
             'force_email': True,
-            'model_description': _("ORDEN DE COMPRA"),
+            'model_description': "ORDEN DE COMPRA",
         }
         return {
             'type': 'ir.actions.act_window',
