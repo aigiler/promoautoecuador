@@ -72,6 +72,12 @@ class EntegaVehiculo(models.Model):
 
     documentos = fields.Many2many('ir.attachment', string='Carga Documentos', track_visibility='onchange')
     active = fields.Boolean(string='Activo', default=True)
+    cuv = fields.Boolean(string='CUV', default=False)
+    documento_cuv=fields.Binary(string="Adjuntar CUV")
+    chequeo_mecanico = fields.Boolean(string='Chequeo Mecánico', default=False)
+    documento_chequeo=fields.Binary(string="Adjuntar Chequeo Mecánico")
+    record_policial = fields.Boolean(string='Récord Policial', default=False)
+    documento_record=fields.Binary(string="Adjuntar Record Policial")
     estado = fields.Selection(selection=[
         ('borrador', 'Borrador'),
         ('revision_documentos', 'Revisión documentos'),
@@ -127,6 +133,7 @@ class EntegaVehiculo(models.Model):
                 l.direccion_trabajoAdj=l.nombreSocioAdjudicado.direccion_trabajo
                 l.telefono_trabajoAdj=l.nombreSocioAdjudicado.telefono_trabajo
                 l.cargoAdj=l.nombreSocioAdjudicado.cargo
+                l.nombre_companiaAdj=l.nombreSocioAdjudicado.nombre_compania
 
     vatAdjudicado = fields.Char(string='Cedula de Ciudadanía',store=True, default='')
 
@@ -320,6 +327,7 @@ class EntegaVehiculo(models.Model):
                 l.direccion_trabajoGar=l.nombreGarante.direccion_trabajo
                 l.telefono_trabajoGar=l.nombreGarante.telefono_trabajo
                 l.cargoGar=l.nombreGarante.cargo
+                l.nombre_companiaGar=l.nombreGarante.nombre_compania
 
 
 
@@ -401,6 +409,9 @@ class EntegaVehiculo(models.Model):
 
     nombreConyugeGarante = fields.Char(string="Nombre del Conyuge", store=True)
 
+
+
+    correo_id=fields.Many2one("mail.compose.message",string="Correo generado")
     @api.constrains("nombreConyugeGarante")
     @api.onchange("nombreConyugeGarante")
     def actualizar_conyuge_gar(self):
@@ -633,17 +644,38 @@ class EntegaVehiculo(models.Model):
 
 #####Funcion para crear purchase order
     def create_purchase_order(self):
-        view_id = self.env.ref('gzl_reporte.informe_credito_cobranza_form').id
-        return {'type': 'ir.actions.act_window',
-                'name': 'ORDEN DE COMPRA',
-                'res_model': 'informe.credito.cobranza',
-                'target': 'new',
-                'view_mode': 'form',
-                'views': [[view_id, 'form']],
-                'context': {
-                    'default_entrega_vehiculo_id': self.id,
-                }
-        }
+        plantilla_id=self.env['informe.credito.cobranza'].create({'clave':"ordencompra",
+                                                    'entrega_vehiculo_id':self.id})
+        dct=plantilla_id.print_report_xls()
+        meeting_ids = [(4, [self.nombreConsesionario.id])] 
+        body="""<div style="margin:0px; padding:0px">
+        <p style="margin:0px; padding:0px; font-size:13px">
+            Hola,
+            <br><br>
+                Buenas tardes, <strong>Orden de Compra generada</strong>
+                   </strong> Está lista para su revisión.
+            <br><br>
+            No dude en ponerse en contacto con nosotros si tiene alguna pregunta.
+            <br>
+        </p>
+    </div>"""
+        correo_id=['mail.compose.message'].create({"partner_ids":[(4, [self.nombreConsesionario.id])],
+                                                    "subject":"Orden de Compra "+self.name,
+                                                    "body":body,
+                                                    "attachment_ids":[(4, [dct["documento"]["id"]])]})
+        self.correo_id=correo_id.id
+
+        # view_id = self.env.ref('gzl_reporte.informe_credito_cobranza_form').id
+        # return {'type': 'ir.actions.act_window',
+        #         'name': 'ORDEN DE COMPRA',
+        #         'res_model': 'informe.credito.cobranza',
+        #         'target': 'new',
+        #         'view_mode': 'form',
+        #         'views': [[view_id, 'form']],
+        #         'context': {
+        #             'default_entrega_vehiculo_id': self.id,
+        #         }
+        # }
 
 
     def create_liq_compra(self):  

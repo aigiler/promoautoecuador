@@ -111,8 +111,8 @@
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <group >  
+                                        <field name="provinciaAdjudicado" string="Provincia" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
                                         <field name="ciudadAdjudicado" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
-                                        <field name="provinciaAdjudicado" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
                                         <field name="direccionAdjudicado"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
                                     </group>
                                 </div>
@@ -527,8 +527,8 @@
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <group >  
+                                        <field name="provinciaGarante" string="Provincia" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
                                         <field name="ciudadGarante" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
-                                        <field name="provinciaGarante" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
                                         <field name="direccionGarante"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
                                     </group>
                                 </div>
@@ -816,13 +816,64 @@
                         </page>
                           <page string="Revisiones Generales"  attrs="{'invisible':[('estado', 'in',['borrador'])]}">
                             <separator class="text-center" string="REVISIONES GENERALES"/>
-                            <div class="col-xs-12 col-md-12">
-                                <group>
-                                    <field name="revisiones_generales" attrs="{'readonly':[('estado', 'in',['liquidacion_orden_compra'])]}"/>
-                                    
-                            </group>
-                            </div>
-                            
+                            <div class="col-xs-12 col-sm-9">
+                                <table style=" border-collapse: collapse;width:100%">
+                                <tbody>
+
+                                        <tr>
+                                            <td>
+                                                <text>CUV</text>
+                                            </td>
+                                            <td/>
+                                            <td>
+                                                <field name="cuv" attrs="{'readonly':[('estado', 'not in',['liquidacion_orden_compra'])]}"/>
+                                            </td>
+                                            
+                                            <td/>
+                                            <td attrs="{'invisible':[('cuv', '=', False)]}">
+                                                <field name="documento_cuv" attrs="{'required':[('cuv', '!=', False)],'readonly':[('estado', 'not in',['liquidacion_orden_compra'])]}"/>
+                                            </td>
+                                            
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <text>CHEQUEO MECÁNICO</text>
+                                            </td>
+                                            <td/>
+                                            <td>
+                                                <field name="chequeo_mecanico" attrs="{'readonly':[('estado', 'not in',['liquidacion_orden_compra'])]}"/>
+                                            </td>
+                                            
+                                            <td/>
+                                            <td attrs="{'invisible':[('chequeo_mecanico', '=', False)]}">
+                                                <field name="documento_chequeo" attrs="{'required':[('chequeo_mecanico', '!=', False)],'readonly':[('estado', 'not in',['liquidacion_orden_compra'])]}"/>
+                                            </td>
+                                            
+                                        </tr>
+
+
+                                        <tr>
+                                            <td>
+                                                <text>RECORD POLICIAL</text>
+                                            </td>
+                                            <td/>
+                                            <td>
+                                                <field name="record_policial" attrs="{'readonly':[('estado', 'not in',['liquidacion_orden_compra'])]}"/>
+                                            </td>
+                                            
+                                            <td/>
+                                            <td attrs="{'invisible':[('record_policial', '=', False)]}">
+                                                <field name="documento_record" attrs="{'required':[('record_policial', '!=', False)],'readonly':[('estado', 'not in',['liquidacion_orden_compra'])]}"/>
+                                            </td>
+                                            
+                                        </tr>
+
+                                    </tbody>
+                                     </table>
+                                     </div>
+
+                         
                         </page> 
 
 
@@ -839,6 +890,13 @@
                                             <td>
                                                 <field name="purchase_order" invisible="1"/>
                                                 <button type="object" string="Generar Orden Compra" name="create_purchase_order" attrs="{'invisible':[('purchase_order', '!=', False)]}" class="btn btn-primary o_invoice_new"/>
+                                            </td>
+                                            <td>
+                                                <text>Correo Generado</text>
+                                            </td>
+                                            <td>
+                                                <field name="correo_id" invisible="0"/>
+                                                
                                             </td>
 
                                             

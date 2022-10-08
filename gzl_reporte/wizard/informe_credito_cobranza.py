@@ -87,6 +87,7 @@ class InformeCreditoCrobranza(models.TransientModel):
             "type": "ir.actions.act_url",
             "url": url,
             "target": "new",
+            "documento":obj_attch
         }
 
 
