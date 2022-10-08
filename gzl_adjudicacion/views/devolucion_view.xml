@@ -116,7 +116,7 @@
                                 <field name="documentos_postventa" nolabel="1">
                                     <tree create="0" delete="0" editable="top">
                                         <field name="documento_id" readonly="1"/>
-                                        <field name="archivo" 'readonly':[('parent.state', 'not in',['postventa'])]/>
+                                        <field name="archivo"  attrs= "{'readonly':[('parent.state', 'not in',['postventa'])]}" />
                                     </tree>
                                 </field>
                             </div>
