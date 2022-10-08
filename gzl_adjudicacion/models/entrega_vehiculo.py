@@ -45,9 +45,9 @@ class Partner(models.Model):
     direccion_trabajo=fields.Char(string='Dirección Laboral')
     nombre_compania=fields.Char(string='Compañia')
     telefono_trabajo=fields.Char(string='Telefono')
-    emailContabilidad=fields.Char(string='Email Contabilidad')
-    emailFinanciero=fields.Char(string='Email Financiero')
-    emailComercial=fields.Char(string='Email Comercial')
+    # emailContabilidad=fields.Char(string='Email Contabilidad')
+    # emailFinanciero=fields.Char(string='Email Financiero')
+    # emailComercial=fields.Char(string='Email Comercial')
     cargo=fields.Char(string='Cargo')
 
 class EntegaVehiculo(models.Model):

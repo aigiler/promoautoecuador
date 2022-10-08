@@ -26,9 +26,9 @@
                         <field name="email" widget="email" context="{'gravatar_image': True}" required="context.get('force_email', False)" attrs="{'required': [('user_ids','!=', [])]}"/>
                         <field name="phone" widget="phone"/>
                         <field name="mobile" widget="phone"/>
-                        <!-- <field name="emailContabilidad" required="0"/>
+                        <field name="emailContabilidad" required="0"/>
                         <field name="emailFinanciero" required="0"/>
-                        <field name="emailComercial" required="0"/> -->
+                        <field name="emailComercial" required="0"/>
                         <field name="tipo" required="1"/>
                         <field name="comisionFacturaConcesionario" required="1"/>
 
