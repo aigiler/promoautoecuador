@@ -696,7 +696,7 @@ class EntegaVehiculo(models.Model):
             'default_atachment_ids':[(4,self.correo_id.id)],
             'default_composition_mode': 'comment',
             'mark_so_as_sent': True,
-            'custom_layout': "mail.mail_notification_paynow",
+            'custom_layout': "",
             'proforma': self.env.context.get('proforma', False),
             'force_email': True,
             'model_description': "ORDEN DE COMPRA",

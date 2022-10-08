@@ -751,7 +751,7 @@
                                         <separator/>
                                         <tr>
                                             <td>
-                                                <text>ANTICIPO AL CONCESIONARIO/PATIOS</text>
+                                                <text>ANTICIPO AL PROVEEDOR</text>
                                             </td>
                                             <td/>
                                             <td>
@@ -760,7 +760,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <text>COMISION FACTURA A NOMBRE CONCESIONARIO/PATIOS</text>
+                                                <text>COMISION FACTURA A NOMBRE PROVEEDOR</text>
                                             </td>
                                             <td style="width:25%">
                                                 <field name="comisionFacturaConcesionario" attrs="{'readonly':[('estado', 'not in',['liquidacion_orden_compra'])]}" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
@@ -781,7 +781,7 @@
                                         <separator/>
                                         <tr>
                                             <td>
-                                                <text>CHEQUE AL CONCESIONARIO/PATIOS</text>
+                                                <text>CHEQUE AL PROVEEDOR</text>
                                             </td>
                                             <td/>
                                             <td>
@@ -796,7 +796,7 @@
                             <div style="border: 1px solid black;">
                                 <div class="col-xs-12 col-sm-12">
                                     <group>
-                                        <field name="nombreConsesionario" string="Nombre del Concesionario/PATIOS" attrs="{'readonly':[('estado', 'not in',['liquidacion_orden_compra'])]}"  domain="[('tipo', 'in', ['concesionario','patio','tercero'])]" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="nombreConsesionario" string="Nombre del Proveedor" attrs="{'readonly':[('estado', 'not in',['liquidacion_orden_compra'])]}"  domain="[('tipo', 'in', ['concesionario','patio','tercero'])]" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
                                 </div>
                             </div>
@@ -898,13 +898,9 @@
 
                                         </tr>
                                         <tr >
-                                            <td>
-                                                <text>Compra a Tercero</text>
-                                            </td>
-                                            <td >
-                                                <field name="compras_terceros" invisible="0"/>
-                                            </td>
+                                            
                                             <td attrs="{'invisible':[('compras_terceros', '=',False)]}">
+                                                <field name="compras_terceros" invisible="1"/>
                                                 <text>Documentos Habilitantes</text>
                                             </td>
                                             <td attrs="{'invisible':[('compras_terceros', '=',False)]}">
