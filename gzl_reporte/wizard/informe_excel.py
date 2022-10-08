@@ -67,8 +67,9 @@ def informe_credito_cobranza(ruta,lista,clave):
                 cell.value = campo['valor'] or ''
             except:
                 raise ValidationError("""El valor {0} en la fila {1} columna {2}  hoja {3} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna'],campo['hoja']))
-        sheet = workbook['OrdenSalida']
+        
     elif clave=='orden_salida':
+        sheet = workbook['OrdenSalida']
         listaSheet = list(filter(lambda x: (x['hoja']==1), lista)) 
         for campo in listaSheet:
             cell = sheet.cell(row=campo['fila'], column=campo['columna'])
