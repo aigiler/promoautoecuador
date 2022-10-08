@@ -35,7 +35,7 @@
                 <form string="Devolucion de Monto">
                 
                     <sheet>
-                      <field name="estado" invisible="0"/>
+                      <field name="estado" invisible="1"/>
                         <notebook>
                         <page string="INFORME DE POSVENTA">
                         <separator class="text-center" string="DATOS GENERALES"/>
@@ -53,7 +53,7 @@
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group> 
-                                    <field name="contrato_id"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}" required="1" domain="[('cliente', '=', cliente)]" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
+                                    <field name="contrato_id"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}" required="1" domain="[('cliente', '=', cliente),('state','=','activo')]" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
                                     <field name="vatAdjudicado"/>
                                     <field name="monto"/>
                                     <field name="asesor"/>
@@ -215,7 +215,7 @@
                             <div class="col-xs-12 col-sm-4">
                                 <group readonly="1"> 
                                     
-                                     <field name="contrato_id"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}" domain="[('cliente', '=', cliente)]" required="1" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
+                                     <field name="contrato_id"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}" domain="[('cliente', '=', cliente),('state','=','activo')]" required="1" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
                                     <field name="vatAdjudicado"/>
                                     <field name="monto"/>
                                     <field name="asesor"/>
@@ -325,7 +325,7 @@
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group readonly="1"> 
-                                     <field name="contrato_id"   attrs="{'readonly':[('estado', 'not in',['postventa'])]}" domain="[('cliente', '=', cliente)]" required="1" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
+                                     <field name="contrato_id"   attrs="{'readonly':[('estado', 'not in',['postventa'])]}" domain="[('cliente', '=', cliente),('state','=','activo')]" required="1" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
                                     
                                     <field name="vatAdjudicado"/>
                                     <field name="monto"/>
@@ -424,7 +424,7 @@
                             <div class="col-xs-12 col-sm-4">
                                 <group readonly="1"> 
                                    
-                                    <field name="contrato_id"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}" domain="[('cliente', '=', cliente)]" required="1" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
+                                    <field name="contrato_id"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}" domain="[('cliente', '=', cliente),('state','=','activo')]" required="1" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
                                     <field name="vatAdjudicado"/>
                                     <field name="monto"/>
                                     <field name="asesor"/>
@@ -480,7 +480,7 @@
                             <div class="col-xs-12 col-sm-4">
                                 <group readonly="1"> 
                                     
-                                    <field name="contrato_id"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}" domain="[('cliente', '=', cliente)]" required="1" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
+                                    <field name="contrato_id"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}" domain="[('cliente', '=', cliente),('state','=','activo')]" required="1" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
                                     <field name="vatAdjudicado"/>
                                     <field name="monto"/>
                                     <field name="asesor"/>
@@ -566,7 +566,7 @@
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-sm-4">
                                 <group> 
-                                    <field name="journal_id" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
+                                    <field name="journal_id" attrs="{'readonly':[('estado', 'not in',['salidadinero'])]}" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
                                     <field name="fecha_estimada_pagos" attrs="{'readonly':[('estado', 'not in',['salidadinero'])]}"/>
 
                                     <button type="object" string="Generar Pago" class="btn btn-primary o_invoice_new" name="generar_pago" attrs="{'invisible':[('pago_id', '!=',False)]}"/>
