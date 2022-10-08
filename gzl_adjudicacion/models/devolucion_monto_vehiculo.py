@@ -56,7 +56,7 @@ class DevolucionMonto(models.Model):
 
 
 
-    state = fields.Selection(selection=[
+    estado = fields.Selection(selection=[
         ('borrador', 'Borrador'),
         ('postventa', 'Analisis Postventa'),
         ('legal', 'Analisis Legal'),
