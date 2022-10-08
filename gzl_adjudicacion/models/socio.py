@@ -11,7 +11,6 @@ class Partner(models.Model):
 
 
 
-    tipo=fields.Char(string='Tipo')
     monto = fields.Float(string='Monto')
     id_cliente = fields.Char(string='ID Cliente')
     direccion = fields.Text(string='Dirección')
