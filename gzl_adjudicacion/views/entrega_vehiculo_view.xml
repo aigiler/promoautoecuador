@@ -831,7 +831,7 @@
                                             
                                             <td/>
                                             <td attrs="{'invisible':[('cuv', '=', False)]}">
-                                                <field name="documento_cuv" attrs="{'required':[('cuv', '!=', False)],'readonly':[('estado', 'not in',['liquidacion_orden_compra'])]}"/>
+                                                <field name="documento_cuv" attrs="{'required':[('cuv', '=', True)],'readonly':[('estado', 'not in',['liquidacion_orden_compra'])]}"/>
                                             </td>
                                             
                                         </tr>
@@ -889,7 +889,7 @@
                                                 <text>Documentos del Adjudicado</text>
                                             </td>
                                             <td>
-                                                <field name="archivo" invisible="0"/>
+                                                <field name="archivo" attrs="{'required':[('estado', 'in',['orden_compra'])]}" invisible="0"/>
                                             </td>
 
                                         </tr>
@@ -898,15 +898,18 @@
                                                 <text>Documentos del Garante</text>
                                             </td>
                                             <td>
-                                                <field name="archivo_garante" invisible="0"/>
+                                                <field name="archivo_garante" attrs="{'required':[('aplicaGarante','in',['sí','SI']),('estado', 'in',['orden_compra'])]}" invisible="0"/>
                                             </td>
 
                                         </tr>
                                         <tr >
+                                            <td>
+                                                <text>Compra a Tercero</text>
+                                            </td>
                                             <td >
                                                 <field name="compras_terceros" invisible="0"/>
                                             </td>
-                                            <td attrs="{'invisible':[('compras_terceros', '=',False)]}">
+                                            <td attrs="{'invisible':[('compras_terceros', '=',False)],'required':[('compras_terceros','=',True)]}">
                                                 <text>Documentos del Garante</text>
                                             </td>
                                             <td attrs="{'invisible':[('compras_terceros', '=',False)]}">
@@ -919,18 +922,24 @@
 
 
                                         <tr>
-                                            
                                             <td>
-                                                <button type="object" string="Enviar Correo" name="create_purchase_order" class="btn btn-primary o_invoice_new"/>
+                                                <button type="object" string="Generar OC" name="create_purchase_order" class="btn btn-primary o_invoice_new"/>
                                             </td>
+
                                             <td>
-                                                <text>Documento Generado</text>
+                                                <text>Documento OC</text>
                                             </td>
                                             <td>
                                                 <field name="correo_id" invisible="0"/>
                                                 
                                             </td>
 
+
+                                            <td>
+                                                <button type="object" string="Enviar Correo" name="enviar_corre" class="btn btn-primary o_invoice_new"/>
+                                            </td>
+
+                                            
                                             
                                         </tr>
                                     </tbody>

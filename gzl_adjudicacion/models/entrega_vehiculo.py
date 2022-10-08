@@ -645,16 +645,18 @@ class EntegaVehiculo(models.Model):
 
 
 
-
-#####Funcion para crear purchase order
     def create_purchase_order(self):
         plantilla_id=self.env['informe.credito.cobranza'].create({'clave':"orden_compra",
                                                     'entrega_vehiculo_id':self.id})
         dct=plantilla_id.print_report_xls()
         self.url_doc=dct["url"]
-
-        self.ensure_one()
         self.correo_id=dct["documento"]["id"]
+
+
+
+
+#####Funcion para crear purchase order
+    def enviar_correo(self):
         ir_model_data = self.env['ir.model.data']
         template_id =  template_id = ir_model_data.get_object_reference('gzl_adjudicacion', "email_orden_compra")[1]
         lang = self.env.context.get('lang')
@@ -666,7 +668,7 @@ class EntegaVehiculo(models.Model):
             'default_res_id': self.ids[0],
             'default_use_template': bool(template_id),
             'default_template_id': template_id,
-            'default_atachment_ids':[(4,[dct["documento"]["id"]])],
+            'default_atachment_ids':[(4,self.correo_id.id)],
             'default_composition_mode': 'comment',
             'mark_so_as_sent': True,
             'custom_layout': "mail.mail_notification_paynow",
