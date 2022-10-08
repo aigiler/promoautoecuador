@@ -51,7 +51,7 @@
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
-                    <field name="estado"  invisible="1"/>
+                    <field name="estado" invisible="0"/>
                     <notebook>
 
 
@@ -61,29 +61,29 @@
                         </page>
 
                     
-                        <page string="Informe de Credito y Cobranza" >
+                        <page string="Informe de Credito y Cobranza">
                             <separator class="text-center" string="ANTECEDENTES DEL ASOCIADO"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
-                                    <group>  
-                                        <field name="nombreSocioAdjudicado"   required="1" options="{'no_open': True, 'no_create': True}" />
-                                        <field name="contrato_id"    domain="[('cliente', '=', nombreSocioAdjudicado),('state','=','activo')]" required="1" options="{'no_open': True, 'no_create': True}" />
+                                    <group >  
+                                        <field name="nombreSocioAdjudicado" required="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" options="{'no_open': True, 'no_create': True}"/>
+                                        <field name="contrato_id" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" domain="[('cliente', '=', nombreSocioAdjudicado),('state','=','activo')]" required="1" options="{'no_open': True, 'no_create': True}"/>
                                         <field name="garante" invisible="1"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
-                                    <group > 
-                                        <field name="vatAdjudicado"   force_save="1" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}'/>
-                                        <field name="fechaNacimientoAdj" force_save="1"  />
-                                        <field name="estadoCivilAdj" force_save="1"   options="{'no_create': True, 'no_open': True}"/>
+                                    <group> 
+                                        <field name="vatAdjudicado" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
+                                        <field name="fechaNacimientoAdj" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1"/>
+                                        <field name="estadoCivilAdj" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
 
                                 </div>
-                                <div class="col-xs-4" >
-                                    <group > 
-                                        <field name="codigoAdjudicado" force_save="1"   options="{'no_create': True, 'no_open': True}"/>
-                                        <field name="edadAdjudicado" force_save="1"   string="Edad"/>
-                                        <field name="cargasFamiliares"    force_save="1" />
+                                <div class="col-xs-4">
+                                    <group> 
+                                        <field name="codigoAdjudicado" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="edadAdjudicado" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" string="Edad"/>
+                                        <field name="cargasFamiliares" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1"/>
                                     </group>
                                 </div>
                             </div>
@@ -91,47 +91,66 @@
                             <div class="row" style="border: 1px solid black;">
                                     <div class="col-xs-12 col-md-12">
                                         <group>
-                                            <field name="nombreConyuge" force_save="1" string="Nombre del Cónyuge"  />
+                                            <field attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  name="nombreConyuge" force_save="1" string="Nombre del Cónyuge"/>
                                         </group>
                                     </div>
                                     <div class="col-xs-12 col-sm-4">
                                         <group> 
-                                            <field name="vatConyuge" force_save="1" string="Cedula de Ciudadanía"  />
-                                            <field name="estadoCivilConyuge" string="Estado Civil"  />
+                                            <field attrs="{'readonly':[('estado', 'not in',['borrador'])]}" name="vatConyuge" force_save="1" string="Cedula de Ciudadanía"/>
+                                            <field attrs="{'readonly':[('estado', 'not in',['borrador'])]}" name="estadoCivilConyuge" string="Estado Civil"/>
                                         </group>
                                     </div>
                                     <div class="col-xs-4">
                                         <group> 
-                                            <field name="fechaNacimientoConyuge"   force_save="1" string="Fecha de Nacimiento"/>
-                                            <field name="edadConyuge" force_save="1"   options="{'no_create': True, 'no_open': True}"/>
+                                            <field attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  name="fechaNacimientoConyuge" force_save="1" string="Fecha de Nacimiento"/>
+                                            <field attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  name="edadConyuge" force_save="1" options="{'no_create': True, 'no_open': True}"/>
                                         </group>
                                     </div>
                             </div>
                             <separator class="text-center fw-bold" string="DATOS DOMICILIARIOS"/>
                             <div class="row" style="border: 1px solid black;">
-                                <field name="referenciaDomiciliaria" widget="pad" force_save="1" string='Referencias indican:'  />
+                                <div class="col-xs-12 col-md-12">
+                                    <group >  
+                                        <field name="ciudadAdjudicado" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
+                                        <field name="provinciaAdjudicado" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                        <field name="direccionAdjudicado"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                    </group>
+                                </div>
+
                             </div>
+
+
+
+
                             <separator class="text-center fw-bold" string="DATOS LABORALES"/>
                             <div class="row" style="border: 1px solid black;">
-                                <field name="referenciasLaborales" force_save="1" widget="pad" string='Referencias indican:'  />
+                                <div class="col-xs-12 col-md-12">
+                                    <group >  
+                                        <field name="direccion_trabajoAdj" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
+                                        <field name="nombre_companiaAdj" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                        <field name="telefono_trabajoAdj"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                        <field name="cargoAdj"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                    </group>
+                                </div>
+
                             </div>
                             <separator class="text-center" string="PATRIMONIO"/>
                             <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-8"> 
-                                    <field name="montoAhorroInversiones" force_save="1"   nolabel="1">
-                                        <tree create='0' delete='0' editable='top'  >
-                                            <field name="patrimonio_id" readonly='1'/>
-                                            <field name="garante" invisible='1'/>
-                                            <field name="valor" sum="valor" />
+                                <div class="col-sm-6"> 
+                                    <field name="montoAhorroInversiones" force_save="1" nolabel="1">
+                                        <tree create="0" delete="0" editable="top">
+                                            <field name="patrimonio_id" readonly="1"  />
+                                            <field name="garante" invisible="1"/>
+                                            <field name="valor"   attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" sum="valor"/>
                                         </tree>
                                     </field>
                                 </div>
-                                <div class="col-xs-4">
+                                <div class="col-sm-6">
                                     <group> 
-                                        <field name="institucionFinanciera"   force_save="1" />
-                                        <field name="direccion" force_save="1"  />
-                                        <field name="direccion1" force_save="1"  />
-                                        <field name="placa"/>
+                                        <field name="institucionFinanciera" force_save="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
+                                        <field name="direccion" force_save="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
+                                        <field name="direccion1" force_save="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
+                                        <field name="placa" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
                                     </group>
                                 </div>
                             </div>
@@ -146,24 +165,24 @@
                                             <text>Score</text>
                                         </td>
                                         <td class="col-xs-12 col-sm-3"> 
-                                            <field name="scoreBuroCredito" nolabel="1"  />
+                                            <field name="scoreBuroCredito" nolabel="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
                                         </td>
                                     </tr>
                                 </tbody>
                             </div>
-                            <div class="col-xs-12 col-sm-12" > 
-                                <field name="paginasDeControl" nolabel="1"  >
-                                    <tree create='0' delete='0' editable='top'>
-                                        <field name="pagina_id" readonly='1'/>
-                                         <field name="garante" invisible='1'/>
-                                        <field name="descripcion" readonly='1'/>
-                                        <field name="pagina"/>
+                            <div class="col-xs-12 col-sm-12"> 
+                                <field name="paginasDeControl" nolabel="1">
+                                    <tree create="0" delete="0" editable="top">
+                                        <field name="pagina_id" readonly="1"/>
+                                         <field name="garante" invisible="1"/>
+                                        <field name="descripcion" readonly="1"/>
+                                        <field name="pagina" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" />
                                     </tree>
                                 </field>
                             </div>
                             <separator/>
                             <separator class="text-center" string="OBSERVACIONES"/>
-                            <div class="row"><field name="observaciones"  />
+                            <div class="row"><field name="observaciones" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
                             </div>
                             <separator/>
 
@@ -171,15 +190,15 @@
 
 
                                                 <!-- CALIFICADOR DE COMPRA -->
-                        <page string="Calificador de Compra"  >
+                        <page string="Calificador de Compra">
                             <separator class="text-center" string="CALIFICADOR PARA COMPRA DEL BIEN"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <group>
-                                        <field name="nombreSocioAdjudicado" readonly="1" force_save="1"  />
+                                        <field name="nombreSocioAdjudicado" readonly="1" force_save="1"/>
                                     </group>
                                 </div>
-                                <div class="col-xs-12 col-sm-4" > 
+                                <div class="col-xs-12 col-sm-4"> 
                                     <group>
                                         <field name="vatAdjudicado" readonly="1" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
@@ -252,7 +271,7 @@
                                             </tr>
                                             <tr class="font-weight-bold">
                                                 <td>
-                                                    <label for="montoCuotasCanceladas" />
+                                                    <label for="montoCuotasCanceladas"/>
                                                 </td>
                                                 <td>
                                                     <field name="montoCuotasCanceladas" readonly="1" options="{'no_create': True, 'no_open': True}"/>
@@ -299,8 +318,8 @@
                                                 <td>
                                                     <field name="valorDelBien" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                                 </td>
-                                                <td style="width:10%"></td>
-                                                <td></td>
+                                                <td style="width:10%"/>
+                                                <td/>
                                             </tr>
                                             <tr class="font-weight-bold">
                                                 <td>
@@ -309,7 +328,7 @@
                                                 <td>
                                                     <field name="saldoPlan" readonly="1" options="{'no_create': True, 'no_open': True}"/>
                                                 </td>
-                                                <td style="width:10%"></td>
+                                                <td style="width:10%"/>
                                                 <td>
                                                     <field name="porcentajeSaldoPlan" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
                                                 %</td>
@@ -333,10 +352,10 @@
                                                     <label for="ingresosFamiliares" string="Ingresos familiares"/>
                                                 </td>
                                                 <td>
-                                                    <field name="ingresosFamiliares" string="Ingresos familiares"/>
+                                                    <field name="ingresosFamiliares" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" string="Ingresos familiares"/>
                                                 </td>
                                                 <td>
-                                                    <field name="porcentajeIngresos" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}" /><text>%</text>
+                                                    <field name="porcentajeIngresos" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/><text>%</text>
                                                 </td>
                                                 <td>
                                                     <text>Comprometido</text>
@@ -347,7 +366,7 @@
                                                     <label for="gastosFamiliares" string="Gastos familiares"/>
                                                 </td>
                                                 <td>
-                                                    <field name="gastosFamiliares" string ="Gastos familiares" readonly="1" readoptions="{'no_create': True, 'no_open': True}" />
+                                                    <field name="gastosFamiliares" string="Gastos familiares" readonly="1" readoptions="{'no_create': True, 'no_open': True}"/>
                                                 </td>
                                                 <td>
                                                     <field name="porcentajeGastos" nolabel="1" options="{'no_create': True, 'no_open': True}"/><text>%</text>
@@ -361,7 +380,7 @@
                                                     <label for="disponibilidad" string="Disponibilidad" options="{'no_create': True, 'no_open': True}"/>
                                                 </td>
                                                 <td style="border-top: 0.5px solid">
-                                                    <field name="disponibilidad" string="Disponibilidad" options="{'no_create': True, 'no_open': True}" />
+                                                    <field name="disponibilidad" string="Disponibilidad" options="{'no_create': True, 'no_open': True}"/>
                                                 </td>
                                                 <td>
                                                     <field name="porcentajeDisponibilidad" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
@@ -387,7 +406,7 @@
                                     </text>
                                 </div>
                                 <div class="col-xs-12 col-sm-5">
-                                    <field name="scoreCredito" nolabel="1" string="Score de Credito Mayor a 800 puntos " />
+                                    <field name="scoreCredito" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" nolabel="1" string="Score de Credito Mayor a 800 puntos "/>
                                 </div>
                                 <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
                                     <field name="puntosScoreCredito" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
@@ -401,7 +420,7 @@
                                     </text>
                                 </div>
                                 <div class="col-xs-12 col-sm-5">
-                                    <field name="antiguedadLaboral" nolabel="1" string="Antigüedad Laboral o Comercial Mayor a 2 años "/>
+                                    <field name="antiguedadLaboral" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" nolabel="1" string="Antigüedad Laboral o Comercial Mayor a 2 años "/>
                                     <text> Años</text>
                                 </div>
                                 <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
@@ -410,18 +429,18 @@
                             </div>
                             <separator/>
                             <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-8" >
+                                <div class="col-xs-12 col-sm-8">
                                     <field name="tablaPuntosBienes" nolabel="1">
-                                        <tree create='0' delete='0' editable='top'>
-                                            <field name="bien_id" readonly='1'/>
-                                            <field name="poseeBien"/>
-                                            <field name="puntosBien" readonly='1'/>
+                                        <tree create="0" delete="0" editable="top">
+                                            <field name="bien_id" readonly="1"/>
+                                            <field name="poseeBien" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" />
+                                            <field name="puntosBien" readonly="1"/>
                                         </tree>
                                     </field>
                                 </div>
                                 
                                 <div class="col-xs-12 col-sm-4" style="border: 0.05px solid black;">
-                                    <field name="totalPuntosBienesAdj" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="totalPuntosBienesAdj" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                 </div>
                             </div>
                             <separator/>
@@ -450,7 +469,7 @@
                                     </text>
                                 </div>
                                 <div class="col-xs-12 col-sm-12">
-                                    <field name="observacionesCalificador" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="observacionesCalificador" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                 </div>
                             </div>
 
@@ -459,27 +478,27 @@
 
 
                         <page string="Informe de Credito y Cobranza Garante" attrs="{'invisible':[('aplicaGarante', 'not in',['sí','SI'])]}">
-                            <separator class="text-center" string="ANTECEDENTES DEL Garante"/>
+                            <separator class="text-center" string="ANTECEDENTES DEL GARANTE"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <group>  
                                         <field name="garante" invisible="1"/>
-                                        <field name="nombreGarante" options="{'no_open': True, 'no_create': True}" />
+                                        <field name="nombreGarante" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" options="{'no_open': True, 'no_create': True}"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
                                     <group> 
-                                        <field force_save="1" name="vatGarante" options='{"no_open": True,"no_create": 1, "no_create_edit": 1}'  />
-                                        <field force_save="1"  name="fechaNacimientoGarante" string="Fecha de Nacimiento" readonly="0"/>
-                                        <field force_save="1" name="estadoCivilGarante" options="{'no_create': True, 'no_open': True}"/>
+                                        <field force_save="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" name="vatGarante" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
+                                        <field force_save="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" name="fechaNacimientoGarante" string="Fecha de Nacimiento" readonly="0"/>
+                                        <field force_save="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" name="estadoCivilGarante" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
 
                                 </div>
-                                <div class="col-xs-4" >
-                                    <group > 
-                                        <field force_save="1" name="codigoGarante" options="{'no_create': True, 'no_open': True}"/>
-                                        <field force_save="1" name="edadGarante" string="Edad"/>
-                                        <field force_save="1" name="cargasFamiliaresGarante" />
+                                <div class="col-xs-4">
+                                    <group> 
+                                        <field force_save="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  name="codigoGarante" options="{'no_create': True, 'no_open': True}"/>
+                                        <field force_save="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" name="edadGarante" string="Edad"/>
+                                        <field force_save="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" name="cargasFamiliaresGarante"/>
                                     </group>
                                     
                                 </div>
@@ -488,47 +507,66 @@
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <group>
-                                        <field force_save="1" name="nombreConyugeGarante" string="Nombre del Cónyuge"  />
+                                        <field force_save="1" name="nombreConyugeGarante" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" string="Nombre del Cónyuge"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
                                     <group> 
-                                        <field force_save="1" name="vatConyugeGarante" string="Cedula de Ciudadanía"  />
-                                        <field force_save="1" name="estadoCivilConyugeGarante" string="Estado Civil"  />
+                                        <field force_save="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" name="vatConyugeGarante" string="Cedula de Ciudadanía"/>
+                                        <field force_save="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" name="estadoCivilConyugeGarante" string="Estado Civil"/>
                                     </group>
                                 </div>
                                 <div class="col-xs-4">
                                     <group> 
-                                        <field force_save="1" name="fechaNacimientoConyugeGarante" string="Fecha de Nacimiento"/>
-                                        <field force_save="1" name="edadConyugeGarante" options="{'no_create': True, 'no_open': True}"/>
+                                        <field force_save="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" name="fechaNacimientoConyugeGarante" string="Fecha de Nacimiento"/>
+                                        <field force_save="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" name="edadConyugeGarante" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
                                 </div>
                             </div>
                             <separator class="text-center fw-bold" string="DATOS DOMICILIARIOS"/>
                             <div class="row" style="border: 1px solid black;">
-                                <field force_save="1" name="referenciaDomiciliariaGarante" widget="pad" string='Referencias indican:'  />
+                                <div class="col-xs-12 col-md-12">
+                                    <group >  
+                                        <field name="ciudadGarante" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
+                                        <field name="provinciaGarante" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                        <field name="direccionGarante"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                    </group>
+                                </div>
+
                             </div>
+
+
+
+
                             <separator class="text-center fw-bold" string="DATOS LABORALES"/>
                             <div class="row" style="border: 1px solid black;">
-                                <field name="referenciasLaboralesGarante" force_save="1" widget="pad" string='Referencias indican:'  />
+                                <div class="col-xs-12 col-md-12">
+                                    <group >  
+                                        <field name="direccion_trabajoAdj" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
+                                        <field name="nombre_companiaAdj" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                        <field name="telefono_trabajoAdj"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                        <field name="cargoAdj"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                    </group>
+                                </div>
+
                             </div>
                             <separator class="text-center" string="PATRIMONIO"/>
                             <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-8"> 
-                                    <field name="montoAhorroInversionesGarante" force_save="1"  nolabel="1">
-                                        <tree create='0' delete='0' editable='top'>
-                                            <field name="patrimonio_id" readonly='1'/>
-                                            <field name="garante" invisible='1'/>
-                                            <field name="valor" sum="valor" />
+                                <div class="col-sm-6"> 
+                                    <field name="montoAhorroInversionesGarante" force_save="1" nolabel="1">
+                                        <tree create="0" delete="0" editable="top">
+                                            <field name="patrimonio_id" readonly="1"/>
+                                            <field name="garante" invisible="1"/>
+                                            <field name="valor" sum="valor" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" />
                                         </tree>
                                     </field>
                                 </div>
-                                <div class="col-xs-4">
+                                <div class="col-xs-6">
                                     <group> 
-                                        <field name="institucionFinancieraGarante" force_save="1" />
-                                        <field name="direccionGarante" force_save="1" />
-                                        <field name="direccion1Garante" force_save="1" />
-                                        <field name="placaGarante" force_save="1" />
+                                        <field name="institucionFinancieraGarante" force_save="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
+                                        <field name="direccionGarante" force_save="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
+                                        <field name="direccion1Garante" force_save="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
+                                        <field name="placaGarante" force_save="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
 
                                     </group>
                                 </div>
@@ -545,29 +583,29 @@
                                             <text>Score</text>
                                         </td>
                                         <td class="col-xs-12 col-sm-3"> 
-                                            <field name="scoreBuroCreditoGarante" nolabel="1"/>
+                                            <field name="scoreBuroCreditoGarante" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  nolabel="1"/>
                                         </td>
                                     </tr>
                                 </tbody>
                             </div>
-                            <div class="col-xs-12 col-sm-12" > 
-                                <field name="paginasDeControlGarante" nolabel="1" force_save="1" >
-                                    <tree create='0' delete='0' editable='top'>
-                                        <field name="pagina_id" readonly='1'/>
-                                        <field name="garante" invisible='1'/>
-                                        <field name="descripcion" readonly='1'/>
-                                        <field name="pagina"/>
+                            <div class="col-xs-12 col-sm-12"> 
+                                <field name="paginasDeControlGarante" nolabel="1" force_save="1">
+                                    <tree create="0" delete="0" editable="top">
+                                        <field name="pagina_id" readonly="1"/>
+                                        <field name="garante" invisible="1"/>
+                                        <field name="descripcion" readonly="1"/>
+                                        <field name="pagina" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" />
                                     </tree>
                                 </field>
                             </div>
                             <separator/>
                             <separator class="text-center" string="OBSERVACIONES"/>
-                            <div class="row"><field name="observacionesGarante"/></div>
+                            <div class="row"><field name="observacionesGarante" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" /></div>
                             <separator/>
 
                         </page>
 
-                        <page string="Liquidación Orden de Compra" >
+                        <page string="Liquidación Orden de Compra"   attrs="{'invisible':[('estado', 'in',['borrador'])]}">
                             <separator class="text-center" string="LIQUIDACION DE COMPRA"/>
                             <div style="border: 1px solid black;">
                                 <div class="row">
@@ -649,7 +687,7 @@
                                             </tr>
                                             <tr class="font-weight-bold">
                                                 <td>
-                                                    <label for="montoCuotasCanceladas" />
+                                                    <label for="montoCuotasCanceladas"/>
                                                 </td>
                                                 <td>
                                                     <field name="montoCuotasCanceladas" readonly="1" options="{'no_create': True, 'no_open': True}"/>
@@ -687,7 +725,7 @@
                                             <td>
                                                 <text>MONTO DEL PLAN ADJUDICADO</text>
                                             </td>
-                                            <td></td>
+                                            <td/>
                                             <td>
                                                 <field name="montoAdjudicado" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                             </td>
@@ -696,16 +734,16 @@
                                             <td>
                                                 <text>VALOR DEL VEHICULO</text>
                                             </td>
-                                            <td></td>
+                                            <td/>
                                             <td>
-                                                <field name="montoVehiculo" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                <field name="montoVehiculo"  attrs="{'readonly':[('estado', 'not in',['liquidacion_orden_compra'])]}" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <field name="montoPagoConsesionario" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                             </td>
-                                            <td></td>
+                                            <td/>
                                             <td>
                                                 <field name="montoAFavor" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                             </td>
@@ -713,20 +751,11 @@
                                         <separator/>
                                         <tr>
                                             <td>
-                                                <text>VALOR ADJUDICADO PARA LA COMPRA DEL VEHICULO</text>
-                                            </td>
-                                            <td></td>
-                                            <td>
-                                                <field name="valorAdjParaCompra" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
                                                 <text>ANTICIPO AL CONCESIONARIO/PATIOS</text>
                                             </td>
-                                            <td></td>
+                                            <td/>
                                             <td>
-                                                <field name="montoAnticipoConsesionaria" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                <field name="montoAnticipoConsesionaria" attrs="{'readonly':[('estado', 'not in',['liquidacion_orden_compra'])]}"  nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                             </td>
                                         </tr>
                                         <tr>
@@ -734,7 +763,7 @@
                                                 <text>COMISION FACTURA A NOMBRE CONCESIONARIO/PATIOS</text>
                                             </td>
                                             <td style="width:25%">
-                                                <field name="comisionFacturaConcesionario" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                <field name="comisionFacturaConcesionario" attrs="{'readonly':[('estado', 'not in',['liquidacion_orden_compra'])]}" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                             %</td>
                                             <td>
                                                 <field name="valorComisionFactura" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
@@ -742,11 +771,11 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <text>COMISION POR DISPOSITIVO DE RASTREO</text>
+                                                <text>RETENCIÓN A PAGAR</text>
                                             </td>
-                                            <td></td>
+                                            <td/>
                                             <td>
-                                                <field name="comisionDispositivoRastreo" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                <field name="comisionDispositivoRastreo" attrs="{'readonly':[('estado', 'not in',['liquidacion_orden_compra'])]}"  nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                             </td>
                                         </tr>
                                         <separator/>
@@ -754,9 +783,9 @@
                                             <td>
                                                 <text>CHEQUE AL CONCESIONARIO/PATIOS</text>
                                             </td>
-                                            <td></td>
+                                            <td/>
                                             <td>
-                                                <field name="montoChequeConsesionario" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                                <field name="montoChequeConsesionario"  nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                             </td>
                                         </tr>
 
@@ -767,7 +796,7 @@
                             <div style="border: 1px solid black;">
                                 <div class="col-xs-12 col-sm-12">
                                     <group>
-                                        <field name="nombreConsesionario" string="Nombre del Concesionario/PATIOS" domain = "[('tipo', '=', 'concesionario')]" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="nombreConsesionario" string="Nombre del Concesionario/PATIOS" attrs="{'readonly':[('estado', 'not in',['liquidacion_orden_compra'])]}"  domain="[('tipo', '=', 'concesionario')]" options="{'no_create': True, 'no_open': True}"/>
                                     </group>
                                 </div>
                             </div>
@@ -780,16 +809,26 @@
                                     </text>
                                 </div>
                                 <div class="col-xs-12 col-sm-12">
-                                    <field name="observacionesLiquidacion" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="observacionesLiquidacion" attrs="{'readonly':[('estado', 'not in',['liquidacion_orden_compra'])]}"  nolabel="1" options="{'no_create': True, 'no_open': True}"/>
                                 </div>
                             </div>
 
                         </page>
+                          <page string="Revisiones Generales"  attrs="{'invisible':[('estado', 'in',['borrador'])]}">
+                            <separator class="text-center" string="REVISIONES GENERALES"/>
+                            <div class="col-xs-12 col-md-12">
+                                <group>
+                                    <field name="revisiones_generales" attrs="{'readonly':[('estado', 'in',['liquidacion_orden_compra'])]}"/>
+                                    
+                            </group>
+                            </div>
+                            
+                        </page> 
 
 
                              <!-- ORDEN DE COMPRA -->
 
-                        <page string ="Orden de Compra" attrs="{'readonly':[('estado', 'not in', ('orden_compra'))]}">
+                        <page string="Orden de Compra"  attrs="{'invisible':[('estado', 'not in',['orden_compra'])]}">
                             <separator class="text-center" string="ORDEN DE COMPRA"/>
                            <div class="col-xs-12 col-sm-9">
                                 <table style=" border-collapse: collapse;width:100%">
@@ -815,104 +854,104 @@
 
 
 
-                        <page string ="Información de Vehículo" >
+                        <page string="Información de Vehículo"  attrs="{'invisible':[('estado', 'in',['borrador','liquidacion_orden_compra','orden_compra'])]}">
                             <separator class="text-center" string="INFORMACIÓN DE VEHICULO"/>
                             <div class="col-xs-12 col-md-12">
                                 <group>
-                                    <field name="tipoVehiculo" placeholder="AUTO" />
-                                    <field name="claseVehiculo" placeholder="VEHICULO UTILITARIO"/>
-                                    <field name="marcaVehiculo" placeholder="MARCA.. SUZUKI" />
-                                    <field name="modeloVehiculoSRI" placeholder="MODELO REGISTRADO SRI" />
+                                    <field name="tipoVehiculo" attrs="{'readonly':[('estado', 'not in',['factura'])]}" placeholder="AUTO"/>
+                                    <field name="claseVehiculo" placeholder="VEHICULO UTILITARIO" attrs="{'readonly':[('estado', 'not in',['factura'])]}"/>
+                                    <field name="marcaVehiculo" placeholder="MARCA.. SUZUKI" attrs="{'readonly':[('estado', 'not in',['factura'])]}"/>
+                                    <field name="modeloVehiculoSRI" placeholder="MODELO REGISTRADO SRI" attrs="{'readonly':[('estado', 'not in',['factura'])]}"/>
 
-                                    <field name="modeloHomologado" placeholder="MODELO HOMOLOGADO ANT" />
-                                    <field name="serieVehiculo" placeholder="SERIE"/>
-                                    <field name="motorVehiculo" placeholder="MOTOR"/>
-                                    <field name="colorVehiculo" placeholder="COLOR" />
+                                    <field name="modeloHomologado" placeholder="MODELO HOMOLOGADO ANT" attrs="{'readonly':[('estado', 'not in',['factura'])]}"/>
+                                    <field name="serieVehiculo" placeholder="SERIE" attrs="{'readonly':[('estado', 'not in',['factura'])]}"/>
+                                    <field name="motorVehiculo" placeholder="MOTOR" attrs="{'readonly':[('estado', 'not in',['factura'])]}"/>
+                                    <field name="colorVehiculo" placeholder="COLOR" attrs="{'readonly':[('estado', 'not in',['factura'])]}"/>
 
-                                    <field name="anioVehiculo" />
-                                    <field name="paisOrigenVehiculo" placeholder="Ecuador" options="{'no_open': True, 'no_create': True}" />
-                                    <field name="conbustibleVehiculo" placeholder="GASOLINA"/>
-                                    <field name="numPasajeros" />
+                                    <field name="anioVehiculo" attrs="{'readonly':[('estado', 'not in',['factura'])]}"/>
+                                    <field name="paisOrigenVehiculo" placeholder="Ecuador" options="{'no_open': True, 'no_create': True}" attrs="{'readonly':[('estado', 'not in',['factura'])]}"/>
+                                    <field name="conbustibleVehiculo" placeholder="GASOLINA" attrs="{'readonly':[('estado', 'not in',['factura'])]}"/>
+                                    <field name="numPasajeros" attrs="{'readonly':[('estado', 'not in',['factura'])]}"/>
 
-                                    <field name="tonelajeVehiculo" placeholder="TONELAJE" />
-                                    <field name="numEjesVehiculo" />
+                                    <field name="tonelajeVehiculo" placeholder="TONELAJE" attrs="{'readonly':[('estado', 'not in',['factura'])]}"/>
+                                    <field name="numEjesVehiculo" attrs="{'readonly':[('estado', 'not in',['factura'])]}"/>
                             </group>
                             </div>
                             
                         </page> 
 
                             
-                        <page string ="Facturación y Documentos" >
+                        <page string="Facturación y Documentos"  attrs="{'invisible':[('estado', 'in',['borrador','liquidacion_orden_compra','orden_compra','factura'])]}">
                             <separator class="text-center" string="Facturación"/>
 
                             <div class="col-xs-12 col-md-12">
                                 <group>
-                                    <field name="factura_id"/>
+                                    <field name="factura_id" attrs="{'readonly':[('estado', 'not in',['firma'])]}"/>
                                     <button name="generar_contrato_reserva" string="Generar Contrato Reserva" type="object"/>
                                     
                             </group>
                             </div>
                             
                         </page> 
-                        <page string="Matriculacion, Rastreo, Seguro"  >
+                        <page string="Matriculacion, Rastreo, Seguro"  attrs="{'invisible':[('estado', 'in',['borrador','liquidacion_orden_compra','orden_compra','factura','firma'])]}">
                             <separator class="text-center" string="OFRECIDOS POR LA EMPRESA"/>
                             <div class="col-xs-12 col-sm-9">
                                 <table style=" border-collapse: collapse;width:100%">
                                 <tbody>
-                                         <tr>
+                                         <!--  <tr>
                                             <td>
                                                 <text>Matriculación</text>
                                             </td>
-                                            <td></td>
+                                            <td/>
                                             <td>
-                                                <field name="matriculacion"  />
+                                                <field name="matriculacion" attrs="{'readonly':[('estado', 'not in',['matriculacion'])]}"/>
                                             </td>
-                                            <td  attrs="{'invisible':[('matriculacion', '=', False)]}">
+                                            <td attrs="{'invisible':[('matriculacion', '=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}">
                                                 <text>Plazo</text>
-                                            </td >
-                                            <td></td>
-                                            <td  attrs="{'invisible':[('matriculacion', '=', False)]}">
-                                                <field name="plazo_matriculacion" attrs="{'required':[('matriculacion', '!=', False)]}"/>
                                             </td>
-                                            <td  attrs="{'invisible':[('matriculacion', '=', False)]}">
+                                            <td/>
+                                            <td attrs="{'invisible':[('matriculacion', '=', False)]}">
+                                                <field name="plazo_matriculacion" attrs="{'required':[('matriculacion', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
+                                            </td>
+                                            <td attrs="{'invisible':[('matriculacion', '=', False)]}">
                                                 <text>Fecha Vencimiento</text>
                                             </td>
-                                            <td></td>
-                                            <td  attrs="{'invisible':[('matriculacion', '=', False)]}">
-                                                <field name="fecha_vencimiento_matriculacion" attrs="{'required':[('matriculacion', '!=', False)]}" />
+                                            <td/>
+                                            <td attrs="{'invisible':[('matriculacion', '=', False)]}">
+                                                <field name="fecha_vencimiento_matriculacion" attrs="{'required':[('matriculacion', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
                                             </td>
-                                        </tr>
+                                        </tr>-->
 
                                         <tr>
                                             <td>
                                                 <text>Seguro</text>
                                             </td>
-                                            <td></td>
+                                            <td/>
                                             <td>
-                                                <field name="seguro"  />
+                                                <field name="seguro"  attrs="{'readonly':[('estado', 'not in',['matriculacion'])]}"/>
                                             </td>
-                                            <td  attrs="{'invisible':[('seguro', '=', False)]}">
+                                            <td attrs="{'invisible':[('seguro', '=', False)]}">
                                                 <text>Plazo</text>
                                             </td>
-                                            <td></td>
-                                            <td  attrs="{'invisible':[('seguro', '=', False)]}">
-                                                <field name="plazo_seguro" attrs="{'required':[('seguro', '!=', False)]}"/>
+                                            <td/>
+                                            <td attrs="{'invisible':[('seguro', '=', False)]}">
+                                                <field name="plazo_seguro" attrs="{'required':[('seguro', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
                                             </td>
                                             
-                                            <td  attrs="{'invisible':[('seguro', '=', False)]}">
+                                            <td attrs="{'invisible':[('seguro', '=', False)]}">
                                                 <text>Fecha Inicio</text>
                                             </td>
-                                            <td></td>
-                                            <td  attrs="{'invisible':[('seguro', '=', False)]}">
-                                                <field name="fecha_inicio_seguro"  attrs="{'required':[('seguro', '!=', False)]}"/>
+                                            <td/>
+                                            <td attrs="{'invisible':[('seguro', '=', False)]}">
+                                                <field name="fecha_inicio_seguro" attrs="{'required':[('seguro', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
                                             </td>
 
-                                            <td  attrs="{'invisible':[('seguro', '=', False)]}">
+                                            <td attrs="{'invisible':[('seguro', '=', False)]}">
                                                 <text>Fecha Vencimiento</text>
                                             </td>
-                                            <td></td>
-                                            <td  attrs="{'invisible':[('seguro', '=', False)]}">
-                                                <field name="fecha_vencimiento_seguro"  attrs="{'required':[('seguro', '!=', False)]}"/>
+                                            <td/>
+                                            <td attrs="{'invisible':[('seguro', '=', False)]}">
+                                                <field name="fecha_vencimiento_seguro" attrs="{'required':[('seguro', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
                                             </td>
                                         </tr>
 
@@ -920,30 +959,30 @@
                                             <td>
                                                 <text>Rastreo</text>
                                             </td>
-                                            <td></td>
+                                            <td/>
                                             <td>
-                                                <field name="rastreo"  />
+                                                <field name="rastreo"  attrs="{'readonly':[('estado', 'not in',['matriculacion'])]}"/>
                                             </td>
-                                            <td  attrs="{'invisible':[('rastreo', '=', False)]}">
+                                            <td attrs="{'invisible':[('rastreo', '=', False)]}">
                                                 <text>Plazo</text>
                                             </td>
-                                            <td></td>
-                                            <td  attrs="{'invisible':[('rastreo', '=', False)]}">
-                                                <field name="plazo_rastreo"  attrs="{'required':[('rastreo', '!=', False)]}"/>
+                                            <td/>
+                                            <td attrs="{'invisible':[('rastreo', '=', False)]}">
+                                                <field name="plazo_rastreo" attrs="{'required':[('rastreo', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
                                             </td>
-                                            <td  attrs="{'invisible':[('rastreo', '=', False)]}">
+                                            <td attrs="{'invisible':[('rastreo', '=', False)]}">
                                                 <text>Fecha Inicio</text>
                                             </td>
-                                            <td></td>
-                                            <td  attrs="{'invisible':[('rastreo', '=', False)]}">
-                                                <field name="fecha_inicio_rastreo" attrs="{'required':[('rastreo', '!=', False)]}" />
+                                            <td/>
+                                            <td attrs="{'invisible':[('rastreo', '=', False)]}">
+                                                <field name="fecha_inicio_rastreo" attrs="{'required':[('rastreo', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
                                             </td>
-                                            <td  attrs="{'invisible':[('rastreo', '=', False)]}">
+                                            <td attrs="{'invisible':[('rastreo', '=', False)]}">
                                                 <text>Fecha Vencimiento</text>
                                             </td>
-                                            <td></td>
-                                            <td  attrs="{'invisible':[('rastreo', '=', False)]}">
-                                                <field name="fecha_vencimiento_rastreo" attrs="{'required':[('rastreo', '!=', False)]}" />
+                                            <td/>
+                                            <td attrs="{'invisible':[('rastreo', '=', False)]}">
+                                                <field name="fecha_vencimiento_rastreo" attrs="{'required':[('rastreo', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
                                             </td>
 
                                         </tr>
@@ -954,35 +993,34 @@
 
                         </page>
 
-                        <page string ="Pago de Matric. Seguro y Rastreo" >
+                        <page string="Pago de Seguro y Rastreo"  attrs="{'invisible':[('estado', 'in',['borrador','liquidacion_orden_compra','orden_compra','factura','firma'])]}">
                             <separator class="text-center" string="PAGO DE MATRIC. SEGURO Y RASTREO"/>
                             <div class="col-xs-12 col-md-12">
                                 <group>
-                                    <field name="pago_seguro_id"/>
-                                    <field name="pago_rastreo_id"/>
-                                    <field name="pago_matriculacion_id"/>
-                                    
+                                    <field name="pago_seguro_id"  attrs="{'readonly':[('estado', 'not in',['matriculacion'])]}"/>
+                                    <field name="pago_rastreo_id"  attrs="{'readonly':[('estado', 'not in',['matriculacion'])]}"/>
+
                             </group>
                             </div>
                             
                         </page> 
 
-                        <page string ="Solicitud de Pago">
+                        <page string="Solicitud de Pago"  attrs="{'invisible':[('estado', 'in',['borrador','liquidacion_orden_compra','orden_compra','factura','firma','matriculacion'])]}">
                             <separator class="text-center" string="SOLICITUD DE PAGO"/>
                             <div class="col-xs-12 col-md-12">
                                 <group>
-                                    <field name="documentos_pagos"/>
+                                    <field name="documentos_pagos"  attrs="{'readonly':[('estado', 'not in',['orden_salida'])]}"/>
                                     
                             </group>
                             </div>
                             
                         </page> 
 
-                        <page string ="Pago de Vehículo">
+                        <page string="Pago de Vehículo"  attrs="{'invisible':[('estado', 'in',['borrador','liquidacion_orden_compra','orden_compra','factura','firma','matriculacion','orden_salida'])]}">
                             <separator class="text-center" string="PAGO DE VEHÍCULO"/>
                             <div class="col-xs-12 col-md-12">
                                 <group>
-                                    <field name="pago_factura"/>
+                                    <field name="pago_factura" attrs="{'readonly':[('estado', 'not in',['entrega_vehiculo'])]}"/>
                                     
                             </group>
                             </div>
@@ -991,30 +1029,22 @@
 
 
 
-                        <page string ="Revisiones Generales" >
-                            <separator class="text-center" string="REVISIONES GENERALES"/>
-                            <div class="col-xs-12 col-md-12">
-                                <group>
-                                    <field name="revisiones_generales"/>
-                                    
-                            </group>
-                            </div>
-                            
-                        </page> 
+
 
 
                     </notebook>
                 </sheet>
 
                 <!-- Attachment preview -->
-                <div class="o_attachment_preview" />
+                <div class="o_attachment_preview"/>
                 <!-- Chatter -->
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
                     <field name="activity_ids" widget="mail_activity"/>
                     <field name="message_ids" widget="mail_thread"/>
                 </div>
-            </form >
+            </form>
+
         </field>
     </record>
 
