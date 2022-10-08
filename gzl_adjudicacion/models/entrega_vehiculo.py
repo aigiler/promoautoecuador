@@ -311,7 +311,7 @@ class EntegaVehiculo(models.Model):
     edadGarante = fields.Integer(compute='calcular_edad_Garante', string="Edad", readonly=True, store=True, default = 0)
     edadConyugeGarante = fields.Integer(compute='calcular_edad_conyuge', string="Edad", default = 0)
 
-    cargasFamiliaresGarante = fields.Integer(string="Cargas Fam."  store=True, default = 0)
+    cargasFamiliaresGarante = fields.Integer(string="Cargas Fam.",  store=True, default = 0)
 
     @api.constrains("cargasFamiliaresGarante")
     @api.onchange("cargasFamiliaresGarante")
