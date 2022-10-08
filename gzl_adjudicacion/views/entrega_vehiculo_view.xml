@@ -908,7 +908,7 @@
                                                 <text>Documentos Habilitantes</text>
                                             </td>
                                             <td attrs="{'invisible':[('compras_terceros', '=',False)]}">
-                                                <field name="archivo_habilitantes" ,attrs="{'required':[('compras_terceros', '=',True),('estado', 'in',['orden_compra'])]}" invisible="0"/>
+                                                <field name="archivo_habilitantes" attrs="{'required':[('compras_terceros', '=',True),('estado', 'in',['orden_compra'])]}"/>
                                             </td>
 
                                         </tr>                            
