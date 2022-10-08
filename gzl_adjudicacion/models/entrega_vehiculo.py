@@ -182,7 +182,7 @@ class EntegaVehiculo(models.Model):
     def actualizar_provincia_conyuge_adj(self):
         for l in self:
             if l.provinciaAdjudicado:
-                l.nombreSocioAdjudicado.state_id.=l.provinciaAdjudicado.id
+                l.nombreSocioAdjudicado.state_id=l.provinciaAdjudicado.id
 
     direccionAdjudicado = fields.Char('Direccion')
     @api.constrains("direccionAdjudicado")
@@ -366,7 +366,7 @@ class EntegaVehiculo(models.Model):
     def actualizar_provincia_conyuge_gar(self):
         for l in self:
             if l.provinciaGarante:
-                l.nombreGarante.state_id.=l.provinciaGarante.id
+                l.nombreGarante.state_id=l.provinciaGarante.id
 
     direccionGarante = fields.Char('Direccion')
     @api.constrains("direccionGarante")
