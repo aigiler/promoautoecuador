@@ -542,10 +542,10 @@
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <group >  
-                                        <field name="direccion_trabajoAdj" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
-                                        <field name="nombre_companiaAdj" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
-                                        <field name="telefono_trabajoAdj"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
-                                        <field name="cargoAdj"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                        <field name="direccion_trabajoGar" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
+                                        <field name="nombre_companiaGar" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                        <field name="telefono_trabajoGar"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                        <field name="cargoGar"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
                                     </group>
                                 </div>
 

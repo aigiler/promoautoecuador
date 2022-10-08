@@ -41,7 +41,7 @@ class Partner(models.Model):
     nombre_compania=fields.Char(string='Compañia')
     telefono_trabajo=fields.Char(string='Telefono')
     cargo=fields.Char(string='Cargo')
-    
+
 class EntegaVehiculo(models.Model):
     _name = 'entrega.vehiculo'
     _description = 'Entrega Vehiculo'
@@ -91,7 +91,6 @@ class EntegaVehiculo(models.Model):
 
     ], string='Estado', default='borrador', track_visibility='onchange')
     # datos del socio adjudicado
-    nombreSocioAdjudicado = fields.Many2one('res.partner', string="Nombre del Socio Adj.", track_visibility='onchange')
     nombreGarante = fields.Many2one('res.partner', string="Nombre del Garante", track_visibility='onchange')
     factura_id = fields.Many2one('account.move', string='Factura')
     archivo = fields.Binary(string='Adjuntar Documento')
@@ -105,6 +104,30 @@ class EntegaVehiculo(models.Model):
     pago_factura=fields.Many2one("account.payment", string="Pago de Factura")
     pago_matriculacion_id=fields.Many2one("account.payment", string="Pago de Matriculación")
 
+    nombreSocioAdjudicado = fields.Many2one('res.partner', string="Nombre del Socio Adj.", track_visibility='onchange')
+
+    @api.onchange("nombreSocioAdjudicado")
+    @api.constrains("nombreSocioAdjudicado")
+    def obtener_datos(self):
+        for l in self:
+            if l.nombreSocioAdjudicado:
+
+                l.vatAdjudicado=l.nombreSocioAdjudicado.vat
+                l.fechaNacimientoAdj=l.nombreSocioAdjudicado.fecha_nacimiento
+                l.estadoCivilAdj=l.nombreSocioAdjudicado.estado_civil
+                l.estadoCivilConyuge=l.nombreSocioAdjudicado.estado_civil
+                l.codigoAdjudicado=l.nombreSocioAdjudicado.codigo_cliente
+                l.cargasFamiliares=l.nombreSocioAdjudicado.num_cargas_familiares
+                l.nombreConyuge=l.nombreSocioAdjudicado.conyuge
+                l.fechaNacimientoConyuge=l.nombreSocioAdjudicado.fechaNacimientoConyuge
+                l.vatConyuge=l.nombreSocioAdjudicado.vatConyuge
+                l.ciudadAdjudicado=l.nombreSocioAdjudicado.city
+                l.provinciaAdjudicado=l.nombreSocioAdjudicado.state_id.id
+                l.direccionAdjudicado=l.nombreSocioAdjudicado.street
+                l.direccion_trabajoAdj=l.nombreSocioAdjudicado.direccion_trabajo
+                l.telefono_trabajoAdj=l.nombreSocioAdjudicado.telefono_trabajo
+                l.cargoAdj=l.nombreSocioAdjudicado.cargo
+
     vatAdjudicado = fields.Char(string='Cedula de Ciudadanía',store=True, default='')
 
     @api.constrains("vatAdjudicado")
@@ -113,6 +136,7 @@ class EntegaVehiculo(models.Model):
         for l in self:
             if l.vatAdjudicado:
                 l.nombreSocioAdjudicado.vat=l.vatAdjudicado
+
 
     fechaNacimientoAdj = fields.Date(string='Fecha de Nacimiento', store=True)
 
@@ -230,7 +254,7 @@ class EntegaVehiculo(models.Model):
 
     @api.constrains("direccion_trabajoAdj")
     @api.onchange("direccion_trabajoAdj")
-    def actualizar_direccion_adj(self):
+    def actualizar_direccion_trab_adj(self):
         for l in self:
             if l.direccion_trabajoAdj:
                 l.nombreSocioAdjudicado.direccion_trabajo=l.direccion_trabajoAdj
@@ -239,7 +263,7 @@ class EntegaVehiculo(models.Model):
     
     @api.constrains("nombre_companiaAdj")
     @api.onchange("nombre_companiaAdj")
-    def actualizar_direccion_adj(self):
+    def actualizar_compania_adj(self):
         for l in self:
             if l.nombre_companiaAdj:
                 l.nombreSocioAdjudicado.nombre_compania=l.nombre_companiaAdj
@@ -248,7 +272,7 @@ class EntegaVehiculo(models.Model):
 
     @api.constrains("telefono_trabajoAdj")
     @api.onchange("telefono_trabajoAdj")
-    def actualizar_direccion_adj(self):
+    def actualizar_telefono_adj(self):
         for l in self:
             if l.telefono_trabajoAdj:
                 l.nombreSocioAdjudicado.telefono_trabajo=l.telefono_trabajoAdj
@@ -257,7 +281,7 @@ class EntegaVehiculo(models.Model):
 
     @api.constrains("cargoAdj")
     @api.onchange("cargoAdj")
-    def actualizar_direccion_adj(self):
+    def actualizar_car_adj(self):
         for l in self:
             if l.cargoAdj:
                 l.nombreSocioAdjudicado.cargo=l.cargoAdj
@@ -275,7 +299,27 @@ class EntegaVehiculo(models.Model):
 
 
 
+    @api.onchange("nombreGarante")
+    @api.constrains("nombreGarante")
+    def obtener_datos_garante(self):
+        for l in self:
+            if l.nombreGarante:
 
+                l.vatGarante=l.nombreGarante.vat
+                l.fechaNacimientoGarante=l.nombreGarante.fecha_nacimiento
+                l.estadoCivilGarante=l.nombreGarante.estado_civil
+                l.estadoCivilConyugeGarante=l.nombreGarante.estado_civil
+                l.codigoGarante=l.nombreGarante.codigo_cliente
+                l.cargasFamiliaresGarante=l.nombreGarante.num_cargas_familiares
+                l.nombreConyugeGarante=l.nombreGarante.conyuge
+                l.fechaNacimientoConyugeGarante=l.nombreGarante.fechaNacimientoConyuge
+                l.vatConyugeGarante=l.nombreGarante.vatConyuge
+                l.ciudadGarante=l.nombreGarante.city
+                l.provinciaGarante=l.nombreGarante.state_id.id
+                l.direccionGarante=l.nombreGarante.street
+                l.direccion_trabajoGar=l.nombreGarante.direccion_trabajo
+                l.telefono_trabajoGar=l.nombreGarante.telefono_trabajo
+                l.cargoGar=l.nombreGarante.cargo
 
 
 
@@ -410,41 +454,41 @@ class EntegaVehiculo(models.Model):
                 l.nombreGarante.street=l.direccionGarante
 
 
-    direccion_trabajoAdj=fields.Char(string='Dirección Laboral')
+    direccion_trabajoGar=fields.Char(string='Dirección Laboral')
 
-    @api.constrains("direccion_trabajoAdj")
-    @api.onchange("direccion_trabajoAdj")
-    def actualizar_direccion_adj(self):
+    @api.constrains("direccion_trabajoGar")
+    @api.onchange("direccion_trabajoGar")
+    def actualizar_direccion_trab_gar(self):
         for l in self:
-            if l.direccion_trabajoAdj:
-                l.nombreGarante.direccion_trabajo=l.direccion_trabajoAdj
+            if l.direccion_trabajoGar:
+                l.nombreGarante.direccion_trabajo=l.direccion_trabajoGar
 
-    nombre_companiaAdj=fields.Char(string='Compañia')
+    nombre_companiaGar=fields.Char(string='Compañia')
     
-    @api.constrains("nombre_companiaAdj")
-    @api.onchange("nombre_companiaAdj")
-    def actualizar_direccion_adj(self):
+    @api.constrains("nombre_companiaGar")
+    @api.onchange("nombre_companiaGar")
+    def actualizar_compania_gar(self):
         for l in self:
-            if l.nombre_companiaAdj:
-                l.nombreGarante.nombre_compania=l.nombre_companiaAdj
+            if l.nombre_companiaGar:
+                l.nombreGarante.nombre_compania=l.nombre_companiaGar
 
-    telefono_trabajoAdj=fields.Char(string='Telefono')
+    telefono_trabajoGar=fields.Char(string='Telefono')
 
-    @api.constrains("telefono_trabajoAdj")
-    @api.onchange("telefono_trabajoAdj")
-    def actualizar_direccion_adj(self):
+    @api.constrains("telefono_trabajoGar")
+    @api.onchange("telefono_trabajoGar")
+    def actualizar_telefono_adj(self):
         for l in self:
-            if l.telefono_trabajoAdj:
-                l.nombreGarante.telefono_trabajo=l.telefono_trabajoAdj
+            if l.telefono_trabajoGar:
+                l.nombreGarante.telefono_trabajo=l.telefono_trabajoGar
 
-    cargoAdj=fields.Char(string='Cargo')
+    cargoGar=fields.Char(string='Cargo')
 
-    @api.constrains("cargoAdj")
-    @api.onchange("cargoAdj")
-    def actualizar_direccion_adj(self):
+    @api.constrains("cargoGar")
+    @api.onchange("cargoGar")
+    def actualizar_cargo_adj(self):
         for l in self:
-            if l.cargoAdj:
-                l.nombreGarante.cargo=l.cargoAdj
+            if l.cargoGar:
+                l.nombreGarante.cargo=l.cargoGar
 
 
 
