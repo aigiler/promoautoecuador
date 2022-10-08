@@ -67,9 +67,9 @@ class InformeCreditoCrobranza(models.TransientModel):
                 lista_campos.append(dct)
 
 
-            informe_excel.informe_credito_cobranza(salida,lista_campos,self.clave)
+            informe_excel.informe_credito_cobranza(obj_plantilla.directorio_out,lista_campos,self.clave)
 
-            with open(salida, "rb") as f:
+            with open(obj_plantilla.directorio_out, "rb") as f:
                 data = f.read()
                 file=bytes(base64.b64encode(data))
 
