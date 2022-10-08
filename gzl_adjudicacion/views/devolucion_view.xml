@@ -35,6 +35,7 @@
                 <form string="Devolucion de Monto">
                 
                     <sheet>
+                      <field name="state" invisible="0"/>
                         <notebook>
                         <page string="INFORME DE POSVENTA">
                         <separator class="text-center" string="DATOS GENERALES"/>
