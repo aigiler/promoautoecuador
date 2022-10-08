@@ -320,38 +320,38 @@ class BitacoraConsumoServicios(models.Model):
 
 
     def jobEnvioServicioValidarFactura(self,):
-        
-        self.env.cr.execute("""select * from bitacora_consumo_servicios where state='proceso'  """)
-        registros = self.env.cr.dictfetchall()
-        hoy = datetime.now()
+        print("**")
+        # self.env.cr.execute("""select * from bitacora_consumo_servicios where state='proceso'  """)
+        # registros = self.env.cr.dictfetchall()
+        # hoy = datetime.now()
 
-        for registro in registros:
-            bitacora=self.env['bitacora.consumo.servicios'].browse(registro['id'])
-            bitacora.validarComprobante()
-            if bitacora.estado_autorizacion_sri=='AUT':
-                bitacora.state='generada'
-                bitacora.descargarXML()
-                bitacora.descargarRide()
-                comprobante,model,nombreComprobante,responseKey,template_id=bitacora.seleccionComprobante()
+        # for registro in registros:
+        #     bitacora=self.env['bitacora.consumo.servicios'].browse(registro['id'])
+        #     bitacora.validarComprobante()
+        #     if bitacora.estado_autorizacion_sri=='AUT':
+        #         bitacora.state='generada'
+        #         bitacora.descargarXML()
+        #         bitacora.descargarRide()
+        #         comprobante,model,nombreComprobante,responseKey,template_id=bitacora.seleccionComprobante()
 
-                template = self.env['mail.template'].browse(template_id)
+        #         template = self.env['mail.template'].browse(template_id)
 
-                email_id=template.send_mail(registro['id'])
+        #         email_id=template.send_mail(registro['id'])
                 
-                obj_mail=self.env['mail.mail'].browse(email_id)
-                obj_attach_pdf=self.env['ir.attachment'].search([('res_model','=','bitacora.consumo.servicios'),('res_id','=',registro['id']),('mimetype','=','application/pdf')],limit=1)
-                obj_attach_xml=self.env['ir.attachment'].search([('res_model','=','bitacora.consumo.servicios'),('res_id','=',registro['id']),('mimetype','=','application/xml')],limit=1)
-                obj_mail.attachment_ids=self.env['ir.attachment'].browse([obj_attach_pdf.id,obj_attach_xml.id])
+        #         obj_mail=self.env['mail.mail'].browse(email_id)
+        #         obj_attach_pdf=self.env['ir.attachment'].search([('res_model','=','bitacora.consumo.servicios'),('res_id','=',registro['id']),('mimetype','=','application/pdf')],limit=1)
+        #         obj_attach_xml=self.env['ir.attachment'].search([('res_model','=','bitacora.consumo.servicios'),('res_id','=',registro['id']),('mimetype','=','application/xml')],limit=1)
+        #         obj_mail.attachment_ids=self.env['ir.attachment'].browse([obj_attach_pdf.id,obj_attach_xml.id])
                 
 
-                obj_mail_invoice=obj_mail.copy({'state':'cancel'})
-                obj_mail_invoice.model=model
-                obj_mail_invoice.res_id=comprobante.id
+        #         obj_mail_invoice=obj_mail.copy({'state':'cancel'})
+        #         obj_mail_invoice.model=model
+        #         obj_mail_invoice.res_id=comprobante.id
 
-                try:
-                    obj_mail.send()
-                except:
-                    pass
+        #         try:
+        #             obj_mail.send()
+        #         except:
+        #             pass
 
 
 
