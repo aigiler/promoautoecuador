@@ -697,7 +697,7 @@ class EntegaVehiculo(models.Model):
             'default_composition_mode': 'comment',
             'mark_so_as_sent': True,
             'custom_layout': "",
-            'proforma': self.env.context.get('proforma', False),
+            'proforma':False,
             'force_email': True,
             'model_description': "ORDEN DE COMPRA",
         }
