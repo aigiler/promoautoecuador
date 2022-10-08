@@ -50,23 +50,21 @@ class InformeCreditoCrobranza(models.TransientModel):
             obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','orden_salida')],limit=1)
             
         if obj_plantilla:
+            shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
+            campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
+            lista_campos=[]
+            for campo in campos:
+                dct={}
+                resultado=self.entrega_vehiculo_id.mapped(campo.name)
+                if len(resultado)>0:
+                    dct['valor']=resultado[0]
+                else:
+                    dct['valor']=''
 
-
-                shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
-                campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
-                lista_campos=[]
-                for campo in campos:
-                    dct={}
-                    resultado=self.entrega_vehiculo_id.mapped(campo.name)
-                    if len(resultado)>0:
-                        dct['valor']=resultado[0]
-                    else:
-                        dct['valor']=''
-
-                    dct['fila']=campo.fila
-                    dct['columna']=campo.columna
-                    dct['hoja']=campo.hoja_excel
-                    lista_campos.append(dct)
+                dct['fila']=campo.fila
+                dct['columna']=campo.columna
+                dct['hoja']=campo.hoja_excel
+                lista_campos.append(dct)
 
 
             informe_excel.informe_credito_cobranza(salida,lista_campos,self.clave)
