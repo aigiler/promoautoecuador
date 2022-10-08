@@ -111,6 +111,7 @@ class EntegaVehiculo(models.Model):
     pago_matriculacion_id=fields.Many2one("account.payment", string="Pago de Matriculación")
 
     nombreSocioAdjudicado = fields.Many2one('res.partner', string="Nombre del Socio Adj.", track_visibility='onchange')
+    correo_id=fields.Many2one("ir.attachment")
 
     @api.onchange("nombreSocioAdjudicado")
     @api.constrains("nombreSocioAdjudicado")
@@ -411,7 +412,8 @@ class EntegaVehiculo(models.Model):
 
 
 
-    correo_id=fields.Many2one("mail.compose.message",string="Correo generado")
+
+
     @api.constrains("nombreConyugeGarante")
     @api.onchange("nombreConyugeGarante")
     def actualizar_conyuge_gar(self):
@@ -647,24 +649,37 @@ class EntegaVehiculo(models.Model):
         plantilla_id=self.env['informe.credito.cobranza'].create({'clave':"ordencompra",
                                                     'entrega_vehiculo_id':self.id})
         dct=plantilla_id.print_report_xls()
-        meeting_ids = [(4, [self.nombreConsesionario.id])] 
-        body="""<div style="margin:0px; padding:0px">
-        <p style="margin:0px; padding:0px; font-size:13px">
-            Hola,
-            <br><br>
-                Buenas tardes, <strong>Orden de Compra generada</strong>
-                   </strong> Está lista para su revisión.
-            <br><br>
-            No dude en ponerse en contacto con nosotros si tiene alguna pregunta.
-            <br>
-        </p>
-    </div>"""
-        correo_id=['mail.compose.message'].create({"partner_ids":[(4, [self.nombreConsesionario.id])],
-                                                    "subject":"Orden de Compra "+self.name,
-                                                    "body":body,
-                                                    "attachment_ids":[(4, [dct["documento"]["id"]])]})
-        self.correo_id=correo_id.id
+        self.url_doc=dct["url"]
 
+        self.ensure_one()
+        self.correo_id=dct["documento"]["id"]
+        template_id =  template_id = ir_model_data.get_object_reference('gzl_adjudicacion', "email_orden_compra")[1]
+        lang = self.env.context.get('lang')
+        template = self.env['mail.template'].browse(template_id)
+        if template.lang:
+            lang = template._render_template(template.lang, 'entrega.vehiculo', self.ids[0])
+        ctx = {
+            'default_model': 'entrega.vehiculo',
+            'default_res_id': self.ids[0],
+            'default_use_template': bool(template_id),
+            'default_template_id': template_id,
+            'default_atachment_ids':[(4[dct["documento"]["id"]])]
+            'default_composition_mode': 'comment',
+            'mark_so_as_sent': True,
+            'custom_layout': "mail.mail_notification_paynow",
+            'proforma': self.env.context.get('proforma', False),
+            'force_email': True,
+            'model_description': self.with_context(lang=lang).type_name,
+        }
+        return {
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [(False, 'form')],
+            'view_id': False,
+            'target': 'new',
+            'context': ctx,
+        }
         # view_id = self.env.ref('gzl_reporte.informe_credito_cobranza_form').id
         # return {'type': 'ir.actions.act_window',
         #         'name': 'ORDEN DE COMPRA',
@@ -1092,6 +1107,7 @@ class EntegaVehiculo(models.Model):
     estado_anterior_requisitos = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
     estado_anterior_orden_compra = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
 
+    url_doc = fields.Char('Url doc') 
     def generar_contrato_reserva(self):
         view_id = self.env.ref('gzl_reporte.contrato_reserva_form').id
         return {'type': 'ir.actions.act_window',
