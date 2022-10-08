@@ -204,22 +204,22 @@
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group readonly="1"> 
-                                   <field name="cliente" readonly="1" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
+                                   <field name="cliente"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
                                      <field name="fecha_contrato"/>
                                      <field name="tipo_de_contrato"/>
                                      <field name="supervisor"/>
-                                     <field name="fsolicitud" readonly="1"/>
+                                     <field name="fsolicitud"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}"/>
                                    </group>
 
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group readonly="1"> 
                                     
-                                     <field name="contrato_id" readonly="1" domain="[('cliente', '=', cliente)]" required="1" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
+                                     <field name="contrato_id"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}" domain="[('cliente', '=', cliente)]" required="1" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
                                     <field name="vatAdjudicado"/>
                                     <field name="monto"/>
                                     <field name="asesor"/>
-                                    <field name="asesor_postventa" readonly="1"/>
+                                    <field name="asesor_postventa"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}"/>
                                     </group>
                             </div>
                             <div class="col-xs-12 col-sm-4">
@@ -239,7 +239,7 @@
                        <div class="row" style="border: 1px solid black;">
                         <div class="col-xs-12 col-sm-12">
                           <label for="alerta"/>
-                          <field name="alerta" readonly="1" widget="statusbar" options="{'clickable': '1'}"/>
+                          <field name="alerta"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}" widget="statusbar" options="{'clickable': '1'}"/>
                         </div>
                         <div class="col-xs-12 col-sm-12">
                           <label for="calidad_venta"/>
@@ -315,22 +315,22 @@
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group readonly="1"> 
-                                   <field name="cliente" readonly="1" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
+                                   <field name="cliente"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
                                      <field name="fecha_contrato"/>
                                      <field name="tipo_de_contrato"/>
                                      <field name="supervisor"/>
-                                     <field name="fsolicitud"  readonly="1"/>
+                                     <field name="fsolicitud"   attrs="{'readonly':[('estado', 'not in',['postventa'])]}"/>
                                    </group>
 
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group readonly="1"> 
-                                     <field name="contrato_id"  readonly="1" domain="[('cliente', '=', cliente)]" required="1" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
+                                     <field name="contrato_id"   attrs="{'readonly':[('estado', 'not in',['postventa'])]}" domain="[('cliente', '=', cliente)]" required="1" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
                                     
                                     <field name="vatAdjudicado"/>
                                     <field name="monto"/>
                                     <field name="asesor"/>
-                                    <field name="asesor_postventa"  readonly="1"/>
+                                    <field name="asesor_postventa"   attrs="{'readonly':[('estado', 'not in',['postventa'])]}"/>
                                     </group>
                             </div>
                             <div class="col-xs-12 col-sm-4">
@@ -349,7 +349,7 @@
                             <div class="row" style="border: 1px solid black;">
                         <div class="col-xs-12 col-sm-12">
                           <label for="alerta"/>
-                          <field name="alerta"  readonly="1" widget="statusbar" options="{'clickable': '1'}"/>
+                          <field name="alerta"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}" widget="statusbar" options="{'clickable': '1'}"/>
                         </div>
                         <div class="col-xs-12 col-sm-12">
                           <label for="calidad_venta"/>
@@ -413,22 +413,22 @@
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group readonly="1"> 
-                                     <field name="cliente" readonly="1" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
+                                     <field name="cliente"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
                                      <field name="fecha_contrato"/>
                                      <field name="tipo_de_contrato"/>
                                      <field name="supervisor"/>
-                                     <field name="fsolicitud" readonly="1"/>
+                                     <field name="fsolicitud"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}"/>
                                    </group>
 
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group readonly="1"> 
                                    
-                                    <field name="contrato_id" readonly="1" domain="[('cliente', '=', cliente)]" required="1" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
+                                    <field name="contrato_id"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}" domain="[('cliente', '=', cliente)]" required="1" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
                                     <field name="vatAdjudicado"/>
                                     <field name="monto"/>
                                     <field name="asesor"/>
-                                    <field name="asesor_postventa" readonly="1"/>
+                                    <field name="asesor_postventa"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}"/>
                                     </group>
                             </div>
                             <div class="col-xs-12 col-sm-4">
@@ -447,7 +447,7 @@
                             <div class="row" style="border: 1px solid black;">
                         <div class="col-xs-12 col-sm-12">
                           <label for="alerta"/>
-                          <field name="alerta" readonly="1"  widget="statusbar" options="{'clickable': '1'}"/>
+                          <field name="alerta"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}"  widget="statusbar" options="{'clickable': '1'}"/>
                         </div>
                         <div class="col-xs-12 col-sm-12">
                           <label for="calidad_venta"/>
@@ -469,22 +469,22 @@
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group readonly="1"> 
-                                    <field name="cliente" readonly="1" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
+                                    <field name="cliente"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
                                      <field name="fecha_contrato"/>
                                      <field name="tipo_de_contrato"/>
                                      <field name="supervisor"/>
-                                     <field name="fsolicitud" readonly="1"/>
+                                     <field name="fsolicitud"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}"/>
                                    </group>
 
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group readonly="1"> 
                                     
-                                    <field name="contrato_id" readonly="1" domain="[('cliente', '=', cliente)]" required="1" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
+                                    <field name="contrato_id"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}" domain="[('cliente', '=', cliente)]" required="1" options="{&quot;no_open&quot;: True,&quot;no_create&quot;: 1, &quot;no_create_edit&quot;: 1}"/>
                                     <field name="vatAdjudicado"/>
                                     <field name="monto"/>
                                     <field name="asesor"/>
-                                    <field name="asesor_postventa" readonly="1"/>
+                                    <field name="asesor_postventa"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}"/>
                                     </group>
                             </div>
                             <div class="col-xs-12 col-sm-4">
@@ -504,11 +504,11 @@
                        <div class="row" style="border: 1px solid black;">
                         <div class="col-xs-12 col-sm-12">
                           <label for="alerta"/>
-                          <field name="alerta" readonly="1" widget="statusbar" options="{'clickable': '1'}"/>
+                          <field name="alerta"  attrs="{'readonly':[('estado', 'not in',['postventa'])]}" widget="statusbar" options="{'clickable': '1'}"/>
                         </div>
                         <div class="col-xs-12 col-sm-12">
                           <label for="calidad_venta"/>
-                          <field name="calidad_venta" readonly="1" widget="statusbar" options="{'clickable': '1'}"/>
+                          <field name="calidad_venta"  attrs="{'readonly':[('estado', 'in',['salidadinero'])]}" widget="statusbar" options="{'clickable': '1'}"/>
                         </div>
                         </div>
                       
@@ -517,18 +517,18 @@
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group> 
-                                    <field name="valor_cancelado_sin_firma"/>
-                                     <field name="valor_reserva"/>
-                                     <field name="valor_licitacion"/>
-                                     <field name="valor_desistimiento"/>
+                                    <field name="valor_cancelado_sin_firma" attrs="{'readonly':[('estado', 'not in',['verifvalores'])]}"/>
+                                     <field name="valor_reserva" attrs="{'readonly':[('estado', 'not in',['verifvalores'])]}"/>
+                                     <field name="valor_licitacion" attrs="{'readonly':[('estado', 'not in',['verifvalores'])]}"/>
+                                     <field name="valor_desistimiento" attrs="{'readonly':[('estado', 'not in',['verifvalores'])]}"/>
                                    </group>
 
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group> 
-                                    <field name="capital_pagado_fecha"/>
-                                    <field name="administrativo_pagado_fecha"/>
-                                    <field name="iva_pagado"/>
+                                    <field name="capital_pagado_fecha" attrs="{'readonly':[('estado', 'not in',['verifvalores'])]}"/>
+                                    <field name="administrativo_pagado_fecha" attrs="{'readonly':[('estado', 'not in',['verifvalores'])]}"/>
+                                    <field name="iva_pagado" attrs="{'readonly':[('estado', 'not in',['verifvalores'])]}"/>
                                     </group>
                             </div>
                         </div>
@@ -537,21 +537,21 @@
                         <div class="row" style="border: 1px solid black;">
                             <div class="col-xs-12 col-sm-4">
                                 <group> 
-                                    <field readonly="1" name="valor_cancelado_sin_firma"/>
-                                     <field name="valor_reserva" readonly="1"/>
-                                     <field name="valor_licitacion" readonly="1"/>
-                                     <field name="valor_desistimiento" readonly="1"/>
+                                    <field  name="valor_cancelado_sin_firma" attrs="{'readonly':[('estado', 'not in',['verifvalores'])]}"/>
+                                     <field name="valor_reserva" readonly="1" attrs="{'readonly':[('estado', 'not in',['verifvalores'])]}"/>
+                                     <field name="valor_licitacion" readonly="1" attrs="{'readonly':[('estado', 'not in',['verifvalores'])]}"/>
+                                     <field name="valor_desistimiento" readonly="1" attrs="{'readonly':[('estado', 'not in',['verifvalores'])]}"/>
                                    </group>
 
                             </div>
                             <div class="col-xs-12 col-sm-4">
                                 <group> 
-                                    <field name="valores_facturados" readonly="1"/>
-                                    <field name="inscripcion" readonly="1"/>
-                                    <field name="notas_credito" readonly="1"/>
-                                    <field name="ingreso_caja" readonly="1"/>
-                                    <field name="ingreso_banco" readonly="1"/>
-                                    <field name="cuota_capital" readonly="1"/>
+                                    <field name="valores_facturados" attrs="{'readonly':[('estado', 'not in',['verifvalores'])]}"/>
+                                    <field name="inscripcion" attrs="{'readonly':[('estado', 'not in',['verifvalores'])]}"/>
+                                    <field name="notas_credito" attrs="{'readonly':[('estado', 'not in',['verifvalores'])]}"/>
+                                    <field name="ingreso_caja" attrs="{'readonly':[('estado', 'not in',['verifvalores'])]}"/>
+                                    <field name="ingreso_banco" attrs="{'readonly':[('estado', 'not in',['verifvalores'])]}"/>
+                                    <field name="cuota_capital" attrs="{'readonly':[('estado', 'not in',['verifvalores'])]}"/>
                                     </group>
                             </div>
                             <div class="col-xs-12 col-sm-4">
