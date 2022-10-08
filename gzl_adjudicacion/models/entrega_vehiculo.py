@@ -16,7 +16,12 @@ class Partner(models.Model):
 
 
 
-    tipo=fields.Char(string='Tipo')
+    tipo=fields.Selection(selection=[
+                    ('concesionrio', 'Concesionario'),
+                    ('patio', 'Patio'),
+                    ('tercero', 'Tercero'),
+                    ], string='Tipo de Proveedor')
+
     monto = fields.Float(string='Monto')
     id_cliente = fields.Char(string='ID Cliente')
     direccion = fields.Text(string='Dirección')
@@ -40,6 +45,9 @@ class Partner(models.Model):
     direccion_trabajo=fields.Char(string='Dirección Laboral')
     nombre_compania=fields.Char(string='Compañia')
     telefono_trabajo=fields.Char(string='Telefono')
+    emailContabilidad=fields.Char(string='Email Contabilidad')
+    emailFinanciero=fields.Char(string='Email Financiero')
+    emailComercial=fields.Char(string='Email Comercial')
     cargo=fields.Char(string='Cargo')
 
 class EntegaVehiculo(models.Model):
@@ -93,6 +101,7 @@ class EntegaVehiculo(models.Model):
         ('orden_salida', 'Orden de Salida'),
 
         ('entrega_vehiculo', 'Entrega de Vehículo'),
+        ('finalizado', 'Finalizado'),
 
 
     ], string='Estado', default='borrador', track_visibility='onchange')
@@ -644,6 +653,10 @@ class EntegaVehiculo(models.Model):
         for l in self:
             if l.nombreConsesionario:
                 porcentaje=l.nombreConsesionario.comisionFacturaConcesionario
+                if l.nombreConsesionario.tipo=='tercero':
+                    l.compras_terceros=True
+                else:
+                    l.compras_terceros=False
         l.comisionFacturaConcesionario=porcentaje
 
 
@@ -1127,7 +1140,7 @@ class EntegaVehiculo(models.Model):
     url_doc = fields.Char('Url doc') 
     def generar_contrato_reserva(self):
         reserva_id=self.env['contrato.reserva'].create({'contrato_id':self.contrato_id.id,'partner_id':self.nombreSocioAdjudicado.id,
-                                            'entrega_id':self.id})
+                                            'vehiculo_id':self.id})
         dct=reserva_id.print_report_xls()
         self.reserva_id=dct["documento"]["id"]
        

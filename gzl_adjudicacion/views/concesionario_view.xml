@@ -26,8 +26,11 @@
                         <field name="email" widget="email" context="{'gravatar_image': True}" required="context.get('force_email', False)" attrs="{'required': [('user_ids','!=', [])]}"/>
                         <field name="phone" widget="phone"/>
                         <field name="mobile" widget="phone"/>
-                        <field name="tipo" />
-                            <field name="comisionFacturaConcesionario" required="1"/>
+                        <field name="emailContabilidad" required="0"/>
+                        <field name="emailFinanciero" required="0"/>
+                        <field name="emailComercial" required="0"/>
+                        <field name="tipo" required="1"/>
+                        <field name="comisionFacturaConcesionario" required="1"/>
 
 
                     </group>
@@ -37,12 +40,12 @@
 
 
         <record id="action_concesionarios_form" model="ir.actions.act_window">
-            <field name="name">Concesionario</field>
+            <field name="name">Proveedores</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">res.partner</field>
             <field name="view_mode">kanban,tree,form</field>
             <field name="context">{'default_tipo': 'concesionario'}</field>
-            <field name="domain">[('tipo','=','concesionario')]</field>
+            <field name="domain">[('tipo','in',['concesionario','patio','tercero'])]</field>
             <field name="search_view_id" ref="base.view_res_partner_filter"/>
             <field name="help" type="html">
               <p class="o_view_nocontent_smiling_face">

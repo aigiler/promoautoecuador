@@ -814,7 +814,7 @@
                             </div>
                         </page>
                         
-                        <page string="Revisiones Generales"  attrs="{'invisible':[('estado', 'in',['borrador'])]}">
+                        <page string="Revisiones Generales"  attrs="{'invisible':['|',('estado', 'in',['borrador']),('compras_terceros','=',False)]}">
                             <separator class="text-center" string="REVISIONES GENERALES"/>
                             <div class="col-xs-12 col-sm-9">
                                 <table style=" border-collapse: collapse;width:100%">
@@ -904,11 +904,11 @@
                                             <td >
                                                 <field name="compras_terceros" invisible="0"/>
                                             </td>
-                                            <td attrs="{'invisible':[('compras_terceros', '=',False)],'required':[('compras_terceros','=',True)]}">
+                                            <td attrs="{'invisible':[('compras_terceros', '=',False)]}">
                                                 <text>Documentos Habilitantes</text>
                                             </td>
                                             <td attrs="{'invisible':[('compras_terceros', '=',False)]}">
-                                                <field name="archivo_habilitantes" invisible="0"/>
+                                                <field name="archivo_habilitantes" ,attrs="{'required':[('compras_terceros', '=',True),('estado', 'in',['orden_compra'])]}" invisible="0"/>
                                             </td>
 
                                         </tr>                            
