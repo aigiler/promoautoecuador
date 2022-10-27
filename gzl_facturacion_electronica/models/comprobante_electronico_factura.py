@@ -431,7 +431,7 @@ class FacturacionElectronica(models.Model):
     def postJson(self, url,headers,request):
         #json_factura=json.dumps(dict, ensure_ascii=False)
         json_factura=json.JSONEncoder().encode(request)
-        raise ValidationError("{json_factura},***,{headers},***,{url}")
+        raise ValidationError("{0},***,{1},***,{2}".format(url,headers,json_factura))
 
         procesar_factura_response = requests.post(url, headers = headers, data = json_factura, verify=False)
 
