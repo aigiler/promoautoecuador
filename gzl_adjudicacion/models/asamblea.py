@@ -238,7 +238,7 @@ class Asamblea(models.Model):
                     valorNeto=l.saldo
                     for suplente in suplentes:
                         if suplentes_seleccionados<suplentes:
-                           licitaciones+=suplente.total_or
+                            licitaciones+=suplente.total_or
                             invertir_licitacion+=suplente.monto_financiamiento-suplente.total_or
                             valorNeto=valorNeto-invertir_licitacion                        
                             if valorNeto>=0:
