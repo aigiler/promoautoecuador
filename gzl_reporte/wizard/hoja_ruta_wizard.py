@@ -204,7 +204,7 @@ class HojaRuta(models.TransientModel):
                                                     'name':'Hoja_de_Ruta.xlsx',
                                                     'datas':file,
                                                     'type':'binary', 
-                                                    'store_fname':'Informe_Credito_Cobranza.xlsx'
+                                                    'store_fname':'Hoja de ruta.xlsx'
                                                     })
 
         url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')

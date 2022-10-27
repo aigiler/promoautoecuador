@@ -75,10 +75,10 @@ class InformeCreditoCrobranza(models.TransientModel):
 
 
         obj_attch=self.env['ir.attachment'].create({
-                                                    'name':'Informe_Credito_Cobranza.xlsx',
+                                                    'name':'Orden de Compra.xlsx',
                                                     'datas':file,
                                                     'type':'binary', 
-                                                    'store_fname':'Informe_Credito_Cobranza.xlsx'
+                                                    'store_fname':'Orden de Compra.xlsx'
                                                     })
 
         url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
