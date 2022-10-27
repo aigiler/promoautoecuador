@@ -333,11 +333,11 @@ class AccountMove(models.Model):
                 texto_anticipo=" con un anticipo de: "+str(round(saldo,2))
         if self.invoice_payment_term_id:
             lista_dic.append({
-                            'nombre': 'CRÉDITO',
+                            'nombre': 'CREDITO',
                             'valor':"La factura emitida es por: "+str(round(saldo_credito,2))+texto_anticipo+ " El total pagado es: " +str(round(saldo_credito-saldo,2))+' a '+self.invoice_payment_term_id.name})
         else:
             lista_dic.append({
-                            'nombre': 'CRÉDITO',
+                            'nombre': 'CREDITO',
                             'valor':"La factura emitida es por: "+str(round(saldo_credito,2))+texto_anticipo+ " El total pagado es: " +str(round(saldo_credito-saldo,2))+' a '+str(self.invoice_date_due)})
         if self.method_payment:
             lista_dic.append({'nombre':'Desde','valor':str(self.invoice_date)}) 
