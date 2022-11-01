@@ -8,6 +8,8 @@
                     <group>
                         <group col="2">
                             <field name="entrega_vehiculo_id" required="1" options="{'no_open': True, 'no_create': True}" />
+                            <field name="archivo_xls1" required="0" attrs="{'invisible': [('archivo_xls1', '=', False)]}" />
+
                         </group>
                     </group>
                     <footer>

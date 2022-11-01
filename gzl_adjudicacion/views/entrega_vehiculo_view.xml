@@ -1100,7 +1100,7 @@
                             <div class="col-xs-12 col-md-12">
                                 <group>
                                     <field name="documentos_pagos"  attrs="{'readonly':[('estado', 'not in',['orden_salida'])]}"/>
-                                    <!-- <field name="salida_id"  attrs="{'readonly':[('estado', 'not in',['orden_salida'])],'invisible':[('salida_id', '=',False)]}"/>
+                                    <!-- <field name="orden_salida"  attrs="{'readonly':[('estado', 'not in',['orden_salida'])],'invisible':[('orden_salida', '=',False)]}"/>
                                     
                                     <button type="object" string="Generar Orden de Salida" name="create_orden_Salida" class="btn btn-primary o_invoice_new"/> -->
 

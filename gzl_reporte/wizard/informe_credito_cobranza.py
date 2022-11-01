@@ -32,7 +32,6 @@ class InformeCreditoCrobranza(models.TransientModel):
 
     entrega_vehiculo_id =  fields.Many2one('entrega.vehiculo',string='Entrega Vehiculo',)
     clave =  fields.Char( default="")
-    xls_filename1 = fields.Char('Nombre Archivo excel')
     archivo_xls1 = fields.Binary('Archivo excel')
 
 
@@ -79,11 +78,17 @@ class InformeCreditoCrobranza(models.TransientModel):
                 file=bytes(base64.b64encode(data))
 
 
+        nombre_doc=""
+        if self.clave=='orden_compra':
+            nombre_doc="Orden de Compra.xlsx"
+        else:
+            nombre_doc="Orden de Salida.xlsx"
+
         obj_attch=self.env['ir.attachment'].create({
-                                                    'name':'Orden de Compra.xlsx',
+                                                    'name':nombre_doc,
                                                     'datas':file,
                                                     'type':'binary', 
-                                                    'store_fname':'Orden de Compra.xlsx'
+                                                    'store_fname':nombre_doc
                                                     })
 
         
@@ -105,6 +110,13 @@ class InformeCreditoCrobranza(models.TransientModel):
 
 
         obj_attch.unlink()
+        obj_attch=self.env['ir.attachment'].create({
+                                                    'name':nombre_archivo.split('.')[0]+'.pdf',
+                                                    'datas':file,
+                                                    'type':'binary', 
+                                                    'store_fname':nombre_archivo.split('.')[0]+'.pdf'
+                                                    })
+        self.archivo_xls1=file
 
 
         return{'xls_filename1':'Orden de Compra.pdf','archivo_xls1':file}

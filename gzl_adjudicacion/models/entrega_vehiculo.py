@@ -123,6 +123,7 @@ class EntegaVehiculo(models.Model):
 
     nombreSocioAdjudicado = fields.Many2one('res.partner', string="Nombre del Socio Adj.", track_visibility='onchange')
     orden_compra=fields.Binary()
+    orden_salida=fields.Binary()
     correo_id=fields.Many2one("ir.attachment")
     reserva_id=fields.Many2one("ir.attachment",string="Contrato de Reserva")
     pagare_id=fields.Many2one("ir.attachment",string="Contrato de Reserva")
@@ -668,7 +669,7 @@ class EntegaVehiculo(models.Model):
         plantilla_id=self.env['informe.credito.cobranza'].create({'clave':"orden_salida",
                                                     'entrega_vehiculo_id':self.id})
         dct=plantilla_id.print_report_xls()
-        self.salida_id=dct["documento"]["id"]
+        self.orden_salida=dct["archivo_xls1"]
 
 
 
@@ -678,6 +679,7 @@ class EntegaVehiculo(models.Model):
                                                     'entrega_vehiculo_id':self.id})
         dct=plantilla_id.print_report_xls()
         self.orden_compra=dct["archivo_xls1"]
+        self.correo_id=dct["documento"]["id"]
 
 
 
@@ -695,7 +697,7 @@ class EntegaVehiculo(models.Model):
             'default_res_id': self.ids[0],
             'default_use_template': bool(template_id),
             'default_template_id': template_id,
-            'default_atachment_ids':[(4,self.correo_id.id)],
+            'default_atachment_ids':[(4,self.orden_compra)],
             'default_composition_mode': 'comment',
             'mark_so_as_sent': True,
             'custom_layout': "",
