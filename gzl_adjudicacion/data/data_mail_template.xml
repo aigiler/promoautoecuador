@@ -171,8 +171,7 @@
                     </table>
                 </div>
                 <div style="padding:0px;width:600px;margin:auto;background: #FFFFFF repeat top /100%;color:#777777">
-                <p class="MsoNormal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p class="MsoNormal" align="center" style="text-align:center"><span lang="ES" style="font-size:12.0pt;line-height:107%;mso-ansi-language:ES">Estimado(a) <b>LISSETTE
-                GUARANDA MERO</b><o:p></o:p></span></p><p class="MsoNormal" align="center" style="text-align:center"><span lang="ES" style="font-size:12.0pt;line-height:107%;mso-ansi-language:ES">&nbsp;</span></p><p class="MsoNormal" style="text-align:justify"><span lang="ES" style="font-size:
+                <p class="MsoNormal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p class="MsoNormal" align="center" style="text-align:center"><span lang="ES" style="font-size:12.0pt;line-height:107%;mso-ansi-language:ES">Estimado(a) <b>${object.partner_id.name}</b><o:p></o:p></span></p><p class="MsoNormal" align="center" style="text-align:center"><span lang="ES" style="font-size:12.0pt;line-height:107%;mso-ansi-language:ES">&nbsp;</span></p><p class="MsoNormal" style="text-align:justify"><span lang="ES" style="font-size:
                 12.0pt;line-height:107%;mso-ansi-language:ES">Siempre pensando en nuevas
                 maneras de brindarle un mejor servicio, detallamos a continuación el resumen de
                 pagos y adjuntamos su estado de cuenta al cierre del mes.<o:p></o:p></span></p><p class="MsoNormal" align="center" style="text-align:center"><b><span lang="ES" style="font-size:12.0pt;line-height:107%;color:#002060;mso-ansi-language:ES">TRABAJAMOS
