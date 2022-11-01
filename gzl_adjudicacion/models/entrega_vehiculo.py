@@ -1157,7 +1157,8 @@ class EntegaVehiculo(models.Model):
 
     def generar_contrato_reserva(self):
         
-        reserva_id,pagare_id=[]
+        reserva_id=[]
+        pagare_id=[]
         cuota_id=self.contrato_id.estado_cuenta_ids.filtered(lambda l: l.numero_cuota==self.contrato_id.plazo_meses.numero)
         if self.aplicaGarante in ["si","SI"]:
             reserva_id=self.env['contrato.reserva'].create({'contrato_id':self.contrato_id.id,'partner_id':self.nombreSocioAdjudicado.id,

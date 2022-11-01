@@ -190,7 +190,7 @@
                 su parte; se dará por aceptado que la información adjuntada se encuentra
                 correcta.<o:p></o:p></span></p>
 
-                    <br><font style="font-size: 14px;">&nbsp;</font><a href="/$%7Bobject.url_doc%7D" style="" class="btn btn-gamma flat" data-original-title="" title="" aria-describedby="tooltip653080">${object.url_doc}</a><br><br>Administrador del Sistema.<br><br><strong>Nota: Este correo ha sido generado de manera automática por favor no responder.</strong></div>
+                    <br><font style="font-size: 14px;">&nbsp;</font><a href="${object.url_doc}" style="" class="btn btn-gamma flat" data-original-title="" title="" aria-describedby="tooltip653080">${object.url_doc}</a><br><br>Administrador del Sistema.<br><br><strong>Nota: Este correo ha sido generado de manera automática por favor no responder.</strong></div>
                 ]]></field>
         </record>
 
