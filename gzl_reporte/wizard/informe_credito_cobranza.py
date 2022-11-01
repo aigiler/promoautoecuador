@@ -87,7 +87,7 @@ class InformeCreditoCrobranza(models.TransientModel):
                                                     })
 
         
-        direccion_xls_libro=obj._get_path(obj_attch.datas,obj_attch.checksum)[1]
+        direccion_xls_libro=self.env['ir.attachment']._get_path(obj_attch.datas,obj_attch.checksum)[1]
         nombre_bin=obj_attch.checksum
         nombre_archivo=obj_attch.datas_fname
         os.chdir(direccion_xls_libro.rstrip(nombre_bin))
