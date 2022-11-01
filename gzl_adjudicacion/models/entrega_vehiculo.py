@@ -682,7 +682,7 @@ class EntegaVehiculo(models.Model):
         url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         url += "/web/content/%s?download=true" %(dct["documento"]["id"])
         self.url_doc=url
-        sel.correo_id=dct["documento"]["id"]
+        self.correo_id=dct["documento"]["id"]
 
 
 
@@ -701,7 +701,7 @@ class EntegaVehiculo(models.Model):
             'default_res_id': self.ids[0],
             'default_use_template': bool(template_id),
             'default_template_id': template_id,
-            'default_attachment_ids':[(4,self.orden_compra)],
+            'default_attachment_ids':[(4,self.correo_id.id)],
             'default_composition_mode': 'comment',
             'mark_so_as_sent': True,
             'custom_layout': "",
