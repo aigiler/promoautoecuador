@@ -677,7 +677,7 @@ class EntegaVehiculo(models.Model):
         plantilla_id=self.env['informe.credito.cobranza'].create({'clave':"orden_compra",
                                                     'entrega_vehiculo_id':self.id})
         dct=plantilla_id.print_report_xls()
-        self.orden_compra=dct["archivo_xls1"]["id"]
+        self.orden_compra=dct["archivo_xls1"]
 
 
 
