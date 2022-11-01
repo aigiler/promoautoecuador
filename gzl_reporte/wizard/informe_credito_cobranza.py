@@ -81,12 +81,7 @@ class InformeCreditoCrobranza(models.TransientModel):
                                                     'store_fname':'Orden de Compra.xlsx'
                                                     })
 
-        workbook = Workbook(file)
-
-        pdfOptions = PdfSaveOptions()
-        pdfOptions.setCompliance(PdfCompliance.PDF_A_1_B)
-          
-        workbook.save("xlsx-to-pdf.pdf", pdfOptions)
+        
 
         url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         url += "/web/content/%s?download=true" %(obj_attch.id)

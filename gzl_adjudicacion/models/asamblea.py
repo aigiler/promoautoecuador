@@ -272,11 +272,11 @@ class Asamblea(models.Model):
                         if suplentes_seleccionados<numero_suplentes:
                             cuota_id=suplente.contrato_id.estado_cuenta_ids.filtered(lambda l: l.programado>0.00 and l.fecha.month==hoy.month and l.fecha.year==hoy.year)
                             if cuota_id:
-                            if (valorNeto-cuota_id.monto_financiamiento)>=0:
-                                valorNeto=valorNeto-cuota_id.monto_financiamiento
-                                suplente.seleccionado=True
-                                suplente.nota="SUPLENTE"
-                                suplentes_seleccionados+=1
+                                if (valorNeto-cuota_id.monto_financiamiento)>=0:
+                                    valorNeto=valorNeto-cuota_id.monto_financiamiento
+                                    suplente.seleccionado=True
+                                    suplente.nota="SUPLENTE"
+                                    suplentes_seleccionados+=1
                         else:
                             pass
             if saldoActual:
@@ -305,11 +305,11 @@ class Asamblea(models.Model):
                         if suplentes_seleccionados<numero_suplentes:
                             cuota_id=suplente.contrato_id.estado_cuenta_ids.filtered(lambda l: l.programado>0.00 and l.fecha.month==hoy.month and l.fecha.year==hoy.year)
                             if cuota_id:
-                            if (valorNeto-cuota_id.monto_financiamiento)>=0:
-                                valorNeto=valorNeto-cuota_id.monto_financiamiento
-                                suplente.seleccionado=True
-                                suplente.nota="SUPLENTE"
-                                suplentes_seleccionados+=1
+                                if (valorNeto-cuota_id.monto_financiamiento)>=0:
+                                    valorNeto=valorNeto-cuota_id.monto_financiamiento
+                                    suplente.seleccionado=True
+                                    suplente.nota="SUPLENTE"
+                                    suplentes_seleccionados+=1
                         else:
                             pass
 
