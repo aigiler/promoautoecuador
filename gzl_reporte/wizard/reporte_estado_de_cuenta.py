@@ -218,47 +218,47 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         line = itertools.count(start=15)
         fila = 15
         fila_current=0
+        total_cuota_capital=0
+        total_cuota_adm=0
+        total_iva_adm=0
+        total_seguro=0
+        total_rastreo=0
+        total_otro=0
+        total_saldo=0
 
         for linea in self.contrato_id.estado_de_cuenta_ids:
             current_line = next(line)
             sheet.write(current_line, 0, linea.numero_cuota ,body)
             sheet.write(current_line, 1, linea.fecha, date_format)
             sheet.write(current_line, 2, linea.cuota_capital , currency_format)
+            total_cuota_capital+=linea.cuota_capital
             if linea.programado>0:
                 sheet.write(current_line, 2, linea.programado , currency_format)
-            sheet.write(current_line, 3, linea.cuota_adm ,currency_format)
-           
+                total_cuota_capital+=linea.programado
 
+            sheet.write(current_line, 3, linea.cuota_adm ,currency_format)           
             sheet.write(current_line, 4, linea.iva_adm ,currency_format)
-            #sheet.write(current_line, 6, linea.factura_id.name or ''  , body)
             sheet.write(current_line, 5, linea.seguro,currency_format)
             sheet.write(current_line, 6, linea.rastreo,currency_format)
             sheet.write(current_line, 7, linea.otro, currency_format)
-            #sheet.write(current_line, 10, linea.monto_pagado, currency_format)
             sheet.write(current_line, 8, linea.saldo, currency_format)
-            # if linea.estado_pago=='pendiente':
-            #     sheet.write(current_line, 12, 'Pendiente', body)
-            # else:
-            #     sheet.write(current_line, 12, 'Pagado', body)
+            total_cuota_adm=linea.cuota_adm
+            total_iva_adm=linea.iva_adm
+            total_seguro=linea.seguro
+            total_rastreo=linea.rastreo
+            total_otro=linea.otro
+            total_saldo=linea.saldo
             fila_current=current_line
 
+        currency_bold=workbook.add_format({'num_format': '[$$-409]#,##0.00','text_wrap': True ,'font_name':'Arial','font_size':  12,'align':'center','bold':True, 'bottom':1, 'top':1})
 
         sheet.merge_range('A{0}:B{0}'.format(fila_current+2), 'TOTALES: ', formato_pie_tabla)
-        lista_col_formulas=[2,3,4,5,6,7,8]
-        for col in lista_col_formulas:
-            col_formula = {
-                            'from_col': chr(65 +col),
-                            'to_col': chr(65 +col),
-                            'from_row': fila+1,
-                            'to_row': fila_current+1,
+        sheet.merge_range('A{0}:B{0}'.format(fila_current+3), total_cuota_capital , currency_bold)
+        sheet.merge_range('A{0}:B{0}'.format(fila_current+4), total_cuota_adm , currency_bold)
+        sheet.merge_range('A{0}:B{0}'.format(fila_current+5), total_iva_adm , currency_bold)
+        sheet.merge_range('A{0}:B{0}'.format(fila_current+6), total_seguro , currency_bold)
+        sheet.merge_range('A{0}:B{0}'.format(fila_current+7), total_rastreo , currency_bold)
+        sheet.merge_range('A{0}:B{0}'.format(fila_current+8), total_otro , currency_bold)
+        sheet.merge_range('A{0}:B{0}'.format(fila_current+8), total_saldo , currency_bold)
 
-                        }
-            currency_bold=workbook.add_format({'num_format': '[$$-409]#,##0.00','text_wrap': True ,'font_name':'Arial','font_size':  12,'align':'center','bold':True, 'bottom':1, 'top':1})
-
-            sheet.write_formula(
-                                    fila_current+1 ,col ,
-                                    '=SUM({from_col}{from_row}:{to_col}{to_row})'.format(
-                                        **col_formula
-                                    ), currency_bold)
-
-
+        
