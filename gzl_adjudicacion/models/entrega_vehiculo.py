@@ -1159,7 +1159,7 @@ class EntegaVehiculo(models.Model):
         
         reserva_id=[]
         pagare_id=[]
-        cuota_id=self.contrato_id.estado_cuenta_ids.filtered(lambda l: l.numero_cuota==self.contrato_id.plazo_meses.numero)
+        cuota_id=self.contrato_id.estado_de_cuenta_ids.filtered(lambda l: l.numero_cuota==self.contrato_id.plazo_meses.numero)
         if self.aplicaGarante in ["si","SI"]:
             reserva_id=self.env['contrato.reserva'].create({'contrato_id':self.contrato_id.id,'partner_id':self.nombreSocioAdjudicado.id,
                                             'vehiculo_id':self.id,"clave":"contrato_reserva_garante"})
