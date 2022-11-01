@@ -28,23 +28,17 @@ class ReporteEstadoDeCuenta(models.TransientModel):
     
     
 
-    def print_report_pdf(self):
-        return self.env.ref('gzl_reporte.reporte_estado_de_cuenta_pdf_id').report_action(self)
+    # def print_report_pdf(self):
+    #     return self.env.ref('gzl_reporte.reporte_estado_de_cuenta_pdf_id').report_action(self)
 
 
     def print_report_xls(self):
         file_data = BytesIO()
-        #file_data = BytesIO()
         workbook = xlsxwriter.Workbook(file_data)
         name = 'Estado de Cuenta'
         self.xslx_body(workbook, name)
-
-
         workbook.close()
         file_data.seek(0)
-
-
-
         attachment = self.env['ir.attachment'].create({
             'datas': base64.b64encode(file_data.getvalue()),
             'name': name,
@@ -52,12 +46,61 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             'type': 'binary',
         })
         url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-        url += "/web/content/19692?download=true" 
+        url += "/web/content/%s?download=true"%(attachment.id) 
         return{
             "type": "ir.actions.act_url",
             "url": url,
             "target": "new",
         }
+
+    def print_report_pdf(self):
+        file_data = BytesIO()
+        workbook = xlsxwriter.Workbook(file_data)
+        name = 'Estado de Cuenta.xlsx'
+        self.xslx_body(workbook, name)
+        workbook.close()
+        file_data.seek(0)
+        obj_attch = self.env['ir.attachment'].create({
+            'datas': base64.b64encode(file_data.getvalue()),
+            'name': name,
+            'store_fname': name,
+            'type': 'binary',
+        })
+
+        direccion_xls_libro=self.env['ir.attachment']._get_path(obj_attch.datas,obj_attch.checksum)[1]
+        nombre_bin=obj_attch.checksum
+        nombre_archivo=obj_attch.name
+        os.chdir(direccion_xls_libro.rstrip(nombre_bin))
+        print(os.chdir(direccion_xls_libro.rstrip(nombre_bin)))
+        os.rename(nombre_bin,nombre_archivo)
+        subprocess.getoutput("""libreoffice --headless --convert-to pdf *.xlsx""") 
+        try:
+            with open(direccion_xls_libro.rstrip(nombre_bin)+nombre_archivo.split('.')[0]+'.pdf', "rb") as f:
+                data = f.read()
+                file=bytes(base64.b64encode(data))
+        except:
+            raise ValidationError(_('No existen datos para generar informe'))
+        obj_attch.unlink()
+        obj_attch=self.env['ir.attachment'].create({
+                                                    'name':nombre_archivo.split('.')[0]+'.pdf',
+                                                    'datas':file,
+                                                    'type':'binary', 
+                                                    'store_fname':nombre_archivo.split('.')[0]+'.pdf'
+                                                    })
+
+        url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        url += "/web/content/%s?download=true"%(obj_attch.id) 
+
+        return{
+            "type": "ir.actions.act_url",
+            "url": url,
+            "target": "new",
+        }
+
+
+
+
+
 
     def enviar_correo_estado_cuenta(self):
         contratos_ids=self.env['contrato'].search([('state','=','activo')])

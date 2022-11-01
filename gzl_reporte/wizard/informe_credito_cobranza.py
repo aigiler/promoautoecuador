@@ -105,10 +105,6 @@ class InformeCreditoCrobranza(models.TransientModel):
                 file=bytes(base64.b64encode(data))
         except:
             raise ValidationError(_('No existen datos para generar informe'))
-
-            fecha = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H%M%S')
-
-
         obj_attch.unlink()
         obj_attch=self.env['ir.attachment'].create({
                                                     'name':nombre_archivo.split('.')[0]+'.pdf',
@@ -117,8 +113,6 @@ class InformeCreditoCrobranza(models.TransientModel):
                                                     'store_fname':nombre_archivo.split('.')[0]+'.pdf'
                                                     })
         self.archivo_xls1=file
-
-
         return{'xls_filename1':'Orden de Compra.pdf','archivo_xls1':file,"documento":obj_attch}
 
 
