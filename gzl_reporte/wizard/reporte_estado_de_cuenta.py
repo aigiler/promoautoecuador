@@ -211,7 +211,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         ##Titulos
         colspan=14
         for col, head in enumerate(title_main):
-            sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))), len(head) + 14)
+            sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))),10)
             sheet.write(14, col, head.upper(), formato_cabecera_tabla)
 
         line = itertools.count(start=15)
