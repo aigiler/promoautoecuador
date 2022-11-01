@@ -1160,18 +1160,22 @@ class EntegaVehiculo(models.Model):
         reserva_id=[]
         pagare_id=[]
         cuota_id=self.contrato_id.estado_de_cuenta_ids.filtered(lambda l: l.numero_cuota==self.contrato_id.plazo_meses.numero)
+        if cuota_id:
+            fecha=cuota_id.fecha
+        else:
+            fecha=datetime.now().date()
         if self.aplicaGarante in ["si","SI"]:
             reserva_id=self.env['contrato.reserva'].create({'contrato_id':self.contrato_id.id,'partner_id':self.nombreSocioAdjudicado.id,
                                             'vehiculo_id':self.id,"clave":"contrato_reserva_garante"})
             pagare_id=self.env['pagare.report'].create({'contrato_id':self.contrato_id.id,'partner_id':self.nombreSocioAdjudicado.id,
-                                            'vehiculo_id':self.id,"clave":"pagare_garante","fecha_vencimiento":cuota_id.fecha})
+                                           "clave":"pagare_garante","fecha_vencimiento":fecha})
         else:
             reserva_id=self.env['contrato.reserva'].create({'contrato_id':self.contrato_id.id,'partner_id':self.nombreSocioAdjudicado.id,
                                             'vehiculo_id':self.id,"clave":"contrato_reserva"})
             
             pagare_id=self.env['pagare.report'].create({'contrato_id':self.contrato_id.id,
                                                 'partner_id':self.nombreSocioAdjudicado.id,
-                                            'vehiculo_id':self.id,"clave":"pagare","fecha_vencimiento":cuota_id.fecha})
+                                            "clave":"pagare","fecha_vencimiento":fecha})
 
         if reserva_id:
             dct_reserva=reserva_id.print_report_xls()

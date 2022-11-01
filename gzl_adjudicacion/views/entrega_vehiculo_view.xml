@@ -988,7 +988,7 @@
                                     <field name="reserva_id" attrs="{'readonly':[('estado', 'not in',['firma'])],'invisible':['reserva_id','=',False]}"/>
                                     <field name="pagare_id" attrs="{'readonly':[('estado', 'not in',['firma'])],'invisible':['pagare_id','=',False]}"/>
 
-                                    <button name="generar_contrato_reserva" string="Generar Contrato Reserva/Pagaré a la Orden" type="object"/>
+                                    <button name="generar_contrato_reserva" string="Generar Contrato Reserva/Pagaré a la Orden" class="btn btn-primary o_invoice_new" type="object"/>
                             </group>
                             </div>
                             
