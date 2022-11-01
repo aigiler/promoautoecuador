@@ -83,6 +83,7 @@ def informe_credito_cobranza(ruta,lista,clave):
 
 
 
+
 # def llenar_tabla_excel(lista,sheet,filaInicioBusqueda,filafinBusqueda,ColumnaEje):
 
 #     for linea in lista:

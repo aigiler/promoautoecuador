@@ -1143,7 +1143,7 @@ class EntegaVehiculo(models.Model):
     estado_anterior_orden_compra = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
 
     url_doc = fields.Char('Url doc') 
-    
+
 
     def generar_contrato_reserva(self):
         
@@ -1158,12 +1158,13 @@ class EntegaVehiculo(models.Model):
             reserva_id=self.env['contrato.reserva'].create({'contrato_id':self.contrato_id.id,'partner_id':self.nombreSocioAdjudicado.id,
                                             'vehiculo_id':self.id,"clave":"contrato_reserva"})
             
-            pagare_id=self.env['pagare.report'].create({'contrato_id':self.contrato_id.id,'partner_id':self.nombreSocioAdjudicado.id,
-                                            'vehiculo_id':self.id,"clave":"pagare","fecha_vencimiento":})
+            pagare_id=self.env['pagare.report'].create({'contrato_id':self.contrato_id.id,
+                                                'partner_id':self.nombreSocioAdjudicado.id,
+                                            'vehiculo_id':self.id,"clave":"pagare","fecha_vencimiento":cuota_id.fecha})
 
         if reserva_id:
             dct_reserva=reserva_id.print_report_xls()
-            self.reserva_id=dct_reserva["documento"]["id"]
+            self.reserva_id=dct_reserva["archivo_xls1"]["id"]
 
         if pagare_id:
             dct_pagare=reserva_id.print_report_xls()
