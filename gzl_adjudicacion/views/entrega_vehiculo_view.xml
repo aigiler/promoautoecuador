@@ -926,11 +926,11 @@
                                                 <button type="object" string="Generar OC" name="create_purchase_order" class="btn btn-primary o_invoice_new"/>
                                             </td>
 
-                                            <td  attrs="{'invisible':[('correo_id', '=',False)]}">
+                                            <td  attrs="{'invisible':[('orden_compra', '=',False)]}">
                                                 <text>Documento OC</text>
                                             </td>
-                                            <td attrs="{'invisible':[('correo_id', '=',False)]}">
-                                                <field name="correo_id" invisible="0" />
+                                            <td attrs="{'invisible':[('orden_compra', '=',False)]}">
+                                                <field name="orden_compra" invisible="0" />
                                                 
                                             </td>
 
