@@ -679,7 +679,11 @@ class EntegaVehiculo(models.Model):
                                                     'entrega_vehiculo_id':self.id})
         dct=plantilla_id.print_report_xls()
         self.orden_compra=dct["archivo_xls1"]
-        self.correo_id=dct["documento"]["id"]
+        url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        url += "/web/content/%s?download=true" %(dct["documento"]["id"])
+        self.url_doc=url
+        sel.correo_id=dct["documento"]["id"]
+
 
 
 
@@ -697,7 +701,7 @@ class EntegaVehiculo(models.Model):
             'default_res_id': self.ids[0],
             'default_use_template': bool(template_id),
             'default_template_id': template_id,
-            'default_atachment_ids':[(4,self.orden_compra)],
+            'default_attachment_ids':[(4,self.orden_compra)],
             'default_composition_mode': 'comment',
             'mark_so_as_sent': True,
             'custom_layout': "",
