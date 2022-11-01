@@ -19,6 +19,7 @@ from . import informe_excel
 import subprocess
 from subprocess import getoutput
 import os
+import io
 import base64
 from base64 import urlsafe_b64decode
 
