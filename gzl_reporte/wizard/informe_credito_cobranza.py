@@ -119,7 +119,7 @@ class InformeCreditoCrobranza(models.TransientModel):
         self.archivo_xls1=file
 
 
-        return{'xls_filename1':'Orden de Compra.pdf','archivo_xls1':file}
+        return{'xls_filename1':'Orden de Compra.pdf','archivo_xls1':file,"documento":obj_attch}
 
 
 
