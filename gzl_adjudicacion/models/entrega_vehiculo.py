@@ -122,6 +122,7 @@ class EntegaVehiculo(models.Model):
     pago_matriculacion_id=fields.Many2one("account.payment", string="Pago de Matriculación")
 
     nombreSocioAdjudicado = fields.Many2one('res.partner', string="Nombre del Socio Adj.", track_visibility='onchange')
+    orden_compra=fields.Binary()
     correo_id=fields.Many2one("ir.attachment")
     reserva_id=fields.Many2one("ir.attachment",string="Contrato de Reserva")
     pagare_id=fields.Many2one("ir.attachment",string="Contrato de Reserva")
@@ -677,7 +678,7 @@ class EntegaVehiculo(models.Model):
                                                     'entrega_vehiculo_id':self.id})
         dct=plantilla_id.print_report_xls()
         self.url_doc=dct["url"]
-        self.correo_id=dct["documento"]["id"]
+        self.orden_compra=dct["documento"]["id"]
 
 
 
@@ -1164,7 +1165,7 @@ class EntegaVehiculo(models.Model):
 
         if reserva_id:
             dct_reserva=reserva_id.print_report_xls()
-            self.reserva_id=dct_reserva["archivo_xls1"]["id"]
+            self.reserva_id=dct_reserva["documento"]["id"]
 
         if pagare_id:
             dct_pagare=reserva_id.print_report_xls()

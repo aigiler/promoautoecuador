@@ -101,20 +101,12 @@ class InformeCreditoCrobranza(models.TransientModel):
             raise ValidationError(_('No existen datos para generar informe'))
 
             fecha = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H%M%S')
-        filename = 'Reportes Detalle Contrato'+'.xlsx'
-        self.write ( {
-            'xls_filename1': filename,
-            'archivo_xls1': base64.b64encode(fp.getvalue())
-            }) 
-        obj=self.env['ir.attachment']
-        obj_xls_libro=obj.create({'name':self.xls_filename1,'datas':self.archivo_xls1,'type_l':'libro','type':'binary','datas_fname':self.xls_filename1})
 
 
-        self.write({'xls_filename1':nombre_archivo.split('.')[0]+'.pdf','archivo_xls1':file})
         obj_attch.unlink()
 
 
-        return{'xls_filename1':nombre_archivo.split('.')[0]+'.pdf','archivo_xls1':file}
+        return{'xls_filename1':'Orden de Compra.pdf','archivo_xls1':file}
 
 
 

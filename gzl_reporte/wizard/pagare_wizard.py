@@ -16,9 +16,8 @@ import datetime as tiempo
 import itertools
 from . import crear_pagare
 import shutil
-import subprocess
-from subprocess import getoutput
-import os
+
+
 
 class PagareOrden(models.TransientModel):
     _name = "pagare.report"
@@ -88,9 +87,7 @@ class PagareOrden(models.TransientModel):
             dct['valor']=fechacontr
             lista_campos.append(dct)
             estado_cuenta.append(self.contrato_id.estado_de_cuenta_ids)
-            fp =io.BytesIO()
-            workbook=crear_pagare.crear_pagare(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
-            workbook
+            crear_pagare.crear_pagare(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
             with open(obj_plantilla.directorio_out, "rb") as f:
                 data = f.read()
                 file=bytes(base64.b64encode(data))
@@ -101,45 +98,11 @@ class PagareOrden(models.TransientModel):
                                                     'store_fname':'Pagare a la Orden.docx'
                                                     })
 
-        
-
-        direccion_xls_libro=obj._get_path(obj_attch.datas,obj_attch.checksum)[1]
-        nombre_bin=obj_attch.checksum
-        nombre_archivo=obj_attch.datas_fname
-        os.chdir(direccion_xls_libro.rstrip(nombre_bin))
-        print(os.chdir(direccion_xls_libro.rstrip(nombre_bin)))
-        os.rename(nombre_bin,nombre_archivo)
-        subprocess.getoutput("""libreoffice --headless --convert-to pdf *.xlsx""") 
-        try:
-            with open(direccion_xls_libro.rstrip(nombre_bin)+nombre_archivo.split('.')[0]+'.pdf', "rb") as f:
-                data = f.read()
-                file=bytes(base64.b64encode(data))
-        except:
-            raise ValidationError(_('No existen datos para generar informe'))
-
-            fecha = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H%M%S')
-        filename = 'Reportes Detalle Contrato'+'.xlsx'
-        self.write ( {
-            'xls_filename1': filename,
-            'archivo_xls1': base64.b64encode(fp.getvalue())
-            }) 
-        obj=self.env['ir.attachment']
-        obj_xls_libro=obj.create({'name':self.xls_filename1,'datas':self.archivo_xls1,'type_l':'libro','type':'binary','datas_fname':self.xls_filename1})
-
-
-        self.write({'xls_filename1':nombre_archivo.split('.')[0]+'.pdf','archivo_xls1':file})
-        obj_attch.unlink()
-
-
-        return{'xls_filename1':nombre_archivo.split('.')[0]+'.pdf','archivo_xls1':file}
-
-
-
-        # url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-        # url += "/web/content/%s?download=true" %(obj_attch.id)
-        # return{
-        #     "type": "ir.actions.act_url",
-        #     "url": url,
-        #     "target": "new",
-        #     "documento":obj_attch
-        # }
+        url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        url += "/web/content/%s?download=true" %(obj_attch.id)
+        return{
+            "type": "ir.actions.act_url",
+            "url": url,
+            "target": "new",
+            "documento":obj_attch
+        }
