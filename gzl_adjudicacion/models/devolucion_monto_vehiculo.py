@@ -452,7 +452,7 @@ class DevolucionMonto(models.Model):
             return True
           else:
             raise ValidationError("Debe estar asignado al rol %s"% self.rolAsignado.name)
-        return True
+        return False
 
 
     def crear_activity(self,rol):

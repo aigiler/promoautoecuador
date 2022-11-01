@@ -1275,6 +1275,15 @@ class EntegaVehiculo(models.Model):
                 rec.fechaNacimientoGarante = rec.nombreGarante.fecha_nacimiento
             
 
+    def validarrol(self):
+        roles=self.env['adjudicaciones.team'].search([('id','=',self.rolAsignado.id)])
+        for x in roles:
+          if self.env.user.id == x.user_id.id:
+            return True
+          else:
+            raise ValidationError("Debe estar asignado al rol %s"% self.rolAsignado.name)
+        return False
+
 
     @api.depends('garante')
     def setea_informe_garante(self):
