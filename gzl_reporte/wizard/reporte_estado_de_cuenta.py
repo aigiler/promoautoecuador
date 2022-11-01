@@ -153,8 +153,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         date_format_title = workbook.add_format({'num_format': 'yyyy-mm-dd', 'align': 'justify','text_wrap': True})
         date_format_title.set_align('vcenter')
 
-        body = workbook.add_format({'font_name':'Arial','font_size':11,'align': 'left','border':0,'text_wrap': True})
-        body.set_align('vcenter')
+        body = workbook.add_format({'align': 'center','font_name':'Arial','font_size':11,'align': 'left','border':0,'text_wrap': True})
         sheet = workbook.add_worksheet(name)
         #
         #img = Image('/gzl_reporte/static/description/promoauto.png')
