@@ -214,6 +214,18 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))),10)
             sheet.write(14, col, head.upper(), formato_cabecera_tabla)
 
+        sheet.set_column('A:A', 10)
+        sheet.set_column('B:B', 12.86)
+        sheet.set_column('C:C', 14)
+        sheet.set_column('D:D', 12.57)
+        sheet.set_column('E:E', 11.71)
+        sheet.set_column('F:F', 11)
+        sheet.set_column('G:G', 11)
+        sheet.set_column('H:H', 11)
+        sheet.set_column('I:I', 11)
+        sheet.set_column('I:I', 12)
+
+
         line = itertools.count(start=15)
         fila = 15
         fila_current=0
