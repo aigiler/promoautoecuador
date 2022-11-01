@@ -205,7 +205,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.write('G12', 'Monto financiamiento: $'+ str(self.contrato_id.monto_financiamiento), format_datos)
         sheet.write('I12', 'Plazo: '+ str(self.contrato_id.plazo_meses.numero)+ ' Meses' , format_datos)
         #
-        title_main=['cuota','Fecha pago','Cuota Capital' ,'Cuota Adm.', 'Cuota Programada','Iva','Seguro','Rastreo','Otro','Saldo']
+        title_main=['cuota','Fecha pago','Cuota Capital' ,'Cuota Adm.','Iva','Seguro','Rastreo','Otro','Saldo']
 
         ##Titulos
         colspan=14
@@ -223,17 +223,19 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             current_line = next(line)
             sheet.write(current_line, 0, linea.numero_cuota ,body)
             sheet.write(current_line, 1, linea.fecha, date_format)
-            #sheet.write(current_line, 2, linea.fecha_pagada or ''  , date_format)
             sheet.write(current_line, 2, linea.cuota_capital , currency_format)
+            if linea.programado>0:
+                sheet.write(current_line, 2, linea.programado , currency_format)
             sheet.write(current_line, 3, linea.cuota_adm ,currency_format)
-            sheet.write(current_line, 4, linea.programado ,currency_format)
-            sheet.write(current_line, 5, linea.iva_adm ,currency_format)
+           
+
+            sheet.write(current_line, 4, linea.iva_adm ,currency_format)
             #sheet.write(current_line, 6, linea.factura_id.name or ''  , body)
-            sheet.write(current_line, 6, linea.seguro,currency_format)
-            sheet.write(current_line, 7, linea.rastreo,currency_format)
-            sheet.write(current_line, 8, linea.otro, currency_format)
+            sheet.write(current_line, 5, linea.seguro,currency_format)
+            sheet.write(current_line, 6, linea.rastreo,currency_format)
+            sheet.write(current_line, 7, linea.otro, currency_format)
             #sheet.write(current_line, 10, linea.monto_pagado, currency_format)
-            sheet.write(current_line, 9, linea.saldo, currency_format)
+            sheet.write(current_line, 8, linea.saldo, currency_format)
             # if linea.estado_pago=='pendiente':
             #     sheet.write(current_line, 12, 'Pendiente', body)
             # else:
@@ -242,7 +244,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
 
 
         sheet.merge_range('A{0}:B{0}'.format(fila_current+2), 'TOTALES: ', formato_pie_tabla)
-        lista_col_formulas=[2,3,4,5,6,7,8,9]
+        lista_col_formulas=[2,3,4,5,6,7,8]
         for col in lista_col_formulas:
             col_formula = {
                             'from_col': chr(65 +col),
