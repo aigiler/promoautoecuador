@@ -29,11 +29,6 @@ class ReporteEstadoDeCuenta(models.TransientModel):
     contrato_id = fields.Many2one('contrato',string='Contrato')
     url_doc = fields.Char('Url doc')    
     
-    
-
-    # def print_report_pdf(self):
-    #     return self.env.ref('gzl_reporte.reporte_estado_de_cuenta_pdf_id').report_action(self)
-
 
     def print_report_xls(self):
         file_data = BytesIO()
@@ -114,11 +109,6 @@ class ReporteEstadoDeCuenta(models.TransientModel):
                                                                         'contrato_id':l.id})
                 
                 url_object=reporte_id.print_report_pdf()
-                #reporte_id.print_report_pdf()
-                #attachment = self.env['ir.attachment'].search([('res_id','=',reporte_id.id),('res_model','=','reporte.estado.de.cuenta'),('mimetype','=','application/pdf')])
-                #url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-                #url += "/web/content/%s?download=true" %(url_object)
-
                 reporte_id.update({'url_doc': url_object['url']})
                 self.envio_correos_plantilla('email_estado_cuenta',reporte_id.id)
 
@@ -155,10 +145,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
 
         body = workbook.add_format({'align': 'vcenter','font_name':'Arial','font_size':8,'border':0,'text_wrap': True})
         sheet = workbook.add_worksheet(name)
-        #
-        #img = Image('/gzl_reporte/static/description/promoauto.png')
-        # Write the byte stream image to a cell. The filename must  be specified.
-        #sheet.insert_image('A2', filename, {'image_data': image_data})
+
         sheet.insert_image('B1', '../static/description/promoauto.png', {'x_offset': 15, 'y_offset': 10})
         sheet.merge_range('A3:I3', self.env.company.name.upper(), format_title)
         sheet.merge_range('A5:I5', self.env.company.street.upper(), format_datos)
@@ -168,7 +155,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         #         sheet.merge_range('H6:I6', self.contrato_id.ciudad.nombre_ciudad +', ' + self.create_date.strftime('%Y-%m-%d'), format_datos)
 
         if self.create_date:
-            sheet.merge_range('H6:J6', self.env.company.city.upper() +', ' + self.create_date.strftime('%Y-%m-%d'), format_datos)
+            sheet.merge_range('G6:I6', self.env.company.city.upper() +', ' + self.create_date.strftime('%Y-%m-%d'), format_datos)
         sheet.merge_range('A8:I8', 'ESTADO DE CUENTA DE APORTES', format_subtitle)
         #
         sheet.merge_range('A9:C9', 'Cliente: '+ self.contrato_id.cliente.name, format_datos)
