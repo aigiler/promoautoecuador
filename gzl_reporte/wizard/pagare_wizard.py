@@ -30,9 +30,8 @@ class PagareOrden(models.TransientModel):
 
 
     def print_report_xls(self):
-        if self.clave=='pagare':
-            dct=self.crear_plantilla_contrato_reserva()
-            return dct
+        dct=self.crear_plantilla_contrato_reserva()
+        return dct
 
     def crear_plantilla_contrato_reserva(self,):
         obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','pagare')],limit=1)
@@ -105,4 +104,5 @@ class PagareOrden(models.TransientModel):
             "type": "ir.actions.act_url",
             "url": url,
             "target": "new",
+            "documento":obj_attch
         }

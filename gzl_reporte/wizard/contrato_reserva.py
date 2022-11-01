@@ -30,9 +30,8 @@ class ContratoResrva(models.TransientModel):
 
     def print_report_xls(self):
 
-        if self.clave=='contrato_reserva':
-            dct=self.crear_plantilla_contrato_reserva()
-            return dct
+        dct=self.crear_plantilla_contrato_reserva()
+        return dct
 
 
     def convierte_cifra(self,numero,sw):

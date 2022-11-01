@@ -24,6 +24,8 @@ class TipoAsamblea(models.Model):
     name=fields.Selection(selection=[
         ('licitacion', 'Licitación'),
         ('evaluacion', 'Evaluación'),
+        ('exacto', 'Exacto'),
+        ('programo', 'Programo'),
     ], string='Tipo', default='licitación', track_visibility='onchange')
 
     numero_ganadores=fields.Integer('Número Ganadores')

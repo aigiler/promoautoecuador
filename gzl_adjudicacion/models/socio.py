@@ -25,7 +25,9 @@ class Partner(models.Model):
                     ('viudo', 'Viudo/a')                    
                     ], string='Estado Civil', default='soltero')
     num_cargas_familiares = fields.Integer(string='Cargas Familiares')
-    comisionFacturaConcesionario = fields.Float(string="COMISION FACTURA A NOMBRE CONCESIONARIO")
+    comisionFacturaConcesionario = fields.Float(string="PORCENTAJE COMISION FACTURA A NOMBRE CONCESIONARIO")
+    retencion_fuente=fields.Float(string="PORCENTAJE RETENCIÓN A LA FUENTE")
+    retencion_iva=fields.Float(string="PORCENTAJE RETENCIÓN IVA")
 
     conyuge=fields.Char(string='Nombre del Conyuge')
 

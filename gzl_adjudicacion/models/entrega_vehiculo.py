@@ -124,6 +124,8 @@ class EntegaVehiculo(models.Model):
     nombreSocioAdjudicado = fields.Many2one('res.partner', string="Nombre del Socio Adj.", track_visibility='onchange')
     correo_id=fields.Many2one("ir.attachment")
     reserva_id=fields.Many2one("ir.attachment",string="Contrato de Reserva")
+    pagare_id=fields.Many2one("ir.attachment",string="Contrato de Reserva")
+
     salida_id=fields.Many2one("ir.attachment")
 
 
@@ -1029,6 +1031,7 @@ class EntegaVehiculo(models.Model):
     valorComisionFactura = fields.Monetary(
         compute='calcular_valor_comision_fact')
     comisionDispositivoRastreo = fields.Monetary()
+    retencion_pagar = fields.Monetary()
     montoChequeConsesionario = fields.Monetary(compute='calcular_valor_cheque')
     nombreConsesionario = fields.Many2one(
         'res.partner', string="NOMBRE DEL CONCESIONARIO:")
@@ -1063,12 +1066,14 @@ class EntegaVehiculo(models.Model):
     fecha_vencimiento_matriculacion = fields.Date(string="Fecha Vencimiento", track_visibility="onchange")
 
     rastreo = fields.Boolean(string="Rastreo",track_visibility="onchange")
+    certificado_rastreo=fields.Binary(string="Certificado")
     plazo_rastreo = fields.Integer(string="Plazo", track_visibility="onchange")
     fecha_inicio_rastreo = fields.Date(string="Fecha Inicio", track_visibility="onchange")
     fecha_vencimiento_rastreo = fields.Date(string="Fecha Vencimiento", track_visibility="onchange")
     proveedor_rastreo=fields.Many2one("res.partner")
     seguro = fields.Boolean(string="Seguro",track_visibility="onchange")
     plazo_seguro = fields.Integer(string="Plazo", track_visibility="onchange")
+    certificado_seguro=fields.Binary(string="Certificado")
     fecha_inicio_seguro = fields.Date(string="Fecha Inicio", track_visibility="onchange")
     fecha_vencimiento_seguro = fields.Date(string="Fecha Vencimiento", track_visibility="onchange")
     proveedor_seguro=fields.Many2one("res.partner")
@@ -1138,13 +1143,33 @@ class EntegaVehiculo(models.Model):
     estado_anterior_orden_compra = fields.Boolean(string="Estado Anterior",compute="consultar_estado_anterior_requisitos")
 
     url_doc = fields.Char('Url doc') 
-    def generar_contrato_reserva(self):
-        reserva_id=self.env['contrato.reserva'].create({'contrato_id':self.contrato_id.id,'partner_id':self.nombreSocioAdjudicado.id,
-                                            'vehiculo_id':self.id})
-        dct=reserva_id.print_report_xls()
-        self.reserva_id=dct["documento"]["id"]
-       
+    
 
+    def generar_contrato_reserva(self):
+        
+        reserva_id,pagare_id=[]
+        cuota_id=self.contrato_id.estado_cuenta_ids.filtered(lambda l: l.numero_cuota==self.contrato_id.plazo_meses.numero)
+        if self.aplicaGarante in ["si","SI"]:
+            reserva_id=self.env['contrato.reserva'].create({'contrato_id':self.contrato_id.id,'partner_id':self.nombreSocioAdjudicado.id,
+                                            'vehiculo_id':self.id,"clave":"contrato_reserva_garante"})
+            pagare_id=self.env['pagare.report'].create({'contrato_id':self.contrato_id.id,'partner_id':self.nombreSocioAdjudicado.id,
+                                            'vehiculo_id':self.id,"clave":"pagare_garante","fecha_vencimiento":cuota_id.fecha})
+        else:
+            reserva_id=self.env['contrato.reserva'].create({'contrato_id':self.contrato_id.id,'partner_id':self.nombreSocioAdjudicado.id,
+                                            'vehiculo_id':self.id,"clave":"contrato_reserva"})
+            
+            pagare_id=self.env['pagare.report'].create({'contrato_id':self.contrato_id.id,'partner_id':self.nombreSocioAdjudicado.id,
+                                            'vehiculo_id':self.id,"clave":"pagare","fecha_vencimiento":})
+
+        if reserva_id:
+            dct_reserva=reserva_id.print_report_xls()
+            self.reserva_id=dct_reserva["documento"]["id"]
+
+        if pagare_id:
+            dct_pagare=reserva_id.print_report_xls()
+            self.pagare_id=dct_pagare["documento"]["id"]
+
+    
     @api.model
     def year_selection(self):
         year = 2000 # año de inicio
@@ -1223,12 +1248,6 @@ class EntegaVehiculo(models.Model):
     numPasajeros = fields.Integer(string='Pasajeros:', default = 4)
     tonelajeVehiculo = fields.Char(string='Tonelaje:', default=' ')
     numEjesVehiculo = fields.Integer(string='Número de eje:', default = 2)
-
-
-
-
-
-
 
 
     @api.depends('garante')
@@ -1317,17 +1336,21 @@ class EntegaVehiculo(models.Model):
                 rec.aplicaGarante = 'SI'
     
 
-    @api.depends('valorAdjParaCompra', 'valorComisionFactura', 'comisionDispositivoRastreo', 'montoAnticipoConsesionaria')
+    @api.depends('montoAdjudicado', 'valorComisionFactura', 'retencion_pagar', 'montoAnticipoConsesionaria')
     def calcular_valor_cheque(self):
         for rec in self:
-            rec.montoChequeConsesionario = rec.valorAdjParaCompra - rec.valorComisionFactura + \
-                rec.comisionDispositivoRastreo - rec.montoAnticipoConsesionaria
+            rec.montoChequeConsesionario = rec.montoAdjudicado - rec.valorComisionFactura + rec.retencion_pagar - rec.montoAnticipoConsesionaria
 
     @api.depends('montoVehiculo', 'comisionFacturaConcesionario')
     def calcular_valor_comision_fact(self):
         for rec in self:
             decimalPorcentaje = (rec.comisionFacturaConcesionario/100)
             rec.valorComisionFactura = rec.montoVehiculo * decimalPorcentaje
+            fuente=(rec.valorComisionFactura/1.12)
+            iva=fuente*0.12
+            retencion_fuente=(fuente*(rec.nombreConsesionario.retencion_fuente/100))
+            retencion_iva=(iva*(rec.nombreConsesionario.retencion_iva/100))
+            rec.retencion_pagar=retencion_fuente+retencion_iva
 
     @api.depends('montoVehiculo', 'montoAdjudicado')
     def calcular_valor_adj_para_compra(self):
