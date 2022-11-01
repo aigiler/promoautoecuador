@@ -134,7 +134,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         format_datos = workbook.add_format({'font_name':'Arial','font_size':  8,'align': 'left'})
         currency_format = workbook.add_format({'font_name':'Arial','font_size':  8,'num_format': '[$$-409]#,##0.00','text_wrap': True,'align':'center' })
         currency_format.set_align('vcenter')
-        formato_cabecera_tabla = workbook.add_format({'font_name':'Arial','font_size':  8,'align':'center','valign':'vcenter','bold':True, 'bottom':2, 'top':1,'text_wrap':True})
+        formato_cabecera_tabla = workbook.add_format({'font_name':'Arial','font_size':  8,'align':'center','valign':'vcenter','bold':True, 'bottom':1, 'top':2,'text_wrap':True})
         formato_pie_tabla = workbook.add_format({'font_name':'Arial','font_size':  8,'align':'left','bold':True, 'bottom':1, 'top':1})
         date_format = workbook.add_format({'font_name':'Arial','font_size':  8,'num_format': 'yyyy-mm-dd', 'align': 'center','text_wrap': True })
         date_format.set_align('vcenter')
