@@ -144,7 +144,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         format_datos = workbook.add_format({'font_name':'Arial','font_size':  8,'align': 'left'})
         currency_format = workbook.add_format({'font_name':'Arial','font_size':  8,'num_format': '[$$-409]#,##0.00','text_wrap': True,'align':'center' })
         currency_format.set_align('vcenter')
-        formato_cabecera_tabla = workbook.add_format({'font_name':'Arial','font_size':  8,'align':'center','bold':True, 'bottom':1, 'top':1,'text_wrap':True})
+        formato_cabecera_tabla = workbook.add_format({'font_name':'Arial','font_size':  8,'align':'center','valign':'vcenter','bold':True, 'bottom':1, 'top':1,'text_wrap':True})
         formato_pie_tabla = workbook.add_format({'font_name':'Arial','font_size':  8,'align':'left','bold':True, 'bottom':1, 'top':1})
         date_format = workbook.add_format({'font_name':'Arial','font_size':  8,'num_format': 'yyyy-mm-dd', 'align': 'center','text_wrap': True })
         date_format.set_align('vcenter')
@@ -208,7 +208,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         title_main=['cuota','Fecha pago','Cuota Capital' ,'Cuota Adm.','Iva','Seguro','Rastreo','Otro','Saldo']
 
         ##Titulos
-        colspan=14
+        colspan=15
         for col, head in enumerate(title_main):
             sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))),7)
             sheet.write(14, col, head.upper(), formato_cabecera_tabla)
