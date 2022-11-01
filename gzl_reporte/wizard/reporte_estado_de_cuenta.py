@@ -252,12 +252,13 @@ class ReporteEstadoDeCuenta(models.TransientModel):
 
         currency_bold=workbook.add_format({'num_format': '[$$-409]#,##0.00','text_wrap': True ,'font_name':'Arial','font_size':  12,'align':'center','bold':True, 'bottom':1, 'top':1})
 
+        raise ValidationError(fila_current)
         sheet.merge_range('A{0}:B{0}'.format(fila_current+2), 'TOTALES: ', formato_pie_tabla)
-        sheet.merge_range('C{0}'.format(fila_current), total_cuota_capital , currency_bold)
-        sheet.merge_range('D{0}'.format(fila_current), total_cuota_adm , currency_bold)
-        sheet.merge_range('E{0}'.format(fila_current), total_iva_adm , currency_bold)
-        sheet.merge_range('F{0}'.format(fila_current), total_seguro , currency_bold)
-        sheet.merge_range('G{0}'.format(fila_current), total_rastreo , currency_bold)
-        sheet.merge_range('H{0}'.format(fila_current), total_otro , currency_bold)
-        sheet.merge_range('I{0}'.format(fila_current), total_saldo , currency_bold)
+        sheet.write('C{0}'.format(fila_current), total_cuota_capital , currency_bold)
+        sheet.write('D{0}'.format(fila_current), total_cuota_adm , currency_bold)
+        sheet.write('E{0}'.format(fila_current), total_iva_adm , currency_bold)
+        sheet.write('F{0}'.format(fila_current), total_seguro , currency_bold)
+        sheet.write('G{0}'.format(fila_current), total_rastreo , currency_bold)
+        sheet.write('H{0}'.format(fila_current), total_otro , currency_bold)
+        sheet.write('I{0}'.format(fila_current), total_saldo , currency_bold)
 
