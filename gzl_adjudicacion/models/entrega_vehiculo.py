@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import datetime
+
 from datetime import datetime, timedelta
 from datetime import date, timedelta
 from email.policy import default
@@ -8,6 +10,7 @@ from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from dateutil.relativedelta import relativedelta
 
+from dateutil.parser import parse
 
 
 class Partner(models.Model):   
@@ -593,6 +596,7 @@ class EntegaVehiculo(models.Model):
             self.actividad_id=actividad_id.id
         else:
             self.contrato_id.state='adjudicar'
+            self.fecha_adjudicado=datetime.now()
 
     def llenar_tabla(self):
         obj_patrimonio=self.env['items.patrimonio'].search([])  
