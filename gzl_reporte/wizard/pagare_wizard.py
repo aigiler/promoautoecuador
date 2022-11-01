@@ -16,8 +16,9 @@ import datetime as tiempo
 import itertools
 from . import crear_pagare
 import shutil
-
-
+import subprocess
+from subprocess import getoutput
+import os
 
 class PagareOrden(models.TransientModel):
     _name = "pagare.report"
@@ -87,7 +88,9 @@ class PagareOrden(models.TransientModel):
             dct['valor']=fechacontr
             lista_campos.append(dct)
             estado_cuenta.append(self.contrato_id.estado_de_cuenta_ids)
-            crear_pagare.crear_pagare(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
+            fp =io.BytesIO()
+            workbook=crear_pagare.crear_pagare(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
+            workbook
             with open(obj_plantilla.directorio_out, "rb") as f:
                 data = f.read()
                 file=bytes(base64.b64encode(data))
@@ -99,7 +102,7 @@ class PagareOrden(models.TransientModel):
                                                     })
 
         
-                
+
         direccion_xls_libro=obj._get_path(obj_attch.datas,obj_attch.checksum)[1]
         nombre_bin=obj_attch.checksum
         nombre_archivo=obj_attch.datas_fname
