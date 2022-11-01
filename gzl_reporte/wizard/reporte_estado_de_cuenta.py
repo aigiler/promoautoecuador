@@ -16,7 +16,10 @@ from odoo.exceptions import AccessError, UserError, ValidationError
 import calendar
 import datetime as tiempo
 import itertools
-
+import subprocess
+from subprocess import getoutput
+import os
+import io
 
 class ReporteEstadoDeCuenta(models.TransientModel):
     _name = "reporte.estado.de.cuenta"
