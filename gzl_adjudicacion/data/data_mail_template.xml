@@ -176,13 +176,9 @@
                     </p><p>Se adjunta el estado de Cuenta <a href="${object.url_doc}">${object.url_doc}</a>.
                 <p>
                 </p>
-
-
                     <p>
                     Saludos,
-                    
                     </p>
-
                     <br><br>Administrador del Sistema.<br><br><strong>Nota: Este correo ha sido generado de manera automática por favor no responder.</strong></div>
                 ]]></field>
         </record>
