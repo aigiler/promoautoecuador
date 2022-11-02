@@ -129,7 +129,7 @@ class EntegaVehiculo(models.Model):
     orden_salida=fields.Binary()
     correo_id=fields.Many2one("ir.attachment")
     reserva_id=fields.Many2one("ir.attachment",string="Contrato de Reserva")
-    pagare_id=fields.Many2one("ir.attachment",string="Contrato de Reserva")
+    pagare_id=fields.Many2one("ir.attachment",string="Pagaré a la orden")
 
     salida_id=fields.Many2one("ir.attachment")
 
@@ -1179,7 +1179,7 @@ class EntegaVehiculo(models.Model):
             self.reserva_id=dct_reserva["documento"]["id"]
 
         if pagare_id:
-            dct_pagare=reserva_id.print_report_xls()
+            dct_pagare=pagare_id.print_report_xls()
             self.pagare_id=dct_pagare["documento"]["id"]
 
     
