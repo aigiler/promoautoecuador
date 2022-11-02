@@ -683,9 +683,6 @@ class EntegaVehiculo(models.Model):
                                                     'entrega_vehiculo_id':self.id})
         dct=plantilla_id.print_report_xls()
         self.orden_compra=dct["archivo_xls1"]
-        url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-        url += "/web/content/%s?download=true" %(dct["documento"]["id"])
-        self.url_doc=url
         self.correo_id=dct["documento"]["id"]
 
 
