@@ -1063,6 +1063,7 @@
                                             <td attrs="{'invisible':[('seguro', '=', False)]}">
                                                 <field name="fecha_vencimiento_seguro" attrs="{'required':[('seguro', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
                                             </td>
+
                                             <td attrs="{'invisible':[('seguro', '=', False)]}">
                                                 <text>Proveedor Seguro</text>
                                             </td>
@@ -1070,20 +1071,21 @@
                                             <td attrs="{'invisible':[('seguro', '=', False)]}">
                                                 <field name="proveedor_seguro" attrs="{'required':[('seguro', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
                                             </td>
-                                            <td attrs="{'invisible':[('seguro', '=', False)]}">
-                                                <text>Certificado Seguro</text>
-                                            </td>
-                                            <td/>
-                                            <td attrs="{'invisible':[('seguro', '=', False)]}">
-                                                <field name="certificado_seguro" attrs="{'required':[('seguro', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
-                                            </td>
-                                            <td/>
+                                            
                                             <td attrs="{'invisible':[('seguro', '=', False)]}">
                                                 <text>Pago Seguro</text>
                                             </td>
                                             <td/>
                                             <td attrs="{'invisible':[('seguro', '=', False)]}">
                                                 <field name="pago_seguro_id" attrs="{'readonly':[('estado', 'not in',['matriculacion'])]}"/>
+                                            </td>
+
+                                            <td attrs="{'invisible':[('seguro', '=', False)]}">
+                                                <text>Certificado Seguro</text>
+                                            </td>
+                                            <td/>
+                                            <td attrs="{'invisible':[('seguro', '=', False)]}">
+                                                <field name="certificado_seguro" attrs="{'required':[('seguro', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
                                             </td>
 
 
@@ -1125,20 +1127,21 @@
                                             <td attrs="{'invisible':[('rastreo', '=', False)]}">
                                                 <field name="proveedor_rastreo" attrs="{'required':[('rastreo', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
                                             </td>
-                                            <td attrs="{'invisible':[('rastreo', '=', False)]}">
-                                                <text>Certificado Rastreo</text>
-                                            </td>
-                                            <td/>
-                                            <td attrs="{'invisible':[('rastreo', '=', False)]}">
-                                                <field name="certificado_rastreo" attrs="{'required':[('rastreo', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
-                                            </td>
-                                            <td/>
+                                            
                                             <td attrs="{'invisible':[('rastreo', '=', False)]}">
                                                 <text>Pago Rastreo</text>
                                             </td>
                                             <td/>
                                             <td attrs="{'invisible':[('rastreo', '=', False)]}">
                                                 <field name="pago_rastreo_id" attrs="{'readonly':[('estado', 'not in',['matriculacion'])]}"/>
+                                            </td>
+
+                                            <td attrs="{'invisible':[('rastreo', '=', False)]}">
+                                                <text>Certificado Rastreo</text>
+                                            </td>
+                                            <td/>
+                                            <td attrs="{'invisible':[('rastreo', '=', False)]}">
+                                                <field name="certificado_rastreo" attrs="{'required':[('rastreo', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
                                             </td>
 
                                         </tr>
