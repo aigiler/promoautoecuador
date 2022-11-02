@@ -38,12 +38,40 @@ class RequisitosCredito(models.TransientModel):
             with open(obj_plantilla.directorio_out, "rb") as f:
                 data = f.read()
                 file=bytes(base64.b64encode(data))
+        nombre_doc='Politicas de Credito.docx'
         obj_attch=self.env['ir.attachment'].create({
-                                                    'name':'Politicas de Credito.docx',
+                                                    'name':nombre_doc,
                                                     'datas':file,
                                                     'type':'binary', 
-                                                    'store_fname':'Politicas de Credito.docx'
+                                                    'store_fname':nombre_doc
                                                     })
+
+                
+        direccion_xls_libro=self.env['ir.attachment']._get_path(obj_attch.datas,obj_attch.checksum)[1]
+        nombre_bin=obj_attch.checksum
+        nombre_archivo=obj_attch.name
+        os.chdir(direccion_xls_libro.rstrip(nombre_bin))
+        print(os.chdir(direccion_xls_libro.rstrip(nombre_bin)))
+        os.rename(nombre_bin,nombre_archivo)
+        subprocess.getoutput("""libreoffice --headless --convert-to pdf *.xlsx""") 
+        try:
+            with open(direccion_xls_libro.rstrip(nombre_bin)+nombre_archivo.split('.')[0]+'.pdf', "rb") as f:
+                data = f.read()
+                file=bytes(base64.b64encode(data))
+        except:
+            raise ValidationError(_('No existen datos para generar informe'))
+        obj_attch.unlink()
+        obj_attch=self.env['ir.attachment'].create({
+                                                    'name':nombre_archivo.split('.')[0]+'.pdf',
+                                                    'datas':file,
+                                                    'type':'binary', 
+                                                    'store_fname':nombre_archivo.split('.')[0]+'.pdf'
+                                                    })
+
+
+
+
+
 
         url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         url += "/web/content/%s?download=true" %(obj_attch.id)
@@ -52,3 +80,4 @@ class RequisitosCredito(models.TransientModel):
             "url": url,
             "target": "new",
         }
+
