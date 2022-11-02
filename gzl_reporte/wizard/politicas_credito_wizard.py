@@ -16,7 +16,10 @@ import datetime as tiempo
 import itertools
 from . import crear_pagare
 import shutil
-
+import subprocess
+from subprocess import getoutput
+import os
+import io
 
 
 class RequisitosCredito(models.TransientModel):
