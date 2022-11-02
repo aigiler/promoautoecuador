@@ -20,6 +20,7 @@ import subprocess
 from subprocess import getoutput
 import os
 import io
+from odoo import _
 
 
 class RequisitosCredito(models.TransientModel):
