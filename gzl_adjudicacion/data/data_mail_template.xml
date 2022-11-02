@@ -390,8 +390,8 @@
                     </table>
                 </div>
                 <div style="padding:0px;width:600px;margin:auto;background: #FFFFFF repeat top /100%;color:#777777">
-                <p>Estimado ${object.nombreSocioAdjudicado.name},
-                    </p><p>Se le ha asignado una orden de Compra del cliente "${object.nombreSocioAdjudicado}".
+                <p>Estimado,
+                    </p><p>Se le ha asignado una orden de Compra del cliente "${object.nombreSocioAdjudicado.name}".
                 <p>
                 </p>
 

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+        <record id="requisitos_credito_form" model="ir.ui.view">
+            <field name="name">requisitos.credito.form</field>
+            <field name="model">requisitos.credito</field>
+            <field name="arch" type="xml">
+                <form string="Requisitos y Políticas de Crédito">
+                    <group>
+                            <field name="clave" invisible="1" />
+                    </group>                        
+                    <footer>
+                        <button name="print_report_xls"
+                                string="Imprimir Word"
+                                type="object"
+                                class="oe_highlight" />
+                                               
+                        <button special="cancel"
+                                string="_Cancel"
+                                class="oe_link" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_requisitos_credito_form" model="ir.actions.act_window">
+            <field name="name">Requisitos y Políticas de Crédito</field>
+            <field name="res_model">requisitos.credito</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+
+        <menuitem 
+        id = "menu_requisitos_credito_form"
+        name = "Requisitos y Políticas de Crédito"  
+        parent="menu_reporte" 
+        sequence="1" 
+        action="action_requisitos_credito_form"/>
+
+
+</odoo>

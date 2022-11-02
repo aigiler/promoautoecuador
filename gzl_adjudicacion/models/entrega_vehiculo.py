@@ -1159,7 +1159,7 @@ class EntegaVehiculo(models.Model):
         
         reserva_id=[]
         pagare_id=[]
-        cuota_id=self.contrato_id.estado_de_cuenta_ids.filtered(lambda l: l.numero_cuota==self.contrato_id.plazo_meses.numero)
+        cuota_id=self.contrato_id.estado_de_cuenta_ids.filtered(lambda l: l.numero_cuota==str(self.contrato_id.plazo_meses.numero))
         if cuota_id:
             fecha=cuota_id.fecha
         else:

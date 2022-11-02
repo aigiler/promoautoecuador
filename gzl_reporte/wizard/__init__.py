@@ -11,3 +11,4 @@ from . import pagare_wizard
 from . import reporte_grupos
 from . import reporte_trazabilidad_pagos
 from . import hoja_ruta_wizard
+from . import politicas_credito_wizard
