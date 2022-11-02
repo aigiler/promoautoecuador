@@ -57,7 +57,7 @@ class RequisitosCredito(models.TransientModel):
         os.chdir(direccion_xls_libro.rstrip(nombre_bin))
         print(os.chdir(direccion_xls_libro.rstrip(nombre_bin)))
         os.rename(nombre_bin,nombre_archivo)
-        subprocess.getoutput("""libreoffice --headless --convert-to pdf *.xlsx""") 
+        subprocess.getoutput("""libreoffice --headless --convert-to pdf *.docx""") 
         try:
             with open(direccion_xls_libro.rstrip(nombre_bin)+nombre_archivo.split('.')[0]+'.pdf', "rb") as f:
                 data = f.read()
