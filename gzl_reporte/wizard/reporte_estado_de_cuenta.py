@@ -158,12 +158,12 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             sheet.merge_range('G6:I6', self.env.company.city.upper() +', ' + self.create_date.strftime('%Y-%m-%d'), format_datos)
         sheet.merge_range('A8:I8', 'ESTADO DE CUENTA DE APORTES', format_subtitle)
         #
-        sheet.merge_range('A9:C9', 'Cliente: '+ self.contrato_id.cliente.name, format_datos)
+        sheet.merge_range('A9:D9', 'Cliente: '+ self.contrato_id.cliente.name, format_datos)
 
         if self.contrato_id.cliente.street!=False:
-            sheet.merge_range('A10:C10', 'Dirección: '+ self.contrato_id.cliente.street.upper(), format_datos)
+            sheet.merge_range('A10:D10', 'Dirección: '+ self.contrato_id.cliente.street.upper(), format_datos)
         else:
-            sheet.merge_range('A10:C10', 'Dirección: ', format_datos)
+            sheet.merge_range('A10:D10', 'Dirección: ', format_datos)
 
         if self.contrato_id.grupo: 
             sheet.merge_range('A11:C11', 'Grupo: '+'['+ self.contrato_id.grupo.codigo+'] '+ self.contrato_id.grupo.name, format_datos)

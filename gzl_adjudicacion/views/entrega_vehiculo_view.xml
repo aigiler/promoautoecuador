@@ -883,7 +883,7 @@
                                      </div>
                         </page> 
 
-                        <page string="Orden de Compra"  attrs="{'invisible':[('estado', 'not in',['orden_compra'])]}">
+                        <page string="Orden de Compra"  attrs="{'invisible':[('estado', 'in',['borrador','liquidacion_orden_compra'])]}">
                             <separator class="text-center" string="ORDEN DE COMPRA"/>
                            <div class="col-xs-12 col-sm-9">
                                 <table style=" border-collapse: collapse;width:100%">
@@ -993,6 +993,40 @@
                             </div>
                             
                         </page> 
+
+                        <page string="Solicitud de Pago"  attrs="{'invisible':[('estado', 'in',['borrador','liquidacion_orden_compra','orden_compra','factura','firma','matriculacion'])]}">
+                            <separator class="text-center" string="SOLICITUD DE PAGO"/>
+                            <div class="col-xs-12 col-md-12">
+                                <group>
+                                    <field name="documentos_pagos"  attrs="{'readonly':[('estado', 'not in',['orden_salida'])]}"/>
+                                    <!-- <field name="orden_salida"  attrs="{'readonly':[('estado', 'not in',['orden_salida'])],'invisible':[('orden_salida', '=',False)]}"/>
+                                    
+                                    <button type="object" string="Generar Orden de Salida" name="create_orden_Salida" class="btn btn-primary o_invoice_new"/> -->
+
+                            </group>
+                            <separator class="text-center" string="PAGO DE VEHÍCULO"  attrs="{'invisible':[('estado', 'in',['borrador','liquidacion_orden_compra','orden_compra','factura','firma','matriculacion','orden_salida'])]}"/>
+                            <div class="col-xs-12 col-md-12" attrs="{'invisible':[('estado', 'in',['borrador','liquidacion_orden_compra','orden_compra','factura','firma','matriculacion','orden_salida'])]}">
+                                <group>
+                                    <field name="pago_factura" attrs="{'readonly':[('estado', 'not in',['entrega_vehiculo'])]}"/>
+                                    
+                            </group>
+                            </div>
+                            
+                            </div>
+                            
+                        </page> 
+
+                    <!--     <page string="Pago de Vehículo"  attrs="{'invisible':[('estado', 'in',['borrador','liquidacion_orden_compra','orden_compra','factura','firma','matriculacion','orden_salida'])]}">
+                            <separator class="text-center" string="PAGO DE VEHÍCULO"/>
+                            <div class="col-xs-12 col-md-12" attrs="{'invisible':[('estado', 'in',['borrador','liquidacion_orden_compra','orden_compra','factura','firma','matriculacion','orden_salida'])]}">
+                                <group>
+                                    <field name="pago_factura" attrs="{'readonly':[('estado', 'not in',['entrega_vehiculo'])]}"/>
+                                    
+                            </group>
+                            </div>
+                            
+                        </page> 
+ -->
                         <page string="Rastreo, Seguro"  attrs="{'invisible':[('estado', 'in',['borrador','liquidacion_orden_compra','orden_compra','factura','firma'])]}">
                             <separator class="text-center" string="OFRECIDOS POR LA EMPRESA"/>
                             <div class="col-xs-12 col-sm-9">
@@ -1043,6 +1077,14 @@
                                             <td attrs="{'invisible':[('seguro', '=', False)]}">
                                                 <field name="certificado_seguro" attrs="{'required':[('seguro', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
                                             </td>
+                                            <td/>
+                                            <td attrs="{'invisible':[('seguro', '=', False)]}">
+                                                <text>Pago Seguro</text>
+                                            </td>
+                                            <td/>
+                                            <td attrs="{'invisible':[('seguro', '=', False)]}">
+                                                <field name="pago_seguro_id" attrs="{'readonly':[('estado', 'not in',['matriculacion'])]}"/>
+                                            </td>
 
 
                                         </tr>
@@ -1090,6 +1132,14 @@
                                             <td attrs="{'invisible':[('rastreo', '=', False)]}">
                                                 <field name="certificado_rastreo" attrs="{'required':[('rastreo', '!=', False)],'readonly':[('estado', 'not in',['matriculacion'])]}"/>
                                             </td>
+                                            <td/>
+                                            <td attrs="{'invisible':[('rastreo', '=', False)]}">
+                                                <text>Pago Rastreo</text>
+                                            </td>
+                                            <td/>
+                                            <td attrs="{'invisible':[('rastreo', '=', False)]}">
+                                                <field name="pago_rastreo_id" attrs="{'readonly':[('estado', 'not in',['matriculacion'])]}"/>
+                                            </td>
 
                                         </tr>
                                        
@@ -1099,7 +1149,7 @@
 
                         </page>
 
-                        <page string="Pago de Seguro y Rastreo"  attrs="{'invisible':[('estado', 'in',['borrador','liquidacion_orden_compra','orden_compra','factura','firma'])]}">
+<!--                         <page string="Pago de Seguro y Rastreo"  attrs="{'invisible':[('estado', 'in',['borrador','liquidacion_orden_compra','orden_compra','factura','firma'])]}">
                             <separator class="text-center" string="PAGO DE MATRIC. SEGURO Y RASTREO"/>
                             <div class="col-xs-12 col-md-12">
                                 <group>
@@ -1111,33 +1161,8 @@
                             
                         </page> 
 
-                        <page string="Solicitud de Pago"  attrs="{'invisible':[('estado', 'in',['borrador','liquidacion_orden_compra','orden_compra','factura','firma','matriculacion'])]}">
-                            <separator class="text-center" string="SOLICITUD DE PAGO"/>
-                            <div class="col-xs-12 col-md-12">
-                                <group>
-                                    <field name="documentos_pagos"  attrs="{'readonly':[('estado', 'not in',['orden_salida'])]}"/>
-                                    <!-- <field name="orden_salida"  attrs="{'readonly':[('estado', 'not in',['orden_salida'])],'invisible':[('orden_salida', '=',False)]}"/>
-                                    
-                                    <button type="object" string="Generar Orden de Salida" name="create_orden_Salida" class="btn btn-primary o_invoice_new"/> -->
 
-                            </group>
-                            </div>
-                            
-                        </page> 
-
-                        <page string="Pago de Vehículo"  attrs="{'invisible':[('estado', 'in',['borrador','liquidacion_orden_compra','orden_compra','factura','firma','matriculacion','orden_salida'])]}">
-                            <separator class="text-center" string="PAGO DE VEHÍCULO"/>
-                            <div class="col-xs-12 col-md-12">
-                                <group>
-                                    <field name="pago_factura" attrs="{'readonly':[('estado', 'not in',['entrega_vehiculo'])]}"/>
-                                    
-                            </group>
-                            </div>
-                            
-                        </page> 
-
-
-
+ -->
 
 
 
