@@ -15,9 +15,6 @@ from dateutil.parser import parse
 
 class Partner(models.Model):   
     _inherit = 'res.partner'    
-  
-
-
 
     tipo=fields.Selection(selection=[
                     ('concesionrio', 'Concesionario'),
