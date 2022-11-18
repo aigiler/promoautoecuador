@@ -78,91 +78,91 @@ class HrEmployee(models.Model):
             if comisiones_ids:
                 self.envio_correos_plantilla('email_comisiones_pendientes',x.employee_id.id)
 
-    @api.onchange("name","identification_id","birthday","estado_civil","phone","mobile_phone",
-                "country_id","direccion","property_account_receivable_id","property_account_payable_id")
-    def actualizar_partner(self):
-        for l in self:
-            if self.address_id and self.name and self.identification_id and self.type_identifier:
-                estado_civil=""
-                if l.marital=="single":
-                    estado_civil="soltero"
-                elif l.marital=="married":
-                    estado_civil="casado"
-                elif l.marital=="widower":
-                    estado_civil="viudo"
-                elif l.marital=="divorced":
-                    estado_civil="divorciado"
-                elif l.marital=="free_union":
-                    estado_civil="union_libre"
-                nombre_conyuge=""
-                nacimiento_conyuge=""
-                cargas_ids=self.env['hr.employee.children'].search([('parentezco','=','conyuge')],limit=1)
-                for x in cargas_ids:
-                    nombre_conyuge=x.name
-                    nacimiento_conyuge=x.date_birth
-                dct={
-                    'name':self.name,
-                    'vat':self.identification_id,
-                    'fecha_nacimiento':self.birthday,
-                    'estado_civil':estado_civil,
-                    'phone':self.phone,
-                    'mobile':self.mobile_phone,
-                    'country_id':self.country_id.id,
-                    'street':self.direccion,
-                    'direccion_trabajo':self.work_location,
-                    'nombre_compania':" PROMOAUTO ECUADOR S.A.",
-                    'telefono_trabajo':self.work_phone,
-                    'cargo':self.job_id.name,
-                    'conyuge':nombre_conyuge,
-                    "fechaNacimientoConyuge":nacimiento_conyuge,
-                    'property_account_receivable_id':self.property_account_receivable_id.id,
-                    "property_account_payable_id":self.property_account_payable_id.id
-                }
-                self.address_id.write(dct)
+    # @api.onchange("name","identification_id","birthday","estado_civil","phone","mobile_phone",
+    #             "country_id","direccion","property_account_receivable_id","property_account_payable_id")
+    # def actualizar_partner(self):
+    #     for l in self:
+    #         if self.address_id and self.name and self.identification_id and self.type_identifier:
+    #             estado_civil=""
+    #             if l.marital=="single":
+    #                 estado_civil="soltero"
+    #             elif l.marital=="married":
+    #                 estado_civil="casado"
+    #             elif l.marital=="widower":
+    #                 estado_civil="viudo"
+    #             elif l.marital=="divorced":
+    #                 estado_civil="divorciado"
+    #             elif l.marital=="free_union":
+    #                 estado_civil="union_libre"
+    #             nombre_conyuge=""
+    #             nacimiento_conyuge=""
+    #             cargas_ids=self.env['hr.employee.children'].search([('parentezco','=','conyuge')],limit=1)
+    #             for x in cargas_ids:
+    #                 nombre_conyuge=x.name
+    #                 nacimiento_conyuge=x.date_birth
+    #             dct={
+    #                 'name':self.name,
+    #                 'vat':self.identification_id,
+    #                 'fecha_nacimiento':self.birthday,
+    #                 'estado_civil':estado_civil,
+    #                 'phone':self.phone,
+    #                 'mobile':self.mobile_phone,
+    #                 'country_id':self.country_id.id,
+    #                 'street':self.direccion,
+    #                 'direccion_trabajo':self.work_location,
+    #                 'nombre_compania':" PROMOAUTO ECUADOR S.A.",
+    #                 'telefono_trabajo':self.work_phone,
+    #                 'cargo':self.job_id.name,
+    #                 'conyuge':nombre_conyuge,
+    #                 "fechaNacimientoConyuge":nacimiento_conyuge,
+    #                 'property_account_receivable_id':self.property_account_receivable_id.id,
+    #                 "property_account_payable_id":self.property_account_payable_id.id
+    #             }
+    #             self.address_id.write(dct)
 
 
 
-    @api.constrains("name")
-    def crear_partner(self):
-        for l in self:
-            estado_civil=""
-            if l.marital=="single":
-                estado_civil="soltero"
-            elif l.marital=="married":
-                estado_civil="casado"
-            elif l.marital=="widower":
-                estado_civil="viudo"
-            elif l.marital=="divorced":
-                estado_civil="divorciado"
-            elif l.marital=="free_union":
-                estado_civil="union_libre"
-            nombre_conyuge=""
-            nacimiento_conyuge=False
-            cargas_ids=self.env['hr.employee.children'].search([('parentezco','=','conyuge')],limit=1)
-            for x in cargas_ids:
-                nombre_conyuge=x.name
-                nacimiento_conyuge=x.date_birth
-            dct={
-                'name':self.name,
-                'vat':self.identification_id,
-                'fecha_nacimiento':self.birthday,
-                'estado_civil':estado_civil,
-                'phone':self.phone,
-                'mobile':self.mobile_phone,
-                'country_id':self.country_id.id,
-                'street':self.direccion,
-                'direccion_trabajo':self.work_location,
-                'nombre_compania':" PROMOAUTO ECUADOR S.A.",
-                'telefono_trabajo':self.work_phone,
-                'cargo':self.job_id.name,
-                'conyuge':nombre_conyuge,
-                "fechaNacimientoConyuge":nacimiento_conyuge,
-                'property_account_receivable_id':self.property_account_receivable_id.id,
-                "property_account_payable_id":self.property_account_payable_id.id
-            }
-            empleado_partner_id=self.env['res.partner'].create(dct)
-            self.address_id=False
-            self.address_id=empleado_partner_id.id
+    # @api.constrains("name")
+    # def crear_partner(self):
+    #     for l in self:
+    #         estado_civil=""
+    #         if l.marital=="single":
+    #             estado_civil="soltero"
+    #         elif l.marital=="married":
+    #             estado_civil="casado"
+    #         elif l.marital=="widower":
+    #             estado_civil="viudo"
+    #         elif l.marital=="divorced":
+    #             estado_civil="divorciado"
+    #         elif l.marital=="free_union":
+    #             estado_civil="union_libre"
+    #         nombre_conyuge=""
+    #         nacimiento_conyuge=False
+    #         cargas_ids=self.env['hr.employee.children'].search([('parentezco','=','conyuge')],limit=1)
+    #         for x in cargas_ids:
+    #             nombre_conyuge=x.name
+    #             nacimiento_conyuge=x.date_birth
+    #         dct={
+    #             'name':self.name,
+    #             'vat':self.identification_id,
+    #             'fecha_nacimiento':self.birthday,
+    #             'estado_civil':estado_civil,
+    #             'phone':self.phone,
+    #             'mobile':self.mobile_phone,
+    #             'country_id':self.country_id.id,
+    #             'street':self.direccion,
+    #             'direccion_trabajo':self.work_location,
+    #             'nombre_compania':" PROMOAUTO ECUADOR S.A.",
+    #             'telefono_trabajo':self.work_phone,
+    #             'cargo':self.job_id.name,
+    #             'conyuge':nombre_conyuge,
+    #             "fechaNacimientoConyuge":nacimiento_conyuge,
+    #             'property_account_receivable_id':self.property_account_receivable_id.id,
+    #             "property_account_payable_id":self.property_account_payable_id.id
+    #         }
+    #         empleado_partner_id=self.env['res.partner'].create(dct)
+    #         self.address_id=False
+    #         self.address_id=empleado_partner_id.id
 
 
 
