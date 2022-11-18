@@ -153,7 +153,7 @@ class HrEmployee(models.Model):
                             "property_account_payable_id":self.property_account_payable_id.id
                         }
                 partner = obj_partner.write(dct)
-                self.address_home_id = partner_id.id
+                self.address_home_id = partner.id
 
 
 
