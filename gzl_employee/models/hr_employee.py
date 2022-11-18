@@ -83,12 +83,29 @@ class HrEmployee(models.Model):
     def create_partner(self):
         obj_partner = self.env['res.partner']
         partner_id = obj_partner.search([('vat','=',self.identification_id)])
+        estado_civil=""
+        if l.marital=="single":
+            estado_civil="soltero"
+        elif l.marital=="married":
+            estado_civil="casado"
+        elif l.marital=="widower":
+            estado_civil="viudo"
+        elif l.marital=="divorced":
+            estado_civil="divorciado"
+        elif l.marital=="free_union":
+            estado_civil="union_libre"
+        nombre_conyuge=""
+        nacimiento_conyuge=False
+        cargas_ids=self.env['hr.employee.children'].search([('parentezco','=','conyuge')],limit=1)
+        for x in cargas_ids:
+            nombre_conyuge=x.name
+            nacimiento_conyuge=x.date_birth
         if not partner_id:
             dct={
                     'name':self.name,
                     'vat':self.identification_id,
                     'fecha_nacimiento':self.birthday,
-                    'estado_civil':self.estado_civil,
+                    'estado_civil':estado_civil,
                     'phone':self.phone,
                     'mobile':self.mobile_phone,
                     'country_id':self.country_id.id,
@@ -138,7 +155,7 @@ class HrEmployee(models.Model):
                             'name':self.name,
                             'vat':self.identification_id,
                             'fecha_nacimiento':self.birthday,
-                            'estado_civil':self.estado_civil,
+                            'estado_civil':estado_civil,
                             'phone':self.phone,
                             'mobile':self.mobile_phone,
                             'country_id':self.country_id.id,
