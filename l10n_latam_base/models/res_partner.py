@@ -157,22 +157,22 @@ class ResPartner(models.Model):
                     
 
 
-    @api.constrains("vat")
-    def validar_digitos_vat(self,):
-        for obj in self:
-            if obj.active == True and obj.val_iden == True:
-                if  obj.l10n_latam_identification_type_id.sigla != False: 
-                    if len(obj.vat) == 10 and obj.l10n_latam_identification_type_id.sigla == 'C':
-                        res = self.valida_identificacionci(obj.vat, obj.l10n_latam_identification_type_id.sigla)
-                        if res == 1:
-                            raise ValidationError('ERROR!, Cedula ingresada incorrecta.')
-                        else:
-                            return True                
-                    elif len(obj.vat) == 13 and obj.l10n_latam_identification_type_id.sigla == 'R' :
-                        res = self.valida_identificacionci(obj.vat, obj.l10n_latam_identification_type_id.sigla)
-                        if res == 1:
-                            raise ValidationError('ERROR!, RUC ingresado incorrecto.')
-                        else:
-                            return True
-                    else:
-                        raise ValidationError("ERROR!, Numero de identificación incorrecto.")                
+    # @api.constrains("vat")
+    # def validar_digitos_vat(self,):
+    #     for obj in self:
+    #         if obj.active == True and obj.val_iden == True:
+    #             if  obj.l10n_latam_identification_type_id.sigla != False: 
+    #                 if len(obj.vat) == 10 and obj.l10n_latam_identification_type_id.sigla == 'C':
+    #                     res = self.valida_identificacionci(obj.vat, obj.l10n_latam_identification_type_id.sigla)
+    #                     if res == 1:
+    #                         raise ValidationError('ERROR!, Cedula ingresada incorrecta.')
+    #                     else:
+    #                         return True                
+    #                 elif len(obj.vat) == 13 and obj.l10n_latam_identification_type_id.sigla == 'R' :
+    #                     res = self.valida_identificacionci(obj.vat, obj.l10n_latam_identification_type_id.sigla)
+    #                     if res == 1:
+    #                         raise ValidationError('ERROR!, RUC ingresado incorrecto.')
+    #                     else:
+    #                         return True
+    #                 else:
+    #                     raise ValidationError("ERROR!, Numero de identificación incorrecto.")                
