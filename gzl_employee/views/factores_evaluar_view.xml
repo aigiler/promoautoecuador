@@ -24,5 +24,7 @@
     </record>
 
 
-    <menuitem id="menu_action_factores_view" action="action_factores_view" parent="hr_payroll.menu_hr_payroll_configuration" sequence="7" />
+    <menuitem id="menu_action_factores_view" action="action_factores_view" parent="hr_appraisal.menu_hr_appraisal_configuration" sequence="7" />
+
+
 </odoo>

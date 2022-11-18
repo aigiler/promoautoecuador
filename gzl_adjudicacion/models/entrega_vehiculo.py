@@ -20,11 +20,12 @@ class Partner(models.Model):
                     ('concesionrio', 'Concesionario'),
                     ('patio', 'Patio'),
                     ('tercero', 'Tercero'),
+                    ('preAdjudicado', 'preAdjudicado'),
                     ], string='Tipo de Proveedor')
 
     monto = fields.Float(string='Monto')
-    id_cliente = fields.Char(string='ID Cliente')
     direccion = fields.Text(string='Dirección')
+    id_cliente = fields.Char(string='ID Cliente')
     tipo_contrato = fields.Many2one("tipo.contrato.adjudicado", String="Tipo de Contrato")
     codigo_cliente = fields.Char(string='Código Cliente')
     fecha_nacimiento  = fields.Date(string='Fecha de nacimiento')
@@ -55,8 +56,6 @@ class EntegaVehiculo(models.Model):
     _description = 'Entrega Vehiculo'
     _rec_name = 'secuencia'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-
-
 
     rolAsignado = fields.Many2one('adjudicaciones.team', string="Rol Asignado", track_visibility='onchange')
     rolCredito = fields.Many2one('adjudicaciones.team', string="Rol Credito", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol3'))
