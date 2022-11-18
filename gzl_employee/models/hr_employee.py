@@ -84,15 +84,15 @@ class HrEmployee(models.Model):
         obj_partner = self.env['res.partner']
         partner_id = obj_partner.search([('vat','=',self.identification_id)])
         estado_civil=""
-        if l.marital=="single":
+        if self.marital=="single":
             estado_civil="soltero"
-        elif l.marital=="married":
+        elif self.marital=="married":
             estado_civil="casado"
-        elif l.marital=="widower":
+        elif self.marital=="widower":
             estado_civil="viudo"
-        elif l.marital=="divorced":
+        elif self.marital=="divorced":
             estado_civil="divorciado"
-        elif l.marital=="free_union":
+        elif self.marital=="free_union":
             estado_civil="union_libre"
         nombre_conyuge=""
         nacimiento_conyuge=False
