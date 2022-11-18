@@ -99,6 +99,7 @@ class HrEmployee(models.Model):
                 nombre_conyuge=x.name
                 nacimiento_conyuge=x.date_birth
             dct={
+                'name':self.name,
                 'vat':self.identification_id,
                 'fecha_nacimiento':self.birthday,
                 'estado_civil':estado_civil,
@@ -140,6 +141,7 @@ class HrEmployee(models.Model):
                 nombre_conyuge=x.name
                 nacimiento_conyuge=x.date_birth
             dct={
+                'name':self.name,
                 'vat':self.identification_id,
                 'fecha_nacimiento':self.birthday,
                 'estado_civil':estado_civil,
