@@ -78,8 +78,6 @@ class HrEmployee(models.Model):
             if comisiones_ids:
                 self.envio_correos_plantilla('email_comisiones_pendientes',x.employee_id.id)
 
-
-
     @api.constrains("address_id")
     def crear_partner(self):
         for l in self:
@@ -117,13 +115,8 @@ class HrEmployee(models.Model):
                 'property_account_receivable_id':self.property_account_receivable_id.id,
                 "property_account_payable_id":self.property_account_payable_id.id
             }
-
-
-
-
-
-
-
+            partner_id=self.env['res.partner'].create(dct)
+            self.address_id=partner_id.id
 
 
 
