@@ -108,11 +108,14 @@ class HrEmployee(models.Model):
             self.address_home_id = partner_id.id
 
 
+
+
+
     @api.onchange("name","identification_id","birthday","estado_civil","phone","mobile_phone",
-                "country_id","direccion","property_account_receivable_id","property_account_payable_id")
+                "country_id","direccion","property_account_receivable_id","property_account_payable_id","job_id")
     def actualizar_partner(self):
         for l in self:
-            if l.name:
+            if self.name and self.identification_id:
                 estado_civil=""
                 if l.marital=="single":
                     estado_civil="soltero"
@@ -131,6 +134,7 @@ class HrEmployee(models.Model):
                     nombre_conyuge=x.name
                     nacimiento_conyuge=x.date_birth
                 obj_partner = self.env['res.partner']
+                partner_id = obj_partner.search([('vat','=',self.identification_id)])
                 dct={
                             'name':self.name,
                             'vat':self.identification_id,
@@ -149,12 +153,9 @@ class HrEmployee(models.Model):
                             'property_account_receivable_id':self.property_account_receivable_id.id,
                             "property_account_payable_id":self.property_account_payable_id.id
                         }
-                if not self.address_home_id:
+                if not self.partner_id:
                     partner = obj_partner.create(dct)
-                    self.address_home_id = partner.id
-                else:
-                    self.address_home_id = partner_id.write(dct)
-
+                self.address_home_id = partner_id.id
 
 
 
