@@ -78,7 +78,8 @@ class HrEmployee(models.Model):
             if comisiones_ids:
                 self.envio_correos_plantilla('email_comisiones_pendientes',x.employee_id.id)
 
-    @api.onchange("address_id")
+    @api.onchange("name","identification_id","birthday","estado_civil","phone","mobile_phone",
+                "country_id","direccion","property_account_receivable_id","property_account_payable_id")
     def actualizar_partner(self):
         for l in self:
             estado_civil=""
@@ -120,7 +121,7 @@ class HrEmployee(models.Model):
 
 
 
-    @api.constrains("address_id")
+    @api.constrains("name")
     def crear_partner(self):
         for l in self:
             estado_civil=""
