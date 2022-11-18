@@ -50,6 +50,14 @@ class Partner(models.Model):
     emailFinanciero=fields.Char(string='Email Financiero')
     emailComercial=fields.Char(string='Email Comercial')
     cargo=fields.Char(string='Cargo')
+    property_account_payable_id = fields.Many2one('account.account', company_dependent=True,
+        string="Account Payable",
+        domain="[('internal_type', '=', 'payable'), ('deprecated', '=', False)]",
+        required=False)
+    property_account_receivable_id = fields.Many2one('account.account', company_dependent=True,
+        string="Account Receivable",
+        domain="[('internal_type', '=', 'receivable'), ('deprecated', '=', False)]",
+        required=False)
 
 class EntegaVehiculo(models.Model):
     _name = 'entrega.vehiculo'

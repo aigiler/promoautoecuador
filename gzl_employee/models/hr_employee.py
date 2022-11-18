@@ -23,6 +23,14 @@ class HrEmployee(models.Model):
     number_bank = fields.Char('Número de Cta')
     children_id = fields.One2many('hr.employee.children','employee_id', string='Id hijos')
     observation = fields.Text(string='Observaciones')
+    property_account_payable_id = fields.Many2one('account.account', company_dependent=True,
+        string="Cuenta por Pagar",
+        domain="[('internal_type', '=', 'payable'), ('deprecated', '=', False)]",
+        help="This account will be used instead of the default one as the payable account for the current partner")
+    property_account_receivable_id = fields.Many2one('account.account', company_dependent=True,
+        string="Cuenta por Cobrar",
+        domain="[('internal_type', '=', 'receivable'), ('deprecated', '=', False)]",
+        help="This account will be used instead of the default one as the receivable account for the current partner")
 
     def has_13months(self, date_init, contract=False):
         days = sum([(c.date_end - c.date_start).days for c in self.contract_ids if c.state == 'close'])
@@ -69,6 +77,52 @@ class HrEmployee(models.Model):
             comisiones_ids=self.env['hr.input'].search([('state','=',True),('employee_id','=',x.employee_id.id),('input_type_id','=',tipo_comision.id)])
             if comisiones_ids:
                 self.envio_correos_plantilla('email_comisiones_pendientes',x.employee_id.id)
+
+
+
+    @api.constrains("address_id")
+    def crear_partner(self):
+        for l in self:
+            estado_civil=""
+            if l.marital=="single":
+                estado_civil="soltero"
+            elif l.marital=="married":
+                estado_civil="casado"
+            elif l.marital=="widower":
+                estado_civil="viudo"
+            elif l.marital=="divorced":
+                estado_civil="divorciado"
+            elif l.marital=="free_union":
+                estado_civil="union_libre"
+            nombre_conyuge=""
+            nacimiento_conyuge=""
+            cargas_ids=self.env['hr.employee.children'].search([('parentezco','=','conyuge')],limit=1)
+            for x in cargas_ids:
+                nombre_conyuge=x.name
+                nacimiento_conyuge=x.date_birth
+            dct={
+                'vat':self.identificacion_id,
+                'fecha_nacimiento':self.birthday,
+                'estado_civil':estado_civil,
+                'phone':self.phone,
+                'mobile':self.mobile_phone,
+                'country_id':self.country_id.id,
+                'street':self.direccion,
+                'dirccion_trabajo':self.work_location,
+                'nombre_compania':" PROMOAUTO ECUADOR S.A.",
+                'telefono_trabajo':self.work_phone,
+                'cargo':self.job_id.name,
+                'conyuge':nombre_conyuge,
+                "fechaNacimientoConyuge":nacimiento_conyuge,
+                'property_account_receivable_id':self.property_account_receivable_id.id,
+                "property_account_payable_id":self.property_account_payable_id.id
+            }
+
+
+
+
+
+
 
 
 

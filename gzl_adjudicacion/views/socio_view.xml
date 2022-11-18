@@ -41,9 +41,9 @@
         
                                 <field name="state_id" string="Provincia"/>
                                 <field name="city" string="Ciudad"/>
-                                <field name="codigo_cliente" string="Código"/>
                                 <field name="street" string="Dirección"/>
                                 <field name="tipo" invisible="1"/>
+                                <field name="proveedor_recurrente" string="Proveedor Recurrente"/>
                                 <field name="num_cargas_familiares" string="Cargas Fam."/>
                             </group>
                             <group>
@@ -51,13 +51,12 @@
                                 <field name="conyuge" string="Nombre del Conyuge"/>
                                 <field name="fechaNacimientoConyuge" string="Fecha de Nacimiento"/>
                                 <field name="vatConyuge" string="Cedula de Ciudadanía"/>
-                                <field name="proveedor_recurrente" string="Proveedor Recurrente"/>
                             </group>
 
                             <group>
                                 <separator class="text-center fw-bold" string="DATOS LABORALES"/>
                                 <field name="direccion_trabajo" string="Dirección de Trabajo"/>
-                                <field name="nombre_compania" string="Nombre Comañia"/>
+                                <field name="nombre_compania" string="Nombre Compañia"/>
                                 <field name="telefono_trabajo" string="Telefono Trabajo"/>
                                 <field name="cargo" string="Cargo"/>
                             </group>

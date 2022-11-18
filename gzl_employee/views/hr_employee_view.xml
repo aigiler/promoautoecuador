@@ -31,10 +31,19 @@
                     <field name="account_type" />
                     <field name="number_bank" />
                 </group>
+                <separator class="text-center fw-bold" string="INFORMACIÓN CONTABLE"/>
+                <field name="property_account_receivable_id" string="Cuenta por Cobrar"/>
+                <field name="property_account_payable_id" string="Cuenta por Pagar"/>
             </xpath>
 
-            <xpath expr="//field[@name='children']" position="replace">
-                <group>
+            <xpath expr="//field[@name='children']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='personal_information']" position="after">
+                <page string="Dependientes">
+                    <group>
+                    
                     <field name="children_id" nolabel="1">
                         <tree editable="bottom">
                             <field name="employee_id" invisible="1"/>
@@ -46,6 +55,7 @@
                         </tree>
                     </field>
                 </group>
+                </page>
             </xpath>
         </field>
     </record>
