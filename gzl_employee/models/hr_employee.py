@@ -82,7 +82,7 @@ class HrEmployee(models.Model):
                 "country_id","direccion","property_account_receivable_id","property_account_payable_id")
     def actualizar_partner(self):
         for l in self:
-            if self.address_id:
+            if self.address_id and self.name:
                 estado_civil=""
                 if l.marital=="single":
                     estado_civil="soltero"
