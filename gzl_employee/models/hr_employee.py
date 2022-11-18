@@ -134,7 +134,7 @@ class HrEmployee(models.Model):
             elif l.marital=="free_union":
                 estado_civil="union_libre"
             nombre_conyuge=""
-            nacimiento_conyuge=""
+            nacimiento_conyuge=False
             cargas_ids=self.env['hr.employee.children'].search([('parentezco','=','conyuge')],limit=1)
             for x in cargas_ids:
                 nombre_conyuge=x.name
