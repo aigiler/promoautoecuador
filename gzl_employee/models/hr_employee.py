@@ -115,7 +115,7 @@ class HrEmployee(models.Model):
                 "country_id","direccion","property_account_receivable_id","property_account_payable_id","job_id")
     def actualizar_partner(self):
         for l in self:
-            if self.name and self.identification_id:
+            if self.name and self.identification_id and self.address_home_id:
                 estado_civil=""
                 if l.marital=="single":
                     estado_civil="soltero"
@@ -152,8 +152,7 @@ class HrEmployee(models.Model):
                             'property_account_receivable_id':self.property_account_receivable_id.id,
                             "property_account_payable_id":self.property_account_payable_id.id
                         }
-                partner = obj_partner.write(dct)
-                self.address_home_id = partner.id
+                self.address_home_id.write(dct)
 
 
 
