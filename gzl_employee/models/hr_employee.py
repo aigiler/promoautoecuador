@@ -134,7 +134,6 @@ class HrEmployee(models.Model):
                     nombre_conyuge=x.name
                     nacimiento_conyuge=x.date_birth
                 obj_partner = self.env['res.partner']
-                partner_id = obj_partner.search([('vat','=',self.identification_id)])
                 dct={
                             'name':self.name,
                             'vat':self.identification_id,
@@ -153,8 +152,7 @@ class HrEmployee(models.Model):
                             'property_account_receivable_id':self.property_account_receivable_id.id,
                             "property_account_payable_id":self.property_account_payable_id.id
                         }
-                if not self.partner_id:
-                    partner = obj_partner.create(dct)
+                partner = obj_partner.write(dct)
                 self.address_home_id = partner_id.id
 
 
