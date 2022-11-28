@@ -21,7 +21,7 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">wizard.import.documents</field>
             <field name="view_mode">form</field>
-           <field name="view_id" ref="gzl.facturacion_electronica.wizard_import_documents"/>
+           <field name="view_id" ref="wizard_import_documents"/>
            <field name="target">current</field>
         </record>
          
