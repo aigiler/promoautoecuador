@@ -16,9 +16,6 @@ def crear_documento_adendum(ruta,detalle,lista_estado_cuenta,estado_cuenta_anter
                 tabla2.cell(contador, 1).text = '$ '+str(a.monto_financiamiento_anterior)
             if a['plazo_meses_anterior']!=False:
                 tabla2.cell(contador, 3).text = str(a.plazo_meses_anterior.numero)+' Meses'
-            
-            #if l['cuota_capital']!=False:
-            #    raise ValidationError(str(l['cuota_capital']) )
             tabla2.cell(contador, 5).text = '$ '+str(a.cuota_capital_anterior) or '$0.00'
             
             contador+=1

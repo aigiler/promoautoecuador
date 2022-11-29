@@ -15,7 +15,7 @@ import time
 from odoo import _
 from odoo.exceptions import ValidationError, except_orm
 from dateutil.relativedelta import *
-from . import informe_excel
+from . import orden_compra_salida_documento
 import subprocess
 from subprocess import getoutput
 import os
@@ -71,7 +71,7 @@ class InformeCreditoCrobranza(models.TransientModel):
 
 
             fp =io.BytesIO()
-            workbook=informe_excel.informe_credito_cobranza(obj_plantilla.directorio_out,lista_campos,self.clave)
+            workbook=orden_compra_salida_documento.informe_credito_cobranza(obj_plantilla.directorio_out,lista_campos,self.clave)
             workbook.save(fp)
             with open(obj_plantilla.directorio_out, "rb") as f:
                 data = f.read()

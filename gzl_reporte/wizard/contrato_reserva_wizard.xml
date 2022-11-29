@@ -37,12 +37,12 @@
 
 
 
-        <menuitem 
+<!--         <menuitem 
         id = "menu_action_contrato_reserva_form"
         name = "Contrato de Reserva"  
         parent="menu_reporte" 
         sequence="1" 
-        action="action_contrato_reserva_form"/>
+        action="action_contrato_reserva_form"/> -->
 
 
 </odoo>

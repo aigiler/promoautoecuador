@@ -15,7 +15,7 @@ import time
 from odoo import _
 from odoo.exceptions import ValidationError, except_orm
 from dateutil.relativedelta import *
-from . import hoja_ruta
+from . import hoja_ruta_documento
 
 import base64
 from base64 import urlsafe_b64decode
@@ -193,7 +193,7 @@ class HojaRuta(models.TransientModel):
             
 
 
-            hoja_ruta.generar_hoja_huta(salida,lista_campos,lista_documentos_postventa, lista_documentos_legal,self.devolucion_id)
+            hoja_ruta_documento.generar_hoja_huta(salida,lista_campos,lista_documentos_postventa, lista_documentos_legal,self.devolucion_id)
 
             with open(salida, "rb") as f:
                 data = f.read()

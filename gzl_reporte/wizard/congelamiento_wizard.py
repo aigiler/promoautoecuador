@@ -14,31 +14,28 @@ from datetime import datetime
 import calendar
 import datetime as tiempo
 import itertools
-from . import pagare_documento
+from . import congelamiento_documento
 import shutil
 
 
 
-class PagareOrden(models.TransientModel):
-    _name = "pagare.report"
+class ContratoAdendum(models.TransientModel):
+    _name = "contrato.adendum.report"
     
-
     partner_id = fields.Many2one('res.partner',string='Cliente')
     contrato_id = fields.Many2one('contrato',string='Contrato')
-    clave =  fields.Char( default="pagare")
-    fecha_vencimiento=fields.Date(string="Fecha de Vencimiento")
+    clave =  fields.Char( default="congelamiento")
+    vehiculo_id = fields.Many2one('entrega.vehiculo',string='entrega.vehiculo')
 
 
     def print_report_xls(self):
-        dct=self.crear_plantilla_contrato_reserva()
+        dct=self.crear_plantilla_contrato_congelamiento()
         return dct
 
-    def crear_plantilla_contrato_reserva(self,):
-        obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','pagare')],limit=1)
-        if self.contrato_id.garante:
-            obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','pagare_garante')],limit=1)
 
-        estado_cuenta=[]
+    def crear_plantilla_contrato_congelamiento(self,):
+        obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=',self.clave)],limit=1)
+        
         if obj_plantilla:
             mesesDic = {
                 "1":'Enero',
@@ -54,48 +51,52 @@ class PagareOrden(models.TransientModel):
                 "11":'Noviembre',
                 "12":'Diciembre'
             }
+                
+
             shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
             campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
+            
             lista_campos=[]
-            dct={}
-            dct['identificar_docx']='fecha_vencimiento'
-            dct['valor'] =''
-            if self.fecha_vencimiento:
-                dct['valor'] = str(self.fecha_vencimiento)
-            lista_campos.append(dct)
+            estado_cuenta=[]
+            estado_cuenta_anterior=[]
             for campo in campos:
                 dct={}
                 resultado=self.mapped(campo.name)
-                
-                if campo.name!=False:
+                if campo.identificar_docx =='num_contrato':
                     dct={}
-                    if len(resultado)>0:
-                        if resultado[0]==False:
-                            dct['valor']=''
-                        else:    
+                    dct['valor'] = resultado[0]
+                    dct['identificar_docx']=campo.identificar_docx
+                    lista_campos.append(dct)
+                else:
+                    if campo.name!=False:
+                        dct={}
+                        if len(resultado)>0:
                             dct['valor']=str(resultado[0])
-                    else:
-                        dct['valor']=''
-                dct['identificar_docx']=campo.identificar_docx
-                lista_campos.append(dct)
+                        else:
+                            dct['valor']=''
+                    dct['identificar_docx']=campo.identificar_docx
+                    lista_campos.append(dct)
+                        
             year = datetime.now().year
             mes = datetime.now().month
             dia = datetime.now().day
             fechacontr = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
             dct = {}
-            dct['identificar_docx']='txt_factual'
+            dct['identificar_docx']='fecha_actual'
             dct['valor']=fechacontr
             lista_campos.append(dct)
-            estado_cuenta.append(self.contrato_id.estado_de_cuenta_ids)
-            pagare_documento.crear_pagare(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
+
+            congelamiento_documento.crear_documento_congelamiento(obj_plantilla.directorio_out,lista_campos)
             with open(obj_plantilla.directorio_out, "rb") as f:
                 data = f.read()
                 file=bytes(base64.b64encode(data))
+
+
         obj_attch=self.env['ir.attachment'].create({
-                                                    'name':'Pagare a la Orden.docx',
+                                                    'name':'Congelamiento.docx',
                                                     'datas':file,
                                                     'type':'binary', 
-                                                    'store_fname':'Pagare a la Orden.docx'
+                                                    'store_fname':'Congelamiento.docx'
                                                     })
 
         url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
@@ -104,5 +105,4 @@ class PagareOrden(models.TransientModel):
             "type": "ir.actions.act_url",
             "url": url,
             "target": "new",
-            "documento":obj_attch
         }

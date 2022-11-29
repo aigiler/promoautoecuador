@@ -10,7 +10,7 @@
 
                             <field name="partner_id" required="1"  options="{'no_open': True, 'no_create': True}" />
                             <field name="contrato_id" required="1"  domain="[('cliente', '=', partner_id)]"   options="{'no_open': True, 'no_create': True}" />
-                            <field name="fecha_vencimiento" required="1" />
+                            <field name="fecha_vencimiento" required="0" />
                         </group>
 
                     </group>                        
@@ -37,12 +37,12 @@
 
 
 
-        <menuitem 
+<!--         <menuitem 
         id = "menu_pagare_reporte_form"
         name = "Pagare a la Orden"  
         parent="menu_reporte" 
         sequence="1" 
-        action="action_pagare_report_form"/>
+        action="action_pagare_report_form"/> -->
 
 
 </odoo>

@@ -14,7 +14,7 @@ from datetime import datetime
 import calendar
 import datetime as tiempo
 import itertools
-from . import crear_carta_finalizacion
+from . import carta_finalizacion_documento
 import shutil
 
 
@@ -122,7 +122,7 @@ class CartaFinalizacion(models.TransientModel):
             dct['identificar_docx']='txt_factual'
             dct['valor']=fechacontr
             lista_campos.append(dct)
-            crear_carta_finalizacion.crear_carta_finalizacion(obj_plantilla.directorio_out,lista_campos)
+            carta_finalizacion_documento.crear_carta_finalizacion(obj_plantilla.directorio_out,lista_campos)
             with open(obj_plantilla.directorio_out, "rb") as f:
                 data = f.read()
                 file=bytes(base64.b64encode(data))

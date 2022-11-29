@@ -14,7 +14,7 @@ from datetime import datetime
 import calendar
 import datetime as tiempo
 import itertools
-from . import crear_documento_adendum
+from . import contrato_adendum_documento
 import shutil
 
 
@@ -31,12 +31,12 @@ class ContratoAdendum(models.TransientModel):
     def print_report_xls(self):
         #raise ValidationError(str(self.clave))
         if self.clave=='contrato_adendum':
-            dct=self.crear_plantilla_contrato_reserva()
+            dct=self.crear_plantilla_contrato_adendum()
             return dct
 
 
 
-    def crear_plantilla_contrato_reserva(self,):
+    def crear_plantilla_contrato_adendum(self,):
         #Instancia la plantilla
         obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','contrato_adendum')],limit=1)
         
@@ -125,7 +125,7 @@ class ContratoAdendum(models.TransientModel):
             estado_cuenta_anterior.append(obj_estado_cuenta_cabecera)
             #crear_documento_contrato_reserva.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
             #raise ValidationError(str(lista_campos))
-            crear_documento_adendum.crear_documento_adendum(obj_plantilla.directorio_out,lista_campos,estado_cuenta,estado_cuenta_anterior)
+            contrato_adendum_documento.crear_documento_adendum(obj_plantilla.directorio_out,lista_campos,estado_cuenta,estado_cuenta_anterior)
 
 
             with open(obj_plantilla.directorio_out, "rb") as f:

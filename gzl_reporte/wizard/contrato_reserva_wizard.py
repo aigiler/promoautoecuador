@@ -14,7 +14,7 @@ from datetime import datetime
 import calendar
 import datetime as tiempo
 import itertools
-from . import crear_documento_contrato_reserva
+from . import contrato_reserva_documento
 import shutil
 
 
@@ -207,7 +207,7 @@ class ContratoResrva(models.TransientModel):
             lista_fecha=[{'identificar_docx':'txt_factual','valor':fechacontr}]
             lista_campos+=lista_fecha
             estado_cuenta.append(self.contrato_id.estado_de_cuenta_ids)
-            crear_documento_contrato_reserva.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
+            contrato_reserva_documento.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
             with open(obj_plantilla.directorio_out, "rb") as f:
                 data = f.read()
                 file=bytes(base64.b64encode(data))

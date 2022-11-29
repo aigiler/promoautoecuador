@@ -35,12 +35,12 @@
 
 
 
-        <menuitem 
+<!--         <menuitem 
         id = "menu_action_informe_credito_cobranza_form"
         name = "Informe Credito y Cobranza"  
         parent="menu_reporte" 
         sequence="1" 
         action="action_informe_credito_cobranza_form"/>
-
+ -->
 
 </odoo>
