@@ -10,7 +10,7 @@
 
                             <field name="partner_id" required="1"  options="{'no_open': True, 'no_create': True}" />
                             <field name="contrato_id" required="1"  domain="[('cliente', '=', partner_id)]"   options="{'no_open': True, 'no_create': True}" />
-                            <field name="Motivo" required="1"  />
+                            <field name="motivo" required="1"  />
                         </group>
 
                     </group>                        
