@@ -23,7 +23,7 @@
             'wizard/carta_finalizacion_wizard.xml',
             'wizard/congelamiento_wizard.xml',
             'wizard/contrato_adendum_wizard.xml',
-            'report/hoja_ruta_wizard.xml',
+            'wizard/hoja_ruta_wizard.xml',
             'wizard/politicas_credito_wizard.xml',
             'wizard/reporte_grupos.xml',
             'wizard/reporte_estado_cuenta_wizard.xml',
