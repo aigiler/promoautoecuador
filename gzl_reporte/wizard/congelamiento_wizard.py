@@ -25,6 +25,7 @@ class CongelamientoWozard(models.TransientModel):
     partner_id = fields.Many2one('res.partner',string='Cliente')
     contrato_id = fields.Many2one('contrato',string='Contrato')
     clave =  fields.Char( default="congelamiento")
+    motivo =  fields.Char(string= "Motivo")
 
 
     def print_report_xls(self):
