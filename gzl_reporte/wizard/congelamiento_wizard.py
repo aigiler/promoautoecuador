@@ -19,13 +19,12 @@ import shutil
 
 
 
-class ContratoAdendum(models.TransientModel):
-    _name = "contrato.adendum.report"
+class CongelamientoWozard(models.TransientModel):
+    _name = "congelamiento.report"
     
     partner_id = fields.Many2one('res.partner',string='Cliente')
     contrato_id = fields.Many2one('contrato',string='Contrato')
     clave =  fields.Char( default="congelamiento")
-    vehiculo_id = fields.Many2one('entrega.vehiculo',string='entrega.vehiculo')
 
 
     def print_report_xls(self):
