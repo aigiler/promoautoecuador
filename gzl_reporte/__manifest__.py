@@ -26,7 +26,7 @@
             'wizard/hoja_ruta_wizard.xml',
             'wizard/politicas_credito_wizard.xml',
             'wizard/reporte_grupos.xml',
-            'wizard/reporte_estado_cuenta_wizard.xml',
+            'wizard/reporte_estado_de_cuenta_wizard.xml',
             'wizard/reporte_trazabilidad_pagos.xml',
             'wizard/politicas_credito_wizard.xml',
 
