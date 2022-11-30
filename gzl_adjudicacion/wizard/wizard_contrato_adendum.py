@@ -87,6 +87,7 @@ class WizardContratoAdendum(models.Model):
     observacion = fields.Char(string='Observacion')
     valor_inscripcion = fields.Monetary(
         string='Valor Inscripción', currency_field='currency_id', track_visibility='onchange')
+    cuota_capital=fields.Monetary(currency_field='currency_id', track_visibility='onchange') 
 
     actividad_id = fields.Many2one('mail.activity',string="Actividades")
 
@@ -270,6 +271,7 @@ class WizardContratoAdendum(models.Model):
             cuota_adm_nueva=round(cuota_adm_nueva, 2)
             cuota_capital_nueva = (nuevoMontoReeestructura/int(intervalo_nuevo))
             cuota_capital_nueva =round(cuota_capital_nueva, 2)
+            self.cuota_capital=cuota_capital_nueva
             contb=0
             for i in range(cont, int(intervalo_nuevo+cont)):
                 contb +=1

@@ -470,7 +470,9 @@ class DevolucionMonto(models.Model):
                 })
             self.actividad_id=actividad_id.id
         else:
-            self.contrato_id.state='finalizado'
+            if self.estado=="liquidacion":
+                self.contrato_id.state='FINALIZADO'
+                self.contrato_id.state='DESISTIDO'
 
     def validar_documentos_postventa(self):
         for l in self:

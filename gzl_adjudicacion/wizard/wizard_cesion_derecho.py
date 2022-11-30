@@ -152,7 +152,9 @@ class WizardAdelantarCuotas(models.Model):
                 l.contrato_id.cliente=l.partner_id.id
                 l.state="cerrado"
                 l.contrato_id.state=l.contrato_a_ceder.state
-                l.contrato_a_ceder.state='inactivo'
+                l.contrato_id.state_simplificado=l.contrato_a_ceder.state_simplificado
+                l.contrato_a_ceder.state='FINALIZADO'
+                l.contrato_a_ceder.state_simplificado="DESISTIDO"
                 l.contrato_id.nota="El cliente "+l.contrato_a_ceder.cliente.name+" le cedió el contrato a "+l.partner_id.name
                 l.contrato_id.cesion_id=l.id
                 if l.actividad_id:

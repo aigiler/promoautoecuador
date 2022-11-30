@@ -106,6 +106,7 @@ class EntegaVehiculo(models.Model):
         ('matriculacion', 'Matriculacion, Seguro y Rastreo'),
 
         ('orden_salida', 'Orden de Salida'),
+        ('rechazado', 'Rechazado'),
 
         ('entrega_vehiculo', 'Entrega de Vehículo'),
         ('finalizado', 'Finalizado'),
@@ -588,7 +589,8 @@ class EntegaVehiculo(models.Model):
         if self.actividad_id:
             self.actividad_id.action_done()
         if not self.proceso_finalizado:
-
+            self.contrato_id.state='ADJUDICADO'
+            self.contrato_id.state_simplificado='NO ENTREGADO'
             actividad_id=self.env['mail.activity'].create({
                     'res_id': self.id,
                     'res_model_id': self.env['ir.model']._get('entrega.vehiculo').id,
@@ -599,8 +601,9 @@ class EntegaVehiculo(models.Model):
                 })
             self.actividad_id=actividad_id.id
         else:
-            self.contrato_id.state='adjudicar'
-            self.fecha_adjudicado=datetime.now()
+            if self.estado=="finalizado":
+                self.contrato_id.state_simplificado='ENTREGADO'
+                self.contrato_id.fecha_adjudicado=datetime.now()
 
     def llenar_tabla(self):
         obj_patrimonio=self.env['items.patrimonio'].search([])  
@@ -726,17 +729,6 @@ class EntegaVehiculo(models.Model):
             'target': 'new',
             'context': ctx,
         }
-        # view_id = self.env.ref('gzl_reporte.informe_credito_cobranza_form').id
-        # return {'type': 'ir.actions.act_window',
-        #         'name': 'ORDEN DE COMPRA',
-        #         'res_model': 'informe.credito.cobranza',
-        #         'target': 'new',
-        #         'view_mode': 'form',
-        #         'views': [[view_id, 'form']],
-        #         'context': {
-        #             'default_entrega_vehiculo_id': self.id,
-        #         }
-        # }
 
 
     def create_liq_compra(self):  
@@ -1419,7 +1411,7 @@ class EntegaVehiculo(models.Model):
             [('cliente', '=', self.nombreSocioAdjudicado.id),('id','=',self.contrato_id.id)], limit=1)
         now=date.today()
         contrato.fecha_adjudicado=now
-        contrato.estado='adjudicar'
+        contrato.estado='ADJUDICADO'
 
 
 
@@ -1427,7 +1419,7 @@ class EntegaVehiculo(models.Model):
         contrato = self.env['contrato'].search(
             [('cliente', '=', self.nombreSocioAdjudicado.id)], limit=1)
         contrato.fecha_adjudicado=False
-        contrato.estado='activo'
+        contrato.estado='ACTIVADO'
         contrato.entrega_vehiculo=False
 
         dct={

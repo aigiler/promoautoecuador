@@ -80,34 +80,29 @@ class Contrato(models.Model):
         'account.move', string='Factura Incripción', track_visibility='onchange')
     active = fields.Boolean(string='Activo', default=True)
     state = fields.Selection(selection=[
-        ('pendiente', 'Pendiente'),
-        ('activo', 'Activo'),
-        ('congelar_contrato', 'Congelado'),
-        ('inactivo', 'Desactivado'),
-        ('adjudicar', 'Adjudicado'),
-        ('cancelado', 'Cancelado'),
-        ('cancelado_siniestro', 'Cancelación por Siniestro'),
-        ('cancelado_compra', 'Cancelación con compra'),
-        ('embargado', 'Embargado'),
-        ('legal', 'Legal'),
-        ('finalizado', 'Finalizado'),
-        ('adendum', 'Realizar Adendum'),
-        ('cedido', 'Cesión de Derecho'),
-        ('desistir', 'Desistido'),
-    ], string='Estado', default='pendiente', track_visibility='onchange')
+        ('ACTIVADO', 'ACTIVADO'),
+        ('NO ACTIVADO', 'NO ACTIVADO'),
+        ('ADJUDICADO', 'ADJUDICADO'),
+        ('FINALIZADO', 'FINALIZADO'),
+    ], string='Estado', default='NO ACTIVADO', track_visibility='onchange')
+
+
+    state_simplificado=fields.Selection(selection=[
+        ('DESACTIVADO', 'DESACTIVADO'),
+        ('INSCRITO', 'INSCRITO'),
+        ('ENTREGADO', 'ENTREGADO'),
+        ('NO ENTREGADO', 'NO ENTREGADO'),
+        ('ADJUDICADO', 'ADJUDICADO'),
+        ('LIQUIDADO', 'LIQUIDADO'),
+        ('SINIESTRADO', 'SINIESTRADO'),
+        ('DESISTIDO', 'DESISTIDO'),
+        ('RESUELTO', 'RESUELTO'),
+    ], string='Detalle de estado', default='DESACTIVADO', track_visibility='onchange')
 
     es_cesion=fields.Boolean(default=False)
 
 
     desistido = fields.Boolean(string='Desistido')
-
-
-# A  Activo        activo    
-# C  Congelado     congelar_contrtato
-# F  Finalizado    finalizado
-# I  Desistido     desistido
-# J  Adjudicado    adjudicar
-# P  Pendiente     pendiente
 
 
 
@@ -197,37 +192,37 @@ class Contrato(models.Model):
 
 
 #    @api.constrains('state')
-    def crear_registro_fondo_grupo(self):
-        if self.grupo and self.state!='pendiente':
-            self.grupo.calcular_monto_pagado()
+    # def crear_registro_fondo_grupo(self):
+    #     if self.grupo and self.state!='pendiente':
+    #         self.grupo.calcular_monto_pagado()
 
-            if self.state in ['desistir','inactivo','congelar_contrato']:
-                transacciones=self.env['transaccion.grupo.adjudicado']
+    #         if self.state in ['desistir','NO ACTIVADO','congelar_contrato']:
+    #             transacciones=self.env['transaccion.grupo.adjudicado']
 
-                dct={
-                'grupo_id':self.grupo.id,
-                'debe':self.monto_pagado ,
-                'adjudicado_id':self.cliente.id,
-                'contrato_id':self.id,
-                'state':self.state
-                }
-
-
-                transacciones.create(dct)
-
-            if self.state in ['activo']:
-                transacciones=self.env['transaccion.grupo.adjudicado']
-
-                dct={
-                'grupo_id':self.grupo.id,
-                'haber':self.monto_pagado ,
-                'adjudicado_id':self.cliente.id,
-                'contrato_id':self.id,
-                'state':self.state
-                }
+    #             dct={
+    #             'grupo_id':self.grupo.id,
+    #             'debe':self.monto_pagado ,
+    #             'adjudicado_id':self.cliente.id,
+    #             'contrato_id':self.id,
+    #             'state':self.state
+    #             }
 
 
-                transacciones.create(dct)
+    #             transacciones.create(dct)
+
+    #         if self.state in ['ACTIVADO']:
+    #             transacciones=self.env['transaccion.grupo.adjudicado']
+
+    #             dct={
+    #             'grupo_id':self.grupo.id,
+    #             'haber':self.monto_pagado ,
+    #             'adjudicado_id':self.cliente.id,
+    #             'contrato_id':self.id,
+    #             'state':self.state
+    #             }
+
+
+    #             transacciones.create(dct)
 
 
     @api.depends('tabla_amortizacion.saldo')
@@ -432,20 +427,20 @@ class Contrato(models.Model):
 
     def cambio_estado_boton_borrador(self):
         self.detalle_tabla_amortizacion()
-        self.write({"state": "activo"})
+        self.write({"state": "ACTIVADO","state_simplificado":"INSCRITO"})
 
     def cambio_estado_boton_inactivar(self):
-        return self.write({"state": "inactivo"})
+        return self.write({"state": "NO ACTIVADO"})
 
     def cambio_estado_boton_adjudicar(self):
-        return self.write({"state": "adjudicar"})
+        return self.write({"state": "ADJUDICADO"})
 
 
     def cambio_estado_boton_adendum(self):
         return self.write({"state": "adendum"})
 
     def cambio_estado_boton_desistir(self):
-        return self.write({"state": "desistir"})
+        return self.write({"state": "FINALIZADO","state_simplificado":"DESISTIDO"})
 
 
 
@@ -485,7 +480,7 @@ class Contrato(models.Model):
     def job_colocar_contratos_en_mora(self, ):
 
         hoy=date.today()
-        contratos=self.env['contrato'].search([('state','in',['adjudicado','activo'])])
+        contratos=self.env['contrato'].search([('state','in',['adjudicado','ACTIVADO'])])
 
         for contrato in contratos:
             mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month)
@@ -506,13 +501,13 @@ class Contrato(models.Model):
 
         numeroCuotasMaximo =  int(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.maximo_cuotas_vencidas'))
 
-        contratos=self.env['contrato'].search([('state','in',['activo'])])
+        contratos=self.env['contrato'].search([('state','in',['ACTIVADO'])])
 
         for contrato in contratos:
                  
             lineas_pendientes=contrato.tabla_amortizacion.filtered(lambda l: l.fecha<dateMonthStart and l.estado_pago=='pendiente')
             if len(lineas_pendientes)>=numeroCuotasMaximo:
-                contrato.state='inactivo'
+                contrato.state='NO ACTIVADO'
 
 
 ###  Job para inactivar acorde a cuotas vencidas en el contrato
@@ -532,7 +527,7 @@ class Contrato(models.Model):
                  
             lineas_pendientes=contrato.tabla_amortizacion.filtered(lambda l: l.fecha<dateMonthStart and l.estado_pago=='pendiente')
             if len(lineas_pendientes)>=numeroCuotasMaximo:
-                contrato.state='inactivo'
+                contrato.state='NO ACTIVADO'
 
 
     def job_enviar_correos_contratos_congelados_por_vencer(self, ):
@@ -583,7 +578,7 @@ class Contrato(models.Model):
     def job_enviar_correos_contratos_pago_por_vencer(self, ):
 
         hoy=date.today()
-        contratos=self.env['contrato'].search([('state','in',['adjudicado','activo'])])
+        contratos=self.env['contrato'].search([('state','in',['adjudicado','ACTIVADO'])])
 
         for contrato in contratos:
             mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month)
@@ -608,14 +603,17 @@ class Contrato(models.Model):
         congelamientos_ids=self.env['contrato.congelamiento'].search([('contrato_id','=',self.id)])
         if congelamientos_ids:
             raise ValidationError("Solo puede aplicar Congelamiento una vez al contrato.")
-        self.state='congelar_contrato'
+        
         #Se obtiene el listado de cuotas pendientes ordenadas de forma ascedente en la fecha de pago.
         tabla=self.env['contrato.estado.cuenta'].search([('estado_pago','=','pendiente'),('contrato_id','=',self.id)],order='fecha asc')
 
         if len(tabla)>0:
             dct={'contrato_id':self.id,'fecha':tabla[0].fecha}
             self.env['contrato.congelamiento'].create(dct)
-
+        else:
+            raise ValidationError("No se puede congelar un contrato que no posee Estado de Cuenta generado")
+        self.state='NO ACTIVADO'
+        self.state_simplificado="DESACTIVADO"
 
 
     def reactivar_contrato_congelado(self):
@@ -640,7 +638,8 @@ class Contrato(models.Model):
                 detalle.fecha+=relativedelta(months=i)
 
             obj_fecha_congelamiento.pendiente=False
-            self.state='activo'
+            self.state='ACTIVADO'
+            self.state_simplificado=False
 
         else:
             raise ValidationError("No se encontró un contrato congelado.")
@@ -674,50 +673,6 @@ class Contrato(models.Model):
                     'default_contrato_id': self.id,
                 }
         }
-
-
-
-    # def crear_adendum(self):
-    #     if len(self.adendums_contrato_ids)>1:
-    #         raise ValidationError("El contrato solo puede realizar un adendum")
-    #     elif self.state !='activo':
-    #         raise ValidationError("El contrato solo puede realizar un adendum en estado activo")
-
-    #     view_id = self.env.ref('gzl_adjudicacion.wizard_crear_adendum_form').id
-
-
-    #     return {'type': 'ir.actions.act_window',
-    #             'name': 'Crear Adendum',
-    #             'res_model': 'wizard.contrato.adendum',
-    #             'target': 'new',
-    #             'view_mode': 'form',
-    #             'views': [[view_id, 'form']],
-    #             'context': {
-    #                 'default_contrato_id': self.id,
-    #                 'default_socio_id': self.cliente.id,
-    #                 'default_monto_financiamiento': self.monto_financiamiento,
-    #                 'default_plazo_meses': self.plazo_meses.id,
-    #             }
-    #     }
-
-
-
-    # def cesion_derecho(self):
-    #     view_id = self.env.ref('gzl_adjudicacion.wizard_cesion_derecho_form').id
-    #     pagos=self.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pagado')
-    #     pago=sum(pagos.mapped("cuota_capital"))
-
-    #     return {'type': 'ir.actions.act_window',
-    #             'name': 'Crear Cesión de Derecho',
-    #             'res_model': 'wizard.cesion.derecho',
-    #             'target': 'new',
-    #             'view_mode': 'form',
-    #             'views': [[view_id, 'form']],
-    #             'context': {
-    #                 'default_contrato_id': self.id,
-    #                 'default_monto_a_ceder': pago,
-    #             }
-    #     }
 
 
     def obtener_contrato(self):

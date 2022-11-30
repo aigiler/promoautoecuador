@@ -22,20 +22,10 @@ class ReportGrupos(models.TransientModel):
     date_end = fields.Date('Fecha Corte', required=False, default = date.today())
     fecha_contrato=fields.Date("Fecha de Contrato")
     state = fields.Selection(selection=[
-        ('pendiente', 'Pendiente'),
-        ('activo', 'Activo'),
-        ('congelar_contrato', 'Congelado'),
-        ('inactivo', 'Desactivado'),
-        ('adjudicar', 'Adjudicado'),
-        ('cancelado', 'Cancelado'),
-        ('cancelado_siniestro', 'Cancelación por Siniestro'),
-        ('cancelado_compra', 'Cancelación con compra'),
-        ('embargado', 'Embargado'),
-        ('legal', 'Legal'),
-        ('finalizado', 'Finalizado'),
-        ('adendum', 'Realizar Adendum'),
-        ('cedido', 'Cesión de Derecho'),
-        ('desistir', 'Desistido'),
+        ('ACTIVADO', 'ACTIVADO'),
+        ('NO ACTIVADO', 'NO ACTIVADO'),
+        ('ADJUDICADO', 'ADJUDICADO'),
+        ('FINALIZADO', 'FINALIZADO'),
     ], string='Estado de Contrato', track_visibility='onchange')
     estado_deuda=fields.Selection(selection=[('todos', 'Todos'),
                                             ('al_dia', 'Al día'),

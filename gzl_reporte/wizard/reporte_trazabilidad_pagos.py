@@ -39,15 +39,10 @@ class ReportTrazabilidad(models.TransientModel):
     grupo=fields.Many2one('grupo.adjudicado',string="Grupo")
     rango=fields.Many2one('rango.pagos',string="Rango de Pagos")
     estado_contrato=fields.Selection([
-                                    ('pendiente', 'Pendiente'),
-                                    ('activo', 'Activo'),
-                                    ('inactivo', 'Inactivo'),
-                                    ('congelar_contrato', 'Congelado'),
-                                    ('adjudicar', 'Adjudicado'),
-                                    ('adendum', 'Realizar Adendum'),
-                                    ('finalizado', 'Finalizado'),
-                                    ('cedido', 'Cesión de Derecho'),
-                                    ('desistir', 'Desistido'),
+                                    ('ACTIVADO', 'ACTIVADO'),
+                                    ('NO ACTIVADO', 'NO ACTIVADO'),
+                                    ('ADJUDICADO', 'ADJUDICADO'),
+                                    ('FINALIZADO', 'FINALIZADO'),
                                 ],string="Estado del Contrato")
     estado_deuda=fields.Selection(selection=[('todos', 'Todos'),
                                             ('al_dia', 'Al día'),

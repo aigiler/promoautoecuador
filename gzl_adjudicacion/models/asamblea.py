@@ -180,7 +180,7 @@ class Asamblea(models.Model):
             lista_evaluacion=[]
             lista_licitacion=[]
             if l.grupo_cliente:
-                contratos_ids=self.env["contrato"].search([('numero_cuotas_pagadas','>',0),('en_mora','=',False),('state','=','activo'),('grupo','=',self.grupo_cliente.id)],order='numero_cuotas_pagadas desc')
+                contratos_ids=self.env["contrato"].search([('numero_cuotas_pagadas','>',0),('en_mora','=',False),('state','=','ACTIVADO'),('grupo','=',self.grupo_cliente.id)],order='numero_cuotas_pagadas desc')
                 for x in contratos_ids:
                     
                     tupla={

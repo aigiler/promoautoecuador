@@ -101,7 +101,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
 
 
     def enviar_correo_estado_cuenta(self):
-        contratos_ids=self.env['contrato'].search([('state','=','activo')])
+        contratos_ids=self.env['contrato'].search([('state','=','ACTIVADO')])
         lis=[]
         for l in contratos_ids:
             if  l.cliente:   
@@ -167,7 +167,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
 
         if self.contrato_id.grupo: 
             sheet.merge_range('A11:C11', 'Grupo: '+'['+ self.contrato_id.grupo.codigo+'] '+ self.contrato_id.grupo.name, format_datos)
-        if self.contrato_id.state == 'adjudicar':
+        if self.contrato_id.state == 'ADJUDICADO':
             fecha_adjudicado_text=""
             if self.contrato_id.fecha_adjudicado:
                 fecha_adjudicado_text= self.contrato_id.fecha_adjudicado.strftime('%Y-%m-%d')+')'

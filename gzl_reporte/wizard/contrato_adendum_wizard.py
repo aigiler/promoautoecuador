@@ -22,10 +22,8 @@ import shutil
 class ContratoAdendum(models.TransientModel):
     _name = "contrato.adendum.report"
     
-    partner_id = fields.Many2one('res.partner',string='Cliente')
-    contrato_id = fields.Many2one('contrato',string='Contrato')
+    adendum_id =fields.Many2one("wizard.contrato.adendum", string="Adendum")
     clave =  fields.Char( default="contrato_adendum")
-    vehiculo_id = fields.Many2one('entrega.vehiculo',string='entrega.vehiculo')
 
 
     def print_report_xls(self):
@@ -37,7 +35,6 @@ class ContratoAdendum(models.TransientModel):
 
 
     def crear_plantilla_contrato_adendum(self,):
-        #Instancia la plantilla
         obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','contrato_adendum')],limit=1)
         
         if obj_plantilla:
@@ -55,20 +52,13 @@ class ContratoAdendum(models.TransientModel):
                 "11":'Noviembre',
                 "12":'Diciembre'
             }
-                
-
             shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
-            #fecha_suscripcion
-
-            #####Se sacan los campos de la plantilla del objeto plantillas.dinamicas.informes
             campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
             
             lista_campos=[]
             estado_cuenta=[]
             estado_cuenta_anterior=[]
             for campo in campos:
-                #if campo:
-                #    raise ValidationError(str(campo.vat))
                 dct={}
 
                 resultado=self.mapped(campo.name)
@@ -90,21 +80,12 @@ class ContratoAdendum(models.TransientModel):
                     if campo.name!=False:
                         dct={}
                         if len(resultado)>0:
-
-
                             dct['valor']=str(resultado[0])
-
                         else:
                             dct['valor']=''
-
-
-
-
                     dct['identificar_docx']=campo.identificar_docx
                     lista_campos.append(dct)
             
-            #if resultado:
-            #    raise ValidationError(str(lista_campos))
             
             year = datetime.now().year
             mes = datetime.now().month
@@ -118,21 +99,13 @@ class ContratoAdendum(models.TransientModel):
             dct['identificar_docx']='txt_factual'
             dct['valor']=fechacontr
             lista_campos.append(dct)
-            #if fechacontr: 
-            #    raise ValidationError(str(fechacontr) )
-            estado_cuenta.append(self.contrato_id)
-            obj_estado_cuenta_cabecera=self.env['contrato.estado.cuenta.historico.cabecera'].search([('contrato_id','=',self.contrato_id.id)])
-            estado_cuenta_anterior.append(obj_estado_cuenta_cabecera)
-            #crear_documento_contrato_reserva.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
-            #raise ValidationError(str(lista_campos))
-            contrato_adendum_documento.crear_documento_adendum(obj_plantilla.directorio_out,lista_campos,estado_cuenta,estado_cuenta_anterior)
+
+            contrato_adendum_documento.crear_documento_adendum(obj_plantilla.directorio_out,lista_campos)
 
 
             with open(obj_plantilla.directorio_out, "rb") as f:
                 data = f.read()
                 file=bytes(base64.b64encode(data))
-
-
         obj_attch=self.env['ir.attachment'].create({
                                                     'name':'Contrato_adendum.docx',
                                                     'datas':file,

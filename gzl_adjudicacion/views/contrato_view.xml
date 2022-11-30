@@ -50,34 +50,25 @@
             <form string="Contrato">
                 <header>
                     <field name="is_group_cobranza" invisible="1"/>
-                    <button name="cambio_estado_boton_borrador" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','!=','pendiente')]}" string="Activo" type="object"  class="oe_highlight"/>
+                    <button name="cambio_estado_boton_borrador" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','!=','NO ACTIVADO')]}" string="Activo" type="object"  class="oe_highlight"/>
 
-                    <button name="cambio_estado_congelar_contrato" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','!=','inactivo')]}" string="Congelar "  type="object" class="oe_highlight"/>
-                    <button name="reactivar_contrato_congelado" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','not in',['congelar_contrato'])]}" string="Reactivar Contrato " type="object" class="oe_highlight"/>
+                    <button name="cambio_estado_congelar_contrato" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','in',['NO ACTIVADO','FINALIZADO']),('state_simplificado','in',['DESACTIVADO'])]}" string="Congelar "  type="object" class="oe_highlight"/>
+                    <button name="reactivar_contrato_congelado" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','not in',['NO ACTIVADO']),('state_simplificado','not in',['DESACTIVADO'])]}" string="Reactivar Contrato" type="object" class="oe_highlight"/>
 
 
-                    <button name="cambio_estado_boton_desistir" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','!=','inactivo')]}" string="Desistir" type="object" class="oe_highlight"/>
+                    <button name="cambio_estado_boton_desistir" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','in',['NO ACTIVADO','FINALIZADO']),('state_simplificado','=','DESISTIDO')]}" string="Desistir" type="object" class="oe_highlight"/>
                     
-                    <button name="detalle_tabla_amortizacion" attrs="{'invisible': ['|',('is_group_cobranza', '=', True)]}" string="Generar estado cuenta contrato" invisible="1" type="object" class="oe_highlight"/>
-                    <button name="pagar_cuotas_por_adelantado" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','not in',['activo','adjudicar'])]}" invisible="1" string="Pagar Cuotas por Adelantado" type="object" class="oe_highlight"/>
-                    <button name="actualizar_rubros_por_adelantado" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','not in',['activo','adjudicar'])]}"  string="Actualizar Rubros" type="object" class="oe_highlight"/>
-                    <button name="cambio_estado_boton_inactivar" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','!=','activo')]}"  string="Inactivar" type="object" class="oe_highlight"/>
+  
+                    <button name="actualizar_rubros_por_adelantado" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','not in',['ACTIVADO','ADJUDICADO'])]}"  string="Actualizar Rubros" type="object" class="oe_highlight"/>
+                    <button name="cambio_estado_boton_inactivar" invisible="1" string="Inactivar" type="object" class="oe_highlight"/>
 
 
 
-                    <!-- <button name="cesion_derecho" string="Cesión de Derecho" attrs="{'invisible':['|',('state','not in',['inactivo','desistir','congelar']),'|',('desistido','=',True),('is_group_cobranza', '=', True)]}" type="object" class="oe_highlight"/> -->
-
-
-
-
-
-
-
-                    <!-- <button name="crear_adendum" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','!=','activo')]}" string="Crear Adendum" type="object" class="oe_highlight"/> -->
                     <button name="modificar_tabla_contrato" attrs="{'invisible': [('is_group_cobranza', '=', True)]}" string="Reajuste" type="object" class="oe_highlight"/>
 
 
-                    <field name="state" widget="statusbar" statusbar_visible="pendiente,activo,congelar_contrato,adjudicar,adendum,desistir"/>
+                    <field name="state" widget="statusbar" statusbar_visible="ACTIVADO,NO ACTIVADO,ADJUDICADO,FINALIZADO"/>
+                    <field name="state_simplificado" widget="statusbar" />
                 </header>
 
                     <div >
@@ -96,7 +87,7 @@
                                     <field name="grupo" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="dia_corte" readonly="1"/>
                                     <field name="saldo_a_favor_de_capital_por_adendum" />
-                                    <field name="pago" attrs="{'invisible': [('state', '!=','pendiente')]}"/>
+                                    <field name="pago" attrs="{'invisible': [('state', '!=','NO ACTIVADO')]}"/>
                                     <field name="monto_financiamiento"/>
                                     <field name="tasa_administrativa" readonly="1"/>
                                     <field name="valor_inscripcion" />
