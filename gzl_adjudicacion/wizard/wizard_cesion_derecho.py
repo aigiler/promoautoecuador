@@ -29,6 +29,7 @@ class WizardAdelantarCuotas(models.Model):
     rolcontab = fields.Many2one('adjudicaciones.team', string="Rol contabilidad Financiera", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol7'))
     rolpostventa = fields.Many2one('adjudicaciones.team', string="Rol Post venta", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol5'))
     rolDelegado = fields.Many2one('adjudicaciones.team', string="Rol Delegado", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol8'))
+    cesion_id=fields.Many2one("ir.attachment",string="Documento Cesión de Derecho")
 
     forma_pago = fields.Selection(selection=[
             ('caja', 'Caja'),
@@ -41,6 +42,12 @@ class WizardAdelantarCuotas(models.Model):
             ('pre_cierre', 'Proceso de cierre'),
             ('cerrado', 'Cerrado')
             ], string='Estado', copy=True, tracking=True, default='inicio',track_visibility='onchange')
+
+    def crear_documento(self):
+        for l in self:
+            cesion_id=self.env['cesion.derecho'].create({"cesion_id":self.id})
+            dct=cesion_id.print_report_xls(self)
+            self.cesion_id=dct["documento"]["id"]
 
     @api.constrains("contrato_a_ceder")
     @api.onchange("contrato_a_ceder")
@@ -160,9 +167,7 @@ class WizardAdelantarCuotas(models.Model):
                 if l.actividad_id:
                     l.actividad_id.action_done()
 
-
     def descargar(self):
-        #Descargar formato de Cesion 
         return True
 
     def validarrol(self,rol):
@@ -174,7 +179,6 @@ class WizardAdelantarCuotas(models.Model):
             raise ValidationError("Debe estar asignado al rol %s"% rol.name)
         return True
 
-    
     def enviar_contabilidad(self):
         #if self.carta_adjunto:
         self.validarrol(self.rolpostventa)   

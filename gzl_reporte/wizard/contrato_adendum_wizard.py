@@ -27,7 +27,6 @@ class ContratoAdendum(models.TransientModel):
 
 
     def print_report_xls(self):
-        #raise ValidationError(str(self.clave))
         if self.clave=='contrato_adendum':
             dct=self.crear_plantilla_contrato_adendum()
             return dct

@@ -5,7 +5,7 @@ from docx import Document
 from odoo.exceptions import AccessError, UserError, ValidationError
 
 
-def crear_documento_adendum(ruta,detalle):
+def crear_documento_cesion(ruta,detalle):
     #Se abre el documento en la ruta
     doc = Document(ruta)
     for campo in detalle:
@@ -14,23 +14,16 @@ def crear_documento_adendum(ruta,detalle):
         docx_replace_regex_header_ram(doc.sections[0].header,regex1,campo['valor'])
     doc.save(ruta)
 
-
 def identificar_parrafo(doc_obj, regex):
-
     for p in doc_obj.paragraphs:
         if regex.search(p.text):
             return p
 
 
 def docx_replace_regex_header_ram(doc_obj, regex , replace):
-
     for p in doc_obj.paragraphs:
         if regex.search(p.text):
-
             inline = p.runs
-
-
-            # Loop added to work with runs (strings with same style)
             for i in range(len(inline)):
 
                 if regex.search(inline[i].text):
@@ -42,21 +35,11 @@ def docx_replace_regex_header_ram(doc_obj, regex , replace):
             for cell in row.cells:
                 docx_replace_regex_ram(cell, regex , replace)
 
-
-
-
-
-
-
-
-
 def docx_replace_regex_ram(doc_obj, regex , replace):
 
     for p in doc_obj.paragraphs:
         if regex.search(p.text):
             inline = p.runs
-
-            # Loop added  to work with runs (strings with same style) 
             for i in range(len(inline)):
                 if regex.search(inline[i].text):
                     text = regex.sub(replace, inline[i].text)
