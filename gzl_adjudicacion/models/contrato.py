@@ -73,6 +73,7 @@ class Contrato(models.Model):
 
     plazo_meses = fields.Many2one('numero.meses',default=lambda self: self.env.ref('gzl_adjudicacion.{0}'.format('numero_meses60')).id ,track_visibility='onchange' )
 
+    plazo_meses_numero=fields.Integer("Plazo de Contrato")
     tiene_cuota = fields.Boolean(String='Cuota de Entrada',default=False)
     cuota_adm = fields.Monetary(
         string='Cuota Administrativa',store=True, compute='calcular_valores_contrato', currency_field='currency_id', track_visibility='onchange')
