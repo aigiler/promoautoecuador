@@ -398,7 +398,7 @@ class Contrato(models.Model):
 
     @api.model
     def create(self, vals):
-        
+        vals['secuencia']="AJ"+vals['secuencia']
         # grupo=self.env['grupo.adjudicado'].browse(vals['grupo'])
         # obj_secuencia= grupo.secuencia_id
 
