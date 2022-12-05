@@ -163,6 +163,7 @@ class Contrato(models.Model):
     garante =  fields.Many2one('res.partner', string="Garante", track_visibility='onchange')
 
     ejecutado = fields.Boolean(string="Ejecutado", default = False)
+
     @api.depends('grupo')
     def setear_codigo_grupo(self):
         for rec in self:
@@ -397,16 +398,17 @@ class Contrato(models.Model):
 
     @api.model
     def create(self, vals):
-        grupo=self.env['grupo.adjudicado'].browse(vals['grupo'])
-        obj_secuencia= grupo.secuencia_id
+        
+        # grupo=self.env['grupo.adjudicado'].browse(vals['grupo'])
+        # obj_secuencia= grupo.secuencia_id
 
-        if not vals.get('es_cesion'):
-            vals['secuencia'] = obj_secuencia.next_by_code(obj_secuencia.code)
-        dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
-        tasa_administrativa =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa')
+        # if not vals.get('es_cesion'):
+        #     vals['secuencia'] = obj_secuencia.next_by_code(obj_secuencia.code)
+        # dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
+        # tasa_administrativa =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa')
 
-        vals['tasa_administrativa'] = float(tasa_administrativa)
-        vals['dia_corte'] = dia_corte
+        # vals['tasa_administrativa'] = float(tasa_administrativa)
+        # vals['dia_corte'] = dia_corte
 
         #self.validar_cliente_en_otro_contrato()
 
