@@ -461,18 +461,20 @@ class Contrato(models.Model):
 
     @api.constrains("grupo")
     def validar_cliente_en_grupo(self, ):
-        if self.grupo.id:
-            obj_cliente_integrante=self.env['integrante.grupo.adjudicado'].search([('adjudicado_id','=',self.cliente.id)])
-            obj_cliente_integrante.unlink()
+        contratos=self.env["contrato"].search([])
+        for l in contratos:
+            if l.grupo.id:
+                obj_cliente_integrante=self.env['integrante.grupo.adjudicado'].search([('adjudicado_id','=',l.cliente.id)])
+                obj_cliente_integrante.unlink()
 
-            dctCliente={
-            "grupo_id":self.grupo.id,
-            "adjudicado_id":self.cliente.id
+                dctCliente={
+                "grupo_id":l.grupo.id,
+                "adjudicado_id":l.cliente.id
 
-            }
+                }
 
-            obj_cliente_integrante=self.env['integrante.grupo.adjudicado'].create(dctCliente)
-            obj_cliente_integrante.agregar_contrato()
+                obj_cliente_integrante=self.env['integrante.grupo.adjudicado'].create(dctCliente)
+                obj_cliente_integrante.agregar_contrato()
 
 
 
