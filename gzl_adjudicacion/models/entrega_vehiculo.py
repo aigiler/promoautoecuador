@@ -682,6 +682,7 @@ class EntegaVehiculo(models.Model):
                                                     'entrega_vehiculo_id':self.id})
         dct=plantilla_id.print_report_xls()
         self.liquidacion_compra=dct["archivo_xls1"]
+        return dct
 
 
 
@@ -692,6 +693,7 @@ class EntegaVehiculo(models.Model):
                                                     'entrega_vehiculo_id':self.id})
         dct=plantilla_id.print_report_xls()
         self.orden_salida=dct["archivo_xls1"]
+        return dct
 
 
 
@@ -705,6 +707,7 @@ class EntegaVehiculo(models.Model):
         url += "/web/content/%s?download=true" %(dct["documento"]["id"])
         self.url_doc=url
         self.correo_id=dct["documento"]["id"]
+        return dct
 
 
 

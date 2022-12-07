@@ -32,6 +32,7 @@ class CesionDerecho(models.TransientModel):
 
     def crear_plantilla_cesion_derecho(self,cesion_id):
         dct={}
+        raise ValidationError(cesion_id)
         obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','cesion_derecho')],limit=1)
         lista_campos=[]
         dct['identificar_docx']='name_socio'
