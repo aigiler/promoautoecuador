@@ -626,6 +626,7 @@
                                     </div>
                                     <div class="col-xs-4">
                                         <group>
+                                             <field name="liquidacion_compra"  attrs="{'readonly':[('estado', 'not in',['liquidacion_orden_compra'])],'invisible':[('liquidacion_compra', '=',False)]}"/>
                                             <button name="create_liquidacion_compra" type="object" string="Descargar PDF" class="btn btn-primary"/>
                                         </group>
                                     </div>
