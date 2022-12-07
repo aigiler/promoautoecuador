@@ -928,7 +928,7 @@
 
                                         <tr>
                                             <td>
-                                                <button type="object" string="Generar OC" name="create_purchase_order" class="btn btn-primary o_invoice_new"/>
+                                                <button type="object" string="Descargar Orden de Compra" name="create_purchase_order" class="btn btn-primary o_invoice_new"/>
                                             </td>
 
                                             <td  attrs="{'invisible':[('orden_compra', '=',False)]}">
@@ -1005,9 +1005,9 @@
                             <div class="col-xs-12 col-md-12">
                                 <group>
                                     <field name="documentos_pagos"  attrs="{'readonly':[('estado', 'not in',['orden_salida'])]}"/>
-                                    <!-- <field name="orden_salida"  attrs="{'readonly':[('estado', 'not in',['orden_salida'])],'invisible':[('orden_salida', '=',False)]}"/>
+                                     <field name="orden_salida"  attrs="{'readonly':[('estado', 'not in',['orden_salida'])],'invisible':[('orden_salida', '=',False)]}"/>
                                     
-                                    <button type="object" string="Generar Orden de Salida" name="create_orden_Salida" class="btn btn-primary o_invoice_new"/> -->
+                                    <button type="object" string="Generar Orden de Salida" name="create_orden_Salida" class="btn btn-primary o_invoice_new"/> 
 
                             </group>
                             <separator class="text-center" string="PAGO DE VEHÍCULO"  attrs="{'invisible':[('estado', 'in',['borrador','liquidacion_orden_compra','orden_compra','factura','firma','matriculacion','orden_salida'])]}"/>
