@@ -79,7 +79,20 @@ class CesionDerecho(models.TransientModel):
         year = datetime.now().year
         mes = datetime.now().month
         dia = datetime.now().day
-        #print(mesesDic[str(mes)][:3])
+        mesesDic = {
+                "1":'Enero',
+                "2":'Febrero',
+                "3":'Marzo',
+                "4":'Abril',
+                "5":'Mayo',
+                "6":'Junio',
+                "7":'Julio',
+                "8":'Agosto',
+                "9":'Septiembre',
+                "10":'Octubre',
+                "11":'Noviembre',
+                "12":'Diciembre'
+            }
         valordia = amount_to_text_es.amount_to_text(dia)
         valordia = valordia.split()
         valordia = valordia[0]
