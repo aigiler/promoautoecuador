@@ -63,11 +63,14 @@ class ContratoAdendum(models.TransientModel):
                 resultado=self.mapped(campo.name)
                 if campo.identificar_docx =='fecha_suscripcion':
                     dct={}
-                    year = resultado[0].year
-                    mes = resultado[0].month
-                    dia = resultado[0].day
-                    fechacontr2 = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
-                    dct['valor'] = fechacontr2
+                    if resultado[0]!=False:
+                        year = resultado[0].year
+                        mes = resultado[0].month
+                        dia = resultado[0].day
+                        fechacontr2 = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
+                        dct['valor'] = fechacontr2
+                    else:
+                        dct['valor']=""
                     dct['identificar_docx']=campo.identificar_docx
                     lista_campos.append(dct)
                 elif campo.identificar_docx =='num_contrato':

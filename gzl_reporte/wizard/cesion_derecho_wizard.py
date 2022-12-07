@@ -68,20 +68,6 @@ class CesionDerecho(models.TransientModel):
             year = datetime.now().year
             mes = datetime.now().month
             dia = datetime.now().day
-            mesesDic = {
-                    "1":'Enero',
-                    "2":'Febrero',
-                    "3":'Marzo',
-                    "4":'Abril',
-                    "5":'Mayo',
-                    "6":'Junio',
-                    "7":'Julio',
-                    "8":'Agosto',
-                    "9":'Septiembre',
-                    "10":'Octubre',
-                    "11":'Noviembre',
-                    "12":'Diciembre'
-                }
             valordia = amount_to_text_es.amount_to_text(dia)
             valordia = valordia.split()
             valordia = valordia[0]
@@ -98,10 +84,10 @@ class CesionDerecho(models.TransientModel):
                 file=bytes(base64.b64encode(data))
 
         obj_attch=self.env['ir.attachment'].create({
-                                                    'name':'Contrato_adendum.docx',
+                                                    'name':'Cesion de Derecho.docx',
                                                     'datas':file,
                                                     'type':'binary', 
-                                                    'store_fname':'Contrato_adendum.docx'
+                                                    'store_fname':'Cesion de Derecho.docx'
                                                     })
 
         url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
