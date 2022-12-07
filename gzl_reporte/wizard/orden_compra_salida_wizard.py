@@ -47,10 +47,7 @@ class InformeCreditoCrobranza(models.TransientModel):
     def crear_plantilla_informe_credito_cobranza(self,):
         #Instancia la plantilla
         garante=False
-        if self.clave=='orden_compra':
-            obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','orden_compra')],limit=1)
-        else:
-            obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','orden_salida')],limit=1)
+        obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=',self.clave)],limit=1)
             
         if obj_plantilla:
             shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
@@ -81,8 +78,10 @@ class InformeCreditoCrobranza(models.TransientModel):
         nombre_doc=""
         if self.clave=='orden_compra':
             nombre_doc="Orden de Compra.xlsx"
-        else:
+        elif self.clave=="orden_salida":
             nombre_doc="Orden de Salida.xlsx"
+        else:
+            nombre_doc="Liquidacion de Compra"
 
         obj_attch=self.env['ir.attachment'].create({
                                                     'name':nombre_doc,

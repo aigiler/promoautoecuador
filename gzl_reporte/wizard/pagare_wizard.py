@@ -30,14 +30,12 @@ class PagareOrden(models.TransientModel):
 
 
     def print_report_xls(self):
-        dct=self.crear_plantilla_contrato_reserva()
+        dct=self.crear_plantilla_pagare()
         return dct
 
-    def crear_plantilla_contrato_reserva(self,):
-        obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','pagare')],limit=1)
-        if self.contrato_id.garante:
-            obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','pagare_garante')],limit=1)
-
+    def crear_plantilla_pagare(self,):
+        obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=',self.clave)],limit=1)
+        obj_documeto=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=',self.clave)],limit=1)
         estado_cuenta=[]
         if obj_plantilla:
             mesesDic = {
@@ -54,7 +52,7 @@ class PagareOrden(models.TransientModel):
                 "11":'Noviembre',
                 "12":'Diciembre'
             }
-            shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
+            shutil.copy2(obj_documeto.directorio,obj_documeto.directorio_out)
             campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
             lista_campos=[]
             dct={}
@@ -87,8 +85,8 @@ class PagareOrden(models.TransientModel):
             dct['valor']=fechacontr
             lista_campos.append(dct)
             estado_cuenta.append(self.contrato_id.estado_de_cuenta_ids)
-            pagare_documento.crear_pagare(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
-            with open(obj_plantilla.directorio_out, "rb") as f:
+            pagare_documento.crear_pagare(obj_documeto.directorio_out,lista_campos,estado_cuenta)
+            with open(obj_documeto.directorio_out, "rb") as f:
                 data = f.read()
                 file=bytes(base64.b64encode(data))
         obj_attch=self.env['ir.attachment'].create({

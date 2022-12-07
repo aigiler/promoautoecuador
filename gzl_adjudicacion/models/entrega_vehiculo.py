@@ -65,6 +65,7 @@ class EntegaVehiculo(models.Model):
     _rec_name = 'secuencia'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
+
     rolAsignado = fields.Many2one('adjudicaciones.team', string="Rol Asignado", track_visibility='onchange')
     rolCredito = fields.Many2one('adjudicaciones.team', string="Rol Credito", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol3'))
     rolGerenciaAdmin = fields.Many2one('adjudicaciones.team', string="Rol Gerencia Admin", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol1'))
@@ -132,6 +133,7 @@ class EntegaVehiculo(models.Model):
     nombreSocioAdjudicado = fields.Many2one('res.partner', string="Nombre del Socio Adj.", track_visibility='onchange')
     orden_compra=fields.Binary()
     orden_salida=fields.Binary()
+    liquidacion_compra=fields.Binary()
     correo_id=fields.Many2one("ir.attachment")
     reserva_id=fields.Many2one("ir.attachment",string="Contrato de Reserva")
     pagare_id=fields.Many2one("ir.attachment",string="Pagaré a la Orden")
@@ -675,6 +677,15 @@ class EntegaVehiculo(models.Model):
         l.comisionFacturaConcesionario=porcentaje
 
 
+    def create_liquidacion_compra(self):
+        plantilla_id=self.env['informe.credito.cobranza'].create({'clave':"liquidacion_compra",
+                                                    'entrega_vehiculo_id':self.id})
+        dct=plantilla_id.print_report_xls()
+        self.liquidacion_compra=dct["archivo_xls1"]
+
+
+
+
 
     def create_orden_Salida(self):
         plantilla_id=self.env['informe.credito.cobranza'].create({'clave':"orden_salida",
@@ -1161,17 +1172,24 @@ class EntegaVehiculo(models.Model):
         else:
             fecha=datetime.now().date()
         if self.aplicaGarante in ["si","SI"]:
-            reserva_id=self.env['contrato.reserva'].create({'contrato_id':self.contrato_id.id,'partner_id':self.nombreSocioAdjudicado.id,
-                                            'vehiculo_id':self.id,"clave":"contrato_reserva_garante"})
-            pagare_id=self.env['pagare.report'].create({'contrato_id':self.contrato_id.id,'partner_id':self.nombreSocioAdjudicado.id,
-                                           "clave":"pagare_garante","fecha_vencimiento":fecha})
+            if self.nombreSocioAdjudicado.estado_civil=="casado":
+                clave_reserva="reserva_casado_garante"
+                clave_pagare="pagare_casado_garante"
+            else:
+               clave_reserva="reserva_demas_garante"
+                clave_pagare="pagare_demas_garante"
         else:
-            reserva_id=self.env['contrato.reserva'].create({'contrato_id':self.contrato_id.id,'partner_id':self.nombreSocioAdjudicado.id,
-                                            'vehiculo_id':self.id,"clave":"contrato_reserva"})
-            
-            pagare_id=self.env['pagare.report'].create({'contrato_id':self.contrato_id.id,
-                                                'partner_id':self.nombreSocioAdjudicado.id,
-                                            "clave":"pagare","fecha_vencimiento":fecha})
+            if self.nombreSocioAdjudicado.estado_civil=="casado":
+                clave_reserva="reserva_casado_sin_garante"
+                clave_pagare="pagare_casado_sin_garante"
+            else:
+                clave_reserva="reserva_demas_sin_garante"
+                clave_pagare="pagare_demas_sin_garante"
+
+        reserva_id=self.env['contrato.reserva'].create({'contrato_id':self.contrato_id.id,'partner_id':self.nombreSocioAdjudicado.id,
+                                        'vehiculo_id':self.id,"clave":clave_reserva})
+        pagare_id=self.env['pagare.report'].create({'contrato_id':self.contrato_id.id,'partner_id':self.nombreSocioAdjudicado.id,
+                                       "clave":clave,"fecha_vencimiento":fecha})
 
         if reserva_id:
             dct_reserva=reserva_id.print_report_xls()
@@ -1246,6 +1264,7 @@ class EntegaVehiculo(models.Model):
     modeloHomologado  = fields.Char(string='Modelo homologado ANT:', default=' ')
     serieVehiculo = fields.Char(string='Serie:', default=' ')
     motorVehiculo = fields.Char(string='Motor:', default=' ')
+    valorCpn = fields.Char(string='valorCpn:', default=' ')
     colorVehiculo = fields.Char(string='Color:', default=' ')
     anioVehiculo = fields.Selection(year_selection, string="Año:", default="2019")
     paisOrigenVehiculo = fields.Many2one('res.country', string='País origen:')

@@ -24,7 +24,6 @@ class ContratoResrva(models.TransientModel):
     
     partner_id = fields.Many2one('res.partner',string='Cliente')
     contrato_id = fields.Many2one('contrato',string='Contrato')
-    clave =  fields.Char( default="contrato_reserva")
     vehiculo_id = fields.Many2one('entrega.vehiculo',string='entrega.vehiculo')
 
 
@@ -109,10 +108,9 @@ class ContratoResrva(models.TransientModel):
 
     def crear_plantilla_contrato_reserva(self,):        
         obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','contrato_reserva')],limit=1)
-        if self.contrato_id.garante:
-            obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','contrato_reserva_garante')],limit=1)
+        obj_documeto=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=',self.clave)],limit=1)
         if obj_plantilla:
-            shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
+            shutil.copy2(obj_documeto.directorio,obj_documeto.directorio_out)
             campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
             lista_campos=[]
             estado_cuenta=[]
@@ -137,66 +135,25 @@ class ContratoResrva(models.TransientModel):
                                 'valor':enteraletras})
             lista_campos.append({'identificar_docx':'montofinanciamiento',
                                 'valor':str(round(self.contrato_id.monto_financiamiento,2))})
+            if self.vehiculo_id.asamblea:
+                year = fecha_fin.year
+                mes = fecha_fin.month
+                dia = fecha_fin.day
+                fechaasamblea = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
+                lista_campos.append({'identificar_docx':'fechaasamblea',
+                            'valor':fechaasamblea})
             for campo in campos:
-                dct={}
-                if campo.name == 'vehiculo_id.tipoVehiculo':
-                    obj_veh=self.env['entrega.vehiculo'].search([])
-                    for l in obj_veh :
-                        if l.nombreSocioAdjudicado.id == self.contrato_id.cliente.id: #vehiculo_clase 238
-                            fechaasamblea=' '
-                            if l.asamblea:
-                                year = resultado[0].year
-                                mes = resultado[0].month
-                                dia = resultado[0].day
-                                fechaasamblea = str(dia)+' de '+str(mesesDic[str(mes)])+' del '+str(year)
-                            lista_vehiculos=[{'identificar_docx':'vehiculo_tipo',
-                                            'valor':l.tipoVehiculo},
-                                            {'identificar_docx':'vehiculoclase',
-                                            'valor':l.claseVehiculo},
-                                            {'identificar_docx':'vehiculomarca',
-                                            'valor':l.marcaVehiculo},
-                                            {'identificar_docx':'modeloregistsri',
-                                            'valor':l.modeloVehiculoSRI},
-                                            {'identificar_docx':'modelohomologadoant',
-                                            'valor':l.modeloHomologado},
-                                            {'identificar_docx':'vehiculoserie',
-                                            'valor':l.serieVehiculo},
-                                            {'identificar_docx':'vehiculomotor',
-                                            'valor':l.motorVehiculo},
-                                            {'identificar_docx':'vehiculocolor',
-                                            'valor':l.colorVehiculo},
-                                            {'identificar_docx':'vehiculoanio',
-                                            'valor':l.anioVehiculo},
-                                            {'identificar_docx':'vehiculopaisorigen',
-                                            'valor':l.paisOrigenVehiculo.name},
-                                            {'identificar_docx':'vehiculocombustible',
-                                            'valor':l.conbustibleVehiculo},
-                                            {'identificar_docx':'vehiculopasajeros',
-                                            'valor':str(l.numPasajeros)},
-                                            {'identificar_docx':'valorcpn',
-                                            'valor':''},
-                                            {'identificar_docx':'vehiculotonelaje',
-                                            'valor':l.tonelajeVehiculo},
-                                            {'identificar_docx':'numeroeje',
-                                            'valor':str(l.numEjesVehiculo)},
-                                            {'identificar_docx':'plazomeses',
-                                            'valor':str(self.contrato_id.plazo_meses.numero)},
-                                            {'identificar_docx':'fechaasamblea',
-                                            'valor':fechaasamblea}]
-  
-                            lista_campos+=lista_vehiculos
-                else:
-                    resultado=self.mapped(campo.name)
-                    if campo.name!=False:
-                        if len(resultado)>0:
-                            if resultado[0]==False:
-                                dct['valor']=''
-                            else:    
-                                dct['valor']=str(resultado[0])
-                        else:
+                resultado=self.mapped(campo.name)
+                if campo.name!=False:
+                    if len(resultado)>0:
+                        if resultado[0]==False:
                             dct['valor']=''
-                    dct['identificar_docx']=campo.identificar_docx
-                    lista_campos.append(dct)            
+                        else:    
+                            dct['valor']=str(resultado[0])
+                    else:
+                        dct['valor']=''
+                dct['identificar_docx']=campo.identificar_docx
+                lista_campos.append(dct)            
             year = datetime.now().year
             mes = datetime.now().month
             dia = datetime.now().day
@@ -207,8 +164,8 @@ class ContratoResrva(models.TransientModel):
             lista_fecha=[{'identificar_docx':'txt_factual','valor':fechacontr}]
             lista_campos+=lista_fecha
             estado_cuenta.append(self.contrato_id.estado_de_cuenta_ids)
-            contrato_reserva_documento.crear_documento_reserva(obj_plantilla.directorio_out,lista_campos,estado_cuenta)
-            with open(obj_plantilla.directorio_out, "rb") as f:
+            contrato_reserva_documento.crear_documento_reserva(obj_documeto.directorio_out,lista_campos,estado_cuenta)
+            with open(obj_documeto.directorio_out, "rb") as f:
                 data = f.read()
                 file=bytes(base64.b64encode(data))
         obj_attch=self.env['ir.attachment'].create({

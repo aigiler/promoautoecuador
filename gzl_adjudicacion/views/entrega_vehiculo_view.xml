@@ -965,6 +965,7 @@
                                     <field name="modeloHomologado" placeholder="MODELO HOMOLOGADO ANT" attrs="{'readonly':[('estado', 'not in',['factura'])]}"/>
                                     <field name="serieVehiculo" placeholder="SERIE" attrs="{'readonly':[('estado', 'not in',['factura'])]}"/>
                                     <field name="motorVehiculo" placeholder="MOTOR" attrs="{'readonly':[('estado', 'not in',['factura'])]}"/>
+                                    <field name="valorCpn" placeholder="Valor CPN" attrs="{'readonly':[('estado', 'not in',['factura'])]}"/>
                                     <field name="colorVehiculo" placeholder="COLOR" attrs="{'readonly':[('estado', 'not in',['factura'])]}"/>
 
                                     <field name="anioVehiculo" attrs="{'readonly':[('estado', 'not in',['factura'])]}"/>
