@@ -2,6 +2,7 @@
 from . import reporte_estado_de_cuenta_wizard
 from . import carta_finalizacion_wizard
 from . import congelamiento_wizard
+from . import cesion_derecho_wizard
 from . import contrato_adendum_wizard
 from . import contrato_reserva_wizard
 from . import hoja_ruta_wizard
