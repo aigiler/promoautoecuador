@@ -1374,12 +1374,15 @@ class EntegaVehiculo(models.Model):
                 rec.aplicaGarante = 'NO'
             else:
                 rec.aplicaGarante = 'SI'
-    
 
     @api.depends('montoAdjudicado', 'valorComisionFactura', 'retencion_pagar', 'montoAnticipoConsesionaria')
     def calcular_valor_cheque(self):
         for rec in self:
-            rec.montoChequeConsesionario = rec.montoAdjudicado - rec.valorComisionFactura + rec.retencion_pagar - rec.montoAnticipoConsesionaria
+            if rec.montoAdjudicado<rec.montoVehiculo:
+                monto_final=rec.montoAdjudicado
+            else:
+                monto_final=rec.montoVehiculo
+            rec.montoChequeConsesionario = monto_final - rec.valorComisionFactura + rec.retencion_pagar - rec.montoAnticipoConsesionaria
 
     @api.depends('montoVehiculo', 'comisionFacturaConcesionario')
     def calcular_valor_comision_fact(self):
