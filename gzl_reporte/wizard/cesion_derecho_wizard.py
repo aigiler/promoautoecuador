@@ -96,7 +96,6 @@ class CesionDerecho(models.TransientModel):
             with open(obj_plantilla.directorio_out, "rb") as f:
                 data = f.read()
                 file=bytes(base64.b64encode(data))
-        raise ValidationError(lista_campos)
 
         obj_attch=self.env['ir.attachment'].create({
                                                     'name':'Contrato_adendum.docx',
