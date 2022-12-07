@@ -626,7 +626,7 @@
                                     </div>
                                     <div class="col-xs-4">
                                         <group>
-                                            <button name="create_liquidacion_compra" type="object" string="Descargar PDF"/>
+                                            <button name="create_liquidacion_compra" type="object" string="Descargar PDF" class="btn btn-primary"/>
                                         </group>
                                     </div>
                                 </div>

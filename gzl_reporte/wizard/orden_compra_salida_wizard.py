@@ -81,7 +81,7 @@ class InformeCreditoCrobranza(models.TransientModel):
         elif self.clave=="orden_salida":
             nombre_doc="Orden de Salida.xlsx"
         else:
-            nombre_doc="Liquidacion de Compra"
+            nombre_doc="Liquidacion de Compra.xlsx"
 
         obj_attch=self.env['ir.attachment'].create({
                                                     'name':nombre_doc,
