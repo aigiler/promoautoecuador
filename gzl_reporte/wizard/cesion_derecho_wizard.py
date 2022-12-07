@@ -34,52 +34,8 @@ class CesionDerecho(models.TransientModel):
         dct={}
         obj_plantilla=self.env['plantillas.dinamicas.informes'].search([('identificador_clave','=','cesion_derecho')],limit=1)
         lista_campos=[]
-        dct['identificar_docx']='name_socio'
-        dct['valor']=cesion_id.contrato_a_ceder.cliente.name
-        lista_campos.append(dct)
-        dct['identificar_docx']='vat_socio'
-        dct['valor']=cesion_id.contrato_a_ceder.cliente.vat
-        lista_campos.append(dct)
-        dct['identificar_docx']='estado_civil_socio'
-        dct['valor']=cesion_id.contrato_a_ceder.cliente.estado_civil
-        lista_campos.append(dct)
-        dct['identificar_docx']='direccion_socio'
-        dct['valor']=cesion_id.contrato_a_ceder.cliente.street
-        lista_campos.append(dct)
-        dct['identificar_docx']='name_cesionario'
-        dct['valor']=cesion_id.partner_id.name
-        lista_campos.append(dct)
-        dct['identificar_docx']='vat_cesionario'
-        dct['valor']=cesion_id.partner_id.vat
-        lista_campos.append(dct)
-        dct['identificar_docx']='estado_civil_cesionario'
-        dct['valor']=cesion_id.partner_id.estado_civil
-        lista_campos.append(dct)
-        dct['identificar_docx']='direccion_cesionario'
-        dct['valor']=cesion_id.partner_id.street
-        lista_campos.append(dct)
-        dct['identificar_docx']='fecha_suscripcion'
-        dct['valor']=cesion_id.contrato_a_ceder.fecha_contrato
-        lista_campos.append(dct)
-        dct['identificar_docx']='monto_financiamiento'
-        dct['valor']=cesion_id.contrato_a_ceder.monto_financiamiento
-        lista_campos.append(dct)
-        dct['identificar_docx']='plazo_meses'
-        dct['valor']=cesion_id.contrato_a_ceder.plazo_meses.numero
-        lista_campos.append(dct)
-        dct['identificar_docx']='provincia_cesionario'
-        dct['valor']=cesion_id.partner_id.state_id.name
-        lista_campos.append(dct)
-        dct['identificar_docx']='canton_cesionario'
-        dct['valor']=cesion_id.partner_id.city
-        lista_campos.append(dct)
-        dct['identificar_docx']='email_cesionario'
-        dct['valor']=cesion_id.partner_id.email
-        lista_campos.append(dct)
-        year = datetime.now().year
-        mes = datetime.now().month
-        dia = datetime.now().day
-        mesesDic = {
+        if obj_plantilla:
+            mesesDic = {
                 "1":'Enero',
                 "2":'Febrero',
                 "3":'Marzo',
@@ -93,23 +49,55 @@ class CesionDerecho(models.TransientModel):
                 "11":'Noviembre',
                 "12":'Diciembre'
             }
-        valordia = amount_to_text_es.amount_to_text(dia)
-        valordia = valordia.split()
-        valordia = valordia[0]
-        fechacontr = 'a los '+valordia.lower()+' dias del mes de '+str(mesesDic[str(mes)])+' del Año '+str(year)
-        dct['identificar_docx']='fecha_actual'
-        dct['valor']=fechacontr
-        lista_campos.append(dct)
-        raise ValidationError(lista_campos)
+                
+
+            shutil.copy2(obj_plantilla.directorio,obj_plantilla.directorio_out)
+            campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
+            for campo in campos:
+                dct={}
+                if campo.name!=False:
+                    dct={}
+                    if len(resultado)>0:
+                        dct['valor']=str(resultado[0])
+                    else:
+                        dct['valor']=''
+                dct['identificar_docx']=campo.identificar_docx
+                lista_campos.append(dct)
+
+            year = datetime.now().year
+            mes = datetime.now().month
+            dia = datetime.now().day
+            mesesDic = {
+                    "1":'Enero',
+                    "2":'Febrero',
+                    "3":'Marzo',
+                    "4":'Abril',
+                    "5":'Mayo',
+                    "6":'Junio',
+                    "7":'Julio',
+                    "8":'Agosto',
+                    "9":'Septiembre',
+                    "10":'Octubre',
+                    "11":'Noviembre',
+                    "12":'Diciembre'
+                }
+            valordia = amount_to_text_es.amount_to_text(dia)
+            valordia = valordia.split()
+            valordia = valordia[0]
+            fechacontr = 'a los '+valordia.lower()+' dias del mes de '+str(mesesDic[str(mes)])+' del Año '+str(year)
+            dct['identificar_docx']='fecha_actual'
+            dct['valor']=fechacontr
+            lista_campos.append(dct)
+            raise ValidationError(lista_campos)
 
 
-        cesion_derecho_documento.crear_documento_cesion(obj_plantilla.directorio_out,lista_campos)
+            cesion_derecho_documento.crear_documento_cesion(obj_plantilla.directorio_out,lista_campos)
 
 
 
-        with open(obj_plantilla.directorio_out, "rb") as f:
-            data = f.read()
-            file=bytes(base64.b64encode(data))
+            with open(obj_plantilla.directorio_out, "rb") as f:
+                data = f.read()
+                file=bytes(base64.b64encode(data))
         obj_attch=self.env['ir.attachment'].create({
                                                     'name':'Contrato_adendum.docx',
                                                     'datas':file,
