@@ -1176,7 +1176,7 @@ class EntegaVehiculo(models.Model):
                 clave_reserva="reserva_casado_garante"
                 clave_pagare="pagare_casado_garante"
             else:
-               clave_reserva="reserva_demas_garante"
+                clave_reserva="reserva_demas_garante"
                 clave_pagare="pagare_demas_garante"
         else:
             if self.nombreSocioAdjudicado.estado_civil=="casado":
