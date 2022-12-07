@@ -25,9 +25,8 @@ class CesionDerecho(models.TransientModel):
     cesion_id =fields.Many2one("wizard.cesion.derecho", string="Adendum")
 
     def print_report_xls(self,cesion_id):
-        if self.clave=='cesion_derecho':
-            dct=self.crear_plantilla_cesion_derecho(cesion_id)
-            return dct
+        dct=self.crear_plantilla_cesion_derecho(cesion_id)
+        return dct
 
 
 
