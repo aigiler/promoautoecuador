@@ -56,6 +56,9 @@ class InformeCreditoCrobranza(models.TransientModel):
             for campo in campos:
                 dct={}
                 resultado=self.entrega_vehiculo_id.mapped(campo.name)
+                if campo.name=="nombreConcesionario":
+                    resultado[0]=resultado[0]/100
+                    
                 if len(resultado)>0:
                     dct['valor']=resultado[0]
                 else:
