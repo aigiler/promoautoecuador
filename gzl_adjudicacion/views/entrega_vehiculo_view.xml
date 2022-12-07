@@ -624,6 +624,11 @@
                                             <field name="codigoAdjudicado" options="{'no_create': True, 'no_open': True}"/>
                                         </group>
                                     </div>
+                                    <div class="col-xs-4">
+                                        <group>
+                                            <button name="create_liquidacion_compra" type="object" string="Descargar PDF"/>
+                                        </group>
+                                    </div>
                                 </div>
                                 <div class="col-xs-12 col-md-12">
                                     <table style=" border-collapse: collapse; width:100%">
