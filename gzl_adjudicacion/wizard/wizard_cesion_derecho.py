@@ -48,6 +48,7 @@ class WizardAdelantarCuotas(models.Model):
             cesion_id=self.env['cesion.derecho'].create({"cesion_id":self.id})
             dct=cesion_id.print_report_xls(self)
             self.cesion_id=dct["documento"]["id"]
+            return dct
 
     @api.constrains("contrato_a_ceder")
     @api.onchange("contrato_a_ceder")
