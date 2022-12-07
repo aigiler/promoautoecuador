@@ -55,6 +55,7 @@ class CesionDerecho(models.TransientModel):
             campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
             for campo in campos:
                 dct={}
+                resultado=self.mapped(campo.name)
                 if campo.name!=False:
                     dct={}
                     if len(resultado)>0:
@@ -88,9 +89,6 @@ class CesionDerecho(models.TransientModel):
             dct['identificar_docx']='fecha_actual'
             dct['valor']=fechacontr
             lista_campos.append(dct)
-            raise ValidationError(lista_campos)
-
-
             cesion_derecho_documento.crear_documento_cesion(obj_plantilla.directorio_out,lista_campos)
 
 
@@ -98,6 +96,8 @@ class CesionDerecho(models.TransientModel):
             with open(obj_plantilla.directorio_out, "rb") as f:
                 data = f.read()
                 file=bytes(base64.b64encode(data))
+        raise ValidationError(lista_campos)
+
         obj_attch=self.env['ir.attachment'].create({
                                                     'name':'Contrato_adendum.docx',
                                                     'datas':file,
