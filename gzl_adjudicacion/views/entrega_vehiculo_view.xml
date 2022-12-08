@@ -134,8 +134,8 @@
                                         <field name="montoAhorroInversiones" force_save="1" nolabel="1">
                                             <tree create="0" delete="0" editable="top">
                                                 <field name="patrimonio_id" readonly="1"  />
-                                                <field name="poseeBien" string="Posee Bien"/>
-                                                <field name="descripcion" string="Descripcion"/>
+                                                <field name="poseeBien" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" string="Posee Bien"/>
+                                                <field name="descripcion" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" string="Descripcion"/>
                                                 <field name="garante" invisible="1"/>
                                                 <field name="valor"   attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" sum="valor"/>
                                             </tree>
@@ -155,53 +155,86 @@
                                         <field name="ingresosIds" force_save="1" nolabel="1">
                                             <tree create="0" delete="0" editable="top">
                                                 <field name="ingresos_id" readonly="1"  />
-                                                <field name="titular" sum="Titular"/>
-                                                <field name="conyuge" sum="Conyuge"/>
+                                                <field name="titular" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" sum="Titular"/>
+                                                <field name="conyuge" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" sum="Conyuge"/>
                                                 <field name="garante" invisible="1"/>
                                                
                                             </tree>
                                         </field>
-                                        <div class="col-xs-12 col-md-6">
-                                             </div>
                                         <div class="col-xs-12 col-md-4">
-                                            <text>Total Ingresos Familiares</text>
+                                             </div>
+                                        <div class="col-xs-12 col-md-8">
+                                          <group> 
+                                               <field name="total_ingresos_familiares" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                            </group>
                                         </div>
-                                        <div class="col-xs-12 col-md-2">
-                                            <field name="total_ingresos_familiares"/>
-                                        </div>
-
                                              
                                         <separator class="text-center fw-bold" string="EGRESOS"/>
                                          <field name="egresosIds" force_save="1" nolabel="1">
                                             <tree create="0" delete="0" editable="top">
-                                                <field name="egresos_id" readonly="1"  />
-                                                <field name="titular" sum="Titular"/>
-                                                <field name="conyuge" sum="Conyuge"/>
+                                                <field name="egresos_id"  readonly="1"  />
+                                                <field name="titular" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" sum="Titular"/>
+                                                <field name="conyuge" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" sum="Conyuge"/>
                                                 <field name="garante" invisible="1"/>
                                                
                                             </tree>
                                         </field>
-                                        <div class="col-xs-12 col-md-6">
-                                             </div>
                                         <div class="col-xs-12 col-md-4">
-                                            <text>Total Egresos Familiares</text>
-                                        </div>
-                                        <div class="col-xs-12 col-md-2">
-                                            <field name="total_egresos_familiares"/>
+                                             </div>
+                                        <div class="col-xs-12 col-md-8">
+                                          <group> 
+                                               <field name="total_egresos_familiares" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                            </group>
                                         </div>
 
-                                        <div class="col-xs-12 col-md-6">
-                                        </div>
                                         <div class="col-xs-12 col-md-4">
-                                            <text>Disponibilidad</text>
+                                             </div>
+                                        <div class="col-xs-12 col-md-8">
+                                          <group> 
+                                               <field name="disponibilidad_dinero" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
+                                            </group>
                                         </div>
-                                        <div class="col-xs-12 col-md-2">
-                                            <field name="disponibilidad_dinero"/>
-                                        </div>
+
+                                        
                                     </group>
                                 </div>
 
                             </div>
+
+                            <separator class="text-center fw-bold" string="REFERENCIAS FAMILIARES"/>
+                            <div class="row" style="border: 1px solid black;">
+                                <div class="col-xs-12 col-md-12">
+                                    <group >  
+                                        <field name="referencias_familiares_ids" force_save="1" nolabel="1">
+                                            <tree create="0" delete="0" editable="top">
+                                                <field name="nombre" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" />
+                                                <field name="cedula" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
+                                                <field name="parentezco" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
+                                                <field name="direccion" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
+                                                <field name="telefono" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
+                                            </tree>
+                                        </field>      
+                                        
+                                       
+                                    </group>
+                                </div>
+
+                            <separator class="text-center fw-bold" string="REFERENCIAS BANCARIAS"/>
+                            <div class="row" style="border: 1px solid black;">
+                                <div class="col-xs-12 col-md-12">
+                                    <group >  
+                                        <field name="referencias_bancarias_ids" force_save="1" nolabel="1">
+                                            <tree create="0" delete="0" editable="top">
+                                                <field name="banco" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" />
+                                                <field name="tipo_cuenta" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
+                                                <field name="numero_cuenta" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
+                                            </tree>
+                                        </field>      
+                                        
+                                       
+                                    </group>
+                                </div>
+
 
 
 

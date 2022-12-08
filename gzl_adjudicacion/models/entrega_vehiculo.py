@@ -279,11 +279,25 @@ class EntegaVehiculo(models.Model):
     ciudadConyuge = fields.Char('Ciudad')
     @api.constrains("ciudadConyuge")
     @api.onchange("ciudadConyuge")
-    def actualizar_ciudad_adj(self):
+    def actualizar_ciudad_conyuge_adj(self):
         for l in self:
             if l.ciudadConyuge:
                 l.nombreSocioAdjudicado.cityConyuge=l.ciudadConyuge
 
+    montoAhorroInversiones = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',domain=[('garante','=',False)] ,track_visibility='onchange')
+
+    ingresosIds = fields.One2many('ingresos.financiero.entrega.vehiculo','entrega_id',domain=[('garante','=',False)] ,track_visibility='onchange')
+
+    egresosIds = fields.One2many('egresos.financiero.entrega.vehiculo','entrega_id',domain=[('garante','=',False)] ,track_visibility='onchange')
+
+    total_ingresos_familiares = fields.Monetary(string='Total Ingresos Familiares')
+
+    total_egresos_familiares = fields.Monetary(string='Total Egresos Familiares')
+
+    disponibilidad_dinero= fields.Monetary(string='Total Dispinible')
+
+    referencias_familiares_ids=fields.One2many('referencias.familiares','entrega_id',domain=[('garante','=',False)] ,track_visibility='onchange')
+    referencias_bancarias_ids=fields.One2many('referencias.bancarias','entrega_id',domain=[('garante','=',False)] ,track_visibility='onchange')
 
 
 
@@ -308,6 +322,8 @@ class EntegaVehiculo(models.Model):
 
 
 
+
+    referencias_bancarias_ids_garante=fields.One2many('referencias.bancararias','entrega_id',domain=[('garante','=',True)] ,track_visibility='onchange')
 
     rolAsignado = fields.Many2one('adjudicaciones.team', string="Rol Asignado", track_visibility='onchange')
     rolCredito = fields.Many2one('adjudicaciones.team', string="Rol Credito", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol3'))
@@ -725,15 +741,13 @@ class EntegaVehiculo(models.Model):
 
 
 
-
-
-
     
     
     
 
 
 
+    referencias_ids_garante=fields.One2many('referencias.familiares','entrega_id',domain=[('garante','=',True)] ,track_visibility='onchange')
 
 
 
@@ -770,19 +784,13 @@ class EntegaVehiculo(models.Model):
     products_id = fields.Many2one('product.product', track_visibility='onchange')
     asamblea_id = fields.Many2one('asamblea', string="Asamblea", track_visibility='onchange')
     currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
-    montoAhorroInversiones = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',domain=[('garante','=',False)] ,track_visibility='onchange')
     montoAhorroInversionesGarante = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',domain=[('garante','=',True)], track_visibility='onchange')
     ahorro_garante=fields.Boolean(default=False)
-    ingresosIds = fields.One2many('ingresos.financiero.entrega.vehiculo','entrega_id',domain=[('garante','=',False)] ,track_visibility='onchange')
     ingresosIdsGarante = fields.One2many('ingresos.financiero.entrega.vehiculo','entrega_id',domain=[('garante','=',True)], track_visibility='onchange')
 
-    egresosIds = fields.One2many('egresos.financiero.entrega.vehiculo','entrega_id',domain=[('garante','=',False)] ,track_visibility='onchange')
     egresosIdsGarante = fields.One2many('egresos.financiero.entrega.vehiculo','entrega_id',domain=[('garante','=',True)], track_visibility='onchange')
-    total_ingresos_familiares = fields.Monetary(string='Total Ingresos Familiares')
-    total_egresos_familiares = fields.Monetary(string='Total Egresos Familiares')
     total_ingresos_familiares_garante = fields.Monetary(string='Total Ingresos Familiares')
     total_egresos_familiares_garante = fields.Monetary(string='Total Egresos Familiares')
-    disponibilidad_dinero= fields.Monetary(string='Total Dispinible')
     disponibilidad_dinero_garante= fields.Monetary(string='Total Dispinible')
 
 
@@ -1853,6 +1861,31 @@ class IngresosFinanciero(models.Model):
 
     garante= fields.Boolean(default=False)
 
+
+
+class ReferenciasBancarias(models.Model):
+    _name = 'referencias.bancarias'
+    _description = ''
+
+
+    banco=fields.Char(string="Banco")
+    tipo_cuenta=fields.Char(string="Tipo de Cuenta")
+    numero_cuenta=fields.Char(string="# de Cuenta")
+
+    garante= fields.Boolean(default=False)
+
+class ReferenciasFamiliares(models.Model):
+    _name = 'referencias.familiares'
+    _description = ''
+
+
+    nombre=fields.Char(string="Nombre")
+    cedula=fields.Char(string="C.C")
+    parentezco=fields.Char(string="Parentezco")
+    direccion=fields.Char(string="Dirección")
+    telefono=fields.Char(string="Teléfono")
+
+    garante= fields.Boolean(default=False)
 
 
 
