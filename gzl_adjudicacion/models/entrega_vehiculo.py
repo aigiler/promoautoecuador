@@ -1871,6 +1871,7 @@ class ReferenciasBancarias(models.Model):
     banco=fields.Char(string="Banco")
     tipo_cuenta=fields.Char(string="Tipo de Cuenta")
     numero_cuenta=fields.Char(string="# de Cuenta")
+    entrega_id = fields.Many2one('entrega.vehiculo')
 
     garante= fields.Boolean(default=False)
 
@@ -1884,6 +1885,7 @@ class ReferenciasFamiliares(models.Model):
     parentezco=fields.Char(string="Parentezco")
     direccion=fields.Char(string="Dirección")
     telefono=fields.Char(string="Teléfono")
+    entrega_id = fields.Many2one('entrega.vehiculo')
 
     garante= fields.Boolean(default=False)
 
