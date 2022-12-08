@@ -323,7 +323,7 @@ class EntegaVehiculo(models.Model):
 
 
 
-    referencias_bancarias_ids_garante=fields.One2many('referencias.bancararias','entrega_id',domain=[('garante','=',True)] ,track_visibility='onchange')
+    referencias_bancarias_ids_garante=fields.One2many('referencias.bancarias','entrega_id',domain=[('garante','=',True)] ,track_visibility='onchange')
 
     rolAsignado = fields.Many2one('adjudicaciones.team', string="Rol Asignado", track_visibility='onchange')
     rolCredito = fields.Many2one('adjudicaciones.team', string="Rol Credito", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol3'))
