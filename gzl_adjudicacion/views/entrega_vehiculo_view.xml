@@ -134,8 +134,8 @@
                                         <field name="montoAhorroInversiones" force_save="1" nolabel="1">
                                             <tree create="0" delete="0" editable="top">
                                                 <field name="patrimonio_id" readonly="1"  />
-                                                <field name="poseeBien"/>
-                                                <field name="descripcion"/>
+                                                <field name="poseeBien" string="Posee Bien"/>
+                                                <field name="descripcion" string="Descripcion"/>
                                                 <field name="garante" invisible="1"/>
                                                 <field name="valor"   attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" sum="valor"/>
                                             </tree>
