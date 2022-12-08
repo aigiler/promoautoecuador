@@ -218,6 +218,7 @@
                                        
                                     </group>
                                 </div>
+                            </div>
 
                             <separator class="text-center fw-bold" string="REFERENCIAS BANCARIAS"/>
                             <div class="row" style="border: 1px solid black;">
@@ -234,6 +235,7 @@
                                        
                                     </group>
                                 </div>
+                            </div>
 
 
 
