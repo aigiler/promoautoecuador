@@ -191,7 +191,7 @@
                                              </div>
                                         <div class="col-xs-12 col-md-8">
                                           <group> 
-                                               <field name="disponibilidad_dinero" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
+                                               <field name="disponibilidad_dinero" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
                                             </group>
                                         </div>
 
