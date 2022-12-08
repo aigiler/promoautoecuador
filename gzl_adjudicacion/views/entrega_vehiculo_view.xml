@@ -164,10 +164,11 @@
                                         <div class="col-xs-12 col-md-6">
                                              </div>
                                         <div class="col-xs-12 col-md-4">
-                                            <label for="total_ingresos_familiares"/>
                                             <text>Total Ingresos Familiares</text>
+                                        </div>
+                                        <div class="col-xs-12 col-md-2">
                                             <field name="total_ingresos_familiares"/>
-                                             </div>
+                                        </div>
 
                                              
                                         <separator class="text-center fw-bold" string="EGRESOS"/>
@@ -183,18 +184,20 @@
                                         <div class="col-xs-12 col-md-6">
                                              </div>
                                         <div class="col-xs-12 col-md-4">
-                                            <label for="total_egresos_familiares"/>
                                             <text>Total Egresos Familiares</text>
+                                        </div>
+                                        <div class="col-xs-12 col-md-2">
                                             <field name="total_egresos_familiares"/>
-                                             </div>
+                                        </div>
 
-                                            <div class="col-xs-12 col-md-6">
-                                             </div>
+                                        <div class="col-xs-12 col-md-6">
+                                        </div>
                                         <div class="col-xs-12 col-md-4">
-                                            <label for="disponibilidad_dinero"/>
                                             <text>Disponibilidad</text>
+                                        </div>
+                                        <div class="col-xs-12 col-md-2">
                                             <field name="disponibilidad_dinero"/>
-                                             </div>
+                                        </div>
                                     </group>
                                 </div>
 
