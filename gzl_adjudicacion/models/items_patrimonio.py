@@ -17,6 +17,20 @@ class ItemsPatrimonio(models.Model):
     descripcion=fields.Text('Descripcion',  required=True)
   
 
+class EgresoFinan(models.Model):
+    _name = 'egresos.financiero'
+    _description = 'Egreso Financiero'
+    _rec_name= 'nombre'
+    
+    nombre = fields.Char('Nombre',  required=True)
+  
+class IngresoFinan(models.Model):
+    _name = 'ingresos.financiero'
+    _description = 'Ingreso Financiero'
+    _rec_name= 'nombre'
+    
+    nombre = fields.Char('Nombre',  required=True)
+  
 
 class ItemsDocumentosPostventa(models.Model):
     _name = 'documentos.postventa'

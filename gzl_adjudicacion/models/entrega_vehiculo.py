@@ -25,10 +25,16 @@ class Partner(models.Model):
 
     monto = fields.Float(string='Monto')
     direccion = fields.Text(string='Dirección')
+    streetConyuge = fields.Text(string='DirecciónConyuge')
+
     id_cliente = fields.Char(string='ID Cliente')
     tipo_contrato = fields.Many2one("tipo.contrato.adjudicado", String="Tipo de Contrato")
     codigo_cliente = fields.Char(string='Código Cliente')
+    mobileConyuge = fields.Char(string='Celular Conyuge')
+    ciudadConyuge = fields.Char(string='Ciudad Conyuge')
+
     fecha_nacimiento  = fields.Date(string='Fecha de nacimiento')
+    state_conyuge_id=fields.Many2one("res.country.state", string="Provincia del Conyuge")
     estado_civil = fields.Selection(selection=[
                     ('soltero', 'Soltero/a'),
                     ('union_libre', 'Unión libre'),
@@ -37,9 +43,13 @@ class Partner(models.Model):
                     ('viudo', 'Viudo/a')                    
                     ], string='Estado Civil', default='soltero')
     num_cargas_familiares = fields.Integer(string='Cargas Familiares')
+    emailConyuge = fields.Integer(string='Email Conyuge')
     comisionFacturaConcesionario = fields.Float(string="COMISION FACTURA A NOMBRE CONCESIONARIO")
 
     conyuge=fields.Char(string='Nombre del Conyuge')
+    dependiente=fields.Char(string='Dependiente')
+    dependienteConyuge=fields.Char(string='Dependiente Conyuge')
+    phoneConyuge=fields.Char(string='Telefono Conyuge')
 
     fechaNacimientoConyuge = fields.Date(string='Fecha de Nacimiento Conyuge')
     vatConyuge = fields.Char(string='Cedula de Ciudadanía Conyuge')
@@ -50,6 +60,8 @@ class Partner(models.Model):
     emailFinanciero=fields.Char(string='Email Financiero')
     emailComercial=fields.Char(string='Email Comercial')
     cargo=fields.Char(string='Cargo')
+    cargoConyuge=fields.Char(string='Cargo Conyuge')
+
     property_account_payable_id = fields.Many2one('account.account', company_dependent=True,
         string="Account Payable",
         domain="[('internal_type', '=', 'payable'), ('deprecated', '=', False)]",
@@ -64,6 +76,237 @@ class EntegaVehiculo(models.Model):
     _description = 'Entrega Vehiculo'
     _rec_name = 'secuencia'
     _inherit = ['mail.thread', 'mail.activity.mixin']
+
+
+
+    nombreSocioAdjudicado = fields.Many2one('res.partner', string="Nombre del Socio Adj.", track_visibility='onchange')
+
+    correoAdj = fields.Char(string='Correo Adjudicado',store=True, default='')
+
+    @api.constrains("correoAdj")
+    @api.onchange("correoAdj")
+    def actualizar_correo_adj(self):
+        for l in self:
+            if l.correoAdj:
+                l.nombreSocioAdjudicado.email=l.correoAdj
+
+    telefonoAdj = fields.Char(string='Telefono Adjudicado',store=True, default='')
+
+    @api.constrains("telefonoAdj")
+    @api.onchange("telefonoAdj")
+    def actualizar_telefono_adj(self):
+        for l in self:
+            if l.telefonoAdj:
+                l.nombreSocioAdjudicado.phone=l.telefonoAdj
+
+    provinciaAdjudicado = fields.Many2one("res.country.state", string='State')
+
+    @api.constrains("provinciaAdjudicado")
+    @api.onchange("provinciaAdjudicado")
+    def actualizar_provincia_adj(self):
+        for l in self:
+            if l.provinciaAdjudicado:
+                l.nombreSocioAdjudicado.state_id=l.provinciaAdjudicado.id
+
+    direccionAdjudicado = fields.Char('Direccion')
+
+    @api.constrains("direccionAdjudicado")
+    @api.onchange("direccionAdjudicado")
+    def actualizar_direccion_adj(self):
+        for l in self:
+            if l.direccionAdjudicado:
+                l.nombreSocioAdjudicado.street=l.direccionAdjudicado
+
+    dependienteAdj = fields.Char(string='Dependiente Adjudicado',store=True, default='')
+
+    @api.constrains("dependienteAdj")
+    @api.onchange("dependienteAdj")
+    def actualizar_dependiente_adj(self):
+        for l in self:
+            if l.dependienteAdj:
+                l.nombreSocioAdjudicado.dependiente=l.dependienteAdj
+
+    cargoAdj=fields.Char(string='Cargo')
+
+    @api.constrains("cargoAdj")
+    @api.onchange("cargoAdj")
+    def actualizar_car_adj(self):
+        for l in self:
+            if l.cargoAdj:
+                l.nombreSocioAdjudicado.cargo=l.cargoAdj
+
+    ingresosFamiliares = fields.Monetary(string='Ingresos familiares')
+
+    edadAdjudicado = fields.Integer(compute='calcular_edad', string="Edad", readonly=True, store=True, default = 0)
+
+    vatAdjudicado = fields.Char(string='Cedula de Ciudadanía',store=True, default='')
+
+    @api.constrains("vatAdjudicado")
+    @api.onchange("vatAdjudicado")
+    def actualizar_cedula_adj(self):
+        for l in self:
+            if l.vatAdjudicado:
+                l.nombreSocioAdjudicado.vat=l.vatAdjudicado
+
+    fechaNacimientoAdj = fields.Date(string='Fecha de Nacimiento', store=True)
+
+    @api.constrains("estadoCivilAdj")
+    @api.onchange("estadoCivilAdj")
+    def actualizar_estado_civ_adj(self):
+        for l in self:
+            if l.estadoCivilAdj:
+                l.nombreSocioAdjudicado.estado_civil=l.estadoCivilAdj
+                l.estadoCivilConyuge=l.estadoCivilAdj
+
+    celularAdj = fields.Char(string='Telefono Adjudicado',store=True, default='')
+
+    @api.constrains("celularAdj")
+    @api.onchange("celularAdj")
+    def actualizar_telefono_adj(self):
+        for l in self:
+            if l.celularAdj:
+                l.nombreSocioAdjudicado.mobile=l.celularAdj
+
+
+    ciudadAdjudicado = fields.Char('Ciudad')
+    @api.constrains("ciudadAdjudicado")
+    @api.onchange("ciudadAdjudicado")
+    def actualizar_ciudad_adj(self):
+        for l in self:
+            if l.ciudadAdjudicado:
+                l.nombreSocioAdjudicado.city=l.ciudadAdjudicado
+
+    nombreConyuge = fields.Char(string="Nombre del Conyuge", store=True)
+
+    @api.constrains("nombreConyuge")
+    @api.onchange("nombreConyuge")
+    def actualizar_conyuge_adj(self):
+        for l in self:
+            if l.nombreConyuge:
+                l.nombreSocioAdjudicado.conyuge=l.nombreConyuge
+
+    fechaNacimientoConyuge = fields.Date(string='Fecha de Nacimiento',store=True)
+
+    @api.constrains("fechaNacimientoConyuge")
+    @api.onchange("fechaNacimientoConyuge")
+    def actualizar_nac_conyuge_adj(self):
+        for l in self:
+            if l.fechaNacimientoConyuge:
+                l.nombreSocioAdjudicado.fechaNacimientoConyuge=l.fechaNacimientoConyuge
+
+    correoConyuge = fields.Char(string='Correo Conyuge',store=True, default='')
+
+    @api.constrains("correoConyuge")
+    @api.onchange("correoConyuge")
+    def actualizar_correo_conyuge_adj(self):
+        for l in self:
+            if l.correoConyuge:
+                l.nombreSocioAdjudicado.emailConyuge=l.correoConyuge
+
+    telefonoConyuge = fields.Char(string='Telefono Conyuge',store=True, default='')
+
+    @api.constrains("telefonoConyuge")
+    @api.onchange("telefonoConyuge")
+    def actualizar_telefono_conyuge_adj(self):
+        for l in self:
+            if l.telefonoConyuge:
+                l.nombreSocioAdjudicado.phoneConyuge=l.telefonoConyuge
+
+    provinciaConyuge = fields.Many2one("res.country.state", string='State')
+
+    @api.constrains("provinciaConyuge")
+    @api.onchange("provinciaConyuge")
+    def actualizar_provincia_conyuge_adj(self):
+        for l in self:
+            if l.provinciaConyuge:
+                l.nombreSocioAdjudicado.state_conyuge_id=l.provinciaConyuge.id
+
+    direccionConyuge = fields.Char('Direccion')
+    @api.constrains("direccionConyuge")
+    @api.onchange("direccionConyuge")
+    def actualizar_direccion_conyuge_adj(self):
+        for l in self:
+            if l.direccionConyuge:
+                l.nombreSocioAdjudicado.streetConyuge=l.direccionConyuge
+
+    dependienteConyuge = fields.Char(string='Dependiente Conyuge',store=True, default='')
+
+    @api.constrains("dependienteConyuge")
+    @api.onchange("dependienteConyuge")
+    def actualizar_dependiente_conyuge_adj(self):
+        for l in self:
+            if l.dependienteConyuge:
+                l.nombreSocioAdjudicado.dependienteConyuge=l.dependienteConyuge
+
+    cargoConyuge=fields.Char(string='Cargo')
+
+    @api.constrains("cargoConyuge")
+    @api.onchange("cargoConyuge")
+    def actualizar_car_conyuge_adj(self):
+        for l in self:
+            if l.cargoConyuge:
+                l.nombreSocioAdjudicado.cargoConyuge=l.cargoConyuge
+
+    ingresosFamiliaresConyuge = fields.Monetary(string='Ingresos familiares')
+
+    edadConyuge = fields.Integer(compute='calcular_edad_conyuge', string="Edad", default = 0)
+
+    vatConyuge = fields.Char(string='Cedula de Ciudadanía', store=True)
+
+    @api.constrains("vatConyuge")
+    @api.onchange("vatConyuge")
+    def actualizar_vat_conyuge_adj(self):
+        for l in self:
+            if l.vatConyuge:
+                l.nombreSocioAdjudicado.vatConyuge=l.vatConyuge
+
+    estadoCivilConyuge = fields.Selection(selection=[
+                    ('soltero', 'Soltero/a'),
+                    ('union_libre', 'Unión libre'),
+                    ('casado', 'Casado/a'),
+                    ('divorciado', 'Divorciado/a'),
+                    ('viudo', 'Viudo/a')                    
+                    ], string='Estado Civil', default='soltero')
+
+    celularConyuge = fields.Char(string='Celular', store=True)
+    @api.constrains("telefonoConyuge")
+    @api.onchange("telefonoConyuge")
+    def actualizar_celular_conyuge_adj(self):
+        for l in self:
+            if l.telefonoConyuge:
+                l.nombreSocioAdjudicado.mobileConyuge=l.telefonoConyuge
+
+    ciudadConyuge = fields.Char('Ciudad')
+    @api.constrains("ciudadConyuge")
+    @api.onchange("ciudadConyuge")
+    def actualizar_ciudad_adj(self):
+        for l in self:
+            if l.ciudadConyuge:
+                l.nombreSocioAdjudicado.cityConyuge=l.ciudadConyuge
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     rolAsignado = fields.Many2one('adjudicaciones.team', string="Rol Asignado", track_visibility='onchange')
@@ -130,7 +373,6 @@ class EntegaVehiculo(models.Model):
     pago_factura=fields.Many2one("account.payment", string="Pago de Factura")
     pago_matriculacion_id=fields.Many2one("account.payment", string="Pago de Matriculación")
 
-    nombreSocioAdjudicado = fields.Many2one('res.partner', string="Nombre del Socio Adj.", track_visibility='onchange')
     orden_compra=fields.Binary()
     orden_salida=fields.Binary()
     liquidacion_compra=fields.Binary()
@@ -164,17 +406,20 @@ class EntegaVehiculo(models.Model):
                 l.cargoAdj=l.nombreSocioAdjudicado.cargo
                 l.nombre_companiaAdj=l.nombreSocioAdjudicado.nombre_compania
 
-    vatAdjudicado = fields.Char(string='Cedula de Ciudadanía',store=True, default='')
-
-    @api.constrains("vatAdjudicado")
-    @api.onchange("vatAdjudicado")
-    def actualizar_cedula_adj(self):
-        for l in self:
-            if l.vatAdjudicado:
-                l.nombreSocioAdjudicado.vat=l.vatAdjudicado
 
 
-    fechaNacimientoAdj = fields.Date(string='Fecha de Nacimiento', store=True)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     @api.constrains("fechaNacimientoAdj")
@@ -192,21 +437,11 @@ class EntegaVehiculo(models.Model):
                     ('viudo', 'Viudo/a')                    
                     ], string='Estado Civil', default='soltero')
 
-    estadoCivilConyuge = fields.Selection(selection=[
-                    ('soltero', 'Soltero/a'),
-                    ('union_libre', 'Unión libre'),
-                    ('casado', 'Casado/a'),
-                    ('divorciado', 'Divorciado/a'),
-                    ('viudo', 'Viudo/a')                    
-                    ], string='Estado Civil', default='soltero')
 
-    @api.constrains("estadoCivilAdj")
-    @api.onchange("estadoCivilAdj")
-    def actualizar_estado_civ_adj(self):
-        for l in self:
-            if l.estadoCivilAdj:
-                l.nombreSocioAdjudicado.estado_civil=l.estadoCivilAdj
-                l.estadoCivilConyuge=l.estadoCivilAdj
+
+
+
+
 
     codigoAdjudicado = fields.Char(string='Código', track_visibility='onchange',store=True, default=' ') 
 
@@ -217,8 +452,6 @@ class EntegaVehiculo(models.Model):
             if l.codigoAdjudicado:
                 l.nombreSocioAdjudicado.codigo_cliente=l.codigoAdjudicado
 
-    edadAdjudicado = fields.Integer(compute='calcular_edad', string="Edad", readonly=True, store=True, default = 0)
-    edadConyuge = fields.Integer(compute='calcular_edad_conyuge', string="Edad", default = 0)
 
     cargasFamiliares = fields.Integer(string="Cargas Fam.", store=True, default = 0)
 
@@ -231,59 +464,23 @@ class EntegaVehiculo(models.Model):
 
 
 
-    nombreConyuge = fields.Char(string="Nombre del Conyuge", store=True)
-
-    @api.constrains("nombreConyuge")
-    @api.onchange("nombreConyuge")
-    def actualizar_conyuge_adj(self):
-        for l in self:
-            if l.nombreConyuge:
-                l.nombreSocioAdjudicado.conyuge=l.nombreConyuge
-
-    fechaNacimientoConyuge = fields.Date(string='Fecha de Nacimiento',store=True)
-
-    @api.constrains("fechaNacimientoConyuge")
-    @api.onchange("fechaNacimientoConyuge")
-    def actualizar_nac_conyuge_adj(self):
-        for l in self:
-            if l.fechaNacimientoConyuge:
-                l.nombreSocioAdjudicado.fechaNacimientoConyuge=l.fechaNacimientoConyuge
-
-    vatConyuge = fields.Char(string='Cedula de Ciudadanía', store=True)
-
-    @api.constrains("vatConyuge")
-    @api.onchange("vatConyuge")
-    def actualizar_vat_conyuge_adj(self):
-        for l in self:
-            if l.vatConyuge:
-                l.nombreSocioAdjudicado.vatConyuge=l.vatConyuge
 
 
-    ciudadAdjudicado = fields.Char('Ciudad')
-    @api.constrains("ciudadAdjudicado")
-    @api.onchange("ciudadAdjudicado")
-    def actualizar_ciudad_adj(self):
-        for l in self:
-            if l.ciudadAdjudicado:
-                l.nombreSocioAdjudicado.city=l.ciudadAdjudicado
 
 
-    provinciaAdjudicado = fields.Many2one("res.country.state", string='State')
 
-    @api.constrains("provinciaAdjudicado")
-    @api.onchange("provinciaAdjudicado")
-    def actualizar_provincia_conyuge_adj(self):
-        for l in self:
-            if l.provinciaAdjudicado:
-                l.nombreSocioAdjudicado.state_id=l.provinciaAdjudicado.id
 
-    direccionAdjudicado = fields.Char('Direccion')
-    @api.constrains("direccionAdjudicado")
-    @api.onchange("direccionAdjudicado")
-    def actualizar_direccion_adj(self):
-        for l in self:
-            if l.direccionAdjudicado:
-                l.nombreSocioAdjudicado.street=l.direccionAdjudicado
+
+
+
+
+
+
+
+
+
+
+
 
 
     direccion_trabajoAdj=fields.Char(string='Dirección Laboral')
@@ -313,14 +510,9 @@ class EntegaVehiculo(models.Model):
             if l.telefono_trabajoAdj:
                 l.nombreSocioAdjudicado.telefono_trabajo=l.telefono_trabajoAdj
 
-    cargoAdj=fields.Char(string='Cargo')
 
-    @api.constrains("cargoAdj")
-    @api.onchange("cargoAdj")
-    def actualizar_car_adj(self):
-        for l in self:
-            if l.cargoAdj:
-                l.nombreSocioAdjudicado.cargo=l.cargoAdj
+
+
 
 
 
@@ -581,7 +773,60 @@ class EntegaVehiculo(models.Model):
     montoAhorroInversiones = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',domain=[('garante','=',False)] ,track_visibility='onchange')
     montoAhorroInversionesGarante = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',domain=[('garante','=',True)], track_visibility='onchange')
     ahorro_garante=fields.Boolean(default=False)
+    ingresosIds = fields.One2many('ingresos.financiero.entrega.vehiculo','entrega_id',domain=[('garante','=',False)] ,track_visibility='onchange')
+    ingresosIdsGarante = fields.One2many('ingresos.financiero.entrega.vehiculo','entrega_id',domain=[('garante','=',True)], track_visibility='onchange')
 
+    egresosIds = fields.One2many('egresos.financiero.entrega.vehiculo','entrega_id',domain=[('garante','=',False)] ,track_visibility='onchange')
+    egresosIdsGarante = fields.One2many('egresos.financiero.entrega.vehiculo','entrega_id',domain=[('garante','=',True)], track_visibility='onchange')
+    total_ingresos_familiares = fields.Monetary(string='Total Ingresos Familiares')
+    total_egresos_familiares = fields.Monetary(string='Total Egresos Familiares')
+    total_ingresos_familiares_garante = fields.Monetary(string='Total Ingresos Familiares')
+    total_egresos_familiares_garante = fields.Monetary(string='Total Egresos Familiares')
+    disponibilidad_dinero= fields.Monetary(string='Total Dispinible')
+    disponibilidad_dinero_garante= fields.Monetary(string='Total Dispinible')
+
+
+
+    @api.onchange("ingresosIds")
+    def obtener_ingresos(self):
+        total_ingresos_familiares=0
+        for l in self.ingresosIds:
+            total_ingresos_familiares+=l.titular+l.conyuge
+        self.total_ingresos_familiares=total_ingresos_familiares
+
+
+    @api.onchange("egresosIds")
+    def obtener_egresos(self):
+        total_egresos_familiares=0
+        for l in self.egresosIds:
+            total_egresos_familiares+=l.titular+l.conyuge
+        self.total_egresos_familiares=total_egresos_familiares
+
+    @api.onchange("ingresosIds","egresosIds")
+    def obtener_disponibilidad(self):
+        for l in self:
+            self.disponibilidad_dinero=l.total_ingresos_familiares-l.total_egresos_familiares
+
+    @api.onchange("ingresosIdsGarante")
+    def obtener_ingresos_garante(self):
+        total_ingresos_familiares=0
+        for l in self.ingresosIdsGarante:
+            total_ingresos_familiares+=l.titular+l.conyuge
+        self.total_ingresos_familiares_garante=total_ingresos_familiares
+
+
+    @api.onchange("egresosIdsGarante")
+    def obtener_egresos_garante(self):
+        total_egresos_familiares=0
+        for l in self.egresosIdsGarante:
+            total_egresos_familiares+=l.titular+l.conyuge
+        self.total_egresos_familiares_garante=total_egresos_familiares
+
+
+    @api.onchange("ingresosIdsGarante","egresosIdsGarante")
+    def obtener_disponibilidad_garante(self):
+        for l in self:
+            self.disponibilidad_dinero_garante=l.total_ingresos_familiares_garante-l.total_egresos_familiares_garante
 
     proceso_finalizado=fields.Boolean(default=False)
     actividad_id = fields.Many2one('mail.activity',string="Actividades")
@@ -624,6 +869,45 @@ class EntegaVehiculo(models.Model):
             id_registro=self.env['items.patrimonio.entrega.vehiculo'].create({'patrimonio_id':patrimonio.id,'garante':True})
             lista_ids.append(int(id_registro))
         self.update({'montoAhorroInversionesGarante':[(6,0,lista_ids)]})
+
+
+    def llenar_tabla_ingresos(self):
+        obj_ingreso=self.env['ingresos.financiero'].search([])  
+        obj_pegreso=self.env['egresos.financiero'].search([])  
+        
+        if not self.ingresosIds:
+            lista_ids=[]
+            for ingreso in obj_ingreso:
+                id_registro=self.env['ingresos.financiero.entrega.vehiculo'].create({'ingresos_id':ingreso.id,'garante':False})
+                lista_ids.append(int(id_registro))
+            self.update({'ingresosIds':[(6,0,lista_ids)]})
+
+        if not self.egresosIds:
+            lista_ids=[]
+            for ingreso in obj_ingreso:
+                id_registro=self.env['ingresos.financiero.entrega.vehiculo'].create({'egresos_id':ingreso.id,'garante':False})
+                lista_ids.append(int(id_registro))
+            self.update({'egresosIds':[(6,0,lista_ids)]})
+
+
+    def llenar_tabla_ingresos_garante(self):
+        obj_ingreso=self.env['ingresos.financiero'].search([])  
+        obj_pegreso=self.env['egresos.financiero'].search([])  
+        
+        if not self.ingresosIdsGarante:
+            lista_ids=[]
+            for ingreso in obj_ingreso:
+                id_registro=self.env['ingresos.financiero.entrega.vehiculo'].create({'ingresos_id':ingreso.id,'garante':True})
+                lista_ids.append(int(id_registro))
+            self.update({'ingresosIdsGarante':[(6,0,lista_ids)]})
+
+        if not self.egresosIdsGarante:
+            lista_ids=[]
+            for ingreso in obj_ingreso:
+                id_registro=self.env['ingresos.financiero.entrega.vehiculo'].create({'egresos_id':ingreso.id,'garante':True})
+                lista_ids.append(int(id_registro))
+            self.update({'egresosIdsGarante':[(6,0,lista_ids)]})
+
 
 
     paginasDeControl = fields.One2many('paginas.de.control.entrega.vehiculo','entrega_id',domain=[('garante','=',False)],  track_visibility='onchange')
@@ -900,7 +1184,6 @@ class EntegaVehiculo(models.Model):
                 rec.puntosPorcentajSaldos = 0
 
 
-    ingresosFamiliares = fields.Monetary(string='Ingresos familiares')
 
     porcentajeIngresos = fields.Float(default=100.00)
 
@@ -1464,6 +1747,7 @@ class EntegaVehiculo(models.Model):
     @api.depends("nombreGarante")
     def llenar_datos(self):
         self.llenar_tabla_garante()
+        self.llenar_tabla_ingresos_garante()
         self.llenar_tabla_paginas_garante()
 
 
@@ -1473,6 +1757,7 @@ class EntegaVehiculo(models.Model):
     @api.constrains('nombreSocioAdjudicado')
     def buscar_contrato_partner(self):
         self.llenar_tabla()
+        self.llenar_tabla_ingresos()
         self.llenar_tabla_paginas()
         self.llenar_tabla_puntos_bienes()
         for rec in self:
@@ -1553,6 +1838,39 @@ class EntegaVehiculo(models.Model):
 
 
  
+class IngresosFinanciero(models.Model):
+    _name = 'ingresos.financiero.entrega.vehiculo'
+    _description = 'Ingresos Financieros '
+
+    currency_id = fields.Many2one(
+        'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
+ 
+    entrega_id = fields.Many2one('entrega.vehiculo')
+    tipo=fields.Char(default="Ingresos")
+    ingresos_id = fields.Many2one('ingresos.financiero')
+    titular  = fields.Monetary(string="Titular($)",digits=(6, 2))
+    conyuge  = fields.Monetary(string="Conyuge($)",digits=(6, 2))
+
+    garante= fields.Boolean(default=False)
+
+
+
+
+class EgresosFinanciero(models.Model):
+    _name = 'egresos.financiero.entrega.vehiculo'
+    _description = 'Egresos Financieros '
+
+    currency_id = fields.Many2one(
+        'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
+ 
+    entrega_id = fields.Many2one('entrega.vehiculo')
+    tipo=fields.Char(default="Egresos")
+    egresos_id = fields.Many2one('egresos.financiero')
+    titular  = fields.Monetary(string="Titular($)",digits=(6, 2))
+    conyuge  = fields.Monetary(string="Conyuge($)",digits=(6, 2))
+
+    garante= fields.Boolean(default=False)
+
 
 class ItemPatrimonioEntregaVehiculo(models.Model):
     _name = 'items.patrimonio.entrega.vehiculo'
@@ -1562,6 +1880,8 @@ class ItemPatrimonioEntregaVehiculo(models.Model):
         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
     entrega_id = fields.Many2one('entrega.vehiculo')
     patrimonio_id = fields.Many2one('items.patrimonio')
+    poseeBien = fields.Selection(selection=[ ('SI', 'SI'),('NO', 'NO')], string='SI/NO', default='NO')
+    descripcion = fields.Char()
     valor  = fields.Monetary(string="Monto($)",digits=(6, 2))
     garante= fields.Boolean(default=False)
 
