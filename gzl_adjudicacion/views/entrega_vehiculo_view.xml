@@ -221,15 +221,7 @@
                             </div>
                             <separator class="text-center" string="PATRIMONIO"/>
                             <div class="row" style="border: 1px solid black;">
-                                <div class="col-sm-6"> 
-                                    <field name="montoAhorroInversiones" force_save="1" nolabel="1">
-                                        <tree create="0" delete="0" editable="top">
-                                            <field name="patrimonio_id" readonly="1"  />
-                                            <field name="garante" invisible="1"/>
-                                            <field name="valor"   attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" sum="valor"/>
-                                        </tree>
-                                    </field>
-                                </div>
+                                
                                 <div class="col-sm-6">
                                     <group> 
                                         <field name="institucionFinanciera" force_save="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
