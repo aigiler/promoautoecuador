@@ -164,6 +164,8 @@
                                         <div class="col-xs-12 col-md-6">
                                              </div>
                                         <div class="col-xs-12 col-md-4">
+                                            <label for="total_ingresos_familiares"/>
+                                            <text>Total Ingresos Familiares</text>
                                             <field name="total_ingresos_familiares"/>
                                              </div>
 
@@ -178,8 +180,21 @@
                                                
                                             </tree>
                                         </field>
-                                        <field name="total_egresos_familiares"/>      
-                                       <field name="disponibilidad_dinero"/>     
+                                        <div class="col-xs-12 col-md-6">
+                                             </div>
+                                        <div class="col-xs-12 col-md-4">
+                                            <label for="total_egresos_familiares"/>
+                                            <text>Total Egresos Familiares</text>
+                                            <field name="total_egresos_familiares"/>
+                                             </div>
+
+                                            <div class="col-xs-12 col-md-6">
+                                             </div>
+                                        <div class="col-xs-12 col-md-4">
+                                            <label for="disponibilidad_dinero"/>
+                                            <text>Disponibilidad</text>
+                                            <field name="disponibilidad_dinero"/>
+                                             </div>
                                     </group>
                                 </div>
 
