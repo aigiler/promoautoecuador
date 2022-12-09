@@ -109,7 +109,7 @@
     </record>
 
 
-    <menuitem id="menu_action_vehiculos_necesidad" action="action_necesidad_vehiculos" 
+    <menuitem id="menu_action_vehiculos_necesidad" action="action_vehiculos_necesidad" 
     parent="menu_configuracion_adjudicaciones" sequence="5" />
 
 
