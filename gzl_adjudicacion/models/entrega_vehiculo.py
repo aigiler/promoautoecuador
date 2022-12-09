@@ -905,7 +905,7 @@ class EntegaVehiculo(models.Model):
             self.update({'egresosIds':[(6,0,lista_ids)]})
 
     def obtener_vehiculos(self):
-        obj_vehiculos=self.env['ingresos.financiero'].search([])  
+        obj_vehiculos=self.env['necesidad.vehiculos'].search([])  
         
         if not self.necesidadIds:
             lista_ids=[]
