@@ -31,4 +31,148 @@
 
 
 
+    <record id="view_ingresos_financieros_tree" model= "ir.ui.view">
+        <field name="name">view.ingresos.financiero.tree</field>
+        <field name="model">ingresos.financier</field>
+        <field name="arch" type="xml">
+            <tree string="Ingresos Financiero" editable="top">
+                <field name="nombre" />
+            </tree>
+        </field>
+    </record>
+
+
+
+    <record id="action_ingresos_financiero" model="ir.actions.act_window">
+        <field name="name">Ingresos Financiero</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ingresos.financiero</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{}</field>
+    </record>
+
+
+
+    <menuitem id="menu_ingresos_financieros" action="action_ingresos_financiero" 
+    parent="menu_configuracion_adjudicaciones" sequence="5" />
+
+
+
+
+
+
+    <record id="view_egresos_financieros_tree" model= "ir.ui.view">
+        <field name="name">view.egresos.financiero.tree</field>
+        <field name="model">egresos.financier</field>
+        <field name="arch" type="xml">
+            <tree string="Egresos Financiero" editable="top">
+                <field name="nombre" />
+            </tree>
+        </field>
+    </record>
+
+
+
+    <record id="action_egresos_financiero" model="ir.actions.act_window">
+        <field name="name">Egresos Financiero</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">egresos.financiero</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{}</field>
+    </record>
+
+
+
+    <menuitem id="menu_egresos_financieros" action="action_egresos_financiero" 
+    parent="menu_configuracion_adjudicaciones" sequence="5" />
+
+
+
+    <record id="view_necesidad_vehiculos_tree" model= "ir.ui.view">
+        <field name="name">view.necesidad.vehiculos.tree</field>
+        <field name="model">necesidad.vehiculos</field>
+        <field name="arch" type="xml">
+            <tree string="Vehículos" editable="top">
+                <field name="nombre" />
+            </tree>
+        </field>
+    </record>
+
+
+
+    <record id="action_necesidad_vehiculos" model="ir.actions.act_window">
+        <field name="name">Vehículos</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">necesidad.vehiculos</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{}</field>
+    </record>
+
+
+    <menuitem id="menu_action_necesidad_vehiculos" action="action_necesidad_vehiculos" 
+    parent="menu_configuracion_adjudicaciones" sequence="5" />
+
+
+
+
+
+
+    <record id="view_documentos_postventa_tree" model= "ir.ui.view">
+        <field name="name">view.documentos.postventa.tree</field>
+        <field name="model">documentos.postventa</field>
+        <field name="arch" type="xml">
+            <tree string="Documentos Postventa" editable="top">
+                <field name="nombre" />
+            </tree>
+        </field>
+    </record>
+
+
+
+    <record id="action_documentos_postventa" model="ir.actions.act_window">
+        <field name="name">Documentos Postventa</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">documentos.postventa</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{}</field>
+    </record>
+
+
+    <menuitem id="menu_action_documentos_postventa" action="action_documentos_postventa" 
+    parent="menu_configuracion_adjudicaciones" sequence="5" />
+
+
+
+
+
+
+    <record id="view_documentos_legal_tree" model= "ir.ui.view">
+        <field name="name">view.documentos.legal.tree</field>
+        <field name="model">documentos.legal</field>
+        <field name="arch" type="xml">
+            <tree string="Documentos legal" editable="top">
+                <field name="nombre" />
+            </tree>
+        </field>
+    </record>
+
+
+
+    <record id="action_documentos_legal" model="ir.actions.act_window">
+        <field name="name">Documentos legal</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">documentos.legal</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{}</field>
+    </record>
+
+
+    <menuitem id="menu_action_documentos:legal" action="action_documentos_legal" 
+    parent="menu_configuracion_adjudicaciones" sequence="5" />
+
+
+
+
+
+
 </odoo>
