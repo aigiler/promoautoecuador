@@ -60,7 +60,7 @@
                             <field name="requisitosPoliticasCredito" widget="html" nolabel="1" force_save="1" readonly="1"/>
                         </page>
  -->
-                    
+                        <field name="aplicaGarante" invisible="1"/>
                         <page string="Entrevista Perfil del Cliente">
                             <separator class="text-center" string="INFORMACIÓN PERSONAL"/>
                             <div class="row" style="border: 1px solid black;">
