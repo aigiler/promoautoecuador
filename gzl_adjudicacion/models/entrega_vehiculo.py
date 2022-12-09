@@ -1886,6 +1886,7 @@ class NecesidadAdjudicado(models.Model):
 
     adquirirBien=fields.Boolean(string="-")
     necesidad_id = fields.Many2one('necesidad.vehiculos')
+    entrega_id = fields.Many2one('entrega.vehiculo')
 
     garante= fields.Boolean(default=False)
 
@@ -1899,6 +1900,7 @@ class DetalleNecesidadAdjudicado(models.Model):
     modelo=fields.Char(string="Modelo")
     anio=fields.Char(string="Año")
     colores=fields.Char(string="Colores")
+    entrega_id = fields.Many2one('entrega.vehiculo')
 
     garante= fields.Boolean(default=False)
 
