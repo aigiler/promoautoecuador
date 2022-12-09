@@ -150,17 +150,24 @@
                             <separator class="text-center fw-bold" string="INFORMACIÓN FINANCIERA"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
-                                    <group >  
-                                        <separator class="text-center fw-bold" string="INGRESOS"/>
+                                    
+                                    <group>  
+                                        <div class="col-xs-12 col-md-3">
+                                        <separator class="text-center fw-bold" string="INGRESOS"/>     
+                                        </div>
+                                        <div class="col-xs-12 col-md-9">
+                                        <group> 
                                         <field name="ingresosIds" force_save="1" nolabel="1">
                                             <tree create="0" delete="0" editable="top">
-                                                <field name="ingresos_id" readonly="1"  />
+                                                <field name="ingresos_id" readonly="1"/>
                                                 <field name="titular" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" sum="Titular"/>
                                                 <field name="conyuge" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" sum="Conyuge"/>
                                                 <field name="garante" invisible="1"/>
                                                
                                             </tree>
                                         </field>
+                                        </group> 
+                                        </div>
                                         <div class="col-xs-12 col-md-4">
                                              </div>
                                         <div class="col-xs-12 col-md-8">
@@ -169,16 +176,22 @@
                                             </group>
                                         </div>
                                              
-                                        <separator class="text-center fw-bold" string="EGRESOS"/>
+                                         <div class="col-xs-12 col-md-3">
+                                        <separator class="text-center fw-bold" string="EGRESOS"/>     
+                                        </div>
+                                        <div class="col-xs-12 col-md-9">
+                                           <group>
                                          <field name="egresosIds" force_save="1" nolabel="1">
                                             <tree create="0" delete="0" editable="top">
-                                                <field name="egresos_id"  readonly="1"  />
+                                                <field name="egresos_id" readonly="1"/>
                                                 <field name="titular" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" sum="Titular"/>
                                                 <field name="conyuge" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" sum="Conyuge"/>
                                                 <field name="garante" invisible="1"/>
                                                
                                             </tree>
                                         </field>
+                                        </group> 
+                                        </div>
                                         <div class="col-xs-12 col-md-4">
                                              </div>
                                         <div class="col-xs-12 col-md-8">
@@ -200,7 +213,6 @@
                                 </div>
 
                             </div>
-
                             <separator class="text-center fw-bold" string="REFERENCIAS FAMILIARES"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
