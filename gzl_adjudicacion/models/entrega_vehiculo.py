@@ -888,7 +888,7 @@ class EntegaVehiculo(models.Model):
 
     def llenar_tabla_ingresos(self):
         obj_ingreso=self.env['ingresos.financiero'].search([])  
-        obj_pegreso=self.env['egresos.financiero'].search([])  
+        obj_egreso=self.env['egresos.financiero'].search([])  
         
         if not self.ingresosIds:
             lista_ids=[]
@@ -899,8 +899,8 @@ class EntegaVehiculo(models.Model):
 
         if not self.egresosIds:
             lista_ids=[]
-            for ingreso in obj_ingreso:
-                id_registro=self.env['ingresos.financiero.entrega.vehiculo'].create({'egresos_id':ingreso.id,'garante':False})
+            for egreso in obj_egreso:
+                id_registro=self.env['egresos.financiero.entrega.vehiculo'].create({'egresos_id':egreso.id,'garante':False})
                 lista_ids.append(int(id_registro))
             self.update({'egresosIds':[(6,0,lista_ids)]})
 
@@ -916,7 +916,7 @@ class EntegaVehiculo(models.Model):
 
     def llenar_tabla_ingresos_garante(self):
         obj_ingreso=self.env['ingresos.financiero'].search([])  
-        obj_pegreso=self.env['egresos.financiero'].search([])  
+        obj_egreso=self.env['egresos.financiero'].search([])  
         
         if not self.ingresosIdsGarante:
             lista_ids=[]
@@ -927,8 +927,8 @@ class EntegaVehiculo(models.Model):
 
         if not self.egresosIdsGarante:
             lista_ids=[]
-            for ingreso in obj_ingreso:
-                id_registro=self.env['ingresos.financiero.entrega.vehiculo'].create({'egresos_id':ingreso.id,'garante':True})
+            for egreso in obj_egreso:
+                id_registro=self.env['egresos.financiero.entrega.vehiculo'].create({'egresos_id':egreso.id,'garante':True})
                 lista_ids.append(int(id_registro))
             self.update({'egresosIdsGarante':[(6,0,lista_ids)]})
 
