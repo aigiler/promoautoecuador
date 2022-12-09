@@ -17,6 +17,13 @@ class ItemsPatrimonio(models.Model):
     descripcion=fields.Text('Descripcion',  required=True)
   
 
+class NecesidadVehiculo(models.Model):
+    _name = 'necesidad.vehiculos'
+    _description = 'Vehiculos'
+    _rec_name= 'nombre'
+    
+    nombre = fields.Char('Nombre',  required=True)
+
 class EgresoFinan(models.Model):
     _name = 'egresos.financiero'
     _description = 'Egreso Financiero'

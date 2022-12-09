@@ -205,8 +205,8 @@
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <group >  
-                                        <field name="referencias_familiares_ids" force_save="1" nolabel="1">
-                                            <tree create="0" delete="0" editable="top">
+                                        <field name="referencias_familiares_ids" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" force_save="1" nolabel="1">
+                                            <tree create="1" delete="1" editable="top">
                                                 <field name="nombre" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" />
                                                 <field name="cedula" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
                                                 <field name="parentezco" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
@@ -224,8 +224,8 @@
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <group >  
-                                        <field name="referencias_bancarias_ids" force_save="1" nolabel="1">
-                                            <tree create="0" delete="0" editable="top">
+                                        <field name="referencias_bancarias_ids" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" nolabel="1">
+                                            <tree create="1" delete="1" editable="top">
                                                 <field name="banco" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" />
                                                 <field name="tipo_cuenta" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
                                                 <field name="numero_cuenta" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
@@ -236,6 +236,49 @@
                                     </group>
                                 </div>
                             </div>
+
+                            <separator class="text-center fw-bold" string="NECESIDAD"/>
+                            <div class="row" style="border: 1px solid black;">
+                                <div class="col-xs-12 col-md-16">
+                                    <group >  
+                                        <field name="estadoVehiculo" readonly="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                        <field name="necesidadIds" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" nolabel="1">
+                                            <tree create="0" delete="0" editable="top">
+                                                <field name="necesidad_id" readonly="1" />
+                                                <field name="adquirirBien" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
+   
+                                            </tree>
+                                        </field>      
+                                        
+                                       
+                                    </group>
+                                </div>
+
+                                <div class="col-xs-12 col-md-16">
+                                    <group >  
+                                        <field name="detalleVehiculoIds" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" nolabel="1">
+                                            <tree create="1" delete="1" editable="top">
+                                                <field name="marca" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" />
+                                                <field name="modelo" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
+                                                <field name="anio" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
+                                                <field name="colores" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
+                                                
+   
+                                            </tree>
+                                        </field>      
+                                        
+                                       
+                                    </group>
+                                </div>
+                                <group >
+                                    <separator class="text-center fw-bold" string="USO"/>
+                                    <field name="publico" readonly="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                    <field name="particular" readonly="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+
+                                </group >
+                            </div>
+
+
 
 
 

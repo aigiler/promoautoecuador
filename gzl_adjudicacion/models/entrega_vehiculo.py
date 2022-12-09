@@ -299,13 +299,20 @@ class EntegaVehiculo(models.Model):
     referencias_familiares_ids=fields.One2many('referencias.familiares','entrega_id',domain=[('garante','=',False)] ,track_visibility='onchange')
     referencias_bancarias_ids=fields.One2many('referencias.bancarias','entrega_id',domain=[('garante','=',False)] ,track_visibility='onchange')
 
+    necesidadIds = fields.One2many('necesidad.adjudicado','entrega_id',domain=[('garante','=',False)] ,track_visibility='onchange')
 
 
 
 
+    estadoVehiculo = fields.Selection(selection=[
+                    ('USADO', 'USADO'),
+                    ('NUEVO', 'NUEVO'),
+                    ], string='Estado Vehiculo', default='')
 
+    publico=fields.Boolean(string="Público")
 
-
+    particular=fields.Boolean(string="Particular")
+    detalleVehiculoIds = fields.One2many('detalle.necesidad.adjudicado','entrega_id',domain=[('garante','=',False)] ,track_visibility='onchange')
 
 
 
@@ -897,6 +904,15 @@ class EntegaVehiculo(models.Model):
                 lista_ids.append(int(id_registro))
             self.update({'egresosIds':[(6,0,lista_ids)]})
 
+    def obtener_vehiculos(self):
+        obj_vehiculos=self.env['ingresos.financiero'].search([])  
+        
+        if not self.necesidadIds:
+            lista_ids=[]
+            for vehiculo in obj_vehiculos:
+                id_registro=self.env['necesidad.adjudicado'].create({'necesidad_id':vehiculo.id,'garante':False})
+                lista_ids.append(int(id_registro))
+            self.update({'necesidadIds':[(6,0,lista_ids)]})
 
     def llenar_tabla_ingresos_garante(self):
         obj_ingreso=self.env['ingresos.financiero'].search([])  
@@ -1766,6 +1782,7 @@ class EntegaVehiculo(models.Model):
     def buscar_contrato_partner(self):
         self.llenar_tabla()
         self.llenar_tabla_ingresos()
+        self.obtener_vehiculos()
         self.llenar_tabla_paginas()
         self.llenar_tabla_puntos_bienes()
         for rec in self:
@@ -1858,6 +1875,30 @@ class IngresosFinanciero(models.Model):
     ingresos_id = fields.Many2one('ingresos.financiero')
     titular  = fields.Monetary(string="Titular($)",digits=(6, 2))
     conyuge  = fields.Monetary(string="Conyuge($)",digits=(6, 2))
+
+    garante= fields.Boolean(default=False)
+
+
+class NecesidadAdjudicado(models.Model):
+    _name = 'necesidad.adjudicado'
+    _description = ''
+
+
+    adquirirBien=fields.Boolean(string="-")
+    necesidad_id = fields.Many2one('necesidad.vehiculos')
+
+    garante= fields.Boolean(default=False)
+
+
+class DetalleNecesidadAdjudicado(models.Model):
+    _name = 'detalle.necesidad.adjudicado'
+    _description = ''
+
+
+    marca=fields.Char(string="Marca")
+    modelo=fields.Char(string="Modelo")
+    anio=fields.Char(string="Año")
+    colores=fields.Char(string="Colores")
 
     garante= fields.Boolean(default=False)
 
