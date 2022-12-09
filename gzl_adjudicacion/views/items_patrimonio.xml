@@ -167,7 +167,7 @@
     </record>
 
 
-    <menuitem id="menu_action_documentos:legal" action="action_documentos_legal" 
+    <menuitem id="menu_action_documentos_legal" action="action_documentos_legal" 
     parent="menu_configuracion_adjudicaciones" sequence="5" />
 
 
