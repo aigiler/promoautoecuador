@@ -239,12 +239,12 @@
 
                             <separator class="text-center fw-bold" string="NECESIDAD"/>
                             <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-md-16">
-                                    <group >  
+                                <div class="col-xs-12 col-md-4">
+                                    <group>  
                                         <field name="estadoVehiculo" readonly="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
-                                        <field name="necesidadIds" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" nolabel="1">
+                                        <field name="necesidadIds" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" force_save="1" nolabel="1">
                                             <tree create="0" delete="0" editable="top">
-                                                <field name="necesidad_id" readonly="1" />
+                                                <field name="necesidad_id" readonly="1"/>
                                                 <field name="adquirirBien" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
    
                                             </tree>
@@ -254,11 +254,11 @@
                                     </group>
                                 </div>
 
-                                <div class="col-xs-12 col-md-16">
-                                    <group >  
-                                        <field name="detalleVehiculoIds" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" nolabel="1">
+                                <div class="col-xs-12 col-md-8">
+                                    <group>  
+                                        <field name="detalleVehiculoIds" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" force_save="1" nolabel="1">
                                             <tree create="1" delete="1" editable="top">
-                                                <field name="marca" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" />
+                                                <field name="marca" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
                                                 <field name="modelo" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
                                                 <field name="anio" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
                                                 <field name="colores" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
@@ -270,369 +270,24 @@
                                        
                                     </group>
                                 </div>
-                                <group >
+                                <group>
+                                  <div class="col-xs-12 col-md-4">
                                     <separator class="text-center fw-bold" string="USO"/>
+                                  </div>
+                                  <div class="col-xs-12 col-md-8">  
+                                    <group>
                                     <field name="publico" readonly="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
                                     <field name="particular" readonly="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
-
-                                </group >
-                            </div>
-
-
-
-
-
-
-
-
-                            <separator class="text-center fw-bold" string="DATOS LABORALES"/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-md-12">
-                                    <group >  
-                                        <field name="direccion_trabajoAdj" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
-                                        <field name="nombre_companiaAdj" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
-                                        <field name="telefono_trabajoAdj"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
-                                        
                                     </group>
-                                </div>
-
+                                  </div>
+                                </group>
                             </div>
-                            <separator class="text-center" string="PATRIMONIO"/>
-                            <div class="row" style="border: 1px solid black;">
-                                
-                                <div class="col-sm-6">
-                                    <group> 
-                                        <field name="institucionFinanciera" force_save="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
-                                        <field name="direccion" force_save="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
-                                        <field name="direccion1" force_save="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
-                                        <field name="placa" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
-                                    </group>
-                                </div>
-                            </div>
-                            <separator class="text-center" string="REVISION EN PAGINAS DE CONTROL"/>
-                            <div class="col-xs-12 col-sm-12">
-                                <tbody>
-                                    <tr>
-                                        <td class="col-xs-12 col-sm-7">
-                                            <label for="scoreBuroCredito"/>
-                                        </td>
-                                        <td class="col-xs-12 col-sm-4">
-                                            <text>Score</text>
-                                        </td>
-                                        <td class="col-xs-12 col-sm-3"> 
-                                            <field name="scoreBuroCredito" nolabel="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </div>
-                            <div class="col-xs-12 col-sm-12"> 
-                                <field name="paginasDeControl" nolabel="1">
-                                    <tree create="0" delete="0" editable="top">
-                                        <field name="pagina_id" readonly="1"/>
-                                         <field name="garante" invisible="1"/>
-                                        <field name="descripcion" readonly="1"/>
-                                        <field name="pagina" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" />
-                                    </tree>
-                                </field>
-                            </div>
-                            <separator/>
-                            <separator class="text-center" string="OBSERVACIONES"/>
-                            <div class="row"><field name="observaciones" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" />
-                            </div>
-                            <separator/>
-
-                        </page>
-
-
-                                                <!-- CALIFICADOR DE COMPRA -->
-                        <page string="Calificador de Compra">
-                            <separator class="text-center" string="CALIFICADOR PARA COMPRA DEL BIEN"/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-md-12">
-                                    <group>
-                                        <field name="nombreSocioAdjudicado" readonly="1" force_save="1"/>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-sm-4"> 
-                                    <group>
-                                        <field name="vatAdjudicado" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                                
-                                <div class="col-xs-4">
-                                    <group>
-                                        <field name="codigoAdjudicado" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                                <div class="col-xs-12 col-md-12">
-                                    <table style=" border-collapse: collapse; width:100%">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <label for="montoAdjudicado"/>
-                                                </td>
-                                                <td>
-                                                    <field name="montoAdjudicado" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <label for="plazoMeses"/>
-                                                </td>
-                                                <td>
-                                                    <label for="tipoAdj"/>
-                                                </td>
-                                                <td>
-                                                    <label for="fechaAdj"/>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label for="valorCuota"/>
-                                                </td>
-                                                <td>
-                                                    <field name="valorCuota" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="plazoMeses" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="tipoAdj" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="fechaAdj" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-4 col-sm-9">
-                                    <table style=" border-collapse: collapse;width:100%">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <label for="valorTotalPlan"/>
-                                                </td>
-                                                <td>
-                                                    <field name="valorTotalPlan" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="plazoMeses" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-                                                    Cuotas</td>
-                                                <td>
-                                                    <field name="porcentajeTotal" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                %</td>
-                                            </tr>
-                                            <tr class="font-weight-bold">
-                                                <td>
-                                                    <label for="montoCuotasCanceladas"/>
-                                                </td>
-                                                <td>
-                                                    <field name="montoCuotasCanceladas" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="cuotasCanceladas" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-                                                Cuotas</td>
-                                                <td>
-                                                    <field name="porcentajeCancelado" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-                                                %</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label for="montoCuotasPendientes" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="montoCuotasPendientes" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="cuotasPendientes" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                Cuotas</td>
-                                                <td>
-                                                    <field name="porcentajePendiente" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                %</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <group>
-                                        <field name="puntosPorcentajeCancelado" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-9">
-                                    <table style=" border-collapse: collapse; width:90%">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <label for="valorDelBien"/>
-                                                </td>
-                                                <td>
-                                                    <field name="valorDelBien" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td style="width:10%"/>
-                                                <td/>
-                                            </tr>
-                                            <tr class="font-weight-bold">
-                                                <td>
-                                                    <label for="saldoPlan"/>
-                                                </td>
-                                                <td>
-                                                    <field name="saldoPlan" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td style="width:10%"/>
-                                                <td>
-                                                    <field name="porcentajeSaldoPlan" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-                                                %</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <group>
-                                        <field name="puntosPorcentajSaldos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-9">
-                                    <table style=" border-collapse: collapse; width:100%">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <label for="ingresosFamiliares" string="Ingresos familiares"/>
-                                                </td>
-                                                <td>
-                                                   
-                                                </td>
-                                                <td>
-                                                    <field name="porcentajeIngresos" readonly="1" nolabel="1" options="{'no_create': True, 'no_open': True}"/><text>%</text>
-                                                </td>
-                                                <td>
-                                                    <text>Comprometido</text>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label for="gastosFamiliares" string="Gastos familiares"/>
-                                                </td>
-                                                <td>
-                                                    <field name="gastosFamiliares" string="Gastos familiares" readonly="1" readoptions="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="porcentajeGastos" nolabel="1" options="{'no_create': True, 'no_open': True}"/><text>%</text>
-                                                </td>
-                                                <td>
-                                                    <text>Cuota Plan</text>
-                                                </td>
-                                            </tr>
-                                            <tr class="font-weight-bold">
-                                                <td>
-                                                    <label for="disponibilidad" string="Disponibilidad" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td style="border-top: 0.5px solid">
-                                                    <field name="disponibilidad" string="Disponibilidad" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="porcentajeDisponibilidad" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                                </td>
-                                                <td>
-                                                    <field name="porcentajeCuotaPlan" nolabel="1" options="{'no_create': True, 'no_open': True}"/>%
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <group>
-                                        <field name="puntosCuotaIngresos" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-4">
-                                    <text class="align-baseline">
-                                        <strong>Score de Credito Mayor a 800 puntos</strong>
-                                    </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-5">
-                                    <field name="scoreCredito" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" nolabel="1" string="Score de Credito Mayor a 800 puntos "/>
-                                </div>
-                                <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <field name="puntosScoreCredito" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-4">
-                                    <text class="align-baseline">
-                                        <strong>Antigüedad Laboral o Comercial Mayor a 2 años</strong>
-                                    </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-5">
-                                    <field name="antiguedadLaboral" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" nolabel="1" string="Antigüedad Laboral o Comercial Mayor a 2 años "/>
-                                    <text> Años</text>
-                                </div>
-                                <div class="col-xs-12 col-sm-3" style="border: 0.05px solid black;">
-                                    <field name="puntosAntiguedadLaboral" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-8">
-                                    <field name="tablaPuntosBienes" nolabel="1">
-                                        <tree create="0" delete="0" editable="top">
-                                            <field name="bien_id" readonly="1"/>
-                                            <field name="poseeBien" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}" />
-                                            <field name="puntosBien" readonly="1"/>
-                                        </tree>
-                                    </field>
-                                </div>
-                                
-                                <div class="col-xs-12 col-sm-4" style="border: 0.05px solid black;">
-                                    <field name="totalPuntosBienesAdj" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row" style="border: 1px solid black;">
-                                <div class="col-xs-12 col-sm-9">
-                                    <text class="text-center">
-                                        <strong>TOTAL PUNTOS</strong>
-                                    </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-3">
-                                    <field name="totalPuntosCalificador" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </div>
-                            </div>
-                            <separator/>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12">
-                                    <field class="font-weight-bold" name="aplicaGarante" nolabel="1" readonly="1" options="{'no_create': True, 'no_open': True}"/>
-                                </div>
-
-                            </div>
-                            <separator/>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12" style="border-bottom: 1px solid black;">
-                                    <text class="text-center">
-                                        <strong>Observaciones:</strong>
-                                    </text>
-                                </div>
-                                <div class="col-xs-12 col-sm-12">
-                                    <field name="observacionesCalificador" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  nolabel="1" options="{'no_create': True, 'no_open': True}"/>
-                                </div>
-                            </div>
-
                         </page>
 
 
 
-                        <page string="Informe de Credito y Cobranza Garante" attrs="{'invisible':[('aplicaGarante', 'not in',['sí','SI'])]}">
+
+                        <page string="Analisis de Crédito del Garante" attrs="{'invisible':[('aplicaGarante', 'not in',['sí','SI'])]}">
                             <separator class="text-center" string="ANTECEDENTES DEL GARANTE"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
