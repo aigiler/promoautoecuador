@@ -33,7 +33,7 @@
 
     <record id="view_ingresos_financieros_tree" model= "ir.ui.view">
         <field name="name">view.ingresos.financiero.tree</field>
-        <field name="model">ingresos.financier</field>
+        <field name="model">ingresos.financiero</field>
         <field name="arch" type="xml">
             <tree string="Ingresos Financiero" editable="top">
                 <field name="nombre" />
