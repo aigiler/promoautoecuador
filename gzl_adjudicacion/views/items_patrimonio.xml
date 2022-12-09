@@ -88,7 +88,7 @@
 
 
 
-    <record id="view_necesidad_vehiculos_tree" model= "ir.ui.view">
+    <record id="view_vehiculos_necesidad_tree" model= "ir.ui.view">
         <field name="name">view.necesidad.vehiculos.tree</field>
         <field name="model">necesidad.vehiculos</field>
         <field name="arch" type="xml">
@@ -100,7 +100,7 @@
 
 
 
-    <record id="action_necesidad_vehiculos" model="ir.actions.act_window">
+    <record id="action_vehiculos_necesidad" model="ir.actions.act_window">
         <field name="name">Vehículos</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">necesidad.vehiculos</field>
@@ -109,7 +109,7 @@
     </record>
 
 
-    <menuitem id="menu_action_necesidad_vehiculos" action="action_necesidad_vehiculos" 
+    <menuitem id="menu_action_vehiculos_necesidad" action="action_necesidad_vehiculos" 
     parent="menu_configuracion_adjudicaciones" sequence="5" />
 
 
