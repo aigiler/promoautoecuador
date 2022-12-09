@@ -63,7 +63,7 @@
 
     <record id="view_egresos_financieros_tree" model= "ir.ui.view">
         <field name="name">view.egresos.financiero.tree</field>
-        <field name="model">egresos.financier</field>
+        <field name="model">egresos.financiero</field>
         <field name="arch" type="xml">
             <tree string="Egresos Financiero" editable="top">
                 <field name="nombre" />
