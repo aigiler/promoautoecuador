@@ -353,7 +353,7 @@
                                 <div class="col-xs-12 col-sm-6">
                                     <group> 
                                         <field name="fechaNacimientoGarante" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1"/>
-                                        <field name="correoGar" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" string="Telefono"/>
+                                        <field name="correoGarante" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" string="Telefono"/>
                                          <field name="telefonoGar" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" string="Teléfono Convencional"/>
                                          <field name="provinciaGarante" string="Provincia" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
                                           <field name="direccionGarante"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
