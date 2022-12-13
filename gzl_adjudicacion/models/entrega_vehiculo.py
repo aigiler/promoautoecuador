@@ -150,6 +150,13 @@ class EntegaVehiculo(models.Model):
 
     fechaNacimientoAdj = fields.Date(string='Fecha de Nacimiento', store=True)
 
+    @api.constrains("fechaNacimientoAdj")
+    @api.onchange("fechaNacimientoAdj")
+    def actualizar_fecha_nac_adj(self):
+        for l in self:
+            if l.fechaNacimientoAdj:
+                l.nombreSocioAdjudicado.fecha_nacimiento=l.fechaNacimientoAdj
+
     @api.constrains("estadoCivilAdj")
     @api.onchange("estadoCivilAdj")
     def actualizar_estado_civ_adj(self):
@@ -269,12 +276,12 @@ class EntegaVehiculo(models.Model):
                     ], string='Estado Civil', default='soltero')
 
     celularConyuge = fields.Char(string='Celular', store=True)
-    @api.constrains("telefonoConyuge")
-    @api.onchange("telefonoConyuge")
+    @api.constrains("celularConyuge")
+    @api.onchange("celularConyuge")
     def actualizar_celular_conyuge_adj(self):
         for l in self:
-            if l.telefonoConyuge:
-                l.nombreSocioAdjudicado.mobileConyuge=l.telefonoConyuge
+            if l.celularConyuge:
+                l.nombreSocioAdjudicado.mobileConyuge=l.celularConyuge
 
     ciudadConyuge = fields.Char('Ciudad')
     @api.constrains("ciudadConyuge")
@@ -299,10 +306,9 @@ class EntegaVehiculo(models.Model):
     referencias_familiares_ids=fields.One2many('referencias.familiares','entrega_id',domain=[('garante','=',False)] ,track_visibility='onchange')
     referencias_bancarias_ids=fields.One2many('referencias.bancarias','entrega_id',domain=[('garante','=',False)] ,track_visibility='onchange')
 
+
+
     necesidadIds = fields.One2many('necesidad.adjudicado','entrega_id',domain=[('garante','=',False)] ,track_visibility='onchange')
-
-
-
 
     estadoVehiculo = fields.Selection(selection=[
                     ('USADO', 'USADO'),
@@ -314,6 +320,27 @@ class EntegaVehiculo(models.Model):
     particular=fields.Boolean(string="Particular")
     detalleVehiculoIds = fields.One2many('detalle.necesidad.adjudicado','entrega_id',domain=[('garante','=',False)] ,track_visibility='onchange')
 
+    @api.onchange("nombreSocioAdjudicado")
+    @api.constrains("nombreSocioAdjudicado")
+    def obtener_datos(self):
+        for l in self:
+            if l.nombreSocioAdjudicado:
+                l.vatAdjudicado=l.nombreSocioAdjudicado.vat
+                l.fechaNacimientoAdj=l.nombreSocioAdjudicado.fecha_nacimiento
+                l.estadoCivilAdj=l.nombreSocioAdjudicado.estado_civil
+                l.estadoCivilConyuge=l.nombreSocioAdjudicado.estado_civil
+                l.codigoAdjudicado=l.nombreSocioAdjudicado.codigo_cliente
+                l.cargasFamiliares=l.nombreSocioAdjudicado.num_cargas_familiares
+                l.nombreConyuge=l.nombreSocioAdjudicado.conyuge
+                l.fechaNacimientoConyuge=l.nombreSocioAdjudicado.fechaNacimientoConyuge
+                l.vatConyuge=l.nombreSocioAdjudicado.vatConyuge
+                l.ciudadAdjudicado=l.nombreSocioAdjudicado.city
+                l.provinciaAdjudicado=l.nombreSocioAdjudicado.state_id.id
+                l.direccionAdjudicado=l.nombreSocioAdjudicado.street
+                l.direccion_trabajoAdj=l.nombreSocioAdjudicado.direccion_trabajo
+                l.telefono_trabajoAdj=l.nombreSocioAdjudicado.telefono_trabajo
+                l.cargoAdj=l.nombreSocioAdjudicado.cargo
+                l.nombre_companiaAdj=l.nombreSocioAdjudicado.nombre_compania
 
 
 
@@ -322,15 +349,246 @@ class EntegaVehiculo(models.Model):
 
 
 
+    nombreGarante = fields.Many2one('res.partner', string="Nombre del Garante", track_visibility='onchange')
+
+    fechaNacimientoGarante = fields.Date(string='Fecha de Nacimiento', store=True)
+
+    correoGarante = fields.Char(string='Correo Garante',store=True, default='')
+
+    @api.constrains("correoGarante")
+    @api.onchange("correoGarante")
+    def actualizar_correo_gar(self):
+        for l in self:
+            if l.correoGarante:
+                l.nombreGarante.email=l.correoGarante
+
+    telefonoGar = fields.Char(string='Telefono Garante',store=True, default='')
+
+    @api.constrains("telefonoGar")
+    @api.onchange("telefonoGar")
+    def actualizar_telefono_gar(self):
+        for l in self:
+            if l.telefonoGar:
+                l.nombreGarante.phone=l.telefonoGar
 
 
+    provinciaGarante = fields.Many2one("res.country.state", string='State')
+
+    @api.constrains("provinciaGarante")
+    @api.onchange("provinciaGarante")
+    def actualizar_provincia_conyuge_gar(self):
+        for l in self:
+            if l.provinciaGarante:
+                l.nombreGarante.state_id=l.provinciaGarante.id
+
+    direccionGarante = fields.Char('Direccion')
+    @api.constrains("direccionGarante")
+    @api.onchange("direccionGarante")
+    def actualizar_direccion_gar(self):
+        for l in self:
+            if l.direccionGarante:
+                l.nombreGarante.street=l.direccionGarante
+
+    dependienteGar = fields.Char(string='Dependiente Garante',store=True, default='')
+
+    @api.constrains("dependienteGar")
+    @api.onchange("dependienteGar")
+    def actualizar_dependiente_gar(self):
+        for l in self:
+            if l.dependienteGar:
+                l.nombreGarante.dependiente=l.dependienteGar
+
+    cargoGar=fields.Char(string='Cargo')
+
+    @api.constrains("cargoGar")
+    @api.onchange("cargoGar")
+    def actualizar_car_gar(self):
+        for l in self:
+            if l.cargoGar:
+                l.nombreGarante.cargo=l.cargoGar
+
+    ingresosFamiliaresGarante = fields.Monetary(string='Ingresos familiares')
+
+    edadGarante = fields.Integer(compute='calcular_edad_Garante', string="Edad", readonly=True, store=True, default = 0)
+
+    vatGarante = fields.Char(string='Cedula de Ciudadanía',store=True, default='')
+
+    estadoCivilGarante = fields.Selection(selection=[
+                    ('soltero', 'Soltero/a'),
+                    ('union_libre', 'Unión libre'),
+                    ('casado', 'Casado/a'),
+                    ('divorciado', 'Divorciado/a'),
+                    ('viudo', 'Viudo/a')                    
+                    ], string='Estado Civil', default='soltero')
+
+    celularGar = fields.Char(string='Telefono Garante',store=True, default='')
+
+    @api.constrains("celularGar")
+    @api.onchange("celularGar")
+    def actualizar_celular_gar(self):
+        for l in self:
+            if l.celularGar:
+                l.nombreGarante.mobile=l.celularGar
 
 
+    ciudadGarante = fields.Char('Ciudad')
+    @api.constrains("ciudadGarante")
+    @api.onchange("ciudadGarante")
+    def actualizar_ciudad_gar(self):
+        for l in self:
+            if l.ciudadGarante:
+                l.nombreGarante.city=l.ciudadGarante
+
+   fechaNacimientoConyugeGarante = fields.Date(string='Fecha de Nacimiento',store=True)
+
+    @api.constrains("fechaNacimientoConyugeGarante")
+    @api.onchange("fechaNacimientoConyugeGarante")
+    def actualizar_nac_conyuge_gar(self):
+        for l in self:
+            if l.fechaNacimientoConyugeGarante:
+                l.nombreGarante.fechaNacimientoConyuge=l.fechaNacimientoConyugeGarante
 
 
+    correoConyugeGarante = fields.Char(string='Correo Conyuge',store=True, default='')
+
+    @api.constrains("correoConyugeGarante")
+    @api.onchange("correoConyugeGarante")
+    def actualizar_correo_conyuge_gar(self):
+        for l in self:
+            if l.correoConyugeGarante:
+                l.nombreGarante.emailConyuge=l.correoConyugeGarante
+
+    nombreConyugeGarante = fields.Char(string="Nombre del Conyuge", store=True)
+
+    direccionConyugeGarante = fields.Char('Direccion')
+    @api.constrains("direccionConyugeGarante")
+    @api.onchange("direccionConyugeGarante")
+    def actualizar_direccion_conyuge_gar(self):
+        for l in self:
+            if l.direccionConyugeGarante:
+                l.nombreGarante.streetConyuge=l.direccionConyugeGarante
 
 
+    telefonoConyugeGarante = fields.Char(string='Telefono Conyuge',store=True, default='')
+
+    @api.constrains("telefonoConyugeGarante")
+    @api.onchange("telefonoConyugeGarante")
+    def actualizar_telefono_conyuge_gar(self):
+        for l in self:
+            if l.telefonoConyugeGarante:
+                l.nombreGarante.phoneConyuge=l.telefonoConyugeGarante
+
+
+    provinciaConyugeGarante = fields.Many2one("res.country.state", string='State')
+
+    @api.constrains("provinciaConyugeGarante")
+    @api.onchange("provinciaConyugeGarante")
+    def actualizar_provincia_conyuge_gar(self):
+        for l in self:
+            if l.provinciaConyugeGarante:
+                l.nombreGarante.state_conyuge_id=l.provinciaConyugeGarante.id
+
+
+    dependienteConyugeGarante = fields.Char(string='Dependiente Conyuge',store=True, default='')
+
+    @api.constrains("dependienteConyugeGarante")
+    @api.onchange("dependienteConyugeGarante")
+    def actualizar_dependiente_conyuge_gar(self):
+        for l in self:
+            if l.dependienteConyugeGarante:
+                l.nombreGarante.dependienteConyuge=l.dependienteConyugeGarante
+
+
+    cargoConyugeGarante=fields.Char(string='Cargo')
+
+    @api.constrains("cargoConyugeGarante")
+    @api.onchange("cargoConyugeGarante")
+    def actualizar_car_conyuge_gar(self):
+        for l in self:
+            if l.cargoConyugeGarante:
+                l.nombreGarante.cargoConyuge=l.cargoConyugeGarante
+
+    ingresosFamiliaresConyugeGarante = fields.Monetary(string='Ingresos familiares')
+
+    edadConyugeGarante = fields.Integer(compute='calcular_edad_conyuge', string="Edad", default = 0)
+
+    vatConyugeGarante = fields.Char(string='Cedula de Ciudadanía', store=True)
+
+    @api.constrains("vatConyugeGarante")
+    @api.onchange("vatConyugeGarante")
+    def actualizar_vat_conyuge_gar(self):
+        for l in self:
+            if l.vatConyugeGarante:
+                l.nombreGarante.vatConyuge=l.vatConyugeGarante
+
+    estadoCivilConyugeGarante = fields.Selection(selection=[
+                    ('soltero', 'Soltero/a'),
+                    ('union_libre', 'Unión libre'),
+                    ('casado', 'Casado/a'),
+                    ('divorciado', 'Divorciado/a'),
+                    ('viudo', 'Viudo/a')                    
+                    ], string='Estado Civil', default='soltero')
+
+    celularConyugeGarante = fields.Char(string='Celular', store=True)
+    @api.constrains("celularConyugeGarante")
+    @api.onchange("celularConyugeGarante")
+    def actualizar_celular_conyuge_gar(self):
+        for l in self:
+            if l.celularConyugeGarante:
+                l.nombreGarante.mobileConyuge=l.celularConyugeGarante
+
+    ciudadConyugeGarante = fields.Char('Ciudad')
+    @api.constrains("ciudadConyugeGarante")
+    @api.onchange("ciudadConyugeGarante")
+    def actualizar_ciudad_conyuge_adj(self):
+        for l in self:
+            if l.ciudadConyugeGarante:
+                l.nombreGarante.cityConyuge=l.ciudadConyugeGarante
+
+    montoAhorroInversionesGarante = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',domain=[('garante','=',True)], track_visibility='onchange')
+
+    ingresosIdsGarante = fields.One2many('ingresos.financiero.entrega.vehiculo','entrega_id',domain=[('garante','=',True)], track_visibility='onchange')
+
+    egresosIdsGarante = fields.One2many('egresos.financiero.entrega.vehiculo','entrega_id',domain=[('garante','=',True)], track_visibility='onchange')
+
+
+    total_ingresos_familiares_garante = fields.Monetary(string='Total Ingresos Familiares')
+    total_egresos_familiares_garante = fields.Monetary(string='Total Egresos Familiares')
+    disponibilidad_dinero_garante= fields.Monetary(string='Total Dispinible')
+
+
+    referencias_familiares_ids_garante=fields.One2many('referencias.familiares','entrega_id',domain=[('garante','=',True)] ,track_visibility='onchange')
     referencias_bancarias_ids_garante=fields.One2many('referencias.bancarias','entrega_id',domain=[('garante','=',True)] ,track_visibility='onchange')
+
+    @api.onchange('fechaNacimientoConyuge','fechaNacimientoConyugeGarante')
+    def calcular_edad_conyuge(self):
+        edad = 0
+        self.edadConyugeGarante = 0
+        self.edadConyuge=0
+        for rec in self:
+            today = date.today()
+            if rec.fechaNacimientoConyuge:
+                edad = today.year - rec.fechaNacimientoConyuge.year - \
+                    ((today.month, today.day) < (
+                        rec.fechaNacimientoConyuge.month, rec.fechaNacimientoConyuge.day))
+                rec.edadConyuge = edad
+            else:
+                rec.edadConyuge = 0
+            if rec.fechaNacimientoConyugeGarante:
+                edadGarante = today.year - rec.fechaNacimientoConyugeGarante.year - \
+                    ((today.month, today.day) < (
+                        rec.fechaNacimientoConyugeGarante.month, rec.fechaNacimientoConyugeGarante.day))
+                rec.edadConyugeGarante = edadGarante
+            else:
+                rec.edadConyugeGarante = 0
+
+
+
+
+
+
+
+
 
     rolAsignado = fields.Many2one('adjudicaciones.team', string="Rol Asignado", track_visibility='onchange')
     rolCredito = fields.Many2one('adjudicaciones.team', string="Rol Credito", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol3'))
@@ -381,7 +639,6 @@ class EntegaVehiculo(models.Model):
 
     ], string='Estado', default='borrador', track_visibility='onchange')
     # datos del socio adjudicado
-    nombreGarante = fields.Many2one('res.partner', string="Nombre del Garante", track_visibility='onchange')
     factura_id = fields.Many2one('account.move', string='Factura')
     archivo = fields.Binary(string='Adjuntar Documentos Adjudicado')
     archivo_garante = fields.Binary(string='Adjuntar Documento Garante')
@@ -406,28 +663,6 @@ class EntegaVehiculo(models.Model):
     salida_id=fields.Many2one("ir.attachment")
 
 
-    @api.onchange("nombreSocioAdjudicado")
-    @api.constrains("nombreSocioAdjudicado")
-    def obtener_datos(self):
-        for l in self:
-            if l.nombreSocioAdjudicado:
-
-                l.vatAdjudicado=l.nombreSocioAdjudicado.vat
-                l.fechaNacimientoAdj=l.nombreSocioAdjudicado.fecha_nacimiento
-                l.estadoCivilAdj=l.nombreSocioAdjudicado.estado_civil
-                l.estadoCivilConyuge=l.nombreSocioAdjudicado.estado_civil
-                l.codigoAdjudicado=l.nombreSocioAdjudicado.codigo_cliente
-                l.cargasFamiliares=l.nombreSocioAdjudicado.num_cargas_familiares
-                l.nombreConyuge=l.nombreSocioAdjudicado.conyuge
-                l.fechaNacimientoConyuge=l.nombreSocioAdjudicado.fechaNacimientoConyuge
-                l.vatConyuge=l.nombreSocioAdjudicado.vatConyuge
-                l.ciudadAdjudicado=l.nombreSocioAdjudicado.city
-                l.provinciaAdjudicado=l.nombreSocioAdjudicado.state_id.id
-                l.direccionAdjudicado=l.nombreSocioAdjudicado.street
-                l.direccion_trabajoAdj=l.nombreSocioAdjudicado.direccion_trabajo
-                l.telefono_trabajoAdj=l.nombreSocioAdjudicado.telefono_trabajo
-                l.cargoAdj=l.nombreSocioAdjudicado.cargo
-                l.nombre_companiaAdj=l.nombreSocioAdjudicado.nombre_compania
 
 
 
@@ -445,12 +680,7 @@ class EntegaVehiculo(models.Model):
 
 
 
-    @api.constrains("fechaNacimientoAdj")
-    @api.onchange("fechaNacimientoAdj")
-    def actualizar_fecha_nac_adj(self):
-        for l in self:
-            if l.fechaNacimientoAdj:
-                l.nombreSocioAdjudicado.fecha_nacimiento=l.fechaNacimientoAdj
+
 
     estadoCivilAdj = fields.Selection(selection=[
                     ('soltero', 'Soltero/a'),
@@ -585,7 +815,6 @@ class EntegaVehiculo(models.Model):
 
 
 
-    vatGarante = fields.Char(string='Cedula de Ciudadanía',store=True, default='')
 
     @api.constrains("vatGarante")
     @api.onchange("vatGarante")
@@ -594,7 +823,6 @@ class EntegaVehiculo(models.Model):
             if l.vatGarante:
                 l.nombreGarante.vat=l.vatGarante
 
-    fechaNacimientoGarante = fields.Date(string='Fecha de Nacimiento', store=True)
 
 
     @api.constrains("fechaNacimientoGarante")
@@ -604,21 +832,8 @@ class EntegaVehiculo(models.Model):
             if l.fechaNacimientoGarante:
                 l.nombreGarante.fecha_nacimiento=l.fechaNacimientoGarante
 
-    estadoCivilGarante = fields.Selection(selection=[
-                    ('soltero', 'Soltero/a'),
-                    ('union_libre', 'Unión libre'),
-                    ('casado', 'Casado/a'),
-                    ('divorciado', 'Divorciado/a'),
-                    ('viudo', 'Viudo/a')                    
-                    ], string='Estado Civil', default='soltero')
 
-    estadoCivilConyugeGarante = fields.Selection(selection=[
-                    ('soltero', 'Soltero/a'),
-                    ('union_libre', 'Unión libre'),
-                    ('casado', 'Casado/a'),
-                    ('divorciado', 'Divorciado/a'),
-                    ('viudo', 'Viudo/a')                    
-                    ], string='Estado Civil', default='soltero')
+
 
     @api.constrains("estadoCivilGarante")
     @api.onchange("estadoCivilGarante")
@@ -637,8 +852,6 @@ class EntegaVehiculo(models.Model):
             if l.codigoGarante:
                 l.nombreGarante.codigo_cliente=l.codigoGarante
 
-    edadGarante = fields.Integer(compute='calcular_edad_Garante', string="Edad", readonly=True, store=True, default = 0)
-    edadConyugeGarante = fields.Integer(compute='calcular_edad_conyuge', string="Edad", default = 0)
 
     cargasFamiliaresGarante = fields.Integer(string="Cargas Fam.",  store=True, default = 0)
 
@@ -651,7 +864,6 @@ class EntegaVehiculo(models.Model):
 
 
 
-    nombreConyugeGarante = fields.Char(string="Nombre del Conyuge", store=True)
 
 
 
@@ -664,50 +876,9 @@ class EntegaVehiculo(models.Model):
             if l.nombreConyugeGarante:
                 l.nombreGarante.conyuge=l.nombreConyugeGarante
 
-    fechaNacimientoConyugeGarante = fields.Date(string='Fecha de Nacimiento',store=True)
-
-    @api.constrains("fechaNacimientoConyugeGarante")
-    @api.onchange("fechaNacimientoConyugeGarante")
-    def actualizar_nac_conyuge_gar(self):
-        for l in self:
-            if l.fechaNacimientoConyugeGarante:
-                l.nombreGarante.fechaNacimientoConyuge=l.fechaNacimientoConyugeGarante
-
-    vatConyugeGarante = fields.Char(string='Cedula de Ciudadanía', store=True)
-
-    @api.constrains("vatConyugeGarante")
-    @api.onchange("vatConyugeGarante")
-    def actualizar_vat_conyuge_gar(self):
-        for l in self:
-            if l.vatConyugeGarante:
-                l.nombreGarante.vatConyuge=l.vatConyugeGarante
 
 
-    ciudadGarante = fields.Char('Ciudad')
-    @api.constrains("ciudadGarante")
-    @api.onchange("ciudadGarante")
-    def actualizar_ciudad_gar(self):
-        for l in self:
-            if l.ciudadGarante:
-                l.nombreGarante.city=l.ciudadGarante
 
-
-    provinciaGarante = fields.Many2one("res.country.state", string='State')
-
-    @api.constrains("provinciaGarante")
-    @api.onchange("provinciaGarante")
-    def actualizar_provincia_conyuge_gar(self):
-        for l in self:
-            if l.provinciaGarante:
-                l.nombreGarante.state_id=l.provinciaGarante.id
-
-    direccionGarante = fields.Char('Direccion')
-    @api.constrains("direccionGarante")
-    @api.onchange("direccionGarante")
-    def actualizar_direccion_gar(self):
-        for l in self:
-            if l.direccionGarante:
-                l.nombreGarante.street=l.direccionGarante
 
 
     direccion_trabajoGar=fields.Char(string='Dirección Laboral')
@@ -791,14 +962,8 @@ class EntegaVehiculo(models.Model):
     products_id = fields.Many2one('product.product', track_visibility='onchange')
     asamblea_id = fields.Many2one('asamblea', string="Asamblea", track_visibility='onchange')
     currency_id = fields.Many2one('res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
-    montoAhorroInversionesGarante = fields.One2many('items.patrimonio.entrega.vehiculo','entrega_id',domain=[('garante','=',True)], track_visibility='onchange')
     ahorro_garante=fields.Boolean(default=False)
-    ingresosIdsGarante = fields.One2many('ingresos.financiero.entrega.vehiculo','entrega_id',domain=[('garante','=',True)], track_visibility='onchange')
 
-    egresosIdsGarante = fields.One2many('egresos.financiero.entrega.vehiculo','entrega_id',domain=[('garante','=',True)], track_visibility='onchange')
-    total_ingresos_familiares_garante = fields.Monetary(string='Total Ingresos Familiares')
-    total_egresos_familiares_garante = fields.Monetary(string='Total Egresos Familiares')
-    disponibilidad_dinero_garante= fields.Monetary(string='Total Dispinible')
 
 
 
@@ -1209,139 +1374,139 @@ class EntegaVehiculo(models.Model):
 
 
 
-    porcentajeIngresos = fields.Float(default=100.00)
+    #porcentajeIngresos = fields.Float(default=100.00)
 
-    gastosFamiliares = fields.Monetary(string='Gastos familiares', compute='calcular_valor_gastos_familiares')
+    #gastosFamiliares = fields.Monetary(string='Gastos familiares', compute='calcular_valor_gastos_familiares')
 
-    @api.depends('ingresosFamiliares')
-    def calcular_valor_gastos_familiares(self):
-        for rec in self:
-            rec.porcentajeIngresos = 100.00
-            rec.gastosFamiliares = rec.ingresosFamiliares * 0.7
-
-
-    porcentajeGastos = fields.Float( digits=(6, 2), compute='calcular_porcentaje_gastos_familiares')
-
-    @api.depends('gastosFamiliares', 'ingresosFamiliares')
-    def calcular_porcentaje_gastos_familiares(self):
-        for rec in self:
-            rec.porcentajeGastos = (
-                rec.gastosFamiliares / rec.ingresosFamiliares) * 100
-
-    @api.depends('ingresosFamiliares', 'gastosFamiliares')
-    def calcular_porcentaje_gastos_familiares(self):
-        for rec in self:
-            if rec.gastosFamiliares:
-                rec.porcentajeGastos = (
-                    rec.gastosFamiliares / rec.ingresosFamiliares) * 100
-            else:
-                rec.porcentajeGastos = 0
+    # @api.depends('ingresosFamiliares')
+    # def calcular_valor_gastos_familiares(self):
+    #     for rec in self:
+    #         rec.porcentajeIngresos = 100.00
+    #         rec.gastosFamiliares = rec.ingresosFamiliares * 0.7
 
 
-    porcentajeCuotaPlan = fields.Float(digits=(6, 2), default=0.0, compute='calcular_porcentaje_cuota_plan')
+    #porcentajeGastos = fields.Float( digits=(6, 2), compute='calcular_porcentaje_gastos_familiares')
+
+    # @api.depends('gastosFamiliares', 'ingresosFamiliares')
+    # def calcular_porcentaje_gastos_familiares(self):
+    #     for rec in self:
+    #         rec.porcentajeGastos = (
+    #             rec.gastosFamiliares / rec.ingresosFamiliares) * 100
+
+    # @api.depends('ingresosFamiliares', 'gastosFamiliares')
+    # def calcular_porcentaje_gastos_familiares(self):
+    #     for rec in self:
+    #         if rec.gastosFamiliares:
+    #             rec.porcentajeGastos = (
+    #                 rec.gastosFamiliares / rec.ingresosFamiliares) * 100
+    #         else:
+    #             rec.porcentajeGastos = 0
 
 
-    @api.depends('valorCuota', 'ingresosFamiliares')
-    def calcular_porcentaje_cuota_plan(self):
-        for rec in self:
-            if rec.ingresosFamiliares:
-                rec.porcentajeCuotaPlan = round(((rec.valorCuota/rec.ingresosFamiliares) * 100), 0) 
-            else:
-                rec.porcentajeCuotaPlan = 0.0
+    # porcentajeCuotaPlan = fields.Float(digits=(6, 2), default=0.0, compute='calcular_porcentaje_cuota_plan')
 
-    puntosCuotaIngresos = fields.Integer(compute='calcular_puntos_ingresos')
+
+    # @api.depends('valorCuota', 'ingresosFamiliares')
+    # def calcular_porcentaje_cuota_plan(self):
+    #     for rec in self:
+    #         if rec.ingresosFamiliares:
+    #             rec.porcentajeCuotaPlan = round(((rec.valorCuota/rec.ingresosFamiliares) * 100), 0) 
+    #         else:
+    #             rec.porcentajeCuotaPlan = 0.0
+
+    # puntosCuotaIngresos = fields.Integer(compute='calcular_puntos_ingresos')
  
-    @api.depends('porcentajeCuotaPlan')
-    def calcular_puntos_ingresos(self):
-        for rec in self:
-            if rec.porcentajeCuotaPlan >= 0.00 and rec.porcentajeCuotaPlan <= 30.00:
-                rec.puntosCuotaIngresos = 200
-            elif rec.porcentajeCuotaPlan >= 31.00 and rec.porcentajeCuotaPlan <= 40.00:
-                rec.puntosCuotaIngresos = 100
-            elif rec.porcentajeCuotaPlan >= 41.00:
-                rec.puntosCuotaIngresos = 0
-            else:
-                rec.puntosPorcentajeCancelado = 0
+    # @api.depends('porcentajeCuotaPlan')
+    # def calcular_puntos_ingresos(self):
+    #     for rec in self:
+    #         if rec.porcentajeCuotaPlan >= 0.00 and rec.porcentajeCuotaPlan <= 30.00:
+    #             rec.puntosCuotaIngresos = 200
+    #         elif rec.porcentajeCuotaPlan >= 31.00 and rec.porcentajeCuotaPlan <= 40.00:
+    #             rec.puntosCuotaIngresos = 100
+    #         elif rec.porcentajeCuotaPlan >= 41.00:
+    #             rec.puntosCuotaIngresos = 0
+    #         else:
+    #             rec.puntosPorcentajeCancelado = 0
 
 
 
-    puntosSaldosPlan = fields.Float(digits=(6, 2), compute='calcular_puntos_saldos_plan')
+    # puntosSaldosPlan = fields.Float(digits=(6, 2), compute='calcular_puntos_saldos_plan')
 
-    @api.depends('porcentajeCuotaPlan')
-    def calcular_puntos_saldos_plan(self):
-        for rec in self:
-            if rec.porcentajeCuotaPlan >= 0.00 and rec.porcentajeCuotaPlan <= 25.00:
-                rec.puntosPorcentajeCancelado = 0
-            elif rec.porcentajeCuotaPlan >= 26.00 and rec.porcentajeCuotaPlan <= 30.00:
-                rec.puntosPorcentajeCancelado = 100
-            elif rec.porcentajeCuotaPlan >= 31.00:
-                rec.puntosPorcentajeCancelado = 200
-            else:
-                rec.puntosPorcentajeCancelado = 0
-
-
-    porcentajeDisponibilidad = fields.Float(digits=(6, 2), compute='calcular_porcentaje_disponibilidad')
-
-    @api.depends('porcentajeGastos', 'porcentajeIngresos')
-    def calcular_porcentaje_disponibilidad(self):
-        for rec in self:
-            rec.porcentajeDisponibilidad = rec.porcentajeIngresos - rec.porcentajeGastos
+    # @api.depends('porcentajeCuotaPlan')
+    # def calcular_puntos_saldos_plan(self):
+    #     for rec in self:
+    #         if rec.porcentajeCuotaPlan >= 0.00 and rec.porcentajeCuotaPlan <= 25.00:
+    #             rec.puntosPorcentajeCancelado = 0
+    #         elif rec.porcentajeCuotaPlan >= 26.00 and rec.porcentajeCuotaPlan <= 30.00:
+    #             rec.puntosPorcentajeCancelado = 100
+    #         elif rec.porcentajeCuotaPlan >= 31.00:
+    #             rec.puntosPorcentajeCancelado = 200
+    #         else:
+    #             rec.puntosPorcentajeCancelado = 0
 
 
-    disponibilidad = fields.Monetary(string='Disponibilidad', compute='calcular_valor_disponibilidad')
+    # porcentajeDisponibilidad = fields.Float(digits=(6, 2), compute='calcular_porcentaje_disponibilidad')
 
-    @api.depends('ingresosFamiliares', 'gastosFamiliares')
-    def calcular_valor_disponibilidad(self):
-        for rec in self:
-            rec.disponibilidad = rec.ingresosFamiliares - rec.gastosFamiliares
-
-
-    scoreCredito = fields.Integer(string="Score de Credito Mayor a 800 puntos")
+    # @api.depends('porcentajeGastos', 'porcentajeIngresos')
+    # def calcular_porcentaje_disponibilidad(self):
+    #     for rec in self:
+    #         rec.porcentajeDisponibilidad = rec.porcentajeIngresos - rec.porcentajeGastos
 
 
-    @api.onchange('scoreBuroCredito')
-    def calculo_scoreCredito(self):
-        self.scoreCredito= self.scoreBuroCredito 
+    # disponibilidad = fields.Monetary(string='Disponibilidad', compute='calcular_valor_disponibilidad')
 
-    puntosScoreCredito = fields.Integer(compute='calcular_punto_score_credito')
-
-    @api.depends('scoreCredito')
-    def calcular_punto_score_credito(self):
-        for rec in self:
-            if rec.scoreCredito >= 500 and rec.scoreCredito <= 799:
-                rec.puntosScoreCredito = 100
-            elif rec.scoreCredito >= 800:
-                rec.puntosScoreCredito = 200
-            else:
-                rec.puntosScoreCredito = 0
+    # @api.depends('ingresosFamiliares', 'gastosFamiliares')
+    # def calcular_valor_disponibilidad(self):
+    #     for rec in self:
+    #         rec.disponibilidad = rec.ingresosFamiliares - rec.gastosFamiliares
 
 
-    antiguedadLaboral = fields.Integer(string="Antigüedad Laboral o Comercial Mayor a 2 años")
+    # scoreCredito = fields.Integer(string="Score de Credito Mayor a 800 puntos")
+
+
+    # @api.onchange('scoreBuroCredito')
+    # def calculo_scoreCredito(self):
+    #     self.scoreCredito= self.scoreBuroCredito 
+
+    # puntosScoreCredito = fields.Integer(compute='calcular_punto_score_credito')
+
+    # @api.depends('scoreCredito')
+    # def calcular_punto_score_credito(self):
+    #     for rec in self:
+    #         if rec.scoreCredito >= 500 and rec.scoreCredito <= 799:
+    #             rec.puntosScoreCredito = 100
+    #         elif rec.scoreCredito >= 800:
+    #             rec.puntosScoreCredito = 200
+    #         else:
+    #             rec.puntosScoreCredito = 0
+
+
+    # antiguedadLaboral = fields.Integer(string="Antigüedad Laboral o Comercial Mayor a 2 años")
     
-    puntosAntiguedadLaboral = fields.Integer(compute='calcular_puntos_antiguedad_laboral')
+    # puntosAntiguedadLaboral = fields.Integer(compute='calcular_puntos_antiguedad_laboral')
 
 
-    @api.depends('antiguedadLaboral')
-    def calcular_puntos_antiguedad_laboral(self):
-        for rec in self:
-            if rec.antiguedadLaboral >= 2:
-                rec.puntosAntiguedadLaboral = 200
-            elif rec.antiguedadLaboral >= 1:
-                rec.puntosAntiguedadLaboral = 100
-            else:
-                rec.puntosAntiguedadLaboral = 0
+    # @api.depends('antiguedadLaboral')
+    # def calcular_puntos_antiguedad_laboral(self):
+    #     for rec in self:
+    #         if rec.antiguedadLaboral >= 2:
+    #             rec.puntosAntiguedadLaboral = 200
+    #         elif rec.antiguedadLaboral >= 1:
+    #             rec.puntosAntiguedadLaboral = 100
+    #         else:
+    #             rec.puntosAntiguedadLaboral = 0
 
 
 
-    totalPuntosCalificador = fields.Integer(compute='calcular_total_puntos')
+    # totalPuntosCalificador = fields.Integer(compute='calcular_total_puntos')
 
-    @api.depends('puntosPorcentajeCancelado', 'puntosPorcentajSaldos', 'puntosCuotaIngresos', 'puntosScoreCredito', 'puntosAntiguedadLaboral', 'totalPuntosBienesAdj')
-    def calcular_total_puntos(self):
-        for rec in self:
-            rec.totalPuntosCalificador = rec.puntosPorcentajeCancelado + rec.puntosPorcentajSaldos +  rec.puntosCuotaIngresos + rec.puntosScoreCredito +  rec.puntosAntiguedadLaboral + rec.totalPuntosBienesAdj
+    # @api.depends('puntosPorcentajeCancelado', 'puntosPorcentajSaldos', 'puntosCuotaIngresos', 'puntosScoreCredito', 'puntosAntiguedadLaboral', 'totalPuntosBienesAdj')
+    # def calcular_total_puntos(self):
+    #     for rec in self:
+    #         rec.totalPuntosCalificador = rec.puntosPorcentajeCancelado + rec.puntosPorcentajSaldos +  rec.puntosCuotaIngresos + rec.puntosScoreCredito +  rec.puntosAntiguedadLaboral + rec.totalPuntosBienesAdj
 
 
-    observacionesCalificador = fields.Text(string="Observaciones", default=' ')
+    # observacionesCalificador = fields.Text(string="Observaciones", default=' ')
 
     titularConyugePuntos = fields.Char(
         string="Titular, Conyugue y Depositario")
@@ -1830,27 +1995,7 @@ class EntegaVehiculo(models.Model):
     
 
 
-    @api.onchange('fechaNacimientoConyuge','fechaNacimientoConyugeGarante')
-    def calcular_edad_conyuge(self):
-        edad = 0
-        self.edadConyugeGarante = 0
-        self.edadConyuge=0
-        for rec in self:
-            today = date.today()
-            if rec.fechaNacimientoConyuge:
-                edad = today.year - rec.fechaNacimientoConyuge.year - \
-                    ((today.month, today.day) < (
-                        rec.fechaNacimientoConyuge.month, rec.fechaNacimientoConyuge.day))
-                rec.edadConyuge = edad
-            else:
-                rec.edadConyuge = 0
-            if rec.fechaNacimientoConyugeGarante:
-                edadGarante = today.year - rec.fechaNacimientoConyugeGarante.year - \
-                    ((today.month, today.day) < (
-                        rec.fechaNacimientoConyugeGarante.month, rec.fechaNacimientoConyugeGarante.day))
-                rec.edadConyuge = edadGarante
-            else:
-                rec.edadConyugeGarante = 0
+
     
 
 
