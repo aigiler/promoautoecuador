@@ -439,7 +439,7 @@ class EntegaVehiculo(models.Model):
             if l.ciudadGarante:
                 l.nombreGarante.city=l.ciudadGarante
 
-   fechaNacimientoConyugeGarante = fields.Date(string='Fecha de Nacimiento',store=True)
+    fechaNacimientoConyugeGarante = fields.Date(string='Fecha de Nacimiento',store=True)
 
     @api.constrains("fechaNacimientoConyugeGarante")
     @api.onchange("fechaNacimientoConyugeGarante")
