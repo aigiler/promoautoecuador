@@ -1842,13 +1842,13 @@ class EntegaVehiculo(models.Model):
                 rec.montoPagoConsesionario = 'diferencia'    
     
     
-    @api.depends('totalPuntosCalificador')
-    def set_aplica_garante(self):
-        for rec in self:
-            if rec.totalPuntosCalificador  >= 700:
-                rec.aplicaGarante = 'NO'
-            else:
-                rec.aplicaGarante = 'SI'
+    # @api.depends('totalPuntosCalificador')
+    # def set_aplica_garante(self):
+    #     for rec in self:
+    #         if rec.totalPuntosCalificador  >= 700:
+    #             rec.aplicaGarante = 'NO'
+    #         else:
+    #             rec.aplicaGarante = 'SI'
 
     @api.depends('montoAdjudicado', 'valorComisionFactura', 'retencion_pagar', 'montoAnticipoConsesionaria')
     def calcular_valor_cheque(self):
