@@ -116,13 +116,13 @@ class EntrevistaCredito(models.TransientModel):
                             if ingreso.ingresos_id.celda_excel in [37,38]:
                                 dct['hoja']=1
                                 dct['fila']=ingreso.ingresos_id.celda_excel
-                                dct['columna']=4
+                                dct['columna']=5
                                 dct['valor']=ingreso.titular
                                 lista_campos.append(dct)
                                 dct={}
                                 dct['hoja']=1
                                 dct['fila']=ingreso.ingresos_id.celda_excel
-                                dct['columna']=5
+                                dct['columna']=6
                                 dct['valor']=ingreso.conyuge
                                 lista_campos.append(dct)
                                 dct={}
@@ -144,9 +144,6 @@ class EntrevistaCredito(models.TransientModel):
                                 dct['valor']=egreso.conyuge
                                 lista_campos.append(dct)
                                 dct={}
-
-                    
-
                     i=0
                     for familia in self.entrega_vehiculo_id.referencias_familiares_ids:
                         if i<2:
@@ -229,7 +226,7 @@ class EntrevistaCredito(models.TransientModel):
                             if ingreso.ingresos_id.celda_excel in [37,38]:
                                 dct['hoja']=1
                                 dct['fila']=ingreso.ingresos_id.celda_excel
-                                dct['columna']=4
+                                dct['columna']=5
                                 dct['valor']=ingreso.titular
                                 lista_campos.append(dct)
                                 dct={}
