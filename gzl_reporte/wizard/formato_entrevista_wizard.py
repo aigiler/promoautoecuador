@@ -349,7 +349,7 @@ class EntrevistaCredito(models.TransientModel):
                                                     'store_fname':nombre_archivo.split('.')[0]+'.pdf'
                                                     })
         self.archivo_xls1=file
-        return{'xls_filename1':'Orden de Compra.pdf','archivo_xls1':file,"documento":obj_attch}
+        return{'xls_filename1':'Entrevista.pdf','archivo_xls1':file,"documento":obj_attch}
 
 
 
