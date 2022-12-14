@@ -76,7 +76,7 @@ class EntrevistaCredito(models.TransientModel):
                 for necesidad in self.entrega_vehiculo_id.necesidadIds:
                     dct={}
                     dct['hoja']=1
-                    if necesidad.necesidad_id.celda_excel==[62,69]:
+                    if necesidad.necesidad_id.celda_excel in [62,69]:
                         dct['hoja']=1
                         dct['fila']=necesidad.necesidad_id.celda_excel
                         dct['columna']=2
@@ -90,7 +90,7 @@ class EntrevistaCredito(models.TransientModel):
                         if not items.garante:
                             dct={}
                             dct['hoja']=1
-                            if items.patrimonio_id.celda_excel==[28,29,30,31,32,33,34]:
+                            if items.patrimonio_id.celda_excel in [28,29,30,31,32,33,34]:
                                 dct['hoja']=1
                                 dct['fila']=items.patrimonio_id.celda_excel
                                 dct['columna']=2
@@ -113,7 +113,7 @@ class EntrevistaCredito(models.TransientModel):
                         if not ingreso.garante:
                             dct={}
                             dct['hoja']=1
-                            if ingreso.ingresos_id.celda_excel==[37,38]:
+                            if ingreso.ingresos_id.celda_excel in [37,38]:
                                 dct['hoja']=1
                                 dct['fila']=ingreso.ingresos_id.celda_excel
                                 dct['columna']=4
@@ -131,7 +131,7 @@ class EntrevistaCredito(models.TransientModel):
                         if not egreso.garante:
                             dct={}
                             dct['hoja']=1
-                            if egreso.egresos_id.celda_excel==[41,49]:
+                            if egreso.egresos_id.celda_excel in [41,49]:
                                 dct['hoja']=1
                                 dct['fila']=egreso.egresos_id.celda_excel
                                 dct['columna']=4
@@ -203,7 +203,7 @@ class EntrevistaCredito(models.TransientModel):
                         if items.garante:
                             dct={}
                             dct['hoja']=1
-                            if items.patrimonio_id.celda_excel==[28,29,30,31,32,33,34]:
+                            if items.patrimonio_id.celda_excel in [28,29,30,31,32,33,34]:
                                 dct['hoja']=1
                                 dct['fila']=items.patrimonio_id.celda_excel
                                 dct['columna']=2
@@ -226,7 +226,7 @@ class EntrevistaCredito(models.TransientModel):
                         if ingreso.garante:
                             dct={}
                             dct['hoja']=1
-                            if ingreso.ingresos_id.celda_excel==[37,38]:
+                            if ingreso.ingresos_id.celda_excel in [37,38]:
                                 dct['hoja']=1
                                 dct['fila']=ingreso.ingresos_id.celda_excel
                                 dct['columna']=4
@@ -244,7 +244,7 @@ class EntrevistaCredito(models.TransientModel):
                         if egreso.garante:
                             dct={}
                             dct['hoja']=1
-                            if egreso.egresos_id.celda_excel==[41,49]:
+                            if egreso.egresos_id.celda_excel in [41,49]:
                                 dct['hoja']=1
                                 dct['fila']=egreso.egresos_id.celda_excel
                                 dct['columna']=4
