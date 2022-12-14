@@ -340,7 +340,7 @@ class EntrevistaCredito(models.TransientModel):
 
 
 
-    def entrevista_credito(ruta,lista):
+    def entrevista_credito(self,ruta,lista):
 
         workbook = openpyxl.load_workbook(ruta)
 
