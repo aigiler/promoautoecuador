@@ -9,6 +9,8 @@
             <tree string="Items Patrimonio" editable="top">
                 <field name="nombre" />
                 <field name="descripcion" />
+                <field name="celda_excel" />
+                
             </tree>
         </field>
     </record>
@@ -37,6 +39,7 @@
         <field name="arch" type="xml">
             <tree string="Ingresos Financiero" editable="top">
                 <field name="nombre" />
+                <field name="celda_excel" />
             </tree>
         </field>
     </record>
@@ -67,6 +70,7 @@
         <field name="arch" type="xml">
             <tree string="Egresos Financiero" editable="top">
                 <field name="nombre" />
+                <field name="celda_excel" />
             </tree>
         </field>
     </record>
@@ -94,6 +98,7 @@
         <field name="arch" type="xml">
             <tree string="Vehículos" editable="top">
                 <field name="nombre" />
+                <field name="celda_excel" />
             </tree>
         </field>
     </record>
