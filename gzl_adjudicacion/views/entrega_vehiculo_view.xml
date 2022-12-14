@@ -65,9 +65,16 @@
                             <separator class="text-center" string="INFORMACIÓN PERSONAL"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
+                                    <div class="col-xs-8">
                                     <group >  
                                         <field name="nombreSocioAdjudicado" required="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" options="{'no_open': True, 'no_create': True}"/>
                                     </group>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <group>
+                                            <button name="create_entrevista" type="object" string="Descargar PDF" class="btn btn-primary"/>
+                                        </group>
+                                    </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-6">
                                     <group> 
@@ -346,9 +353,15 @@
                             <separator class="text-center" string="INFORMACIÓN PERSONAL"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
-                                    <group >  
+                                    <div class="col-xs-8"><group >  
                                         <field name="nombreGarante" required="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" options="{'no_open': True, 'no_create': True}"/>
                                     </group>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <group>
+                                            <button name="create_entrevista" type="object" string="Descargar PDF" class="btn btn-primary"/>
+                                        </group>
+                                    </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-6">
                                     <group> 

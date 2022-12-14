@@ -14,6 +14,7 @@ class ItemsPatrimonio(models.Model):
     _rec_name= 'nombre'
     
     nombre = fields.Char('Nombre',  required=True)
+    celda_excel=fields.Integer("Celda en Excel")
     descripcion=fields.Text('Descripcion',  required=True)
   
 
@@ -23,6 +24,7 @@ class NecesidadVehiculo(models.Model):
     _rec_name= 'nombre'
     
     nombre = fields.Char('Nombre',  required=True)
+    celda_excel=fields.Integer("Celda en Excel")
 
 class EgresoFinan(models.Model):
     _name = 'egresos.financiero'
@@ -30,13 +32,16 @@ class EgresoFinan(models.Model):
     _rec_name= 'nombre'
     
     nombre = fields.Char('Nombre',  required=True)
-  
+    celda_excel=fields.Integer("Celda en Excel")
+
+
 class IngresoFinan(models.Model):
     _name = 'ingresos.financiero'
     _description = 'Ingreso Financiero'
     _rec_name= 'nombre'
     
     nombre = fields.Char('Nombre',  required=True)
+    celda_excel=fields.Integer("Celda en Excel")
   
 
 class ItemsDocumentosPostventa(models.Model):
