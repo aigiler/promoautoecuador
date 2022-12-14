@@ -167,7 +167,7 @@ class EntrevistaCredito(models.TransientModel):
                                 dct['columna']=5
                                 dct['valor']=familia.telefono
                                 lista_campos.append(dct)
-                                i++
+                                i+=1
 
 
                     j=0
@@ -279,7 +279,7 @@ class EntrevistaCredito(models.TransientModel):
                                 dct['columna']=5
                                 dct['valor']=familia.telefono
                                 lista_campos.append(dct)
-                                i++
+                                i+=1
 
 
                     j=0
