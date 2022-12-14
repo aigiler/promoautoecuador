@@ -1166,7 +1166,7 @@ class EntegaVehiculo(models.Model):
 
 
     def create_entrevista_garante(self):
-        plantilla_id=self.env['entrevista.credito'].create({'clave':"liquidacion_compra",
+        plantilla_id=self.env['entrevista.credito'].create({'clave':"entrevista_adjudicado",
                                                     'entrega_vehiculo_id':self.id})
         dct=plantilla_id.crear_formato_entrevista()
         return dct
