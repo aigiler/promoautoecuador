@@ -189,25 +189,19 @@ class EntrevistaCredito(models.TransientModel):
                                 dct['hoja']=1
                                 dct['fila']=59+j
                                 dct['columna']=1
-                                dct['valor']="No"
-                                if bancaria.banco:
-                                    dct['valor']="SI"
+                                dct['valor']=bancaria.banco
                                 lista_campos.append(dct)
                                 dct={}
                                 dct['hoja']=1
                                 dct['fila']=59+j
                                 dct['columna']=2
-                                dct['valor']="No"
-                                if bancaria.tipo_cuenta:
-                                    dct['valor']="SI"
+                                dct['valor']=bancaria.tipo_cuenta
                                 lista_campos.append(dct)
                                 dct={}
                                 dct['hoja']=1
                                 dct['fila']=59+j
                                 dct['columna']=4
-                                dct['valor']="No"
-                                if bancaria.numero_cuenta:
-                                    dct['valor']="SI"
+                                dct['valor']=bancaria.numero_cuenta
                                 lista_campos.append(dct)
                                 j+=1
                 else:
@@ -316,25 +310,19 @@ class EntrevistaCredito(models.TransientModel):
                                 dct['hoja']=1
                                 dct['fila']=59+j
                                 dct['columna']=1
-                                dct['valor']="No"
-                                if bancaria.banco:
-                                    dct['valor']="SI"
+                                dct['valor']=bancaria.banco
                                 lista_campos.append(dct)
                                 dct={}
                                 dct['hoja']=1
                                 dct['fila']=59+j
                                 dct['columna']=2
-                                dct['valor']="No"
-                                if bancaria.tipo_cuenta:
-                                    dct['valor']="SI"
+                                dct['valor']=bancaria.tipo_cuenta
                                 lista_campos.append(dct)
                                 dct={}
                                 dct['hoja']=1
                                 dct['fila']=59+j
                                 dct['columna']=4
-                                dct['valor']="No"
-                                if bancaria.numero_cuenta:
-                                    dct['valor']="SI"
+                                dct['valor']=bancaria.numero_cuenta
                                 lista_campos.append(dct)
                                 j+=1
 
