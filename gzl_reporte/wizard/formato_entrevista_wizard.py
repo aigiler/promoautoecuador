@@ -168,22 +168,21 @@ class EntrevistaCredito(models.TransientModel):
                                 dct['valor']=familia.telefono
                                 lista_campos.append(dct)
                                 i++
-                        else:
-                            pass
+
 
                     j=0
                     for bancaria in self.entrega_vehiculo_id.referencias_bancarias_ids:
                         if j<2:
-                        if not bancaria.garante:
-                            dct={}
-                            dct['hoja']=1
-                            dct['fila']=59
-                            dct['columna']=2
-                            dct['valor']="No"
-                            if bancaria.adquirirBien:
-                                dct['valor']="SI"
-                            lista_campos.append(dct)
-                            j+=1
+                            if not bancaria.garante:
+                                dct={}
+                                dct['hoja']=1
+                                dct['fila']=59
+                                dct['columna']=2
+                                dct['valor']="No"
+                                if bancaria.adquirirBien:
+                                    dct['valor']="SI"
+                                lista_campos.append(dct)
+                                j+=1
 
                 else:
                     for items in self.entrega_vehiculo_id.montoAhorroInversionesGarante:
@@ -281,22 +280,21 @@ class EntrevistaCredito(models.TransientModel):
                                 dct['valor']=familia.telefono
                                 lista_campos.append(dct)
                                 i++
-                        else:
-                            pass
+
 
                     j=0
                     for bancaria in self.entrega_vehiculo_id.referencias_bancarias_ids_garante:
                         if j<2:
-                        if bancaria.garante:
-                            dct={}
-                            dct['hoja']=1
-                            dct['fila']=59
-                            dct['columna']=2
-                            dct['valor']="No"
-                            if bancaria.adquirirBien:
-                                dct['valor']="SI"
-                            lista_campos.append(dct)
-                            j+=1
+                            if bancaria.garante:
+                                dct={}
+                                dct['hoja']=1
+                                dct['fila']=59
+                                dct['columna']=2
+                                dct['valor']="No"
+                                if bancaria.adquirirBien:
+                                    dct['valor']="SI"
+                                lista_campos.append(dct)
+                                j+=1
 
 
             fp =io.BytesIO()
@@ -342,24 +340,24 @@ class EntrevistaCredito(models.TransientModel):
 
 
 
-def entrevista_credito(ruta,lista):
+    def entrevista_credito(ruta,lista):
 
-    workbook = openpyxl.load_workbook(ruta)
+        workbook = openpyxl.load_workbook(ruta)
 
-    sheet = workbook.active
+        sheet = workbook.active
 
-    sheet = workbook['Entrevista']
-    listaSheet = list(filter(lambda x: (x['hoja']==1), lista)) 
-    for campo in listaSheet:
-        cell = sheet.cell(row=campo['fila'], column=campo['columna'])
-        try:
-            cell.value = campo['valor'] or ''
-        except:
-            raise ValidationError("""El valor {0} en la fila {1} columna {2}  hoja {3} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna'],campo['hoja']))
-    
+        sheet = workbook['Entrevista']
+        listaSheet = list(filter(lambda x: (x['hoja']==1), lista)) 
+        for campo in listaSheet:
+            cell = sheet.cell(row=campo['fila'], column=campo['columna'])
+            try:
+                cell.value = campo['valor'] or ''
+            except:
+                raise ValidationError("""El valor {0} en la fila {1} columna {2}  hoja {3} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna'],campo['hoja']))
+        
 
 
-    workbook.save(ruta)
-    return workbook
+        workbook.save(ruta)
+        return workbook
 
 
