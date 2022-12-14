@@ -105,8 +105,8 @@ class EntrevistaCredito(models.TransientModel):
                                 dct={}
                                 dct['hoja']=1
                                 dct['fila']=items.patrimonio_id.celda_excel
-                                dct['columna']=5
-                                dct['valor']=items.descripcion
+                                dct['columna']=4
+                                dct['valor']=items.valor
                                 lista_campos.append(dct)
                     
                     for ingreso in self.entrega_vehiculo_id.ingresosIds:
@@ -216,7 +216,7 @@ class EntrevistaCredito(models.TransientModel):
                                 dct['hoja']=1
                                 dct['fila']=items.patrimonio_id.celda_excel
                                 dct['columna']=5
-                                dct['valor']=items.descripcion
+                                dct['valor']=items.valor
                                 lista_campos.append(dct)
                 
                     for ingreso in self.entrega_vehiculo_id.ingresosIdsGarante:
