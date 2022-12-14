@@ -89,6 +89,7 @@ class EntrevistaCredito(models.TransientModel):
                     for items in self.entrega_vehiculo_id.montoAhorroInversiones:
                         if not items.garante:
                             dct={}
+                        
                             dct['hoja']=1
                             if items.patrimonio_id.celda_excel in [28,29,30,31,32,33,34]:
                                 dct['hoja']=1
@@ -149,31 +150,31 @@ class EntrevistaCredito(models.TransientModel):
                         if i<2:
                             if not familia.garante:
                                 dct={}
-                                dct['hoja']=11
+                                dct['hoja']=1
                                 dct['fila']=55+i
                                 dct['columna']=1
                                 dct['valor']=familia.nombre
                                 lista_campos.append(dct)
                                 dct={}
-                                dct['hoja']=11
+                                dct['hoja']=1
                                 dct['fila']=55+i
                                 dct['columna']=2
                                 dct['valor']=familia.cedula
                                 lista_campos.append(dct)
                                 dct={}
-                                dct['hoja']=11
+                                dct['hoja']=1
                                 dct['fila']=55+i
                                 dct['columna']=3
                                 dct['valor']=familia.parentezco
                                 lista_campos.append(dct)
                                 dct={}
-                                dct['hoja']=11
+                                dct['hoja']=1
                                 dct['fila']=55+i
                                 dct['columna']=4
                                 dct['valor']=familia.direccion
                                 lista_campos.append(dct)
                                 dct={}
-                                dct['hoja']=11
+                                dct['hoja']=1
                                 dct['fila']=55+i
                                 dct['columna']=5
                                 dct['valor']=familia.telefono
@@ -270,25 +271,25 @@ class EntrevistaCredito(models.TransientModel):
                         if i<2:
                             if familia.garante:
                                 dct={}
-                                dct['hoja']=11
+                                dct['hoja']=1
                                 dct['fila']=55+i
                                 dct['columna']=1
                                 dct['valor']=familia.nombre
                                 lista_campos.append(dct)
                                 dct={}
-                                dct['hoja']=11
+                                dct['hoja']=1
                                 dct['fila']=55+i
                                 dct['columna']=2
                                 dct['valor']=familia.cedula
                                 lista_campos.append(dct)
                                 dct={}
-                                dct['hoja']=11
+                                dct['hoja']=1
                                 dct['fila']=55+i
                                 dct['columna']=3
                                 dct['valor']=familia.parentezco
                                 lista_campos.append(dct)
                                 dct={}
-                                dct['hoja']=11
+                                dct['hoja']=1
                                 dct['fila']=55+i
                                 dct['columna']=4
                                 dct['valor']=familia.direccion
