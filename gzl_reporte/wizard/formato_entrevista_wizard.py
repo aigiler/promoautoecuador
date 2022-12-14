@@ -298,7 +298,7 @@ class EntrevistaCredito(models.TransientModel):
 
 
             fp =io.BytesIO()
-            workbook=self.entrevista_credito(obj_plantilla.directorio_out,lista_campos,self.clave)
+            workbook=self.entrevista_credito(obj_plantilla.directorio_out,lista_campos)
             workbook.save(fp)
             with open(obj_plantilla.directorio_out, "rb") as f:
                 data = f.read()
