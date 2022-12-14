@@ -349,8 +349,13 @@ class EntrevistaCredito(models.TransientModel):
                                                     'store_fname':nombre_archivo.split('.')[0]+'.pdf'
                                                     })
         self.archivo_xls1=file
-        return{'xls_filename1':'Entrevista.pdf','archivo_xls1':file,"documento":obj_attch}
-
+        url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        url += "/web/content/%s?download=true"%(obj_attch.id) 
+        return{
+            "type": "ir.actions.act_url",
+            "url": url,
+            "target": "new",
+        }
 
 
 
