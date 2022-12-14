@@ -359,7 +359,7 @@
                                     </div>
                                     <div class="col-xs-4">
                                         <group>
-                                            <button name="create_entrevista" type="object" string="Descargar PDF" class="btn btn-primary"/>
+                                            <button name="create_entrevista_garante" type="object" string="Descargar PDF" class="btn btn-primary"/>
                                         </group>
                                     </div>
                                 </div>
