@@ -22,6 +22,20 @@ import os
 import io
 import base64
 from base64 import urlsafe_b64decode
+import openpyxl
+from openpyxl import Workbook
+import openpyxl.worksheet
+import unicodedata
+from string import ascii_letters
+from openpyxl import Workbook
+from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font
+from openpyxl.styles.borders import Border, Side
+from openpyxl.drawing.image import Image
+import time
+from datetime import datetime,timedelta,date
+import calendar
+import locale
+from odoo.exceptions import UserError, ValidationError
 
 import shutil
 
