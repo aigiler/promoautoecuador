@@ -105,7 +105,7 @@ class EntrevistaCredito(models.TransientModel):
                                 dct={}
                                 dct['hoja']=1
                                 dct['fila']=items.patrimonio_id.celda_excel
-                                dct['columna']=4
+                                dct['columna']=5
                                 dct['valor']=items.valor
                                 lista_campos.append(dct)
                     
@@ -204,13 +204,12 @@ class EntrevistaCredito(models.TransientModel):
                                 dct={}
                                 dct['hoja']=1
                                 dct['fila']=59+j
-                                dct['columna']=3
+                                dct['columna']=4
                                 dct['valor']="No"
                                 if bancaria.numero_cuenta:
                                     dct['valor']="SI"
                                 lista_campos.append(dct)
                                 j+=1
-
                 else:
                     for items in self.entrega_vehiculo_id.montoAhorroInversionesGarante:
                         if items.garante:
@@ -332,7 +331,7 @@ class EntrevistaCredito(models.TransientModel):
                                 dct={}
                                 dct['hoja']=1
                                 dct['fila']=59+j
-                                dct['columna']=3
+                                dct['columna']=4
                                 dct['valor']="No"
                                 if bancaria.numero_cuenta:
                                     dct['valor']="SI"
