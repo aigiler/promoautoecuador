@@ -134,7 +134,7 @@ class EntrevistaCredito(models.TransientModel):
                             if egreso.egresos_id.celda_excel in [41,49]:
                                 dct['hoja']=1
                                 dct['fila']=egreso.egresos_id.celda_excel
-                                dct['columna']=4
+                                dct['columna']=5
                                 dct['valor']=egreso.titular
                                 lista_campos.append(dct)
                                 dct={}
@@ -218,7 +218,7 @@ class EntrevistaCredito(models.TransientModel):
                                 dct['columna']=5
                                 dct['valor']=items.descripcion
                                 lista_campos.append(dct)
-                    
+                
                     for ingreso in self.entrega_vehiculo_id.ingresosIdsGarante:
                         if ingreso.garante:
                             dct={}
@@ -232,7 +232,7 @@ class EntrevistaCredito(models.TransientModel):
                                 dct={}
                                 dct['hoja']=1
                                 dct['fila']=ingreso.ingresos_id.celda_excel
-                                dct['columna']=5
+                                dct['columna']=6
                                 dct['valor']=ingreso.conyuge
                                 lista_campos.append(dct)
                                 dct={}
@@ -244,13 +244,13 @@ class EntrevistaCredito(models.TransientModel):
                             if egreso.egresos_id.celda_excel in [41,49]:
                                 dct['hoja']=1
                                 dct['fila']=egreso.egresos_id.celda_excel
-                                dct['columna']=4
+                                dct['columna']=5
                                 dct['valor']=egreso.titular
                                 lista_campos.append(dct)
                                 dct={}
                                 dct['hoja']=1
                                 dct['fila']=egreso.egresos_id.celda_excel
-                                dct['columna']=5
+                                dct['columna']=6
                                 dct['valor']=egreso.conyuge
                                 lista_campos.append(dct)
                                 dct={}
