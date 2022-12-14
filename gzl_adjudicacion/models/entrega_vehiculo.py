@@ -1540,7 +1540,7 @@ class EntegaVehiculo(models.Model):
     aplicaGarante = fields.Selection(selection=[
         ('NO', 'Titular, Conyugue y Depositario'),
         ('SI', 'Titular, Conyugue y Garante Solidario')
-    ], compute='set_aplica_garante')
+    ])
     
     montoPagoConsesionario = fields.Selection(selection=[
         ('saldo_a_favor', 'SALDO A FAVOR APLICA A CUOTAS FINALES DEL PLAN'),
