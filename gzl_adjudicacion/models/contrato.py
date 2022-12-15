@@ -814,8 +814,8 @@ class ContratoEstadoCuenta(models.Model):
 
 
     #####Comentar función luego de la migración
-    @api.contrains("numero_cuota")
-    def actualizar_valores(self, vals):
+    @api.constrains("numero_cuota")
+    def actualizar_valores(self):
         for x in self:
             cuota_actual=0
             saldos=0
