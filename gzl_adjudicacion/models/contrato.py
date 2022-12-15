@@ -815,6 +815,7 @@ class ContratoEstadoCuenta(models.Model):
 
     #####Comentar función luego de la migración
     def create(self, vals):
+        raise ValidationError(vals)
         cuota_actual=0
         saldos=0
         if vals.get('cuota_capital'):
