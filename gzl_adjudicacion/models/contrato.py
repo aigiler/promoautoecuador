@@ -818,40 +818,40 @@ class ContratoEstadoCuenta(models.Model):
         raise ValidationError(vals)
         cuota_actual=0
         saldos=0
-        if vals.get('cuota_capital'):
-            cuota_actual+=vals.get('cuota_capital')
-        if vals.get('cuota_adm'):
-            cuota_actual+=vals.get("cuota_adm")
-        if vals.get('iva_adm'):
-            cuota_actual+=vals.get("iva_adm")
-        if vals.get('fondo_reserva'):
-            cuota_actual+=vals.get("fondo_reserva")
-        if vals.get('programado'):
-            cuota_actual+=vals.get("programado")
-        if vals.get('seguro'):
-            cuota_actual+=vals.get("seguro")
-        if vals.get('rastreo'):
-            cuota_actual+=vals.get("rastreo")
-        if vals.get('otros'):
-            cuota_actual+=vals.get("otros")
+        if vals['cuota_capital']:
+            cuota_actual+=vals['cuota_capital']
+        if vals['cuota_adm']:
+            cuota_actual+=vals["cuota_adm"]
+        if vals['iva_adm']:
+            cuota_actual+=vals["iva_adm"]
+        if vals['fondo_reserva']:
+            cuota_actual+=vals["fondo_reserva"]
+        if vals['programado']:
+            cuota_actual+=vals["programado"]
+        if vals['seguro']:
+            cuota_actual+=vals["seguro"]
+        if vals['rastreo']:
+            cuota_actual+=vals["rastreo"]
+        if vals['otros']:
+            cuota_actual+=vals["otros"]
 
 
-        if vals.get('saldo_cuota_capital'):
-            saldos+=vals.get("saldo_cuota_capital")
-        if vals.get('saldo_cuota_administrativa'):
-            saldos+=vals.get("saldo_cuota_administrativa")
-        if vals.get('saldo_iva'):
-            saldos+=vals.get("saldo_iva")
-        if vals.get('saldo_fondo_reserva'):
-            saldos+=vals.get("saldo_fondo_reserva")
-        if vals.get('saldo_programado'):
-            saldos+=vals.get("saldo_programado")
-        if vals.get('saldo_seguro'):
-            saldos+=vals.get("saldo_seguro")
-        if vals.get('saldo_rastreo'):
-            saldos+=vals.get("saldo_rastreo")
-        if vals.get('saldo_otros'):
-            saldos+=vals.get("saldo_otros")
+        if vals['saldo_cuota_capital']:
+            saldos+=vals["saldo_cuota_capital"]
+        if vals['saldo_cuota_administrativa']:
+            saldos+=vals["saldo_cuota_administrativa"]
+        if vals['saldo_iva']:
+            saldos+=vals["saldo_iva"]
+        if vals['saldo_fondo_reserva']:
+            saldos+=vals["saldo_fondo_reserva"]
+        if vals['saldo_programado']:
+            saldos+=vals["saldo_programado"]
+        if vals['saldo_seguro']:
+            saldos+=vals["saldo_seguro"]
+        if vals['saldo_rastreo']:
+            saldos+=vals["saldo_rastreo"]
+        if vals['saldo_otros']:
+            saldos+=vals["saldo_otros"]
 
         diferencia=cuota_actual-saldos
         if saldo==0:
