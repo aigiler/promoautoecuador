@@ -814,9 +814,9 @@ class ContratoEstadoCuenta(models.Model):
 
 
     #####Comentar función luego de la migración
-    @api.constrains("numero_cuota")
     def actualizar_valores(self):
-        for x in self:
+        estado_cuenta_ids=self.env["contrato.estado.cuenta"].search([])
+        for x in estado_cuenta_ids:
             cuota_actual=0
             saldos=0
             if x['cuota_capital']:
@@ -835,8 +835,6 @@ class ContratoEstadoCuenta(models.Model):
                 cuota_actual+=x["rastreo"]
             if x['otros']:
                 cuota_actual+=x["otros"]
-
-
             if x['saldo_cuota_capital']:
                 saldos+=x["saldo_cuota_capital"]
             if x['saldo_cuota_administrativa']:
@@ -865,9 +863,6 @@ class ContratoEstadoCuenta(models.Model):
                 lista_ids.append(int(id_registro))
                 self.update({'ids_pagos':[(6,0,lista_ids)]})
 
-
-
-                
 
 class PagoContratoEstadoCuenta(models.Model):
     _inherit = 'account.payment'
