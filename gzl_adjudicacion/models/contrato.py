@@ -815,53 +815,52 @@ class ContratoEstadoCuenta(models.Model):
 
     #####Comentar función luego de la migración
     def create(self, vals):
-        raise ValidationError(vals)
-        cuota_actual=0
-        saldos=0
-        if vals['cuota_capital']:
-            cuota_actual+=vals['cuota_capital']
-        if vals['cuota_adm']:
-            cuota_actual+=vals["cuota_adm"]
-        if vals['iva_adm']:
-            cuota_actual+=vals["iva_adm"]
-        if vals['fondo_reserva']:
-            cuota_actual+=vals["fondo_reserva"]
-        if vals['programado']:
-            cuota_actual+=vals["programado"]
-        if vals['seguro']:
-            cuota_actual+=vals["seguro"]
-        if vals['rastreo']:
-            cuota_actual+=vals["rastreo"]
-        if vals['otros']:
-            cuota_actual+=vals["otros"]
+        for x in vals:
+            cuota_actual=0
+            saldos=0
+            if x['cuota_capital']:
+                cuota_actual+=x['cuota_capital']
+            if x['cuota_adm']:
+                cuota_actual+=x["cuota_adm"]
+            if x['iva_adm']:
+                cuota_actual+=x["iva_adm"]
+            if x['fondo_reserva']:
+                cuota_actual+=x["fondo_reserva"]
+            if x['programado']:
+                cuota_actual+=x["programado"]
+            if x['seguro']:
+                cuota_actual+=x["seguro"]
+            if x['rastreo']:
+                cuota_actual+=x["rastreo"]
+            if x['otros']:
+                cuota_actual+=x["otros"]
 
 
-        if vals['saldo_cuota_capital']:
-            saldos+=vals["saldo_cuota_capital"]
-        if vals['saldo_cuota_administrativa']:
-            saldos+=vals["saldo_cuota_administrativa"]
-        if vals['saldo_iva']:
-            saldos+=vals["saldo_iva"]
-        if vals['saldo_fondo_reserva']:
-            saldos+=vals["saldo_fondo_reserva"]
-        if vals['saldo_programado']:
-            saldos+=vals["saldo_programado"]
-        if vals['saldo_seguro']:
-            saldos+=vals["saldo_seguro"]
-        if vals['saldo_rastreo']:
-            saldos+=vals["saldo_rastreo"]
-        if vals['saldo_otros']:
-            saldos+=vals["saldo_otros"]
+            if x['saldo_cuota_capital']:
+                saldos+=x["saldo_cuota_capital"]
+            if x['saldo_cuota_administrativa']:
+                saldos+=x["saldo_cuota_administrativa"]
+            if x['saldo_iva']:
+                saldos+=x["saldo_iva"]
+            if x['saldo_fondo_reserva']:
+                saldos+=x["saldo_fondo_reserva"]
+            if x['saldo_programado']:
+                saldos+=x["saldo_programado"]
+            if x['saldo_seguro']:
+                saldos+=x["saldo_seguro"]
+            if x['saldo_rastreo']:
+                saldos+=x["saldo_rastreo"]
+            if x['saldo_otros']:
+                saldos+=x["saldo_otros"]
 
-        diferencia=cuota_actual-saldos
-        if saldo==0:
-            vals["estado_pago"]="pagado"
-        id_registro=super(ContratoEstadoCuenta, self).create(vals)
-        raise ValidationError(id_registro)
-        if diferencia!=0:
-            self.env["account.payment.cuotas"].create({"cuotas_id":id_registro.id,
-                                                    "monto_pagado":diferencia,
-                                                    "valor_asignado":diferencia})
+            diferencia=cuota_actual-saldos
+            if saldo==0:
+                x["estado_pago"]="pagado"
+            id_registro=super(ContratoEstadoCuenta, self).create(vals)
+            if diferencia!=0:
+                self.env["account.payment.cuotas"].create({"cuotas_id":id_registro.id,
+                                                        "monto_pagado":diferencia,
+                                                        "valor_asignado":diferencia})
 
 class PagoContratoEstadoCuenta(models.Model):
     _inherit = 'account.payment'
