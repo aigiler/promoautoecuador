@@ -394,8 +394,6 @@ class Asamblea(models.Model):
 class IntegrantesGrupoAsamblea(models.Model):
     _name = 'integrante.grupo.adjudicado.asamblea.clientes'
     _description = 'Integrantes de Grupo Participante en asamblea'
-  
-
 
     adjudicado_id = fields.Many2one('res.partner', string="Nombre")
 

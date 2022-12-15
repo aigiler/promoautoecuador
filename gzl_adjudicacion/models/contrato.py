@@ -841,6 +841,18 @@ class ContratoEstadoCuenta(models.Model):
             l.saldo=l.cuota_capital+l.cuota_adm+l.iva_adm + l.seguro+ l.rastreo + l.otro + l.programado - l.monto_pagado
 
 
+    def create(self, vals):
+        cuota_actual=vals["cuota_capital"]+vals["cuota_adm"]+vals["iva_adm"]+vals["fondo_reserva"]+vals["programado"]+vals["saldo_seguro"]+vals["saldo_rastreo"]+vals["saldo_otros"]
+        saldos= vals["saldo_cuota_capital"]+vals["saldo_cuota_administrativa"]+vals["saldo_fondo_reserva"]+vals["saldo_iva"]+vals["saldo_programado"]+vals["seguro"]+vals["rastreo"]+vals["otros"]
+
+        diferencia=cuota_actual-saldos
+        if saldo==0:
+            vals["estado_pago"]="pagado"
+        id_registro=super(ContratoEstadoCuenta, self).create(vals)
+        if diferencia!=0:
+            self.env["account.payment.cuotas"].create({"cuotas_id":id_registro.id,
+                                                    "monto_pagado":diferencia,
+                                                    "valor_asignado":diferencia})
     # def pagar_cuota(self):
     #     view_id = self.env.ref('gzl_adjudicacion.wizard_pago_cuota_amortizaciones_contrato').id
 
