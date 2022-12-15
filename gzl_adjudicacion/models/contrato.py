@@ -856,7 +856,7 @@ class ContratoEstadoCuenta(models.Model):
             diferencia=cuota_actual-saldos
             if saldo==0:
                 x["estado_pago"]="pagado"
-            id_registro=super(ContratoEstadoCuenta, self).create(vals)
+            id_registro=super(ContratoEstadoCuenta, self).create(x)
             if diferencia!=0:
                 self.env["account.payment.cuotas"].create({"cuotas_id":id_registro.id,
                                                         "monto_pagado":diferencia,
