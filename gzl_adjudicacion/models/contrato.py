@@ -193,39 +193,6 @@ class Contrato(models.Model):
             
 
 
-#    @api.constrains('state')
-    # def crear_registro_fondo_grupo(self):
-    #     if self.grupo and self.state!='pendiente':
-    #         self.grupo.calcular_monto_pagado()
-
-    #         if self.state in ['desistir','NO ACTIVADO','congelar_contrato']:
-    #             transacciones=self.env['transaccion.grupo.adjudicado']
-
-    #             dct={
-    #             'grupo_id':self.grupo.id,
-    #             'debe':self.monto_pagado ,
-    #             'adjudicado_id':self.cliente.id,
-    #             'contrato_id':self.id,
-    #             'state':self.state
-    #             }
-
-
-    #             transacciones.create(dct)
-
-    #         if self.state in ['ACTIVADO']:
-    #             transacciones=self.env['transaccion.grupo.adjudicado']
-
-    #             dct={
-    #             'grupo_id':self.grupo.id,
-    #             'haber':self.monto_pagado ,
-    #             'adjudicado_id':self.cliente.id,
-    #             'contrato_id':self.id,
-    #             'state':self.state
-    #             }
-
-
-    #             transacciones.create(dct)
-
 
     @api.depends('tabla_amortizacion.saldo')
     def calcular_cuotas_pagadas(self):
@@ -398,7 +365,12 @@ class Contrato(models.Model):
 
     @api.model
     def create(self, vals):
+        ####Comentar luego de la Migración
         vals['secuencia']="AJ"+vals['secuencia']
+        return super(Contrato, self).create(vals)
+
+
+        ####Desomentar luego de la Migración
         # grupo=self.env['grupo.adjudicado'].browse(vals['grupo'])
         # obj_secuencia= grupo.secuencia_id
 
@@ -413,7 +385,7 @@ class Contrato(models.Model):
         #self.validar_cliente_en_otro_contrato()
 
 
-        return super(Contrato, self).create(vals)
+        
 
     @api.onchange('cliente', 'grupo')
     def onchange_provincia(self):
@@ -841,41 +813,54 @@ class ContratoEstadoCuenta(models.Model):
             l.saldo=l.cuota_capital+l.cuota_adm+l.iva_adm + l.seguro+ l.rastreo + l.otro + l.programado - l.monto_pagado
 
 
+    #####Comentar función luego de la migración
     def create(self, vals):
-        cuota_actual=vals["cuota_capital"]+vals["cuota_adm"]+vals["iva_adm"]+vals["fondo_reserva"]+vals["programado"]+vals["saldo_seguro"]+vals["saldo_rastreo"]+vals["saldo_otros"]
-        saldos= vals["saldo_cuota_capital"]+vals["saldo_cuota_administrativa"]+vals["saldo_fondo_reserva"]+vals["saldo_iva"]+vals["saldo_programado"]+vals["seguro"]+vals["rastreo"]+vals["otros"]
+        cuota_actual=0
+        saldos=0
+        if vals.get('cuota_capital'):
+            cuota_actual+=vals.get('cuota_capital')
+        if vals.get('cuota_adm'):
+            cuota_actual+=vals.get("cuota_adm")
+        if vals.get('iva_adm'):
+            cuota_actual+=vals.get("iva_adm")
+        if vals.get('fondo_reserva'):
+            cuota_actual+=vals.get("fondo_reserva")
+        if vals.get('programado'):
+            cuota_actual+=vals.get("programado")
+        if vals.get('seguro'):
+            cuota_actual+=vals.get("seguro")
+        if vals.get('rastreo'):
+            cuota_actual+=vals.get("rastreo")
+        if vals.get('otros'):
+            cuota_actual+=vals.get("otros")
+
+
+        if vals.get('saldo_cuota_capital'):
+            saldos+=vals.get("saldo_cuota_capital")
+        if vals.get('saldo_cuota_administrativa'):
+            saldos+=vals.get("saldo_cuota_administrativa")
+        if vals.get('saldo_iva'):
+            saldos+=vals.get("saldo_iva")
+        if vals.get('saldo_fondo_reserva'):
+            saldos+=vals.get("saldo_fondo_reserva")
+        if vals.get('saldo_programado'):
+            saldos+=vals.get("saldo_programado")
+        if vals.get('saldo_seguro'):
+            saldos+=vals.get("saldo_seguro")
+        if vals.get('saldo_rastreo'):
+            saldos+=vals.get("saldo_rastreo")
+        if vals.get('saldo_otros'):
+            saldos+=vals.get("saldo_otros")
 
         diferencia=cuota_actual-saldos
         if saldo==0:
             vals["estado_pago"]="pagado"
         id_registro=super(ContratoEstadoCuenta, self).create(vals)
+        raise ValidationError(id_registro)
         if diferencia!=0:
             self.env["account.payment.cuotas"].create({"cuotas_id":id_registro.id,
                                                     "monto_pagado":diferencia,
                                                     "valor_asignado":diferencia})
-    # def pagar_cuota(self):
-    #     view_id = self.env.ref('gzl_adjudicacion.wizard_pago_cuota_amortizaciones_contrato').id
-
-    #     hoy= date.today()
-
-    #     pagos_pendientes=self.contrato_id.tabla_amortizacion.filtered(lambda l: l.estado_pago=='pendiente' and l.fecha<self.fecha)
-    #     if len(pagos_pendientes)>0 :
-    #         raise ValidationError('Tengo pagos pendientes a la fecha, por favor realizar los pagos pendientes.')
-
-    #     return {'type': 'ir.actions.act_window',
-    #             'name': 'Pagar Cuota',
-    #             'res_model': 'wizard.pago.cuota.amortizacion.contrato',
-    #             'target': 'new',
-    #             'view_mode': 'form',
-    #             'views': [[view_id, 'form']],
-    #             'context': {
-    #                 'default_tabla_amortizacion_id': self.id,
-    #                 'default_amount': self.saldo,
-    #                 'default_payment_method_id': 2,
-
-
-    #             }
-    #     }
 
 class PagoContratoEstadoCuenta(models.Model):
     _inherit = 'account.payment'
