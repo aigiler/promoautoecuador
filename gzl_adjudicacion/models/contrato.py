@@ -814,8 +814,9 @@ class ContratoEstadoCuenta(models.Model):
 
 
     #####Comentar función luego de la migración
-    def create(self, vals):
-        for x in vals:
+    @api.contrains("numero_cuota")
+    def actualizar_valores(self, vals):
+        for x in self:
             cuota_actual=0
             saldos=0
             if x['cuota_capital']:
@@ -856,11 +857,17 @@ class ContratoEstadoCuenta(models.Model):
             diferencia=cuota_actual-saldos
             if saldo==0:
                 x["estado_pago"]="pagado"
-            id_registro=super(ContratoEstadoCuenta, self).create(x)
             if diferencia!=0:
-                self.env["account.payment.cuotas"].create({"cuotas_id":id_registro.id,
-                                                        "monto_pagado":diferencia,
-                                                        "valor_asignado":diferencia})
+                lista_ids=[]
+                id_registro=self.env["account.payment.cuotas"].create({
+                                                                        "monto_pagado":diferencia,
+                                                                        "valor_asignado":diferencia})
+                lista_ids.append(int(id_registro))
+                self.update({'ids_pagos':[(6,0,lista_ids)]})
+
+
+
+                
 
 class PagoContratoEstadoCuenta(models.Model):
     _inherit = 'account.payment'
