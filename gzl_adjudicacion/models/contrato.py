@@ -589,7 +589,7 @@ class Contrato(models.Model):
                 l.grupo=grupo_id.id
             cliente_id=self.env["res.partner"].search([("codigo_cliente","=",l.idClienteContrato)])
             if cliente_id:
-                l.grupo=cliente_id.id
+                l.clente=cliente_id.id
             if l.idEstadoContrato=="A":
                 l.state="ACTIVADO"
                 l.state_simplificado=False
