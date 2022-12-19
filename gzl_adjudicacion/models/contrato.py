@@ -55,7 +55,7 @@ class Contrato(models.Model):
         ('mes_actual', 'Mes Actual'),
         ('siguiente_mes', 'Siguiente Mes'),
         ('personalizado', 'Personalizado')
-    ], string='Pago', default='mes_actual', track_visibility='onchange')
+    ], string='Pago', default='personalizado', track_visibility='onchange')
     monto_financiamiento = fields.Monetary(
         string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
     tasa_administrativa = fields.Float(
@@ -101,6 +101,13 @@ class Contrato(models.Model):
     ], string='Detalle de estado', default='DESACTIVADO', track_visibility='onchange')
 
     es_cesion=fields.Boolean(default=False)
+
+# A  Activo        activo    
+# C  Congelado     congelar_contrtato
+# F  Finalizado    finalizado
+# I  Desistido     desistido
+# J  Adjudicado    adjudicar
+# P  Pendiente     pendiente
 
 
     desistido = fields.Boolean(string='Desistido')
@@ -191,6 +198,7 @@ class Contrato(models.Model):
             else:
                 l.cuota_pago=0
             
+
 
 
 
@@ -402,7 +410,7 @@ class Contrato(models.Model):
 
     def cambio_estado_boton_borrador(self):
         self.detalle_tabla_amortizacion()
-        self.write({"state": "ACTIVADO","state_simplificado":"INSCRITO"})
+        self.write({"state": "NO ACTIVADO","state_simplificado":"INSCRITO"})
 
     def cambio_estado_boton_inactivar(self):
         return self.write({"state": "NO ACTIVADO"})
@@ -552,6 +560,8 @@ class Contrato(models.Model):
         for contrato in contratos:  
             self.envio_correos_plantilla('email_contrato_en_mora',contrato.id)
 
+####Job para enviar correo contrato pago por vencer
+
     def job_enviar_correos_contratos_pago_por_vencer(self, ):
 
         hoy=date.today()
@@ -562,18 +572,41 @@ class Contrato(models.Model):
             if len(mes_estado_cuenta)>0:
                 self.envio_correos_plantilla('email_contrato_notificacion_de_pago',contrato.id)
 
+###Job migración
 
-
-
-
-####Jo para enviar correo contrato pago por vencer
-
-
-
-
-
-
-
+    def job_contratos_migrados(self):
+        contratos_ids=self.env["contrato"].search([])
+        for l in contratos_ids:
+            if l.idClienteContrato==
+            if l.idTipoContrato=="E":
+                l.tipo_de_contrato = 2
+            if l.idTipoContrato=="PA":
+                l.tipo_de_contrato = 1
+            if l.idTipoContrato=="PP":
+                l.tipo_de_contrato = 4
+            if l.idTipoContrato=="P":
+                l.tipo_de_contrato = 5
+            grupo_id=self.env["grupo.adudicado"].search([("idGrupo","=",l.idGrupo)])
+            if grupo_id:
+                l.grupo=grupo_id.id
+            cliente_id=self.env["res.partner"].search([("codigo_cliente","=",l.idClienteContrato)])
+            if cliente_id:
+                l.grupo=cliente_id.id
+            if l.idEstadoContrato=="A":
+                l.state="ACTIVADO"
+                l.state_simplificado=False
+            if l.idEstadoContrato=="F":
+                l.state="FINALIZADO"
+                l.state_simplificado="LIQUIDADO" 
+            if l.idEstadoContrato=="I":
+                l.state="FINALIZADO"
+                l.state_simplificado="DESISTIDO"
+            if l.idEstadoContrato=="J":
+                l.state="ADJUDICADO"
+                l.state_simplificado="ENTREGADO"
+            if l.idEstadoContrato=="P":
+                l.state="NO ACTIVADO"
+                l.state_simplificado="DESACTIVADO"
 
     def cambio_estado_congelar_contrato(self):
         #Cambio de estado
@@ -814,9 +847,10 @@ class ContratoEstadoCuenta(models.Model):
 
 
     #####Comentar función luego de la migración
-    def actualizar_valores(self):
+    def job_actualizar_valores(self):
         estado_cuenta_ids=self.env["contrato.estado.cuenta"].search([])
         for x in estado_cuenta_ids:
+            contrato_id=self.env["contrato"].search([("idContrato","=",x.idContrato)])
             cuota_actual=0
             saldos=0
             if x['cuota_capital']:

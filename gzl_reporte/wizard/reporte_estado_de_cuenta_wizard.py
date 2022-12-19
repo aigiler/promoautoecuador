@@ -96,11 +96,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         }
 
 
-
-
-
-
-    def enviar_correo_estado_cuenta(self):
+    def job_enviar_correo_estado_cuenta(self):
         contratos_ids=self.env['contrato'].search([('state','=','ACTIVADO')])
         lis=[]
         for l in contratos_ids:
@@ -113,7 +109,6 @@ class ReporteEstadoDeCuenta(models.TransientModel):
                 self.envio_correos_plantilla('email_estado_cuenta',reporte_id.id)
 
     def envio_correos_plantilla(self, plantilla,id_envio):
-
         try:
             ir_model_data = self.env['ir.model.data']
             template_id = ir_model_data.get_object_reference('gzl_adjudicacion', plantilla)[1]

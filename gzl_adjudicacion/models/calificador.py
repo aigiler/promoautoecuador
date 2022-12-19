@@ -18,7 +18,7 @@ class Partner(models.Model):
         for l in self:
             l.calificacion=sum(l.calificaciones.mapped('calificacion'))
 
-    def obtener_proveedores_recurrente(self):
+    def job_obtener_proveedores_recurrente(self):
         hoy=date.today()
         proveedores_ids=self.env['res.partner'].search([('proveedor_recurrente','=',True)])
         for x in proveedores_ids:
