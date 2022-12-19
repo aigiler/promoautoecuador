@@ -859,7 +859,7 @@ class ContratoEstadoCuenta(models.Model):
                 lista_ids=[]
                 id_registro=self.env["account.payment.cuotas"].create({
                                                                         "monto_pagado":diferencia,
-                                                                        "valor_asignado":diferencia})
+                                                                        "valor_asociado":diferencia})
                 lista_ids.append(int(id_registro))
                 self.update({'ids_pagos':[(6,0,lista_ids)]})
 
