@@ -577,7 +577,6 @@ class Contrato(models.Model):
     def job_contratos_migrados(self):
         contratos_ids=self.env["contrato"].search([])
         for l in contratos_ids:
-            if l.idClienteContrato==
             if l.idTipoContrato=="E":
                 l.tipo_de_contrato = 2
             if l.idTipoContrato=="PA":
