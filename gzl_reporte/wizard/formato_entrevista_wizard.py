@@ -85,18 +85,7 @@ class EntrevistaCredito(models.TransientModel):
             dct['hoja']=1
             dct['valor']=self.entrega_vehiculo_id.contrato_id.fecha_adjudicado
             lista_campos.append(dct)
-            dct={}
-            dct['fila']=campo.fila
-            dct['columna']=campo.columna
-            dct['hoja']=1
-            dct['valor']=
-            lista_campos.append(dct)
-            dct={}
-            dct['fila']=campo.fila
-            dct['columna']=campo.columna
-            dct['hoja']=1
-            dct['valor']=
-            lista_campos.append(dct)
+
             if self.entrega_vehiculo_id:
                 if self.entrega_vehiculo_id.estadoVehiculo=="USADO":
                     inicia=62
