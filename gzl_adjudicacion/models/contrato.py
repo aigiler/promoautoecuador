@@ -573,7 +573,6 @@ class Contrato(models.Model):
                 self.envio_correos_plantilla('email_contrato_notificacion_de_pago',contrato.id)
 
 ###Job migración
-
     def job_contratos_migrados(self):
         contratos_ids=self.env["contrato"].search([])
         for l in contratos_ids:
