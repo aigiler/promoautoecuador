@@ -857,10 +857,9 @@ class ContratoEstadoCuenta(models.Model):
                 x["estado_pago"]="pagado"
             if diferencia!=0:
                 lista_ids=[]
-                id_registro=self.env["account.payment.cuotas"].create({
+                id_registro=self.env["account.payment.cuotas"].create({"cuotas_id":x["id"],
                                                                         "monto_pagado":diferencia,
                                                                         "valor_asociado":diferencia})
-                x.update({'ids_pagos':[(6,0,lista_ids)]})
 
 
 class PagoContratoEstadoCuenta(models.Model):
