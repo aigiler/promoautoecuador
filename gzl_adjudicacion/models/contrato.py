@@ -585,7 +585,7 @@ class Contrato(models.Model):
                 l.tipo_de_contrato = 4
             if l.idTipoContrato=="P":
                 l.tipo_de_contrato = 5
-            grupo_id=self.env["grupo.adudicado"].search([("idGrupo","=",l.idGrupo)])
+            grupo_id=self.env["grupo.adjudicado"].search([("idGrupo","=",l.idGrupo)])
             if grupo_id:
                 l.grupo=grupo_id.id
             cliente_id=self.env["res.partner"].search([("codigo_cliente","=",l.idClienteContrato)])
