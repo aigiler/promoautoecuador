@@ -74,11 +74,11 @@ class EntrevistaCredito(models.TransientModel):
             dct={}
             if self.entrega_vehiculo_id.contrato_id.grupo:
                 grupo_contrato=self.entrega_vehiculo_id.contrato_id.grupo.name+"/"+self.entrega_vehiculo_id.contrato_id.secuencia
-            dct['fila']=1
-            dct['columna']=6
-            dct['hoja']=1
-            dct['valor']=
-            lista_campos.append(dct)
+                dct['fila']=1
+                dct['columna']=6
+                dct['hoja']=1
+                dct['valor']=grupo_contrato
+                lista_campos.append(dct)
             dct={}
             dct['fila']=2
             dct['columna']=6
