@@ -833,8 +833,8 @@ class ContratoEstadoCuenta(models.Model):
                 cuota_actual+=x["seguro"]
             if x['rastreo']:
                 cuota_actual+=x["rastreo"]
-            if x['otros']:
-                cuota_actual+=x["otros"]
+            if x['otro']:
+                cuota_actual+=x["otro"]
             if x['saldo_cuota_capital']:
                 saldos+=x["saldo_cuota_capital"]
             if x['saldo_cuota_administrativa']:
