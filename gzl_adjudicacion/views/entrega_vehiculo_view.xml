@@ -275,12 +275,8 @@
                                                 <field name="modelo" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
                                                 <field name="anio" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
                                                 <field name="colores" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
-                                                
-   
                                             </tree>
                                         </field>      
-                                        
-                                       
                                     </group>
                                 </div>
                                 <group>
@@ -296,53 +292,6 @@
                                 </group>
                             </div>
                         </page>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                         <page string="Entrevista Perfil del Garante"  attrs="{'invisible':[('aplicaGarante', 'not in',['sí','SI'])]}">
                             <separator class="text-center" string="INFORMACIÓN PERSONAL"/>
                             <div class="row" style="border: 1px solid black;">
