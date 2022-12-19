@@ -366,10 +366,7 @@
                                           <field name="direccionGarante" string="Sector, Dirección de Residencia"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
                                           <field name="dependienteGar" string="Dependiente (cargo)" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
                                           <field name="cargoGar" string="Comercial o Profesional (Actividad)" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
-                                           <field name="ingresosFamiliaresGarante" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" string="Ingresos"/>
-
-                                        
-                                        
+                                           <field name="ingresosFamiliaresGarante" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" string="Ingresos"/>    
                                     </group>
                                 </div>
                                 <div class="col-xs-6">
