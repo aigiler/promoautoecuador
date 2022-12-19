@@ -54,13 +54,6 @@
                     <field name="estado" invisible="1"/>
                      <group><field name="aplicaGarante" invisible="0"/></group>
                     <notebook>
-
-<!-- 
-                        <page string="Entrega de Requisitos">
-                            <separator class="text-center" string="REQUISITOS Y POLÍTICAS PARA APLICAR CRÉDITO"/>
-                            <field name="requisitosPoliticasCredito" widget="html" nolabel="1" force_save="1" readonly="1"/>
-                        </page>
- -->
                        
                         <page string="Entrevista Perfil del Cliente">
                             <separator class="text-center" string="INFORMACIÓN PERSONAL"/>
@@ -68,7 +61,7 @@
                                 <div class="col-xs-12 col-md-12">
                                     <div class="col-xs-8">
                                     <group >  
-                                        <field name="nombreSocioAdjudicado" required="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" options="{'no_open': True, 'no_create': True}"/>
+                                        <field name="nombreSocioAdjudicado" required="1" string="NOMBRE DEL TITULAR" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" options="{'no_open': True, 'no_create': True}"/>
                                     </group>
                                     </div>
                                     <div class="col-xs-4">
@@ -80,12 +73,12 @@
                                 <div class="col-xs-12 col-sm-6">
                                     <group> 
                                         <field name="fechaNacimientoAdj" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1"/>
-                                        <field name="correoAdj" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" string="Telefono"/>
+                                        <field name="correoAdj" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" string="Correo"/>
                                          <field name="telefonoAdj" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" string="Teléfono Convencional"/>
                                          <field name="provinciaAdjudicado" string="Provincia" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
-                                          <field name="direccionAdjudicado"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
-                                          <field name="dependienteAdj"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
-                                          <field name="cargoAdj"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                          <field name="direccionAdjudicado"  string="Sector, dirección de Residencia" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                          <field name="dependienteAdj" string="Dependiente (cargo)" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                          <field name="cargoAdj" string="Comercial o Profesional (Actividad)" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
                                            <field name="ingresosFamiliares" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" string="Ingresos"/>
 
                                         
@@ -113,12 +106,12 @@
                                     <div class="col-xs-12 col-sm-6">
                                         <group> 
                                             <field name="fechaNacimientoConyuge" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1"/>
-                                        <field name="correoConyuge" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" string="Telefono"/>
+                                        <field name="correoConyuge" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" string="Correo"/>
                                          <field name="telefonoConyuge" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" string="Teléfono Convencional"/>
                                          <field name="provinciaConyuge" string="Provincia" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
-                                          <field name="direccionConyuge"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
-                                          <field name="dependienteConyuge"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
-                                          <field name="cargoConyuge"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                          <field name="direccionConyuge"  string="Sector, dirección de Residencia" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                          <field name="dependienteConyuge" string="Dependiente (cargo)" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                          <field name="cargoConyuge" string="Comercial o Profesional (Actividad)" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
                                            <field name="ingresosFamiliaresConyuge" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" string="Ingresos"/>
 
 
@@ -282,12 +275,8 @@
                                                 <field name="modelo" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
                                                 <field name="anio" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
                                                 <field name="colores" attrs="{'readonly':[('parent.estado', 'not in',['borrador'])]}"/>
-                                                
-   
                                             </tree>
                                         </field>      
-                                        
-                                       
                                     </group>
                                 </div>
                                 <group>
@@ -303,59 +292,12 @@
                                 </group>
                             </div>
                         </page>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                         <page string="Entrevista Perfil del Garante"  attrs="{'invisible':[('aplicaGarante', 'not in',['sí','SI'])]}">
                             <separator class="text-center" string="INFORMACIÓN PERSONAL"/>
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <div class="col-xs-8"><group >  
-                                        <field name="nombreGarante" required="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" options="{'no_open': True, 'no_create': True}"/>
+                                        <field name="nombreGarante" string="Nombre del Garante" required="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" options="{'no_open': True, 'no_create': True}"/>
                                     </group>
                                     </div>
                                     <div class="col-xs-4">
@@ -367,16 +309,13 @@
                                 <div class="col-xs-12 col-sm-6">
                                     <group> 
                                         <field name="fechaNacimientoGarante" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1"/>
-                                        <field name="correoGarante" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" string="Telefono"/>
+                                        <field name="correoGarante" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" string="Correo"/>
                                          <field name="telefonoGar" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" string="Teléfono Convencional"/>
                                          <field name="provinciaGarante" string="Provincia" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
-                                          <field name="direccionGarante"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
-                                          <field name="dependienteGar"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
-                                          <field name="cargoGar"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
-                                           <field name="ingresosFamiliaresGarante" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" string="Ingresos"/>
-
-                                        
-                                        
+                                          <field name="direccionGarante" string="Sector, Dirección de Residencia"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                          <field name="dependienteGar" string="Dependiente (cargo)" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                          <field name="cargoGar" string="Comercial o Profesional (Actividad)" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                           <field name="ingresosFamiliaresGarante" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" string="Ingresos"/>    
                                     </group>
                                 </div>
                                 <div class="col-xs-6">
@@ -400,12 +339,12 @@
                                     <div class="col-xs-12 col-sm-6">
                                         <group> 
                                             <field name="fechaNacimientoConyugeGarante" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1"/>
-                                        <field name="correoConyugeGarante" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" string="Telefono"/>
+                                        <field name="correoConyugeGarante" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" string="Correo"/>
                                          <field name="telefonoConyugeGarante" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"  force_save="1" string="Teléfono Convencional"/>
                                          <field name="provinciaConyugeGarante" string="Provincia" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
-                                          <field name="direccionConyugeGarante"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
-                                          <field name="dependienteConyugeGarante"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
-                                          <field name="cargoConyugeGarante"  attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                          <field name="direccionConyugeGarante" string="Sector, Dirección de Residencia"   attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                          <field name="dependienteConyugeGarante" string="Dependiente (cargo)" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
+                                          <field name="cargoConyugeGarante" string="Comercial o Profesional (Actividad)" attrs="{'readonly':[('estado', 'not in',['borrador'])]}"/>
                                            <field name="ingresosFamiliaresConyugeGarante" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" string="Ingresos"/>
 
 

@@ -71,12 +71,68 @@ class EntrevistaCredito(models.TransientModel):
                 lista_campos.append(dct)
             
 
-
+            dct={}
+            if self.entrega_vehiculo_id.contrato_id.grupo:
+                grupo_contrato=self.entrega_vehiculo_id.contrato_id.grupo.name+"/"+self.entrega_vehiculo_id.contrato_id.secuencia
+            dct['fila']=1
+            dct['columna']=6
+            dct['hoja']=1
+            dct['valor']=
+            lista_campos.append(dct)
+            dct={}
+            dct['fila']=2
+            dct['columna']=6
+            dct['hoja']=1
+            dct['valor']=self.entrega_vehiculo_id.contrato_id.fecha_adjudicado
+            lista_campos.append(dct)
+            dct={}
+            dct['fila']=campo.fila
+            dct['columna']=campo.columna
+            dct['hoja']=1
+            dct['valor']=
+            lista_campos.append(dct)
+            dct={}
+            dct['fila']=campo.fila
+            dct['columna']=campo.columna
+            dct['hoja']=1
+            dct['valor']=
+            lista_campos.append(dct)
             if self.entrega_vehiculo_id:
+                if self.entrega_vehiculo_id.estadoVehiculo=="USADO":
+                    inicia=62
+                elif self.entrega_vehiculo_id.estadoVehiculo=="NUEVO":
+                    inicia=66
+                cont=1
+                for detalle in self.entrega_vehiculo_id.detalleVehiculoIds:
+                    if cont==1:
+                        dct={}
+                        dct['hoja']=1
+                        dct['fila']=inicia
+                        dct['columna']=2
+                        dct['valor']=detalle.marca
+                        lista_campos.append(dct)
+                        dct={}
+                        dct['hoja']=1
+                        dct['fila']=inicia+1
+                        dct['columna']=2
+                        dct['valor']=detalle.modelo
+                        lista_campos.append(dct)
+                        dct={}
+                        dct['hoja']=1
+                        dct['fila']=inicia+2
+                        dct['columna']=2
+                        dct['valor']=detalle.anio
+                        lista_campos.append(dct)
+                        dct={}
+                        dct['hoja']=1
+                        dct['fila']=inicia+3
+                        dct['columna']=2
+                        dct['valor']=detalle.colores
+                        lista_campos.append(dct)
+                        break
                 for necesidad in self.entrega_vehiculo_id.necesidadIds:
-                    dct={}
-                    dct['hoja']=1
                     if necesidad.necesidad_id.celda_excel in [62,63,64,65,66,67,68,69]:
+                        dct={}
                         dct['hoja']=1
                         dct['fila']=necesidad.necesidad_id.celda_excel
                         dct['columna']=2
@@ -88,10 +144,8 @@ class EntrevistaCredito(models.TransientModel):
                 if self.clave=="entrevista_adjudicado":
                     for items in self.entrega_vehiculo_id.montoAhorroInversiones:
                         if not items.garante:
-                            dct={}
-
-                            dct['hoja']=1
                             if items.patrimonio_id.celda_excel in [28,29,30,31,32,33,34]:
+                                dct={}
                                 dct['hoja']=1
                                 dct['fila']=items.patrimonio_id.celda_excel
                                 dct['columna']=2
@@ -112,9 +166,8 @@ class EntrevistaCredito(models.TransientModel):
                     
                     for ingreso in self.entrega_vehiculo_id.ingresosIds:
                         if not ingreso.garante:
-                            dct={}
-                            dct['hoja']=1
                             if ingreso.ingresos_id.celda_excel in [37,38]:
+                                dct={}
                                 dct['hoja']=1
                                 dct['fila']=ingreso.ingresos_id.celda_excel
                                 dct['columna']=5
@@ -126,13 +179,11 @@ class EntrevistaCredito(models.TransientModel):
                                 dct['columna']=6
                                 dct['valor']=ingreso.conyuge
                                 lista_campos.append(dct)
-                                dct={}
 
                     for egreso in self.entrega_vehiculo_id.egresosIds:
                         if not egreso.garante:
-                            dct={}
-                            dct['hoja']=1
                             if egreso.egresos_id.celda_excel in [41,42,43,44,45,46,47,48,49]:
+                                dct={}
                                 dct['hoja']=1
                                 dct['fila']=egreso.egresos_id.celda_excel
                                 dct['columna']=5
@@ -144,7 +195,6 @@ class EntrevistaCredito(models.TransientModel):
                                 dct['columna']=5
                                 dct['valor']=egreso.conyuge
                                 lista_campos.append(dct)
-                                dct={}
                     i=0
                     for familia in self.entrega_vehiculo_id.referencias_familiares_ids:
                         if i<2:
@@ -181,7 +231,6 @@ class EntrevistaCredito(models.TransientModel):
                                 lista_campos.append(dct)
                                 i+=1
 
-
                     j=0
                     for bancaria in self.entrega_vehiculo_id.referencias_bancarias_ids:
                         if j<2:
@@ -208,9 +257,8 @@ class EntrevistaCredito(models.TransientModel):
                 else:
                     for items in self.entrega_vehiculo_id.montoAhorroInversionesGarante:
                         if items.garante:
-                            dct={}
-                            dct['hoja']=1
                             if items.patrimonio_id.celda_excel in [28,29,30,31,32,33,34]:
+                                dct={}
                                 dct['hoja']=1
                                 dct['fila']=items.patrimonio_id.celda_excel
                                 dct['columna']=2
@@ -231,9 +279,8 @@ class EntrevistaCredito(models.TransientModel):
                 
                     for ingreso in self.entrega_vehiculo_id.ingresosIdsGarante:
                         if ingreso.garante:
-                            dct={}
-                            dct['hoja']=1
                             if ingreso.ingresos_id.celda_excel in [37,38]:
+                                dct={}
                                 dct['hoja']=1
                                 dct['fila']=ingreso.ingresos_id.celda_excel
                                 dct['columna']=5
@@ -245,13 +292,10 @@ class EntrevistaCredito(models.TransientModel):
                                 dct['columna']=6
                                 dct['valor']=ingreso.conyuge
                                 lista_campos.append(dct)
-                                dct={}
-
                     for egreso in self.entrega_vehiculo_id.egresosIdsGarante:
                         if egreso.garante:
-                            dct={}
-                            dct['hoja']=1
                             if egreso.egresos_id.celda_excel in [41,42,43,44,45,46,47,48,49]:
+                                dct={}
                                 dct['hoja']=1
                                 dct['fila']=egreso.egresos_id.celda_excel
                                 dct['columna']=5
@@ -263,9 +307,6 @@ class EntrevistaCredito(models.TransientModel):
                                 dct['columna']=6
                                 dct['valor']=egreso.conyuge
                                 lista_campos.append(dct)
-                                dct={}
-
-
                     i=0
                     for familia in self.entrega_vehiculo_id.referencias_familiares_ids_garante:
                         if i<2:
@@ -301,8 +342,6 @@ class EntrevistaCredito(models.TransientModel):
                                 dct['valor']=familia.telefono
                                 lista_campos.append(dct)
                                 i+=1
-
-
                     j=0
                     for bancaria in self.entrega_vehiculo_id.referencias_bancarias_ids_garante:
                         if j<2:
@@ -326,8 +365,6 @@ class EntrevistaCredito(models.TransientModel):
                                 dct['valor']=bancaria.numero_cuenta
                                 lista_campos.append(dct)
                                 j+=1
-
-
             fp =io.BytesIO()
             workbook=self.entrevista_credito(obj_plantilla.directorio_out,lista_campos)
             workbook.save(fp)
@@ -374,14 +411,9 @@ class EntrevistaCredito(models.TransientModel):
             "target": "new",
         }
 
-
-
     def entrevista_credito(self,ruta,lista):
-
         workbook = openpyxl.load_workbook(ruta)
-
         sheet = workbook.active
-
         sheet = workbook['Entrevista']
         listaSheet = list(filter(lambda x: (x['hoja']==1), lista)) 
         for campo in listaSheet:
@@ -390,10 +422,5 @@ class EntrevistaCredito(models.TransientModel):
                 cell.value = campo['valor'] or ''
             except:
                 raise ValidationError("""El valor {0} en la fila {1} columna {2}  hoja {3} se encuentra mal configurado en la plantilla""".format( campo['valor'], campo['fila'],campo['columna'],campo['hoja']))
-        
-
-
         workbook.save(ruta)
         return workbook
-
-

@@ -35,13 +35,13 @@
         </record>
 
 
-
+<!-- 
         <menuitem 
         id = "menu_hoja_ruta_form"
         name = "Hoja de Ruta"  
         parent="menu_reporte" 
         sequence="1" 
-        action="action_hoja_ruta_form"/>
+        action="action_hoja_ruta_form"/> -->
 
 
 </odoo>
