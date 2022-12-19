@@ -853,7 +853,7 @@ class ContratoEstadoCuenta(models.Model):
                 saldos+=x["saldo_otros"]
 
             diferencia=cuota_actual-saldos
-            if saldo==0:
+            if saldos==0:
                 x["estado_pago"]="pagado"
             if diferencia!=0:
                 lista_ids=[]
