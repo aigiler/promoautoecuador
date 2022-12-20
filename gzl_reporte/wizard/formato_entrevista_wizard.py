@@ -135,8 +135,9 @@ class EntrevistaCredito(models.TransientModel):
                         dct['valor']=detalle.colores
                         lista_campos.append(dct)
                         break
+                    
                 for necesidad in self.entrega_vehiculo_id.necesidadIds:
-                    if necesidad.necesidad_id.celda_excel in [62,63,64,65,66,67,68,69]:
+                    if necesidad.necesidad_id.celda_excel in [62,63,64,65,66,67,69]:
                         dct={}
                         dct['hoja']=1
                         dct['fila']=necesidad.necesidad_id.celda_excel
