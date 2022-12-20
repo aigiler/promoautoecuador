@@ -75,7 +75,6 @@ class EntrevistaCredito(models.TransientModel):
             lista_campos=[]
             for campo in campos:
                 resultado=self.mapped(campo.name)
-                raise ValidationError(resultado)
                 dct={}
                 if len(resultado)>0:
                     dct['valor']=resultado[0]
