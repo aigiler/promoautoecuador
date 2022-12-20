@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-s
 
 from odoo import api, fields, models, tools
 from datetime import date, timedelta,datetime
@@ -74,7 +74,7 @@ class EntrevistaCredito(models.TransientModel):
             campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
             lista_campos=[]
             for campo in campos:
-                resultado=self.mapped(campo.name)
+                resultado=self.entrega_vehiculo_id.mapped(campo.name)
                 dct={}
                 if len(resultado)>0:
                     dct['valor']=resultado[0]
