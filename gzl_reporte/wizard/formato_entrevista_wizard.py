@@ -1,5 +1,20 @@
 # -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from odoo import api, fields, models, tools
+from datetime import date, timedelta,datetime
+from dateutil.relativedelta import relativedelta
+import xlsxwriter
+from io import BytesIO
+import base64
+from odoo.exceptions import AccessError, UserError, ValidationError
+#from . import l10n_ec_check_printing.amount_to_text_es
+from . import amount_to_text_es
+from datetime import datetime
+import calendar
+import datetime as tiempo
+import itertools
+from . import contrato_reserva_documento
+import shutil
 
 import os
 import re
