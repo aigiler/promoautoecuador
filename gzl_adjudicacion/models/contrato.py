@@ -242,8 +242,8 @@ class Contrato(models.Model):
                     anioSgte=str(fechaMesSeguiente.year)
                     fechaPago = anioSgte+"-"+mesSgte+"-{0}".format(rec.dia_corte.zfill(2)) 
                     rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%Y-%m-%d')
-                #else:
-                #    rec.fecha_inicio_pago =False
+                else:
+                    rec.fecha_inicio_pago =False
     
     @api.depends('plazo_meses', 'monto_financiamiento','monto_programado')
     def calcular_valores_contrato(self):
@@ -577,7 +577,7 @@ class Contrato(models.Model):
         contratos_ids=self.env["contrato"].search([])
         for l in contratos_ids:
             if l.idTipoContrato=="E":
-                l.tipo_de_contrato = 2
+                l.tipo_de_contrato.id = 2
             if l.idTipoContrato=="PA":
                 l.tipo_de_contrato = 1
             if l.idTipoContrato=="PP":
@@ -589,7 +589,7 @@ class Contrato(models.Model):
                 l.grupo=grupo_id.id
             cliente_id=self.env["res.partner"].search([("codigo_cliente","=",l.idClienteContrato)])
             if cliente_id:
-                l.clente=cliente_id.id
+                l.cliente=cliente_id.id
             if l.idEstadoContrato=="A":
                 l.state="ACTIVADO"
                 l.state_simplificado=False
