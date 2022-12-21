@@ -256,7 +256,7 @@ class Asamblea(models.Model):
                     hoy=date.today()
                     ganadores=self.env['participantes.asamblea.clientes'].search([('asamblea_id','=',self.id),('seleccionado','=',False)])
                     for ganador in ganadores:
-                        if ganador.tipo_de_contrato.code=="exacto":
+                        if ganador.contrato_id.tipo_de_contrato.code=="exacto":
                             if ganadores_seleccionados<numero_ganadores:
                                 cuota_id=ganador.contrato_id.estado_cuenta_ids.filtered(lambda l: l.programado>0.00 and l.fecha.month==hoy.month and l.fecha.year==hoy.year)
                                 if cuota_id:
@@ -272,7 +272,7 @@ class Asamblea(models.Model):
                     suplentes=self.env['participantes.asamblea.clientes'].search([('asamblea_id','=',self.id),('seleccionado','=',False)])
                     suplentes_seleccionados=0
                     for suplente in suplentes:
-                        if suplente.tipo_de_contrato.code=="exacto":
+                        if suplente.contrato_id.tipo_de_contrato.code=="exacto":
                             if suplentes_seleccionados<numero_suplentes:
                                 cuota_id=suplente.contrato_id.estado_cuenta_ids.filtered(lambda l: l.programado>0.00 and l.fecha.month==hoy.month and l.fecha.year==hoy.year)
                                 if cuota_id:
@@ -291,7 +291,7 @@ class Asamblea(models.Model):
                     hoy=date.today()
                     ganadores=self.env['participantes.asamblea.clientes'].search([('asamblea_id','=',self.id),('seleccionado','=',False)])
                     for ganador in ganadores:
-                        if ganador.tipo_de_contrato.code=="programo":
+                        if ganador.contrato_id.tipo_de_contrato.code=="programo":
                             if ganadores_seleccionados<numero_ganadores:
                                 cuota_id=ganador.contrato_id.estado_cuenta_ids.filtered(lambda l: l.programado>0.00 and l.fecha.month==hoy.month and l.fecha.year==hoy.year)
                                 if cuota_id:
@@ -307,7 +307,7 @@ class Asamblea(models.Model):
                     suplentes=self.env['participantes.asamblea.clientes'].search([('asamblea_id','=',self.id),('seleccionado','=',False)])
                     suplentes_seleccionados=0
                     for suplente in suplentes:
-                        if suplente.tipo_de_contrato.code=="exacto":
+                        if suplente.contrato_id.tipo_de_contrato.code=="exacto":
                             if suplentes_seleccionados<numero_suplentes:
                                 cuota_id=suplente.contrato_id.estado_cuenta_ids.filtered(lambda l: l.programado>0.00 and l.fecha.month==hoy.month and l.fecha.year==hoy.year)
                                 if cuota_id:
