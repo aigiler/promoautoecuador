@@ -18,7 +18,7 @@ class TransaccionesGrupoSocio(models.Model):
         ('NO ACTIVADO', 'NO ACTIVADO'),
         ('ADJUDICADO', 'ADJUDICADO'),
         ('FINALIZADO', 'FINALIZADO'),
-    ], string='Estado', default='pendiente', track_visibility='onchange')
+    ], string='Estado', default='ACTIVADO', track_visibility='onchange')
 
     debe=fields.Float('Débito')
     haber=fields.Float('Crédito')
