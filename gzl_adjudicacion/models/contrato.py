@@ -577,7 +577,7 @@ class Contrato(models.Model):
         contratos_ids=self.env["contrato"].search([])
         for l in contratos_ids:
             if l.idTipoContrato=="E":
-                l.tipo_de_contrato.id = 2
+                l.tipo_de_contrato = 2
             if l.idTipoContrato=="PA":
                 l.tipo_de_contrato = 1
             if l.idTipoContrato=="PP":
