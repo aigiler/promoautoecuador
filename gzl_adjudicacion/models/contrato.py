@@ -41,6 +41,8 @@ class Contrato(models.Model):
     fechaInicioPago = fields.Date("Fecha de inicio de Pago")
     numeroCuotasPagadas = fields.Char("Numero de Contrato Original")
 
+    tipo_documento = fields.Char()
+    prefijo = fields.Char()
     secuencia = fields.Char(index=True)
     currency_id = fields.Many2one(
         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
@@ -374,7 +376,7 @@ class Contrato(models.Model):
     @api.model
     def create(self, vals):
         ####Comentar luego de la Migración
-        vals['secuencia']="AJ"+vals['secuencia']
+        vals['secuencia']=vals["tipo_documento"]+vals["prefijo"].zfill(3)+vals['secuencia'].zfill(8)
         return super(Contrato, self).create(vals)
 
 
@@ -848,7 +850,6 @@ class ContratoEstadoCuenta(models.Model):
     def job_actualizar_valores(self):
         estado_cuenta_ids=self.env["contrato.estado.cuenta"].search([])
         for x in estado_cuenta_ids:
-            contrato_id=self.env["contrato"].search([("idContrato","=",x.idContrato)])
             cuota_actual=0
             saldos=0
             if x['cuota_capital']:
