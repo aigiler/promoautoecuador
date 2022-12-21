@@ -258,7 +258,7 @@ class Asamblea(models.Model):
                     for ganador in ganadores:
                         if ganador.contrato_id.tipo_de_contrato.code=="exacto":
                             if ganadores_seleccionados<numero_ganadores:
-                                cuota_id=ganador.contrato_id.estado_cuenta_ids.filtered(lambda l: l.programado>0.00 and l.fecha.month==hoy.month and l.fecha.year==hoy.year)
+                                cuota_id=ganador.contrato_id.estado_de_cuenta_ids.filtered(lambda l: l.programado>0.00 and l.fecha.month==hoy.month and l.fecha.year==hoy.year)
                                 if cuota_id:
                                     if (saldoActual-cuota_id.monto_financiamiento)>=0:
                                         saldoActual=saldoActual-cuota_id.monto_financiamiento
@@ -274,7 +274,7 @@ class Asamblea(models.Model):
                     for suplente in suplentes:
                         if suplente.contrato_id.tipo_de_contrato.code=="exacto":
                             if suplentes_seleccionados<numero_suplentes:
-                                cuota_id=suplente.contrato_id.estado_cuenta_ids.filtered(lambda l: l.programado>0.00 and l.fecha.month==hoy.month and l.fecha.year==hoy.year)
+                                cuota_id=suplente.contrato_id.estado_de_cuenta_ids.filtered(lambda l: l.programado>0.00 and l.fecha.month==hoy.month and l.fecha.year==hoy.year)
                                 if cuota_id:
                                     if (valorNeto-cuota_id.monto_financiamiento)>=0:
                                         valorNeto=valorNeto-cuota_id.monto_financiamiento
@@ -293,7 +293,7 @@ class Asamblea(models.Model):
                     for ganador in ganadores:
                         if ganador.contrato_id.tipo_de_contrato.code=="programo":
                             if ganadores_seleccionados<numero_ganadores:
-                                cuota_id=ganador.contrato_id.estado_cuenta_ids.filtered(lambda l: l.programado>0.00 and l.fecha.month==hoy.month and l.fecha.year==hoy.year)
+                                cuota_id=ganador.contrato_id.estado_de_cuenta_ids.filtered(lambda l: l.programado>0.00 and l.fecha.month==hoy.month and l.fecha.year==hoy.year)
                                 if cuota_id:
                                     if (saldoActual-cuota_id.monto_financiamiento)>=0:
                                         saldoActual=saldoActual-cuota_id.monto_financiamiento
@@ -309,7 +309,7 @@ class Asamblea(models.Model):
                     for suplente in suplentes:
                         if suplente.contrato_id.tipo_de_contrato.code=="exacto":
                             if suplentes_seleccionados<numero_suplentes:
-                                cuota_id=suplente.contrato_id.estado_cuenta_ids.filtered(lambda l: l.programado>0.00 and l.fecha.month==hoy.month and l.fecha.year==hoy.year)
+                                cuota_id=suplente.contrato_id.estado_de_cuenta_ids.filtered(lambda l: l.programado>0.00 and l.fecha.month==hoy.month and l.fecha.year==hoy.year)
                                 if cuota_id:
                                     if (valorNeto-cuota_id.monto_financiamiento)>=0:
                                         valorNeto=valorNeto-cuota_id.monto_financiamiento
