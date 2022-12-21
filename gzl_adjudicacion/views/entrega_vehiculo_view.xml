@@ -297,7 +297,7 @@
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <div class="col-xs-8"><group >  
-                                        <field name="nombreGarante" string="Nombre del Garante" required="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" options="{'no_open': True, 'no_create': True}"/>
+                                        <field name="nombreGarante" string="Nombre del Garante"  attrs="{'readonly':[('estado', 'not in',['borrador'])],'required':[('aplicaGarante', 'in',['sí','SI'])]}" options="{'no_open': True, 'no_create': True}"/>
                                     </group>
                                     </div>
                                     <div class="col-xs-4">
