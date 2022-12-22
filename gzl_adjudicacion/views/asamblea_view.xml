@@ -74,7 +74,7 @@
                                         <field name="monto_financiamiento" readonly="1"/>
                                         <field name="licitacion_valor" readonly="0"/>
                                          <field name="monto_programado" readonly="0"/>
-                                          <field name="cuota_progamada" readonly="0"/>
+                                          <field name="porcentaje_programado" readonly="0"/>
                                         <field name="cuotas_licitadas" readonly="0"/>
                                         <field name="cuotas_pagadas" readonly="1"/>
                                         <field name="total_cuotas" readonly="1"/>
