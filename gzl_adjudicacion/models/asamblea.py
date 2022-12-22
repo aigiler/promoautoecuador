@@ -277,7 +277,6 @@ class Asamblea(models.Model):
                         if suplente.contrato_id.tipo_de_contrato.code=="exacto":
                             if suplentes_seleccionados<numero_suplentes:
                                 cuota_id=suplente.contrato_id.estado_de_cuenta_ids.filtered(lambda l: l.programado>0.00 and l.fecha.month==hoy.month and l.fecha.year==hoy.year)
-                                suplente.
                                 if cuota_id:
                                     if (valorNeto-suplente.monto_financiamiento)>=0:
                                         valorNeto=valorNeto-suplente.monto_financiamiento
