@@ -312,7 +312,7 @@ class Asamblea(models.Model):
                     suplentes=self.env['participantes.asamblea.clientes'].search([('asamblea_id','=',self.id),('seleccionado','=',False)])
                     suplentes_seleccionados=0
                     for suplente in suplentes:
-                        if suplente.contrato_id.tipo_de_contrato.code=="exacto":
+                        if suplente.contrato_id.tipo_de_contrato.code=="programo":
                             if suplentes_seleccionados<numero_suplentes:
                                 cuota_id=suplente.contrato_id.estado_de_cuenta_ids.filtered(lambda l: l.programado>0.00 and l.fecha.month==hoy.month and l.fecha.year==hoy.year)
                                 if cuota_id:
