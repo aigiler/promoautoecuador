@@ -23,7 +23,7 @@ class ParticipantesAsamblea(models.Model):
     monto_financiamiento = fields.Monetary(related='contrato_id.monto_financiamiento',string='Monto Financiamiento', currency_field='currency_id', track_visibility='onchange')
     cuota=fields.Float("Cuota",compute="obtener_valor_cuota",store=True)
     monto_programado=fields.Monetary("Monto Programado",related="contrato_id.monto_programado",store=True,currency_field='currency_id')
-    porcentaje_programado=fields.Float("Cuota Programada(%)", related="contrato_id.cuota_pago", store=True)
+    porcentaje_programado=fields.Float("Cuota Programada(%)", related="contrato_id.porcentaje_programado", store=True)
     licitacion_valor=fields.Float("Licitación")
     cuotas_licitadas=fields.Integer("Cuotas Licitadas")
     cuotas_pagadas=fields.Integer(related="contrato_id.numero_cuotas_pagadas",string="Cuotas Pagadas")
