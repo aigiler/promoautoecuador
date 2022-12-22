@@ -52,11 +52,7 @@ class ParticipantesAsamblea(models.Model):
         for l in self:
             if l.contrato_id:
                 cuota=l.contrato_id.cuota_adm+l.contrato_id.iva_administrativo+l.contrato_id.cuota_capital
-                if l.contrato_id.tipo_de_contrato.code=="programo" or l.contrato_id.tipo_de_contrato.code=="exacto":
-                    licitacion_valor=l.contrato_id.monto_programado
-
             l.cuota=cuota
-            l.licitacion_valor=licitacion_valor
 
 
 
@@ -267,6 +263,7 @@ class Asamblea(models.Model):
                                 if cuota_id:
                                     if (saldoActual-ganador.monto_financiamiento)>=0:
                                         saldoActual=saldoActual-ganador.monto_financiamiento
+                                        ganador.licitacion_valor=l.programado
                                         ganador.seleccionado=True
                                         ganador.nota="GANADOR"
                                         ganadores_seleccionados+=1
@@ -280,9 +277,11 @@ class Asamblea(models.Model):
                         if suplente.contrato_id.tipo_de_contrato.code=="exacto":
                             if suplentes_seleccionados<numero_suplentes:
                                 cuota_id=suplente.contrato_id.estado_de_cuenta_ids.filtered(lambda l: l.programado>0.00 and l.fecha.month==hoy.month and l.fecha.year==hoy.year)
+                                suplente.
                                 if cuota_id:
                                     if (valorNeto-suplente.monto_financiamiento)>=0:
                                         valorNeto=valorNeto-suplente.monto_financiamiento
+                                        suplente.licitacion_valor=l.programado
                                         suplente.seleccionado=True
                                         suplente.nota="SUPLENTE"
                                         suplentes_seleccionados+=1
@@ -302,6 +301,7 @@ class Asamblea(models.Model):
                                 if cuota_id:
                                     if (saldoActual-ganador.monto_financiamiento)>=0:
                                         saldoActual=saldoActual-ganador.monto_financiamiento
+                                        ganador.licitacion_valor=l.programado
                                         ganador.seleccionado=True
                                         ganador.nota="GANADOR"
                                         ganadores_seleccionados+=1
@@ -318,6 +318,7 @@ class Asamblea(models.Model):
                                 if cuota_id:
                                     if (valorNeto-suplente.monto_financiamiento)>=0:
                                         valorNeto=valorNeto-suplente.monto_financiamiento
+                                        suplente.licitacion_valor=l.programado
                                         suplente.seleccionado=True
                                         suplente.nota="SUPLENTE"
                                         suplentes_seleccionados+=1
