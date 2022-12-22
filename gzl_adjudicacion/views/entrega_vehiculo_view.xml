@@ -25,7 +25,7 @@
         </search>
         </field>
     </record>
-    
+
     <record id="view_res_partner_form" model= "ir.ui.view">
         <field name="name">view.res.partner.form</field>
         <field name="model">res.partner</field>
@@ -1105,7 +1105,7 @@
         <field name="name">Entrega Vehiculo</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">entrega.vehiculo</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,search</field>
     </record>
 
 
