@@ -12,5 +12,5 @@ class NumeroMeses(models.Model):
 
     numero = fields.Integer( string="Número")
     porcentaje=fields.Float(string="Porcentaje")
-    cuota_adjudicacion=fields.Float(string="Número de Cuota a Adjudicar")
+    cuota_adjudicacion=fields.Char(string="Número de Cuota a Adjudicar")
     active = fields.Boolean(string="Activo",default=True)
