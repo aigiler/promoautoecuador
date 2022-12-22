@@ -391,7 +391,7 @@ class Asamblea(models.Model):
             if l.seleccionado and l.nota=='GANADOR' and l.licitacion_valor:
                 total+=l.total_or
                 monto_financiamiento+=l.monto_financiamiento
-            elif l.seleccionado and l.nota=='GANADOR' and l.tipo_asamblea.code=="programo":
+            elif l.seleccionado and l.nota=='GANADOR' and l.tipo_asamblea.code=="programo" and l.licitacion_valor==0:
                 programado+=l.monto_financiamiento
         self.licitaciones=total
         self.invertir_licitacion=monto_financiamiento-total
