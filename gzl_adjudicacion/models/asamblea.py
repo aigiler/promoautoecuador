@@ -52,8 +52,9 @@ class ParticipantesAsamblea(models.Model):
         for l in self:
             if l.contrato_id:
                 cuota=l.contrato_id.cuota_adm+l.contrato_id.iva_administrativo+l.contrato_id.cuota_capital
-                if l.contrato_id.tipo_de_contrato.code=="programo":
+                if l.contrato_id.tipo_de_contrato.code=="programo" or l.contrato_id.tipo_de_contrato.code=="exacto":
                     licitacion_valor=l.contrato_id.monto_programado
+
             l.cuota=cuota
             l.licitacion_valor=licitacion_valor
 
