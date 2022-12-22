@@ -377,13 +377,18 @@ class Asamblea(models.Model):
     def calcular_licitacion(self):
         total=0
         monto_financiamiento=0
+        programado=0
         for l in self.integrantes_licitacion_id:
-            if l.seleccionado and l.nota=='GANADOR':
+            if l.seleccionado and l.nota=='GANADOR' and l.licitacion_valor:
                 total+=l.total_or
                 monto_financiamiento+=l.monto_financiamiento
+            elif l.seleccionado and l.nota=='GANADOR' and l.tipo_asamblea.code=="programo":
+                programado+=l.monto_financiamiento
         self.licitaciones=total
         self.invertir_licitacion=monto_financiamiento-total
+        self.programo=programado
         total_eva=0
+        
         for x in self.integrantes_evaluacion_id:
             if l.seleccionado and l.nota=='GANADOR':
                 total_eva+=l.monto_financiamiento
