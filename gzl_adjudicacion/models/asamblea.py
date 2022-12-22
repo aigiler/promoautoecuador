@@ -48,10 +48,14 @@ class ParticipantesAsamblea(models.Model):
     @api.constrains("contrato_id")
     def obtener_valor_cuota(self):
         cuota=0
+        licitacion_valor=0
         for l in self:
             if l.contrato_id:
                 cuota=l.contrato_id.cuota_adm+l.contrato_id.iva_administrativo+l.contrato_id.cuota_capital
+                if l.contrato_id.tipo_de_contrato.code=="programo":
+                    licitacion_valor=l.contrato_id.monto_programado
             l.cuota=cuota
+            l.licitacion_valor=licitacion_valor
 
 
 
