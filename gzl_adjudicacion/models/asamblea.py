@@ -221,7 +221,7 @@ class Asamblea(models.Model):
                 if parametros_licitacion:
 
                     numero_ganadores=int(parametros_licitacion.numero_ganadores)
-                    ganadores=self.env['participantes.asamblea.clientes'].search([('asamblea_id','=',self.id),('cuotas_licitadas','>',0),('seleccionado','=',False)],order='total_cuotas desc')
+                    ganadores=self.env['participantes.asamblea.clientes'].search([('asamblea_id','=',self.id),('cuotas_licitadas','>',0),('seleccionado','=',False)],order='cuotas_licitadas desc')
                     ganadores_seleccionados=0
                     invertir_licitacion=0
                     for ganador in ganadores:
@@ -235,7 +235,7 @@ class Asamblea(models.Model):
                         else:
                             pass
                     numero_suplentes=int(parametros_licitacion.numero_suplentes)
-                    suplentes=self.env['participantes.asamblea.clientes'].search([('asamblea_id','=',self.id),('cuotas_licitadas','>',0),('seleccionado','=',False)],order='total_cuotas desc')
+                    suplentes=self.env['participantes.asamblea.clientes'].search([('asamblea_id','=',self.id),('cuotas_licitadas','>',0),('seleccionado','=',False)],order='cuotas_licitadas desc')
                     suplentes_seleccionados=0
                     invertir_licitacion=0
                     for suplente in suplentes:
