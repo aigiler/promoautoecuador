@@ -78,7 +78,7 @@ class ReportAdjudicados(models.TransientModel):
                     "fecha_orden":contrato.entrega_vehiculo_id.fecha_orden or '',
                     "comision_factura":contrato.entrega_vehiculo_id.comisionFacturaConcesionario or 0,
                     "monto_vehiculo":contrato.entrega_vehiculo_id.montoVehiculo or 0,
-                    "asamblea":contrato.entrega_vehiculo_id.asamblea_id.name or "",
+                    "asamblea":contrato.entrega_vehiculo_id.asamblea_id.secuencia or "",
                     "tipo":contrato.tipo_de_contrato.name  or '',
                     'plazo':contrato.plazo_meses.numero  or '',
                     'monto':contrato.monto_financiamiento  or 0,
