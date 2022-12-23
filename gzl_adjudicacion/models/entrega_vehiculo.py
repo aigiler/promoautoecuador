@@ -325,6 +325,7 @@ class EntegaVehiculo(models.Model):
     def obtener_datos(self):
         for l in self:
             if l.nombreSocioAdjudicado:
+                l-contrato_id.entrega_vehiculo_id=self.id
                 l.vatAdjudicado=l.nombreSocioAdjudicado.vat
                 l.fechaNacimientoAdj=l.nombreSocioAdjudicado.fecha_nacimiento
                 l.estadoCivilAdj=l.nombreSocioAdjudicado.estado_civil
@@ -341,12 +342,6 @@ class EntegaVehiculo(models.Model):
                 l.telefono_trabajoAdj=l.nombreSocioAdjudicado.telefono_trabajo
                 l.cargoAdj=l.nombreSocioAdjudicado.cargo
                 l.nombre_companiaAdj=l.nombreSocioAdjudicado.nombre_compania
-
-
-
-
-
-
 
 
     nombreGarante = fields.Many2one('res.partner', string="Nombre del Garante", track_visibility='onchange')
@@ -663,7 +658,8 @@ class EntegaVehiculo(models.Model):
     salida_id=fields.Many2one("ir.attachment")
 
 
-
+    fecha_orden = fields.Date(
+        string='Fecha Orden de Compra.', track_visibility='onchange')
 
 
 
@@ -1031,6 +1027,7 @@ class EntegaVehiculo(models.Model):
             if self.estado=="finalizado":
                 self.contrato_id.state_simplificado='ENTREGADO'
                 self.contrato_id.fecha_adjudicado=datetime.now()
+                self.contrato_id.fecha_entrega=datetime.now()
 
     def llenar_tabla(self):
         obj_patrimonio=self.env['items.patrimonio'].search([])  
@@ -1188,6 +1185,7 @@ class EntegaVehiculo(models.Model):
                                                     'entrega_vehiculo_id':self.id})
         dct=plantilla_id.print_report_xls()
         self.orden_compra=dct["archivo_xls1"]
+        self.contrato_id.fecha_orden=datetime.now()
         url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         url += "/web/content/%s?download=true" %(dct["documento"]["id"])
         self.url_doc=url

@@ -144,6 +144,8 @@ class Contrato(models.Model):
         'contrato.estado.cuenta', 'contrato_id', track_visibility='onchange')
     fecha_adjudicado = fields.Date(
         string='Fecha Adj.', track_visibility='onchange')
+    fecha_entrega = fields.Date(
+        string='Fecha Adj.', track_visibility='onchange')
 
     monto_pagado = fields.Float(
         string='Monto Pagado', compute="calcular_monto_pagado", store=True, track_visibility='onchange')
