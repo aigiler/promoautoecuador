@@ -325,7 +325,7 @@ class EntegaVehiculo(models.Model):
     def obtener_datos(self):
         for l in self:
             if l.nombreSocioAdjudicado:
-                l-contrato_id.entrega_vehiculo_id=self.id
+                l.contrato_id.entrega_vehiculo_id=self.id
                 l.vatAdjudicado=l.nombreSocioAdjudicado.vat
                 l.fechaNacimientoAdj=l.nombreSocioAdjudicado.fecha_nacimiento
                 l.estadoCivilAdj=l.nombreSocioAdjudicado.estado_civil
