@@ -11,4 +11,5 @@ from . import pagare_wizard
 from . import formato_entrevista_wizard
 from . import politicas_credito_wizard
 from . import reporte_grupos
+from . import reporte_adjudicados
 from . import reporte_trazabilidad_pagos

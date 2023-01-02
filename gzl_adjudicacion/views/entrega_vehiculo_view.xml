@@ -14,6 +14,17 @@
         </field>
     </record>
 
+<record id="view_entrega_vehiculo_search" model= "ir.ui.view">
+        <field name="name">view.entrega.vehiculo.search</field>
+        <field name="model">entrega.vehiculo</field>
+        <field name="arch" type="xml">
+        <search string="Búsqueda">
+            <filter invisible="0" string="Retrasado" name="activities_overdue" domain="[('activity_ids.date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]" help="Show all opportunities for which the next action date is before today"/>
+            <filter invisible="0" string="Hoy" name="activities_today" domain="[('activity_ids.date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
+            <filter invisible="0" string="Futuros" name="activities_upcoming_all" domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
+        </search>
+        </field>
+    </record>
 
     <record id="view_res_partner_form" model= "ir.ui.view">
         <field name="name">view.res.partner.form</field>
@@ -297,7 +308,7 @@
                             <div class="row" style="border: 1px solid black;">
                                 <div class="col-xs-12 col-md-12">
                                     <div class="col-xs-8"><group >  
-                                        <field name="nombreGarante" string="Nombre del Garante" required="1" attrs="{'readonly':[('estado', 'not in',['borrador'])]}" options="{'no_open': True, 'no_create': True}"/>
+                                        <field name="nombreGarante" string="Nombre del Garante"  attrs="{'readonly':[('estado', 'not in',['borrador'])],'required':[('aplicaGarante', 'in',['sí','SI'])]}" options="{'no_open': True, 'no_create': True}"/>
                                     </group>
                                     </div>
                                     <div class="col-xs-4">
@@ -1094,7 +1105,7 @@
         <field name="name">Entrega Vehiculo</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">entrega.vehiculo</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,search</field>
     </record>
 
 

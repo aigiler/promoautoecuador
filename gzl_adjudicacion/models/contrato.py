@@ -41,6 +41,8 @@ class Contrato(models.Model):
     fechaInicioPago = fields.Date("Fecha de inicio de Pago")
     numeroCuotasPagadas = fields.Char("Numero de Contrato Original")
 
+    tipo_documento = fields.Char()
+    prefijo = fields.Char()
     secuencia = fields.Char(index=True)
     currency_id = fields.Many2one(
         'res.currency', readonly=True, default=lambda self: self.env.company.currency_id)
@@ -142,6 +144,8 @@ class Contrato(models.Model):
         'contrato.estado.cuenta', 'contrato_id', track_visibility='onchange')
     fecha_adjudicado = fields.Date(
         string='Fecha Adj.', track_visibility='onchange')
+    fecha_entrega = fields.Date(
+        string='Fecha Adj.', track_visibility='onchange')
 
     monto_pagado = fields.Float(
         string='Monto Pagado', compute="calcular_monto_pagado", store=True, track_visibility='onchange')
@@ -242,8 +246,8 @@ class Contrato(models.Model):
                     anioSgte=str(fechaMesSeguiente.year)
                     fechaPago = anioSgte+"-"+mesSgte+"-{0}".format(rec.dia_corte.zfill(2)) 
                     rec.fecha_inicio_pago = parse(fechaPago).date().strftime('%Y-%m-%d')
-                #else:
-                #    rec.fecha_inicio_pago =False
+                else:
+                    rec.fecha_inicio_pago =False
     
     @api.depends('plazo_meses', 'monto_financiamiento','monto_programado')
     def calcular_valores_contrato(self):
@@ -374,7 +378,7 @@ class Contrato(models.Model):
     @api.model
     def create(self, vals):
         ####Comentar luego de la Migración
-        vals['secuencia']="AJ"+vals['secuencia']
+        vals['secuencia']=vals["tipo_documento"]+vals["prefijo"].zfill(3)+vals['secuencia'].zfill(8)
         return super(Contrato, self).create(vals)
 
 
@@ -589,7 +593,7 @@ class Contrato(models.Model):
                 l.grupo=grupo_id.id
             cliente_id=self.env["res.partner"].search([("codigo_cliente","=",l.idClienteContrato)])
             if cliente_id:
-                l.clente=cliente_id.id
+                l.cliente=cliente_id.id
             if l.idEstadoContrato=="A":
                 l.state="ACTIVADO"
                 l.state_simplificado=False
@@ -848,7 +852,6 @@ class ContratoEstadoCuenta(models.Model):
     def job_actualizar_valores(self):
         estado_cuenta_ids=self.env["contrato.estado.cuenta"].search([])
         for x in estado_cuenta_ids:
-            contrato_id=self.env["contrato"].search([("idContrato","=",x.idContrato)])
             cuota_actual=0
             saldos=0
             if x['cuota_capital']:
@@ -887,11 +890,13 @@ class ContratoEstadoCuenta(models.Model):
             diferencia=cuota_actual-saldos
             if saldos==0:
                 x["estado_pago"]="pagado"
+                x["monto_pagado"]=diferencia
             if diferencia!=0:
                 lista_ids=[]
                 id_registro=self.env["account.payment.cuotas"].create({"cuotas_id":x["id"],
                                                                         "monto_pagado":diferencia,
                                                                         "valor_asociado":diferencia})
+
 
 
 class PagoContratoEstadoCuenta(models.Model):

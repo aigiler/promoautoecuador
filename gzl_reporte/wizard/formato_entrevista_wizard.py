@@ -1,5 +1,20 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
+# -*- coding: utf-8 -*-s
+
+from odoo import api, fields, models, tools
+from datetime import date, timedelta,datetime
+from dateutil.relativedelta import relativedelta
+import xlsxwriter
+from io import BytesIO
+import base64
+from odoo.exceptions import AccessError, UserError, ValidationError
+#from . import l10n_ec_check_printing.amount_to_text_es
+from . import amount_to_text_es
+from datetime import datetime
+import calendar
+import datetime as tiempo
+import itertools
+from . import contrato_reserva_documento
+import shutil
 
 import os
 import re
@@ -59,6 +74,7 @@ class EntrevistaCredito(models.TransientModel):
             campos=obj_plantilla.campos_ids.filtered(lambda l: len(l.child_ids)==0)
             lista_campos=[]
             for campo in campos:
+                resultado=self.mapped(campo.name)
                 dct={}
                 if len(resultado)>0:
                     dct['valor']=resultado[0]
@@ -119,8 +135,9 @@ class EntrevistaCredito(models.TransientModel):
                         dct['valor']=detalle.colores
                         lista_campos.append(dct)
                         break
+                    
                 for necesidad in self.entrega_vehiculo_id.necesidadIds:
-                    if necesidad.necesidad_id.celda_excel in [62,63,64,65,66,67,68,69]:
+                    if necesidad.necesidad_id.celda_excel in [62,63,64,65,66,67,69]:
                         dct={}
                         dct['hoja']=1
                         dct['fila']=necesidad.necesidad_id.celda_excel

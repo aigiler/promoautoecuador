@@ -46,38 +46,19 @@ class AccountGuiaRemision(models.Model):
                                     string='Estado de Autorización del Sri')
     email_fe = fields.Char('Email Factura Electronica')
 
-
-
-
-
-
-
-
-
-
-    
     @api.onchange("auth_id")
     def actualizar_es_electronico(self):
         if self.auth_id.is_electronic:
             self.is_electronic=True
 
-            
-
     @api.onchange('partner_id')
     def actualizar_email_factura(self):
         self.email_fe=self.partner_id.email
-
-
-
-
-
 
     def validate(self):
         for detalle in self.guia_remision_line_ids:
             if len(detalle.guia_remision_line_quantity_ids)==0:
                 raise ValidationError("Ingresar el detalle de productos a enviar en el detalle de la Guia de Remisión")
-
-
         self.name="%s%s%09s"%(self.auth_id.serie_establecimiento,self.auth_id.serie_emision,self.auth_id.sequence_id.next_by_id())
         if self.is_electronic:
             self.procesoComprobanteElectronico()
@@ -95,10 +76,6 @@ class AccountGuiaRemision(models.Model):
 
     campos_adicionales_facturacion = fields.One2many('campos.adicionales.facturacion', inverse_name = 'remision_id')
 
-
-
-
-
 class AccountGuiaRemisionLine(models.Model):
     _name = 'account.guia.remision.line'
 
@@ -115,7 +92,6 @@ class AccountGuiaRemisionLine(models.Model):
 
     guia_remision_line_quantity_ids = fields.One2many('detalle.productos.guia.remision', inverse_name = 'linea_guia_id')
 
-
     @api.constrains('cod_establecimiento_destino')
     def es_codigo_establecimiento(self, ):
         pattern ="^[0-9]{3}$"
@@ -123,12 +99,6 @@ class AccountGuiaRemisionLine(models.Model):
             return True
         else:
             raise ValidationError("Ingresar solo caracteres numéricos")
-
-
-
-
-
-
 
     @api.onchange('picking_id')
     def find_rel_invoice(self):
@@ -145,10 +115,6 @@ class AccountGuiaRemisionLine(models.Model):
                         s.invoice_id = line[0]
                         break
 
-
-
-
-
 class DetalleProductosGuiaRemision(models.Model):
     _name = 'detalle.productos.guia.remision'
     _description = 'detalle de cantidad por linea'
@@ -157,9 +123,6 @@ class DetalleProductosGuiaRemision(models.Model):
     linea_guia_id = fields.Many2one('account.guia.remision.line', string = 'linea')
     product_id= fields.Many2one('product.product', string="Producto")
     cantidad = fields.Float('Cantidad')
-
-
-
 
 class ReasonGuiaRemision(models.Model):
     _name = 'reason.guia.remision'
