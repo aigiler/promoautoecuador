@@ -806,6 +806,8 @@ class ContratoEstadoCuenta(models.Model):
     pago_ids = fields.One2many(
         'account.payment', 'pago_id', track_visibility='onchange')
     
+    saldo_kimera = fields.Monetary(
+        string='Saldo Kimera', currency_field='currency_id')
 
     fondo_reserva = fields.Monetary(
         string='Fondo Reserva', currency_field='currency_id')
@@ -847,10 +849,51 @@ class ContratoEstadoCuenta(models.Model):
             l.monto_pagado=monto
             l.saldo=l.cuota_capital+l.cuota_adm+l.iva_adm + l.seguro+ l.rastreo + l.otro + l.programado - l.monto_pagado
 
+    
+
+    def actualizar_rubros_detalle(self):
+        estado_cuenta_ids=self.env["contrato.estado.cuenta"].search([])
+        for x in estado_cuenta_ids:
+            cuota_actual=0
+            saldos=0
+            if x['cuota_capital']:
+                cuota_actual+=x['cuota_capital']
+            if x['cuota_adm']:
+                cuota_actual+=x["cuota_adm"]
+            if x['iva_adm']:
+                cuota_actual+=x["iva_adm"]
+            if x['fondo_reserva']:
+                cuota_actual+=x["fondo_reserva"]
+            if x['programado']:
+                cuota_actual+=x["programado"]
+            if x['seguro']:
+                cuota_actual+=x["seguro"]
+            if x['rastreo']:
+                cuota_actual+=x["rastreo"]
+            if x['otro']:
+                cuota_actual+=x["otro"]
+            x["estado_pago"]="pagado"
+            if x["fecha_pagada"]:
+                x["saldo_cuota_capital"]=0
+                x["saldo_cuota_administrativa"]=0
+                x["saldo_iva"]=0
+                x["saldo_fondo_reserva"]=0
+                x["programado"]=0
+                x["saldo_programado"]=0
+                x["saldo_seguro"]=0
+                x["saldo_rastreo"]=0
+                x["saldo_otros"]=0
+                id_registro=self.env["account.payment.cuotas"].create({"cuotas_id":x["id"],
+                                                                        "monto_pagado":cuota_actual,
+                                                                        "valor_asociado":cuota_actual})
+
+
+
+
 
     #####Comentar función luego de la migración
     def job_actualizar_valores(self):
-        estado_cuenta_ids=self.env["contrato.estado.cuenta"].search([])
+        estado_cuenta_ids=self.env["contrato.estado.cuenta"].search([("estado_pago","!=","pagado")])
         for x in estado_cuenta_ids:
             cuota_actual=0
             saldos=0
@@ -890,7 +933,7 @@ class ContratoEstadoCuenta(models.Model):
             diferencia=cuota_actual-saldos
             if saldos==0:
                 x["estado_pago"]="pagado"
-                x["monto_pagado"]=diferencia
+            x["monto_pagado"]=diferencia
             if diferencia!=0:
                 lista_ids=[]
                 id_registro=self.env["account.payment.cuotas"].create({"cuotas_id":x["id"],
