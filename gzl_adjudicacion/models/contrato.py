@@ -854,8 +854,40 @@ class ContratoEstadoCuenta(models.Model):
     def actualizar_rubros_detalle(self):
         estado_cuenta_ids=self.env["contrato.estado.cuenta"].search([])
         for x in estado_cuenta_ids:
-            if not x["fecha_pagada"]:
-                x["estado_pago"]="pendiente"
+            cuota_actual=0
+            saldos=0
+            if x['cuota_capital']:
+                cuota_actual+=x['cuota_capital']
+            if x['cuota_adm']:
+                cuota_actual+=x["cuota_adm"]
+            if x['iva_adm']:
+                cuota_actual+=x["iva_adm"]
+            if x['fondo_reserva']:
+                cuota_actual+=x["fondo_reserva"]
+            if x['programado']:
+                cuota_actual+=x["programado"]
+            if x['seguro']:
+                cuota_actual+=x["seguro"]
+            if x['rastreo']:
+                cuota_actual+=x["rastreo"]
+            if x['otro']:
+                cuota_actual+=x["otro"]
+            if x["fecha_pagada"]:
+                x["estado_pago"]="pagado"
+
+                x["saldo_cuota_capital"]=0
+                x["saldo_cuota_administrativa"]=0
+                x["saldo_iva"]=0
+                x["saldo_fondo_reserva"]=0
+                x["programado"]=0
+                x["saldo_programado"]=0
+                x["saldo_seguro"]=0
+                x["saldo_rastreo"]=0
+                x["saldo_otros"]=0
+                id_registro=self.env["account.payment.cuotas"].create({"cuotas_id":x["id"],
+                                                                        "monto_pagado":cuota_actual,
+                                                                        "valor_asociado":cuota_actual})
+
 
 
 
