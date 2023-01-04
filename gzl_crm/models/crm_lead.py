@@ -448,7 +448,7 @@ class CrmLead(models.Model):
                                             'dia_corte':self.dia_pago,
                                             'monto_financiamiento':self.planned_revenue,
                                             'tipo_de_contrato':self.tipo_contrato.id,
-                                            'provincias':self.partner_id.state_id.id,
+                                            # 'provincias':self.partner_id.state_id.id,
                                             'ciudad':self.ciudad_id.id,
                                             'plazo_meses':self.numero_cuotas.id,
                                             'cuota_capital':self.cuota_capital,
