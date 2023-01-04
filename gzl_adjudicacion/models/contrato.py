@@ -394,7 +394,7 @@ class Contrato(models.Model):
         vals['tasa_administrativa'] = float(tasa_administrativa)
         vals['dia_corte'] = dia_corte
 
-        self.validar_cliente_en_otro_contrato()
+        #self.validar_cliente_en_otro_contrato()
 
 
         
