@@ -806,6 +806,8 @@ class ContratoEstadoCuenta(models.Model):
     pago_ids = fields.One2many(
         'account.payment', 'pago_id', track_visibility='onchange')
     
+    saldo_kimera = fields.Monetary(
+        string='Saldo Kimera', currency_field='currency_id')
 
     fondo_reserva = fields.Monetary(
         string='Fondo Reserva', currency_field='currency_id')
@@ -846,6 +848,39 @@ class ContratoEstadoCuenta(models.Model):
             monto=sum(l.ids_pagos.mapped("valor_asociado"))
             l.monto_pagado=monto
             l.saldo=l.cuota_capital+l.cuota_adm+l.iva_adm + l.seguro+ l.rastreo + l.otro + l.programado - l.monto_pagado
+
+    def actualizar_rubros_detalle(self):
+        estado_cuenta_ids=self.env["contrato.estado.cuenta"].search([])
+        for x in estado_cuenta_ids:
+            cuota_actual=0
+            saldos=0
+            if x['cuota_capital']:
+                cuota_actual+=x['cuota_capital']
+            if x['cuota_adm']:
+                cuota_actual+=x["cuota_adm"]
+            if x['iva_adm']:
+                cuota_actual+=x["iva_adm"]
+            if x['fondo_reserva']:
+                cuota_actual+=x["fondo_reserva"]
+            if x['programado']:
+                cuota_actual+=x["programado"]
+            if x['seguro']:
+                cuota_actual+=x["seguro"]
+            if x['rastreo']:
+                cuota_actual+=x["rastreo"]
+            if x['otro']:
+                cuota_actual+=x["otro"]     
+            monto_pagado=cuota_actual-x.saldo_kimera 
+            if x.saldo_kimera==0:
+                x.estado="estado_pago"
+            if monto_pagado!=0:
+                lista_ids=[]
+                id_registro=self.env["account.payment.cuotas"].create({"cuotas_id":x["id"],
+                                                                        "monto_pagado":diferencia,
+                                                                        "valor_asociado":diferencia})
+
+
+
 
 
     #####Comentar función luego de la migración
