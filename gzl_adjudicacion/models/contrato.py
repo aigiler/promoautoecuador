@@ -849,6 +849,8 @@ class ContratoEstadoCuenta(models.Model):
             l.monto_pagado=monto
             l.saldo=l.cuota_capital+l.cuota_adm+l.iva_adm + l.seguro+ l.rastreo + l.otro + l.programado - l.monto_pagado
 
+    
+
     def actualizar_rubros_detalle(self):
         estado_cuenta_ids=self.env["contrato.estado.cuenta"].search([])
         for x in estado_cuenta_ids:
@@ -869,15 +871,21 @@ class ContratoEstadoCuenta(models.Model):
             if x['rastreo']:
                 cuota_actual+=x["rastreo"]
             if x['otro']:
-                cuota_actual+=x["otro"]     
-            monto_pagado=cuota_actual-x.saldo_kimera 
-            if x.saldo_kimera==0:
-                x.estado="estado_pago"
-            if monto_pagado!=0:
-                lista_ids=[]
+                cuota_actual+=x["otro"]
+            x["estado_pago"]="pagado"
+            if x["fecha_pagada"]:
+                x["saldo_cuota_capital"]=0
+                x["saldo_cuota_administrativa"]=0
+                x["saldo_iva"]=0
+                x["saldo_fondo_reserva"]=0
+                x["programado"]=0
+                x["saldo_programado"]=0
+                x["saldo_seguro"]=0
+                x["saldo_rastreo"]=0
+                x["saldo_otros"]=0
                 id_registro=self.env["account.payment.cuotas"].create({"cuotas_id":x["id"],
-                                                                        "monto_pagado":diferencia,
-                                                                        "valor_asociado":diferencia})
+                                                                        "monto_pagado":cuota_actual,
+                                                                        "valor_asociado":cuota_actual})
 
 
 
@@ -885,7 +893,7 @@ class ContratoEstadoCuenta(models.Model):
 
     #####Comentar función luego de la migración
     def job_actualizar_valores(self):
-        estado_cuenta_ids=self.env["contrato.estado.cuenta"].search([])
+        estado_cuenta_ids=self.env["contrato.estado.cuenta"].search([("estado_pago","!=","pagado")])
         for x in estado_cuenta_ids:
             cuota_actual=0
             saldos=0
