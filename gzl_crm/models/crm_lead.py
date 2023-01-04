@@ -457,7 +457,7 @@ class CrmLead(models.Model):
                                             'grupo':self.grupo_adjudicado_id.id,
                                             'supervisor':self.team_id.user_id.id,
                                             'asesor':self.cerrador.id,
-                                            'valor_inscripcion':self.valor_inscripcion
+                                            # 'valor_inscripcion':self.valor_inscripcion
 
                                         })
                 self.contrato_id=contrato.id
