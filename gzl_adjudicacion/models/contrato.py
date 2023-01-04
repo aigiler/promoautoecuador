@@ -872,8 +872,9 @@ class ContratoEstadoCuenta(models.Model):
                 cuota_actual+=x["rastreo"]
             if x['otro']:
                 cuota_actual+=x["otro"]
-            x["estado_pago"]="pagado"
             if x["fecha_pagada"]:
+                x["estado_pago"]="pagado"
+
                 x["saldo_cuota_capital"]=0
                 x["saldo_cuota_administrativa"]=0
                 x["saldo_iva"]=0
