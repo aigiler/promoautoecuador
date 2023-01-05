@@ -129,6 +129,7 @@ class BitacoraConsumoServicios(models.Model):
             self.url=url
             self.header=header
             self.request=diccionarioRequest
+            raise ValidationError({0}+{1}+{2}.format(url,header,diccionarioRequest))
             response=comprobante.postJson(url,header,diccionarioRequest)
 
 
