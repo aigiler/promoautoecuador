@@ -317,6 +317,7 @@ class WizardContratoAdendum(models.Model):
                     if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
                         c.update({
                             'cuota_adm': c.cuota_adm - valor_a_restar,
+                            "saldo":c.cuota_capital+(c.cuota_adm - valor_a_restar)+c.iva_adm,
                             'adendum_id':self.id,
                         })
                         vls_adm.append(valor_sobrante)
@@ -337,6 +338,7 @@ class WizardContratoAdendum(models.Model):
                     if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
                         c.update({
                             'cuota_adm': c.cuota_adm + valor_a_restar,
+                            "saldo":c.cuota_capital+(c.cuota_adm + valor_a_restar)+c.iva_adm,
                             'adendum_id':self.id,
                         })  
                         vls_adm.append(valor_sobrante)
@@ -367,6 +369,7 @@ class WizardContratoAdendum(models.Model):
                     if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
                         c.update({
                             'cuota_capital': c.cuota_capital - valor_a_restar,
+                            "saldo":(c.cuota_capital - valor_a_restar)+c.cuota_adm+c.iva_adm,
                             'adendum_id':self.id,
                         })
                         vls.append(valor_sobrante)
@@ -387,6 +390,7 @@ class WizardContratoAdendum(models.Model):
                     if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
                         c.update({
                             'cuota_capital': c.cuota_capital + valor_a_restar,
+                            "saldo":(c.cuota_capital + valor_a_restar)+c.cuota_adm+c.iva_adm,
                             'adendum_id':self.id,
                         })  
                         vls.append(valor_sobrante)
