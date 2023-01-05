@@ -288,7 +288,7 @@ class WizardContratoAdendum(models.Model):
                                                     'cuota_capital':cuota_capital_nueva,
                                                     'cuota_adm':cuota_adm_nueva,
                                                     'iva_adm':iva,
-                                                    'saldo': cuota_capital_nueva+cuota_adm_nueva+cuota_adm_nueva,
+                                                    'saldo': cuota_capital_nueva+cuota_adm_nueva+iva,
                                                     'procesado': False,
                                                         }
                 lista_tabla.append(dct_tabla)               
