@@ -281,7 +281,7 @@ class WizardContratoAdendum(models.Model):
                 iva = cuota_adm_nueva * 0.12
                 cuota_asignada=i+1
                 cuota_administrativa_neto= cuota_adm + iva
-                saldo = cuota_capital+cuota_adm_nueva+iva
+                saldo = cuota_capital_nueva+cuota_adm_nueva+iva
                 dct_tabla={
                                                     'numero_cuota':i+1, 
                                                     'fecha':self.contrato_id.fecha_inicio_pago + relativedelta(months=i),
