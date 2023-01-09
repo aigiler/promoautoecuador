@@ -21,7 +21,7 @@
                         <field name="monto_a_ceder" invisible="1"/>
                         <field name="partner_id" required="1"/>
                         <field name="contrato_a_ceder" required="1"/>
-                        <!-- <button string="Exportar" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'inicio')]}" type="object" name="descargar"/ -->>
+                        <!-- <button string="Exportar" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'inicio')]}" type="object" name="descargar"/ -->
                          <field name="forma_pago" required="0" string="Forma de Pago"/>
                         <field name="carta_adjunto" string="Cesión Notarizada"/>
                         <field name="comprobante_pago" string="Comprobante de Pago"/>
@@ -41,7 +41,7 @@
         </field>
     </record>
 
-<record id="view_cesion_derecho_search" model= "ir.ui.view">
+    <record id="view_cesion_derecho_search" model= "ir.ui.view">
         <field name="name">view.cesion.derecho.search</field>
         <field name="model">wizard.cesion.derecho</field>
         <field name="arch" type="xml">
@@ -52,7 +52,8 @@
         </search>
         </field>
     </record>
-        <record id="view_cesion_derecho_tree" model= "ir.ui.view">
+    
+    <record id="view_cesion_derecho_tree" model= "ir.ui.view">
         <field name="name">view.wizard.cesion.derecho.tree</field>
         <field name="model">wizard.cesion.derecho</field>
         <field name="arch" type="xml">

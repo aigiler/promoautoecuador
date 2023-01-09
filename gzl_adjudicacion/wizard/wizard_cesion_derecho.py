@@ -174,7 +174,7 @@ class WizardAdelantarCuotas(models.Model):
     def validarrol(self,rol):
         roles=self.env['adjudicaciones.team'].search([('id','=',rol.id)])
         for x in roles:
-          if self.env.user.id == x.user_id.id:
+          if self.env.user.id in x.member_ids.ids:
             return True
           else:
             raise ValidationError("Debe estar asignado al rol %s"% rol.name)

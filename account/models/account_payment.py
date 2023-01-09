@@ -895,8 +895,8 @@ class account_payment(models.Model):
                                                                     })
                                                             lista.append(tupla) 
                                             else:
-                                                if valor_pago_cliente>=cuota_id.cuota_id.saldo_seguro:
-                                                    monto_cruzado=cuota_id.cuota_id.saldo_seguro
+                                                if valor_pago_cliente>=cuota_id.saldo_seguro:
+                                                    monto_cruzado=cuota_id.saldo_seguro
                                                 else:
                                                     monto_cruzado=valor_pago_cliente
                                                 acumulado_cuota+=monto_cruzado
@@ -949,8 +949,8 @@ class account_payment(models.Model):
                                                                     })
                                                             lista.append(tupla) 
                                             else:
-                                                if valor_pago_cliente>=cuota_id.cuota_id.saldo_rastreo:
-                                                    monto_cruzado=cuota_id.cuota_id.saldo_rastreo
+                                                if valor_pago_cliente>=cuota_id.saldo_rastreo:
+                                                    monto_cruzado=cuota_id.saldo_rastreo
                                                 else:
                                                     monto_cruzado=valor_pago_cliente
                                                 acumulado_cuota+=monto_cruzado
@@ -1002,8 +1002,8 @@ class account_payment(models.Model):
                                                                     })
                                                             lista.append(tupla) 
                                             else:
-                                                if valor_pago_cliente>=cuota_id.cuota_id.saldo_otros:
-                                                    monto_cruzado=cuota_id.cuota_id.saldo_otros
+                                                if valor_pago_cliente>=cuota_id.saldo_otros:
+                                                    monto_cruzado=cuota_id.saldo_otros
                                                 else:
                                                     monto_cruzado=valor_pago_cliente
                                                 acumulado_cuota+=monto_cruzado

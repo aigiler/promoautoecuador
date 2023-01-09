@@ -12,8 +12,9 @@
                 <sheet>
                     <group string="Ingrese la modificación del contrato"> 
 
-                        <field name="contrato_id" required="1" attrs="{'readonly': [('state', '=', 'procesado')]}"/>
-                        <field name="socio_id" readonly="1"/>
+                         <field name="socio_id" readonly="0"/>
+
+                        <field name="contrato_id" required="1" attrs="{'readonly': [('state', '=', 'procesado')]}" domain="[('cliente', '=', socio_id)]"/>
                         <field name="asignado" invisible="0"/>
                         <field name="monto_financiamiento_anterior" string="Financiamiento Actual" readonly="1"/>
 
