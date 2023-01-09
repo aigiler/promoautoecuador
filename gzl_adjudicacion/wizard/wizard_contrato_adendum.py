@@ -415,10 +415,10 @@ class WizardContratoAdendum(models.Model):
     @api.onchange("contrato_id")
     def validarAsignacion(self):
         for l in self:
-            if self.env.user.id not in self.rolpostventa.member_ids.ids or self.env.user.id not in self.rolAdjudicacion.member_ids.ids:
-                raise ValidationError("No tiene permiso para realizar esta acción")
-            elif self.env.user.id not in self.rolpostventa.member_ids.ids and self.env.user.id not in self.rolAdjudicacion.member_ids.ids:
-                l.asignado=True
+            #if self.env.user.id not in self.rolpostventa.member_ids.ids or self.env.user.id not in self.rolAdjudicacion.member_ids.ids:
+            #    raise ValidationError("No tiene permiso para realizar esta acción")
+            #elif self.env.user.id not in self.rolpostventa.member_ids.ids and self.env.user.id not in self.rolAdjudicacion.member_ids.ids:
+            l.asignado=True
 
     def cancelar(self):
         for l in self:
@@ -430,8 +430,8 @@ class WizardContratoAdendum(models.Model):
 
         if not self.tabla_adendum_id:
             raise ValidationError("Debe generar la simulación de la tabla para que pueda validar el ajuste a su nueva tabla.")
-        if self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
-             raise ValidationError("No tiene permiso para realizar esta acción")
+        #if self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
+             #raise ValidationError("No tiene permiso para realizar esta acción")
         if self.nota:
             if self.env.user.id == self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
                 raise ValidationError("Si desea continuar con el proceso debe enviarlo al Aprobador de Adjudicaciones.")
