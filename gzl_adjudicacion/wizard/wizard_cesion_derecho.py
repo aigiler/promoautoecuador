@@ -23,6 +23,8 @@ class WizardAdelantarCuotas(models.Model):
     comprobante_pago = fields.Binary('Comprobante de Pago', attachment=True)
     otro_documento = fields.Binary('Otro Documento', attachment=True)
     partner_id=fields.Many2one("res.partner", "Cliente a Ceder")
+    cliente_id=fields.Many2one("res.partner", "Cliente Cedente")
+
     pago_id=fields.Many2one("account.payment", "Pago Generado")
     ejecutado=fields.Boolean(default=False)
     actividad_id = fields.Many2one('mail.activity',string="Actividades")
