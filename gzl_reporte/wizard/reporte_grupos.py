@@ -101,7 +101,7 @@ class ReportGrupos(models.TransientModel):
         if self.supervisor:
             query+=" and supervisor={0} ".format(self.supervisor.id)
         if self.state:
-            query+=" and state='{0}'' ".format(self.state)
+            query+=" and state='{0}'".format(self.state)
         if self.jefe_zona:
             query+=" and descripcion_adjudicaciones='{0}'' ".format(self.jefe_zona)
 
