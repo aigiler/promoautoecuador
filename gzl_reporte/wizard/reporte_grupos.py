@@ -91,7 +91,7 @@ class ReportGrupos(models.TransientModel):
         elif self.estado_deuda=='en_mora':
             query+=" WHERE en_mora=True "
         else:
-            query+=" WHERE en_mora in (True,False) "
+            query+=" "
         if self.fecha_contrato:
             query+=" and fecha_contrato='{0}'' ".format(self.fecha_contrato)
         if self.tipo_de_contrato:
