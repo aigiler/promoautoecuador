@@ -90,8 +90,7 @@ class ReportGrupos(models.TransientModel):
             query+=" WHERE en_mora=False "
         elif self.estado_deuda=='en_mora':
             query+=" WHERE en_mora=True "
-        else:
-            query+=" "
+
         if self.fecha_contrato:
             query+=" and fecha_contrato='{0}'' ".format(self.fecha_contrato)
         if self.tipo_de_contrato:
@@ -104,7 +103,7 @@ class ReportGrupos(models.TransientModel):
             query+=" and state='{0}'".format(self.state)
         if self.jefe_zona:
             query+=" and descripcion_adjudicaciones='{0}'' ".format(self.jefe_zona)
-
+        raise ValidationError(query)
 
 
         self.env.cr.execute(query)
