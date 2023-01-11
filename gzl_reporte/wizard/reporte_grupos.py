@@ -103,7 +103,6 @@ class ReportGrupos(models.TransientModel):
             query+=" and state='{0}'".format(self.state)
         if self.jefe_zona:
             query+=" and descripcion_adjudicaciones='{0}' ".format(self.jefe_zona)
-        raise ValidationError(query)
 
 
         self.env.cr.execute(query)
