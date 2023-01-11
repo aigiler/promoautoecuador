@@ -92,7 +92,7 @@ class ReportGrupos(models.TransientModel):
             query+=" WHERE en_mora=True "
 
         if self.fecha_contrato:
-            query+=" and fecha_contrato='{0}'' ".format(self.fecha_contrato)
+            query+=" and fecha_contrato='{0}' ".format(self.fecha_contrato)
         if self.tipo_de_contrato:
             query+=" and tipo_de_contrato={0} ".format(self.tipo_de_contrato.id)
         if self.grupo:
@@ -102,7 +102,7 @@ class ReportGrupos(models.TransientModel):
         if self.state:
             query+=" and state='{0}'".format(self.state)
         if self.jefe_zona:
-            query+=" and descripcion_adjudicaciones='{0}'' ".format(self.jefe_zona)
+            query+=" and descripcion_adjudicaciones='{0}' ".format(self.jefe_zona)
         raise ValidationError(query)
 
 
