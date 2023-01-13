@@ -27,6 +27,20 @@ class ReportGrupos(models.TransientModel):
         ('ADJUDICADO', 'ADJUDICADO'),
         ('FINALIZADO', 'FINALIZADO'),
     ], string='Estado de Contrato', track_visibility='onchange')
+
+    state_simplificado=fields.Selection(selection=[
+        ('DESACTIVADO', 'DESACTIVADO'),
+        ('INSCRITO', 'INSCRITO'),
+        ('ENTREGADO', 'ENTREGADO'),
+        ('NO ENTREGADO', 'NO ENTREGADO'),
+        ('ADJUDICADO', 'ADJUDICADO'),
+        ('LIQUIDADO', 'LIQUIDADO'),
+        ('SINIESTRADO', 'SINIESTRADO'),
+        ('DESISTIDO', 'DESISTIDO'),
+        ('RESUELTO', 'RESUELTO'),
+    ], string='Detalle de estado', default='DESACTIVADO', track_visibility='onchange')
+
+
     estado_deuda=fields.Selection(selection=[('todos', 'Todos'),
                                             ('al_dia', 'Al día'),
                                             ('en_mora', 'En Mora')],required=True)
@@ -105,7 +119,8 @@ class ReportGrupos(models.TransientModel):
             query+=" and state='{0}'".format(self.state)
         if self.jefe_zona:
             query+=" and descripcion_adjudicaciones='{0}' ".format(self.jefe_zona)
-
+        if self.state_simplificado:
+            query+=" and state_simplificado='{0}'".format(self.state_simplificado)
 
         self.env.cr.execute(query)
         contrato_ids=self.env.cr.dictfetchall()
