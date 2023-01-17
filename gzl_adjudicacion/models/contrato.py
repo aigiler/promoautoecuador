@@ -467,7 +467,7 @@ class Contrato(models.Model):
     def job_colocar_contratos_en_mora(self, ):
 
         hoy=date.today()
-        contratos=self.env['contrato'].search([('state','in',['adjudicado','ACTIVADO'])])
+        contratos=self.env['contrato'].search([])
 
         for contrato in contratos:
             mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month)
