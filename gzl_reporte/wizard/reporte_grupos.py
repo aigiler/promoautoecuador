@@ -174,19 +174,19 @@ class ReportGrupos(models.TransientModel):
                     'supervisor':'',
                     'jefe_zona':contrato.descripcion_adjudicaciones,}
             dct['cuota_mensual']=contrato.iva_administrativo+contrato.cuota_capital+contrato.cuota_adm
-            dct['capital_pagado'] =round(sum(contrato.estado_de_cuenta_ids.mapped("cuota_capital"),2))-round(sum(contrato.estado_de_cuenta_ids.mapped("saldo_cuota_capital"),2))
+            dct['capital_pagado'] =round(sum(contrato.estado_de_cuenta_ids.mapped("cuota_capital")),2)-round(sum(contrato.estado_de_cuenta_ids.mapped("saldo_cuota_capital")),2)
             dct['cuotas_consecutivas']=len(contrato.estado_de_cuenta_ids.filtered(lambda l: l.estado_pago=='pagado' and l.cuotaAdelantada==False))
             dct['cuotasAdelantadas']=len(contrato.estado_de_cuenta_ids.filtered(lambda l: l.estado_pago=='pagado' and l.cuotaAdelantada==True))
             dct['cuotas_pagadas']=dct['cuotas_consecutivas']+dct['cuotasAdelantadas']
             dct['capital_por_cobrar']=contrato.monto_financiamiento-dct['capital_pagado']
             dct['sum_adm_iva']=contrato.cuota_adm+contrato.iva_administrativo
 
-            dct['administrativo_pagado']=round(sum(contrato.estado_de_cuenta_ids.mapped("cuota_adm"),2))-round(sum(contrato.estado_de_cuenta_ids.mapped("saldo_cuota_administrativa"),2))
-            dct['administrativo_total']=round(sum(contrato.estado_de_cuenta_ids.mapped("cuota_adm"),2))
+            dct['administrativo_pagado']=round(sum(contrato.estado_de_cuenta_ids.mapped("cuota_adm")),2)-round(sum(contrato.estado_de_cuenta_ids.mapped("saldo_cuota_administrativa")),2)
+            dct['administrativo_total']=round(sum(contrato.estado_de_cuenta_ids.mapped("cuota_adm")),2)
             dct['administrativo_por_cobrar']=dct['administrativo_total']-dct['administrativo_pagado']
 
-            dct['iva_pagado']=round(sum(contrato.estado_de_cuenta_ids.mapped("iva_adm"),2))-round(sum(contrato.estado_de_cuenta_ids.mapped("saldo_iva"),2))
-            dct['iva_total']=round(sum(contrato.estado_de_cuenta_ids.mapped("iva_adm"),2))
+            dct['iva_pagado']=round(sum(contrato.estado_de_cuenta_ids.mapped("iva_adm")),2)-round(sum(contrato.estado_de_cuenta_ids.mapped("saldo_iva")),2)
+            dct['iva_total']=round(sum(contrato.estado_de_cuenta_ids.mapped("iva_adm")),2)
             dct['iva_por_cobrar']=dct['iva_total']-dct['iva_pagado']
             dct['sum_adm_iva_total']=dct['iva_total']+dct['administrativo_total']
             dct['seguro']=sum(contrato.estado_de_cuenta_ids.mapped("seguro"))
