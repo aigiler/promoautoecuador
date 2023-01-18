@@ -20,11 +20,11 @@ class WizardImportDocuments(models.TransientModel):
 
     def format_authorization_date(self, date):    
         date_conv = dateutil.parser.parse(date)
-        return date_conv.strftime('%Y-%m-%d %H:%M:%S')
+        return date_conv.strftime('%d-%m-%Y %H:%M:%S')
 
     def format_date(self, date):    
         date_conv = dateutil.parser.parse(date)
-        return date_conv.strftime('%Y-%m-%d')
+        return date_conv.strftime('%d-%m-%Y')
     def import_txt(self): 
         ####Crea el archivo en directorio y se sobrescribe el binario para abrirlo en el siguiente bloque.
                 binario = b64decode(self.file_txt)
