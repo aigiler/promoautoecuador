@@ -894,50 +894,16 @@ class ContratoEstadoCuenta(models.Model):
     def job_actualizar_valores(self):
         estado_cuenta_ids=self.env["contrato.estado.cuenta"].search([("estado_pago","!=","pagado")])
         for x in estado_cuenta_ids:
-            cuota_actual=0
-            saldos=0
-            if x['cuota_capital']:
-                cuota_actual+=x['cuota_capital']
-            if x['cuota_adm']:
-                cuota_actual+=x["cuota_adm"]
-            if x['iva_adm']:
-                cuota_actual+=x["iva_adm"]
-            if x['fondo_reserva']:
-                cuota_actual+=x["fondo_reserva"]
-            if x['programado']:
-                cuota_actual+=x["programado"]
-            if x['seguro']:
-                cuota_actual+=x["seguro"]
-            if x['rastreo']:
-                cuota_actual+=x["rastreo"]
-            if x['otro']:
-                cuota_actual+=x["otro"]
-            if x['saldo_cuota_capital']:
-                saldos+=x["saldo_cuota_capital"]
-            if x['saldo_cuota_administrativa']:
-                saldos+=x["saldo_cuota_administrativa"]
-            if x['saldo_iva']:
-                saldos+=x["saldo_iva"]
-            if x['saldo_fondo_reserva']:
-                saldos+=x["saldo_fondo_reserva"]
-            if x['saldo_programado']:
-                saldos+=x["saldo_programado"]
-            if x['saldo_seguro']:
-                saldos+=x["saldo_seguro"]
-            if x['saldo_rastreo']:
-                saldos+=x["saldo_rastreo"]
-            if x['saldo_otros']:
-                saldos+=x["saldo_otros"]
+            if x['monto_pagado']:
+                pagos_ids=self.env["account.payment.cuotas"].search([('cuotas_id','=',x['id'])])  
+                if pagos_ids:
+                    pass
+                else:
+                    id_registro=self.env["account.payment.cuotas"].create({"cuotas_id":x["id"],
+                                                                        "monto_pagado":x["monto_pagado"],
+                                                                        "valor_asociado":x["monto_pagado"]})
+            
 
-            diferencia=cuota_actual-saldos
-            if saldos==0:
-                x["estado_pago"]="pagado"
-            x["monto_pagado"]=diferencia
-            if diferencia!=0:
-                lista_ids=[]
-                id_registro=self.env["account.payment.cuotas"].create({"cuotas_id":x["id"],
-                                                                        "monto_pagado":diferencia,
-                                                                        "valor_asociado":diferencia})
 
 
 
