@@ -189,7 +189,10 @@ class ReportGrupos(models.TransientModel):
             dct['iva_total']=round(sum(contrato.estado_de_cuenta_ids.mapped("iva_adm"),2))
             dct['iva_por_cobrar']=dct['iva_total']-dct['iva_pagado']
             dct['sum_adm_iva_total']=dct['iva_total']+dct['administrativo_total']
-
+            dct['seguro']=sum(contrato.estado_de_cuenta_ids.mapped("seguro"),2)
+            dct['rastreo']=sum(contrato.estado_de_cuenta_ids.mapped("rastreo"),2)
+  
+            dct['otros']=sum(contrato.estado_de_cuenta_ids.mapped("otro"),2)
             seguro_id = self.env['wizard.actualizar.rubro'].search([('contrato_id','=',contrato.id),('rubro','=','seguro')],limit=1)
             rastreo_id = self.env['wizard.actualizar.rubro'].search([('contrato_id','=',contrato.id),('rubro','=','rastreo')],limit=1)
             otros_id = self.env['wizard.actualizar.rubro'].search([('contrato_id','=',contrato.id),('rubro','=','otro')],limit=1)
@@ -217,12 +220,7 @@ class ReportGrupos(models.TransientModel):
             for total in total_vencer:
                 dct['total_vencer']+=total.saldo_cuota_capital
 
-            if seguro_id:
-                dct['seguro']=seguro_id.monto
-            if rastreo_id:
-                dct['rastreo']=rastreo_id.monto
-            if otros_id:    
-                dct['otros']=otros_id.monto
+            
             crm_id = self.env['crm.lead'].search([('contrato_id','=',contrato.id)],limit=1)
             if crm_id:
                 dct['sucursal']=crm_id.surcursal_id.name
