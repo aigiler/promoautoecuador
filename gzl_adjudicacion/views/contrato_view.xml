@@ -50,7 +50,10 @@
             <form string="Contrato">
                 <header>
                     <field name="is_group_cobranza" invisible="1"/>
-                    <button name="cambio_estado_boton_borrador" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','!=','NO ACTIVADO')]}" string="Activo" type="object"  class="oe_highlight"/>
+                    <button name="cambio_estado_boton_borrador" attrs="{'invisible': [('state','=','ACTIVADO')]}" string="Activo" type="object"  class="oe_highlight"/>
+                    <button name="cambio_estado_boton_borrador" attrs="{'invisible': [('state','=','ACTIVADO')]}" string="Activo" type="object"  class="oe_highlight"/>
+                    <button name="finalizar_contrato" attrs="{'invisible': [('state','=','ADJUDICADO')]}" string="FINALIZAR" type="object"  class="oe_highlight"/>
+                    
 
                     <button name="cambio_estado_congelar_contrato" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','in',['NO ACTIVADO','FINALIZADO']),('state_simplificado','in',['DESACTIVADO'])]}" string="Congelar "  type="object" class="oe_highlight"/>
                     <button name="reactivar_contrato_congelado" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','not in',['NO ACTIVADO']),('state_simplificado','not in',['DESACTIVADO'])]}" string="Reactivar Contrato" type="object" class="oe_highlight"/>

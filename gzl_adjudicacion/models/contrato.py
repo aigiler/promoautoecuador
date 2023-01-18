@@ -417,6 +417,9 @@ class Contrato(models.Model):
     def cambio_estado_boton_inactivar(self):
         return self.write({"state": "NO ACTIVADO"})
 
+    def finalizar_contrato(self):
+        return self.write({"state": "FINALIZADO","state_simplificado":"LIQUIDADO"})
+
     def cambio_estado_boton_adjudicar(self):
         return self.write({"state": "ADJUDICADO"})
 
