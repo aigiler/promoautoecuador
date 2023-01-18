@@ -189,10 +189,10 @@ class ReportGrupos(models.TransientModel):
             dct['iva_total']=round(sum(contrato.estado_de_cuenta_ids.mapped("iva_adm"),2))
             dct['iva_por_cobrar']=dct['iva_total']-dct['iva_pagado']
             dct['sum_adm_iva_total']=dct['iva_total']+dct['administrativo_total']
-            dct['seguro']=sum(contrato.estado_de_cuenta_ids.mapped("seguro"),2)
-            dct['rastreo']=sum(contrato.estado_de_cuenta_ids.mapped("rastreo"),2)
+            dct['seguro']=sum(contrato.estado_de_cuenta_ids.mapped("seguro"))
+            dct['rastreo']=sum(contrato.estado_de_cuenta_ids.mapped("rastreo"))
   
-            dct['otros']=sum(contrato.estado_de_cuenta_ids.mapped("otro"),2)
+            dct['otros']=sum(contrato.estado_de_cuenta_ids.mapped("otro"))
             seguro_id = self.env['wizard.actualizar.rubro'].search([('contrato_id','=',contrato.id),('rubro','=','seguro')],limit=1)
             rastreo_id = self.env['wizard.actualizar.rubro'].search([('contrato_id','=',contrato.id),('rubro','=','rastreo')],limit=1)
             otros_id = self.env['wizard.actualizar.rubro'].search([('contrato_id','=',contrato.id),('rubro','=','otro')],limit=1)
