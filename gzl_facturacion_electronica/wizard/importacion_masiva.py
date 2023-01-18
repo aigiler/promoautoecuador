@@ -69,6 +69,7 @@ class WizardImportDocuments(models.TransientModel):
                             'partner_id':partner_id.id,
                             #'type_environment':fila[6],
                             'numero_autorizacion_sri':fila[10],
+                            'auth_number':fila[10],
                             'fecha_autorizacion_sri':self.format_authorization_date(fila[5]),
                             #'estado_autorizacion_sri':'AUT' if aut['estado']=='AUTORIZADO' else 'NAT',
                             'clave_acceso_sri':fila[9],
