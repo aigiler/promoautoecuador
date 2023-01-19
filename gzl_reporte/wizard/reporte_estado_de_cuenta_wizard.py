@@ -118,6 +118,11 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             obj_template=self.env['mail.template'].browse(template_id)
 
             email_id=obj_template.send_mail(id_envio)
+            obj_mail=self.env['mail.mail'].browse(email_id)
+            try:
+                obj_mail.send()
+            except:
+                pass
 
     def xslx_body(self, workbook, name):
         bold = workbook.add_format({'bold':True,'border':1})
@@ -191,7 +196,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
 
         if self.contrato_id.tipo_de_contrato:
             sheet.write('G11', 'Tipo de contrato: '+ self.contrato_id.tipo_de_contrato.name.upper(), format_datos)
-        sheet.write('G12', 'Monto financiamiento: $'+ str(self.contrato_id.monto_financiamiento), format_datos)
+        sheet.write('G12', 'Monto financiamiento: $'+ str(round(self.contrato_id.monto_financiamiento,2)), format_datos)
         sheet.write('G13', 'Plazo: '+ str(self.contrato_id.plazo_meses.numero)+ ' Meses' , format_datos)
         #
         title_main=['cuota','Fecha pago','Cuota Capital' ,'Cuota Adm.','Iva','Seguro','Rastreo','Otro','Saldo']
