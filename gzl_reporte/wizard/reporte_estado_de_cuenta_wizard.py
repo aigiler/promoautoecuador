@@ -149,7 +149,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.merge_range('A5:I5', self.env.company.street, format_datos)
         # self.env.company.city.name
         sheet.merge_range('A6:C6', self.env.company.city.upper() + ' - ' +self.env.company.country_id.name.upper(), format_datos)
-        sheet.merge_range('A7:C7', self.env.company.vat, format_datos)
+        sheet.merge_range('A7:C7', "RUC: "+self.env.company.vat, format_datos)
         #         sheet.merge_range('H6:I6', self.contrato_id.ciudad.nombre_ciudad +', ' + self.create_date.strftime('%Y-%m-%d'), format_datos)
 
         if self.create_date:
