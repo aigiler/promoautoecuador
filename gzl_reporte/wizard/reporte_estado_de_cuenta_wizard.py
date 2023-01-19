@@ -127,6 +127,9 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         format_subtitle = workbook.add_format({'font_name':'Arial','font_size':  14,'bold':True, 'bottom':1})
         format_subtitle.set_center_across()
         format_datos = workbook.add_format({'font_name':'Arial','font_size':  8,'align': 'left'})
+        format_datos_cab = workbook.add_format({'font_name':'Arial','font_size':  8,'align': 'right'})
+        num_contrato = workbook.add_format({'font_name':'Arial','font_size':  10,'bold':True, 'bottom':1})
+
         currency_format = workbook.add_format({'font_name':'Arial','font_size':  8,'num_format': '[$$-409]#,##0.00','text_wrap': True,'align':'center' })
         currency_format.set_align('vcenter')
         formato_cabecera_tabla = workbook.add_format({'font_name':'Arial','font_size':  8,'align':'center','valign':'vcenter','bold':True, 'bottom':1, 'top':1,'text_wrap':True})
@@ -150,7 +153,9 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         #         sheet.merge_range('H6:I6', self.contrato_id.ciudad.nombre_ciudad +', ' + self.create_date.strftime('%Y-%m-%d'), format_datos)
 
         if self.create_date:
-            sheet.merge_range('G6:I6', self.env.company.city.upper() +', ' + self.create_date.strftime('%Y-%m-%d'), format_datos)
+            sheet.merge_range('G6:I6', self.env.company.city.upper() +', ' + self.create_date.strftime('%Y-%m-%d'), format_datos_cab)
+        if self.contrato_id.secuencia:
+            sheet.merge_range('G7:I7', 'No. ' + self.contrato_id.secuencia, num_contrato)
         sheet.merge_range('A8:I8', 'ESTADO DE CUENTA DE APORTES', format_subtitle)
         #
         if self.contrato_id.cliente:
