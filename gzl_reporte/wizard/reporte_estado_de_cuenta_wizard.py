@@ -128,7 +128,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         format_subtitle.set_center_across()
         format_datos = workbook.add_format({'font_name':'Arial','font_size':  8,'align': 'left'})
         format_datos_cab = workbook.add_format({'font_name':'Arial','font_size':  8,'align': 'right'})
-        num_contrato = workbook.add_format({'font_name':'Arial','font_size':  10,'bold':True, 'bottom':1})
+        num_contrato = workbook.add_format({'font_name':'Arial','font_size':  10,'bold':True,'align':'right'})
 
         currency_format = workbook.add_format({'font_name':'Arial','font_size':  8,'num_format': '[$$-409]#,##0.00','text_wrap': True,'align':'center' })
         currency_format.set_align('vcenter')
