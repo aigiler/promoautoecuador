@@ -183,8 +183,8 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             sheet.merge_range('A12:C12', 'Estado: '+ self.contrato_id.state.upper() +'(' +fecha_adjudicado_text+')' , format_datos)
         else:
             sheet.merge_range('A12:C12', 'Estado: '+ self.contrato_id.state.upper(), format_datos)
-        sheet.merge_range('A13:C13', 'Valor Inscripción: $'+ str(self.contrato_id.valor_inscripcion), format_datos)
-        #
+        sheet.merge_range('A13:C13', 'Valor Inscripción: $'+ str('{:.2f}'.format(self.contrato_id.valor_inscripcion)), format_datos)
+        
         if self.contrato_id.cliente:
             sheet.write('G9', 'Ced/RUC: '+ self.contrato_id.cliente.vat , format_datos)
 
