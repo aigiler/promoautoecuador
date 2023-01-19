@@ -155,7 +155,7 @@ class WizardContratoAdendum(models.Model):
         for l in self:
             porcentaje_perm_adendum_postventa =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.porcentaje_perm_adendum_postventa'))
             
-            if self.env.user.id == self.rolpostventa.user_id.id or self.env.user.id == self.rolAdjudicacion.user_id.id:
+            if self.env.user.id in self.rolpostventa.member_ids.ids or self.env.user.id in self.rolAdjudicacion.member_ids.ids:
                 monto_maximo =  float(self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.monto_maximo'))
                 valor_porcentaje_post = (self.contrato_id.monto_financiamiento * porcentaje_perm_adendum_postventa)/100
                 valor_menor_porcentaje = self.contrato_id.monto_financiamiento - valor_porcentaje_post
@@ -430,8 +430,8 @@ class WizardContratoAdendum(models.Model):
 
         if not self.tabla_adendum_id:
             raise ValidationError("Debe generar la simulación de la tabla para que pueda validar el ajuste a su nueva tabla.")
-        #if self.env.user.id != self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
-             #raise ValidationError("No tiene permiso para realizar esta acción")
+        if self.env.user.id not in self.rolpostventa.member_ids.ids and self.env.user.id not in self.rolAdjudicacion.member_ids.ids:
+            raise ValidationError("No tiene permiso para realizar esta acción")
         if self.nota:
             if self.env.user.id == self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
                 raise ValidationError("Si desea continuar con el proceso debe enviarlo al Aprobador de Adjudicaciones.")
