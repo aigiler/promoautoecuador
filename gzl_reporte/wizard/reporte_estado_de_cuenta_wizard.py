@@ -246,6 +246,6 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.write('G{0}'.format(fila_current+2), total_seguro , currency_bold)
         sheet.write('H{0}'.format(fila_current+2), total_rastreo , currency_bold)
         sheet.write('I{0}'.format(fila_current+2), total_saldo , currency_bold)
-        sheet.merge_range('A{0}:I{0}'.format(fila_current+2), '', formato_cabecera_tabla)
+        sheet.merge_range('A{0}:I{0}'.format(fila_current+3), '', formato_cabecera_tabla)
 
 
