@@ -217,7 +217,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             current_line = next(line)
             sheet.write(current_line, 0, linea.numero_cuota ,body)
             sheet.write(current_line, 1, linea.fecha, date_format)
-            sheet.write(current_line, 2, linea.fecha_pagada or "", body)
+            sheet.write(current_line, 2, linea.fecha_pagada or "", date_format)
             sheet.write(current_line, 3, linea.cuota_capital , currency_format)
             total_cuota_capital+=linea.cuota_capital
             if linea.programado>0:
