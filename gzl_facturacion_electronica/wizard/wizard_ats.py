@@ -501,14 +501,19 @@ class WizardAts(models.TransientModel):
         ]
         anulados = []
         for inv in self.env['account.move'].search(dmn):
+            registro=""
+            inicio=""
+            if inv.l10n_latam_document_number[6:].rstrip("0"):
+                registro=inv.l10n_latam_document_number[6:].rstrip("0")
+                inicio= inv.l10n_latam_document_number[6:].rstrip("0")
             auth = inv.establecimiento
             aut = auth.is_electronic and inv.numero_autorizacion_sri or auth.name
             detalleanulados = {
                 'tipoComprobante': auth.type_id.code or '00',
                 'establecimiento': auth.serie_establecimiento,
                 'ptoEmision': auth.serie_emision,
-                'secuencialInicio': inv.l10n_latam_document_number[6:].rstrip("0"),
-                'secuencialFin': inv.l10n_latam_document_number[6:].rstrip("0"),
+                'secuencialInicio': inicio,
+                'secuencialFin': registro,
                 'autorizacion': aut or '000000'
             }
             anulados.append(detalleanulados)
