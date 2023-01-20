@@ -503,8 +503,9 @@ class WizardAts(models.TransientModel):
         for inv in self.env['account.move'].search(dmn):
             registro=""
             inicio=""
-            if inv.l10n_latam_document_number[6:].rstrip("0"):
+            if inv.l10n_latam_document_number:
                 registro=inv.l10n_latam_document_number[6:].rstrip("0")
+            if inv.l10n_latam_document_number:
                 inicio= inv.l10n_latam_document_number[6:].rstrip("0")
             auth = inv.establecimiento
             aut = auth.is_electronic and inv.numero_autorizacion_sri or auth.name
