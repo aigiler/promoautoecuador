@@ -157,8 +157,8 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.merge_range('A7:C7', "RUC: "+self.env.company.vat, format_datos)
         #         sheet.merge_range('H6:I6', self.contrato_id.ciudad.nombre_ciudad +', ' + self.create_date.strftime('%Y-%m-%d'), format_datos)
 
-        if self.create_date:
-            sheet.merge_range('G6:I6', self.env.company.city.upper() +', ' + self.create_date.strftime('%Y-%m-%d'), format_datos_cab)
+        if self.contrato_id.fecha_contrato:
+            sheet.merge_range('G6:I6', self.env.company.city.upper() +', ' + self.contrato_id.fecha_contrato.strftime('%Y-%m-%d'), format_datos_cab)
         if self.contrato_id.secuencia:
             sheet.merge_range('G7:I7', 'No. ' + self.contrato_id.secuencia, num_contrato)
         sheet.merge_range('A8:I8', 'ESTADO DE CUENTA DE APORTES', format_subtitle)
@@ -166,10 +166,6 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         if self.contrato_id.cliente:
             sheet.merge_range('A9:D9', 'Cliente: '+ self.contrato_id.cliente.name, format_datos)
 
-        if self.contrato_id.cliente.street!=False:
-            sheet.merge_range('A10:D10', 'Dirección: '+ self.contrato_id.cliente.street.upper(), format_datos)
-        else:
-            sheet.merge_range('A10:D10', 'Dirección: ', format_datos)
 
         if self.contrato_id.grupo: 
             sheet.merge_range('A11:C11', 'Grupo: '+'['+ self.contrato_id.grupo.codigo+'] '+ self.contrato_id.grupo.name, format_datos)
@@ -188,18 +184,13 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         if self.contrato_id.cliente:
             sheet.write('G9', 'Ced/RUC: '+ self.contrato_id.cliente.vat , format_datos)
 
-            if self.contrato_id.cliente.phone!=False and self.contrato_id.cliente.mobile!=False:
-                sheet.write('G10', 'Telefonos: '+ self.contrato_id.cliente.phone+' - '+ self.contrato_id.cliente.mobile, format_datos)
-            else:
-                sheet.write('G10', 'Telefonos: '+' - ', format_datos)
-
 
         if self.contrato_id.tipo_de_contrato:
             sheet.write('G11', 'Tipo de contrato: '+ self.contrato_id.tipo_de_contrato.name.upper(), format_datos)
         sheet.write('G12', 'Monto financiamiento: $'+ str('{:.2f}'.format(self.contrato_id.monto_financiamiento)), format_datos)
         sheet.write('G13', 'Plazo: '+ str(self.contrato_id.plazo_meses_numero)+ ' Meses' , format_datos)
         #
-        title_main=['cuota','Fecha pago','Cuota Capital' ,'Cuota Adm.','Iva','Seguro','Rastreo','Otro','Saldo']
+        title_main=['cuota','Fecha de Pago','Fecha Pagada','Cuota Capital' ,'Cuota Adm.','Iva','Seguro','Rastreo','Saldo']
 
         ##Titulos
         colspan=15
@@ -224,18 +215,19 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             current_line = next(line)
             sheet.write(current_line, 0, linea.numero_cuota ,body)
             sheet.write(current_line, 1, linea.fecha, date_format)
-            sheet.write(current_line, 2, linea.cuota_capital , currency_format)
+            sheet.write(current_line, 2, linea.fecha_pagada, date_format)
+            sheet.write(current_line, 3, linea.cuota_capital , currency_format)
             total_cuota_capital+=linea.cuota_capital
             if linea.programado>0:
                 sheet.write(current_line, 2, linea.programado , currency_format)
                 total_cuota_capital+=linea.programado
 
-            sheet.write(current_line, 3, linea.cuota_adm ,currency_format)           
-            sheet.write(current_line, 4, linea.iva_adm ,currency_format)
-            sheet.write(current_line, 5, linea.seguro,currency_format)
-            sheet.write(current_line, 6, linea.rastreo,currency_format)
-            sheet.write(current_line, 7, linea.otro, currency_format)
-            sheet.write(current_line, 8, linea.saldo, currency_format)
+            sheet.write(current_line, 4, linea.cuota_adm ,currency_format)           
+            sheet.write(current_line, 5, linea.iva_adm ,currency_format)
+            sheet.write(current_line, 6, linea.seguro,currency_format)
+            sheet.write(current_line, 7, linea.rastreo,currency_format)
+            sheet.write(current_line, 8, linea.otro, currency_format)
+            sheet.write(current_line, 9, linea.saldo, currency_format)
             total_cuota_adm+=linea.cuota_adm
             total_iva_adm+=linea.iva_adm
             total_seguro+=linea.seguro
@@ -247,11 +239,10 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         currency_bold=workbook.add_format({'num_format': '[$$-409]#,##0.00','text_wrap': True ,'font_name':'Arial','font_size':  8,'align':'center','bold':True, 'bottom':1, 'top':1})
 
         sheet.merge_range('A{0}:B{0}'.format(fila_current+2), 'TOTALES: ', formato_pie_tabla)
-        sheet.write('C{0}'.format(fila_current+2), total_cuota_capital , currency_bold)
-        sheet.write('D{0}'.format(fila_current+2), total_cuota_adm , currency_bold)
-        sheet.write('E{0}'.format(fila_current+2), total_iva_adm , currency_bold)
-        sheet.write('F{0}'.format(fila_current+2), total_seguro , currency_bold)
-        sheet.write('G{0}'.format(fila_current+2), total_rastreo , currency_bold)
-        sheet.write('H{0}'.format(fila_current+2), total_otro , currency_bold)
+        sheet.write('D{0}'.format(fila_current+2), total_cuota_capital , currency_bold)
+        sheet.write('E{0}'.format(fila_current+2), total_cuota_adm , currency_bold)
+        sheet.write('F{0}'.format(fila_current+2), total_iva_adm , currency_bold)
+        sheet.write('G{0}'.format(fila_current+2), total_seguro , currency_bold)
+        sheet.write('H{0}'.format(fila_current+2), total_rastreo , currency_bold)
         sheet.write('I{0}'.format(fila_current+2), total_saldo , currency_bold)
 
