@@ -264,7 +264,7 @@ class FacturacionElectronica(models.Model):
             dctDetalle['codigoAuxiliar']=str(detalle.id)
             dctDetalle['codigoPrincipal']=str(detalle.id)
             dctDetalle['descripcion']=funciones.elimina_tildes(detalle.name) or ""
-            dctDetalle['descuento']=(detalle.discount*detalle.price_unit/100) 
+            dctDetalle['descuento']=round((detalle.discount*detalle.price_unit/100),2)
 
 
 
