@@ -222,9 +222,10 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             sheet.write(current_line, 2, linea["fecha_pagada"] or "", date_format)
             sheet.write(current_line, 3, linea["cuota_capital"] , currency_format)
             total_cuota_capital+=linea["cuota_capital"]
-            if linea["programado"]>0:
-                sheet.write(current_line, 2, linea["programado"] , currency_format)
-                total_cuota_capital+=linea["programado"]
+            if linea["programado"]:
+                if linea["programado"]>0:
+                    sheet.write(current_line, 3, linea["programado"] , currency_format)
+                    total_cuota_capital+=linea["programado"]
 
             sheet.write(current_line, 4, linea["cuota_adm"] ,currency_format)           
             sheet.write(current_line, 5, linea["iva_adm"] ,currency_format)
