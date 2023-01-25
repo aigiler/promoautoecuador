@@ -397,7 +397,7 @@ class Contrato(models.Model):
         #self.validar_cliente_en_otro_contrato()
 
 
-    @api.onchange('cliente', 'grupo')
+    @api.onchange('cliente')
     def onchange_provincia(self):
         self.env.cr.execute("""select id from res_country_state where country_id={0}""".format(
             self.env.ref('base.ec').id))
