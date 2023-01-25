@@ -217,26 +217,26 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         estado_cuenta_ids=self.env.cr.dictfetchall()
         for linea in estado_cuenta_ids:
             current_line = next(line)
-            sheet.write(current_line, 0, linea.numero_cuota ,body)
-            sheet.write(current_line, 1, linea.fecha, date_format)
-            sheet.write(current_line, 2, linea.fecha_pagada or "", date_format)
-            sheet.write(current_line, 3, linea.cuota_capital , currency_format)
-            total_cuota_capital+=linea.cuota_capital
-            if linea.programado>0:
-                sheet.write(current_line, 2, linea.programado , currency_format)
-                total_cuota_capital+=linea.programado
+            sheet.write(current_line, 0, linea["numero_cuota"] ,body)
+            sheet.write(current_line, 1, linea["fecha"], date_format)
+            sheet.write(current_line, 2, linea["fecha_pagada"] or "", date_format)
+            sheet.write(current_line, 3, linea["cuota_capital"] , currency_format)
+            total_cuota_capital+=linea["cuota_capital"]
+            if linea["programado"]>0:
+                sheet.write(current_line, 2, linea["programado"] , currency_format)
+                total_cuota_capital+=linea["programado"]
 
-            sheet.write(current_line, 4, linea.cuota_adm ,currency_format)           
-            sheet.write(current_line, 5, linea.iva_adm ,currency_format)
-            sheet.write(current_line, 6, linea.seguro,currency_format)
-            sheet.write(current_line, 7, linea.rastreo,currency_format)
-            sheet.write(current_line, 8, linea.saldo, currency_format)
-            total_cuota_adm+=linea.cuota_adm
-            total_iva_adm+=linea.iva_adm
-            total_seguro+=linea.seguro
-            total_rastreo+=linea.rastreo
-            total_otro+=linea.otro
-            total_saldo+=linea.saldo
+            sheet.write(current_line, 4, linea["cuota_adm"] ,currency_format)           
+            sheet.write(current_line, 5, linea["iva_adm"] ,currency_format)
+            sheet.write(current_line, 6, linea["seguro"],currency_format)
+            sheet.write(current_line, 7, linea["rastreo"],currency_format)
+            sheet.write(current_line, 8, linea["saldo"], currency_format)
+            total_cuota_adm+=linea["cuota_adm"]
+            total_iva_adm+=linea["iva_adm"]
+            total_seguro+=linea["seguro"]
+            total_rastreo+=linea["rastreo"]
+            total_otro+=linea["otro"]
+            total_saldo+=linea["saldo"]
             fila_current=current_line
 
         currency_bold=workbook.add_format({'num_format': '[$$-409]#,##0.00','text_wrap': True ,'font_name':'Arial','font_size':  8,'align':'center','bold':True, 'bottom':1, 'top':1})
