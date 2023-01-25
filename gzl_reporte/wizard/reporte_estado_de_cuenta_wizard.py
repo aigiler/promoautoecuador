@@ -212,7 +212,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         total_rastreo=0
         total_otro=0
         total_saldo=0
-        query="SELECT * FROM contrato_estado_cuenta where contrato_id={0}  order by fecha".format(contrato_id.id)
+        query="SELECT * FROM contrato_estado_cuenta where contrato_id={0}  order by fecha".format(self.contrato_id.id)
         self.env.cr.execute(query)
         estado_cuenta_ids=self.env.cr.dictfetchall()
         for linea in estado_cuenta_ids:
