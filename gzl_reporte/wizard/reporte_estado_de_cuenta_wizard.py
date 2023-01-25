@@ -229,9 +229,9 @@ class ReporteEstadoDeCuenta(models.TransientModel):
 
             sheet.write(current_line, 4, linea["cuota_adm"] ,currency_format)           
             sheet.write(current_line, 5, linea["iva_adm"] ,currency_format)
-            sheet.write(current_line, 6, linea["seguro"] || 0.00,currency_format)
-            sheet.write(current_line, 7, linea["rastreo"] || 0.00,currency_format)
-            sheet.write(current_line, 8, linea["saldo"] || 0.00, currency_format)
+            sheet.write(current_line, 6, linea["seguro"] or 0.00,currency_format)
+            sheet.write(current_line, 7, linea["rastreo"] or 0.00,currency_format)
+            sheet.write(current_line, 8, linea["saldo"] or 0.00, currency_format)
             if linea["cuota_adm"]:
                 total_cuota_adm+=linea["cuota_adm"]
             if linea["iva_adm"]:
