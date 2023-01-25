@@ -212,8 +212,10 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         total_rastreo=0
         total_otro=0
         total_saldo=0
-
-        for linea in self.contrato_id.estado_de_cuenta_ids:
+        query="SELECT * FROM contrato_estado_cuenta order by fecha"
+        self.env.cr.execute(query)
+        estado_cuenta_ids=self.env.cr.dictfetchall()
+        for linea in estado_cuenta_ids:
             current_line = next(line)
             sheet.write(current_line, 0, linea.numero_cuota ,body)
             sheet.write(current_line, 1, linea.fecha, date_format)
