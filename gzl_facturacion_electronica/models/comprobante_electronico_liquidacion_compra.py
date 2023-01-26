@@ -199,82 +199,82 @@ class FacturacionElectronica(models.Model):
 
 ##############DETALLES 
         listaImpuesto=[]
-        for detalle in facturaReembolso.invoice_line_ids:
-           impuestos=detalle.tax_ids.filtered(lambda l: l.tax_group_id.code not in ['ret_vat_b', 'ret_vat_srv', 'ret_ir','no_ret_ir']).mapped("id")
-           listaImpuesto= listaImpuesto +impuestos
+        #for detalle in facturaReembolso.invoice_line_ids:
+        #    impuestos=detalle.tax_ids.filtered(lambda l: l.tax_group_id.code not in ['ret_vat_b', 'ret_vat_srv', 'ret_ir','no_ret_ir']).mapped("id")
+        #    listaImpuesto= listaImpuesto +impuestos
 
-        listaImpuesto=list(set(listaImpuesto))
+        #listaImpuesto=list(set(listaImpuesto))
 
 
         listaImpuestoDct=[]
-        for impuesto in listaImpuesto:
-           dctImpuesto={}#
+        #for impuesto in listaImpuesto:
+        #    dctImpuesto={}#
 
-           baseImponible=sum(facturaReembolso.invoice_line_ids.filtered(lambda l: impuesto in  l.tax_ids.ids).mapped('price_subtotal'))
-           obj_impuesto=self.env['account.tax'].browse(impuesto)
-           valor=obj_impuesto._compute_amount(round(baseImponible,2),0)
+        #    baseImponible=sum(facturaReembolso.invoice_line_ids.filtered(lambda l: impuesto in  l.tax_ids.ids).mapped('price_subtotal'))
+        #    obj_impuesto=self.env['account.tax'].browse(impuesto)
+        #    valor=obj_impuesto._compute_amount(round(baseImponible,2),0)
               
 
-           dctImpuesto['baseImponibleReembolso']=round(baseImponible,2)
-           dctImpuesto['codigo']=obj_impuesto.l10n_ec_code_base or ""
-           dctImpuesto['codigoPorcentaje']=obj_impuesto.l10n_ec_code_applied or ""
-           dctImpuesto['impuestoReembolso']=round(valor,2)
-           dctImpuesto['tarifa']=obj_impuesto.tarifa
-           listaImpuestoDct.append(dctImpuesto)
+        #    dctImpuesto['baseImponibleReembolso']=round(baseImponible,2)
+        #    dctImpuesto['codigo']=obj_impuesto.l10n_ec_code_base or ""
+        #    dctImpuesto['codigoPorcentaje']=obj_impuesto.l10n_ec_code_applied or ""
+        #    dctImpuesto['impuestoReembolso']=round(valor,2)
+        #    dctImpuesto['tarifa']=obj_impuesto.tarifa
+        #    listaImpuestoDct.append(dctImpuesto)
 
 
-        if len(listaImpuestoDct)==0:
-           dctImpuesto={}
+        #if len(listaImpuestoDct)==0:
+        #    dctImpuesto={}
 
-           baseImponible=sum(facturaReembolso.invoice_line_ids.filtered(lambda l: impuesto in  l.tax_ids.ids).mapped('price_subtotal'))
-           obj_impuesto=self.env['account.tax'].browse(impuesto)
-           valor=obj_impuesto._compute_amount(round(baseImponible,2),0)
+        #    baseImponible=sum(facturaReembolso.invoice_line_ids.filtered(lambda l: impuesto in  l.tax_ids.ids).mapped('price_subtotal'))
+        #    obj_impuesto=self.env['account.tax'].browse(impuesto)
+        #    valor=obj_impuesto._compute_amount(round(baseImponible,2),0)
               
 
-           dctImpuesto['baseImponibleReembolso']=round(baseImponible,2)
-           dctImpuesto['codigo']='2'
-           dctImpuesto['codigoPorcentaje']='0'
-           dctImpuesto['impuestoReembolso']=0.0
-           dctImpuesto['tarifa']='0'
-           listaImpuestoDct.append(dctImpuesto)
+        #    dctImpuesto['baseImponibleReembolso']=round(baseImponible,2)
+        #    dctImpuesto['codigo']='2'
+        #    dctImpuesto['codigoPorcentaje']='0'
+        #    dctImpuesto['impuestoReembolso']=0.0
+        #    dctImpuesto['tarifa']='0'
+        #    listaImpuestoDct.append(dctImpuesto)
 
 
 
-        dctReembolso['codDocReembolso']=facturaReembolso.l10n_latam_document_type_id.code
-        dctReembolso['codPaisPagoProveedorReembolso']='593'
-        dctReembolso['detalleImpuestos']=listaImpuestoDct
+        #dctReembolso['codDocReembolso']=facturaReembolso.l10n_latam_document_type_id.code
+        #dctReembolso['codPaisPagoProveedorReembolso']='593'
+        #dctReembolso['detalleImpuestos']=listaImpuestoDct
         #dctReembolso['estabDocReembolso']=facturaReembolso.l10n_latam_document_number[0:3]
-        dctReembolso['fechaEmisionDocReembolso']='%s/%s/%s' % (str(facturaReembolso.invoice_date.day).zfill(2), str(facturaReembolso.invoice_date.month).zfill(2),facturaReembolso.invoice_date.year)
-        dctReembolso['identificacionProveedorReembolso']=facturaReembolso.partner_id.vat
-        dctReembolso['numeroautorizacionDocReemb']=facturaReembolso.auth_number
+        #dctReembolso['fechaEmisionDocReembolso']='%s/%s/%s' % (str(facturaReembolso.invoice_date.day).zfill(2), str(facturaReembolso.invoice_date.month).zfill(2),facturaReembolso.invoice_date.year)
+        #dctReembolso['identificacionProveedorReembolso']=facturaReembolso.partner_id.vat
+        #dctReembolso['numeroautorizacionDocReemb']=facturaReembolso.auth_number
 
-        dctReembolso['ptoEmiDocReembolso']=facturaReembolso.l10n_latam_document_number[3:6]
-        dctReembolso['secuencialDocReembolso']=facturaReembolso.l10n_latam_document_number[6:]
-        dctReembolso['tipoIdentificacionProveedorReembolso']=facturaReembolso.partner_id.l10n_latam_identification_type_id.code_venta
-        tipoProveedorReembolso=facturaReembolso.partner_id.tipo_proveedor_reembolso_id.id
-        if not tipoProveedorReembolso:
-           if facturaReembolso.partner_id.company_type=='company':
-               tipoProveedorReembolso=self.env.ref('gzl_facturacion_electronica.tipo_proveedor_reembolso_sociedad').code
-           else:
-               tipoProveedorReembolso=self.env.ref('gzl_facturacion_electronica.tipo_proveedor_reembolso_persona').code
-        else:
-           tipoProveedorReembolso=facturaReembolso.partner_id.tipo_proveedor_reembolso_id.code
-
-
-
-        dctReembolso['tipoProveedorReembolso']=tipoProveedorReembolso
-
-
-        listaReembolso.append(dctReembolso)
-
-        totalComprobantesReembolso=0
-        if facturaReembolso.l10n_latam_document_type_id.code=='41':
-           totalComprobantesReembolso=1
+        #dctReembolso['ptoEmiDocReembolso']=facturaReembolso.l10n_latam_document_number[3:6]
+        #dctReembolso['secuencialDocReembolso']=facturaReembolso.l10n_latam_document_number[6:]
+        #dctReembolso['tipoIdentificacionProveedorReembolso']=facturaReembolso.partner_id.l10n_latam_identification_type_id.code_venta
+        #tipoProveedorReembolso=facturaReembolso.partner_id.tipo_proveedor_reembolso_id.id
+        #if not tipoProveedorReembolso:
+        #    if facturaReembolso.partner_id.company_type=='company':
+        #        tipoProveedorReembolso=self.env.ref('gzl_facturacion_electronica.tipo_proveedor_reembolso_sociedad').code
+        #    else:
+        #        tipoProveedorReembolso=self.env.ref('gzl_facturacion_electronica.tipo_proveedor_reembolso_persona').code
+        #else:
+        #    tipoProveedorReembolso=facturaReembolso.partner_id.tipo_proveedor_reembolso_id.code
 
 
 
+        #dctReembolso['tipoProveedorReembolso']=tipoProveedorReembolso
 
-        dctFactura['codDocReembolso']=facturaReembolso.l10n_latam_document_type_id.code
+
+        #listaReembolso.append(dctReembolso)
+
+        #totalComprobantesReembolso=0
+        #if facturaReembolso.l10n_latam_document_type_id.code=='41':
+        #    totalComprobantesReembolso=1
+
+
+
+
+        #dctFactura['codDocReembolso']=facturaReembolso.l10n_latam_document_type_id.code
         dctFactura['codigoExterno']= self.l10n_latam_document_number or ""
 
         dctFactura['correoNotificacion']=self.env.user.email or ""
@@ -302,8 +302,8 @@ class FacturacionElectronica(models.Model):
 
 
         dctFactura['razonSocialProveedor']= funciones.elimina_tildes(self.partner_id.name)
-        if facturaReembolso.l10n_latam_document_type_id.code=='41':
-            dctFactura['reembolsos']=listaReembolso
+        #if facturaReembolso.l10n_latam_document_type_id.code=='41':
+        #    dctFactura['reembolsos']=listaReembolso
 
 
         dctFactura['ruc']= self.env.user.company_id.vat
@@ -312,10 +312,10 @@ class FacturacionElectronica(models.Model):
         dctFactura['tipoIdentificacionProveedor']=self.partner_id.l10n_latam_identification_type_id.code_venta
 
 
-        dctFactura['tipoNegociable']=""
+        #dctFactura['tipoNegociable']=""
 
-        dctFactura['totalBaseImponibleReembolso']=self.documento_reembolso_id.amount_untaxed
-        dctFactura['totalComprobantesReembolso']=totalComprobantesReembolso
+        #dctFactura['totalBaseImponibleReembolso']=self.documento_reembolso_id.amount_untaxed
+        #dctFactura['totalComprobantesReembolso']=totalComprobantesReembolso
 
 
         dctFactura['totalConImpuestos']=listaTotalConImpuestos
@@ -330,7 +330,7 @@ class FacturacionElectronica(models.Model):
             listaDescuento.append(dctDetalle)
 
         dctFactura['totalDescuento']=sum(map(lambda x: x['descuento'], listaDescuento))
-        dctFactura['totalImpuestoReembolso']=(sum(map(lambda x: x['impuestoReembolso'], listaImpuestoDct)))
+        #dctFactura['totalImpuestoReembolso']=(sum(map(lambda x: x['impuestoReembolso'], listaImpuestoDct)))
 
         dctFactura['totalSinImpuestos']=  self.amount_untaxed
 
