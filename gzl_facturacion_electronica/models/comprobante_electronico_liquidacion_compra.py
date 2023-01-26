@@ -243,7 +243,7 @@ class FacturacionElectronica(models.Model):
         dctReembolso['codDocReembolso']=facturaReembolso.l10n_latam_document_type_id.code
         dctReembolso['codPaisPagoProveedorReembolso']='593'
         dctReembolso['detalleImpuestos']=listaImpuestoDct
-        dctReembolso['estabDocReembolso']=facturaReembolso.l10n_latam_document_number[0:3]
+        #dctReembolso['estabDocReembolso']=facturaReembolso.l10n_latam_document_number[0:3]
         dctReembolso['fechaEmisionDocReembolso']='%s/%s/%s' % (str(facturaReembolso.invoice_date.day).zfill(2), str(facturaReembolso.invoice_date.month).zfill(2),facturaReembolso.invoice_date.year)
         dctReembolso['identificacionProveedorReembolso']=facturaReembolso.partner_id.vat
         dctReembolso['numeroautorizacionDocReemb']=facturaReembolso.auth_number
