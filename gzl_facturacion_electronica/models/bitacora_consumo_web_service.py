@@ -101,7 +101,6 @@ class BitacoraConsumoServicios(models.Model):
             responseKey=dctCodDoc[self.invoice_id.type]
             template_id = self.env.ref('gzl_facturacion_electronica.facturacion_electronica_email_template').id
 
-            raise ValidationError(" {0} ".format(responseKey))
 
 
         if self.guia_remision_id.id:
@@ -165,7 +164,7 @@ class BitacoraConsumoServicios(models.Model):
 
     def validarComprobante(self):
         comprobante,model,nombreComprobante,responseKey,template_id=self.seleccionComprobante()
-
+        raise ValidationError(" {0} ".format(responseKey))
         self.etapa='Validar Comprobante'
 
 
