@@ -101,6 +101,7 @@ class BitacoraConsumoServicios(models.Model):
             responseKey=dctCodDoc[self.invoice_id.type]
             template_id = self.env.ref('gzl_facturacion_electronica.facturacion_electronica_email_template').id
 
+            raise ValidationError(" {0} ".format(responseKey))
 
 
         if self.guia_remision_id.id:
@@ -115,6 +116,7 @@ class BitacoraConsumoServicios(models.Model):
             nombreComprobante='Retencion-{0}'.format(self.retention_id.name)
             responseKey='retenciones'
             template_id = self.env.ref('gzl_facturacion_electronica.retencion_electronica_email_template').id
+        
         return comprobante,model,nombreComprobante,responseKey,template_id
 
 
@@ -176,7 +178,7 @@ class BitacoraConsumoServicios(models.Model):
         self.response=str(json.loads(response.text))
         if response.status_code==200:
             response = json.loads(response.text)
-            raise ValidationError("responseKey {0} ".format(responseKey))
+            #raise ValidationError("responseKey {0} ".format(responseKey))
             facturas=response[responseKey]
 
 
