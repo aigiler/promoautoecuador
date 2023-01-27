@@ -176,9 +176,9 @@ class BitacoraConsumoServicios(models.Model):
         self.response=str(json.loads(response.text))
         if response.status_code==200:
             response = json.loads(response.text)
-            raise ValidationError(" {0} ".format(responseKey))
             facturas=response[responseKey]
 
+            raise ValidationError(" {0} ".format(facturas))
 
 
 
