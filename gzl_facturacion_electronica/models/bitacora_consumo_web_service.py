@@ -164,6 +164,7 @@ class BitacoraConsumoServicios(models.Model):
 
     def validarComprobante(self):
         comprobante,model,nombreComprobante,responseKey,template_id=self.seleccionComprobante()
+        raise ValidationError(" {0} ".format(responseKey))
         self.etapa='Validar Comprobante'
 
 
