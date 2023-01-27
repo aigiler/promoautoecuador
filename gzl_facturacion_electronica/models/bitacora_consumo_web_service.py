@@ -178,10 +178,6 @@ class BitacoraConsumoServicios(models.Model):
             response = json.loads(response.text)
             facturas=response[responseKey]
 
-            raise ValidationError(" {0} ".format(facturas))
-
-
-
             for factura in facturas:
                 #raise ValidationError('{0}'.format(factura['estado']))                  
                 if factura['estado']=='AUTORIZADO':
