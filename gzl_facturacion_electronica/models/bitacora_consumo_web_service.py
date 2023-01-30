@@ -177,9 +177,7 @@ class BitacoraConsumoServicios(models.Model):
         if response.status_code==200:
             response = json.loads(response.text)
             facturas=response[responseKey]
-
             for factura in facturas:
-                #raise ValidationError('{0}'.format(factura['estado']))                  
                 if factura['estado']=='AUTORIZADO':
                     dias=datetime.now(pytz.timezone('America/Guayaquil'))
                     fecha = dias.strftime('%Y-%m-%d %H:%M:%S')
