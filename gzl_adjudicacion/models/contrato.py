@@ -474,7 +474,7 @@ class Contrato(models.Model):
         contratos=self.env['contrato'].search([])
 
         for contrato in contratos:
-            mes_estado_cuenta=contrato.estado_cuenta_ids.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month)
+            mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month)
             for mes in mes_estado_cuenta:
 
                 if  mes.estado_pago=='pagado':
