@@ -451,7 +451,7 @@ class Contrato(models.Model):
     #         if l.grupo.id:
     #             obj_cliente_integrante=self.env['integrante.grupo.adjudicado'].search([('adjudicado_id','=',l.cliente.id)])
     #             obj_cliente_integrante.unlink()
-                
+
 
     #             dctCliente={
     #             "grupo_id":l.grupo.id,
@@ -476,7 +476,10 @@ class Contrato(models.Model):
         for contrato in contratos:
             mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month)
             for mes in mes_estado_cuenta:
+
                 if  mes.estado_pago=='pagado':
+                    contrato.en_mora=False
+                if mes.estado_pago=="pendiente" and mes.saldo<=10.00:
                     contrato.en_mora=False
                 else:
                     contrato.en_mora=True
