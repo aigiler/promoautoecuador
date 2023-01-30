@@ -474,12 +474,12 @@ class Contrato(models.Model):
         contratos=self.env['contrato'].search([])
 
         for contrato in contratos:
-            mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month)
+            mes_estado_cuenta=contrato.estado_cuenta_ids.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month)
             for mes in mes_estado_cuenta:
 
                 if  mes.estado_pago=='pagado':
                     contrato.en_mora=False
-                if mes.estado_pago=="pendiente" and mes.saldo<=10.00:
+                elif mes.estado_pago=="pendiente" and mes.saldo<=10.00:
                     contrato.en_mora=False
                 else:
                     contrato.en_mora=True
