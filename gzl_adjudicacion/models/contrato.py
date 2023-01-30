@@ -479,10 +479,11 @@ class Contrato(models.Model):
 
                 if  mes.estado_pago=='pagado':
                     contrato.en_mora=False
-                elif mes.estado_pago=="pendiente" and mes.saldo<=10.00:
-                    contrato.en_mora=False
-                else:
-                    contrato.en_mora=True
+                elif mes.estado_pago=="pendiente":
+                    if mes.saldo<=10.00:
+                        contrato.en_mora=False
+                    else:
+                        contrato.en_mora=True
 
 ###  Job para inactivar acorde a cuotas vencidas en el contrato
 
