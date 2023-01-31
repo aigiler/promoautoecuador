@@ -451,20 +451,12 @@ class Contrato(models.Model):
     #         if l.grupo.id:
     #             obj_cliente_integrante=self.env['integrante.grupo.adjudicado'].search([('adjudicado_id','=',l.cliente.id)])
     #             obj_cliente_integrante.unlink()
-
-
     #             dctCliente={
     #             "grupo_id":l.grupo.id,
     #             "adjudicado_id":l.cliente.id
-
     #             }
-
     #             obj_cliente_integrante=self.env['integrante.grupo.adjudicado'].create(dctCliente)
     #             obj_cliente_integrante.agregar_contrato()
-
-
-
-
 
 
 ####Job que coloca la bandera estado en mora de los contratos se ejecuta cada minuto
