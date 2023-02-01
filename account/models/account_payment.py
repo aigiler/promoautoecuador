@@ -752,7 +752,7 @@ class account_payment(models.Model):
                                 rec.contrato_id.state="ACTIVADO"
                                 rec.contrato_id.state_simplificado=False
                             if y.monto_pagar:
-                                raise ValidationError("sdfghjkjhgfds")
+                                
                                 cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',rec.contrato_id.id),
                                                                     ('numero_cuota','=',y.numero_cuota)])
                                 if y.programado:
@@ -761,7 +761,7 @@ class account_payment(models.Model):
                                                                          
                                     
                             
-                                
+                                raise ValidationError(cuota_id)
                                 if y.cuota_capital_pagar:
                                     cuota_id.saldo_cuota_capital=cuota_id.saldo_cuota_capital-y.cuota_capital_pagar
                                     transacciones=self.env['transaccion.grupo.adjudicado']
