@@ -752,7 +752,7 @@ class account_payment(models.Model):
                                 rec.contrato_id.state="ACTIVADO"
                                 rec.contrato_id.state_simplificado=False
                             if y.monto_pagar:
-                                raise ValidationError("Aquiiiii")
+                                
                                 if y.programado:
                                     cuota_id=self.env['contrato.estado.cuenta'].search([('contrato_id','=',rec.contrato_id.id),
                                                                     ('numero_cuota','=',y.numero_cuota),('saldo_programado','=',y.programado)])[0]
