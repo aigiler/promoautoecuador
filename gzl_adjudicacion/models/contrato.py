@@ -378,22 +378,22 @@ class Contrato(models.Model):
     @api.model
     def create(self, vals):
         ####Comentar luego de la Migración
-        vals['secuencia']=vals["tipo_documento"]+vals["prefijo"].zfill(3)+vals['secuencia'].zfill(8)
-        return super(Contrato, self).create(vals)
+        #vals['secuencia']=vals["tipo_documento"]+vals["prefijo"].zfill(3)+vals['secuencia'].zfill(8)
+        #return super(Contrato, self).create(vals)
 
 
         ####Desomentar luego de la Migración
-        # grupo=self.env['grupo.adjudicado'].browse(vals['grupo'])
-        # obj_secuencia= grupo.secuencia_id
+        grupo=self.env['grupo.adjudicado'].browse(vals['grupo'])
+        obj_secuencia= grupo.secuencia_id
 
-        # if not vals.get('es_cesion'):
-        #     vals['secuencia'] = obj_secuencia.next_by_code(obj_secuencia.code)
-        # dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
-        # tasa_administrativa =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa')
+        if not vals.get('es_cesion'):
+            vals['secuencia'] = obj_secuencia.next_by_code(obj_secuencia.code)
+        dia_corte =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.dia_corte')
+        tasa_administrativa =  self.env['ir.config_parameter'].sudo().get_param('gzl_adjudicacion.tasa_administrativa')
 
-        # vals['tasa_administrativa'] = float(tasa_administrativa)
-        # vals['dia_corte'] = dia_corte
-        # return super(Contrato, self).create(vals)
+        vals['tasa_administrativa'] = float(tasa_administrativa)
+        vals['dia_corte'] = dia_corte
+        return super(Contrato, self).create(vals)
         #self.validar_cliente_en_otro_contrato()
 
 
