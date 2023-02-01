@@ -745,6 +745,7 @@ class account_payment(models.Model):
                     lista_dct=[]
                     
                     if rec.abono_contrato and not rec.abono_aplicado:
+                        raise ValidationError("Aquiiiii")
                         rec.write({'abono_aplicado': True})
                         for y in rec.contrato_estado_cuenta_payment_ids:
                             if y.numero_cuota=="1":
