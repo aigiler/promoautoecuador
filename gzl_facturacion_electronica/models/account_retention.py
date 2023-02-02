@@ -372,14 +372,16 @@ class AccountRetention(models.Model):
         """
         nombre="N/A"
         diario=9
+        name="NA"
 
         for ret in self:
             inv = ret.invoice_id
             if inv:
                 nombre=inv.name
                 diario=inv.journal_id.id
+                name=inv.name
             move_data = {
-                'name':inv.name,
+                'name':name,
                 'journal_id': diario,
                 'ref': 'Ret. '+nombre,
                 'date': ret.date
