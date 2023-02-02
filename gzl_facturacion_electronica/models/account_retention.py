@@ -375,7 +375,7 @@ class AccountRetention(models.Model):
 
         for ret in self:
             inv = ret.invoice_id
-            if not inv:
+            if inv:
                 nombre=inv.name
                 diario=inv.journal_id.id
             move_data = {
