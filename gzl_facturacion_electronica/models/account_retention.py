@@ -238,7 +238,10 @@ class AccountRetention(models.Model):
 
             }  
         for rec in self:
-            rec.l10n_latam_document_type_id = dctCodDoc[rec.in_type].id
+            if rec.in_type=="ret_liq_purchase":
+                rec.l10n_latam_document_type_id = dctCodDoc["ret_in_invoice"].id    
+            else:
+                rec.l10n_latam_document_type_id = dctCodDoc[rec.in_type].id
 
       
     def post(self):
@@ -339,7 +342,7 @@ class AccountRetention(models.Model):
         @number: Número para usar en el documento
         """
         self.action_number(number)
-        if self.in_type in ['ret_in_invoice','ret_liq_purchase']:
+        if self.in_type in ['ret_in_invoice']:
             self.procesoComprobanteElectronico()
     
         return self.write({'state': 'done'})
