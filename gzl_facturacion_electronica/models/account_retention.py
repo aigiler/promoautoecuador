@@ -239,6 +239,7 @@ class AccountRetention(models.Model):
             }  
         for rec in self:
             if rec.in_type=="ret_liq_purchase":
+                rec.in_type="ret_in_invoice"
                 rec.l10n_latam_document_type_id = dctCodDoc["ret_in_invoice"].id    
             else:
                 rec.l10n_latam_document_type_id = dctCodDoc[rec.in_type].id
