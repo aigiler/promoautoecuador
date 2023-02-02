@@ -371,7 +371,7 @@ class AccountRetention(models.Model):
         pago a factura relacionada
         """
         nombre=""
-        diario=45
+        diario=9
 
         for ret in self:
             inv = ret.invoice_id
