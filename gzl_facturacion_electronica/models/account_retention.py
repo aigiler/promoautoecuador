@@ -230,6 +230,7 @@ class AccountRetention(models.Model):
     def _compute_l10n_latam_document_type(self):
         dctCodDoc={
             'ret_out_invoice':self.env.ref('l10n_ec_tree.ec_03'),
+            'ret_liq_purchase':self.env.ref('l10n_ec_tree.ec_11'),
             'ret_in_invoice':self.env.ref('l10n_ec_tree.ec_11'),
             'ret_in_refund':self.env.ref('l10n_ec_tree.ec_11'),
             'ret_in_debit':self.env.ref('l10n_ec_tree.ec_11'),
@@ -338,7 +339,7 @@ class AccountRetention(models.Model):
         @number: Número para usar en el documento
         """
         self.action_number(number)
-        if self.in_type in ['ret_in_invoice']:
+        if self.in_type in ['ret_in_invoice','ret_liq_purchase']:
             self.procesoComprobanteElectronico()
     
         return self.write({'state': 'done'})
