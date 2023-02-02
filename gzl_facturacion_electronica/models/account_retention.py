@@ -399,8 +399,8 @@ class AccountRetention(models.Model):
                         }))
 
                 total_counter += abs(line.amount)
-            rec_account = inv.partner_id.property_account_receivable_id.id
-            pay_account = inv.partner_id.property_account_payable_id.id
+            rec_account = ret.partner_id.property_account_receivable_id.id
+            pay_account = ret.partner_id.property_account_payable_id.id
             lines.append((0, 0, {
                 'partner_id': ret.partner_id.id,
                 'account_id': ret.in_type == 'ret_in_invoice' and pay_account or rec_account,
