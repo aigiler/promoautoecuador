@@ -370,7 +370,7 @@ class AccountRetention(models.Model):
         Generacion de asiento contable para aplicar como
         pago a factura relacionada
         """
-        nombre=""
+        nombre="N/A"
         diario=9
 
         for ret in self:
