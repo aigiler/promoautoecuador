@@ -375,7 +375,7 @@ class AccountRetention(models.Model):
             move_data = {
                 'name':inv.name,
                 'journal_id': inv.journal_id.id,
-                'ref': 'Ret. '+inv.name,
+                'ref': 'Ret. '+(inv.name || ""),
                 'date': ret.date
             }
             total_counter = 0
