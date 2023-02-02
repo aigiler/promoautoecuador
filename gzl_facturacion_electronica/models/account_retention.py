@@ -409,16 +409,17 @@ class AccountRetention(models.Model):
                 'credit': total_counter
             }))
             move_data.update({'line_ids': lines})
+
             move = self.env['account.move'].create(move_data)
 
 
 
 
             acctype = self.type == 'in_invoice' and 'payable' or 'receivable'
-            inv_lines = inv.line_ids
-            acc2rec = inv_lines.filtered(lambda l: l.account_id.internal_type == acctype)  
-            acc2rec += move.line_ids.filtered(lambda l: l.account_id.internal_type == acctype)  
-            acc2rec.auto_reconcile_lines()
+            #inv_lines = inv.line_ids
+            #acc2rec = inv_lines.filtered(lambda l: l.account_id.internal_type == acctype)  
+            #acc2rec += move.line_ids.filtered(lambda l: l.account_id.internal_type == acctype)  
+            #acc2rec.auto_reconcile_lines()
             ret.write({'move_ret_id': move.id})
             move.post()
         return True
