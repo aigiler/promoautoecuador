@@ -465,7 +465,7 @@ class Contrato(models.Model):
         test_date = datetime(hoy.year, hoy.month, hoy.day)
         nxt_mnth = test_date.replace(day=28) + timedelta(days=4)
         res = nxt_mnth - timedelta(days=nxt_mnth.day)
-        res=datetime.strptime(dateMonthStart, '%Y-%m-%d').date()
+        res=datetime.strptime(res, '%Y-%m-%d').date()
         contratos=self.env['contrato'].search([])
 
         for contrato in contratos:
