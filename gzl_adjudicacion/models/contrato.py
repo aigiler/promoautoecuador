@@ -462,9 +462,9 @@ class Contrato(models.Model):
 ####Job que coloca la bandera estado en mora de los contratos se ejecuta cada minuto
     def job_colocar_contratos_en_mora(self, ):
         hoy=date.today()
-        test_date = datetime.datetime(hoy.year, hoy.month, hoy.day)
-        nxt_mnth = test_date.replace(day=28) + datetime.timedelta(days=4)
-        res = nxt_mnth - datetime.timedelta(days=nxt_mnth.day)
+        test_date = datetime(hoy.year, hoy.month, hoy.day)
+        nxt_mnth = test_date.replace(day=28) + timedelta(days=4)
+        res = nxt_mnth - timedelta(days=nxt_mnth.day)
         contratos=self.env['contrato'].search([])
 
         for contrato in contratos:
