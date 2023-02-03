@@ -469,6 +469,8 @@ class Contrato(models.Model):
 
         for contrato in contratos:
             mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.estado_pago=="pendiente" and l.fecha<=res.date())
+            if not mes_estado_cuenta:
+                contrato.en_mora=False
             if len(mes_estado_cuenta)>1:
                 contrato.en_mora=True
             else:
