@@ -466,16 +466,18 @@ class Contrato(models.Model):
         contratos=self.env['contrato'].search([])
 
         for contrato in contratos:
-            mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month and hoy.day>l.fecha.day)
+            mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month)
             for mes in mes_estado_cuenta:
 
                 if  mes.estado_pago=='pagado':
                     contrato.en_mora=False
-                elif mes.estado_pago=="pendiente":
+                elif mes.estado_pago=="pendiente" and hoy.day>mes.fecha.day:
                     if mes.saldo<=10.00:
                         contrato.en_mora=False
                     else:
                         contrato.en_mora=True
+                elif and hoy.day<=mes.fecha.day
+                    contrato.en_mora=False
 
 ###  Job para inactivar acorde a cuotas vencidas en el contrato
 
