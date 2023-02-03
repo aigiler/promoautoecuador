@@ -465,11 +465,10 @@ class Contrato(models.Model):
         test_date = datetime(hoy.year, hoy.month, hoy.day)
         nxt_mnth = test_date.replace(day=28) + timedelta(days=4)
         res = nxt_mnth - timedelta(days=nxt_mnth.day)
-        res=datetime.strptime(res, '%Y-%m-%d').date()
         contratos=self.env['contrato'].search([])
 
         for contrato in contratos:
-            mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.estado_pago=="pendiente" and l.fecha<=res)
+            mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.estado_pago=="pendiente" and l.fecha<=res.date())
             if len(mes_estado_cuenta)>1:
                 contrato.en_mora=True
             else:
