@@ -466,25 +466,34 @@ class Contrato(models.Model):
         nxt_mnth = test_date.replace(day=28) + timedelta(days=4)
         res = nxt_mnth - timedelta(days=nxt_mnth.day)
         contratos=self.env['contrato'].search([])
-
         for contrato in contratos:
-            mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.estado_pago=="pendiente" and l.fecha<=res.date())
-            if not mes_estado_cuenta:
-                contrato.en_mora=False
-            if len(mes_estado_cuenta)>1:
-                contrato.en_mora=True
+            mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.estado_pago=="pendiente" and l.fecha<hoy)
+            
+            if len(mes_estado_cuenta)==0:
+                 contrato.en_mora=False
             else:
-                for mes in mes_estado_cuenta:
-                    contrato.en_mora=True
-                    if mes.fecha.year==res.year and mes.fecha.month==res.month:
-                        if mes.fecha.day<=hoy.day: 
-                            if mes.saldo<=10.00:
-                                contrato.en_mora=False 
-                        else:                            
-                            contrato.en_mora=False 
-                    else:
-                        if mes.saldo<=10.00:
-                            contrato.en_mora=False
+                saldo=sum(mes_estado_cuenta.mapped('saldo'))
+                if saldo<=10.00:
+                    contrato.en_mora=False
+                else:contrato.en_mora=True
+            
+
+            # if not mes_estado_cuenta:
+            #     contrato.en_mora=False
+            # if len(mes_estado_cuenta)>1:
+            #     contrato.en_mora=True
+            # else:
+            #     for mes in mes_estado_cuenta:
+            #         contrato.en_mora=True
+            #         if mes.fecha.year==res.year and mes.fecha.month==res.month:
+            #             if mes.fecha.day<=hoy.day: 
+            #                 if mes.saldo<=10.00:
+            #                     contrato.en_mora=False 
+            #             else:                            
+            #                 contrato.en_mora=False 
+            #         else:
+            #             if mes.saldo<=10.00:
+            #                 contrato.en_mora=False
                             
 ###  Job para inactivar acorde a cuotas vencidas en el contrato
 
