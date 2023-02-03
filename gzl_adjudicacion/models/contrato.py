@@ -473,7 +473,7 @@ class Contrato(models.Model):
                 contrato.en_mora=False
             mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month and l.estado_pago=="pendiente")
             for mes in mes_estado_cuenta:
-                elif hoy.day>mes.fecha.day:
+                if hoy.day>mes.fecha.day:
                     if mes.saldo<=10.00:
                         contrato.en_mora=False
                     else:
