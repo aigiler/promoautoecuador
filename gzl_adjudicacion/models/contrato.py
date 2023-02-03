@@ -476,7 +476,7 @@ class Contrato(models.Model):
                         contrato.en_mora=False
                     else:
                         contrato.en_mora=True
-                elif and hoy.day<=mes.fecha.day
+                elif hoy.day<=mes.fecha.day:
                     contrato.en_mora=False
 
 ###  Job para inactivar acorde a cuotas vencidas en el contrato
