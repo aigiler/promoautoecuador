@@ -420,6 +420,9 @@ class Contrato(models.Model):
     def finalizar_contrato(self):
         return self.write({"state": "FINALIZADO","state_simplificado":"LIQUIDADO"})
 
+    def adjudicar_cliente(self):
+        return self.write({"state": "ADJUDICADO","state_simplificado":"NO ENTREGADO"})
+
     def cambio_estado_boton_adjudicar(self):
         return self.write({"state": "ADJUDICADO"})
 
