@@ -50,24 +50,22 @@
             <form string="Contrato">
                 <header>
                     <field name="is_group_cobranza" invisible="1"/>
-                    <button name="cambio_estado_boton_borrador" attrs="{'invisible': [('state','=','ACTIVADO')]}" string="Activo" type="object"  class="oe_highlight"/>
-                    <button name="cambio_estado_boton_borrador" attrs="{'invisible': [('state','=','ACTIVADO')]}" string="Activo" type="object"  class="oe_highlight"/>
-                    <button name="finalizar_contrato" attrs="{'invisible': [('state','=','ADJUDICADO')]}" string="FINALIZAR" type="object"  class="oe_highlight"/>
+                    <button name="cambio_estado_boton_borrador"  attrs="{'invisible': [('estado_de_cuenta_ids','!=',[])]}" string="Activo" type="object"  class="oe_highlight"/>
                     
-
-                    <button name="cambio_estado_congelar_contrato" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','in',['NO ACTIVADO','FINALIZADO']),('state_simplificado','in',['DESACTIVADO'])]}" string="Congelar "  type="object" class="oe_highlight"/>
+                    <button name="cambio_estado_congelar_contrato" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','in',['NO ACTIVADO','FINALIZADO']),('state_simplificado','in',['DESACTIVADO'])]}" string="Congelar " type="object" class="oe_highlight"/>
                     <button name="reactivar_contrato_congelado" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','not in',['NO ACTIVADO']),('state_simplificado','not in',['DESACTIVADO'])]}" string="Reactivar Contrato" type="object" class="oe_highlight"/>
-
+                    <button name="finalizar_contrato" attrs="{'invisible': [('state','!=','ADJUDICADO')]}" string="FINALIZAR" type="object"  class="oe_highlight"/>
 
                     <button name="cambio_estado_boton_desistir" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','in',['NO ACTIVADO','FINALIZADO']),('state_simplificado','=','DESISTIDO')]}" string="Desistir" type="object" class="oe_highlight"/>
                     
   
-                    <button name="actualizar_rubros_por_adelantado" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','not in',['ACTIVADO','ADJUDICADO'])]}"  string="Actualizar Rubros" type="object" class="oe_highlight"/>
+                    <button name="actualizar_rubros_por_adelantado" attrs="{'invisible': ['|',('is_group_cobranza', '=', True),('state','not in',['ACTIVADO','ADJUDICADO'])]}" string="Actualizar Rubros" type="object" class="oe_highlight"/>
                     <button name="cambio_estado_boton_inactivar" invisible="1" string="Inactivar" type="object" class="oe_highlight"/>
 
 
 
                     <button name="modificar_tabla_contrato" attrs="{'invisible': [('is_group_cobranza', '=', True)]}" string="Reajuste" type="object" class="oe_highlight"/>
+
 
 
                     <field name="state" widget="statusbar" statusbar_visible="ACTIVADO,NO ACTIVADO,ADJUDICADO,FINALIZADO"/>
