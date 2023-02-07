@@ -180,9 +180,9 @@ class ReportGrupos(models.TransientModel):
             dct['cuota_mensual']=contrato.iva_administrativo+contrato.cuota_capital+contrato.cuota_adm
             sum_programo=round(sum(contrato.estado_de_cuenta_ids.mapped("programado")),2)-round(sum(contrato.estado_de_cuenta_ids.mapped("saldo_programado")),2)
             dct['capital_pagado'] =round(sum(contrato.estado_de_cuenta_ids.mapped("cuota_capital")),2)-round(sum(contrato.estado_de_cuenta_ids.mapped("saldo_cuota_capital")),2)+sum_programo
-            dct['cuotas_consecutivas']=len(contrato.estado_de_cuenta_ids.filtered(lambda l: l.estado_pago=='pagado' and l.fecha_pago<=res.date()))
+            dct['cuotas_consecutivas']=len(contrato.estado_de_cuenta_ids.filtered(lambda l: l.estado_pago=='pagado' and l.fecha<=res.date()))
             
-            dct['cuotasAdelantadas']=len(contrato.estado_de_cuenta_ids.filtered(lambda l: l.estado_pago=='pagado' and l.fecha_pago>res.date()))
+            dct['cuotasAdelantadas']=len(contrato.estado_de_cuenta_ids.filtered(lambda l: l.estado_pago=='pagado' and l.fecha>res.date()))
             dct['cuotas_pagadas']=dct['cuotas_consecutivas']+dct['cuotasAdelantadas']
             dct['capital_por_cobrar']=contrato.monto_financiamiento-dct['capital_pagado']
             dct['sum_adm_iva']=contrato.cuota_adm+contrato.iva_administrativo
