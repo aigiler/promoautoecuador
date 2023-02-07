@@ -114,7 +114,7 @@ class AccountPayment(models.Model):
                             'seguro':ric.saldo_seguro,
                             'rastreo':ric.saldo_rastreo,
                             'otro':ric.saldo_otros,
-                            'programado':ric.programado,
+                            'programado':ric.saldo_programado,
                             'saldo':saldo,
                             'contrato_id':ric.contrato_id.id,
                             # 'cuota_capital_pagar':ric.cuota_capital_pagar,
