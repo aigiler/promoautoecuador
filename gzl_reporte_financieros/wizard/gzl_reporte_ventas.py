@@ -54,6 +54,11 @@ class ReporteVentas(models.TransientModel):
             dct['biva0']=0
             dct['reiva']=0
             dct['noobj']=0.0
+            serie=""
+            secuencia=""
+            if m.l10n_latam_document_number:
+                serie=m.l10n_latam_document_number[3:6]
+                secuencia=m.l10n_latam_document_number[6:15]
             #raise ValidationError((str((m.create_date))))
             dct['tipo_id']= m.partner_id.l10n_latam_identification_type_id.name
             dct['ident']= m.partner_id.vat
@@ -61,8 +66,8 @@ class ReporteVentas(models.TransientModel):
             dct['part_rel']= 'NO'
             dct['tipo_anexo']= 'V'
             dct['tipo_comp']= m.sustento_del_comprobante.code or ""
-            dct['serie']=m.l10n_latam_document_number[3:6]
-            dct['secuencia']=m.l10n_latam_document_number[6:15]
+            dct['serie']=serie
+            dct['secuencia']=secuencia
             dct['num_ret']= m.retention_id.name or ""
             dct['auth_number']=m.auth_number
             dct['date']=str(m.invoice_date)
