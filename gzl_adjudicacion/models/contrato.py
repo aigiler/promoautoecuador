@@ -386,7 +386,6 @@ class Contrato(models.Model):
         grupo=self.env['grupo.adjudicado'].browse(vals['grupo'])
 
         obj_secuencia= grupo.secuencia_id
-        raise ValidationError(" {0} , {1}".format(obj_secuencia.next_by_code(obj_secuencia.code),obj_secuencia))
 
         if not vals.get('es_cesion'):
             vals['secuencia'] = obj_secuencia.next_by_code(obj_secuencia.code)
