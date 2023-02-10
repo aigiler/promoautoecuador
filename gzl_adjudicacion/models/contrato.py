@@ -384,7 +384,7 @@ class Contrato(models.Model):
 
         ####Desomentar luego de la Migración
         grupo=self.env['grupo.adjudicado'].browse(vals['grupo'])
-        raise ValidationError(" {0}{1} ".format(vals['grupo']))
+        raise ValidationError(" {0} ".format(vals['grupo']))
         obj_secuencia= grupo.secuencia_id
 
         if not vals.get('es_cesion'):
