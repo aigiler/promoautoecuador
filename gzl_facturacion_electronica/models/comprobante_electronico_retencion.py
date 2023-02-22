@@ -142,7 +142,7 @@ class Retenciones(models.Model):
             dctDetalle={}
 
 
-            dctDetalle['baseImponible']=detalle.base_ret
+            dctDetalle['baseImponible']=round(detalle.base_ret,2)
             dctDetalle['codDocSustento']=dctCodDocSustento[self.invoice_id.type]
             dctDetalle['codigoImpuesto']=detalle.tax_id.l10n_ec_code_base
             dctDetalle['codigoRetencion']=detalle.tax_id.l10n_ec_code_applied
