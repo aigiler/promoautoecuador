@@ -375,20 +375,19 @@ class AccountRetention(models.Model):
         Generacion de asiento contable para aplicar como
         pago a factura relacionada
         """
-        nombre="N/A"
         diario=9
-        name="NA"
+        
 
         for ret in self:
+            name=ret.x_factura
             inv = ret.invoice_id
             if inv:
-                nombre=inv.name
                 diario=inv.journal_id.id
                 name=inv.name
             move_data = {
                 'name':name,
                 'journal_id': diario,
-                'ref': 'Ret. '+nombre,
+                'ref': 'Ret. '+name,
                 'date': ret.date
             }
             total_counter = 0
