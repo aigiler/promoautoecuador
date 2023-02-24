@@ -642,7 +642,7 @@ class AccountMove(models.Model):
                                             str((inv.l10n_latam_document_type_id.code).strip())+ \
                                             str((inv.partner_id.vat).strip())+ \
                                             str(inv.company_id.type_environment.strip())+ \
-                                            str(inv.establecimiento.serie_establecimiento+inv.establecimiento.serie_emision+str(seq.next_by_code(inv.establecimiento.sequence_id.code))).strip()+ \
+                                            str(inv.l10n_latam_document_number).strip()+ \
                                             str(inv.company_id.numerical_code).strip()+ \
                                             str(inv.company_id.emission_code).strip()
                         digito_verificador = inv.GenerarClaveAcceso(clave_acceso_48)

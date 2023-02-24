@@ -44,7 +44,7 @@ class WizardContratoAct(models.Model):
         while(monto_restado<monto_excedente):
             valor_cuota=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('numero_cuota','=',cuota_ultima),('cuota_capital','!=',0)])
 
-            if valor_cuota.cuota_capital:
+            if valor_cuota.cuota_capital and valor_cuota.estado_pago=='pendiente':
                 if (monto_restado+valor_cuota.cuota_capital)>monto_excedente:
                     diferencia=monto_excedente-monto_restado
                     monto_restado+=diferencia
