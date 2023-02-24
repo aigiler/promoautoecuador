@@ -44,24 +44,25 @@ class WizardContratoAct(models.Model):
         while(monto_restado<monto_excedente):
             valor_cuota=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.contrato_id.id),('numero_cuota','=',cuota_ultima),('cuota_capital','!=',0)])
 
-            if valor_cuota.cuota_capital and valor_cuota.estado_pago=='pendiente':
-                if (monto_restado+valor_cuota.cuota_capital)>monto_excedente:
-                    diferencia=monto_excedente-monto_restado
-                    monto_restado+=diferencia
-                    valor_cuota.cuota_capital=valor_cuota.cuota_capital-diferencia
-                    valor_cuota.saldo_cuota_capital=valor_cuota.saldo_cuota_capital-diferencia
-                    valor_cuota.fecha_pagada=date.today()
-                    pass
-                else:
-                    monto_restado+=valor_cuota.cuota_capital
-                    valor_cuota.cuota_capital=0
-                    valor_cuota.cuota_adm=0
-                    valor_cuota.iva_adm=0
-                    valor_cuota.saldo_cuota_capital=0
-                    valor_cuota.saldo_cuota_administrativa=0
-                    valor_cuota.saldo_iva=0
+            if valor_cuota.estado_pago=='pendiente':
+                if valor_cuota.cuota_capital:
+                    if (monto_restado+valor_cuota.cuota_capital)>monto_excedente:
+                        diferencia=monto_excedente-monto_restado
+                        monto_restado+=diferencia
+                        valor_cuota.cuota_capital=valor_cuota.cuota_capital-diferencia
+                        valor_cuota.saldo_cuota_capital=valor_cuota.saldo_cuota_capital-diferencia
+                        valor_cuota.fecha_pagada=date.today()
+                        pass
+                    else:
+                        monto_restado+=valor_cuota.cuota_capital
+                        valor_cuota.cuota_capital=0
+                        valor_cuota.cuota_adm=0
+                        valor_cuota.iva_adm=0
+                        valor_cuota.saldo_cuota_capital=0
+                        valor_cuota.saldo_cuota_administrativa=0
+                        valor_cuota.saldo_iva=0
 
-                    valor_cuota.fecha_pagada=date.today()
+                        valor_cuota.fecha_pagada=date.today()
             cuota_ultima=cuota_ultima-1
         self.ejecutado=True
         self.contrato_id.monto_financiamiento=self.monto_financiamiento
