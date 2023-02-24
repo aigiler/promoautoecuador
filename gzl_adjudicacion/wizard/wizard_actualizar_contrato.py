@@ -62,7 +62,7 @@ class WizardContratoAct(models.Model):
                     valor_cuota.saldo_iva=0
 
                     valor_cuota.fecha_pagada=date.today()
-                cuota_ultima=cuota_ultima-1
+            cuota_ultima=cuota_ultima-1
         self.ejecutado=True
         self.contrato_id.monto_financiamiento=self.monto_financiamiento
         cuota_inscripcion_anterior=self.contrato_id.valor_inscripcion
