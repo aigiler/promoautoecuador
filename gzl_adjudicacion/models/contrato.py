@@ -676,6 +676,30 @@ class Contrato(models.Model):
         else:
             raise ValidationError("No se encontró un contrato congelado.")
 
+    def reestructurar_contratos(self):
+        obj_fecha_congelamiento=self.env['contrato.congelamiento'].search([('contrato_id','=',self.id),('pendiente','=',True)],limit=1)
+
+
+        if obj_fecha_congelamiento:
+            hoy=date.today()
+
+            fecha_reactivacion = datetime.strptime(self.x_fecha_reactivacion, '%Y-%m-%d').date()
+            detalle_estado_cuenta_pendiente=self.tabla_amortizacion.filtered(lambda l:  l.fecha>=obj_fecha_congelamiento.fecha  and l.fecha<fecha_reactivacion)
+            i=0
+            for detalle in detalle_estado_cuenta_pendiente:
+                i+=1
+            tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.id)],order='fecha asc')
+
+            self.fecha_inicio_pago+=relativedelta(months=i)            
+            for detalle in tabla:
+                detalle.fecha+=relativedelta(months=i)
+
+            obj_fecha_congelamiento.pendiente=False
+            self.state='ACTIVADO'
+            self.state_simplificado=False            
+
+
+
     def envio_correos_plantilla(self, plantilla,id_envio):
 
         try:

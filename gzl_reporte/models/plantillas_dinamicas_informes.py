@@ -5,6 +5,11 @@ from odoo import api, models, fields, _
 from odoo.exceptions import ValidationError, except_orm
 
 
+
+class Contrato(models.Model):
+    _inherit = 'contrato'
+    x_fecha_reactivacion=fields.Date("Fecha de Reactivación")
+
 class PlantillasDinamicasInformes(models.Model):
     _name = 'plantillas.dinamicas.informes' 
     _description = 'Plantillas dinamicas para Informes'
