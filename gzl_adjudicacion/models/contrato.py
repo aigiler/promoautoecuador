@@ -678,8 +678,7 @@ class Contrato(models.Model):
 
     def reestructurar_contratos(self):
 
-        fecha_reactivacion = datetime.strptime(self.x_fecha_reactivacion, '%Y-%m-%d').date()
-        detalle_estado_cuenta_pendiente=self.tabla_amortizacion.filtered(lambda l:  l.fecha<fecha_reactivacion)
+        detalle_estado_cuenta_pendiente=self.tabla_amortizacion.filtered(lambda l:  l.fecha<self.x_fecha_reactivacion)
         i=0
         for detalle in detalle_estado_cuenta_pendiente:
             i+=1
