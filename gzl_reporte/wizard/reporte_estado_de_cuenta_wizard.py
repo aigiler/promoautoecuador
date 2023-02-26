@@ -190,7 +190,10 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         if self.contrato_id.tipo_de_contrato:
             sheet.write('G11', 'Tipo de contrato: '+ self.contrato_id.tipo_de_contrato.name.upper(), format_datos)
         sheet.write('G12', 'Monto financiamiento: $'+ str('{:.2f}'.format(self.contrato_id.monto_financiamiento)), format_datos)
-        sheet.write('G13', 'Plazo: '+ str(self.contrato_id.plazo_meses_numero)+ ' Meses' , format_datos)
+        plazo_contrato=plazo_meses_numero
+        if self.contrato_id.plazo_meses_numero==0:
+            plazo_contrato=self.contrato_id.plazo_meses.numero
+        sheet.write('G13', 'Plazo: '+ str(plazo_contrato)+ ' Meses' , format_datos)
         #
         title_main=['cuota','Fecha de Pago','Fecha Pagada','Cuota Capital' ,'Cuota Adm.','Iva','Seguro','Rastreo','Saldo']
 

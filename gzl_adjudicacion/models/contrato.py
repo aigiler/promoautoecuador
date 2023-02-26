@@ -463,6 +463,24 @@ class Contrato(models.Model):
     #             obj_cliente_integrante.agregar_contrato()
 
 
+    def validar_estado_deuda(self ):
+        hoy=date.today()
+        test_date = datetime(hoy.year, hoy.month, hoy.day)
+        nxt_mnth = test_date.replace(day=28) + timedelta(days=4)
+        res = nxt_mnth - timedelta(days=nxt_mnth.day)
+        for contrato in self:
+            mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.estado_pago=="pendiente" and l.fecha<hoy)
+            
+            if len(mes_estado_cuenta)==0:
+                 contrato.en_mora=False
+            else:
+                saldo=sum(mes_estado_cuenta.mapped('saldo'))
+                if saldo<=10.00:
+                    contrato.en_mora=False
+                else:
+                    contrato.en_mora=True
+            
+
 ####Job que coloca la bandera estado en mora de los contratos se ejecuta cada minuto
     def job_colocar_contratos_en_mora(self, ):
         hoy=date.today()
@@ -479,7 +497,8 @@ class Contrato(models.Model):
                 saldo=sum(mes_estado_cuenta.mapped('saldo'))
                 if saldo<=10.00:
                     contrato.en_mora=False
-                else:contrato.en_mora=True
+                else:
+                    contrato.en_mora=True
             
 
             # if not mes_estado_cuenta:
@@ -677,7 +696,8 @@ class Contrato(models.Model):
             raise ValidationError("No se encontró un contrato congelado.")
 
     def reestructurar_contratos(self):
-
+        if not self.x_fecha_reactivacion:
+            raise ValidationError("Favor indicar la fecha de Reactivación del contrato en el campo 'Fecha de Reactivación.'")
         tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.id)],order='fecha asc')
 
         self.fecha_inicio_pago=self.x_fecha_reactivacion        

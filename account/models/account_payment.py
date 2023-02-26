@@ -800,6 +800,7 @@ class account_payment(models.Model):
 
                                 if cuota_id.saldo==0:
                                     cuota_id.estado_pago='pagado'
+                                rec.contrato_id.validar_estado_deuda()
                         
 
 
@@ -1081,6 +1082,7 @@ class account_payment(models.Model):
                             
                             if cuota_id.saldo==0:
                                 cuota_id.estado_pago='pagado'
+                            rec.contrato_id.validar_estado_deuda()
                             transacciones=self.env['transaccion.grupo.adjudicado']
                             if capital_pagado:
                                 transacciones.create({
@@ -1174,6 +1176,7 @@ class account_payment(models.Model):
                                 
                                 if cuota_id.saldo==0:
                                     cuota_id.estado_pago='pagado'
+                                rec.contrato_id.validar_estado_deuda()
                             pago_fact_id=self.env['account.payment.cuotas.detalle'].search([('factura_id','=',fact.id),('pago_id','=',rec.id)],limit=1)
                        
                             if pago_fact_id:
