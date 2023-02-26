@@ -680,7 +680,7 @@ class Contrato(models.Model):
 
         tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.id)],order='fecha asc')
 
-        self.fecha_inicio_pago+=relativedelta(months=i)
+        self.fecha_inicio_pago=self.x_fecha_reactivacion        
         i=0
         for detalle in tabla:
             detalle.fecha=self.x_fecha_reactivacion+relativedelta(months=i)
