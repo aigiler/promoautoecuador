@@ -678,17 +678,14 @@ class Contrato(models.Model):
 
     def reestructurar_contratos(self):
 
-        detalle_estado_cuenta_pendiente=self.tabla_amortizacion.filtered(lambda l:  l.fecha<self.x_fecha_reactivacion)
-        i=0
-        for detalle in detalle_estado_cuenta_pendiente:
-            i+=1
         tabla=self.env['contrato.estado.cuenta'].search([('contrato_id','=',self.id)],order='fecha asc')
 
-        self.fecha_inicio_pago+=relativedelta(months=i)            
+        self.fecha_inicio_pago+=relativedelta(months=i)
+        i=0
         for detalle in tabla:
-            detalle.fecha+=relativedelta(months=i)
+            detalle.fecha=self.x_fecha_reactivacion+relativedelta(months=i)
+            i+=1
 
-        obj_fecha_congelamiento.pendiente=False
         self.state='ACTIVADO'
         self.state_simplificado=False            
 
