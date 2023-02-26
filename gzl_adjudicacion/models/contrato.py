@@ -500,23 +500,6 @@ class Contrato(models.Model):
                 else:
                     contrato.en_mora=True
             
-
-            # if not mes_estado_cuenta:
-            #     contrato.en_mora=False
-            # if len(mes_estado_cuenta)>1:
-            #     contrato.en_mora=True
-            # else:
-            #     for mes in mes_estado_cuenta:
-            #         contrato.en_mora=True
-            #         if mes.fecha.year==res.year and mes.fecha.month==res.month:
-            #             if mes.fecha.day<=hoy.day: 
-            #                 if mes.saldo<=10.00:
-            #                     contrato.en_mora=False 
-            #             else:                            
-            #                 contrato.en_mora=False 
-            #         else:
-            #             if mes.saldo<=10.00:
-            #                 contrato.en_mora=False
                             
 ###  Job para inactivar acorde a cuotas vencidas en el contrato
 
