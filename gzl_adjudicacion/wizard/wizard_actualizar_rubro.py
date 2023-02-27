@@ -42,7 +42,7 @@ class WizardActualizarRubro(models.Model):
 
     def funcion_modificar_contrato_por_rubro_seguro(self,valor,variable,numero_cuota,month,year,diferido,cuota_final):
 
-
+        raise ValidationError(" {0} ".format(valor))
         month=month
         year=year
 
