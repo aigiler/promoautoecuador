@@ -73,7 +73,7 @@ class WizardActualizarRubro(models.Model):
         cuotas_parte_calculo=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota) in lista_cuotas)
 
         
-        monto_finan_contrato = sum(cuotas_parte_calculo.mapped(variable))
+        monto_finan_contrato = sum(self.contrato_id.tabla_amortizacion.mapped(variable))
         raise ValidationError(" {0} ".format(monto_finan_contrato))
         monto_finan_contrato = round(monto_finan_contrato,2)
         #raise ValidationError(str(monto_finan_contrato))
