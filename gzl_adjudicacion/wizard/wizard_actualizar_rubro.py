@@ -30,15 +30,17 @@ class WizardActualizarRubro(models.Model):
             raise ValidationError('El número de meses a diferir debe ser mayor a 0')
 
         numero_cuota=self.diferido
+
         month=self.mes
         year=self.anio
         valor=self.monto/self.diferido
+        cuota_final=month+self.diferido
 
-        self.funcion_modificar_contrato_por_rubro_seguro(valor,self.rubro,numero_cuota,month,year,self.diferido)
+        self.funcion_modificar_contrato_por_rubro_seguro(valor,self.rubro,numero_cuota,month,year,self.diferido,cuota_final)
 
 
 
-    def funcion_modificar_contrato_por_rubro_seguro(self,valor,variable,numero_cuota,month,year,diferido):
+    def funcion_modificar_contrato_por_rubro_seguro(self,valor,variable,numero_cuota,month,year,diferido,cuota_final):
 
 
         month=month
@@ -50,10 +52,13 @@ class WizardActualizarRubro(models.Model):
         cuota_inicial=int(obj_detalle.numero_cuota)
         detalle_a_pagar=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota)>=int(obj_detalle.numero_cuota) and l.cuota_capital>0)
         id_detalles=[]
+        lista_cuotas=[]
         for i in range(0,diferido):
 
             obj_detalle=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota)==cuota_inicial and l.cuota_capital>0)
             obj_detalle.write({variable:valor})
+            lista_cuotas.append(obj_detalle.numero_cuota)
+            obj_detalle.numero_cuota
             if variable=='rastreo':
                 obj_detalle.write({'saldo_rastreo':valor})
             elif variable=='seguro':
@@ -65,8 +70,9 @@ class WizardActualizarRubro(models.Model):
             id_detalles.append(obj_detalle.id)
 
         vls=[]                                                
-
-        monto_finan_contrato = sum(self.contrato_id.tabla_amortizacion.mapped(variable))
+        cuotas_parte_calculo=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota) in lista_cuotas)
+        
+        monto_finan_contrato = sum(cuotas_parte_calculo.mapped(variable))
         monto_finan_contrato = round(monto_finan_contrato,2)
         #raise ValidationError(str(monto_finan_contrato))
         if  monto_finan_contrato  > self.monto:
