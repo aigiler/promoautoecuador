@@ -52,19 +52,22 @@ class WizardActualizarRubro(models.Model):
         cuota_inicial=int(obj_detalle.numero_cuota)
         detalle_a_pagar=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota)>=int(obj_detalle.numero_cuota) and l.cuota_capital>0)
         id_detalles=[]
+        valor_total=0
         lista_cuotas=[]
         for i in range(0,diferido):
 
             obj_detalle=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota)==cuota_inicial and l.cuota_capital>0)
             obj_detalle.write({variable:valor})
             lista_cuotas.append(obj_detalle.numero_cuota)
-            obj_detalle.numero_cuota
             if variable=='rastreo':
                 obj_detalle.write({'saldo_rastreo':valor})
+                valor_total+=valor
             elif variable=='seguro':
                 obj_detalle.write({'saldo_seguro':valor})
+                valor_total+=valor
             elif variable=='otro':
                 obj_detalle.write({'saldo_otros':valor})
+                valor_total+=valor
 
             cuota_inicial+=1
             id_detalles.append(obj_detalle.id)
@@ -73,9 +76,7 @@ class WizardActualizarRubro(models.Model):
         cuotas_parte_calculo=self.contrato_id.tabla_amortizacion.filtered(lambda l: int(l.numero_cuota) in lista_cuotas)
 
         
-        monto_finan_contrato = sum(self.contrato_id.tabla_amortizacion.mapped(variable))
-        raise ValidationError(" {0} ".format(monto_finan_contrato))
-        monto_finan_contrato = round(monto_finan_contrato,2)
+        monto_finan_contrato = round(valor_total,2)
         #raise ValidationError(str(monto_finan_contrato))
         if  monto_finan_contrato  > self.monto:
             valor_sobrante = monto_finan_contrato - self.monto 
