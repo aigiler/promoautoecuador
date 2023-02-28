@@ -102,7 +102,7 @@ class FacturacionElectronica(models.Model):
                       "facturas": [
                         {
                           "codigoExterno": self.l10n_latam_document_number[0:3]+self.l10n_latam_document_number[3:6]+self.l10n_latam_document_number[6:],
-                          "ruc": self.env.user.company_id.vat,
+                          "ruc": self.company_id.vat,
 
                         }
                       ]
@@ -404,7 +404,7 @@ class FacturacionElectronica(models.Model):
         dctFactura['propina']=0
         dctFactura['puntoEmision']= self.l10n_latam_document_number[3:6]
         dctFactura['razonSocialComprador']= funciones.elimina_tildes(self.partner_id.name)
-        dctFactura['ruc']= self.env.user.company_id.vat
+        dctFactura['ruc']= self.company_id.vat
         dctFactura['secuencial']=self.l10n_latam_document_number[6:]
         dctFactura['telefonoComprodar']=self.partner_id.phone
 
