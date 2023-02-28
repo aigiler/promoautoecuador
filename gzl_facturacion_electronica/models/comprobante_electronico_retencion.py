@@ -84,7 +84,7 @@ class Retenciones(models.Model):
                       "retenciones": [
                         {
                           "codigoExterno": self.name[0:3]+self.name[3:6]+self.name[6:],
-                          "ruc": self.env.user.company_id.vat,
+                          "ruc": self.company_id.vat,
 
                         }
                       ]
@@ -165,7 +165,7 @@ class Retenciones(models.Model):
 
         dctFactura['correoNotificacion']=self.env.user.email or ""
         #dctFactura['detalles']=listaDetalle
-        dctFactura['dirEstablecimiento']=funciones.elimina_tildes(self.env.user.company_id.street) or ""
+        dctFactura['dirEstablecimiento']=funciones.elimina_tildes(self.company_id.street) or ""
         dctFactura['establecimiento']=self.name[0:3]
         dctFactura['fechaAutorizacion']='%s-%s-%s 00:00' % (self.date.year, str(self.date.month).zfill(2),str(self.date.day).zfill(2))
 
@@ -195,7 +195,7 @@ class Retenciones(models.Model):
 
         dctFactura['puntoEmision']= self.name[3:6]
         dctFactura['razonSocialSujetoRetenido']= funciones.elimina_tildes(self.partner_id.name)
-        dctFactura['ruc']= self.env.user.company_id.vat
+        dctFactura['ruc']= self.company_id.vat
         dctFactura['secuencial']=self.name[6:]
 
         dctFactura['tipoIdentificacionSujetoRetenido']=self.partner_id.l10n_latam_identification_type_id.code_venta

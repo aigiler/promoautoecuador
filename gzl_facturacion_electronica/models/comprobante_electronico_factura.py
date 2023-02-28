@@ -376,7 +376,7 @@ class FacturacionElectronica(models.Model):
         dctFactura['correoNotificacion']=self.env.user.email or ""
         dctFactura['detalleFormaPagoFacturas']=listaDetalleFormaPago
         dctFactura['detalles']=listaDetalle
-        dctFactura['dirEstablecimiento']=funciones.elimina_tildes(self.env.user.company_id.street) or ""
+        dctFactura['dirEstablecimiento']=funciones.elimina_tildes(self.company_id.street) or ""
         dctFactura['direccionComprodar']=funciones.elimina_tildes(self.partner_id.street )or ""
         dctFactura['establecimiento']=self.l10n_latam_document_number[0:3]
         dctFactura['estadoPago']= estadoPago
