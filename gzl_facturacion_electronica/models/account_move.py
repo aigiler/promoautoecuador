@@ -112,6 +112,10 @@ class AccountMove(models.Model):
             obj_product = self.env['product.template'].search([('default_code','=','CA1')])
             obj_account = self.env['account.account'].search([('code','=','4010101002')])
             obj_tax = self.env['account.tax'].search([('name','=','VENTAS DE ACTIVOS FIJOS GRAVADAS TARIFA 12%')])
+            obj_tax1 = self.env['account.tax'].search([('name','=','VENTAS LOCALES (EXC ACT FIJOS) GRAV TARIFA 0% SIN CT')])
+
+
+
             obj_account_debe = self.env['account.account'].search([('code','=','1010205001')])
             obj_account_haber = self.env['account.account'].search([('code','=','4010102002')])
             list_pagos_diferentes = {}
@@ -130,7 +134,7 @@ class AccountMove(models.Model):
                         'product_id':obj_product.id,
                         'name': 'Cuota Capital. Pago de Cuota(s) de Contrato. Cuota Capital: ',
                         'account_id':obj_account.id,
-                        'tax_ids': [(6,0,[obj_tax.id])],
+                        'tax_ids': [(6,0,[obj_tax1.id])],
                         'quantity': 0,
                         'price_unit':0,
                     }
