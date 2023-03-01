@@ -112,25 +112,28 @@ class AccountMove(models.Model):
             if self.contrato_id.tasa_administrativa:
                 obj_product = self.env['product.template'].search([('default_code','=','CA1')])
                 obj_account = self.env['account.account'].search([('code','=','4010101002')])
+
                 obj_tax = self.env['account.tax'].search([('name','=','VENTAS DE ACTIVOS FIJOS GRAVADAS TARIFA 12%')])
+                detalle="'Cuota Administrativa. Pago de Cuota(s) de Contrato. Cuota Administrativa: ',"
 
             else:
                 obj_product = self.env['product.template'].search([('default_code','=','CC1')])
                 obj_account = self.env['account.account'].search([('code','=','2020601001')])
             
                 obj_tax = self.env['account.tax'].search([('name','=','VENTAS LOCALES (EXC ACT FIJOS) GRAV TARIFA 0% SIN CT')])
+                detalle="'Cuota Capital. Pago de Cuota(s) de Contrato. Cuota Capital: ',"
 
 
+            obj_account_haber = self.env['account.account'].search([('code','=','4010102002')])
 
             obj_account_debe = self.env['account.account'].search([('code','=','1010205001')])
-            obj_account_haber = self.env['account.account'].search([('code','=','4010102002')])
             list_pagos_diferentes = {}
             valor = 0
             valor_debe = 0
             valor_haber = 0
             values = {
                         'product_id':obj_product.id,
-                        'name': 'Cuota Administrativa. Pago de Cuota(s) de Contrato. Cuota Administrativa: ',
+                        'name': detalle
                         'account_id':obj_account.id,
                         'tax_ids': [(6,0,[obj_tax.id])],
                         'quantity': 0,
