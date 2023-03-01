@@ -109,15 +109,16 @@ class AccountMove(models.Model):
     @api.onchange('contrato_estado_cuenta_ids')
     def _onchange_contrato_estado_cuenta_ids(self):
         if self.state=='draft':
-            obj_product = self.env['product.template'].search([('default_code','=','CA1')])
-            obj_product1 = self.env['product.template'].search([('default_code','=','CC1')])
+            if self.contrato_id.tasa_administrativa:
+                obj_product = self.env['product.template'].search([('default_code','=','CA1')])
+                obj_account = self.env['account.account'].search([('code','=','4010101002')])
+                obj_tax = self.env['account.tax'].search([('name','=','VENTAS DE ACTIVOS FIJOS GRAVADAS TARIFA 12%')])
 
-
-            obj_account = self.env['account.account'].search([('code','=','4010101002')])
-            obj_account1 = self.env['account.account'].search([('code','=','2020601001')])
+            else:
+                obj_product = self.env['product.template'].search([('default_code','=','CC1')])
+                obj_account = self.env['account.account'].search([('code','=','2020601001')])
             
-            obj_tax = self.env['account.tax'].search([('name','=','VENTAS DE ACTIVOS FIJOS GRAVADAS TARIFA 12%')])
-            obj_tax1 = self.env['account.tax'].search([('name','=','VENTAS LOCALES (EXC ACT FIJOS) GRAV TARIFA 0% SIN CT')])
+                obj_tax = self.env['account.tax'].search([('name','=','VENTAS LOCALES (EXC ACT FIJOS) GRAV TARIFA 0% SIN CT')])
 
 
 
@@ -135,14 +136,7 @@ class AccountMove(models.Model):
                         'quantity': 0,
                         'price_unit':0,
                     }
-            values1 = {
-                        'product_id':obj_product1.id,
-                        'name': 'Cuota Capital. Pago de Cuota(s) de Contrato. Cuota Capital: ',
-                        'account_id':obj_account1.id,
-                        'tax_ids': [(6,0,[obj_tax1.id])],
-                        'quantity': 0,
-                        'price_unit':0,
-                    }
+
             cliente=self.partner_id.name
             if self.contrato_estado_cuenta_ids:
                 obj_contrato_estado_cuenta = self.env['contrato.estado.cuenta'].search([('id','in',self.contrato_estado_cuenta_ids.ids)])
@@ -157,9 +151,9 @@ class AccountMove(models.Model):
                             nombre=values.get('name')+rec.numero_cuota+','
                     else:
                         if i==0:
-                            nombre=values1.get('name')+str(rec.cuota_capital)+'.'+' Cuota(s): '+rec.numero_cuota+','
+                            nombre=values.get('name')+str(rec.cuota_capital)+'.'+' Cuota(s): '+rec.numero_cuota+','
                         else:
-                            nombre=values1.get('name')+rec.numero_cuota+','
+                            nombre=values.get('name')+rec.numero_cuota+','
 
                     i+=1
                     values['quantity'] = values.get('quantity') + 1
