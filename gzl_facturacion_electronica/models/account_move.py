@@ -118,6 +118,7 @@ class AccountMove(models.Model):
 
             else:
                 obj_product = self.env['product.template'].search([('default_code','=','CC1')])
+                raise ValidationError("{0}".format(obj_product))
                 obj_account = self.env['account.account'].search([('code','=','2020601001')])
             
                 obj_tax = self.env['account.tax'].search([('name','=','VENTAS LOCALES (EXC ACT FIJOS) GRAV TARIFA 0% SIN CT')])
