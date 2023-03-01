@@ -811,7 +811,7 @@ class account_payment(models.Model):
                             #raise ValidationError('{0}'.format(valor_pago_cliente))
                             if valor_pago_cliente:
                                 if cuota_id.saldo_cuota_capital:
-                                    movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',y.name)])
+                                    movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',y.name),('state','=','posted')])
                                     for x in movimientos_cuota.invoice_line_ids:
                                         if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
                                             if x.id in lista_ids:
@@ -866,7 +866,7 @@ class account_payment(models.Model):
                             
                             if valor_pago_cliente:
                                 if cuota_id.saldo_seguro:
-                                    movimientos_seguro=self.env['account.move'].search([('journal_id','=',seguro_obj.journal_id.id),('ref','=',y.name)])
+                                    movimientos_seguro=self.env['account.move'].search([('journal_id','=',seguro_obj.journal_id.id),('ref','=',y.name),('state','=','posted')])
                                     for x in movimientos_seguro.invoice_line_ids:
                                         if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
                                             if x.id in lista_ids:
@@ -920,7 +920,7 @@ class account_payment(models.Model):
                                                 lista.append(tupla)
                             if valor_pago_cliente: 
                                 if cuota_id.saldo_rastreo:
-                                    movimientos_rastreo=self.env['account.move'].search([('journal_id','=',rastreo_obj.journal_id.id),('ref','=',y.name)])
+                                    movimientos_rastreo=self.env['account.move'].search([('journal_id','=',rastreo_obj.journal_id.id),('ref','=',y.name),('state','=','posted')])
                                     for x in movimientos_rastreo.invoice_line_ids:
                                         if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
                                             if x.id in lista_ids:
@@ -974,7 +974,7 @@ class account_payment(models.Model):
                                             lista.append(tupla)
                             if valor_pago_cliente: 
                                 if cuota_id.saldo_otros:
-                                    movimientos_otro=self.env['account.move'].search([('journal_id','=',otros_obj.journal_id.id),('ref','=',y.name)])
+                                    movimientos_otro=self.env['account.move'].search([('journal_id','=',otros_obj.journal_id.id),('ref','=',y.name),('state','=','posted')])
                                     for x in movimientos_otro.invoice_line_ids:
                                         if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
                                             if x.id in lista_ids:
