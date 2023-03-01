@@ -666,7 +666,10 @@ class AccountPayment(models.Model):
                         else:
                             amount = invoice.amount_total-amount_balance 
                     for x in invoice.contrato_estado_cuenta_ids:
-                        deuda_total+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
+                        if invoice.contrato_id.tasa_administrativa:
+                            deuda_total+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
+                        else:
+                            deuda_total+=(x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
                     line_id = PaymentLine.create([{
                         'invoice_id': invoice.id,
                         'amount_total': invoice.amount_total,
@@ -679,7 +682,10 @@ class AccountPayment(models.Model):
                     list_ids.append(line_id.id)
             else:
                 for x in invoice.contrato_estado_cuenta_ids:
-                    deuda_total+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
+                    if invoice.contrato_id.tasa_administrativa:
+                        deuda_total+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
+                    else:
+                        deuda_total+=(x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
                 line_id = PaymentLine.create([{
                     'invoice_id': invoice.id,
                     'amount_total': invoice.amount_total,
@@ -1702,7 +1708,10 @@ class AccountPaymentLineNew(models.Model):
                         saldo_seg+=x.saldo_seguro
                         saldo_ras+=x.saldo_rastreo
                         saldo_otros+=x.saldo_otros
-                        monto_pendiente_pago+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
+                        if l.invoice_id.contrato_id.tasa_administrativa:
+                            monto_pendiente_pago+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
+                        else:
+                            monto_pendiente_pago+=(x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
             
             l.saldo_cuota_capital=saldo_cap
             l.saldo_seguro=saldo_seg
