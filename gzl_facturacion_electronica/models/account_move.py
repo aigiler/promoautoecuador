@@ -133,7 +133,7 @@ class AccountMove(models.Model):
             valor_haber = 0
             values = {
                         'product_id':obj_product.id,
-                        'name': detalle
+                        'name': detalle,
                         'account_id':obj_account.id,
                         'tax_ids': [(6,0,[obj_tax.id])],
                         'quantity': 0,
