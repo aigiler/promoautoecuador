@@ -1721,6 +1721,7 @@ class AccountPaymentLineNew(models.Model):
                             raise ValidationError(monto_pendiente_pago)
                         else:
                             monto_pendiente_pago+=(x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
+                            raise ValidationError(monto_pendiente_pago)
             
             l.saldo_cuota_capital=saldo_cap
             l.saldo_seguro=saldo_seg
