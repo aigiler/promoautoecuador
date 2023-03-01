@@ -126,7 +126,7 @@ class AccountMove(models.Model):
                         'quantity': 0,
                         'price_unit':0,
                     }
-             values1 = {
+            values1 = {
                         'product_id':obj_product.id,
                         'name': 'Cuota Capital. Pago de Cuota(s) de Contrato. Cuota Capital: ',
                         'account_id':obj_account.id,
@@ -148,9 +148,9 @@ class AccountMove(models.Model):
                             nombre=values.get('name')+rec.numero_cuota+','
                     else:
                         if i==0:
-                            nombre=values.get('name')+str(rec.cuota_capital)+'.'+' Cuota(s): '+rec.numero_cuota+','
+                            nombre=values1.get('name')+str(rec.cuota_capital)+'.'+' Cuota(s): '+rec.numero_cuota+','
                         else:
-                            nombre=values.get('name')+rec.numero_cuota+','
+                            nombre=values1.get('name')+rec.numero_cuota+','
 
                     i+=1
                     values['quantity'] = values.get('quantity') + 1
