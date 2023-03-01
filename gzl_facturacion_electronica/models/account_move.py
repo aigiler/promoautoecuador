@@ -114,14 +114,14 @@ class AccountMove(models.Model):
                 obj_account = self.env['account.account'].search([('code','=','4010101002')])
 
                 obj_tax = self.env['account.tax'].search([('name','=','VENTAS DE ACTIVOS FIJOS GRAVADAS TARIFA 12%')])
-                detalle="'Cuota Administrativa. Pago de Cuota(s) de Contrato. Cuota Administrativa: ',"
+                detalle='Cuota Administrativa. Pago de Cuota(s) de Contrato. Cuota Administrativa: '
 
             else:
                 obj_product = self.env['product.template'].search([('default_code','=','CC1')])
                 obj_account = self.env['account.account'].search([('code','=','2020601001')])
             
                 obj_tax = self.env['account.tax'].search([('name','=','VENTAS LOCALES (EXC ACT FIJOS) GRAV TARIFA 0% SIN CT')])
-                detalle="'Cuota Capital. Pago de Cuota(s) de Contrato. Cuota Capital: ',"
+                detalle='Cuota Capital. Pago de Cuota(s) de Contrato. Cuota Capital: '
 
 
             obj_account_haber = self.env['account.account'].search([('code','=','4010102002')])
