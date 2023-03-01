@@ -810,59 +810,60 @@ class account_payment(models.Model):
                             acumulado_cuota=0
                             #raise ValidationError('{0}'.format(valor_pago_cliente))
                             if valor_pago_cliente:
-                                if cuota_id.saldo_cuota_capital:
-                                    movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',y.name),('state','=','posted')])
-                                    for x in movimientos_cuota.invoice_line_ids:
-                                        if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
-                                            if x.id in lista_ids:
-                                                i=0
-                                                for mov in lista_movimientos:
-                                                    if x.id==mov['debit_move_id']:
-                                                        if valor_pago_cliente>=cuota_id.saldo_cuota_capital:
-                                                            mov['amount']+=cuota_id.saldo_cuota_capital
-                                                            acumulado_cuota+=cuota_id.saldo_cuota_capital
-                                                            valor_pago_cliente=valor_pago_cliente-cuota_id.saldo_cuota_capital
-                                                        else:
-                                                            mov['amount']+=valor_pago_cliente
-                                                            acumulado_cuota+=valor_pago_cliente
-                                                            valor_pago_cliente=0
-                                                        monto_cruzado=mov['amount']
-                                                        if lista:
-                                                            for z in lista:
-                                                                if z[2]['debit_move_id']==x.id:
-                                                                    z[2]['amount']=mov['amount']
-                                                        else:
-                                                            tupla=(0, 0, {
-                                                                    'debit_move_id': x.id,
-                                                                    'credit_move_id':  move_credito,
-                                                                    'amount': monto_cruzado,
-                                                                    'amount_currency': '',
-                                                                    'currency_id':  '',
-                                                                    'company_currency_id': 2,
-                                                                    'company_id': 1,
-                                                                    })
-                                                            lista.append(tupla) 
-                                            
-                                            else:
-                                                if valor_pago_cliente>=cuota_id.saldo_cuota_capital:
-                                                    monto_cruzado=cuota_id.saldo_cuota_capital
+                                if y.contrato_id.tasa_administrativa:
+                                    if cuota_id.saldo_cuota_capital:
+                                        movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',y.name),('state','=','posted')])
+                                        for x in movimientos_cuota.invoice_line_ids:
+                                            if x.account_id.id==rec.partner_id.property_account_receivable_id.id:
+                                                if x.id in lista_ids:
+                                                    i=0
+                                                    for mov in lista_movimientos:
+                                                        if x.id==mov['debit_move_id']:
+                                                            if valor_pago_cliente>=cuota_id.saldo_cuota_capital:
+                                                                mov['amount']+=cuota_id.saldo_cuota_capital
+                                                                acumulado_cuota+=cuota_id.saldo_cuota_capital
+                                                                valor_pago_cliente=valor_pago_cliente-cuota_id.saldo_cuota_capital
+                                                            else:
+                                                                mov['amount']+=valor_pago_cliente
+                                                                acumulado_cuota+=valor_pago_cliente
+                                                                valor_pago_cliente=0
+                                                            monto_cruzado=mov['amount']
+                                                            if lista:
+                                                                for z in lista:
+                                                                    if z[2]['debit_move_id']==x.id:
+                                                                        z[2]['amount']=mov['amount']
+                                                            else:
+                                                                tupla=(0, 0, {
+                                                                        'debit_move_id': x.id,
+                                                                        'credit_move_id':  move_credito,
+                                                                        'amount': monto_cruzado,
+                                                                        'amount_currency': '',
+                                                                        'currency_id':  '',
+                                                                        'company_currency_id': 2,
+                                                                        'company_id': 1,
+                                                                        })
+                                                                lista.append(tupla) 
+                                                
                                                 else:
-                                                    monto_cruzado=valor_pago_cliente
-                                                acumulado_cuota+=monto_cruzado
-                                                valor_pago_cliente=valor_pago_cliente-monto_cruzado
-                                                lista_ids.append(x.id)
-                                                lista_movimientos.append({'debit_move_id':x.id,'amount':monto_cruzado})
-                                                tupla=(0, 0, {
-                                                    'debit_move_id': x.id,
-                                                    'credit_move_id':  move_credito,
-                                                    'amount': monto_cruzado,
-                                                    'amount_currency': '',
-                                                    'currency_id':  '',
-                                                    'company_currency_id': 2,
-                                                    'company_id': 1,
-                                                    })
+                                                    if valor_pago_cliente>=cuota_id.saldo_cuota_capital:
+                                                        monto_cruzado=cuota_id.saldo_cuota_capital
+                                                    else:
+                                                        monto_cruzado=valor_pago_cliente
+                                                    acumulado_cuota+=monto_cruzado
+                                                    valor_pago_cliente=valor_pago_cliente-monto_cruzado
+                                                    lista_ids.append(x.id)
+                                                    lista_movimientos.append({'debit_move_id':x.id,'amount':monto_cruzado})
+                                                    tupla=(0, 0, {
+                                                        'debit_move_id': x.id,
+                                                        'credit_move_id':  move_credito,
+                                                        'amount': monto_cruzado,
+                                                        'amount_currency': '',
+                                                        'currency_id':  '',
+                                                        'company_currency_id': 2,
+                                                        'company_id': 1,
+                                                        })
 
-                                                lista.append(tupla)
+                                                    lista.append(tupla)
                             
                             if valor_pago_cliente:
                                 if cuota_id.saldo_seguro:
@@ -1028,17 +1029,18 @@ class account_payment(models.Model):
                             total_cuota=0
                             capital_pagado=0
                             if acumulado_cuota:
-                                if acumulado_cuota>=cuota_id.saldo_cuota_capital:
-                                    capital_pagado+=cuota_id.saldo_cuota_capital
-                                    total_cuota+=cuota_id.saldo_cuota_capital
-                                    acumulado_cuota=acumulado_cuota-cuota_id.saldo_cuota_capital
-                                    cuota_id.saldo_cuota_capital=0
+                                if y.contrato_id.tasa_administrativa:
+                                    if acumulado_cuota>=cuota_id.saldo_cuota_capital:
+                                        capital_pagado+=cuota_id.saldo_cuota_capital
+                                        total_cuota+=cuota_id.saldo_cuota_capital
+                                        acumulado_cuota=acumulado_cuota-cuota_id.saldo_cuota_capital
+                                        cuota_id.saldo_cuota_capital=0
 
-                                else:
-                                    capital_pagado+=acumulado_cuota
-                                    total_cuota+=acumulado_cuota
-                                    cuota_id.saldo_cuota_capital=cuota_id.saldo_cuota_capital-acumulado_cuota
-                                    acumulado_cuota=0
+                                    else:
+                                        capital_pagado+=acumulado_cuota
+                                        total_cuota+=acumulado_cuota
+                                        cuota_id.saldo_cuota_capital=cuota_id.saldo_cuota_capital-acumulado_cuota
+                                        acumulado_cuota=0
 
                             if acumulado_cuota:
                                 if acumulado_cuota>=cuota_id.saldo_seguro:
@@ -1128,42 +1130,63 @@ class account_payment(models.Model):
                             valor_final_factura=fact.amount_residual
                             valor_pagado=valor_inicial_factura-valor_final_factura
                             for cuota_id in fact.contrato_estado_cuenta_ids:
-                                if valor_pagado:
-                                    if cuota_id.saldo_cuota_administrativa:
-                                        if valor_pagado>=cuota_id.saldo_cuota_administrativa:
-                                            acumulado_cuota+=cuota_id.saldo_cuota_administrativa
-                                            valor_pagado=valor_pagado-cuota_id.saldo_cuota_administrativa
+                                if fact.contrato_id.tasa_administrativa:
+                                    if valor_pagado:
+                                        if cuota_id.saldo_cuota_administrativa:
+                                            if valor_pagado>=cuota_id.saldo_cuota_administrativa:
+                                                acumulado_cuota+=cuota_id.saldo_cuota_administrativa
+                                                valor_pagado=valor_pagado-cuota_id.saldo_cuota_administrativa
+                                            else:
+                                                acumulado_cuota+=valor_pagado
+                                                valor_pagado=0
+                                    if valor_pagado:
+                                        if cuota_id.saldo_iva:
+                                            if valor_pagado>=cuota_id.saldo_iva:
+                                                acumulado_cuota+=cuota_id.saldo_iva
+                                                valor_pagado=valor_pagado-cuota_id.saldo_iva
+                                            else:
+                                                acumulado_cuota+=valor_pagado
+                                                valor_pagado=0
+                                    total_cuota=0
+                                    if acumulado_cuota:
+                                        if acumulado_cuota>=cuota_id.saldo_cuota_administrativa:
+                                            total_cuota+=cuota_id.saldo_cuota_administrativa
+                                            acumulado_cuota=acumulado_cuota-cuota_id.saldo_cuota_administrativa
+                                            cuota_id.saldo_cuota_administrativa=0
                                         else:
-                                            acumulado_cuota+=valor_pagado
-                                            valor_pagado=0
-                                if valor_pagado:
-                                    if cuota_id.saldo_iva:
-                                        if valor_pagado>=cuota_id.saldo_iva:
-                                            acumulado_cuota+=cuota_id.saldo_iva
-                                            valor_pagado=valor_pagado-cuota_id.saldo_iva
+                                            total_cuota+=acumulado_cuota
+                                            cuota_id.saldo_cuota_administrativa=cuota_id.saldo_cuota_administrativa-acumulado_cuota
+                                            acumulado_cuota=0
+                                              
+                                    if acumulado_cuota:
+                                        if acumulado_cuota>=cuota_id.saldo_iva:
+                                            total_cuota+=cuota_id.saldo_iva
+                                            acumulado_cuota=acumulado_cuota-cuota_id.saldo_iva
+                                            cuota_id.saldo_iva=0
                                         else:
-                                            acumulado_cuota+=valor_pagado
-                                            valor_pagado=0
-                                total_cuota=0
-                                if acumulado_cuota:
-                                    if acumulado_cuota>=cuota_id.saldo_cuota_administrativa:
-                                        total_cuota+=cuota_id.saldo_cuota_administrativa
-                                        acumulado_cuota=acumulado_cuota-cuota_id.saldo_cuota_administrativa
-                                        cuota_id.saldo_cuota_administrativa=0
-                                    else:
-                                        total_cuota+=acumulado_cuota
-                                        cuota_id.saldo_cuota_administrativa=cuota_id.saldo_cuota_administrativa-acumulado_cuota
-                                        acumulado_cuota=0
-                                          
-                                if acumulado_cuota:
-                                    if acumulado_cuota>=cuota_id.saldo_iva:
-                                        total_cuota+=cuota_id.saldo_iva
-                                        acumulado_cuota=acumulado_cuota-cuota_id.saldo_iva
-                                        cuota_id.saldo_iva=0
-                                    else:
-                                        total_cuota+=acumulado_cuota
-                                        cuota_id.saldo_iva=cuota_id.saldo_iva-acumulado_cuota
-                                        acumulado_cuota=0
+                                            total_cuota+=acumulado_cuota
+                                            cuota_id.saldo_iva=cuota_id.saldo_iva-acumulado_cuota
+                                            acumulado_cuota=0
+                                else:
+                                    if valor_pagado:
+                                        if cuota_id.saldo_cuota_capital:
+                                            if valor_pagado>=cuota_id.saldo_cuota_capital:
+                                                acumulado_cuota+=cuota_id.saldo_cuota_capital
+                                                valor_pagado=valor_pagado-cuota_id.saldo_cuota_capital
+                                            else:
+                                                acumulado_cuota+=valor_pagado
+                                                valor_pagado=0
+                                    total_cuota=0
+                                    if acumulado_cuota:
+                                        if acumulado_cuota>=cuota_id.saldo_cuota_capital:
+                                            total_cuota+=cuota_id.saldo_cuota_capital
+                                            acumulado_cuota=acumulado_cuota-cuota_id.saldo_cuota_capital
+                                            cuota_id.saldo_cuota_capital=0
+                                        else:
+                                            total_cuota+=acumulado_cuota
+                                            cuota_id.saldo_cuota_capital=cuota_id.saldo_cuota_administrativa-acumulado_cuota
+                                            acumulado_cuota=0
+
                                 if total_cuota:
                                     monto_a_factura+=total_cuota
                                     cuota_id.fecha_pagada=rec.payment_date
@@ -1176,6 +1199,17 @@ class account_payment(models.Model):
                                 
                                 if cuota_id.saldo==0:
                                     cuota_id.estado_pago='pagado'
+                                if fact.contrato_id.tasa_administrativa:
+                                    if total_cuota:
+                                        transacciones.create({
+                                        'grupo_id':cuota_id.contrato_id.grupo.id,
+                                        'haber':total_cuota,
+                                        'adjudicado_id':cuota_id.contrato_id.cliente.id,
+                                        'contrato_id':cuota_id.contrato_id.id,
+                                        'state':cuota_id.contrato_id.state
+                                        })
+
+
                                 rec.contrato_id.validar_estado_deuda()
                             pago_fact_id=self.env['account.payment.cuotas.detalle'].search([('factura_id','=',fact.id),('pago_id','=',rec.id)],limit=1)
                        

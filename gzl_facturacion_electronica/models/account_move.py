@@ -126,6 +126,14 @@ class AccountMove(models.Model):
                         'quantity': 0,
                         'price_unit':0,
                     }
+             values1 = {
+                        'product_id':obj_product.id,
+                        'name': 'Cuota Capital. Pago de Cuota(s) de Contrato. Cuota Capital: ',
+                        'account_id':obj_account.id,
+                        'tax_ids': [(6,0,[obj_tax.id])],
+                        'quantity': 0,
+                        'price_unit':0,
+                    }
             cliente=self.partner_id.name
             if self.contrato_estado_cuenta_ids:
                 obj_contrato_estado_cuenta = self.env['contrato.estado.cuenta'].search([('id','in',self.contrato_estado_cuenta_ids.ids)])
@@ -133,13 +141,23 @@ class AccountMove(models.Model):
                 saldo_credito=0
                 numero_cuotas=''
                 for rec in obj_contrato_estado_cuenta:
-                    if i==0:
-                        nombre=values.get('name')+str(rec.cuota_adm)+'.'+' IVA: '+str(rec.iva_adm)+' Cuota(s): '+rec.numero_cuota+','
+                    if self.contrato_id.tasa_administrativa:
+                        if i==0:
+                            nombre=values.get('name')+str(rec.cuota_adm)+'.'+' IVA: '+str(rec.iva_adm)+' Cuota(s): '+rec.numero_cuota+','
+                        else:
+                            nombre=values.get('name')+rec.numero_cuota+','
                     else:
-                        nombre=values.get('name')+rec.numero_cuota+','
+                        if i==0:
+                            nombre=values.get('name')+str(rec.cuota_capital)+'.'+' Cuota(s): '+rec.numero_cuota+','
+                        else:
+                            nombre=values.get('name')+rec.numero_cuota+','
+
                     i+=1
                     values['quantity'] = values.get('quantity') + 1
-                    valor += rec.cuota_adm
+                    if self.contrato_id.tasa_administrativa:
+                        valor += rec.cuota_adm
+                    else:
+                        valor += rec.cuota_capital
                     values['price_unit'] = valor/values.get('quantity')
                     values['name'] =nombre
                     list_pagos_diferentes.update({
@@ -812,30 +830,33 @@ class AccountMove(models.Model):
                     seguro += rec.saldo_seguro
                     otros += rec.saldo_otros
                     rastreo +=rec.saldo_rastreo
-                if cuota_capital>0:
-                    if not cuota_capital_obj:
-                        raise ValidationError("Debe parametrizar la cuenta para los rubros de los contratos.")
-                    obj_am.create({
-                        'date':self.invoice_date,
-                        'journal_id':cuota_capital_obj.journal_id.id,
-                        'company_id':self.company_id.id,
-                        'type':'entry',
-                        'ref':self.name,
-                        'line_ids':[
-                            (0,0,{
-                            'account_id':obj_account_debe.id,
-                            'partner_id':self.partner_id.id,
-                            'credit':0,
-                            'debit':cuota_capital
-                            }),
-                            (0,0,{
-                            'account_id':cuota_capital_obj.cuenta_id.id,
-                            'partner_id':self.partner_id.id,
-                            'credit':cuota_capital,
-                            'debit':0
-                            })
-                        ]
-                    }).action_post()
+                if self.contrato_id.tasa_administrativa:
+                    if cuota_capital>0:
+                        if not cuota_capital_obj:
+                            raise ValidationError("Debe parametrizar la cuenta para los rubros de los contratos.")
+                        obj_am.create({
+                            'date':self.invoice_date,
+                            'journal_id':cuota_capital_obj.journal_id.id,
+                            'company_id':self.company_id.id,
+                            'type':'entry',
+                            'ref':self.name,
+                            'line_ids':[
+                                (0,0,{
+                                'account_id':obj_account_debe.id,
+                                'partner_id':self.partner_id.id,
+                                'credit':0,
+                                'debit':cuota_capital
+                                }),
+                                (0,0,{
+                                'account_id':cuota_capital_obj.cuenta_id.id,
+                                'partner_id':self.partner_id.id,
+                                'credit':cuota_capital,
+                                'debit':0
+                                })
+                            ]
+                        }).action_post()
+                else:
+                    pass
                 obj_anticipo=self.env['anticipos.pendientes'].search([('factura_id','=',self.id),('anticipo_pendiente','=',False)])
                 #for ant in self.anticipos_ids:
                 #    ant.linea_pago_id.saldo_pendiente=valor_restar
