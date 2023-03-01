@@ -1222,7 +1222,10 @@ class account_payment(models.Model):
                     for lineas in rec.payment_line_ids:
                         monto_pendiente_pago=lineas.invoice_id.amount_residual
                         for x in lineas.invoice_id.contrato_estado_cuenta_ids:
-                            monto_pendiente_pago+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
+                            if lineas.invoice_id.contrato_id.tasa_administrativa:
+                                monto_pendiente_pago+=(x.saldo_cuota_capital+x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
+                            else:
+                                monto_pendiente_pago+=(x.saldo_seguro+x.saldo_rastreo+x.saldo_otros)
                         lineas.monto_pendiente_pago=monto_pendiente_pago
                 if rec.payment_type=='outbound':
                     if rec.invoice_ids:
