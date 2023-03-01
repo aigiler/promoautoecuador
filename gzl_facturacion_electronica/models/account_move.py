@@ -180,7 +180,8 @@ class AccountMove(models.Model):
                     else:
                         for ric in self.invoice_line_ids:
                             self.invoice_line_ids = [(1,ric.id,{
-                                'product_id': values.get('product_id'),
+                                'product_id': rec.get('product_id'),
+                                'account_id': rec.get('account_id'),
                                 'name': rec.get('name'),
                                 'quantity': rec.get('quantity'),
                                 'price_unit': rec.get('price_unit'),
