@@ -110,7 +110,12 @@ class AccountMove(models.Model):
     def _onchange_contrato_estado_cuenta_ids(self):
         if self.state=='draft':
             obj_product = self.env['product.template'].search([('default_code','=','CA1')])
+            obj_product1 = self.env['product.template'].search([('default_code','=','CC1')])
+
+
             obj_account = self.env['account.account'].search([('code','=','4010101002')])
+            obj_account1 = self.env['account.account'].search([('code','=','2020601001')])
+            
             obj_tax = self.env['account.tax'].search([('name','=','VENTAS DE ACTIVOS FIJOS GRAVADAS TARIFA 12%')])
             obj_tax1 = self.env['account.tax'].search([('name','=','VENTAS LOCALES (EXC ACT FIJOS) GRAV TARIFA 0% SIN CT')])
 
@@ -131,9 +136,9 @@ class AccountMove(models.Model):
                         'price_unit':0,
                     }
             values1 = {
-                        'product_id':obj_product.id,
+                        'product_id':obj_product1.id,
                         'name': 'Cuota Capital. Pago de Cuota(s) de Contrato. Cuota Capital: ',
-                        'account_id':obj_account.id,
+                        'account_id':obj_account1.id,
                         'tax_ids': [(6,0,[obj_tax1.id])],
                         'quantity': 0,
                         'price_unit':0,
@@ -164,10 +169,14 @@ class AccountMove(models.Model):
                         valor += rec.cuota_capital
                     values['price_unit'] = valor/values.get('quantity')
                     values['name'] =nombre
-                    list_pagos_diferentes.update({
-                        str(rec.cuota_adm):values
-                    })
-                        
+                    if self.contrato_id.tasa_administrativa:
+                        list_pagos_diferentes.update({
+                            str(rec.cuota_adm):values
+                        })
+                    else:
+                        list_pagos_diferentes.update({
+                            str(rec.cuota_capital):values
+                        })
                 for rec in list_pagos_diferentes.values():
                     if not self.invoice_line_ids:
                         self.invoice_line_ids = [(0,0,rec)] 
