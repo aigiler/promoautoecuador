@@ -154,7 +154,7 @@ class AccountMove(models.Model):
                             nombre=values.get('name')+rec.numero_cuota+','
                     else:
                         if i==0:
-                            nombre=values.get('name')+str(rec.cuota_capital)+'.'+' Cuota(s): '+rec.numero_cuota+','
+                            nombre=values.get('name')+str(rec.saldo_cuota_capital)+'.'+' Cuota(s): '+rec.numero_cuota+','
                         else:
                             nombre=values.get('name')+rec.numero_cuota+','
 
@@ -172,7 +172,7 @@ class AccountMove(models.Model):
                         })
                     else:
                         list_pagos_diferentes.update({
-                            str(rec.cuota_capital):values
+                            str(rec.saldo_cuota_capital):values
                         })
                 for rec in list_pagos_diferentes.values():
                     if not self.invoice_line_ids:
