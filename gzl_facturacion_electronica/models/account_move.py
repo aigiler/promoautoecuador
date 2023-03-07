@@ -163,7 +163,7 @@ class AccountMove(models.Model):
                     if self.contrato_id.tasa_administrativa:
                         valor += rec.cuota_adm
                     else:
-                        valor += rec.cuota_capital
+                        valor += rec.saldo_cuota_capital
                     values['price_unit'] = valor/values.get('quantity')
                     values['name'] =nombre
                     if self.contrato_id.tasa_administrativa:
