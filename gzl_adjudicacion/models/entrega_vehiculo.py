@@ -71,6 +71,15 @@ class Partner(models.Model):
         domain="[('internal_type', '=', 'receivable'), ('deprecated', '=', False)]",
         required=False)
 
+
+    def actualizar_identificacion(self):
+        partner_ids=self.env['res.partner'].search([])
+        for cliente in partner_ids:
+            if len(cliente.vat)==10:
+                l10n_latam_identification_type_id.id=4
+            else:
+                l10n_latam_identification_type_id.id=3
+
 class EntegaVehiculo(models.Model):
     _name = 'entrega.vehiculo'
     _description = 'Entrega Vehiculo'
