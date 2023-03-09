@@ -77,7 +77,7 @@ class Partner(models.Model):
         for cliente in partner_ids:
             if len(cliente.vat)==10:
                 l10n_latam_identification_type_id.id=4
-            else:
+            elif len(cliente.vat)==13:
                 l10n_latam_identification_type_id.id=3
 
 class EntegaVehiculo(models.Model):
