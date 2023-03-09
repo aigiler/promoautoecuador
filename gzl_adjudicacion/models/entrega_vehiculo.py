@@ -76,9 +76,9 @@ class Partner(models.Model):
         partner_ids=self.env['res.partner'].search([])
         for cliente in partner_ids:
             if len(cliente.vat)==10:
-                l10n_latam_identification_type_id.id=4
+                cliente.l10n_latam_identification_type_id.id=4
             elif len(cliente.vat)==13:
-                l10n_latam_identification_type_id.id=3
+                cliente.l10n_latam_identification_type_id.id=3
 
 class EntegaVehiculo(models.Model):
     _name = 'entrega.vehiculo'
