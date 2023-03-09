@@ -508,16 +508,17 @@ class WizardAts(models.TransientModel):
             if inv.l10n_latam_document_number:
                 inicio= inv.l10n_latam_document_number[6:].rstrip("0")
             auth = inv.establecimiento
-            aut = auth.is_electronic and inv.numero_autorizacion_sri or auth.name
-            detalleanulados = {
-                'tipoComprobante': auth.type_id.code or '00',
-                'establecimiento': auth.serie_establecimiento,
-                'ptoEmision': auth.serie_emision,
-                'secuencialInicio': inicio,
-                'secuencialFin': registro,
-                'autorizacion': aut or '000000'
-            }
-            anulados.append(detalleanulados)
+            aut = auth.is_electronic and inv.numero_autorizacion_sri  and inv.clave_acceso_sri
+            if inv.l10n_latam_document_number
+                detalleanulados = {
+                    'tipoComprobante': auth.type_id.code or '00',
+                    'establecimiento': auth.serie_establecimiento,
+                    'ptoEmision': auth.serie_emision,
+                    'secuencialInicio': inicio,
+                    'secuencialFin': registro,
+                    'autorizacion': aut or '000000'
+                }
+                anulados.append(detalleanulados)
 
         dmn_ret = [
             ('state', '=', 'cancel'),
@@ -532,8 +533,8 @@ class WizardAts(models.TransientModel):
                 'tipoComprobante': auth.type_id.code or '00',
                 'establecimiento': auth.serie_establecimiento,
                 'ptoEmision': auth.serie_emision,
-                'secuencialInicio': ret.name[6:9],
-                'secuencialFin': ret.name[6:9],
+                'secuencialInicio': ret.name[11:],
+                'secuencialFin': ret.name[11:],
                 'autorizacion': aut
             }
             anulados.append(detalleanulados)
