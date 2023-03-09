@@ -509,7 +509,7 @@ class WizardAts(models.TransientModel):
                 inicio= inv.l10n_latam_document_number[6:].rstrip("0")
             auth = inv.establecimiento
             aut = auth.is_electronic and inv.numero_autorizacion_sri  and inv.clave_acceso_sri
-            if inv.l10n_latam_document_number
+            if inv.l10n_latam_document_number:
                 detalleanulados = {
                     'tipoComprobante': auth.type_id.code or '00',
                     'establecimiento': auth.serie_establecimiento,
