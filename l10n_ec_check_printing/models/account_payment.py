@@ -566,7 +566,7 @@ class AccountPayment(models.Model):
                 valor_pagado=valor_inicial_factura-valor_final_factura
                 #raise ValidationError(acumulado_cuota)
                 for cuota_id in l.contrato_estado_cuenta_ids:
-                    if l.invoice_id.contrato_id.tasa_administrativa:
+                    if l.contrato_id.tasa_administrativa:
                         if valor_pagado:
                             if cuota_id.saldo_cuota_administrativa:
                                 if valor_pagado>=cuota_id.saldo_cuota_administrativa:
