@@ -528,7 +528,7 @@ class WizardAts(models.TransientModel):
         ]
         for ret in self.env['account.retention'].search(dmn_ret):
             auth = ret.auth_id
-            aut = auth.is_electronic and inv.numero_autorizacion_sri and inv.clave_acceso_sri
+            aut = auth.is_electronic and ret.numero_autorizacion_sri and ret.clave_acceso_sri
             detalleanulados = {
                 'tipoComprobante': auth.type_id.code or '00',
                 'establecimiento': auth.serie_establecimiento,
