@@ -184,7 +184,7 @@ class ReportGrupos(models.TransientModel):
             cuota_mensual=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month )
             if cuota_mensual:
                 for cuota in cuota_mensual:
-                        dct['cuota_mensual']=cuota_mensual.cuota_capital+cuota_mensual.cuota_adm+cuota_mensual.iva_adm+cuota_mensual.seguro+cuota_mensual.rastreo+cuota_mensual.otros
+                    dct['cuota_mensual']=cuota_mensual.cuota_capital+cuota_mensual.cuota_adm+cuota_mensual.iva_adm+cuota_mensual.seguro+cuota_mensual.rastreo+cuota_mensual.otros
 
             dct['cuotasAdelantadas']=len(contrato.estado_de_cuenta_ids.filtered(lambda l: l.estado_pago=='pagado' and l.fecha>res.date()))
             dct['cuotas_pagadas']=dct['cuotas_consecutivas']+dct['cuotasAdelantadas']
