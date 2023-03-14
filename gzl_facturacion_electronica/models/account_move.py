@@ -137,6 +137,7 @@ class AccountMove(models.Model):
                         'account_id':obj_account.id,
                         'tax_ids': [(6,0,[obj_tax.id])],
                         'quantity': 0,
+                        'price_unit':0
                     }
 
             cliente=self.partner_id.name
@@ -173,10 +174,17 @@ class AccountMove(models.Model):
                         list_pagos_diferentes.update({
                             str(rec.saldo_cuota_capital):values
                         })
-                    raise ValidationError("{0}".format(list_pagos_diferentes))
                 for rec in list_pagos_diferentes.values():
+                    raise ValidationError("{0}".format(rec))
+
                     if not self.invoice_line_ids:
-                        self.invoice_line_ids = [(0,0,rec)] 
+                        self.invoice_line_ids = [(0,0,{
+                                'product_id': rec.get('product_id'),
+                                'account_id': rec.get('account_id'),
+                                'name': rec.get('name'),
+                                'quantity': rec.get('quantity'),
+                                'price_unit': rec.get('price_unit'),
+                            })] 
                     else:
                         for ric in self.invoice_line_ids:
                             self.invoice_line_ids = [(1,ric.id,{
