@@ -175,7 +175,6 @@ class AccountMove(models.Model):
                             str(rec.saldo_cuota_capital):values
                         })
                 for rec in list_pagos_diferentes.values():
-                    raise ValidationError("{0}".format(rec))
 
                     if not self.invoice_line_ids:
                         self.invoice_line_ids = [(0,0,{
