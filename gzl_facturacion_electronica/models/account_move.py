@@ -174,18 +174,18 @@ class AccountMove(models.Model):
                         list_pagos_diferentes.update({
                             str(rec.saldo_cuota_capital):values
                         })
-                for rec in list_pagos_diferentes.values():
+                for reg in list_pagos_diferentes.values():
 
                     if not self.invoice_line_ids:
-                        self.invoice_line_ids = [(0,0,rec)] 
+                        self.invoice_line_ids = [(0,0,reg)] 
                     else:
                         for ric in self.invoice_line_ids:
                             self.invoice_line_ids = [(1,ric.id,{
-                                'product_id': rec.get('product_id'),
-                                'account_id': rec.get('account_id'),
-                                'name': rec.get('name'),
-                                'quantity': rec.get('quantity'),
-                                'price_unit': rec.get('price_unit'),
+                                'product_id': reg.get('product_id'),
+                                'account_id': reg.get('account_id'),
+                                'name': reg.get('name'),
+                                'quantity': reg.get('quantity'),
+                                'price_unit': reg.get('price_unit'),
                             })]          
                 self._move_autocomplete_invoice_lines_values()
 
