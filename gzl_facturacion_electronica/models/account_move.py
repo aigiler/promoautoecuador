@@ -165,6 +165,7 @@ class AccountMove(models.Model):
                     else:
                         valor += rec.saldo_cuota_capital
                     values['price_unit'] = valor/values.get('quantity')
+                    raise ValidationError("{0}".format(values["price_unit"]))
                     values['name'] =nombre
                     if self.contrato_id.tasa_administrativa!=0:
                         list_pagos_diferentes.update({
