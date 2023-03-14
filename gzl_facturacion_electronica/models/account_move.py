@@ -177,13 +177,7 @@ class AccountMove(models.Model):
                 for rec in list_pagos_diferentes.values():
 
                     if not self.invoice_line_ids:
-                        self.invoice_line_ids = [(0,0,{
-                                'product_id': rec.get('product_id'),
-                                'account_id': rec.get('account_id'),
-                                'name': rec.get('name'),
-                                'quantity': rec.get('quantity'),
-                                'price_unit': rec.get('price_unit'),
-                            })] 
+                        self.invoice_line_ids = [(0,0,rec)] 
                     else:
                         for ric in self.invoice_line_ids:
                             self.invoice_line_ids = [(1,ric.id,{
