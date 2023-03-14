@@ -166,7 +166,7 @@ class AccountMove(models.Model):
                         valor += rec.saldo_cuota_capital
                     values['price_unit'] = valor/values.get('quantity')
                     values['name'] =nombre
-                    if self.contrato_id.tasa_administrativa:
+                    if self.contrato_id.tasa_administrativa!=0:
                         list_pagos_diferentes.update({
                             str(rec.cuota_adm):values
                         })
