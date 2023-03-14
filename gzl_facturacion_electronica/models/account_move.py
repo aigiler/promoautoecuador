@@ -137,7 +137,6 @@ class AccountMove(models.Model):
                         'account_id':obj_account.id,
                         'tax_ids': [(6,0,[obj_tax.id])],
                         'quantity': 0,
-                        'price_unit':0,
                     }
 
             cliente=self.partner_id.name
