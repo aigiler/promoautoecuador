@@ -795,7 +795,7 @@ class AccountMove(models.Model):
                     except:
                         print('Error de asiento contable')    
         
-        if self.type == 'out_invoice':
+        if self.type == 'out_invoice' and self.estado_autorizacion_sri!="AUT":
             if self.contrato_estado_cuenta_ids:
                 #obj_account_debe = self.env['account.account'].search([('code','=','1010205001')])
                 obj_account_debe=self.partner_id.property_account_receivable_id

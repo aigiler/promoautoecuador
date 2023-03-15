@@ -46,7 +46,8 @@ class FacturacionElectronica(models.Model):
         contador = self.env.cr.dictfetchall()
 
         if contador[0]['contador']>0:
-            raise ValidationError('El Comprobante Electrónico está en proceso')
+            pass
+            ##raise ValidationError('El Comprobante Electrónico está en proceso')
         else:
             instanciaBitacora=self.env['bitacora.consumo.servicios'].create(dct)
             self.bitacora_id=instanciaBitacora.id
