@@ -41,7 +41,7 @@
 		</record>
 		
 		<record id="ec_06" model="l10n_latam.document.type">
-			<field name="code">18</field>
+			<field name="code">01</field>
 			<field name="name">Factura de Compra</field>
 			<field name="doc_code_prefix">Fact.</field>
 			<field name="l10n_ec_validate_number">True</field>
