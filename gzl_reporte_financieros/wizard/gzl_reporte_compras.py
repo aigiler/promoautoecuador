@@ -177,7 +177,7 @@ class ReporteCompras(models.TransientModel):
                 for l in m.ret_tax_ids:
                     
                     #if l.group_id.code != 'ret_ir':
-                    dct['miva']=(m.amount_untaxed*0.12)#l.base
+                    dct['miva']=(biva0*0.12)#l.base
                     if l.group_id.code =='ret_vat_b' and l.tax_id.tax_group_id.code =='ret_vat_b':
                         dct['porctretb']=l.tax_id.tarifa
                         dct['retb']='0'
