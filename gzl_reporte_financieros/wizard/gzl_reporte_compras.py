@@ -185,8 +185,8 @@ class ReporteCompras(models.TransientModel):
                         dct['retserv']='0'
                     if l.group_id.code =='ret_vat_srv' and l.tax_id.tax_group_id.code =='ret_vat_srv':
                         dct['porctretb']='0'
-                        dct['retb']=l.tax_id.tarifa
-                        dct['porctrets']='0'
+                        dct['retb']='0'
+                        dct['porctrets']=l.tax_id.tarifa
                         dct['retserv']=l.amount  
                     valor= (-1)*l.amount
                     if valor == l.base:
