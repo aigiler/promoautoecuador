@@ -138,20 +138,19 @@ class ReporteCompras(models.TransientModel):
             for i in m.invoice_line_ids:
                 taxes=i.tax_ids.filtered(lambda l: l.tax_group_id.code in ['novat','vat'])
 
+                if i.account_id.name!='IVA pagado':
+                    bagrav += i.price_subtotal
                 if len(taxes)>0:
                     for f in taxes:
                         if  f.tax_group_id.code =='novat' and f.description == '531':
                             no_obj+= i.price_subtotal
                         elif f.tax_group_id.code =='novat' and f.description == '532':
                             no_ext += i.price_subtotal 
-                            
-                        else:
-                            bagrav += i.price_subtotal 
-                            
-
 
                 else:
                     biva0+=i.price_subtotal
+                    if i.account_id.name=='IVA pagado':
+                        biva0=0
                 for k in i.tax_ids:
                     if k.tax_group_id.code =='ret_vat_srv' and bagrav!=0:
                         bn_trf_diff +=  i.price_subtotal
