@@ -188,7 +188,10 @@ class WizardAts(models.TransientModel):
                         retBien += abs(tax._compute_amount(line.price_subtotal, line.price_unit, line.quantity, line.product_id))*0.12
                 if tax.tax_group_id.code == 'ret_vat_srv':
                     if abs(tax.amount) == 100:
+
                         retServ100 += abs(tax._compute_amount(line.price_subtotal, line.price_unit, line.quantity, line.product_id))*0.12
+                        if line.account_id.name=='IVA pagado':
+                            retServ100=line.price_subtotal
                     elif abs(tax.amount) == 20:
                         retServ20 += abs(tax._compute_amount(line.price_subtotal, line.price_unit, line.quantity, line.product_id))*0.12
                     else:
