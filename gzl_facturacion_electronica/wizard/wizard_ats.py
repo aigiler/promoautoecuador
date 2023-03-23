@@ -261,6 +261,8 @@ class WizardAts(models.TransientModel):
                 if tax.tax_group_id.code == 'vat':
                     cont_vats+=1
                     iva12 += abs(line.price_subtotal)
+                if line.account_id.name!='IVA pagado':
+                    iva12+= abs(line.price_subtotal)
                 if tax.tax_group_id.code == 'vat0':
                     cont_vats+=1
                     iva0 += abs(line.price_subtotal)
@@ -270,6 +272,8 @@ class WizardAts(models.TransientModel):
             #raise ValidationError((str(len(line.tax_ids))+'kdkd'))
             if cont_vats==0:
                 iva0 += abs(line.price_subtotal)
+                if line.account_id.name=='IVA pagado':
+                    iva0=0
         
         return iva12, iva0, novat
                             
