@@ -616,7 +616,7 @@ class Contrato(models.Model):
             if l.idEstadoContrato=="F":
                 l.state="FINALIZADO"
                 l.state_simplificado="LIQUIDADO" 
-            if l.idEstadoContrato=="I":
+            if l.idEstadoContrato=="D":
                 l.state="FINALIZADO"
                 l.state_simplificado="DESISTIDO PAGADO"
             if l.idEstadoContrato=="J": 
@@ -627,6 +627,9 @@ class Contrato(models.Model):
             if l.idEstadoContrato=="P":
                 l.state="NO ACTIVADO"
                 l.state_simplificado="INSCRITO"
+            if l.idEstadoContrato=="C":
+                l.state="ACTIVADO"
+                l.state_simplificado="CONGELADO"
        
 
     def cambio_estado_congelar_contrato(self):
