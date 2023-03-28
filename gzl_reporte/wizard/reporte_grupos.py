@@ -137,9 +137,7 @@ class ReportGrupos(models.TransientModel):
             if pagos_ids:
 
                 for rec in pagos_ids:
-                    if rec.payment_date.month==mes and rec.payment_date.year==anio:
-                        raise ValidationError('AQUIIII PASA {0} '.format(rec.reconciled_invoice_ids))
-
+                    if int(rec.payment_date.month)==int(mes) and int(rec.payment_date.year)==int(anio):
                         for fac in rec.reconciled_invoice_ids:
 
 
