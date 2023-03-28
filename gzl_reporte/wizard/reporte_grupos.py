@@ -120,6 +120,7 @@ class ReportGrupos(models.TransientModel):
             query+=" and descripcion_adjudicaciones='{0}' ".format(self.jefe_zona)
         if self.state_simplificado:
             query+=" and state_simplificado='{0}'".format(self.state_simplificado)
+        raise ValidationError('{0}'.format(query))
 
         self.env.cr.execute(query)
         contrato_ids=self.env.cr.dictfetchall()
@@ -136,22 +137,21 @@ class ReportGrupos(models.TransientModel):
             iva_adm_cancelado_mes=0
             capital_cancelado_mes=0
             
-            if pagos_ids:
-                for rec in pagos_ids:
-                    if int(rec.payment_date.month)==int(mes) and int(rec.payment_date.year)==int(anio):
-                        for fac in rec.reconciled_invoice_ids:
-                            if fac.id not in lista_facturas:
-                                lista_facturas.append(fac.id)
-                                if fac.contrato_id.id==contrato.id: 
-                                    if fac.contrato_id.id==contrato.id and fac.contrato_estado_cuenta_ids:
-                                        cuotas_canceladas_mes+=len(fac.contrato_estado_cuenta_ids)
-                                        administrativo_cancelado_mes+=fac.amount_untaxed
-                                        iva_adm_cancelado_mes+=(fac.amount_total-fac.amount_untaxed)
-                                        capital_ids=self.env['account.move'].search([('ref','=',fac.name),('state','=','posted')])
-                                        for cap in capital_ids:
-                                            capital_cancelado_mes+=cap.amount_total_signed
-                            else:
-                                pass
+            for rec in pagos_ids:
+                if int(rec.payment_date.month)==int(mes) and int(rec.payment_date.year)==int(anio):
+                    for fac in rec.reconciled_invoice_ids:
+                        if fac.id not in lista_facturas:
+                            lista_facturas.append(fac.id)
+                            if fac.contrato_id.id==contrato.id: 
+                                if fac.contrato_id.id==contrato.id and fac.contrato_estado_cuenta_ids:
+                                    cuotas_canceladas_mes+=len(fac.contrato_estado_cuenta_ids)
+                                    administrativo_cancelado_mes+=fac.amount_untaxed
+                                    iva_adm_cancelado_mes+=(fac.amount_total-fac.amount_untaxed)
+                                    capital_ids=self.env['account.move'].search([('ref','=',fac.name),('state','=','posted')])
+                                    for cap in capital_ids:
+                                        capital_cancelado_mes+=cap.amount_total_signed
+                        else:
+                            pass
             total_cancelado_mes=administrativo_cancelado_mes+iva_adm_cancelado_mes+capital_cancelado_mes
             dct={'codigo_grupo':contrato.grupo.name or '',
                     'contrato':contrato.secuencia  or '',
