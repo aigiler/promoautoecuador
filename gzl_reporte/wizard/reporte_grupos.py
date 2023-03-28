@@ -28,17 +28,16 @@ class ReportGrupos(models.TransientModel):
         ('FINALIZADO', 'FINALIZADO'),
     ], string='Estado de Contrato', track_visibility='onchange')
 
+
     state_simplificado=fields.Selection(selection=[
-        ('DESACTIVADO', 'DESACTIVADO'),
+        ('AL DIA', 'AL DIA'),
+        ('EN MORA', 'EN MORA'),
+        ('CONGELADO', 'CONGELADO'),
         ('INSCRITO', 'INSCRITO'),
-        ('ENTREGADO', 'ENTREGADO'),
-        ('NO ENTREGADO', 'NO ENTREGADO'),
-        ('ADJUDICADO', 'ADJUDICADO'),
         ('LIQUIDADO', 'LIQUIDADO'),
-        ('SINIESTRADO', 'SINIESTRADO'),
-        ('DESISTIDO', 'DESISTIDO'),
-        ('RESUELTO', 'RESUELTO'),
-    ], string='Detalle de estado', track_visibility='onchange')
+        ('DESISTIDO PAGADO', 'DESISTIDO PAGADO'),
+        ('DESISTIDO NO PAGADO', 'DESISTIDO NO PAGADO'),
+    ], string='Detalle de estado', default='DESACTIVADO', track_visibility='onchange')
 
 
     estado_deuda=fields.Selection(selection=[('todos', 'Todos'),
