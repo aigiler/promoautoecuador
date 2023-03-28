@@ -620,28 +620,31 @@ class Contrato(models.Model):
         contratos_ids=self.env["contrato"].search([])
         for l in contratos_ids:
             l.state_simplificado=False
-            if l.idEstadoContrato=="I":
+            if l.idEstadoContrato=="A":
+                l.state="ACTIVADO"
+                l.state_simplificado="AL DIA"
+                if l.en_mora:
+                    l.state_simplificado="EN MORA"
+            if l.idEstadoContrato=="F":
+                l.state="FINALIZADO"
+                l.state_simplificado="LIQUIDADO" 
+            if l.idEstadoContrato== "I":
                 l.state="FINALIZADO"
                 l.state_simplificado="DESISTIDO NO PAGADO"
-            #     if l.en_mora:
-            #         l.state_simplificado="EN MORA"
-            # if l.idEstadoContrato=="F":
-            #     l.state="FINALIZADO"
-            #     l.state_simplificado="LIQUIDADO" 
-            # if l.idEstadoContrato in ["D","I"]:
-            #     l.state="FINALIZADO"
-            #     l.state_simplificado="DESISTIDO PAGADO"
-            # if l.idEstadoContrato=="J": 
-            #     l.state="ADJUDICADO ENTREGADO"
-            #     l.state_simplificado="AL DIA"
-            #     if l.en_mora:
-            #         l.state_simplificado="EN MORA"
-            # if l.idEstadoContrato=="P":
-            #     l.state="NO ACTIVADO"
-            #     l.state_simplificado="INSCRITO"
-            # if l.idEstadoContrato=="C":
-            #     l.state="ACTIVADO"
-            #     l.state_simplificado="CONGELADO"
+            if l.idEstadoContrato=="D":
+                l.state="FINALIZADO"
+                l.state_simplificado="DESISTIDO PAGADO"
+            if l.idEstadoContrato=="J": 
+                l.state="ADJUDICADO ENTREGADO"
+                l.state_simplificado="AL DIA"
+                if l.en_mora:
+                    l.state_simplificado="EN MORA"
+            if l.idEstadoContrato=="P":
+                l.state="NO ACTIVADO"
+                l.state_simplificado="INSCRITO"
+            if l.idEstadoContrato=="C":
+                l.state="ACTIVADO"
+                l.state_simplificado="CONGELADO"
        
 
     def cambio_estado_congelar_contrato(self):
