@@ -137,9 +137,10 @@ class ReportGrupos(models.TransientModel):
             capital_cancelado_mes=0
             lista_facturas=[]
             for rec in pagos_ids:
+                raise ValidationError('{0} + {1} + {2} + {3}'.format(rec.payment_date.month,mes,rec.payment_date.year,anio))
                 if int(rec.payment_date.month)==int(mes) and int(rec.payment_date.year)==int(anio):
                     for fac in rec.reconciled_invoice_ids:
-                        raise ValidationError('{0} '.format(lista_facturas))
+                        
 
                         if fac.id in lista_facturas:
                             pass
