@@ -138,6 +138,7 @@ class ReportGrupos(models.TransientModel):
             capital_cancelado_mes=0
             
             for rec in pagos_ids:
+                raise ValidationError('PASA AQUIIII')
                 if int(rec.payment_date.month)==int(mes) and int(rec.payment_date.year)==int(anio):
                     for fac in rec.reconciled_invoice_ids:
                         if fac.id not in lista_facturas:
