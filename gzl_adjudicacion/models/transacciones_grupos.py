@@ -16,9 +16,10 @@ class TransaccionesGrupoSocio(models.Model):
     state = fields.Selection(selection=[
         ('ACTIVADO', 'ACTIVADO'),
         ('NO ACTIVADO', 'NO ACTIVADO'),
-        ('ADJUDICADO', 'ADJUDICADO'),
+        ('ADJUDICADO ENTREGADO', 'ADJUDICADO ENTREGADO'),
+        ('ADJUDICADO NO ENTREGADO', 'ADJUDICADO ENTREGADO'),
         ('FINALIZADO', 'FINALIZADO'),
-    ], string='Estado', default='ACTIVADO', track_visibility='onchange')
+    ], string='Estado', default='NO ACTIVADO', track_visibility='onchange')
 
     debe=fields.Float('Débito')
     haber=fields.Float('Crédito')
