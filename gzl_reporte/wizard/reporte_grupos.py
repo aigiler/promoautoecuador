@@ -135,11 +135,12 @@ class ReportGrupos(models.TransientModel):
             iva_adm_cancelado_mes=0
             capital_cancelado_mes=0
             if pagos_ids:
-                raise ValidationError('PASA AQUIIII')
 
                 for rec in pagos_ids:
                     if rec.payment_date.month==mes and rec.payment_date.year==anio:
-                        for fac in rec.invoice_ids:
+                        for fac in rec.reconciled_invoice_ids:
+                            raise ValidationError('PASA AQUIIII')
+
                             if fac.contrato_id==contrato_id.id  and fac.contrato_estado_cuenta_ids:
                                 cuotas_canceladas_mes+=len(fac.contrato_estado_cuenta_ids)
                                 administrativo_cancelado_mes+=fac.amount_untaxed
