@@ -136,14 +136,13 @@ class ReportGrupos(models.TransientModel):
             capital_cancelado_mes=0
             lista_facturas=[]
             if pagos_ids:
-
                 for rec in pagos_ids:
                     if int(rec.payment_date.month)==int(mes) and int(rec.payment_date.year)==int(anio):
                         for fac in rec.reconciled_invoice_ids:
                             if fac.id not in lista_facturas:
                                 lista_facturas.append(fac.id)
-                                if fac.contrato_id.id==contrato_id['id']: 
-                                    if fac.contrato_id.id==contrato_id['id'] and fac.contrato_estado_cuenta_ids:
+                                if fac.contrato_id.id==contrato.id: 
+                                    if fac.contrato_id.id==contrato.id and fac.contrato_estado_cuenta_ids:
                                         cuotas_canceladas_mes+=len(fac.contrato_estado_cuenta_ids)
                                         administrativo_cancelado_mes+=fac.amount_untaxed
                                         iva_adm_cancelado_mes+=(fac.amount_total-fac.amount_untaxed)
@@ -153,12 +152,6 @@ class ReportGrupos(models.TransientModel):
                             else:
                                 pass
             total_cancelado_mes=administrativo_cancelado_mes+iva_adm_cancelado_mes+capital_cancelado_mes
-
-
-
-
-                
-
             dct={'codigo_grupo':contrato.grupo.name or '',
                     'contrato':contrato.secuencia  or '',
                     'tipo_contrato':contrato.tipo_de_contrato.name  or '',
@@ -464,7 +457,7 @@ class ReportGrupos(models.TransientModel):
             sheet.write(row, 53, line['iva_total'], formato_numero)
             sheet.write(row, 54, line['iva_por_cobrar'], formato_numero)
             sheet.write(row, 55, line['sum_adm_iva_total'], formato_numero)
-            sheet.write(row, 56, line['cuotas_canceladas_mes'], formato_numero)
+            sheet.write(row, 56, line['cuotas_canceladas_mes'], registros_tabla)
             sheet.write(row, 57, line['capital_cancelado_mes'], formato_numero)
             sheet.write(row, 58, line['administrativo_cancelado_mes'], formato_numero)
             sheet.write(row, 59, line['iva_adm_cancelado_mes'], formato_numero)
