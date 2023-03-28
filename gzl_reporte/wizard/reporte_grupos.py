@@ -130,7 +130,8 @@ class ReportGrupos(models.TransientModel):
             #####obtener los nuevos campos cuotas_canceladas_mes, capital_cancelado_mes, administrativo_cancelado_mes, iva_adm_cancelado_mes, total_cancelado_mes
             contrato=self.env['contrato'].search([('id','=',contrato_id['id'])])
             pagos_ids=self.env['account.payment'].search([('partner_id','=',contrato.cliente.id),('state','=','posted'),('payment_type','=','inbound')])
-            raise ValidationError('{0}'.format(pagos_ids))
+            if contrato.cliente.name=='GUALAN YAGUACHI NOE JESUS':
+                raise ValidationError('{0}'.format(pagos_ids))
             cuotas_canceladas_mes=0
             administrativo_cancelado_mes=0
             iva_adm_cancelado_mes=0
