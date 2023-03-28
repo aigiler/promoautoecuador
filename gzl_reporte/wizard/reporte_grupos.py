@@ -135,6 +135,7 @@ class ReportGrupos(models.TransientModel):
             administrativo_cancelado_mes=0
             iva_adm_cancelado_mes=0
             capital_cancelado_mes=0
+            total_cancelado_mes=0
             
             
             dct={'codigo_grupo':contrato.grupo.name or '',
