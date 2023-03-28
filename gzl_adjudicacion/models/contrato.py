@@ -607,35 +607,27 @@ class Contrato(models.Model):
     def job_contratos_migrados(self):
         contratos_ids=self.env["contrato"].search([])
         for l in contratos_ids:
-            if l.idTipoContrato=="E":
-                l.tipo_de_contrato = 2
-            if l.idTipoContrato=="PA":
-                l.tipo_de_contrato = 1
-            if l.idTipoContrato=="PP":
-                l.tipo_de_contrato = 4
-            if l.idTipoContrato=="P":
-                l.tipo_de_contrato = 5
-            grupo_id=self.env["grupo.adjudicado"].search([("idGrupo","=",l.idGrupo)])
-            if grupo_id:
-                l.grupo=grupo_id.id
-            cliente_id=self.env["res.partner"].search([("codigo_cliente","=",l.idClienteContrato)])
-            if cliente_id:
-                l.cliente=cliente_id.id
+            l.state_simplificado=False
             if l.idEstadoContrato=="A":
                 l.state="ACTIVADO"
-                l.state_simplificado=False
+                l.state_simplificado="AL DIA"
+                if l.en_mora:
+                    l.state_simplificado="EN MORA"
             if l.idEstadoContrato=="F":
                 l.state="FINALIZADO"
                 l.state_simplificado="LIQUIDADO" 
             if l.idEstadoContrato=="I":
                 l.state="FINALIZADO"
-                l.state_simplificado="DESISTIDO"
-            if l.idEstadoContrato=="J":
-                l.state="ADJUDICADO"
-                l.state_simplificado="ENTREGADO"
+                l.state_simplificado="DESISTIDO PAGADO"
+            if l.idEstadoContrato=="J": 
+                l.state="ADJUDICADO ENTREGADO"
+                l.state_simplificado="AL DIA"
+                if l.en_mora:
+                    l.state_simplificado="EN MORA"
             if l.idEstadoContrato=="P":
                 l.state="NO ACTIVADO"
-                l.state_simplificado="DESACTIVADO"
+                l.state_simplificado="INSCRITO"
+       
 
     def cambio_estado_congelar_contrato(self):
         #Cambio de estado
