@@ -125,7 +125,7 @@ class ReportGrupos(models.TransientModel):
         contrato_ids=self.env.cr.dictfetchall()
         lista_final=[]
         anio = str(datetime.today().year)
-        mes = str(datetime.today().month)
+        mes_curso = str(datetime.today().month)
         
         for contrato_id in contrato_ids:
             #####obtener los nuevos campos cuotas_canceladas_mes, capital_cancelado_mes, administrativo_cancelado_mes, iva_adm_cancelado_mes, total_cancelado_mes
@@ -137,8 +137,7 @@ class ReportGrupos(models.TransientModel):
             capital_cancelado_mes=0
             lista_facturas=[]
             for rec in pagos_ids:
-                raise ValidationError('{0} + {1} + {2} + {3}'.format(rec.payment_date.month,mes,rec.payment_date.year,anio))
-                if int(rec.payment_date.month)==int(mes) and int(rec.payment_date.year)==int(anio):
+                if int(rec.payment_date.month)==int(mes_curso) and int(rec.payment_date.year)==int(anio):
                     for fac in rec.reconciled_invoice_ids:
                         
 
