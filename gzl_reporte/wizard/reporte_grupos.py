@@ -124,8 +124,34 @@ class ReportGrupos(models.TransientModel):
         self.env.cr.execute(query)
         contrato_ids=self.env.cr.dictfetchall()
         lista_final=[]
+        anio = str(datetime.today().year)
+        mes = str(datetime.today().month)
         for contrato_id in contrato_ids:
+            #####obtener los nuevos campos cuotas_canceladas_mes, capital_cancelado_mes, administrativo_cancelado_mes, iva_adm_cancelado_mes, total_cancelado_mes
             contrato=self.env['contrato'].search([('id','=',contrato_id['id'])])
+            pagos_ids=self.env['account.payment'].search([('partner_id','=',contrato.cliente.id),('state','=','posted'),('payment_type','=','inbound')])
+            cuotas_canceladas_mes=0
+            administrativo_cancelado_mes=0
+            iva_adm_cancelado_mes=0
+            capital_cancelado_mes=0
+            if pagos_ids:
+                for rec in pagos_ids:
+                    if rec.payment_date.month==mes and rec.payment_date.year==anio:
+                        for fac in rec.invoice_ids:
+                            if fac.contrato_id==contrato_id  && fac.contrato_estado_cuenta_ids:
+                                cuotas_canceladas_mes+=len(fac.contrato_estado_cuenta_ids)
+                                administrativo_cancelado_mes+=fac.amount_untaxed
+                                iva_adm_cancelado_mes+=(fac.amount_total-fac.amount_untaxed)
+                            capital_ids=self.env['acount.move'].search([('ref','=',fac.name),('state','=','posted')])
+                            for cap in capital_ids:
+                                capital_cancelado_mes+=cap.amount_total_signed
+            total_cancelado_mes=administrativo_cancelado_mes+iva_adm_cancelado_mes+capital_cancelado_mes
+
+
+
+
+                
+
             dct={'codigo_grupo':contrato.grupo.name or '',
                     'contrato':contrato.secuencia  or '',
                     'tipo_contrato':contrato.tipo_de_contrato.name  or '',
@@ -172,7 +198,12 @@ class ReportGrupos(models.TransientModel):
                     'direccion':contrato.cliente.street or '',
                     'asesor':'',
                     'supervisor':'',
-                    'jefe_zona':contrato.descripcion_adjudicaciones,}
+                    'jefe_zona':contrato.descripcion_adjudicaciones,
+                    'cuotas_canceladas_mes':cuotas_canceladas_mes,
+                    'capital_cancelado_mes':capital_cancelado_mes,
+                    'administrativo_cancelado_mes':administrativo_cancelado_mes,
+                    'iva_adm_cancelado_mes':iva_adm_cancelado_mes,
+                    'total_cancelado_mes':total_cancelado_mes}
             hoy=date.today()
             test_date = datetime(hoy.year, hoy.month, hoy.day)
             nxt_mnth = test_date.replace(day=28) + timedelta(days=4)
@@ -360,9 +391,12 @@ class ReportGrupos(models.TransientModel):
         sheet.write(4, 53, 'IVA PLAZO TOTAL', bold2)
         sheet.write(4, 54, 'IVA POR COBRAR', bold2)
         sheet.write(4, 55, 'CUOTA ADM + IVA ADM TOTAL', bold2)
+        sheet.write(4, 56, 'CUOTAS CANCELADAS EN EL MES', bold2)
+        sheet.write(4, 57, 'CAPITAL CANCELADO EN EL MES', bold2)
+        sheet.write(4, 58, 'ADMINISTRATIVO CANCELADO EN EL MES', bold2)
+        sheet.write(4, 59, 'IVA CANCELADO EN EL MES', bold2)
+        sheet.write(4, 60, 'TOTAL CANCELADO EN EL MES', bold2)
         row=5
-
-        
 
         lista_asesores=[]
         
@@ -423,6 +457,11 @@ class ReportGrupos(models.TransientModel):
             sheet.write(row, 53, line['iva_total'], formato_numero)
             sheet.write(row, 54, line['iva_por_cobrar'], formato_numero)
             sheet.write(row, 55, line['sum_adm_iva_total'], formato_numero)
+            sheet.write(row, 56, line['cuotas_canceladas_mes'], formato_numero)
+            sheet.write(row, 57, line['capital_cancelado_mes'], formato_numero)
+            sheet.write(row, 58, line['administrativo_cancelado_mes'], formato_numero)
+            sheet.write(row, 59, line['iva_adm_cancelado_mes'], formato_numero)
+            sheet.write(row, 60, line['total_cancelado_mes'], formato_numero)
 
 
             row+=1
