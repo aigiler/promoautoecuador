@@ -24,10 +24,10 @@ class ReportGrupos(models.TransientModel):
     state = fields.Selection(selection=[
         ('ACTIVADO', 'ACTIVADO'),
         ('NO ACTIVADO', 'NO ACTIVADO'),
-        ('ADJUDICADO', 'ADJUDICADO'),
+        ('ADJUDICADO ENTREGADO', 'ADJUDICADO ENTREGADO'),
+        ('ADJUDICADO NO ENTREGADO', 'ADJUDICADO ENTREGADO'),
         ('FINALIZADO', 'FINALIZADO'),
-    ], string='Estado de Contrato', track_visibility='onchange')
-
+    ], string='Estado', default='NO ACTIVADO', track_visibility='onchange')
 
     state_simplificado=fields.Selection(selection=[
         ('AL DIA', 'AL DIA'),
