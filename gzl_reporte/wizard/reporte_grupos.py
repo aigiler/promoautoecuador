@@ -138,7 +138,7 @@ class ReportGrupos(models.TransientModel):
                 for rec in pagos_ids:
                     if rec.payment_date.month==mes and rec.payment_date.year==anio:
                         for fac in rec.invoice_ids:
-                            if fac.contrato_id==contrato_id  && fac.contrato_estado_cuenta_ids:
+                            if fac.contrato_id==contrato_id  and fac.contrato_estado_cuenta_ids:
                                 cuotas_canceladas_mes+=len(fac.contrato_estado_cuenta_ids)
                                 administrativo_cancelado_mes+=fac.amount_untaxed
                                 iva_adm_cancelado_mes+=(fac.amount_total-fac.amount_untaxed)
