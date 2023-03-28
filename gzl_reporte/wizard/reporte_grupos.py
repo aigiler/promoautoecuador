@@ -120,7 +120,6 @@ class ReportGrupos(models.TransientModel):
             query+=" and descripcion_adjudicaciones='{0}' ".format(self.jefe_zona)
         if self.state_simplificado:
             query+=" and state_simplificado='{0}'".format(self.state_simplificado)
-        raise ValidationError('{0}'.format(query))
 
         self.env.cr.execute(query)
         contrato_ids=self.env.cr.dictfetchall()
