@@ -145,7 +145,7 @@ class ReportGrupos(models.TransientModel):
                                 cuotas_canceladas_mes+=len(fac.contrato_estado_cuenta_ids)
                                 administrativo_cancelado_mes+=fac.amount_untaxed
                                 iva_adm_cancelado_mes+=(fac.amount_total-fac.amount_untaxed)
-                            capital_ids=self.env['acount.move'].search([('ref','=',fac.name),('state','=','posted')])
+                            capital_ids=self.env['account.move'].search([('ref','=',fac.name),('state','=','posted')])
                             for cap in capital_ids:
                                 capital_cancelado_mes+=cap.amount_total_signed
             total_cancelado_mes=administrativo_cancelado_mes+iva_adm_cancelado_mes+capital_cancelado_mes
