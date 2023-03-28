@@ -479,17 +479,17 @@ class Contrato(models.Model):
             if len(mes_estado_cuenta)==0:
                  contrato.en_mora=False
                  if contrato.state in ['ADJUDICADO ENTREGADO', 'ADJUDICADO NO ENTREGADO','ACTIVADO']:
-                    contrato.state_simplificado='AL_DIA'
+                    contrato.state_simplificado='AL DIA'
             else:
                 saldo=sum(mes_estado_cuenta.mapped('saldo'))
                 if saldo<=10.00:
                     contrato.en_mora=False
                     if contrato.state in ['ADJUDICADO ENTREGADO', 'ADJUDICADO NO ENTREGADO','ACTIVADO']:
-                        contrato.state_simplificado='AL_DIA'
+                        contrato.state_simplificado='AL DIA'
                 else:
                     contrato.en_mora=True
                     if contrato.state in ['ADJUDICADO ENTREGADO', 'ADJUDICADO NO ENTREGADO','ACTIVADO']:
-                        contrato.state_simplificado='EN_MORA'
+                        contrato.state_simplificado='EN MORA'
             
 
 ####Job que coloca la bandera estado en mora de los contratos se ejecuta cada minuto
