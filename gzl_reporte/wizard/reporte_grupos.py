@@ -37,7 +37,7 @@ class ReportGrupos(models.TransientModel):
         ('LIQUIDADO', 'LIQUIDADO'),
         ('DESISTIDO PAGADO', 'DESISTIDO PAGADO'),
         ('DESISTIDO NO PAGADO', 'DESISTIDO NO PAGADO'),
-    ], string='Detalle de estado', default='DESACTIVADO', track_visibility='onchange')
+    ], string='Detalle de estado', track_visibility='onchange')
 
 
     estado_deuda=fields.Selection(selection=[('todos', 'Todos'),
