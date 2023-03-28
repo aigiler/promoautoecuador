@@ -126,7 +126,7 @@ class ReportGrupos(models.TransientModel):
         lista_final=[]
         anio = str(datetime.today().year)
         mes = str(datetime.today().month)
-        lista_facturas=[]
+        
         for contrato_id in contrato_ids:
             #####obtener los nuevos campos cuotas_canceladas_mes, capital_cancelado_mes, administrativo_cancelado_mes, iva_adm_cancelado_mes, total_cancelado_mes
             contrato=self.env['contrato'].search([('id','=',contrato_id['id'])])
@@ -135,12 +135,15 @@ class ReportGrupos(models.TransientModel):
             administrativo_cancelado_mes=0
             iva_adm_cancelado_mes=0
             capital_cancelado_mes=0
-            
+            lista_facturas=[]
             for rec in pagos_ids:
-                raise ValidationError('PASA AQUIIII')
                 if int(rec.payment_date.month)==int(mes) and int(rec.payment_date.year)==int(anio):
                     for fac in rec.reconciled_invoice_ids:
-                        if fac.id not in lista_facturas:
+                        raise ValidationError('{0} '.format(lista_facturas))
+
+                        if fac.id in lista_facturas:
+                            pass
+                        else:
                             lista_facturas.append(fac.id)
                             if fac.contrato_id.id==contrato.id: 
                                 if fac.contrato_id.id==contrato.id and fac.contrato_estado_cuenta_ids:
@@ -150,8 +153,8 @@ class ReportGrupos(models.TransientModel):
                                     capital_ids=self.env['account.move'].search([('ref','=',fac.name),('state','=','posted')])
                                     for cap in capital_ids:
                                         capital_cancelado_mes+=cap.amount_total_signed
-                        else:
-                            pass
+                        
+                            
             total_cancelado_mes=administrativo_cancelado_mes+iva_adm_cancelado_mes+capital_cancelado_mes
             dct={'codigo_grupo':contrato.grupo.name or '',
                     'contrato':contrato.secuencia  or '',
