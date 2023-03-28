@@ -85,20 +85,25 @@ class Contrato(models.Model):
     state = fields.Selection(selection=[
         ('ACTIVADO', 'ACTIVADO'),
         ('NO ACTIVADO', 'NO ACTIVADO'),
-        ('ADJUDICADO', 'ADJUDICADO'),
+        ('ADJUDICADO ENTREGADO', 'ADJUDICADO ENTREGADO'),
+        ('ADJUDICADO NO ENTREGADO', 'ADJUDICADO ENTREGADO'),
         ('FINALIZADO', 'FINALIZADO'),
     ], string='Estado', default='NO ACTIVADO', track_visibility='onchange')
 
 
     state_simplificado=fields.Selection(selection=[
-        ('DESACTIVADO', 'DESACTIVADO'),
+        ('AL DIA', 'AL DIA'),
+        ('EN MORA', 'EN MORA'),
+        ('CONGELADO', 'CONGELADO'),
         ('INSCRITO', 'INSCRITO'),
+        ('LIQUIDADO', 'LIQUIDADO'),
+        ('DESISTIDO PAGADO', 'DESISTIDO PAGADO'),
+        ('DESISTIDO NO PAGADO', 'DESISTIDO NO PAGADO'),
+        ('DESACTIVADO', 'DESACTIVADO'),
         ('ENTREGADO', 'ENTREGADO'),
         ('NO ENTREGADO', 'NO ENTREGADO'),
         ('ADJUDICADO', 'ADJUDICADO'),
-        ('LIQUIDADO', 'LIQUIDADO'),
         ('SINIESTRADO', 'SINIESTRADO'),
-        ('DESISTIDO', 'DESISTIDO'),
         ('RESUELTO', 'RESUELTO'),
     ], string='Detalle de estado', default='DESACTIVADO', track_visibility='onchange')
 
