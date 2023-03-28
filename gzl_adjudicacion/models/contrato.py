@@ -504,12 +504,18 @@ class Contrato(models.Model):
             
             if len(mes_estado_cuenta)==0:
                  contrato.en_mora=False
+                 if contrato.state in ['ADJUDICADO ENTREGADO', 'ADJUDICADO NO ENTREGADO','ACTIVADO']:
+                    contrato.state_simplificado='AL DIA'
             else:
                 saldo=sum(mes_estado_cuenta.mapped('saldo'))
                 if saldo<=10.00:
                     contrato.en_mora=False
+                    if contrato.state in ['ADJUDICADO ENTREGADO', 'ADJUDICADO NO ENTREGADO','ACTIVADO']:
+                        contrato.state_simplificado='AL DIA'
                 else:
                     contrato.en_mora=True
+                    if contrato.state in ['ADJUDICADO ENTREGADO', 'ADJUDICADO NO ENTREGADO','ACTIVADO']:
+                        contrato.state_simplificado='EN MORA'
             
                             
 ###  Job para inactivar acorde a cuotas vencidas en el contrato
