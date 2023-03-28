@@ -130,6 +130,7 @@ class ReportGrupos(models.TransientModel):
             #####obtener los nuevos campos cuotas_canceladas_mes, capital_cancelado_mes, administrativo_cancelado_mes, iva_adm_cancelado_mes, total_cancelado_mes
             contrato=self.env['contrato'].search([('id','=',contrato_id['id'])])
             pagos_ids=self.env['account.payment'].search([('partner_id','=',contrato.cliente.id),('state','=','posted'),('payment_type','=','inbound')])
+            raise ValidationError('{0}'.format(pagos_ids))
             cuotas_canceladas_mes=0
             administrativo_cancelado_mes=0
             iva_adm_cancelado_mes=0
@@ -139,8 +140,6 @@ class ReportGrupos(models.TransientModel):
                 for rec in pagos_ids:
                     if int(rec.payment_date.month)==int(mes) and int(rec.payment_date.year)==int(anio):
                         for fac in rec.reconciled_invoice_ids:
-
-
                             if fac.contrato_id.id==contrato_id['id']: 
                                 if fac.contrato_id.id==contrato_id['id'] and fac.contrato_estado_cuenta_ids:
                                     cuotas_canceladas_mes+=len(fac.contrato_estado_cuenta_ids)

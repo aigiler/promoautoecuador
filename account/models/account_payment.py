@@ -806,7 +806,9 @@ class account_payment(models.Model):
 
                     for y in rec.invoice_ids:
                         monto_a_factura=0
-                        for cuota_id in y.contrato_estado_cuenta_ids:                            
+                        for cuota_id in y.contrato_estado_cuenta_ids: 
+                            if cuota_id.numero_cuota=="1":
+                                y.contrato_id.state="ACTIVADO"
                             acumulado_cuota=0
                             #raise ValidationError('{0}'.format(valor_pago_cliente))
                             if valor_pago_cliente:

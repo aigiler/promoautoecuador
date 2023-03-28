@@ -220,6 +220,8 @@ class AccountPayment(models.Model):
             for l in reg.invoice_id:
                 monto_a_factura=0
                 for cuota_id in l.contrato_estado_cuenta_ids:
+                    if y.numero_cuota=="1":
+                        cuota_id.contrato_id.state="ACTIVADO"
                     #raise ValidationError("Pasa por aqui")
 
                     acumulado_cuota=0
