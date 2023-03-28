@@ -131,6 +131,7 @@ class ReportGrupos(models.TransientModel):
             contrato=self.env['contrato'].search([('id','=',contrato_id['id'])])
             pagos_ids=self.env['account.payment'].search([('partner_id','=',contrato.cliente.id),('state','=','posted'),('payment_type','=','inbound')])
             if contrato.cliente.name=='GUALAN YAGUACHI NOE JESUS':
+                
                 raise ValidationError('{0}'.format(pagos_ids))
             cuotas_canceladas_mes=0
             administrativo_cancelado_mes=0
