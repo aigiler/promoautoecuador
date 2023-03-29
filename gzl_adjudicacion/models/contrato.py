@@ -429,8 +429,8 @@ class Contrato(models.Model):
     def adjudicar_cliente(self):
         return self.write({"state": "ADJUDICADO NO ENTREGADO","state_simplificado":"AL DIA"})
 
-    def cambio_estado_boton_adjudicar(self):
-        return self.write({"state": "ADJUDICADO"})
+    def adjudicar_cliente_entregado(self):
+        return self.write({"state": "ADJUDICADO ENTREGADO","state_simplificado":"AL DIA"})
 
 
     def cambio_estado_boton_adendum(self):
@@ -619,7 +619,6 @@ class Contrato(models.Model):
     def job_contratos_migrados(self):
         contratos_ids=self.env["contrato"].search([])
         for l in contratos_ids:
-            l.state_simplificado=False
             if l.idEstadoContrato=="A":
                 l.state="ACTIVADO"
                 l.state_simplificado="AL DIA"
@@ -655,14 +654,13 @@ class Contrato(models.Model):
         
         #Se obtiene el listado de cuotas pendientes ordenadas de forma ascedente en la fecha de pago.
         tabla=self.env['contrato.estado.cuenta'].search([('estado_pago','=','pendiente'),('contrato_id','=',self.id)],order='fecha asc')
-
         if len(tabla)>0:
             dct={'contrato_id':self.id,'fecha':tabla[0].fecha}
             self.env['contrato.congelamiento'].create(dct)
         else:
             raise ValidationError("No se puede congelar un contrato que no posee Estado de Cuenta generado")
-        self.state='NO ACTIVADO'
-        self.state_simplificado="DESACTIVADO"
+        self.state='ACTIVADO'
+        self.state_simplificado="CONGELADO"
 
 
     def reactivar_contrato_congelado(self):
@@ -688,7 +686,7 @@ class Contrato(models.Model):
 
             obj_fecha_congelamiento.pendiente=False
             self.state='ACTIVADO'
-            self.state_simplificado=False
+            self.state_simplificado='AL DIA'
 
         else:
             raise ValidationError("No se encontró un contrato congelado.")
