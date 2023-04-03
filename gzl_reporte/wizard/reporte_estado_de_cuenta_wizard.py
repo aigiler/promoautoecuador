@@ -97,7 +97,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
 
 
     def job_enviar_correo_estado_cuenta(self):
-        contratos_ids=self.env['contrato'].search([('state','in',['ACTIVADO','ADJUDICADO ENTREGADO','ADJUDICADO NO ENTREGADO'])])
+        contratos_ids=self.env['contrato'].search([('state','in',['ACTIVADO','ADJUDICADO ENTREGADO','ADJUDICADO NO ENTREGADO']),('id','=',32041)])
         lis=[]
         for l in contratos_ids:
             if  l.cliente:   
