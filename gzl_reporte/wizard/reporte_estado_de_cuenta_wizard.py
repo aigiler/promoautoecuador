@@ -97,7 +97,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
 
 
     def job_enviar_correo_estado_cuenta(self):
-        contratos_ids=self.env['contrato'].search([('state','=','ACTIVADO')])
+        contratos_ids=self.env['contrato'].search([('state','=','ACTIVADO'),('id','=',32054)])
         lis=[]
         for l in contratos_ids:
             if  l.cliente:   
@@ -119,7 +119,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
 
             email_id=obj_template.send_mail(id_envio)
             obj_mail=self.env['mail.mail'].browse(email_id)
-            obj_mail.send()
+            #bj_mail.send()
 
 
     def xslx_body(self, workbook, name):
