@@ -43,8 +43,8 @@ class ReporteEstadoDeCuenta(models.TransientModel):
             'store_fname': name,
             'type': 'binary',
         })
-        url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-        url += "/web/content/%s?download=true"%(attachment.id) 
+        ##url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        url = "https://promoauto.odoo.com/web/content/%s?download=true"%(attachment.id) 
         return{
             "type": "ir.actions.act_url",
             "url": url,
@@ -87,7 +87,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
                                                     })
 
         ##url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-        url = "https://promoauto.odoo.com//web/content/%s?download=true"%(obj_attch.id) 
+        url = "https://promoauto.odoo.com/web/content/%s?download=true"%(obj_attch.id) 
 
         return{
             "type": "ir.actions.act_url",
