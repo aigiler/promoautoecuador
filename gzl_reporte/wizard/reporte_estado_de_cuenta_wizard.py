@@ -119,10 +119,8 @@ class ReporteEstadoDeCuenta(models.TransientModel):
 
             email_id=obj_template.send_mail(id_envio)
             obj_mail=self.env['mail.mail'].browse(email_id)
-            try:
-                obj_mail.send()
-            except:
-                pass
+            obj_mail.send()
+
 
     def xslx_body(self, workbook, name):
         bold = workbook.add_format({'bold':True,'border':1})
