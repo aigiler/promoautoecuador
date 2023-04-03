@@ -86,8 +86,8 @@ class ReporteEstadoDeCuenta(models.TransientModel):
                                                     'store_fname':nombre_archivo.split('.')[0]+'.pdf'
                                                     })
 
-        url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-        url += "/web/content/%s?download=true"%(obj_attch.id) 
+        ##url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        url = "https://promoauto.odoo.com//web/content/%s?download=true"%(obj_attch.id) 
 
         return{
             "type": "ir.actions.act_url",
