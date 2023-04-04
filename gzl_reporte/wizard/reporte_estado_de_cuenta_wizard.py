@@ -21,7 +21,7 @@ from subprocess import getoutput
 import os
 import io
 
-class ReporteEstadoDeCuenta(models.TransientModel):
+class ReporteEstadoDeCuentaIndividual(models.TransientModel):
     _name = "reporte.estado.de.cuenta"
 
 
