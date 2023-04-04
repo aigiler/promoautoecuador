@@ -259,7 +259,7 @@ class ReporteEstadoDeCuenta(models.TransientModel):
         sheet.merge_range('A{0}:I{0}'.format(fila_current+3), '', formato_cabecera_tabla)
 
 
-class ReporteEstadoDeCuenta(models.Model):
+class ReporteEstadoDeCuentaMasivo(models.Model):
     _name = "reporte.estado.de.cuenta.masivo"
 
 
