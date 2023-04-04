@@ -29,7 +29,6 @@ class ReporteEstadoDeCuentaIndividual(models.TransientModel):
     contrato_id = fields.Many2one('contrato',string='Contrato')
     url_doc = fields.Char('Url doc')    
     
-
     def print_report_xls(self):
         file_data = BytesIO()
         workbook = xlsxwriter.Workbook(file_data)
