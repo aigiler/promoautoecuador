@@ -264,29 +264,10 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
 
     partner_id = fields.Many2one('res.partner',string='Cliente')
     contrato_id = fields.Many2one('contrato',string='Contrato')
+    adjunto_id = fields.Many2one('ir.attachment',string='Contrato PDF')
     url_doc = fields.Char('Url doc')    
     
 
-    def print_report_xls(self):
-        file_data = BytesIO()
-        workbook = xlsxwriter.Workbook(file_data)
-        name = 'Estado de Cuenta'
-        self.xslx_body(workbook, name)
-        workbook.close()
-        file_data.seek(0)
-        attachment = self.env['ir.attachment'].create({
-            'datas': base64.b64encode(file_data.getvalue()),
-            'name': name,
-            'store_fname': name,
-            'type': 'binary',
-        })
-        ##url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-        url = "https://promoauto.odoo.com/web/content/%s?download=true"%(attachment.id) 
-        return{
-            "type": "ir.actions.act_url",
-            "url": url,
-            "target": "new",
-        }
 
     def print_report_pdf(self):
         file_data = BytesIO()
@@ -326,11 +307,7 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
         ##url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         url = "https://promoauto.odoo.com/web/content/%s?download=true"%(obj_attch.id) 
 
-        return{
-            "type": "ir.actions.act_url",
-            "url": url,
-            "target": "new",
-        }
+        return obj_attch
 
 
     def job_enviar_correo_estado_cuenta(self):
@@ -342,7 +319,7 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
                                                                         'contrato_id':l.id})
                 
                 url_object=reporte_id.print_report_pdf()
-                reporte_id.update({'url_doc': url_object['url']})
+                reporte_id.update({'adjunto_id':url_object.id })
                 self.envio_correos_plantilla('email_estado_cuenta',reporte_id.id)
 
     def envio_correos_plantilla(self, plantilla,id_envio):
