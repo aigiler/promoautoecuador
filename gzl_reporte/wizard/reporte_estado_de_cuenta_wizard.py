@@ -311,7 +311,7 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
 
 
     def job_enviar_correo_estado_cuenta(self):
-        contratos_ids=self.env['contrato'].search([('state','in',['ACTIVADO','ADJUDICADO ENTREGADO','ADJUDICADO NO ENTREGADO'])],limit=20)
+        contratos_ids=self.env['contrato'].search([('state','in',['ACTIVADO','ADJUDICADO ENTREGADO','ADJUDICADO NO ENTREGADO'])])
         lis=[]
         for l in contratos_ids:
             if  l.cliente:   
