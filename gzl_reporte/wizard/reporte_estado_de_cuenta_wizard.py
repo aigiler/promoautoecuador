@@ -333,12 +333,11 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
 
 
     def enviar_correo_masivo(self):
-        for l in self:
-            obj_mails=self.env['mail.mail'].search([('subject','=','Estado de Cuenta'),('state','=','outgoing')])
-            raise ValidationError(obj_mails)
-            for id_mail in obj_mails:
-                obj_mail=self.env['mail.mail'].browse(id_mail)
-                obj_mail.send()
+        obj_mails=self.env['mail.mail'].search([('subject','=','Estado de Cuenta'),('state','=','outgoing')])
+        raise ValidationError(obj_mails)
+        for id_mail in obj_mails:
+            obj_mail=self.env['mail.mail'].browse(id_mail)
+            obj_mail.send()
 
 
     def envio_correos_plantilla(self, plantilla,id_envio):
