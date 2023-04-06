@@ -2291,6 +2291,23 @@ class AccountMove(models.Model):
         return lines.reconcile()
 
     def button_draft(self):
+        cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
+        seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
+        otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
+        rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
+        movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',self.name),('state','=',self.state)])
+        movimientos_seguro=self.env['account.move'].search([('journal_id','=',seguro_obj.journal_id.id),('ref','=',self.name),('state','=',self.state)])
+        movimientos_rastreo=self.env['account.move'].search([('journal_id','=',rastreo_obj.journal_id.id),('ref','=',self.name),('state','=',self.state)])
+        movimientos_otro=self.env['account.move'].search([('journal_id','=',otros_obj.journal_id.id),('ref','=',self.name),('state','=',self.state)])
+        for cuota in movimientos_cuota:
+            cuota.button_draft()
+        for seguro in movimientos_seguro:
+            seguro.button_draft()
+        for rastreo in movimientos_rastreo:
+            rastreo.button_draft()
+        for otro in movimientos_otro:
+            otro.button_draft()
+
         AccountMoveLine = self.env['account.move.line']
         excluded_move_ids = []
 
@@ -2311,6 +2328,22 @@ class AccountMove(models.Model):
         self.write({'state': 'draft'})
 
     def button_cancel(self):
+        cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
+        seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
+        otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
+        rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
+        movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',self.name),('state','=',self.state)])
+        movimientos_seguro=self.env['account.move'].search([('journal_id','=',seguro_obj.journal_id.id),('ref','=',self.name),('state','=',self.state)])
+        movimientos_rastreo=self.env['account.move'].search([('journal_id','=',rastreo_obj.journal_id.id),('ref','=',self.name),('state','=',self.state)])
+        movimientos_otro=self.env['account.move'].search([('journal_id','=',otros_obj.journal_id.id),('ref','=',self.name),('state','=',self.state)])
+        for cuota in movimientos_cuota:
+            cuota.write({'state': 'cancel'})
+        for seguro in movimientos_seguro:
+            seguro.write({'state': 'cancel'})
+        for rastreo in movimientos_rastreo:
+            rastreo.write({'state': 'cancel'})
+        for otro in movimientos_otro:
+            otro.write({'state': 'cancel'})
         self.write({'state': 'cancel'})
 
     def action_invoice_sent(self):
