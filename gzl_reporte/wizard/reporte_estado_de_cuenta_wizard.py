@@ -336,7 +336,7 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
         obj_mails=self.env['mail.mail'].search([('subject','=','Estado de Cuenta'),('state','=','outgoing')])
         #raise ValidationError(obj_mails)
         for id_mail in obj_mails:
-            obj_mail=self.env['mail.mail'].browse(id_mail)
+            obj_mail=self.env['mail.mail'].browse(id_mail.id)
             obj_mail.send()
 
 
