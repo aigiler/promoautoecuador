@@ -402,7 +402,7 @@ class WizardAts(models.TransientModel):
                 if inv.retention_id:
                     detallecompras.update({'retencion': True})
                     detallecompras.update(self.get_withholding(inv.retention_id))  # noqa
-                if  inv.tipoComprobante=='04':
+                if  detallecompras.tipoComprobante=='04':
                     secuC =''
                     if len (inv.reversed_entry_id.l10n_latam_document_number[6:15])==9:
                         secuC =inv.reversed_entry_id.l10n_latam_document_number[6:15]
