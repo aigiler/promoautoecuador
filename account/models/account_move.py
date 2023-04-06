@@ -2336,6 +2336,62 @@ class AccountMove(models.Model):
         movimientos_seguro=self.env['account.move'].search([('journal_id','=',seguro_obj.journal_id.id),('ref','=',self.name),('state','=',self.state)])
         movimientos_rastreo=self.env['account.move'].search([('journal_id','=',rastreo_obj.journal_id.id),('ref','=',self.name),('state','=',self.state)])
         movimientos_otro=self.env['account.move'].search([('journal_id','=',otros_obj.journal_id.id),('ref','=',self.name),('state','=',self.state)])
+        for cuota_id in self.contrato_estado_cuenta_ids:
+            cuota_id.factura_id=False
+            cuota_id.saldo_cuota_capital=cuota_id.cuota_capital
+            cuota_id.saldo_seguro=cuota_id.seguro
+            cuota_id.saldo_rastreo=cuota_id.rastreo
+            cuota_id.saldo_otros=cuota_id.otro
+            cuota_id.saldo_cuota_administrativa=cuota_id.cuota_adm
+            cuota_id.saldo_iva=cuota_id.iva_adm
+            pago_total=0
+            for pag in cuota_id.ids_pagos:
+                pago_total+=pag.valor_asociado
+            if pago_total and cuota_id.saldo_cuota_capital:
+                if pago_total>=cuota_id.saldo_cuota_capital:
+                    pago_total=pago_total-cuota_id.saldo_cuota_capital
+                    cuota_id.saldo_cuota_capital=0
+                else:
+                    cuota_id.saldo_cuota_capital=cuota_id.saldo_cuota_capital-pago_total
+                    pago_total=0
+            if pago_total and cuota_id.saldo_seguro:
+                if pago_total>=cuota_id.saldo_seguro:
+                    pago_total=pago_total-cuota_id.saldo_seguro
+                    cuota_id.saldo_seguro=0
+                else:
+                    cuota_id.saldo_seguro=cuota_id.saldo_seguro-pago_total
+                    pago_total=0
+            if pago_total and cuota_id.saldo_rastreo:
+                if pago_total>=cuota_id.saldo_rastreo:
+                    pago_total=pago_total-cuota_id.saldo_rastreo
+                    cuota_id.saldo_rastreo=0
+                else:
+                    cuota_id.saldo_rastreo=cuota_id.saldo_rastreo-pago_total
+                    pago_total=0
+            if pago_total and cuota_id.saldo_otros:
+                if pago_total>=cuota_id.saldo_otros:
+                    pago_total=pago_total-cuota_id.saldo_otros
+                    cuota_id.saldo_otros=0
+                else:
+                    cuota_id.saldo_otros=cuota_id.saldo_otros-pago_total
+                    pago_total=0
+            if pago_total and cuota_id.saldo_cuota_administrativa:
+                if pago_total>=cuota_id.saldo_cuota_administrativa:
+                    pago_total=pago_total-cuota_id.saldo_cuota_administrativa
+                    cuota_id.saldo_cuota_administrativa=0
+                else:
+                    cuota_id.saldo_cuota_administrativa=cuota_id.saldo_cuota_administrativa-pago_total
+                    pago_total=0
+
+            if pago_total and cuota_id.saldo_iva:
+                if pago_total>=cuota_id.saldo_iva:
+                    pago_total=pago_total-cuota_id.saldo_iva
+                    cuota_id.saldo_iva=0
+                else:
+                    cuota_id.saldo_iva=cuota_id.saldo_iva-pago_total
+                    pago_total=0
+
+
         for cuota in movimientos_cuota:
             cuota.write({'state': 'cancel'})
         for seguro in movimientos_seguro:
