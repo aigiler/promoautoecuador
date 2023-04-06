@@ -311,6 +311,9 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
 
 
     def job_enviar_correo_estado_cuenta(self,estado,grupo,tipo_de_contrato=False):
+        pdf_generados=self.env['ir.attachment'].search([('name','=','Estado de Cuenta.pdf')])
+        for doc in pdf_generados:
+            doc.unlink()
         if tipo_de_contrato:
             contratos_ids=self.env['contrato'].search([('state','=',estado),('grupo','=',grupo),('tipo_de_contrato','=',tipo_de_contrato)])
         else:
@@ -324,7 +327,18 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
                 
                 url_object=reporte_id.print_report_pdf()
                 reporte_id.update({'adjunto_id':url_object.id })
+
+
                 self.envio_correos_plantilla('email_estado_cuenta',reporte_id)
+
+
+    def enviar_correo_masivo(self):
+        for l in self:
+            obj_mails=self.env['mail.mail'].search([('subject','=','Estado de Cuenta'),('state','=','outgoing')])
+            for id_mail in obj_mails:
+                obj_mail=self.env['mail.mail'].browse(id_mail)
+                obj_mail.send()
+
 
     def envio_correos_plantilla(self, plantilla,id_envio):
         try:
@@ -339,8 +353,8 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
             email_id=obj_template.send_mail(id_envio.id)
             obj_mail=self.env['mail.mail'].browse(email_id)
             lista_adjunto.append(int(id_envio.adjunto_id.id))
-            obj_mail.update({'attachment_ids':[(6,0,lista_adjunto)],'auto_delete':False}) 
-            obj_mail.send()
+            obj_mail.update({'attachment_ids':[(6,0,lista_adjunto)],'auto_delete':True}) 
+            #obj_mail.send()
 
 
     def xslx_body(self, workbook, name):
