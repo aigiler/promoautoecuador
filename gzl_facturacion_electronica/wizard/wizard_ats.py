@@ -278,7 +278,7 @@ class WizardAts(models.TransientModel):
                 if tax.tax_group_id.code == 'novat':
                     cont_vats+=1
                     novat += abs(line.price_subtotal)
-                if tax.name=='IVA 0'
+                if tax.name=='IVA 0':
                     cont_vats+=1
                     iva0=0
                 
