@@ -196,8 +196,13 @@ class WizardAts(models.TransientModel):
                             retServ100=line.price_subtotal
                     elif abs(tax.amount) == 20:
                         retServ20 += abs(tax._compute_amount(line.price_subtotal, line.price_unit, line.quantity, line.product_id))*0.12
+                    
                     else:
-                        retServ += abs(tax._compute_amount(line.price_subtotal, line.price_unit, line.quantity, line.product_id))*0.12
+                        if line.account_id.name=='IVA pagado':
+                            retServ+=(line.price_subtotal*float(tax.tarifa))
+                        else:
+                            retServ += abs(tax._compute_amount(line.price_subtotal, line.price_unit, line.quantity, line.product_id))*0.12
+
         return retBien10, retServ20, retBien, retServ, retServ100
     def get_withholding(self, wh):
         if wh.id:
