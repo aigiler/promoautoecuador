@@ -317,7 +317,7 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
         if tipo_de_contrato:
             contratos_ids=self.env['contrato'].search([('state','=',estado),('grupo','=',grupo),('tipo_de_contrato','=',tipo_de_contrato)])
         else:
-            contratos_ids=self.env['contrato'].search([('state','=',estado),('grupo','=',grupo),('id','in',[32041,32042])])
+            contratos_ids=self.env['contrato'].search([('state','=',estado),('grupo','=',grupo)])
 
         lis=[]
         for l in contratos_ids:
