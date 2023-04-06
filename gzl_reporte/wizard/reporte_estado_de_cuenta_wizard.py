@@ -311,9 +311,6 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
 
 
     def job_enviar_correo_estado_cuenta(self,estado,grupo,tipo_de_contrato=False):
-        pdf_generados=self.env['ir.attachment'].search([('name','=','Estado de Cuenta.pdf')])
-        for doc in pdf_generados:
-            doc.unlink()
         if tipo_de_contrato:
             contratos_ids=self.env['contrato'].search([('state','=',estado),('grupo','=',grupo),('tipo_de_contrato','=',tipo_de_contrato)])
         else:
