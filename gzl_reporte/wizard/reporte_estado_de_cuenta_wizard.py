@@ -340,7 +340,7 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
             obj_mail=self.env['mail.mail'].browse(email_id)
             lista_adjunto.append(int(id_envio.adjunto_id.id))
             self.update({'attachment_ids':[(6,0,lista_adjunto)]}) 
-            obj_mail.send()
+            #obj_mail.send()
 
 
     def xslx_body(self, workbook, name):
