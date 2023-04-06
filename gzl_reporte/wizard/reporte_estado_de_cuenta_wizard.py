@@ -324,7 +324,7 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
                 
                 url_object=reporte_id.print_report_pdf()
                 reporte_id.update({'adjunto_id':url_object.id })
-                self.envio_correos_plantilla('email_estado_cuenta',reporte_id.id)
+                self.envio_correos_plantilla('email_estado_cuenta',reporte_id)
 
     def envio_correos_plantilla(self, plantilla,id_envio):
         try:
@@ -336,7 +336,7 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
             lista_adjunto=[]
             obj_template=self.env['mail.template'].browse(template_id)
 
-            email_id=obj_template.send_mail(id_envio)
+            email_id=obj_template.send_mail(id_envio.id)
             obj_mail=self.env['mail.mail'].browse(email_id)
             lista_adjunto.append(int(id_envio.adjunto_id.id))
             self.update({'attachment_ids':[(6,0,lista_adjunto)]}) 
