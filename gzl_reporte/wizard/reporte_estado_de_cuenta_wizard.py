@@ -339,7 +339,7 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
             email_id=obj_template.send_mail(id_envio.id)
             obj_mail=self.env['mail.mail'].browse(email_id)
             lista_adjunto.append(int(id_envio.adjunto_id.id))
-            obj_mail.update({'attachment_ids':[(6,0,lista_adjunto)]}) 
+            obj_mail.update({'attachment_ids':[(6,0,lista_adjunto)],'auto_delete':False}) 
             obj_mail.send()
 
 
