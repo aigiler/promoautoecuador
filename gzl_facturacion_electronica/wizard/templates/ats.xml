@@ -119,6 +119,7 @@
 				<ptoEmiModificado>{{ compra.ptoEmiModificado }}</ptoEmiModificado>
 				<secModificado>{{ compra.secModificado }}</secModificado>
 				<autModificado>{{ compra.autModificado }}</autModificado>
+			{% endif %}
 		</detalleCompras>
 		{% endfor %}
 	</compras>
