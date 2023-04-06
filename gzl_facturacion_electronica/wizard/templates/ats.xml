@@ -113,6 +113,12 @@
 				{% endfor %}
 			</reembolsos>
 			{% endif %}
+			{% if compra.tipoComprobante=='04' %}
+				<docModificado>{{ compra.docModificado }}</docModificado>
+				<estabModificado>{{ compra.estabModificado }}</estabModificado>
+				<ptoEmiModificado>{{ compra.ptoEmiModificado }}</ptoEmiModificado>
+				<secModificado>{{ compra.secModificado }}</secModificado>
+				<autModificado>{{ compra.autModificado }}</autModificado>
 		</detalleCompras>
 		{% endfor %}
 	</compras>
