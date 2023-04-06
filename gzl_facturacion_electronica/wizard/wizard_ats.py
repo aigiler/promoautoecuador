@@ -281,6 +281,7 @@ class WizardAts(models.TransientModel):
                 if tax.name=='IVA 0':
                     cont_vats+=1
                     iva12=0
+                    iva0 = abs(line.price_subtotal)
                 
 
             #raise ValidationError((str(len(line.tax_ids))+'kdkd'))
