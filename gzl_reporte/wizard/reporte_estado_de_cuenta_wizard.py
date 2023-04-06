@@ -314,7 +314,7 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
         if tipo_de_contrato:
             contratos_ids=self.env['contrato'].search([('state','=',estado),('grupo','=',grupo),('tipo_de_contrato','=',tipo_de_contrato)])
         else:
-            contratos_ids=self.env['contrato'].search([('state','=',estado),('grupo','=',grupo),('id','=',32041)])
+            contratos_ids=self.env['contrato'].search([('state','=',estado),('grupo','=',grupo),('id','in',[32041,32042])])
 
         lis=[]
         for l in contratos_ids:
@@ -340,7 +340,7 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
             obj_mail=self.env['mail.mail'].browse(email_id)
             lista_adjunto.append(int(id_envio.adjunto_id.id))
             obj_mail.update({'attachment_ids':[(6,0,lista_adjunto)]}) 
-            #obj_mail.send()
+            obj_mail.send()
 
 
     def xslx_body(self, workbook, name):
