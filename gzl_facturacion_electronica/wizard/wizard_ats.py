@@ -73,7 +73,7 @@ class WizardAts(models.TransientModel):
         iva0 = 0
         novat = 0
         for line in invoice.invoice_line_ids:
-            if line.account_id.name!='IVA pagado':
+            if line.account_id.name=='IVA pagado':
                     iva12+= abs(line.price_subtotal)
             for tax in line.tax_ids:
                 if tax.tax_group_id.code == 'vat':
