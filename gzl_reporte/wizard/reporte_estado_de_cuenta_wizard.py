@@ -333,6 +333,7 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
         except ValueError:
             template_id = False
         if template_id:
+            lista_adjunto=[]
             obj_template=self.env['mail.template'].browse(template_id)
 
             email_id=obj_template.send_mail(id_envio)
