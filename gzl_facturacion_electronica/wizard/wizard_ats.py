@@ -402,6 +402,20 @@ class WizardAts(models.TransientModel):
                 if inv.retention_id:
                     detallecompras.update({'retencion': True})
                     detallecompras.update(self.get_withholding(inv.retention_id))  # noqa
+                if  inv.tipoComprobante=='04':
+                    secuC =''
+                    if len (inv.reversed_entry_id.l10n_latam_document_number[6:15])==9:
+                        secuC =inv.reversed_entry_id.l10n_latam_document_number[6:15]
+                    else:
+                        secuC ='0'+inv.reversed_entry_id.l10n_latam_document_number[6:15]
+                    detallecompras.update({
+                        'docModificado':inv.reversed_entry_id.sustento_del_comprobante.code,
+                        'estabModificado':inv.reversed_entry_id.l10n_latam_document_number[:3],
+                        'ptoEmiModificado':inv.reversed_entry_id.l10n_latam_document_number[3:6],
+                        'secModificado':secuC,
+                        'autModificado':inv.reversed_entry_id.auth_number,
+                        })
+
                 if inv.type in ['out_refund', 'in_refund']:
                     refund = self.get_refund(inv)
                     if refund:
