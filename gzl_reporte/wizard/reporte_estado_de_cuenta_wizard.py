@@ -381,8 +381,8 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
         sheet = workbook.add_worksheet(name)
 
         sheet.insert_image('B1', '../static/description/promoauto.png', {'x_offset': 15, 'y_offset': 10})
-        sheet.merge_range('A3:I3', self.env.company.name, format_title)
-        sheet.merge_range('A5:I5', self.env.company.street, format_datos)
+        sheet.merge_range('A3:J3', self.env.company.name, format_title)
+        sheet.merge_range('A5:J5', self.env.company.street, format_datos)
         # self.env.company.city.name
         sheet.merge_range('A6:C6', self.env.company.city.upper() + ' - ' +self.env.company.country_id.name.upper(), format_datos)
         sheet.merge_range('A7:C7', "RUC: "+self.env.company.vat, format_datos)
