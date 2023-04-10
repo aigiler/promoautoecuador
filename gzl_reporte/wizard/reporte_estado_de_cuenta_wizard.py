@@ -426,14 +426,14 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
             plazo_contrato=self.contrato_id.plazo_meses.numero
         sheet.write('G13', 'Plazo: '+ str(plazo_contrato)+ ' Meses' , format_datos)
         #
-        title_main=['cuota','Fecha de Pago','Fecha Pagada','Cuota Capital' ,'Cuota Adm.','Iva','Seguro','Rastreo','Saldo']
+        title_main=['#','Fecha de Pago','Fecha Pagada','Cuota Capital' ,'Cuota Adm.','Iva','Seguro','Rastreo','Otro','Saldo']
 
         ##Titulos
         colspan=15
         for col, head in enumerate(title_main):
-            sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))),7)
+            sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))),6)
             sheet.write(14, col, head.upper(), formato_cabecera_tabla)
-
+        sheet.set_column('A:A',2)
 
 
         line = itertools.count(start=15)
@@ -465,7 +465,9 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
             sheet.write(current_line, 5, linea["iva_adm"] ,currency_format)
             sheet.write(current_line, 6, linea["seguro"] or 0.00,currency_format)
             sheet.write(current_line, 7, linea["rastreo"] or 0.00,currency_format)
-            sheet.write(current_line, 8, linea["saldo"] or 0.00, currency_format)
+            sheet.write(current_line, 8, linea["otro"] or 0.00, currency_format)
+            sheet.write(current_line, 9, linea["saldo"] or 0.00, currency_format)
+
             if linea["cuota_adm"]:
                 total_cuota_adm+=linea["cuota_adm"]
             if linea["iva_adm"]:
@@ -488,8 +490,6 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
         sheet.write('F{0}'.format(fila_current+2), total_iva_adm , currency_bold)
         sheet.write('G{0}'.format(fila_current+2), total_seguro , currency_bold)
         sheet.write('H{0}'.format(fila_current+2), total_rastreo , currency_bold)
-        sheet.write('I{0}'.format(fila_current+2), total_saldo , currency_bold)
-        sheet.merge_range('A{0}:I{0}'.format(fila_current+3), '', formato_cabecera_tabla)
-
-
-
+        sheet.write('I{0}'.format(fila_current+2), total_otro , currency_bold)
+        sheet.write('J{0}'.format(fila_current+2), total_saldo , currency_bold)
+        sheet.merge_range('A{0}:J{0}'.format(fila_current+3), '', formato_cabecera_tabla)
