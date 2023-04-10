@@ -199,7 +199,7 @@ class ReporteEstadoDeCuentaIndividual(models.TransientModel):
         for col, head in enumerate(title_main):
             sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))),5)
             sheet.write(14, col, head.upper(), formato_cabecera_tabla)
-
+        sheet.set_column('A:14',2)
 
 
         line = itertools.count(start=15)
