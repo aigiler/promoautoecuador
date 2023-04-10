@@ -197,10 +197,9 @@ class ReporteEstadoDeCuentaIndividual(models.TransientModel):
         ##Titulos
         colspan=15
         for col, head in enumerate(title_main):
-            raise ValidationError('{0}:{0}'.format(chr(col + ord('A'))))
             sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))),6)
             sheet.write(14, col, head.upper(), formato_cabecera_tabla)
-        #sheet.set_column('A:15',2)
+        sheet.set_column('A:A',2)
 
 
         line = itertools.count(start=15)
