@@ -389,12 +389,12 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
         #         sheet.merge_range('H6:I6', self.contrato_id.ciudad.nombre_ciudad +', ' + self.create_date.strftime('%Y-%m-%d'), format_datos)
 
         if self.contrato_id.fecha_contrato:
-            sheet.merge_range('G6:I6', self.env.company.city.upper() +', ' + self.contrato_id.fecha_contrato.strftime('%Y-%m-%d'), format_datos_cab)
+            sheet.merge_range('H6:J6', self.env.company.city.upper() +', ' + self.contrato_id.fecha_contrato.strftime('%Y-%m-%d'), format_datos_cab)
 
 
         if self.contrato_id.secuencia:
-            sheet.merge_range('G7:I7', 'No. ' + self.contrato_id.secuencia, num_contrato)
-        sheet.merge_range('A8:I8', 'ESTADO DE CUENTA DE APORTES', format_subtitle)
+            sheet.merge_range('H7:J7', 'No. ' + self.contrato_id.secuencia, num_contrato)
+        sheet.merge_range('A8:J8', 'ESTADO DE CUENTA DE APORTES', format_subtitle)
         #
         if self.contrato_id.cliente:
             sheet.merge_range('A9:D9', 'Cliente: '+ self.contrato_id.cliente.name, format_datos)
@@ -415,16 +415,16 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
         sheet.merge_range('A13:C13', 'Valor Inscripción: $'+ str('{:.2f}'.format(self.contrato_id.valor_inscripcion)), format_datos)
         
         if self.contrato_id.cliente:
-            sheet.write('G9', 'Ced/RUC: '+ self.contrato_id.cliente.vat , format_datos)
+            sheet.write('H9', 'Ced/RUC: '+ self.contrato_id.cliente.vat , format_datos)
 
 
         if self.contrato_id.tipo_de_contrato:
-            sheet.write('G11', 'Tipo de contrato: '+ self.contrato_id.tipo_de_contrato.name.upper(), format_datos)
-        sheet.write('G12', 'Monto financiamiento: $'+ str('{:.2f}'.format(self.contrato_id.monto_financiamiento)), format_datos)
+            sheet.write('H11', 'Tipo de contrato: '+ self.contrato_id.tipo_de_contrato.name.upper(), format_datos)
+        sheet.write('H12', 'Monto financiamiento: $'+ str('{:.2f}'.format(self.contrato_id.monto_financiamiento)), format_datos)
         plazo_contrato=self.contrato_id.plazo_meses_numero
         if self.contrato_id.plazo_meses_numero==0:
             plazo_contrato=self.contrato_id.plazo_meses.numero
-        sheet.write('G13', 'Plazo: '+ str(plazo_contrato)+ ' Meses' , format_datos)
+        sheet.write('H13', 'Plazo: '+ str(plazo_contrato)+ ' Meses' , format_datos)
         #
         title_main=['#','Fecha de Pago','Fecha Pagada','Cuota Capital' ,'Cuota Adm.','Iva','Seguro','Rastreo','Otro','Saldo']
 
