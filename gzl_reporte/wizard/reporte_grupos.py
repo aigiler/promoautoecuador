@@ -136,26 +136,43 @@ class ReportGrupos(models.TransientModel):
             iva_adm_cancelado_mes=0
             capital_cancelado_mes=0
             lista_facturas=[]
-            for rec in pagos_ids:
-                if int(rec.payment_date.month)==int(mes_curso) and int(rec.payment_date.year)==int(anio):
-                    for fac in rec.reconciled_invoice_ids:
+            facturas_ids=self.env['account.move'].search([('partner_id','=',contrato.cliente.id),('state','=','posted'),('type','=','out_invoice'),('contrato_id','=',contrato.id)])
+            cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
+            seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
+            otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
+            rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
+
+            for factura_id in facturas_ids:
+                if factura_id.contrato_estado_cuenta_ids:
+                    if int(factura_id.invoice_date.month)==int(mes_curso) and int(factura_id.invoice_date.year)==int(anio):
+                        cuota_capital=self.env['account.move'].search([('ref','=',factura_id.name),('state','=','posted'),('journal_id','=',cuota_capital_obj.journal_id.id)])
+                        for cap in cuota_capital:
+                            for credit_cap in cuota_capital.line_ids.matched_credit_ids:
+                                capital_cancelado_mes+=credit_cap.amount
+                        if factura_id.line_ids.matched_credit_ids:
+                            cuotas_canceladas_mes+=len(fac.contrato_estado_cuenta_ids)
+                            administrativo_cancelado_mes+=fac.amount_untaxed
+                            iva_adm_cancelado_mes+=(fac.amount_total-fac.amount_untaxed)
+
+            
+            total_cancelado_mes=administrativo_cancelado_mes+iva_adm_cancelado_mes+capital_cancelado_mes
+            # for rec in pagos_ids:
+            #     if int(rec.payment_date.month)==int(mes_curso) and int(rec.payment_date.year)==int(anio):
+            #         for fac in rec.reconciled_invoice_ids:
                         
 
-                        if fac.id in lista_facturas:
-                            pass
-                        else:
-                            lista_facturas.append(fac.id)
-                            if fac.contrato_id.id==contrato.id: 
-                                if fac.contrato_id.id==contrato.id and fac.contrato_estado_cuenta_ids:
-                                    cuotas_canceladas_mes+=len(fac.contrato_estado_cuenta_ids)
-                                    administrativo_cancelado_mes+=fac.amount_untaxed
-                                    iva_adm_cancelado_mes+=(fac.amount_total-fac.amount_untaxed)
-                                    for cap in fac.contrato_estado_cuenta_ids:
-                                        capital_cancelado_mes+=cap.cuota_capital
-                                    # capital_ids=self.env['account.move'].search([('ref','=',fac.name),('state','=','posted'),('journal_id','=',21)])
-                                    # for cap in capital_ids:
-                                    #     capital_cancelado_mes+=cap.amount_total_signed
-                        
+            #             if fac.id in lista_facturas:
+            #                 pass
+            #             else:
+            #                 lista_facturas.append(fac.id)
+            #                 if fac.contrato_id.id==contrato.id: 
+            #                     if fac.contrato_id.id==contrato.id and fac.contrato_estado_cuenta_ids:
+            #                         cuotas_canceladas_mes+=len(fac.contrato_estado_cuenta_ids)
+            #                         administrativo_cancelado_mes+=fac.amount_untaxed
+            #                         iva_adm_cancelado_mes+=(fac.amount_total-fac.amount_untaxed)
+            #                         for cap in fac.contrato_estado_cuenta_ids:
+            #                             capital_cancelado_mes+=cap.cuota_capital
+                                   
                             
             total_cancelado_mes=administrativo_cancelado_mes+iva_adm_cancelado_mes+capital_cancelado_mes
             dct={'codigo_grupo':contrato.grupo.name or '',
