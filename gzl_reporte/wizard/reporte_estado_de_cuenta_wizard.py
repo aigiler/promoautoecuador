@@ -197,7 +197,7 @@ class ReporteEstadoDeCuentaIndividual(models.TransientModel):
         ##Titulos
         colspan=15
         for col, head in enumerate(title_main):
-            sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))),7)
+            sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))),2)
             sheet.write(14, col, head.upper(), formato_cabecera_tabla)
 
 
