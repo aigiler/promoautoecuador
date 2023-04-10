@@ -399,7 +399,6 @@ class ReporteEstadoDeCuentaMasivo(models.Model):
         if self.contrato_id.cliente:
             sheet.merge_range('A9:D9', 'Cliente: '+ self.contrato_id.cliente.name, format_datos)
 
-
         if self.contrato_id.grupo: 
             sheet.merge_range('A11:C11', 'Grupo: '+'['+ self.contrato_id.grupo.codigo+'] '+ self.contrato_id.grupo.name, format_datos)
         if self.contrato_id.state == 'ADJUDICADO':
