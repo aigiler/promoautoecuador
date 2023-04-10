@@ -147,12 +147,14 @@ class ReportGrupos(models.TransientModel):
                     if int(factura_id.invoice_date.month)==int(mes_curso) and int(factura_id.invoice_date.year)==int(anio):
                         cuota_capital=self.env['account.move'].search([('ref','=',factura_id.name),('state','=','posted'),('journal_id','=',cuota_capital_obj.journal_id.id)])
                         for cap in cuota_capital:
-                            for credit_cap in cuota_capital.line_ids.matched_credit_ids:
-                                capital_cancelado_mes+=credit_cap.amount
+                            if cuota_capital.line_ids.matched_credit_ids:
+                                #capital_cancelado_mes+=credit_cap.amount
+                                for capital in factura_id.contrato_estado_cuenta_ids:
+                                    capital_cancelado_mes+=capital.cuota_capital
                         if factura_id.line_ids.matched_credit_ids:
-                            cuotas_canceladas_mes+=len(fac.contrato_estado_cuenta_ids)
-                            administrativo_cancelado_mes+=fac.amount_untaxed
-                            iva_adm_cancelado_mes+=(fac.amount_total-fac.amount_untaxed)
+                            cuotas_canceladas_mes+=len(factura_id.contrato_estado_cuenta_ids)
+                            administrativo_cancelado_mes+=factura_id.amount_untaxed
+                            iva_adm_cancelado_mes+=(factura_id.amount_total-factura_id.amount_untaxed)
 
             
             total_cancelado_mes=administrativo_cancelado_mes+iva_adm_cancelado_mes+capital_cancelado_mes
