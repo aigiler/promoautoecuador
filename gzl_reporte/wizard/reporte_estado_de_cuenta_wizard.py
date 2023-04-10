@@ -197,7 +197,7 @@ class ReporteEstadoDeCuentaIndividual(models.TransientModel):
         ##Titulos
         colspan=15
         for col, head in enumerate(title_main):
-            sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))),6)
+            sheet.set_column('{0}:{0}'.format(chr(col + ord('A'))),7)
             sheet.write(14, col, head.upper(), formato_cabecera_tabla)
         sheet.set_column('A:A',2)
 
@@ -258,7 +258,7 @@ class ReporteEstadoDeCuentaIndividual(models.TransientModel):
         sheet.write('H{0}'.format(fila_current+2), total_rastreo , currency_bold)
         sheet.write('I{0}'.format(fila_current+2), total_otro , currency_bold)
         sheet.write('J{0}'.format(fila_current+2), total_saldo , currency_bold)
-        sheet.merge_range('A{0}:I{0}'.format(fila_current+3), '', formato_cabecera_tabla)
+        sheet.merge_range('A{0}:J{0}'.format(fila_current+3), '', formato_cabecera_tabla)
 
 
 class ReporteEstadoDeCuentaMasivo(models.Model):
