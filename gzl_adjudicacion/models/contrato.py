@@ -659,7 +659,6 @@ class Contrato(models.Model):
                 except:
                     pass
 
-        return dia_corte
 
     def cambio_estado_congelar_contrato(self):
         #Cambio de estado
