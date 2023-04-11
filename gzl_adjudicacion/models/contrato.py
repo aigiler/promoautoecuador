@@ -506,15 +506,22 @@ class Contrato(models.Model):
                  contrato.en_mora=False
                  if contrato.state in ['ADJUDICADO ENTREGADO', 'ADJUDICADO NO ENTREGADO','ACTIVADO']:
                     contrato.state_simplificado='AL DIA'
+                if contrato.state in ['NO ACTIVADO']:
+                    contrato.state_simplificado='AL DIA'
+
             else:
                 saldo=sum(mes_estado_cuenta.mapped('saldo'))
                 if saldo<=10.00:
                     contrato.en_mora=False
                     if contrato.state in ['ADJUDICADO ENTREGADO', 'ADJUDICADO NO ENTREGADO','ACTIVADO']:
                         contrato.state_simplificado='AL DIA'
+                    if contrato.state in ['NO ACTIVADO']:
+                        contrato.state_simplificado='AL DIA'
                 else:
                     contrato.en_mora=True
                     if contrato.state in ['ADJUDICADO ENTREGADO', 'ADJUDICADO NO ENTREGADO','ACTIVADO']:
+                        contrato.state_simplificado='EN MORA'
+                    if contrato.state in ['NO ACTIVADO']:
                         contrato.state_simplificado='EN MORA'
             
                             
