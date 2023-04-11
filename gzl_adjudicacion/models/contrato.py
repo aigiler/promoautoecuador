@@ -659,12 +659,12 @@ class Contrato(models.Model):
         for l in contratos_ids:
             if l.plazo_meses_numero:
                 try:
-                    l.cuota_capital=round(l.monto_financiamiento/l.plazo_meses_numero,2)
+                    l.cuota_capital=round((l.monto_financiamiento-l.monto_programado)/l.plazo_meses_numero,2)
                 except:
                     pass
             else:
                 try:
-                    l.cuota_capital=round(l.monto_financiamiento/l.plazo_meses.numero,2)
+                    l.cuota_capital=round(l.monto_financiamiento-l.monto_programado/l.plazo_meses.numero,2)
                 except:
                     pass
 
