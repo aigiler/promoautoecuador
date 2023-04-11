@@ -645,6 +645,21 @@ class Contrato(models.Model):
                 l.state="ACTIVADO"
                 l.state_simplificado="CONGELADO"
        
+    def actualizar_cuota_capital(self):
+        contratos_ids =  self.env['contrato'].search([])
+        for l in contratos_ids:
+            if l.plazo_meses_numero:
+                try:
+                    l.cuota_capital=round(l.monto_financiamiento/l.plazo_meses_numero,2)
+                except:
+                    pass
+            else:
+                try:
+                    l.cuota_capital=round(l.monto_financiamiento/l.plazo_meses.numero,2)
+                except:
+                    pass
+
+        return dia_corte
 
     def cambio_estado_congelar_contrato(self):
         #Cambio de estado
