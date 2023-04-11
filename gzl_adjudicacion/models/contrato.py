@@ -503,8 +503,8 @@ class Contrato(models.Model):
             mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.estado_pago=="pendiente" and l.fecha<hoy)
             
             if len(mes_estado_cuenta)==0:
-                 contrato.en_mora=False
-                 if contrato.state in ['ADJUDICADO ENTREGADO', 'ADJUDICADO NO ENTREGADO','ACTIVADO']:
+                contrato.en_mora=False
+                if contrato.state in ['ADJUDICADO ENTREGADO', 'ADJUDICADO NO ENTREGADO','ACTIVADO']:
                     contrato.state_simplificado='AL DIA'
                 if contrato.state in ['NO ACTIVADO']:
                     contrato.state_simplificado='AL DIA'
