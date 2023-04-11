@@ -516,12 +516,14 @@ class Contrato(models.Model):
                     if contrato.state in ['ADJUDICADO ENTREGADO', 'ADJUDICADO NO ENTREGADO','ACTIVADO']:
                         contrato.state_simplificado='AL DIA'
                     if contrato.state in ['NO ACTIVADO']:
+                        contrato.state='ACTIVADO'
                         contrato.state_simplificado='AL DIA'
                 else:
                     contrato.en_mora=True
                     if contrato.state in ['ADJUDICADO ENTREGADO', 'ADJUDICADO NO ENTREGADO','ACTIVADO']:
                         contrato.state_simplificado='EN MORA'
                     if contrato.state in ['NO ACTIVADO']:
+                        contrato.state='ACTIVADO'
                         contrato.state_simplificado='EN MORA'
             
                             
