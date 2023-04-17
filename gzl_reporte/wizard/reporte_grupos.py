@@ -229,6 +229,10 @@ class ReportGrupos(models.TransientModel):
                     'administrativo_cancelado_mes':administrativo_cancelado_mes,
                     'iva_adm_cancelado_mes':iva_adm_cancelado_mes,
                     'total_cancelado_mes':total_cancelado_mes}
+            if contrato.plazo_meses_numero:
+                dct['plazo']=contrato.plazo_meses_numero
+            else:
+                dct['plazo']=contrato.plazo_meses.numero
             hoy=date.today()
             test_date = datetime(hoy.year, hoy.month, hoy.day)
             nxt_mnth = test_date.replace(day=28) + timedelta(days=4)
