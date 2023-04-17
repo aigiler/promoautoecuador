@@ -664,7 +664,7 @@ class Contrato(models.Model):
                     pass
             else:
                 try:
-                    l.cuota_capital=round(l.monto_financiamiento-l.monto_programado/l.plazo_meses.numero,2)
+                    l.cuota_capital=round((l.monto_financiamiento-l.monto_programado)/l.plazo_meses.numero,2)
                 except:
                     pass
 
