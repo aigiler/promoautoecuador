@@ -101,7 +101,7 @@ class ReporteEstadoCuenta(models.TransientModel):
                                     am.narration as observaciones, 
 
                                     case    when am.type = ANY (array['in_debit','out_debit','out_invoice']) then coalesce(abs(am.amount_total),0) 
-                                            when am.type = ANY (array['in_invoice']) then coalesce(abs(am.amount_untaxed),0)
+                                            when am.type = 'in_invoice' then coalesce(abs(am.amount_untaxed),0)
  
 
                                             else 0 end as debe ,
