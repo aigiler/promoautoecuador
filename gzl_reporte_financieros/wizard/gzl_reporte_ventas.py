@@ -323,7 +323,7 @@ class ReporteVentas(models.TransientModel):
                 columna+=1
                 sheet.write(fila, columna, l['base_grav'], currency_format)
                 columna+=1
-                sheet.write(fila, columna, l['no_obj'], format_title2)
+                sheet.write(fila, columna, l['noobj'], format_title2)
                 columna+=1
                 sheet.write(fila, columna, l['miva'], currency_format)
                 columna+=1
