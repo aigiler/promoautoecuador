@@ -45,16 +45,16 @@ class FacturacionElectronica(models.Model):
         self.env.cr.execute("""select count(*) contador from bitacora_consumo_servicios where invoice_id={0}  """.format(self.id))
         contador = self.env.cr.dictfetchall()
 
-        if contador[0]['contador']>0:
-            pass
+        #if contador[0]['contador']>0:
+        #    pass
             ##raise ValidationError('El Comprobante Electrónico está en proceso')
-        else:
-            instanciaBitacora=self.env['bitacora.consumo.servicios'].create(dct)
-            self.bitacora_id=instanciaBitacora.id
-            try:
-                instanciaBitacora.procesarComprobante()
-            except json.decoder.JSONDecodeError:
-                instanciaBitacora.response='Error 500 al consumir el servicio'
+        #else:
+        instanciaBitacora=self.env['bitacora.consumo.servicios'].create(dct)
+        self.bitacora_id=instanciaBitacora.id
+        try:
+            instanciaBitacora.procesarComprobante()
+        except json.decoder.JSONDecodeError:
+            instanciaBitacora.response='Error 500 al consumir el servicio'
 
 
 
