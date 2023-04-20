@@ -153,7 +153,7 @@ class ReporteCompras(models.TransientModel):
                     biva0+=i.price_subtotal
                     if i.account_id.name=='IVA pagado':
                         biva0=0
-                        dct['miva']=(i.price_subtotal*0.12)
+                        dct['miva']=(i.price_subtotal)
                 for k in i.tax_ids:
                     if k.tax_group_id.code =='ret_vat_srv' and bagrav!=0:
                         bn_trf_diff +=  i.price_subtotal
