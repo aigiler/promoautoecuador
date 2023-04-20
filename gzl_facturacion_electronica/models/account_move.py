@@ -114,6 +114,7 @@ class AccountMove(models.Model):
         self.is_group_cobranza = self.env['res.users'].has_group('gzl_facturacion_electronica.grupo_cobranza')
 
     @api.onchange('contrato_estado_cuenta_ids')
+    @api.constrains('contrato_estado_cuenta_ids')
     def _onchange_contrato_estado_cuenta_ids(self):
         if self.state=='draft':
             if self.contrato_id.tasa_administrativa:
@@ -153,7 +154,7 @@ class AccountMove(models.Model):
                 i=0
                 saldo_credito=0
                 numero_cuotas=''
-                for rec in obj_contrato_estado_cuenta:
+                for rec in self.contrato_estado_cuenta_ids:
                     if self.contrato_id.tasa_administrativa:
                         if i==0:
                             nombre=values.get('name')+str(rec.cuota_adm)+'.'+' IVA: '+str(rec.iva_adm)+' Cuota(s): '+rec.numero_cuota+','
