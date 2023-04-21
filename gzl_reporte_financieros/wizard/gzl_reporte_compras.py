@@ -183,8 +183,8 @@ class ReporteCompras(models.TransientModel):
                     #dct['miva']=(biva0*0.12)#l.base
                     if l.group_id.code =='ret_vat_b' and l.tax_id.tax_group_id.code =='ret_vat_b':
                         dct['porctretb']=l.tax_id.tarifa
-                        dct['retb']='0'
-                        dct['porctrets']=l.amount
+                        dct['retb']=l.amount
+                        dct['porctrets']='0'
                         dct['retserv']='0'
                     if l.group_id.code =='ret_vat_srv' and l.tax_id.tax_group_id.code =='ret_vat_srv':
                         dct['porctretb']='0'
