@@ -317,30 +317,29 @@ class ReporteCompras(models.TransientModel):
         #sheet.write(7, 28, 'Dbl Tributación', bold)
         #sheet.write(7, 29, 'Suj. Ret.', bold)   
         #sheet.write(7, 30, 'DrawBack', bold)  
-        sheet.write(7, 26, 'Ret. IVA 100%', bold)  
-        sheet.write(7, 27, 'Contribuyente Suj. Ret.', bold)  
-        sheet.write(7, 28, 'Origen', bold)  
-        sheet.write(7, 29, 'Estado', bold)  
-        sheet.write(7, 30, 'Nombre Docum.', bold)
+        sheet.write(7, 26, 'Contribuyente Suj. Ret.', bold)  
+        sheet.write(7, 27, 'Origen', bold)  
+        sheet.write(7, 28, 'Estado', bold)  
+        sheet.write(7, 29, 'Nombre Docum.', bold)
         #sheet.write(7, 29, 'Docum.', bold)
-        sheet.write(7, 31, 'Chq.', bold)
-        sheet.write(7, 32, 'Tip S,B,A', bold)
-        sheet.write(7, 33, 'Fch. Rete.', bold)
-        sheet.write(7, 34, 'Serie Ret..', bold)
-        sheet.write(7, 35, 'Pto.Emi.Ret.', bold)
-        sheet.write(7, 36, '# Reten.', bold) 
-        sheet.write(7, 37, 'Autori. Ret.', bold)
-        sheet.write(7, 38, 'Bien. Tarf. Dif 0%', bold)
-        sheet.write(7, 39, 'Serv. Tarf. Dif 0%', bold)
-        sheet.write(7, 40, 'Acti. Tarf. Dif 0%', bold)
-        sheet.write(7, 41, 'Bien. Tarf. 0%', bold)
-        sheet.write(7, 42, 'Serv. Tarf. 0%.', bold)
-        sheet.write(7, 43, 'Acti. Tarf. 0%', bold)
-        sheet.write(7, 44,  'Usuario', bold)
-        sheet.write(7, 45, 'Motivo', bold)
+        sheet.write(7, 30, 'Chq.', bold)
+        sheet.write(7, 31, 'Tip S,B,A', bold)
+        sheet.write(7, 32, 'Fch. Rete.', bold)
+        sheet.write(7, 33, 'Serie Ret..', bold)
+        sheet.write(7, 34, 'Pto.Emi.Ret.', bold)
+        sheet.write(7, 35, '# Reten.', bold) 
+        sheet.write(7, 36, 'Autori. Ret.', bold)
+        sheet.write(7, 37, 'Bien. Tarf. Dif 0%', bold)
+        sheet.write(7, 38, 'Serv. Tarf. Dif 0%', bold)
+        sheet.write(7, 39, 'Acti. Tarf. Dif 0%', bold)
+        sheet.write(7, 40, 'Bien. Tarf. 0%', bold)
+        sheet.write(7, 41, 'Serv. Tarf. 0%.', bold)
+        sheet.write(7, 42, 'Acti. Tarf. 0%', bold)
+        sheet.write(7, 43,  'Usuario', bold)
+        sheet.write(7, 44, 'Motivo', bold)
         #sheet.write(7, 52, 'F caducidad', bold)
-        sheet.write(7, 46, 'Tipo de Contribuyente', bold)
-        sheet.write(7, 47, 'Forma de pago', bold)
+        sheet.write(7, 45, 'Tipo de Contribuyente', bold)
+        sheet.write(7, 46, 'Forma de pago', bold)
         #move=self.obtener_listado(filtro) 
         columna=0
         #raise ValidationError((str((move))))
@@ -407,7 +406,6 @@ class ReporteCompras(models.TransientModel):
                 columna+=1
                 sheet.write(fila, columna, l['retserv'], format_title2)
                 columna+=1
-                sheet.write(fila, columna, l['retiva100'], format_title2)
                 #columna+=1
                 #sheet.write(fila, columna, '01', format_title2) #pago local/ext no se de donde se saca
                 #columna+=1
@@ -416,7 +414,6 @@ class ReporteCompras(models.TransientModel):
                 #sheet.write(fila, columna, 'NO', format_title2)#no
                 #columna+=1
                 #sheet.write(fila, columna, 'NA', format_title2)#no
-                columna+=1
                 sheet.write(fila, columna, l['apply_ret'], format_title2)
                 #columna+=1
                 #sheet.write(fila, columna, 'N', format_title2)
@@ -497,17 +494,14 @@ class ReporteCompras(models.TransientModel):
             sheet.write(fila,19, '=+SUM(T'+str(9)+':T'+str(fila)+')', currency_format)
             #sheet.write(fila,36, '=+SUM(AK'+str(9)+':AK'+str(fila)+')', currency_format)
             #sheet.write(fila,37, '=+SUM(AL'+str(9)+':AL'+str(fila)+')', currency_format)
+            sheet.write(fila,37, '=+SUM(AL'+str(9)+':AL'+str(fila)+')', currency_format)
             sheet.write(fila,38, '=+SUM(AM'+str(9)+':AM'+str(fila)+')', currency_format)
             sheet.write(fila,39, '=+SUM(AN'+str(9)+':AN'+str(fila)+')', currency_format)
             sheet.write(fila,40, '=+SUM(AO'+str(9)+':AO'+str(fila)+')', currency_format)
             sheet.write(fila,41, '=+SUM(AP'+str(9)+':AP'+str(fila)+')', currency_format)
             sheet.write(fila,42, '=+SUM(AQ'+str(9)+':AQ'+str(fila)+')', currency_format)
-            sheet.write(fila,43, '=+SUM(AR'+str(9)+':AR'+str(fila)+')', currency_format)
-            sheet.write(fila,47, '=+SUM(AV'+str(9)+':AV'+str(fila)+')', currency_format)
-            sheet.write(fila,49, '=+SUM(AZ'+str(9)+':AZ'+str(fila)+')', currency_format)
+            sheet.write(fila,46, '=+SUM(AU'+str(9)+':AU'+str(fila)+')', currency_format)
+            sheet.write(fila,48, '=+SUM(AW'+str(9)+':AW'+str(fila)+')', currency_format)
             sheet.merge_range('B'+str(fila+1)+':N'+str(fila+1), 'TOTALES', workbook.add_format({'bold':True,'border':0,'align': 'center','size': 14}))
 
-                
-
-                
-                
+            
