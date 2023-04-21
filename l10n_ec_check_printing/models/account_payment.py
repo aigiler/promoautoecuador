@@ -730,6 +730,7 @@ class AccountPayment(models.Model):
 
 
     @api.onchange('payment_line_ids')
+    @api.constrains('payment_line_ids')
     def _onchange_residual(self):
         monto=self.amount
         total=0
