@@ -336,13 +336,11 @@ class ReporteCompras(models.TransientModel):
         sheet.write(7, 41, 'Bien. Tarf. 0%', bold)
         sheet.write(7, 42, 'Serv. Tarf. 0%.', bold)
         sheet.write(7, 43, 'Acti. Tarf. 0%', bold)
-        sheet.write(7, 44, 'Cajas Banano', bold)
-        sheet.write(7, 45, 'Precio Banano', bold)
-        sheet.write(7, 46,  'Usuario', bold)
-        sheet.write(7, 47, 'Motivo', bold)
+        sheet.write(7, 44,  'Usuario', bold)
+        sheet.write(7, 45, 'Motivo', bold)
         #sheet.write(7, 52, 'F caducidad', bold)
-        sheet.write(7, 48, 'Tipo de Contribuyente', bold)
-        sheet.write(7, 49, 'Forma de pago', bold)
+        sheet.write(7, 46, 'Tipo de Contribuyente', bold)
+        sheet.write(7, 47, 'Forma de pago', bold)
         #move=self.obtener_listado(filtro) 
         columna=0
         #raise ValidationError((str((move))))
@@ -457,10 +455,6 @@ class ReporteCompras(models.TransientModel):
                 columna+=1
                 sheet.write(fila, columna, '0', format_title2)
                 columna+=1
-                sheet.write(fila, columna, '0', format_title2)
-                columna+=1
-                sheet.write(fila, columna, '0', format_title2)
-                columna+=1
                 sheet.write(fila, columna, str(self.env.user.name), format_title2)
                 columna+=1
                 sheet.write(fila, columna, ' ', bold)
@@ -509,8 +503,8 @@ class ReporteCompras(models.TransientModel):
             sheet.write(fila,41, '=+SUM(AP'+str(9)+':AP'+str(fila)+')', currency_format)
             sheet.write(fila,42, '=+SUM(AQ'+str(9)+':AQ'+str(fila)+')', currency_format)
             sheet.write(fila,43, '=+SUM(AR'+str(9)+':AR'+str(fila)+')', currency_format)
-            sheet.write(fila,49, '=+SUM(AX'+str(9)+':AX'+str(fila)+')', currency_format)
-            sheet.write(fila,51, '=+SUM(AZ'+str(9)+':AZ'+str(fila)+')', currency_format)
+            sheet.write(fila,47, '=+SUM(AV'+str(9)+':AV'+str(fila)+')', currency_format)
+            sheet.write(fila,49, '=+SUM(AZ'+str(9)+':AZ'+str(fila)+')', currency_format)
             sheet.merge_range('B'+str(fila+1)+':N'+str(fila+1), 'TOTALES', workbook.add_format({'bold':True,'border':0,'align': 'center','size': 14}))
 
                 
