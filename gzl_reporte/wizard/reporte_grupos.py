@@ -153,7 +153,8 @@ class ReportGrupos(models.TransientModel):
                                 for capital in factura_id.contrato_estado_cuenta_ids:
                                     capital_cancelado_mes+=capital.cuota_capital
                                 for progrmao in  pagos_programados_ids:
-                                    capital_cancelado_mes+=progrmao.monto_pagar
+                                    if int(progrmao.payment_date.month)==int(mes_curso) and int(progrmao.payment_date.year)==int(anio)::
+                                        capital_cancelado_mes+=progrmao.monto_pagar
                         if factura_id.line_ids.matched_credit_ids:
                             cuotas_canceladas_mes+=len(factura_id.contrato_estado_cuenta_ids)
                             administrativo_cancelado_mes+=factura_id.amount_untaxed
