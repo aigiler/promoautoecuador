@@ -130,7 +130,8 @@ class ReportGrupos(models.TransientModel):
         for contrato_id in contrato_ids:
             #####obtener los nuevos campos cuotas_canceladas_mes, capital_cancelado_mes, administrativo_cancelado_mes, iva_adm_cancelado_mes, total_cancelado_mes
             contrato=self.env['contrato'].search([('id','=',contrato_id['id'])])
-            pagos_ids=self.env['account.payment'].search([('partner_id','=',contrato.cliente.id),('state','=','posted'),('payment_type','=','inbound')])
+            pagos_ids=self.env['account.payment'].search([('partner_id','=',contrato.cliente.id),('state','=','posted'),('payment_type','=','inbound'),('abono_contrato','=',True)])
+            pagos_programados_ids=pagos_ids.contrato_estado_cuenta_payment_ids.filtered(lambda l: l.programado>0 and l.monto_pagar>0)
             cuotas_canceladas_mes=0
             administrativo_cancelado_mes=0
             iva_adm_cancelado_mes=0
@@ -151,6 +152,8 @@ class ReportGrupos(models.TransientModel):
                                 #capital_cancelado_mes+=credit_cap.amount
                                 for capital in factura_id.contrato_estado_cuenta_ids:
                                     capital_cancelado_mes+=capital.cuota_capital
+                                for progrmao in  pagos_programados_ids:
+                                    capital_cancelado_mes+=progrmao.monto_pagar
                         if factura_id.line_ids.matched_credit_ids:
                             cuotas_canceladas_mes+=len(factura_id.contrato_estado_cuenta_ids)
                             administrativo_cancelado_mes+=factura_id.amount_untaxed
