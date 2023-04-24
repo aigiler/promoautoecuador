@@ -175,6 +175,8 @@ class ReporteCompras(models.TransientModel):
             dct['srv_trf_dif']=srv_trf_diff
             dct['bn_trf_dif']= bn_trf_diff
             dct['biva0']=biva0
+            if biva0:
+                bagrav=0
             dct['bgrav']=bagrav
             if m.ret_tax_ids:
                 for l in m.ret_tax_ids:
