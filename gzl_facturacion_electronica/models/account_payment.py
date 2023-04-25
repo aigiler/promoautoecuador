@@ -131,13 +131,14 @@ class AccountPayment(models.Model):
             for x in l.contrato_estado_cuenta_payment_ids:
                 l.total_asignado+=x.monto_pagar
 
-    @api.onchange('tipo_valor','amount','credito_contrato','credito',"tipo_transaccion")
+    @api.onchange('tipo_valor','amount','credito_contrato','credito',"tipo_transaccion","x_aplica_cuenta","x_valor_cuenta")
     @api.depends('tipo_valor','amount','credito_contrato','credito')
     def _saldo_pagar(self):
         for l in self:
             valor_asignado=0
             contrato_valor=0
             credito_contrato=0
+            cuenta_valor=0
             for x in l.payment_line_ids:
                 if x.pagar:
                     valor_asignado+=x.amount
@@ -149,9 +150,11 @@ class AccountPayment(models.Model):
                 credito_contrato=l.amount-valor_asignado-contrato_valor
             if not l.aplicar_credito:
                 l.credito=credito_contrato
+            if l.x_aplica_cuenta:
+                cuenta_valor=l.amount-valor_asignado-contrato_valor-credito_contrato-l.x_valor_cuenta
             l.contrato_valor=contrato_valor
             l.valor_deuda=valor_asignado
-            l.saldo_pago=l.amount-valor_asignado-contrato_valor-credito_contrato
+            l.saldo_pago=l.amount-valor_asignado-contrato_valor-credito_contrato-cuenta_valor
             if round(valor_asignado+contrato_valor+credito_contrato,2)==round(l.amount,2):
                 l.saldo_pago=0
             if l.tipo_transaccion=="Anticipo":
