@@ -154,6 +154,7 @@ class AccountPayment(models.Model):
                 cuenta_valor=l.amount-valor_asignado-contrato_valor-credito_contrato
             l.contrato_valor=contrato_valor
             l.valor_deuda=valor_asignado
+            l.x_valor_cuenta=cuenta_valor
             l.saldo_pago=l.amount-valor_asignado-contrato_valor-credito_contrato-cuenta_valor
             if round(valor_asignado+contrato_valor+credito_contrato,2)==round(l.amount,2):
                 l.saldo_pago=0
