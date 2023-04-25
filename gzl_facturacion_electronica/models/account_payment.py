@@ -151,7 +151,7 @@ class AccountPayment(models.Model):
             if not l.aplicar_credito:
                 l.credito=credito_contrato
             if l.x_aplica_cuenta:
-                cuenta_valor=l.amount-valor_asignado-contrato_valor-credito_contrato-l.x_valor_cuenta
+                cuenta_valor=l.amount-valor_asignado-contrato_valor-credito_contrato
             l.contrato_valor=contrato_valor
             l.valor_deuda=valor_asignado
             l.saldo_pago=l.amount-valor_asignado-contrato_valor-credito_contrato-cuenta_valor
