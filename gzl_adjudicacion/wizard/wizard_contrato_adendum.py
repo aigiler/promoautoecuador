@@ -648,6 +648,7 @@ class WizardContratoAdendum(models.Model):
                 if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
                     if c.programado == 0.00 or c.programado == 0 or c.programado == 0.0:
                         c.update({
+                            'saldo_cuota_administrativa': c.cuota_adm - valor_a_restar,
                             'cuota_adm': c.cuota_adm - valor_a_restar,
                             'contrato_id':self.contrato_id.id,
                         })
@@ -669,6 +670,7 @@ class WizardContratoAdendum(models.Model):
                 if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
                     if c.programado == 0.00 or c.programado == 0 or c.programado == 0.0:
                         c.update({
+                            'saldo_cuota_administrativa': c.cuota_adm - valor_a_restar,
                             'cuota_adm': c.cuota_adm + valor_a_restar,
                             'contrato_id':self.contrato_id.id,
                         })  
@@ -701,6 +703,7 @@ class WizardContratoAdendum(models.Model):
                 if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
                     if c.programado == 0.00 or c.programado == 0 or c.programado == 0.0:
                         c.update({
+                            'saldo_cuota_capital': c.cuota_capital - valor_a_restar,
                             'cuota_capital': c.cuota_capital - valor_a_restar,
                             'contrato_id':self.contrato_id.id,
                         })
@@ -722,6 +725,7 @@ class WizardContratoAdendum(models.Model):
                 if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
                     if c.programado == 0.00 or c.programado == 0 or c.programado == 0.0:
                         c.update({
+                            'saldo_cuota_capital': c.cuota_capital + valor_a_restar,
                             'cuota_capital': c.cuota_capital + valor_a_restar,
                             'contrato_id':self.contrato_id.id,
                         })  
