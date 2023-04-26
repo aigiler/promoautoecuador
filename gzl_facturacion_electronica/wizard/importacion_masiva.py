@@ -50,6 +50,7 @@ class WizardImportDocuments(models.TransientModel):
                     if (i+error) % modulo==0:
                         nuevaLista.append(listaLinea)
                         listaLinea=[]
+                raise ValidationError("{0} ".format(nuevaLista[1:]))
                 
                 for fila in nuevaLista[1:]:
                     journal_id = self.env['account.journal'].search([('type','=','purchase')],limit=1)
