@@ -52,7 +52,6 @@ class WizardImportDocuments(models.TransientModel):
                         listaLinea=[]
                 
                 for fila in nuevaLista[1:]:
-                    raise ValidationError("{0} ".format(fila))
 
                     journal_id = self.env['account.journal'].search([('type','=','purchase')],limit=1)
                     
@@ -64,6 +63,7 @@ class WizardImportDocuments(models.TransientModel):
                     serie=fila[1].split('-')
                 
                     factura=self.env['mantenedor.importacion.masiva'].search([('code','=','FAC')])
+                    raise ValidationError("{0} {1}".format(fila[0],factura.name))
                     if fila[0] == factura.name:
                         invoice_id = {
                             'type':'in_invoice',
