@@ -56,7 +56,6 @@ class ReporteEstadoCuenta(models.TransientModel):
             seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
             otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
             rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
-            raise ValidationError("{0}".format(saldo[0]))
             capital_fac=self.env['account.move'].search([('ref','=',sal['secuencia']),('state','=','posted'),('journal_id','=',cuota_capital_obj.journal_id.id)])
             seguro_fac=self.env['account.move'].search([('ref','=',sal['secuencia']),('state','=','posted'),('journal_id','=',seguro_obj.journal_id.id)])
             rastreo_fac=self.env['account.move'].search([('ref','=',sal['secuencia']),('state','=','posted'),('journal_id','=',rastreo_obj.journal_id.id)])
