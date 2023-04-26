@@ -70,19 +70,20 @@ class ReporteEstadoCuenta(models.TransientModel):
             seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
             otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
             rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
-            capital_fac=self.env['account.move'].search([('ref','=',factura['name']),('state','=','posted'),('journal_id','=',cuota_capital_obj.journal_id.id)])
-            seguro_fac=self.env['account.move'].search([('ref','=',factura['name']),('state','=','posted'),('journal_id','=',seguro_obj.journal_id.id)])
-            rastreo_fac=self.env['account.move'].search([('ref','=',factura['name']),('state','=','posted'),('journal_id','=',rastreo_obj.journal_id.id)])
-            otros_fac=self.env['account.move'].search([('ref','=',factura['name']),('state','=','posted'),('journal_id','=',otros_obj.journal_id.id)])
+            capital_fac=self.env['account.move'].search([('ref','=',factura['secuencia']),('state','=','posted'),('journal_id','=',cuota_capital_obj.journal_id.id)])
+            seguro_fac=self.env['account.move'].search([('ref','=',factura['secuencia']),('state','=','posted'),('journal_id','=',seguro_obj.journal_id.id)])
+            rastreo_fac=self.env['account.move'].search([('ref','=',factura['secuencia']),('state','=','posted'),('journal_id','=',rastreo_obj.journal_id.id)])
+            otros_fac=self.env['account.move'].search([('ref','=',factura['secuencia']),('state','=','posted'),('journal_id','=',otros_obj.journal_id.id)])
             dct={}
+
             for cap in  capital_fac:
                 dct={'fecha_emision':cap.date,
-                    'tipo_referencia':'Capital '+factura['name'],
+                    'tipo_referencia':'Capital '+factura['secuencia'],
                     'numero_documento':cap.name,
                     'tipo_invoice':'INT',
-                    'referencia':factura['ref'],
+                    'referencia':factura['referencia'],
                     'documento_contable':journal_id.name,
-                    'observaciones':factura['name'],
+                    'observaciones':factura['secuencia'],
                     'monto_adeudado':0,
                     'debe':cap.amount_total_signed,
                     'haber':0}
@@ -91,12 +92,12 @@ class ReporteEstadoCuenta(models.TransientModel):
             dct={}
             for seg in  seguro_fac:
                 dct={'fecha_emision':seg.date,
-                    'tipo_referencia':'Seguro '+factura['name'],
+                    'tipo_referencia':'Seguro '+factura['secuencia'],
                     'numero_documento':seg.name,
                     'tipo_invoice':'INT',
-                    'referencia':factura['ref'],
+                    'referencia':factura['referencia'],
                     'documento_contable':journal_id.name,
-                    'observaciones':factura['name'],
+                    'observaciones':factura['secuencia'],
                     'monto_adeudado':0,
                     'debe':seg.amount_total_signed,
                     'haber':0}
@@ -105,12 +106,12 @@ class ReporteEstadoCuenta(models.TransientModel):
             dct={}
             for ras in  rastreo_fac:
                 dct={'fecha_emision':ras.date,
-                    'tipo_referencia':'Rastreo '+factura['name'],
+                    'tipo_referencia':'Rastreo '+factura['secuencia'],
                     'numero_documento':ras.name,
                     'tipo_invoice':'INT',
-                    'referencia':factura['ref'],
+                    'referencia':factura['referencia'],
                     'documento_contable':journal_id.name,
-                    'observaciones':factura['name'],
+                    'observaciones':factura['secuencia'],
                     'monto_adeudado':0,
                     'debe':ras.amount_total_signed,
                     'haber':0}
@@ -119,12 +120,12 @@ class ReporteEstadoCuenta(models.TransientModel):
             dct={}
             for otr in  otros_fac:
                 dct={'fecha_emision':otr.date,
-                    'tipo_referencia':'Otro '+factura['name'],
+                    'tipo_referencia':'Otro '+factura['secuencia'],
                     'numero_documento':otr.name,
                     'tipo_invoice':'INT',
-                    'referencia':factura['ref'],
+                    'referencia':factura['referencia'],
                     'documento_contable':journal_id.name,
-                    'observaciones':factura['name'],
+                    'observaciones':factura['secuencia'],
                     'monto_adeudado':0,
                     'debe':otr.amount_total_signed,
                     'haber':0}
