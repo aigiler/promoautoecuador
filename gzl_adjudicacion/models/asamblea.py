@@ -78,7 +78,7 @@ class ParticipantesAsamblea(models.Model):
         cuotas_licitadas=0
         for l in self:
             if l.licitacion_valor and l.cuota:
-                cuotas_licitadas=l.licitacion_valor/l.cuota
+                cuotas_licitadas=round(l.licitacion_valor,2)/round(l.cuota,1)
             l.cuotas_licitadas=cuotas_licitadas
             l.total_or=cuotas_licitadas*l.cuota_capital
 
