@@ -63,6 +63,7 @@ class WizardImportDocuments(models.TransientModel):
                 
                     factura=self.env['mantenedor.importacion.masiva'].search([('code','=','FAC')])
                     if fila[0] == factura.name:
+                        raise ValidationError("PASA AQUIII")
                         invoice_id = {
                             'type':'in_invoice',
                             'is_electronic':True,
