@@ -41,33 +41,40 @@ class ReporteEstadoCuenta(models.TransientModel):
 
         sql=self.obtener_sql_de_listas(partner_id)
 
-        query_final=sql + ' select coalesce (sum(debe) - sum(haber),0) as saldo_inicial from lista_documentos {0}  '.format(filtro)
+        query_final=sql + ' select * from lista_documentos {0} order by fecha_emision,create_date '.format(filtro)
         self.env.cr.execute(query_final)
 
+
+
+        #query_final=sql + ' select coalesce (sum(debe) - sum(haber),0) as saldo_inicial from lista_documentos {0}  '.format(filtro)
+        #self.env.cr.execute(query_final)
+
         saldo=self.env.cr.dictfetchall()
-    
-        cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
-        seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
-        otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
-        rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
-        raise ValidationError("{0}".format(saldo[0]))
-        capital_fac=self.env['account.move'].search([('ref','=',saldo[0]['secuencia']),('state','=','posted'),('journal_id','=',cuota_capital_obj.journal_id.id)])
-        seguro_fac=self.env['account.move'].search([('ref','=',saldo[0]['secuencia']),('state','=','posted'),('journal_id','=',seguro_obj.journal_id.id)])
-        rastreo_fac=self.env['account.move'].search([('ref','=',saldo[0]['secuencia']),('state','=','posted'),('journal_id','=',rastreo_obj.journal_id.id)])
-        otros_fac=self.env['account.move'].search([('ref','=',saldo[0]['secuencia']),('state','=','posted'),('journal_id','=',otros_obj.journal_id.id)])
-        debe=0
-        for cap in  capital_fac:
-            debe=cap.amount_total_signed
-        for seg in  seguro_fac:
-            debe=seg.amount_total_signed
+        saldo_inicial=0
+        for sal in saldo:
+            cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
+            seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
+            otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
+            rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
+            raise ValidationError("{0}".format(saldo[0]))
+            capital_fac=self.env['account.move'].search([('ref','=',sal['secuencia']),('state','=','posted'),('journal_id','=',cuota_capital_obj.journal_id.id)])
+            seguro_fac=self.env['account.move'].search([('ref','=',sal['secuencia']),('state','=','posted'),('journal_id','=',seguro_obj.journal_id.id)])
+            rastreo_fac=self.env['account.move'].search([('ref','=',sal['secuencia']),('state','=','posted'),('journal_id','=',rastreo_obj.journal_id.id)])
+            otros_fac=self.env['account.move'].search([('ref','=',sal['secuencia']),('state','=','posted'),('journal_id','=',otros_obj.journal_id.id)])
+            debe=0
+            for cap in  capital_fac:
+                debe=cap.amount_total_signed
+            for seg in  seguro_fac:
+                debe=seg.amount_total_signed
 
-        for ras in  rastreo_fac:
-            debe=ras.amount_total_signed
+            for ras in  rastreo_fac:
+                debe=ras.amount_total_signed
 
-        for otr in  otros_fac:
-            debe=otr.amount_total_signed
+            for otr in  otros_fac:
+                debe=otr.amount_total_signed
+            saldo_inicial+=sal.debe-sal.haber+debe
 
-        return saldo[0]['saldo_inicial']+debe
+        return saldo_inicial
          
 
 
