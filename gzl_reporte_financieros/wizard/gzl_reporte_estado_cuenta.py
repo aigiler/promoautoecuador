@@ -71,7 +71,7 @@ class ReporteEstadoCuenta(models.TransientModel):
 
             for otr in  otros_fac:
                 debe=otr.amount_total_signed
-            saldo_inicial+=sal.debe-sal.haber+debe
+            saldo_inicial+=sal['debe'] -sal['haber'] +debe
 
         return saldo_inicial
          
