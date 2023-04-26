@@ -37,7 +37,7 @@ class ContratoEstadoCuentaPagos(models.Model):
     def validar_cuota_capital_pagar(self):
         for l in self:
             if l.cuota_capital_pagar>l.cuota_capital:
-                raise ValidationError("El valor a Pagar no puede ser mayor que el permitido")
+                raise ValidationError("El valor a Pagar no puede ser mayor que el permitido {0}-{1}".format(l.cuota_capital_pagar,l.cuota_capital))
 
     @api.onchange('seguro_pagar')
     def validar_seguro_pagar(self):
