@@ -395,7 +395,7 @@ class Asamblea(models.Model):
                 adjudicados+=cont.monto_financiamiento
 
             #l.recuperacionCartera
-            l.recuperacionCartera= 
+            #l.recuperacionCartera= 
             l.adjudicados= adjudicados
             l.fondos_mes=capital_cancelado_mes
 
