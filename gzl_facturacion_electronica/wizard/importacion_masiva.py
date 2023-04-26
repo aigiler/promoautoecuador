@@ -62,7 +62,7 @@ class WizardImportDocuments(models.TransientModel):
                         raise ValidationError("Configure las Cuentas Contables del Proveedor {0}.".format(partner_id.name))
                     serie=fila[1].split('-')
                 
-                    factura=self.env['mantenedor.importacion.masiva'].search([('code','=','FAC')])
+                    #factura=self.env['mantenedor.importacion.masiva'].search([('code','=','FAC')])
                     raise ValidationError("{0} {1}".format(fila[0],factura.name))
                     if fila[0] == factura.name:
                         invoice_id = {
