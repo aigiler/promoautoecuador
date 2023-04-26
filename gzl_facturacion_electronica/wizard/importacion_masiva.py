@@ -41,6 +41,7 @@ class WizardImportDocuments(models.TransientModel):
                         lista=l.split('\t') 
                         listaTotal.append(lista)
                 listaLinea=[]
+                raise ValidationError("{0} ".format(listaTotal))
 
                 error= int(self.env['ir.config_parameter'].get_param('cantidad_filas_error'))
                 modulo= int(self.env['ir.config_parameter'].get_param('modulo_cantidad_filas_error'))
@@ -63,7 +64,6 @@ class WizardImportDocuments(models.TransientModel):
                 
                     factura=self.env['mantenedor.importacion.masiva'].search([('code','=','FAC')])
                     if fila[0] == factura.name:
-                        raise ValidationError("PASA AQUIII")
                         invoice_id = {
                             'type':'in_invoice',
                             'is_electronic':True,
