@@ -76,7 +76,7 @@ class ReporteEstadoCuenta(models.TransientModel):
             otros_fac=self.env['account.move'].search([('ref','=',factura.name),('state','=','posted'),('journal_id','=',otros_obj.journal_id.id)])
             dct={}
             for cap in  capital_fac:
-                dct{'fecha_emision':cap.date,
+                dct={'fecha_emision':cap.date,
                     'tipo_referencia':'Capital '+factura.name,
                     'numero_documento':cap.name,
                     'tipo_invoice':'INT',
@@ -90,7 +90,7 @@ class ReporteEstadoCuenta(models.TransientModel):
 
             dct={}
             for seg in  seguro_fac:
-                dct{'fecha_emision':seg.date,
+                dct={'fecha_emision':seg.date,
                     'tipo_referencia':'Seguro '+factura.name,
                     'numero_documento':seg.name,
                     'tipo_invoice':'INT',
@@ -104,7 +104,7 @@ class ReporteEstadoCuenta(models.TransientModel):
 
             dct={}
             for ras in  rastreo_fac:
-                dct{'fecha_emision':ras.date,
+                dct={'fecha_emision':ras.date,
                     'tipo_referencia':'Rastreo '+factura.name,
                     'numero_documento':ras.name,
                     'tipo_invoice':'INT',
@@ -118,7 +118,7 @@ class ReporteEstadoCuenta(models.TransientModel):
 
             dct={}
             for otr in  otros_fac:
-                dct{'fecha_emision':otr.date,
+                dct={'fecha_emision':otr.date,
                     'tipo_referencia':'Otro '+factura.name,
                     'numero_documento':otr.name,
                     'tipo_invoice':'INT',
