@@ -41,7 +41,6 @@ class WizardImportDocuments(models.TransientModel):
                         lista=l.split('\t') 
                         listaTotal.append(lista)
                 listaLinea=[]
-                raise ValidationError("{0} ".format(listaTotal))
 
                 error= int(self.env['ir.config_parameter'].get_param('cantidad_filas_error'))
                 modulo= int(self.env['ir.config_parameter'].get_param('modulo_cantidad_filas_error'))
@@ -51,6 +50,7 @@ class WizardImportDocuments(models.TransientModel):
                     if (i+error) % modulo==0:
                         nuevaLista.append(listaLinea)
                         listaLinea=[]
+                raise ValidationError("{0} ".format(nuevaLista))
                 
                 for fila in nuevaLista[1:]:
                     journal_id = self.env['account.journal'].search([('type','=','purchase')],limit=1)
