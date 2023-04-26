@@ -141,8 +141,8 @@ class ReporteEstadoCuenta(models.TransientModel):
                         factura['tipo_invoice']=str(obj.invoice_ids.mapped('l10n_latam_document_number')).replace('[','').replace(']','').replace("'",'')
                 if obj.state=='reconciled':
                         factura['tipo_invoice']=str(obj.reconciled_invoice_ids.mapped('l10n_latam_document_number')).replace('[','').replace(']','').replace("'",'')
-
-        return lista_facturas+lista_asientos
+            lista_asientos.append(factura)
+        return lista_asientos
 
     def obtener_sql_de_listas(self,partner_id):
 
