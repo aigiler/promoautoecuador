@@ -64,7 +64,73 @@ class ReporteEstadoCuenta(models.TransientModel):
 
         lista_facturas=self.env.cr.dictfetchall()
 
+        lista_asientos=[]
         for factura in lista_facturas:
+            cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
+            seguro_obj = self.env['rubros.contratos'].search([('name','=','seguro')])
+            otros_obj = self.env['rubros.contratos'].search([('name','=','otros')])
+            rastreo_obj = self.env['rubros.contratos'].search([('name','=','rastreo')])
+            capital_fac=self.env['account.move'].search([('ref','=',factura.name),('state','=','posted'),('journal_id','=',cuota_capital_obj.journal_id.id)])
+            seguro_fac=self.env['account.move'].search([('ref','=',factura.name),('state','=','posted'),('journal_id','=',seguro_obj.journal_id.id)])
+            rastreo_fac=self.env['account.move'].search([('ref','=',factura.name),('state','=','posted'),('journal_id','=',rastreo_obj.journal_id.id)])
+            otros_fac=self.env['account.move'].search([('ref','=',factura.name),('state','=','posted'),('journal_id','=',otros_obj.journal_id.id)])
+            dct={}
+            for cap in  capital_fac:
+                dct{'fecha_emision':cap.date,
+                    'tipo_referencia':'Capital '+factura.name,
+                    'numero_documento':cap.name,
+                    'tipo_invoice':'INT',
+                    'referencia':factura.ref,
+                    'documento_contable':journal_id.name,
+                    'observaciones':factura.name,
+                    'monto_adeudado':0,
+                    'debe':cap.amount_total_signed,
+                    'haber':0}
+                lista_asientos.append(dct)
+
+            dct={}
+            for seg in  seguro_fac:
+                dct{'fecha_emision':seg.date,
+                    'tipo_referencia':'Seguro '+factura.name,
+                    'numero_documento':seg.name,
+                    'tipo_invoice':'INT',
+                    'referencia':factura.ref,
+                    'documento_contable':journal_id.name,
+                    'observaciones':factura.name,
+                    'monto_adeudado':0,
+                    'debe':seg.amount_total_signed,
+                    'haber':0}
+                lista_asientos.append(dct)
+
+            dct={}
+            for ras in  rastreo_fac:
+                dct{'fecha_emision':ras.date,
+                    'tipo_referencia':'Rastreo '+factura.name,
+                    'numero_documento':ras.name,
+                    'tipo_invoice':'INT',
+                    'referencia':factura.ref,
+                    'documento_contable':journal_id.name,
+                    'observaciones':factura.name,
+                    'monto_adeudado':0,
+                    'debe':ras.amount_total_signed,
+                    'haber':0}
+                lista_asientos.append(dct)
+
+            dct={}
+            for otr in  otros_fac:
+                dct{'fecha_emision':otr.date,
+                    'tipo_referencia':'Otro '+factura.name,
+                    'numero_documento':otr.name,
+                    'tipo_invoice':'INT',
+                    'referencia':factura.ref,
+                    'documento_contable':journal_id.name,
+                    'observaciones':factura.name,
+                    'monto_adeudado':0,
+                    'debe':otr.amount_total_signed,
+                    'haber':0}
+                lista_asientos.append(dct)
+
+
             if factura.get('tipo_invoice')!='' and factura.get('tipo_referencia') in ['NCR','NDB']:
                 obj=self.env['account.move'].browse(int(factura['tipo_invoice']))
                 factura['tipo_invoice']=obj.l10n_latam_document_number
@@ -76,7 +142,7 @@ class ReporteEstadoCuenta(models.TransientModel):
                 if obj.state=='reconciled':
                         factura['tipo_invoice']=str(obj.reconciled_invoice_ids.mapped('l10n_latam_document_number')).replace('[','').replace(']','').replace("'",'')
 
-        return lista_facturas
+        return lista_facturas+lista_asientos
 
     def obtener_sql_de_listas(self,partner_id):
 
@@ -133,11 +199,36 @@ class ReporteEstadoCuenta(models.TransientModel):
                                         am.partner_id={0} {1}  """.format(partner_id,filtro_tipo_empresa))
 
 
-
         if self.tipo_empresa=='proveedor':
             filtro_tipo_empresa_pago=" and ap.partner_type = 'supplier'"
         else:
             filtro_tipo_empresa_pago=" and ap.partner_type = 'customer'"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         query_pagos=(""" select 
                                     ap.id,
