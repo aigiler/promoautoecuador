@@ -14,6 +14,14 @@ from odoo.exceptions import ValidationError
 
 #     codigo_asesor=fields.Char("Codigo de Asesor")
 
+class DetalleProgramo(models.Model):
+    _name = "detalle.programo"
+
+    plazo_meses = fields.Many2one('numero.meses',default=lambda self: self.env.ref('gzl_adjudicacion.{0}'.format('numero_meses60')).id ,track_visibility='onchange' )
+    porcentaje_programado = fields.Float(
+        string='Porcentaje Programado')
+    numero_cuotas_pagadas=fields.Integer('Cuotas Pagadas')
+
 class ReportGrupos(models.TransientModel):
     _name = "reporte.grupos"
 
