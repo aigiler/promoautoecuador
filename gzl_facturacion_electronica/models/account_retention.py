@@ -326,7 +326,6 @@ class AccountRetention(models.Model):
             s.amount_total = sum(tax.amount for tax in s.tax_ids)
     
     def button_validate(self):
-        raise ValidationError('{0}'.format(self.in_type))
         for ret in self:
             if not ret.tax_ids:
                 raise UserError('No ha aplicado impuestos.')
