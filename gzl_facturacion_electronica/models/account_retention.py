@@ -358,6 +358,8 @@ class AccountRetention(models.Model):
                                     cuota_id.saldo_iva=cuota_id.saldo_iva-valor_pagado
                                     valor_pagado=0
                         saldo=cuota_id.saldo_cuota_capital+cuota_id.saldo_iva+cuota_id.saldo_cuota_administrativa+cuota_id.saldo_rastreo+cuota_id.saldo_seguro+cuota_id.saldo_otros
+                        pago_cuota_id=self.env['account.payment.cuotas'].create({'cuotas_id':cuota_id.id,
+                                                                                            'monto_pagado':self.amount_total,'valor_asociado':self.amount_total})
                         if saldo==0:
                             cuota_id.estado_pago='pagado'
 
