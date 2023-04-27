@@ -310,8 +310,7 @@ class Asamblea(models.Model):
                                                 ganador.seleccionado=True
                                                 ganador.nota="GANADOR"
                                                 ganadores_seleccionados+=1
-                                    else:
-                                        pass
+ 
 
                     numero_suplentes=int(parametros_programo.numero_suplentes)
                     suplentes=self.env['participantes.asamblea.clientes'].search([('asamblea_id','=',self.id),('seleccionado','=',False)])
@@ -331,8 +330,7 @@ class Asamblea(models.Model):
                                                 suplente.seleccionado=True
                                                 suplente.nota="SUPLENTE"
                                                 suplentes_seleccionados+=1
-                                    else:
-                                        pass
+
 
 
             if saldoActual:
