@@ -2392,6 +2392,8 @@ class AccountMove(models.Model):
                     pago_total=0
 
 
+
+
         for cuota in movimientos_cuota:
             cuota.write({'state': 'cancel'})
         for seguro in movimientos_seguro:
