@@ -400,7 +400,7 @@ class Asamblea(models.Model):
                 adjudicados+=cont.monto_financiamiento
                 programo=round(sum(cont.estado_de_cuenta_ids.mapped("programado")),2)-round(sum(cont.estado_de_cuenta_ids.mapped("saldo_programado")),2)
 
-                capital=round(sum(cont.estado_de_cuenta_ids.mapped("cuota_capital")),2)-round(sum(cont.estado_de_cuenta_ids.mapped("saldo_cuota_capital")),2)+sum_programo
+                capital=round(sum(cont.estado_de_cuenta_ids.mapped("cuota_capital")),2)-round(sum(cont.estado_de_cuenta_ids.mapped("saldo_cuota_capital")),2)
                 total_capital=capital+programo
                 recuperacionCartera+=total_capital
 
