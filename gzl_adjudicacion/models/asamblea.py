@@ -393,11 +393,16 @@ class Asamblea(models.Model):
             ids_contratos=self.env["contrato"].search([])
             for cont in ids_contratos:
                 adjudicados+=cont.monto_financiamiento
+                programo=round(sum(cont.estado_de_cuenta_ids.mapped("programado")),2)-round(sum(cont.estado_de_cuenta_ids.mapped("saldo_programado")),2)
+
+                capital=round(sum(cont.estado_de_cuenta_ids.mapped("cuota_capital")),2)-round(sum(cont.estado_de_cuenta_ids.mapped("saldo_cuota_capital")),2)+sum_programo
+                total_capital=capital+programo
+                recuperacionCartera+=total_capital
 
             #l.recuperacionCartera
-            #l.recuperacionCartera= 
+            l.recuperacionCartera= recuperacionCartera
             l.adjudicados= adjudicados
-            l.fondos_mes=capital_cancelado_mes
+            l.fondos_mes=recuperacionCartera-adjudicados
 
 
     @api.depends('fondos_mes','invertir_licitacion','programo','evaluacion')
