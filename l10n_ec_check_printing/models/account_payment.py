@@ -1533,12 +1533,13 @@ class AccountPayment(models.Model):
                             otro_pagar+=y.otro_pagar
                 
                     if  cuota_capital_pagar:
+                        
+
+                        cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
                         if self.x_aplica_moto:
                             cuenta_cap=l.partner_id.property_account_receivable_id.id
                         else:
                             cuenta_cap=cuota_capital_obj.cuenta_id.id,
-
-                        cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
                         tupla={
                                                             'partner_id':l.partner_id.id,
                                                             'cuenta':cuenta_cap,
