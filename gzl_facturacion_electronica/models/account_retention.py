@@ -354,7 +354,7 @@ class AccountRetention(models.Model):
                 for cuota_id in self.invoice_id.contrato_estado_cuenta_ids:
                     if valor_pagado:
                         if cuota_id.saldo_cuota_administrativa:
-                             if valor_pagado>=cuota_id.saldo_cuota_administrativa:
+                            if valor_pagado>=cuota_id.saldo_cuota_administrativa:
                                 valor_pagado=valor_pagado-cuota_id.saldo_cuota_administrativa
                                 cuota_id.saldo_cuota_administrativa=0
                             else:
@@ -362,7 +362,7 @@ class AccountRetention(models.Model):
                                 valor_pagado=0
                     if valor_pagado:
                         if cuota_id.saldo_iva:
-                             if valor_pagado>=cuota_id.saldo_iva:
+                            if valor_pagado>=cuota_id.saldo_iva:
                                 valor_pagado=valor_pagado-cuota_id.saldo_iva
                                 cuota_id.saldo_iva=0
                             else:
