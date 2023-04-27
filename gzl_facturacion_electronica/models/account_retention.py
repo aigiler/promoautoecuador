@@ -370,7 +370,6 @@ class AccountRetention(models.Model):
         self.action_number(number)
         if self.in_type in ['ret_in_invoice']:
             self.procesoComprobanteElectronico()
-        elif self.in_type in ['ret_out_invoice']:    
             
 
     
