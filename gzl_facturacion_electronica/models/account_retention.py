@@ -334,19 +334,7 @@ class AccountRetention(models.Model):
                 ret.invoice_id.write({'retention_id': ret.id})
             if self.in_type in ['ret_out_invoice']:
                 self.create_move()
-
-
-        
-    
-    def action_validate(self, number=None):
-        """
-        @number: Número para usar en el documento
-        """
-        self.action_number(number)
-        if self.in_type in ['ret_in_invoice']:
-            self.procesoComprobanteElectronico()
-        elif self.in_type in ['ret_out_invoice']:    
-            if self.invoice_id and self.invoice_id.contrato_estado_cuenta_ids and self.amount_total:
+                if self.invoice_id and self.invoice_id.contrato_estado_cuenta_ids and self.amount_total:
                 lista_final=[]
                 monto_a_factura=0
                 valor_inicial_factura=self.invoice_id.amount_residual
@@ -372,6 +360,18 @@ class AccountRetention(models.Model):
                     if saldo==0:
                         cuota_id.estado_pago='pagado'
 
+
+        
+    
+    def action_validate(self, number=None):
+        """
+        @number: Número para usar en el documento
+        """
+        self.action_number(number)
+        if self.in_type in ['ret_in_invoice']:
+            self.procesoComprobanteElectronico()
+        elif self.in_type in ['ret_out_invoice']:    
+            
 
     
         return self.write({'state': 'done'})
