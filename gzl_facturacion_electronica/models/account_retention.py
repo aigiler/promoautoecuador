@@ -335,30 +335,30 @@ class AccountRetention(models.Model):
             if self.in_type in ['ret_out_invoice']:
                 self.create_move()
                 if self.invoice_id and self.invoice_id.contrato_estado_cuenta_ids and self.amount_total:
-                lista_final=[]
-                monto_a_factura=0
-                valor_inicial_factura=self.invoice_id.amount_residual
-                valor_pagado=self.amount_total
-                for cuota_id in self.invoice_id.contrato_estado_cuenta_ids:
-                    if valor_pagado:
-                        if cuota_id.saldo_cuota_administrativa:
-                            if valor_pagado>=cuota_id.saldo_cuota_administrativa:
-                                valor_pagado=valor_pagado-cuota_id.saldo_cuota_administrativa
-                                cuota_id.saldo_cuota_administrativa=0
-                            else:
-                                cuota_id.saldo_cuota_administrativa=cuota_id.saldo_cuota_administrativa-valor_pagado
-                                valor_pagado=0
-                    if valor_pagado:
-                        if cuota_id.saldo_iva:
-                            if valor_pagado>=cuota_id.saldo_iva:
-                                valor_pagado=valor_pagado-cuota_id.saldo_iva
-                                cuota_id.saldo_iva=0
-                            else:
-                                cuota_id.saldo_iva=cuota_id.saldo_iva-valor_pagado
-                                valor_pagado=0
-                    saldo=cuota_id.saldo_cuota_capital+cuota_id.saldo_iva+cuota_id.saldo_cuota_administrativa+cuota_id.saldo_rastreo+cuota_id.saldo_seguro+cuota_id.saldo_otros
-                    if saldo==0:
-                        cuota_id.estado_pago='pagado'
+                    lista_final=[]
+                    monto_a_factura=0
+                    valor_inicial_factura=self.invoice_id.amount_residual
+                    valor_pagado=self.amount_total
+                    for cuota_id in self.invoice_id.contrato_estado_cuenta_ids:
+                        if valor_pagado:
+                            if cuota_id.saldo_cuota_administrativa:
+                                if valor_pagado>=cuota_id.saldo_cuota_administrativa:
+                                    valor_pagado=valor_pagado-cuota_id.saldo_cuota_administrativa
+                                    cuota_id.saldo_cuota_administrativa=0
+                                else:
+                                    cuota_id.saldo_cuota_administrativa=cuota_id.saldo_cuota_administrativa-valor_pagado
+                                    valor_pagado=0
+                        if valor_pagado:
+                            if cuota_id.saldo_iva:
+                                if valor_pagado>=cuota_id.saldo_iva:
+                                    valor_pagado=valor_pagado-cuota_id.saldo_iva
+                                    cuota_id.saldo_iva=0
+                                else:
+                                    cuota_id.saldo_iva=cuota_id.saldo_iva-valor_pagado
+                                    valor_pagado=0
+                        saldo=cuota_id.saldo_cuota_capital+cuota_id.saldo_iva+cuota_id.saldo_cuota_administrativa+cuota_id.saldo_rastreo+cuota_id.saldo_seguro+cuota_id.saldo_otros
+                        if saldo==0:
+                            cuota_id.estado_pago='pagado'
 
 
         
