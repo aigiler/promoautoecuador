@@ -298,35 +298,42 @@ class Asamblea(models.Model):
                     for ganador in ganadores:
                         if ganador.contrato_id.tipo_de_contrato.code=="programo":
                             if ganadores_seleccionados<numero_ganadores:
-                                if ganador.contrato_id.porcentaje_programado==ganador.contrato_id.plazo_meses.porcentaje:
-                                    cuota_id=ganador.contrato_id.estado_de_cuenta_ids.filtered(lambda l: l.numero_cuota==str(ganador.contrato_id.plazo_meses.cuota_adjudicacion) and l.fecha.month==hoy.month and l.fecha.year==hoy.year)
-                                    if cuota_id:
-                                        if (saldoActual-ganador.monto_financiamiento)>=0:
-                                            saldoActual=saldoActual-ganador.monto_financiamiento
-                                            ganador.licitacion_valor=l.programado
-                                            ganador.seleccionado=True
-                                            ganador.nota="GANADOR"
-                                            ganadores_seleccionados+=1
-                                else:
-                                    pass
+                                for det in ganador.contrato_id.tipo_de_contrato.detalle_programo:
+                                    if ganador.contrato_id.porcentaje_programado== det.porcentaje_programado and ganador.contrato_id.plazo_meses.numero==det.plazo_meses.numero:
+                                        cuotas_pendientes=ganador.contrato_id.estado_de_cuenta_ids.filtered(lambda l: l.numero_cuota<str(det.numero_cuotas_pagadas) and l.estado_pago=='pendiente')
+                                        if cuotas_pendientes:
+                                            pass
+                                        else:
+                                            if (saldoActual-ganador.monto_financiamiento)>=0:
+                                                saldoActual=saldoActual-ganador.monto_financiamiento
+                                                ganador.licitacion_valor=l.programado
+                                                ganador.seleccionado=True
+                                                ganador.nota="GANADOR"
+                                                ganadores_seleccionados+=1
+                                    else:
+                                        pass
 
                     numero_suplentes=int(parametros_programo.numero_suplentes)
                     suplentes=self.env['participantes.asamblea.clientes'].search([('asamblea_id','=',self.id),('seleccionado','=',False)])
                     suplentes_seleccionados=0
                     for suplente in suplentes:
                         if suplente.contrato_id.tipo_de_contrato.code=="programo":
-                            if suplente.contrato_id.porcentaje_programado==ganador.contrato_id.plazo_meses.porcentaje:
-                                if suplentes_seleccionados<numero_suplentes:
-                                    cuota_id=suplente.contrato_id.estado_de_cuenta_ids.filtered(lambda l: l.numero_cuota==str(suplente.contrato_id.plazo_meses.cuota_adjudicacion) and l.fecha.month==hoy.month and l.fecha.year==hoy.year)
-                                    if cuota_id:
-                                        if (valorNeto-suplente.monto_financiamiento)>=0:
-                                            valorNeto=valorNeto-suplente.monto_financiamiento
-                                            suplente.licitacion_valor=l.programado
-                                            suplente.seleccionado=True
-                                            suplente.nota="SUPLENTE"
-                                            suplentes_seleccionados+=1
-                                else:
-                                    pass
+                            if suplentes_seleccionados<numero_suplentes:
+                                for det in suplente.contrato_id.tipo_de_contrato.detalle_programo:
+                                    if suplente.contrato_id.porcentaje_programado== det.porcentaje_programado and suplente.contrato_id.plazo_meses.numero==det.plazo_meses.numero:
+                                        cuotas_pendientes_sup=suplente.contrato_id.estado_de_cuenta_ids.filtered(lambda l: l.numero_cuota<str(det.numero_cuotas_pagadas) and l.estado_pago=='pendiente')
+                                        if cuotas_pendientes_sup:
+                                            pass
+                                        else:
+                                            if (valorNeto-suplente.monto_financiamiento)>=0:
+                                                valorNeto=valorNeto-suplente.monto_financiamiento
+                                                suplente.licitacion_valor=l.programado
+                                                suplente.seleccionado=True
+                                                suplente.nota="SUPLENTE"
+                                                suplentes_seleccionados+=1
+                                    else:
+                                        pass
+
 
             if saldoActual:
                 valorNeto=saldoActual
