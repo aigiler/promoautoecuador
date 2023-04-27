@@ -101,6 +101,12 @@ class WizardAdelantarCuotas(models.Model):
                     cuota_actual.factura_id=False
                     if detalle.estado_pago=='pagado':
                         cuota_actual.estado_pago="varias"
+                    pagos_asociados=self.env['account.payment.cuotas'].search([('cuotas_id','=',detalle.id)])
+                    for pag in pagos_asociados:
+                        id_pago=self.env['account.payment.cuotas'].create({'pago_id':pag.pago_id.id,
+                                                        'monto_pagado':pag.monto_pagado,
+                                                        'valor_asociado':pag.valor_asociado,
+                                                        'cuotas_id':cuota_actual.id})
                 i=2
                 j=1
                 detalle_estado_cuenta_pendiente=self.contrato_a_ceder.tabla_amortizacion.filtered(lambda l:  l.numero_cuota != "1" and l.estado_pago=='pendiente' and not l.programado)
@@ -110,13 +116,20 @@ class WizardAdelantarCuotas(models.Model):
                     cuota_actual.contrato_id=id_contrato.id
                     cuota_actual.numero_cuota=i
                     cuota_actual.fecha=l.contrato_id.fecha_inicio_pago + relativedelta(months=j)
-                    cuota_actual.saldo_cuota_capital=detalle.cuota_capital
-                    cuota_actual.saldo_cuota_administrativa=detalle.cuota_adm
-                    cuota_actual.saldo_iva=detalle.iva_adm
-                    cuota_actual.saldo_seguro=detalle.seguro
-                    cuota_actual.saldo_rastreo=detalle.rastreo
-                    cuota_actual.saldo_programado=detalle.programado
-                    cuota_actual.saldo_otros=detalle.otro
+                    cuota_actual.saldo_cuota_capital=detalle.saldo_cuota_capital
+                    cuota_actual.saldo_cuota_administrativa=detalle.saldo_cuota_administrativa
+                    cuota_actual.saldo_iva=detalle.saldo_iva
+                    cuota_actual.saldo_seguro=detalle.saldo_seguro
+                    cuota_actual.saldo_rastreo=detalle.saldo_rastreo
+                    cuota_actual.saldo_programado=detalle.saldo_programado
+                    cuota_actual.saldo_otros=detalle.saldo_otros
+                    pagos_asociados=self.env['account.payment.cuotas'].search([('cuotas_id','=',detalle.id)])
+                    for pag in pagos_asociados:
+                        id_pago=self.env['account.payment.cuotas'].create({'pago_id':pag.pago_id.id,
+                                                        'monto_pagado':pag.monto_pagado,
+                                                        'valor_asociado':pag.valor_asociado,
+                                                        'cuotas_id':cuota_actual.id})
+
                     cuota_actual.factura_id=False
                     lista_final.append({'cuota':i,'fecha_pago':cuota_actual.fecha})
                     i+=1
@@ -131,13 +144,20 @@ class WizardAdelantarCuotas(models.Model):
                     if detalle.estado_pago=='pagado':
                         cuota_actual.estado_pago="varias"
                     cuota_actual.factura_id=False
-                    cuota_actual.saldo_cuota_capital=detalle.cuota_capital
-                    cuota_actual.saldo_cuota_administrativa=detalle.cuota_adm
-                    cuota_actual.saldo_iva=detalle.iva_adm
-                    cuota_actual.saldo_seguro=detalle.seguro
-                    cuota_actual.saldo_rastreo=detalle.rastreo
-                    cuota_actual.saldo_programado=detalle.programado
-                    cuota_actual.saldo_otros=detalle.otro
+                    cuota_actual.saldo_cuota_capital=0
+                    cuota_actual.saldo_cuota_administrativa=0
+                    cuota_actual.saldo_iva=0
+                    cuota_actual.saldo_seguro=0
+                    cuota_actual.saldo_rastreo=0
+                    cuota_actual.saldo_programado=0
+                    cuota_actual.saldo_otros=0
+                    pagos_asociados=self.env['account.payment.cuotas'].search([('cuotas_id','=',detalle.id)])
+                    for pag in pagos_asociados:
+                        id_pago=self.env['account.payment.cuotas'].create({'pago_id':pag.pago_id.id,
+                                                        'monto_pagado':pag.monto_pagado,
+                                                        'valor_asociado':pag.valor_asociado,
+                                                        'cuotas_id':cuota_actual.id})
+
                     cuota_actual.fecha=l.contrato_id.fecha_inicio_pago+ relativedelta(months=j)
                     lista_final.append({'cuota':i,'fecha_pago':cuota_actual.fecha})
                     i+=1
