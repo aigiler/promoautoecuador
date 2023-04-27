@@ -21,6 +21,17 @@ class DetalleProgramo(models.Model):
     porcentaje_programado = fields.Float(
         string='Porcentaje Programado')
     numero_cuotas_pagadas=fields.Integer('Cuotas Pagadas')
+    tipo_de_contrato = fields.Many2one(
+        'tipo.contrato.adjudicado', string='Tipo de Contrato', track_visibility='onchange')
+
+
+class TipoContratoAdjudicado(models.Model):
+    
+    _inherit = 'tipo.contrato.adjudicado'
+
+    detalle_programo = fields.One2many(
+        'detalle.programo', 'tipo_de_contrato', track_visibility='onchange')
+
 
 class ReportGrupos(models.TransientModel):
     _name = "reporte.grupos"
