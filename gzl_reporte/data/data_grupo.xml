@@ -4,9 +4,11 @@
         <record id="grupo_reporte" model="res.groups">
             <field name="name">Reporteria</field>
             <field name="users" eval="[(4,ref('base.user_admin'))]"/>
-
-
             
+        </record>
+        <record id="grupo_cobranza_lectura" model="res.groups">
+            <field name="name">Rol de Cobraza Lectura</field>
+            <field name="users" eval="[(4,ref('base.user_admin'))]"/>
         </record>
 
 
