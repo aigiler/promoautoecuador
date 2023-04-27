@@ -379,21 +379,21 @@ class Asamblea(models.Model):
             ##grupoParticipante=l.grupo_cliente.transacciones_ids.filtered(lambda l: l.create_date.month==hoy.month and l.create_date.year==hoy.year)
             grupoParticipante=l.grupo_cliente.transacciones_ids
             #######Capital cancelado del mes
-            facturas_ids=self.env['account.move'].search([('partner_id','=',contrato.cliente.id),('state','=','posted'),('type','=','out_invoice'),('contrato_id','=',contrato.id)])
-            pagos_ids=self.env['account.payment'].search([('partner_id','=',contrato.cliente.id),('state','=','posted'),('payment_type','=','inbound'),('abono_contrato','=',True)])
-            pagos_programados_ids=pagos_ids.contrato_estado_cuenta_payment_ids.filtered(lambda l: l.programado>0 and l.monto_pagar>0)
-            capital_cancelado_mes=0
-            if factura_id.contrato_estado_cuenta_ids:
-                if int(factura_id.invoice_date.month)==int(mes_curso) and int(factura_id.invoice_date.year)==int(anio):
-                    cuota_capital=self.env['account.move'].search([('ref','=',factura_id.name),('state','=','posted'),('journal_id','=',cuota_capital_obj.journal_id.id)])
-                    for cap in cuota_capital:
-                        if cuota_capital.line_ids.matched_credit_ids:
-                            #capital_cancelado_mes+=credit_cap.amount
-                            for capital in factura_id.contrato_estado_cuenta_ids:
-                                capital_cancelado_mes+=capital.cuota_capital
-                            for progrmao in  pagos_programados_ids:
-                                if int(progrmao.payment_pagos_id.create_date.month)==int(mes_curso) and int(progrmao.payment_pagos_id.create_date.year)==int(anio):
-                                    capital_cancelado_mes+=progrmao.monto_pagar
+            # facturas_ids=self.env['account.move'].search([('partner_id','=',contrato.cliente.id),('state','=','posted'),('type','=','out_invoice'),('contrato_id','=',contrato.id)])
+            # pagos_ids=self.env['account.payment'].search([('partner_id','=',contrato.cliente.id),('state','=','posted'),('payment_type','=','inbound'),('abono_contrato','=',True)])
+            # pagos_programados_ids=pagos_ids.contrato_estado_cuenta_payment_ids.filtered(lambda l: l.programado>0 and l.monto_pagar>0)
+            # capital_cancelado_mes=0
+            # if factura_id.contrato_estado_cuenta_ids:
+            #     if int(factura_id.invoice_date.month)==int(mes_curso) and int(factura_id.invoice_date.year)==int(anio):
+            #         cuota_capital=self.env['account.move'].search([('ref','=',factura_id.name),('state','=','posted'),('journal_id','=',cuota_capital_obj.journal_id.id)])
+            #         for cap in cuota_capital:
+            #             if cuota_capital.line_ids.matched_credit_ids:
+            #                 #capital_cancelado_mes+=credit_cap.amount
+            #                 for capital in factura_id.contrato_estado_cuenta_ids:
+            #                     capital_cancelado_mes+=capital.cuota_capital
+            #                 for progrmao in  pagos_programados_ids:
+            #                     if int(progrmao.payment_pagos_id.create_date.month)==int(mes_curso) and int(progrmao.payment_pagos_id.create_date.year)==int(anio):
+            #                         capital_cancelado_mes+=progrmao.monto_pagar
 
             ids_contratos=self.env["contrato"].search([])
             for cont in ids_contratos:
