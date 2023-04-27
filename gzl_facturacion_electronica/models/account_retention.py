@@ -349,7 +349,7 @@ class AccountRetention(models.Model):
             if self.invoice_id and self.invoice_id.contrato_estado_cuenta_ids and self.amount_total:
                 lista_final=[]
                 monto_a_factura=0
-                valor_inicial_factura=fact.amount_residual
+                valor_inicial_factura=self.invoice_id.amount_residual
                 valor_pagado=self.amount_total
                 for cuota_id in self.invoice_id.contrato_estado_cuenta_ids:
                     if valor_pagado:
