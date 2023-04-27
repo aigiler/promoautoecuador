@@ -326,6 +326,7 @@ class AccountRetention(models.Model):
             s.amount_total = sum(tax.amount for tax in s.tax_ids)
     
     def button_validate(self):
+        raise ValidationError('{0}'.format(self.in_type))
         for ret in self:
             if not ret.tax_ids:
                 raise UserError('No ha aplicado impuestos.')
@@ -334,6 +335,7 @@ class AccountRetention(models.Model):
                 ret.invoice_id.write({'retention_id': ret.id})
             if self.in_type in ['ret_out_invoice']:
                 self.create_move()
+
                 if self.invoice_id and self.invoice_id.contrato_estado_cuenta_ids and self.amount_total:
                     lista_final=[]
                     monto_a_factura=0
