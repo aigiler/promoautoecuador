@@ -48,6 +48,32 @@ class ReportGrupos(models.TransientModel):
         ('FINALIZADO', 'FINALIZADO'),
     ], string='Estado', default='NO ACTIVADO', track_visibility='onchange')
 
+    mes_contable = fields.Selection(selection=[
+        ('1', 'Enero'),
+        ('2', 'Febrero'),
+        ('3', 'Marzo'),
+        ('4', 'Abril'),
+        ('5', 'Mayo'),
+        ('6', 'Junio'),
+        ('7', 'Julio'),
+        ('8', 'Agosto'),
+        ('9', 'Septiembre'),
+        ('10', 'Octubre'),
+        ('11', 'Noviembre'),
+        ('12', 'Diciembre'),
+    ], string='Mes', track_visibility='onchange')
+    anio_contable= fielda.Selection(selection=[
+        ('2023','2023'),
+        ('2024','2024'),
+        ('2025','2025'),
+        ('2026','2026'),
+        ('2027','2027'),
+        ('2028','2028'),
+        ('2029','2029'),
+        ('2030','2030'),
+        ('2031','2031'),
+        ('2032','2032'),
+        ])
     state_simplificado=fields.Selection(selection=[
         ('AL DIA', 'AL DIA'),
         ('EN MORA', 'EN MORA'),
@@ -145,7 +171,10 @@ class ReportGrupos(models.TransientModel):
         lista_final=[]
         anio = str(datetime.today().year)
         mes_curso = str(datetime.today().month)
-        
+        if self.anio_contable:
+            anio= self.anio_contable
+        if self.mes_contable:
+            mes_curso = self.mes_contable
         for contrato_id in contrato_ids:
             #####obtener los nuevos campos cuotas_canceladas_mes, capital_cancelado_mes, administrativo_cancelado_mes, iva_adm_cancelado_mes, total_cancelado_mes
             contrato=self.env['contrato'].search([('id','=',contrato_id['id'])])
@@ -180,27 +209,7 @@ class ReportGrupos(models.TransientModel):
             for progrmao in  pagos_programados_ids:
                 if int(progrmao.payment_pagos_id.create_date.month)==int(mes_curso) and int(progrmao.payment_pagos_id.create_date.year)==int(anio):
                     capital_cancelado_mes+=progrmao.monto_pagar
-                                        
-            total_cancelado_mes=administrativo_cancelado_mes+iva_adm_cancelado_mes+capital_cancelado_mes
-            # for rec in pagos_ids:
-            #     if int(rec.payment_date.month)==int(mes_curso) and int(rec.payment_date.year)==int(anio):
-            #         for fac in rec.reconciled_invoice_ids:
-                        
-
-            #             if fac.id in lista_facturas:
-            #                 pass
-            #             else:
-            #                 lista_facturas.append(fac.id)
-            #                 if fac.contrato_id.id==contrato.id: 
-            #                     if fac.contrato_id.id==contrato.id and fac.contrato_estado_cuenta_ids:
-            #                         cuotas_canceladas_mes+=len(fac.contrato_estado_cuenta_ids)
-            #                         administrativo_cancelado_mes+=fac.amount_untaxed
-            #                         iva_adm_cancelado_mes+=(fac.amount_total-fac.amount_untaxed)
-            #                         for cap in fac.contrato_estado_cuenta_ids:
-            #                             capital_cancelado_mes+=cap.cuota_capital
-                                   
-                            
-            total_cancelado_mes=administrativo_cancelado_mes+iva_adm_cancelado_mes+capital_cancelado_mes
+            total_cancelado_mes=administrativo_cancelado_mes+iva_adm_cancelado_mes+capital_cancelado_mes                                               
             dct={'codigo_grupo':contrato.grupo.name or '',
                     'contrato':contrato.secuencia  or '',
                     'tipo_contrato':contrato.tipo_de_contrato.name  or '',
