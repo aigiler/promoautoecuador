@@ -44,7 +44,7 @@ class ReportGrupos(models.TransientModel):
         ('ACTIVADO', 'ACTIVADO'),
         ('NO ACTIVADO', 'NO ACTIVADO'),
         ('ADJUDICADO ENTREGADO', 'ADJUDICADO ENTREGADO'),
-        ('ADJUDICADO NO ENTREGADO', 'ADJUDICADO ENTREGADO'),
+        ('ADJUDICADO NO ENTREGADO', 'ADJUDICADO NO ENTREGADO'),
         ('FINALIZADO', 'FINALIZADO'),
     ], string='Estado', default='NO ACTIVADO', track_visibility='onchange')
 
