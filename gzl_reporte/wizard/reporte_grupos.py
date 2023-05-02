@@ -62,7 +62,7 @@ class ReportGrupos(models.TransientModel):
         ('11', 'Noviembre'),
         ('12', 'Diciembre'),
     ], string='Mes', track_visibility='onchange')
-    anio_contable= fielda.Selection(selection=[
+    anio_contable= fields.Selection(selection=[
         ('2023','2023'),
         ('2024','2024'),
         ('2025','2025'),
