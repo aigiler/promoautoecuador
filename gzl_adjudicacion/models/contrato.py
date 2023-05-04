@@ -741,7 +741,8 @@ class Contrato(models.Model):
             obj_template=self.env['mail.template'].browse(template_id)
 
             email_id=obj_template.send_mail(id_envio)
-
+            obj_mail=self.env['mail.mail'].browse(email_id)
+            obj_mail.send()
 
 
     def pagar_cuotas_por_adelantado(self):
