@@ -617,7 +617,7 @@ class Contrato(models.Model):
     def job_enviar_correos_contratos_pago_por_vencer(self, ):
 
         hoy=date.today()
-        contratos=self.env['contrato'].search([('state','in',['ACTIVADO','NO ACTIVADO', 'ADJUDICADO ENTREGADO','ADJUDICADO NO ENTREGADO'])])
+        contratos=self.env['contrato'].search([('id','=',32041),('state','in',['ACTIVADO','NO ACTIVADO', 'ADJUDICADO ENTREGADO','ADJUDICADO NO ENTREGADO'])])
 
         for contrato in contratos:
             if len(contrato.estado_cuenta_ids)>0:
