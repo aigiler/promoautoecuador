@@ -617,11 +617,10 @@ class Contrato(models.Model):
     def job_enviar_correos_contratos_pago_por_vencer(self, ):
 
         hoy=date.today()
-        contratos=self.env['contrato'].search([('state','in',['adjudicado','ACTIVADO'])])
+        contratos=self.env['contrato'].search([('state','in',['ACTIVADO','NO ACTIVADO', 'ADJUDICADO ENTREGADO','ADJUDICADO NO ENTREGADO'])])
 
         for contrato in contratos:
-            mes_estado_cuenta=contrato.tabla_amortizacion.filtered(lambda l: l.fecha.year == hoy.year and l.fecha.month == hoy.month)
-            if len(mes_estado_cuenta)>0:
+            if len(contrato.estado_cuenta_ids)>0:
                 self.envio_correos_plantilla('email_contrato_notificacion_de_pago',contrato.id)
 
 ###Job migración
