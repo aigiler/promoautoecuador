@@ -620,7 +620,7 @@ class Contrato(models.Model):
         contratos=self.env['contrato'].search([('id','=',32041),('state','in',['ACTIVADO','NO ACTIVADO', 'ADJUDICADO ENTREGADO','ADJUDICADO NO ENTREGADO'])])
 
         for contrato in contratos:
-            if len(contrato.estado_cuenta_ids)>0:
+            if len(contrato.estado_de_cuenta_ids)>0:
                 self.envio_correos_plantilla('email_contrato_notificacion_de_pago',contrato.id)
 
 ###Job migración
