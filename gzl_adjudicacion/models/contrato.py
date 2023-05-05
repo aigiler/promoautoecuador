@@ -613,13 +613,6 @@ class Contrato(models.Model):
             self.envio_correos_plantilla('email_contrato_en_mora',contrato.id)
 
 ####Job para enviar correo contrato pago por vencer
-def job_enviar_correo_estado_cuenta(self,estado,grupo,tipo_de_contrato=False):
-        if tipo_de_contrato:
-            contratos_ids=self.env['contrato'].search([('state','=',estado),('grupo','=',grupo),('tipo_de_contrato','=',tipo_de_contrato)])
-        else:
-            contratos_ids=self.env['contrato'].search([('state','=',estado),('grupo','=',grupo)])
-
-
 
     def job_enviar_correos_contratos_pago_por_vencer(self,estado,grupo,tipo_de_contrato=False):
         if tipo_de_contrato:
