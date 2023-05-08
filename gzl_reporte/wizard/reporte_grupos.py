@@ -209,7 +209,16 @@ class ReportGrupos(models.TransientModel):
             for progrmao in  pagos_programados_ids:
                 if int(progrmao.payment_pagos_id.create_date.month)==int(mes_curso) and int(progrmao.payment_pagos_id.create_date.year)==int(anio):
                     capital_cancelado_mes+=progrmao.monto_pagar
-            total_cancelado_mes=administrativo_cancelado_mes+iva_adm_cancelado_mes+capital_cancelado_mes                                               
+            
+            pago_mes=self.env['account.payment'].search([('partner_id','=',contrato.cliente.id),('state','=','posted'),('payment_type','=','inbound')])
+            importes_ids=pago_mes.contrato_estado_cuenta_payment_ids.filtered(lambda l: l.programado>0 and l.monto_pagar>0)
+            ###PAGOS DEL MES CLIENTE
+            for imp in importes_ids:
+                if int(imp.payment_pagos_id.create_date.month)==int(mes_curso) and int(imp.payment_pagos_id.create_date.year)==int(anio):
+                    total_cancelado_mes+=imp.amount
+
+
+            #total_cancelado_mes=administrativo_cancelado_mes+iva_adm_cancelado_mes+capital_cancelado_mes                                               
             dct={'codigo_grupo':contrato.grupo.name or '',
                     'contrato':contrato.secuencia  or '',
                     'tipo_contrato':contrato.tipo_de_contrato.name  or '',
