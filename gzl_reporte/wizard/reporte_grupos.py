@@ -184,6 +184,7 @@ class ReportGrupos(models.TransientModel):
             administrativo_cancelado_mes=0
             iva_adm_cancelado_mes=0
             capital_cancelado_mes=0
+            total_cancelado_mes=0
             lista_facturas=[]
             facturas_ids=self.env['account.move'].search([('partner_id','=',contrato.cliente.id),('state','=','posted'),('type','=','out_invoice'),('contrato_id','=',contrato.id)])
             cuota_capital_obj = self.env['rubros.contratos'].search([('name','=','cuota_capital')])
@@ -217,7 +218,7 @@ class ReportGrupos(models.TransientModel):
                     total_cancelado_mes+=imp.amount
 
 
-            #total_cancelado_mes=administrativo_cancelado_mes+iva_adm_cancelado_mes+capital_cancelado_mes                                               
+            #total_cancelado_mes=administrativo_cancelado_mes+iva_adm_cancelado_mes+capital_cancelado_mes
             dct={'codigo_grupo':contrato.grupo.name or '',
                     'contrato':contrato.secuencia  or '',
                     'tipo_contrato':contrato.tipo_de_contrato.name  or '',
