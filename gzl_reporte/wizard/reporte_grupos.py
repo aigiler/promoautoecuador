@@ -211,10 +211,9 @@ class ReportGrupos(models.TransientModel):
                     capital_cancelado_mes+=progrmao.monto_pagar
             
             pago_mes=self.env['account.payment'].search([('partner_id','=',contrato.cliente.id),('state','=','posted'),('payment_type','=','inbound')])
-            importes_ids=pago_mes.contrato_estado_cuenta_payment_ids.filtered(lambda l: l.programado>0 and l.monto_pagar>0)
             ###PAGOS DEL MES CLIENTE
-            for imp in importes_ids:
-                if int(imp.payment_pagos_id.create_date.month)==int(mes_curso) and int(imp.payment_pagos_id.create_date.year)==int(anio):
+            for imp in pago_mes:
+                if int(imp.payment_date.month)==int(mes_curso) and int(imp.payment_date.year)==int(anio):
                     total_cancelado_mes+=imp.amount
 
 
