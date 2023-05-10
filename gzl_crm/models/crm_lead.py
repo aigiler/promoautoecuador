@@ -271,7 +271,7 @@ class CrmLead(models.Model):
 
 
 
-    tipo_contrato = fields.Many2one('tipo.contrato.adjudicado', string='Tipo de Contrato', required=True)
+    tipo_contrato = fields.Many2one('tipo.contrato.adjudicado', string='Tipo de Contrato', required=False)
     tabla_amortizacion = fields.One2many('tabla.amortizacion', 'oportunidad_id' )
     cotizaciones_ids = fields.One2many('sale.order', 'oportunidad_id')
     cuota_capital = fields.Monetary(string='Cuota Capital', currency_field='currency_id')
