@@ -131,7 +131,7 @@ class ReportCrm(models.TransientModel):
                         'id_asesor':l.cerrador.id,
                         'asesor':l.cerrador.name,
                         'cliente':l.partner_id.name,
-                        'presupuesto':100,
+                        'presupuesto':l.cerrador.x_presupuesto,
                         'prospectos':1,
                         'llamadas':llamada,
                         'citas':cita,
