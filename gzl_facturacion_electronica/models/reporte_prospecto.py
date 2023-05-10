@@ -123,7 +123,7 @@ class ReportCrm(models.TransientModel):
                             llamada=1
                         elif m.activity_type_id.name=='Reunión':
                             cita=1
-                    if l.colocar_venta_como_ganada:
+                    if l.probability==100:
                         venta=1
                     lista_asesores.append(l.cerrador.id)
                     dct={'fecha_gestion':l.create_date,
@@ -146,7 +146,7 @@ class ReportCrm(models.TransientModel):
                                 elif m.activity_type_id.name=='Reunión':
                                     x['citas']+=1
                             x['prospectos']+=1
-                            if l.colocar_venta_como_ganada:
+                            if l.probability==100:
                                 x['ventas']+=1
             else:
                 llamada=0
@@ -157,7 +157,7 @@ class ReportCrm(models.TransientModel):
                         llamada=1
                     elif m.activity_type_id.name=='Reunión':
                         cita=1
-                if l.colocar_venta_como_ganada:
+                if l.probability==100:
                     venta=1
 
                 dct={'fecha_gestion':l.create_date,
