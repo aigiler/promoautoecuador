@@ -123,6 +123,9 @@ class ReportCrm(models.TransientModel):
                             llamada=1
                         elif m.activity_type_id.name=='Reunión':
                             cita=1
+
+######Prospecto todo aquello que
+
                     if l.probability==100:
                         venta=1
                     lista_asesores.append(l.cerrador.id)
