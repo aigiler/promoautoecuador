@@ -820,10 +820,10 @@ class AccountMove(models.Model):
                 obj_am = self.env['account.move']
                 valor_credito=0
 
-                movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',self.name),('state','=',,'posted')])
-                movimientos_seguro=self.env['account.move'].search([('journal_id','=',seguro_obj.journal_id.id),('ref','=',self.name),('state','=',,'posted')])
-                movimientos_rastreo=self.env['account.move'].search([('journal_id','=',rastreo_obj.journal_id.id),('ref','=',self.name),('state','=',,'posted')])
-                movimientos_otro=self.env['account.move'].search([('journal_id','=',otros_obj.journal_id.id),('ref','=',self.name),('state','=',,'posted')])
+                movimientos_cuota=self.env['account.move'].search([('journal_id','=',cuota_capital_obj.journal_id.id),('ref','=',self.name),('state','=','posted')])
+                movimientos_seguro=self.env['account.move'].search([('journal_id','=',seguro_obj.journal_id.id),('ref','=',self.name),('state','=','posted')])
+                movimientos_rastreo=self.env['account.move'].search([('journal_id','=',rastreo_obj.journal_id.id),('ref','=',self.name),('state','=','posted')])
+                movimientos_otro=self.env['account.move'].search([('journal_id','=',otros_obj.journal_id.id),('ref','=',self.name),('state','=','posted')])
                 for cuota in movimientos_cuota:
                     cuota.button_draft()
                     cuota.button_cancel()
