@@ -432,10 +432,12 @@ class FacturacionElectronica(models.Model):
     def postJson(self, url,headers,request):
         #json_factura=json.dumps(dict, ensure_ascii=False)
         json_factura=json.JSONEncoder().encode(request)
-
-        procesar_factura_response = requests.post(url, headers = headers, data = json_factura, verify=False)
-
-
+        procesar_factura_response={}
+        try:
+            procesar_factura_response = requests.post(url, headers = headers, data = json_factura, verify=False,timeout=10)
+            
+        except:
+            raise ValidationError("Por el momento el servicio no está disponible. Contáctese con el administrador")
         return procesar_factura_response
 
 
