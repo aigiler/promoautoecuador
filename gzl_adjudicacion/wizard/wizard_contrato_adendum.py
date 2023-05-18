@@ -433,7 +433,7 @@ class WizardContratoAdendum(models.Model):
         if self.env.user.id not in self.rolpostventa.member_ids.ids and self.env.user.id not in self.rolAdjudicacion.member_ids.ids:
             raise ValidationError("No tiene permiso para realizar esta acción")
         if self.nota:
-            if self.env.user.id == self.rolpostventa.user_id.id and self.env.user.id != self.rolAdjudicacion.user_id.id:
+            if self.env.user.id == self.rolpostventa.user_id.id:
                 raise ValidationError("Si desea continuar con el proceso debe enviarlo al Aprobador de Adjudicaciones.")
         #if not self.pago_id:
         #    raise ValidationError("Debe generarse el pago y asociarse a este proceso")
