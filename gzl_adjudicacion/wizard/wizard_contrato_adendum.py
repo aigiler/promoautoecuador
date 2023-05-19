@@ -313,7 +313,7 @@ class WizardContratoAdendum(models.Model):
                 else:
                     valor_a_restar= (valor_sobrante/parte_decimal)*0.01
                 obj_contrato=self.env['tabla.adendum'].search([('adendum_id','=',self.id),('estado_pago','=','pendiente'),('procesado','=',False)] , order ='fecha desc')
-                raise ValidationError(" {0}{1}{2}{3}  ".format(valor_a_restar,monto_adm_contrato,cuota_admin_contrato,valor_sobrante))
+                raise ValidationError(" {0}-{1}-{2}-{3}  ".format(valor_a_restar,monto_adm_contrato,cuota_admin_contrato,valor_sobrante))
                 for c in obj_contrato:
                     if valor_sobrante != 0.00 or valor_sobrante != 0 or valor_sobrante != 0.0:
                         c.update({
