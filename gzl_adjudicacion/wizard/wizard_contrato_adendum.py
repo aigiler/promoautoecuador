@@ -298,7 +298,7 @@ class WizardContratoAdendum(models.Model):
                 lista_ids.append(id_registro.id)
             self.update({'tabla_adendum_id':[(6,0,lista_ids)]}) 
             ##########################################validar que la cuota capital este bien ####################################################
-            monto_adm_contrato=sum(self.tabla_adendum_id.tabla_amortizacion.mapped('cuota_adm'))
+            monto_adm_contrato=sum(self.tabla_adendum_id.mapped('cuota_adm'))
             monto_adm_contrato= round(monto_adm_contrato,2)
             cuota_admin_contrato=self.cuota_adm
             vls_adm=[]
@@ -349,7 +349,7 @@ class WizardContratoAdendum(models.Model):
             valor_a_restar=0
             parte_decimal=0
             parte_entera=0
-            monto_finan_contrato = sum(self.tabla_adendum_id.tabla_amortizacion.mapped('cuota_capital'))
+            monto_finan_contrato = sum(self.tabla_adendum_id.mapped('cuota_capital'))
             monto_finan_contrato = round(monto_finan_contrato,2)
             monto_financiamiento_contrato=self.monto_financiamiento
             if self.contrato_id.tiene_cuota:
