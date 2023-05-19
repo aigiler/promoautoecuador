@@ -268,10 +268,9 @@ class WizardContratoAdendum(models.Model):
                             }
                 lista_tabla.append(dct_tabla)
             cuota_adm_nueva=(nuevoCuotaAdm/int(intervalo_nuevo))
+            raise ValidationError("{0}".format(cuota_adm_nueva))
             cuota_adm_nueva=round(cuota_adm_nueva, 2)
             cuota_capital_nueva = (nuevoMontoReeestructura/int(intervalo_nuevo))
-            valor_calculado=(self.monto_financiamiento*((self.contrato_id.tasa_administrativa/100)/12))*self.plazo_meses.numero
-            raise ValidationError("{0} ".format(valor_calculado))
             cuota_capital_nueva =round(cuota_capital_nueva, 2)
             self.cuota_capital=cuota_capital_nueva
             contb=0
