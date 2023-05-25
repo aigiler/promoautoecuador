@@ -844,6 +844,9 @@ class AccountMove(models.Model):
                             valor_credito+=m.credit
 
                 valor_restar=valor_credito
+                cuotas_viejas=self.env['contrato.estado.cuenta'].search([('id','not in',self.contrato_estado_cuenta_ids.ids),('factura_id','=',self.id)])
+                for cuota_vieja in cuotas_viejas:
+                  cuota_vieja.factura_id=False
                 for rec in self.contrato_id.estado_de_cuenta_ids.search([('id','in',self.contrato_estado_cuenta_ids.ids)]):
                     rec.factura_id = self.id
                     if valor_restar:
