@@ -74,6 +74,13 @@ class ReportGrupos(models.TransientModel):
         ('2031','2031'),
         ('2032','2032'),
         ])
+
+    fecha_inicio=fields.Date("Fecha de Inicio")
+
+    fecha_fin=fields.Date("Fecha de Fin")
+
+
+
     state_simplificado=fields.Selection(selection=[
         ('AL DIA', 'AL DIA'),
         ('EN MORA', 'EN MORA'),
@@ -175,6 +182,12 @@ class ReportGrupos(models.TransientModel):
             anio= self.anio_contable
         if self.mes_contable:
             mes_curso = self.mes_contable
+
+
+
+
+
+
         for contrato_id in contrato_ids:
             #####obtener los nuevos campos cuotas_canceladas_mes, capital_cancelado_mes, administrativo_cancelado_mes, iva_adm_cancelado_mes, total_cancelado_mes
             contrato=self.env['contrato'].search([('id','=',contrato_id['id'])])
@@ -194,7 +207,10 @@ class ReportGrupos(models.TransientModel):
 
             for factura_id in facturas_ids:
                 if factura_id.contrato_estado_cuenta_ids:
-                    if int(factura_id.invoice_date.month)==int(mes_curso) and int(factura_id.invoice_date.year)==int(anio):
+  #                  if int(factura_id.invoice_date.month)==int(mes_curso) and int(factura_id.invoice_date.year)==int(anio):
+
+
+                    if factura_id.invoice_date>=self.fecha_inicio and factura.invoice_date <= self.fecha_fin:
                         cuota_capital=self.env['account.move'].search([('ref','=',factura_id.name),('state','=','posted'),('journal_id','=',cuota_capital_obj.journal_id.id)])
                         for cap in cuota_capital:
                             if cuota_capital.line_ids.matched_credit_ids:
@@ -208,13 +224,19 @@ class ReportGrupos(models.TransientModel):
                             iva_adm_cancelado_mes+=(factura_id.amount_total-factura_id.amount_untaxed)
 
             for progrmao in  pagos_programados_ids:
-                if int(progrmao.payment_pagos_id.create_date.month)==int(mes_curso) and int(progrmao.payment_pagos_id.create_date.year)==int(anio):
+               # if int(progrmao.payment_pagos_id.create_date.month)==int(mes_curso) and int(progrmao.payment_pagos_id.create_date.year)==int(anio):
+                if progrmao.payment_pagos_id.create_date>=self.fecha_inicio and progrmao.payment_pagos_id.create_date <= self.fecha_fin:
+
+
                     capital_cancelado_mes+=progrmao.monto_pagar
             
             pago_mes=self.env['account.payment'].search([('partner_id','=',contrato.cliente.id),('state','=','posted'),('payment_type','=','inbound')])
             ###PAGOS DEL MES CLIENTE
             for imp in pago_mes:
-                if int(imp.payment_date.month)==int(mes_curso) and int(imp.payment_date.year)==int(anio):
+            #    if int(imp.payment_date.month)==int(mes_curso) and int(imp.payment_date.year)==int(anio):
+                if imp.payment_date>=self.fecha_inicio and imp.payment_date <= self.fecha_fin:
+
+
                     total_cancelado_mes+=imp.amount
 
 

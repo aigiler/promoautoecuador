@@ -15,6 +15,11 @@
                             <field name="state"/>
                             <field name="state_simplificado"/>
                             <field name="jefe_zona"/>
+                            <field name="mes_contable" string="Mes"/>
+                            <field name="anio_contable" string="Año"/>
+
+                            <field name="fecha_inicio" string="Fecha de Inicio"/>
+                            <field name="fecha_fin" string="Fecha Fin"/>
                         </group>                    
                     </group>                        
                     <footer>
