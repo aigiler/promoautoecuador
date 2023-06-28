@@ -109,7 +109,7 @@ class ReportGrupos(models.TransientModel):
     def validacion_fechas(self):
         if self.fecha_inicio and self.fecha_fin:
             if  self.fecha_inicio > self.fecha_fin:
-                raise ValidationError(("La fecha hasta debe ser mayor a la fecha desde"))
+                raise ValidationError(("La fecha fin debe ser mayor a la fecha inicio"))
 
 
 
