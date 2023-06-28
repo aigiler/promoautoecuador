@@ -100,17 +100,20 @@ class ReporteVentas(models.TransientModel):
                             no_obj+= i.price_subtotal
                         elif f.tax_group_id.code =='novat' and f.description == '532':
                             no_ext += i.price_subtotal 
-                        elif f.tax_group_id.code =='vat' and (f.description == '402' or f.description == '401'):
-                            miva += i.price_subtotal*0.12
                         else:
                             bagrav += i.price_subtotal 
+                        
+                        if f.tax_group_id.code =='vat' and (f.description == '402' or f.description == '401'):
+                            miva += i.price_subtotal*0.12
+
+
 
 
                 else:
                     biva0+=i.price_subtotal
             dct['base_grav']=bagrav
             dct['biva0']=biva0
-            dct['miva']=miva
+            dct['miva']=bagrav * 0.12
             dct['noobj']=no_obj
             if m.ret_tax_ids:
                 for l in m.ret_tax_ids:
