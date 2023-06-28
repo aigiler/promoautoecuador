@@ -95,7 +95,7 @@
                                     <field name="saldo_a_favor_de_capital_por_adendum" />
                                     <field name="pago" attrs="{'invisible': [('state', '!=','NO ACTIVADO')]}"/>
                                     <field name="monto_financiamiento"/>
-                                    <field name="tasa_administrativa" readonly="1"/>
+                                    <field name="tasa_administrativa" />
                                     <field name="valor_inscripcion" />
                                     <field name="desistido" />
 
