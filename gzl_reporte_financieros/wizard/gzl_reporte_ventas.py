@@ -215,7 +215,7 @@ class ReporteVentas(models.TransientModel):
 
         ##Titulos
         filtro=[('invoice_date','>=',dateMonthStart),
-            ('invoice_date','<=',dateMonthEnd),('company_id', '=', self.env.company.id),('type','=','out_invoice')]        
+            ('invoice_date','<=',dateMonthEnd),('company_id', '=', self.env.company.id),('type','=','out_invoice'),('state','=','posted')]        
         #taxes= ['ret_vat_srv','ret_vat_b']
         #ret_purchase=self.obtener_listado_retenciones(filtro,'purchase','ret',taxes) 
         fila =8
@@ -287,7 +287,7 @@ class ReporteVentas(models.TransientModel):
                 sheet.write(fila, columna, l['num_doc'], format_title2)
                 fila+=1
         filtro=[('invoice_date','>=',dateMonthStart),
-            ('invoice_date','<=',dateMonthEnd),('company_id', '=', self.env.company.id),('type','=','out_refund')]  
+            ('invoice_date','<=',dateMonthEnd),('company_id', '=', self.env.company.id),('type','=','out_refund'),('state','=','posted')]  
         move=self.obtener_listado(filtro) 
         columna=0
         if move:
