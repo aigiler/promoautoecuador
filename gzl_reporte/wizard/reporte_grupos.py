@@ -101,6 +101,19 @@ class ReportGrupos(models.TransientModel):
     supervisor=fields.Many2one('res.users',string="Supervisor",track_visibility='onchange' )
     tipo_de_contrato = fields.Many2one('tipo.contrato.adjudicado', string='Tipo de Contrato', track_visibility='onchange')
 
+
+
+
+
+    @api.constrains('fecha_inicio','fecha_fin' )
+    def validacion_fechas(self):
+        if self.fecha_inicio and self.fecha_fin:
+            if  self.fecha_inicio > self.fecha_fin:
+                raise ValidationError(("La fecha hasta debe ser mayor a la fecha desde"))
+
+
+
+
     def print_report_xls(self):
         today = date.today()
         file_data = BytesIO()
@@ -173,6 +186,8 @@ class ReportGrupos(models.TransientModel):
         if self.state_simplificado:
             query+=" and state_simplificado='{0}'".format(self.state_simplificado)
 
+       # raise ValidationError(query)
+            
         self.env.cr.execute(query)
         contrato_ids=self.env.cr.dictfetchall()
         lista_final=[]
@@ -210,7 +225,7 @@ class ReportGrupos(models.TransientModel):
   #                  if int(factura_id.invoice_date.month)==int(mes_curso) and int(factura_id.invoice_date.year)==int(anio):
 
 
-                    if factura_id.invoice_date>=self.fecha_inicio and factura.invoice_date <= self.fecha_fin:
+                    if factura_id.invoice_date>=self.fecha_inicio and factura_id.invoice_date <= self.fecha_fin:
                         cuota_capital=self.env['account.move'].search([('ref','=',factura_id.name),('state','=','posted'),('journal_id','=',cuota_capital_obj.journal_id.id)])
                         for cap in cuota_capital:
                             if cuota_capital.line_ids.matched_credit_ids:
@@ -225,7 +240,7 @@ class ReportGrupos(models.TransientModel):
 
             for progrmao in  pagos_programados_ids:
                # if int(progrmao.payment_pagos_id.create_date.month)==int(mes_curso) and int(progrmao.payment_pagos_id.create_date.year)==int(anio):
-                if progrmao.payment_pagos_id.create_date>=self.fecha_inicio and progrmao.payment_pagos_id.create_date <= self.fecha_fin:
+                if progrmao.payment_pagos_id.create_date.date()>=self.fecha_inicio and progrmao.payment_pagos_id.create_date.date() <= self.fecha_fin:
 
 
                     capital_cancelado_mes+=progrmao.monto_pagar
