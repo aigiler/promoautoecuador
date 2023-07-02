@@ -135,25 +135,26 @@ class ReporteCompras(models.TransientModel):
             srv_trf_diff = 0.00
             srv_trff =0.00
             bn_trff = 0.00
+            miva=0.00
             for i in m.invoice_line_ids:
-                taxes=i.tax_ids.filtered(lambda l: l.tax_group_id.code in ['novat'])
+                taxes=i.tax_ids.filtered(lambda l: l.tax_group_id.code in ['novat','vat'])
 
-                if i.account_id.name!='IVA pagado':
-                    bagrav += i.price_subtotal
                 if len(taxes)>0:
                     for f in taxes:
                         if  f.tax_group_id.code =='novat' and f.description == '531':
                             no_obj+= i.price_subtotal
                         elif f.tax_group_id.code =='novat' and f.description == '532':
-                            no_ext += i.price_subtotal
-                        elif f.tax_group_id.code =='vat':
-                            dct['miva']=(i.price_subtotal*0.12) 
+                            no_ext += i.price_subtotal 
+                        else:
+                            bagrav += i.price_subtotal 
+                            
+                        if f.tax_group_id.code =='vat' and f.description == '501':
+                            miva+= i.price_subtotal*0.12  
+                            
+                            
 
                 else:
                     biva0+=i.price_subtotal
-                    if i.account_id.name=='IVA pagado':
-                        biva0=0
-                        dct['miva']=(i.price_subtotal)
                 for k in i.tax_ids:
                     if k.tax_group_id.code =='ret_vat_srv' and bagrav!=0:
                         bn_trf_diff +=  i.price_subtotal
@@ -175,38 +176,30 @@ class ReporteCompras(models.TransientModel):
             dct['srv_trf_dif']=srv_trf_diff
             dct['bn_trf_dif']= bn_trf_diff
             dct['biva0']=biva0
-            if biva0:
-                bagrav=0
             dct['bgrav']=bagrav
+            dct['miva']=miva
             if m.ret_tax_ids:
                 for l in m.ret_tax_ids:
                     
-                    #if l.group_id.code != 'ret_ir':
-                    #dct['miva']=(biva0*0.12)#l.base
                     if l.group_id.code =='ret_vat_b' and l.tax_id.tax_group_id.code =='ret_vat_b':
                         dct['porctretb']=l.tax_id.tarifa
-                        dct['retb']=l.amount
-                        dct['porctrets']='0'
+                        dct['retb']='0'
+                        dct['porctrets']=l.amount
                         dct['retserv']='0'
                     if l.group_id.code =='ret_vat_srv' and l.tax_id.tax_group_id.code =='ret_vat_srv':
                         dct['porctretb']='0'
-                        dct['retb']='0'
-                        dct['porctrets']=l.tax_id.tarifa
+                        dct['retb']=l.tax_id.tarifa
+                        dct['porctrets']='0'
                         dct['retserv']=l.amount  
                     valor= (-1)*l.amount
                     if valor == l.base:
                         dct['retiva100']=l.base
-            #if dct['bgrav']==0 :
-            #    dct['biva0']=m.amount_untaxed
-            #    dct['bn_trf_dif']= 0
-            #    dct['srv_trf_dif']=0
-            #raise ValidationError((str((dct['dct']))))
+
+                        
+                        
             lista_retenciones.append(dct)
             
-            #obj_line=self.env['account.move'].search([('retention_id','=',line.id)], order ='id desc')
 
-        #if num_sub:
-        #   raise ValidationError((str((num_sub)))) 
         return lista_retenciones
 
     def print_report_xls(self):
@@ -505,5 +498,3 @@ class ReporteCompras(models.TransientModel):
             sheet.write(fila,46, '=+SUM(AU'+str(9)+':AU'+str(fila)+')', currency_format)
             sheet.write(fila,48, '=+SUM(AW'+str(9)+':AW'+str(fila)+')', currency_format)
             sheet.merge_range('B'+str(fila+1)+':N'+str(fila+1), 'TOTALES', workbook.add_format({'bold':True,'border':0,'align': 'center','size': 14}))
-
-            
