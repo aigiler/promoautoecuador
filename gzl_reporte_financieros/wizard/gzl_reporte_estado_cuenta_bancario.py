@@ -537,7 +537,7 @@ class ReporteEstadoCuentaBancario(models.TransientModel):
 
 
     def print_report_pdf(self):
-        return self.env.ref('gzl_reporte_financiero.repote_estado_cuenta_bancario_pdf_id').report_action(self)
+        return self.env.ref('gzl_reporte_financieros.repote_estado_cuenta_bancario_pdf_id').report_action(self)
 
 
 
