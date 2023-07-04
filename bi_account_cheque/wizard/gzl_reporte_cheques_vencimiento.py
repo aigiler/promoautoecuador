@@ -181,7 +181,12 @@ class ChequesVencimiento(models.TransientModel):
             sheet.write(current_line, 8, cheque['monto'] ,currency_format)
             sheet.write(current_line, 9, cheque['conciliado'] or "", body)
 
-        fila_current=current_line+1
+        if len(lista_cheques)>0:
+            fila_current=current_line+1
+        else:
+            fila_current+=1
+
+
         bold_right=workbook.add_format({'bold':True,'border':1,'align':'right'})
         bold_right.set_bg_color('d9d9d9')
 
