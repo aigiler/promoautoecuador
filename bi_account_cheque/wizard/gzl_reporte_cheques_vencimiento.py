@@ -184,7 +184,7 @@ class ChequesVencimiento(models.TransientModel):
         if len(lista_cheques)>0:
             fila_current=current_line+1
         else:
-            fila_current+=1
+            fila_current=itertools.count(start=6)+1
 
 
         bold_right=workbook.add_format({'bold':True,'border':1,'align':'right'})
