@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="report_invoice_document" inherit_id="account.report_invoice_document">
-        <xpath expr="//table[@name='invoice_line_table']" position="after">
+        <xpath expr="//p[@name='comment']" position="before">
             
 
 
-                <table class="table table-condensed">
+                <table class="table table-condensed" t-if="o.type in ('out_invoice', 'in_refund','in_debit')">
+
+
                     <thead style="text-align: center; margin-bottom: 10px ">
+                        <th>Codigo</th>
                         <th>Cuenta</th>
                         <th>Descripción</th>
                         <th>Debe</th>
@@ -15,6 +18,7 @@
                     </thead>
                     <tbody>
                         <tr t-foreach="o.asientos_contables()" t-as="asiento">
+                            <td><span t-esc="asiento.account_id.code"/></td>
                             <td><span t-esc="asiento.account_id.name"/></td>
                             <td><span t-esc="asiento.name"/></td>
                             <td style="text-align: right"><span t-esc="'%.2f' %(asiento.debit)"/></td>
