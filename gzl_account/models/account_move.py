@@ -14,6 +14,22 @@ class AccountMove(models.Model):
             self.auth_number=diario_de_ventas.auth_out_invoice_id.authorization_number
 
 
+    def asientos_contables(self):
+
+
+        movimientos=self.line_ids
+        lista_obj=[]
+        for asiento in movimientos:
+
+            lista_obj.append(asiento)
+        return lista_obj
+
+
+
+
+
+
+
 class AccountMoveLine(models.Model):   
     _inherit = 'account.move.line'    
   

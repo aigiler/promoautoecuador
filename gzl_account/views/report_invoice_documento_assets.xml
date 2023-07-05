@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_invoice_document" inherit_id="account.report_invoice_document">
+        <xpath expr="//table[@name='invoice_line_table']" position="after">
+            
+
+
+                <table class="table table-condensed">
+                    <thead style="text-align: center; margin-bottom: 10px ">
+                        <th>Cuenta</th>
+                        <th>Descripción</th>
+                        <th>Debe</th>
+                        <th>Haber</th>
+
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="o.asientos_contables()" t-as="asiento">
+                            <td><span t-esc="asiento.account_id.name"/></td>
+                            <td><span t-esc="asiento.name"/></td>
+                            <td style="text-align: right"><span t-esc="'%.2f' %(asiento.debit)"/></td>
+                            <td style="text-align: right"><span t-esc="'%.2f' %(asiento.credit)"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+
+            </div>
+        </xpath>
+    </template>
+</odoo>
