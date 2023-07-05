@@ -5,7 +5,7 @@
             
 
 
-                <table class="table table-condensed" t-if="o.type in ('out_invoice', 'in_refund','in_debit')">
+                <table class="table table-condensed" t-if="o.type in ('in_invoice', 'in_refund','in_debit')">
 
 
                     <thead style="text-align: center; margin-bottom: 10px ">
