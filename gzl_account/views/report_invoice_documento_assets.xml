@@ -3,6 +3,7 @@
     <template id="report_invoice_document" inherit_id="account.report_invoice_document">
         <xpath expr="//p[@name='comment']" position="before">
             
+                <h4><strong>Asientos Contables</strong></h4>
 
 
                 <table class="table table-condensed" t-if="o.type in ('in_invoice', 'in_refund','in_debit')">
