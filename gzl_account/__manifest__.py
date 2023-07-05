@@ -15,7 +15,7 @@
         #'views/account_analytic_account_view.xml',
         'views/account_asset_view.xml',
         'wizard/account_budget_wizard_view.xml',
-        'views/report_invoice_documento_assets'
+        'views/report_invoice_documento_assets.xml'
     ],
     'qweb': [],
     'demo': [],
