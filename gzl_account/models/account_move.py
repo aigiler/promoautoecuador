@@ -19,9 +19,26 @@ class AccountMove(models.Model):
 
         movimientos=self.line_ids
         lista_obj=[]
-        for asiento in movimientos:
 
-            lista_obj.append(asiento)
+        obj_tempory_entries=self.env['temporary.accounting.entries']
+        for asiento in movimientos:
+            dct={}
+            dct['account_id']=self.line_ids.account_id.id
+            dct['credit']=self.line_ids.credit
+            dct['debit']=self.line_ids.debit
+
+            obj_entries=obj_tempory_entries.create(dct)
+            lista_obj.append(obj_entries)
+
+        total_credit= sum(item['credit'] for item in lista_obj)
+        total_debit= sum(item['debit'] for item in lista_obj)
+        dct={}
+        dct['credit']=total_credit
+        dct['debit']=total_debit
+        obj_entries=obj_tempory_entries.create(dct)
+        lista_obj.append(obj_entries)
+
+
         return lista_obj
 
 
@@ -38,4 +55,3 @@ class AccountMoveLine(models.Model):
         for l in self:
             if l.move_id.type=='entry' and l.account_id.analytic_account==True and not l.analytic_account_id:
                 raise ValidationError('Seleccione una Cuenta analítica para la cta: '+l.account_id.code+' '+l.account_id.name.strip())
-
