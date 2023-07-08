@@ -26,7 +26,7 @@ class AccountMove(models.Model):
             dct['account_id']=asiento.account_id.id
             dct['credit']=asiento.credit
             dct['debit']=asiento.debit
-            dct['nombre_codigo']=asiento.name
+            dct['name']=asiento.name
 
 
 

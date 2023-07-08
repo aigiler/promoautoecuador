@@ -11,7 +11,7 @@ class TemporaryAccountingEntries(models.TransientModel):
 
     
     account_id = fields.Many2one('account.account', 'Cuenta')
-    nombre_codigo = fields.Char('Codigo')
+    name = fields.Char('Codigo')
     debit = fields.Float( 'Credito')
     credit = fields.Float( 'Debito')
 
