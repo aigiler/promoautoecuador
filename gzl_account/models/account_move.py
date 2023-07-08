@@ -23,9 +23,12 @@ class AccountMove(models.Model):
         obj_tempory_entries=self.env['temporary.accounting.entries']
         for asiento in movimientos:
             dct={}
-            dct['account_id']=self.line_ids.account_id.id
-            dct['credit']=self.line_ids.credit
-            dct['debit']=self.line_ids.debit
+            dct['account_id']=asiento.account_id.id
+            dct['credit']=asiento.credit
+            dct['debit']=asiento.debit
+            dct['nombre_codigo']=asiento.name
+
+
 
             obj_entries=obj_tempory_entries.create(dct)
             lista_obj.append(obj_entries)
