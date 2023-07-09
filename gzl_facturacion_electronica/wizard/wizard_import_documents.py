@@ -22,11 +22,17 @@ class WizardImportDocuments(models.TransientModel):
 
     
     def format_authorization_date(self, date): 
+        fecha,hora= date.split(" ")
+        anio,mes,dia=fecha.split("-")
+        date=anio+'-'+dia+'-'+mes+' '+hora
+
         date_conv = dateutil.parser.parse(date)
 
         return date_conv.strftime('%Y-%m-%d %H:%M:%S')
     
-    def format_date(self, date):    
+    def format_date(self, date):
+        dia,mes,anio=date.split("/")
+        date=mes+'/'+dia+'/'+anio
         date_conv = dateutil.parser.parse(date)
         return date_conv.strftime('%Y-%m-%d')
     
@@ -92,13 +98,20 @@ class WizardImportDocuments(models.TransientModel):
         journal_id = journal.search([('type','=','purchase')],limit=1)
         
 
+        try:
+            fecha_autorizacion=self.format_authorization_date(aut['fechaAutorizacion']['#text'])
+        except:
+            fecha_autorizacion=self.format_authorization_date(aut['fechaAutorizacion'])
+        
+        
+
         invoice_id = {
             'type':tipo_documento,
             'is_electronic':True,
             'partner_id':partner_id.id,
             'type_environment':infoTrib['ambiente'],
             'numero_autorizacion_sri':aut['numeroAutorizacion'],
-            'fecha_autorizacion_sri':self.format_authorization_date(aut['fechaAutorizacion']['#text']),
+            'fecha_autorizacion_sri':fecha_autorizacion,
             'estado_autorizacion_sri':'AUT' if aut['estado']=='AUTORIZADO' else 'NAT',
             'clave_acceso_sri':infoTrib['claveAcceso'],
             'manual_establishment':infoTrib['estab'],
@@ -270,8 +283,10 @@ class WizardImportDocuments(models.TransientModel):
         journal_id = journal.search([('type','=','purchase')],limit=1)
         
 
-
-
+        try:
+            fecha_autorizacion=self.format_authorization_date(aut['fechaAutorizacion']['#text'])
+        except:
+            fecha_autorizacion=self.format_authorization_date(aut['fechaAutorizacion'])
 
 
         invoice_id = {
@@ -280,7 +295,7 @@ class WizardImportDocuments(models.TransientModel):
             'partner_id':partner_id.id,
             'type_environment':infoTrib['ambiente'],
             'numero_autorizacion_sri':aut['numeroAutorizacion'],
-            'fecha_autorizacion_sri':self.format_authorization_date(aut['fechaAutorizacion']['#text']),
+            'fecha_autorizacion_sri':fecha_autorizacion  ,
             'estado_autorizacion_sri':'AUT' if aut['estado']=='AUTORIZADO' else 'NAT',
             'clave_acceso_sri':infoTrib['claveAcceso'],
             'manual_establishment':infoTrib['estab'],
