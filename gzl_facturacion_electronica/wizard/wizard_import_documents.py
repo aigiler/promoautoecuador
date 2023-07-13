@@ -87,7 +87,7 @@ class WizardImportDocuments(models.TransientModel):
 
         ###### Objetos relacionales
         partner_id = self.env['res.partner'].search([('vat','=',infoTrib['ruc'])],limit=1)
-        
+        raise ValidationError("cambio")
         if partner_id.id == False:
             raise ValidationError("El proveedor {1} con el RUC {0} no esta ingresado en la aplicacion, proceda a ingresarlo.".format(infoTrib['ruc'],infoTrib['razonSocial']))
             
@@ -194,23 +194,7 @@ class WizardImportDocuments(models.TransientModel):
     def import_xml_credit_note_and_invoice(self):
         
         decoded_data = base64.b64decode(self.file_xml)#tranformo el archivo a base 64
-        #raise ValidationError("ESTO ES UNA PRUEBA{1}{0}".format(file_xml,decoded_data))       
-        
-        #import xml.etree.ElementTree as ET
 
-
-        #tree = ET.parse(decoded_data)
-        #decode_data = tree.getroot()
-        #here you can change the encoding type to be able to set it to the one you need
-        #xmlstr = ET.tostring(xml_data, encoding='utf-8', method='xml')
-
-#data_dict = dict(xmltodict.parse(xmlstr))
-
-
-
-
-
-        #raise ValidationError(decoded_data)
 
         autorizacion_xml = xmltodict.parse(decoded_data)
         autorizacion_str = json.dumps(autorizacion_xml, indent=4)
@@ -272,7 +256,7 @@ class WizardImportDocuments(models.TransientModel):
 
         ###### Objetos relacionales
         partner_id = self.env['res.partner'].search([('vat','=',infoTrib['ruc'])],limit=1)
-        
+
         if partner_id.id == False:
             raise ValidationError("El proveedor {1} con el RUC {0} no esta ingresado en la aplicacion, proceda a ingresarlo.".format(infoTrib['ruc'],infoTrib['razonSocial']))
             
@@ -305,6 +289,7 @@ class WizardImportDocuments(models.TransientModel):
             'invoice_date':self.format_date(infoFact['fechaEmision']),
             'date':self.format_date(infoFact['fechaEmision']),
             'journal_id':journal_id.id,
+            'sustento_del_comprobante':self.env['ats.sustento.comprobante'].search([('code','=','00')],limit=1).id
 
 
 
@@ -327,17 +312,19 @@ class WizardImportDocuments(models.TransientModel):
             detalles.append(comp[clave_xml_tipo_documento]['detalles']['detalle'])
         
         
-        
     
         for l in detalles:
+
             product_template=self.env.ref('gzl_facturacion_electronica.generic_product_template')
             product = product_product.search([('product_tmpl_id','=',product_template.id)])
+            
+            obj_product=product.copy({'name':l['descripcion']})
 
 
             dct_line={
                     'partner_id':partner_id.id,
-                    'product_id':product.id,
-                    'name': '['+product.default_code+']'+product.product_tmpl_id.name,
+                    'product_id':obj_product.id,
+                    'name': obj_product.name,
                     'account_id':product.categ_id.property_stock_account_input_categ_id.id,
                     'quantity':float(l['cantidad']),
                     'price_unit':float(l['precioUnitario']),
@@ -352,10 +339,15 @@ class WizardImportDocuments(models.TransientModel):
                 impuestos.append(l['impuestos']['impuesto'])
 
 
-
             impuesto_ids=[]
+            
+            
+            
             for impuesto in impuestos:
-                obj_impuesto = self.env['account.tax'].search([('l10n_ec_code_base','=',impuesto['codigo'])],limit=1)
+                obj_impuesto = self.env['account.tax'].search([('l10n_ec_code_base','=',impuesto['codigo']),('l10n_ec_code_applied','=',impuesto['codigoPorcentaje']),('tarifa','=',impuesto['tarifa']),('type_tax_use','=','purchase')],limit=1)
+                                                               
+                                                               
+                                                               
                 for obj in obj_impuesto:
                     if obj.id:
                         impuesto_ids.append(obj.id)
@@ -379,7 +371,7 @@ class WizardImportDocuments(models.TransientModel):
     
         invoice_id.update({'line_ids': lines})
         move = self.env['account.move'].create(invoice_id)
-
+        
 
 
         if self.type_document=='in_credit':
