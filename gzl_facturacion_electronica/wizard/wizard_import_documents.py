@@ -183,8 +183,8 @@ class WizardImportDocuments(models.TransientModel):
     
         invoice_id.update({'line_ids': lines})
         move = self.env['account.move'].create(invoice_id)
-        
-            
+
+
         if self.type_document=='in_debit':
             factura_relacionada=self.env['account.move'].search([('l10n_latam_document_number','=',infoFact['numDocModificado']),('type','=','in_invoice')],limit=1)
 
@@ -299,7 +299,8 @@ class WizardImportDocuments(models.TransientModel):
             invoice_id['method_payment']=payment_method_id.id
         
         
-        
+        move = self.env['account.move'].create(invoice_id)
+
         
         tot_debit=0
         lines=[]
@@ -359,20 +360,13 @@ class WizardImportDocuments(models.TransientModel):
 
             lines.append((0, 0, dct_line))
 
-            tot_debit += float(l['precioTotalSinImpuesto'])
-        lines.append((0, 0, {
-        'partner_id':partner_id.id,
-        'account_id':partner_id.property_account_payable_id.id,
-        'account_internal_type':'payable',
-        'debit':0.00,
-        'credit':tot_debit,
-        'exclude_from_invoice_tab':True
-        }))
-    
-        invoice_id.update({'line_ids': lines})
-        move = self.env['account.move'].create(invoice_id)
-        
 
+        move.write({"invoice_line_ids":lines})
+        
+        move._compute_amount()
+        
+        for l in move.line_ids:
+            l._onchange_mark_recompute_taxes()
 
         if self.type_document=='in_credit':
             factura_relacionada=self.env['account.move'].search([('l10n_latam_document_number','=',infoFact['numDocModificado']),('type','=','in_invoice')],limit=1)
