@@ -121,10 +121,10 @@
             <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="options.get('unfold_all') != None" title="Unfold" data-filter="unfold_all">Unfold All</a>
 
 
-            <a role="menuitem" class="dropdown-item js_niveles1_filtro" t-if="context.get('id') == 10" title="Unfold" data-filter="unfold1_all">Nivel 1</a>
-            <a role="menuitem" class="dropdown-item js_niveles2_filtro" t-if="context.get('id') == 10" title="Unfold" data-filter="unfold2_all">Nivel 2</a>
-            <a role="menuitem" class="dropdown-item js_niveles3_filtro" t-if="context.get('id') == 10" title="Unfold" data-filter="unfold3_all">Nivel 3</a>
-            <a role="menuitem" class="dropdown-item js_niveles4_filtro" t-if="context.get('id') == 10" title="Unfold" data-filter="unfold4_all">Nivel 4</a>
+            <a role="menuitem" class="dropdown-item js_niveles1_filtro" t-if="context.get('id') == 5" title="Unfold" data-filter="unfold1_all">Nivel 1</a>
+            <a role="menuitem" class="dropdown-item js_niveles2_filtro" t-if="context.get('id') == 5" title="Unfold" data-filter="unfold2_all">Nivel 2</a>
+            <a role="menuitem" class="dropdown-item js_niveles3_filtro" t-if="context.get('id') == 5" title="Unfold" data-filter="unfold3_all">Nivel 3</a>
+            <a role="menuitem" class="dropdown-item js_niveles4_filtro" t-if="context.get('id') == 5" title="Unfold" data-filter="unfold4_all">Nivel 4</a>
 
 
 
