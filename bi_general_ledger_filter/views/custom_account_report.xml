@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+        <template id="search_template_custom_account">
+            <a t-if="options.get('custom_account')" type="button" class="dropdown-toggle account_custom_account_filter" data-toggle="dropdown">
+                <span class="fa fa-folder-open"/> Accounts
+            </a>
+            <ul class="dropdown-menu o_filters_menu" role="menu">
+                <li class="o_account_report_search js_account_custom_account_m2m"/>
+            </ul>
+        </template>
+
+        <template id="browseinfo_search_template_custom_account" inherit_id="account_reports.search_template">
+            <xpath expr="//div[@class='btn-group o_dropdown o_account_reports_filter_analytic']" position="after">
+                <div class="btn-group o_dropdown o_account_reports_filter_custom_account" t-if="options.get('custom_account')">
+                    <t t-call="bi_general_ledger_filter.search_template_custom_account"/>
+                </div>
+            </xpath>
+        </template>
+
+</odoo>

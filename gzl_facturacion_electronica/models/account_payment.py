@@ -7,6 +7,9 @@ from odoo.exceptions import UserError, ValidationError
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
+
+    x_valor_cuenta=fields.Float("Valor a Pagar",compute='_saldo_pagar', store=True)
+
     contrato_estado_cuenta_payment_ids = fields.One2many('contrato.estado.cuenta.payment', 'payment_pagos_id')
     deuda_total=fields.Float("Deuda Total")
     valor_deuda=fields.Float("Valor a Pagar",compute='_saldo_pagar', store=True)

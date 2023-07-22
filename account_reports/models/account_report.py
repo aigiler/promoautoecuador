@@ -162,11 +162,34 @@ class AccountReport(models.AbstractModel):
             not journal['id'] in ('divider', 'group') and journal['selected']
         ]
 
+
+
+    @api.model
+    def _get_options_account_account(self, options):
+        return [
+            journal for journal in options.get('account_account', []) if
+            not journal['id'] in ('divider', 'group') and journal['selected']
+        ]
+
+
+
+
     @api.model
     def _get_options_journals_domain(self, options):
         # Make sure to return an empty array when nothing selected to handle archived journals.
         selected_journals = self._get_options_journals(options)
         return selected_journals and [('journal_id', 'in', [j['id'] for j in selected_journals])] or []
+
+
+    @api.model
+    def _get_options_account_account_domain(self, options):
+        # Make sure to return an empty array when nothing selected to handle archived journals.
+        selected_journals = self._get_options_account_account(options)
+        return selected_journals and [('account_id', 'in', [j['id'] for j in selected_journals])] or []
+
+
+
+
 
     ####################################################
     # OPTIONS: date + comparison
@@ -1242,6 +1265,13 @@ class AccountReport(models.AbstractModel):
             rcontext['options']['analytic_account_ids'] = [
                 {'id': acc.id, 'name': acc.name} for acc in self.env.context['analytic_account_ids']
             ]
+        if self.env.context.get('account_account_ids'):
+            rcontext['options']['account_account_ids'] = [
+                {'id': acc.id, 'name': acc.name} for acc in self.env.context['account_account_ids']
+            ]
+
+
+
 
         render_template = templates.get('main_template', 'account_reports.main_template')
         if line_id is not None:

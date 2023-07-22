@@ -1,0 +1,154 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* bi_general_ledger_filter
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-10-13 13:01+0000\n"
+"PO-Revision-Date: 2021-10-13 13:01+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: bi_general_ledger_filter
+#: model_terms:ir.ui.view,arch_db:bi_general_ledger_filter.search_template_custom_account
+msgid "<span class=\"fa fa-folder-open\"/> Accounts"
+msgstr "<span class=\"fa fa-folder-open\"/> rekeningen"
+
+#. module: bi_general_ledger_filter
+#. openerp-web
+#: code:addons/bi_general_ledger_filter/static/src/js/custom_account_reports.js:0
+#, python-format
+msgid "Account"
+msgstr "Rekening"
+
+#. module: bi_general_ledger_filter
+#: model:ir.model,name:bi_general_ledger_filter.model_account_report
+msgid "Account Report"
+msgstr "Accountrapport"
+
+#. module: bi_general_ledger_filter
+#. openerp-web
+#: code:addons/bi_general_ledger_filter/static/src/js/custom_account_reports.js:0
+#, python-format
+msgid "Account Type"
+msgstr "account type"
+
+#. module: bi_general_ledger_filter
+#: model:ir.actions.client,name:bi_general_ledger_filter.action_account_report_general_ledger_bi
+msgid "Advanced General Ledger"
+msgstr "Geavanceerd grootboek"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Balance"
+msgstr "Evenwicht"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Base Amount"
+msgstr "Basis aantal"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Communication"
+msgstr "Communicatie"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Credit"
+msgstr "Credit"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Currency"
+msgstr "Munteenheid"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Date"
+msgstr "Datum"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Debit"
+msgstr "Debiteren"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#: model:ir.model,name:bi_general_ledger_filter.model_bi_account_general_ledger
+#: model:ir.ui.menu,name:bi_general_ledger_filter.menu_action_account_report_general_ledger
+#, python-format
+msgid "Detailed General Ledger"
+msgstr "Gedetailleerd grootboek"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#: model:ir.model.fields,field_description:bi_general_ledger_filter.field_bi_account_general_ledger__display_name
+#, python-format
+msgid "Display Name"
+msgstr "Weergavenaam"
+
+#. module: bi_general_ledger_filter
+#: model:ir.model.fields,field_description:bi_general_ledger_filter.field_bi_account_general_ledger__id
+msgid "ID"
+msgstr "ID kaart"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Initial Balance"
+msgstr "Beginsaldo"
+
+#. module: bi_general_ledger_filter
+#: model:ir.model.fields,field_description:bi_general_ledger_filter.field_bi_account_general_ledger____last_update
+msgid "Last Modified on"
+msgstr "Laatst gewijzigd op"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Name"
+msgstr "Naam"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Partner"
+msgstr "Partner"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Tax Amount"
+msgstr "Belastingbedrag"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Tax Declaration"
+msgstr "Belastingaangifte"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Total"
+msgstr "Totaal"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Total "
+msgstr "Totaal"

@@ -1,0 +1,154 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* bi_general_ledger_filter
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-10-13 13:04+0000\n"
+"PO-Revision-Date: 2021-10-13 13:04+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: bi_general_ledger_filter
+#: model_terms:ir.ui.view,arch_db:bi_general_ledger_filter.search_template_custom_account
+msgid "<span class=\"fa fa-folder-open\"/> Accounts"
+msgstr "<span class=\"fa fa-folder-open\"/> Cuentas"
+
+#. module: bi_general_ledger_filter
+#. openerp-web
+#: code:addons/bi_general_ledger_filter/static/src/js/custom_account_reports.js:0
+#, python-format
+msgid "Account"
+msgstr "Cuenta"
+
+#. module: bi_general_ledger_filter
+#: model:ir.model,name:bi_general_ledger_filter.model_account_report
+msgid "Account Report"
+msgstr "Informe de cuenta"
+
+#. module: bi_general_ledger_filter
+#. openerp-web
+#: code:addons/bi_general_ledger_filter/static/src/js/custom_account_reports.js:0
+#, python-format
+msgid "Account Type"
+msgstr "Tipo de cuenta"
+
+#. module: bi_general_ledger_filter
+#: model:ir.actions.client,name:bi_general_ledger_filter.action_account_report_general_ledger_bi
+msgid "Advanced General Ledger"
+msgstr "Libro mayor general avanzado"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Balance"
+msgstr "Equilibrio"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Base Amount"
+msgstr "Cantidad base"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Communication"
+msgstr "Comunicación"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Credit"
+msgstr "Crédito"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Currency"
+msgstr "Divisa"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Date"
+msgstr "Fecha"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Debit"
+msgstr "Débito"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#: model:ir.model,name:bi_general_ledger_filter.model_bi_account_general_ledger
+#: model:ir.ui.menu,name:bi_general_ledger_filter.menu_action_account_report_general_ledger
+#, python-format
+msgid "Detailed General Ledger"
+msgstr "Libro mayor general detallado"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#: model:ir.model.fields,field_description:bi_general_ledger_filter.field_bi_account_general_ledger__display_name
+#, python-format
+msgid "Display Name"
+msgstr "Nombre para mostrar"
+
+#. module: bi_general_ledger_filter
+#: model:ir.model.fields,field_description:bi_general_ledger_filter.field_bi_account_general_ledger__id
+msgid "ID"
+msgstr "IDENTIFICACIÓN"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Initial Balance"
+msgstr "Saldo inicial"
+
+#. module: bi_general_ledger_filter
+#: model:ir.model.fields,field_description:bi_general_ledger_filter.field_bi_account_general_ledger____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Name"
+msgstr "Nombre"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Partner"
+msgstr "Pareja"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Tax Amount"
+msgstr "Importe del impuesto"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Tax Declaration"
+msgstr "Declaración de impuestos"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Total"
+msgstr "Total"
+
+#. module: bi_general_ledger_filter
+#: code:addons/bi_general_ledger_filter/models/bi_account_general_ledger.py:0
+#, python-format
+msgid "Total "
+msgstr "Total"

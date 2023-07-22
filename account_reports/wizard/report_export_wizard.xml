@@ -14,7 +14,7 @@
                         <group>
                             <field name="doc_name" required="1"/>
                             <field name="report_model" invisible="1" />
-                            <field name="groupbymonth" attrs="{'invisible':[('report_model','!=','account.general.ledger')]}"/>
+                            <field name="groupbymonth" attrs="{'invisible':[('report_model','=','account.general.ledger')]}"/>
                         </group>
                     </group>
                     <footer>
