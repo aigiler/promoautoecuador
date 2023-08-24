@@ -206,8 +206,18 @@ class Contrato(models.Model):
                 l.cuota_pago=self.plazo_meses.numero
             else:
                 l.cuota_pago=0
-            
 
+
+
+
+
+    def ingreso_fecha_inicio_pago(self):
+        contratos=self.env['contrato'].search([])
+        for contrato in contratos:
+            cuota1= contrato.estado_de_cuenta_ids.filtered(lambda l: l.numero_cuota=="1")
+
+            for l in cuota1:
+                contrato.fecha_inicio_pago=l.fecha
 
 
 
