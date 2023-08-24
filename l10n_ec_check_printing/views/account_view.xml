@@ -70,7 +70,7 @@
 
                     <field name="account_payment_account_ids" nolabel="1">
                         <tree string="Pagos" editable="bottom"  >
-                            <field name="cuenta"  domain="[('deprecated', '=', False), ('user_type_id.type', 'not in', ('receivable', 'payable')), ('company_id', '=', parent.company_id)]"  required="1"/>
+                            <field name="cuenta"  domain="[('deprecated', '=', False), ('company_id', '=', parent.company_id)]"  required="1"/>
 
 
                             <field name="name" required="1" />
