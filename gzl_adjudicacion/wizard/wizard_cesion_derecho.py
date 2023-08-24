@@ -31,6 +31,7 @@ class WizardAdelantarCuotas(models.Model):
     rolcontab = fields.Many2one('adjudicaciones.team', string="Rol contabilidad Financiera", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol7'))
     rolpostventa = fields.Many2one('adjudicaciones.team', string="Rol Post venta", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol5'))
     rolDelegado = fields.Many2one('adjudicaciones.team', string="Rol Delegado", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol8'))
+    rolAdjudicaciones = fields.Many2one('adjudicaciones.team', string="Rol Delegado", track_visibility='onchange',default=lambda self:self.env.ref('gzl_adjudicacion.tipo_rol2'))
     cesion_id=fields.Many2one("ir.attachment",string="Documento Cesión de Derecho")
 
     forma_pago = fields.Selection(selection=[
@@ -75,7 +76,14 @@ class WizardAdelantarCuotas(models.Model):
         self.actividad_id=actividad_id.id
 
     def ejecutar_cesion(self):
-        self.validarrol(self.rolpostventa)  
+      #  self.validarrol(self.rolAdjudicaciones)
+
+
+        if self.env.user.id != self.rolAdjudicaciones.user_id:
+            raise ValidationError("La solicitud solo debe ser finalizada por el responsable de Adjudicaciones "+self.rolAdjudicaciones.user_id)
+
+
+
          
         for l in self:
             lista_final=[]
