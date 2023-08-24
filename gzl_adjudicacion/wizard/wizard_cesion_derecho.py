@@ -80,7 +80,7 @@ class WizardAdelantarCuotas(models.Model):
 
 
         if self.env.user.id != self.rolAdjudicaciones.user_id:
-            raise ValidationError("La solicitud solo debe ser finalizada por el responsable de Adjudicaciones "+self.rolAdjudicaciones.user_id)
+            raise ValidationError("La solicitud solo debe ser finalizada por el responsable de Adjudicaciones "+self.rolAdjudicaciones.user_id.name)
 
 
 
