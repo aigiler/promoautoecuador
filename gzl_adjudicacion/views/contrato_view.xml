@@ -137,7 +137,7 @@
                                     <field name="asesor"/>
                                     
                                     <field name="archivo_adicional" filename="name"/>
-                                    <field name="fecha_inicio_pago" readonly="0"/>
+                                    <field name="fecha_inicio_pago" attrs="{'readonly': [('estado_de_cuenta_ids','!=',[])]}" required="1"/>
                                     <field name="cuota_capital"/>
                                     <field name="iva_administrativo" />
                                     <field name="numero_cuotas_pagadas" />
