@@ -212,7 +212,7 @@ class Contrato(models.Model):
 
 
     def ingreso_fecha_inicio_pago(self):
-        contratos=self.env['contrato'].search([])
+        contratos=self.env['contrato'].search([('fecha_inicio_pago','=',False)])
         for contrato in contratos:
             cuota1= contrato.estado_de_cuenta_ids.filtered(lambda l: l.numero_cuota=="1")
 
